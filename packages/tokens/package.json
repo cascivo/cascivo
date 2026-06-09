@@ -5,6 +5,7 @@
   "exports": {
     ".": "./src/index.css"
   },
+  "files": ["src"],
   "scripts": {
     "build": "echo 'tokens: CSS-only, no build'",
     "test": "echo 'tokens: no tests yet'"

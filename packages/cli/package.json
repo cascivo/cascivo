@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "build": "vp pack && node -e \"const fs=require('fs');const f='dist/index.mjs';fs.writeFileSync(f,'#!/usr/bin/env node\\n'+fs.readFileSync(f,'utf8'))\"",
+    "build": "vp pack && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c)\" && chmod +x dist/index.mjs",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
