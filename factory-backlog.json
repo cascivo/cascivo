@@ -5,35 +5,140 @@
       "category": "inputs",
       "priority": 1,
       "spec": "Primary interactive element. Supports variants (primary, secondary, ghost, destructive), sizes (sm, md, lg), loading state, disabled state, and optional leading/trailing icons. Keyboard: Enter, Space. Role: button.",
-      "status": "pending"
+      "status": "done"
     },
     {
       "name": "input",
       "category": "inputs",
       "priority": 2,
       "spec": "Text input field. Supports label, helper text, error state, disabled state, leading/trailing adornments. Fully controlled and uncontrolled modes.",
-      "status": "pending"
+      "status": "done"
     },
     {
       "name": "modal",
       "category": "overlay",
       "priority": 3,
       "spec": "Dialog overlay using native <dialog> element. Controlled open/close. Focus trap. Backdrop click to dismiss. Keyboard: Escape to close.",
-      "status": "pending"
+      "status": "done"
     },
     {
       "name": "card",
       "category": "display",
       "priority": 4,
       "spec": "Container component. Optional header, body, footer sections. Supports hover/interactive variant.",
-      "status": "pending"
+      "status": "done"
     },
     {
       "name": "badge",
       "category": "display",
       "priority": 5,
       "spec": "Inline label for status, count, or category. Variants: default, success, warning, error, info. Sizes: sm, md.",
-      "status": "pending"
+      "status": "done"
+    },
+    {
+      "name": "textarea",
+      "category": "inputs",
+      "priority": 6,
+      "spec": "Multi-line text input. Label, hint, error state. resize prop (none/vertical/both). idle/focused/error machine like Input. A11y: role textbox, aria-multiline.",
+      "status": "done"
+    },
+    {
+      "name": "select",
+      "category": "inputs",
+      "priority": 7,
+      "spec": "Native <select> wrapper. Label, hint, error, placeholder, options array, size. Chevron via masked SVG. idle/focused/error machine. A11y: role combobox.",
+      "status": "done"
+    },
+    {
+      "name": "checkbox",
+      "category": "inputs",
+      "priority": 8,
+      "spec": "Hidden native checkbox + CSS :checked indicator. label, indeterminate (set via ref effect), disabled. A11y: role checkbox, keyboard Space.",
+      "status": "done"
+    },
+    {
+      "name": "radio",
+      "category": "inputs",
+      "priority": 9,
+      "spec": "Radio + RadioGroup. Hidden native radio with CSS indicator. RadioGroup drills name/checked via cloneElement (no context). A11y: role radio/radiogroup, arrow keys.",
+      "status": "done"
+    },
+    {
+      "name": "toggle",
+      "category": "inputs",
+      "priority": 10,
+      "spec": "Switch built as <button role=switch>. Controlled + uncontrolled (on/off machine). Sliding thumb via translate. Sizes sm/md. A11y: aria-checked, keyboard Space.",
+      "status": "done"
+    },
+    {
+      "name": "slider",
+      "category": "inputs",
+      "priority": 11,
+      "spec": "Native <input type=range> with custom track/thumb styling under @supports. Label, min/max/step. A11y: role slider, arrow keys, Home/End.",
+      "status": "done"
+    },
+    {
+      "name": "tooltip",
+      "category": "overlay",
+      "priority": 12,
+      "spec": "CSS-positioned tooltip shown on hover/focus. hidden/visible machine, configurable delay. @starting-style enter animation. A11y: role tooltip, aria-describedby on trigger.",
+      "status": "done"
+    },
+    {
+      "name": "dropdown",
+      "category": "overlay",
+      "priority": 13,
+      "spec": "Menu from a trigger. closed/open machine, controlled override. Full keyboard nav (arrows/Home/End/Enter/Escape), roving tabindex, outside-click dismiss. A11y: role menu/menuitem.",
+      "status": "done"
+    },
+    {
+      "name": "toast",
+      "category": "overlay",
+      "priority": 14,
+      "spec": "ToastProvider + useToast hook. Signal-backed queue, max 3 visible, auto-dismiss. Per-toast entering/visible/dismissing/gone machine. A11y: aria-live polite (assertive for destructive).",
+      "status": "done"
+    },
+    {
+      "name": "alert",
+      "category": "display",
+      "priority": 15,
+      "spec": "Inline message. Variants default/info/success/warning/destructive, optional icon, title, dismissible. A11y: role alert for urgent, role status otherwise.",
+      "status": "done"
+    },
+    {
+      "name": "avatar",
+      "category": "display",
+      "priority": 16,
+      "spec": "User image with initials fallback via loading/loaded/error machine driven by img onLoad/onError. Sizes xs-xl, optional status dot. A11y: img alt / aria-label fallback.",
+      "status": "done"
+    },
+    {
+      "name": "separator",
+      "category": "display",
+      "priority": 17,
+      "spec": "Divider. <hr> for horizontal, <div role=separator> for vertical. decorative prop hides from a11y. Logical-property borders.",
+      "status": "done"
+    },
+    {
+      "name": "tabs",
+      "category": "navigation",
+      "priority": 18,
+      "spec": "Tabs/TabsList/TabsTrigger/TabsContent. Shared signal store via createContext + use(). Roving arrow-key nav, Home/End. A11y: role tablist/tab/tabpanel, aria-selected/controls/labelledby.",
+      "status": "done"
+    },
+    {
+      "name": "accordion",
+      "category": "navigation",
+      "priority": 19,
+      "spec": "Accordion/AccordionItem/AccordionTrigger/AccordionContent. single/multiple modes, signal store via createContext + use(). grid-template-rows 0fr->1fr animation. A11y: aria-expanded/controls.",
+      "status": "done"
+    },
+    {
+      "name": "spinner",
+      "category": "feedback",
+      "priority": 20,
+      "spec": "Pure-CSS rotating border indicator. Sizes sm/md/lg, screen-reader label. Shared by Button's loading state. A11y: role status, aria-label.",
+      "status": "done"
     }
   ]
 }

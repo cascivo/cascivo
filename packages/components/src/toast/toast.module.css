@@ -1,0 +1,105 @@
+@layer cascade.component {
+  .viewport {
+    position: fixed;
+    inset-block-end: var(--cascade-space-4);
+    inset-inline-end: var(--cascade-space-4);
+    z-index: var(--cascade-z-toast);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-2);
+    inline-size: min(24rem, calc(100vw - var(--cascade-space-8)));
+    pointer-events: none;
+
+    @container (max-width: 30rem) {
+      inset-inline: var(--cascade-space-4);
+      inline-size: auto;
+    }
+  }
+
+  .toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cascade-space-3);
+    padding: var(--cascade-space-4);
+    background-color: var(--cascade-color-surface-overlay);
+    border: 1px solid var(--cascade-color-border);
+    border-inline-start-width: 3px;
+    border-radius: var(--cascade-radius-md);
+    box-shadow: var(--cascade-shadow-lg);
+    pointer-events: auto;
+    transition:
+      opacity var(--cascade-duration-200) var(--cascade-ease-out),
+      translate var(--cascade-duration-200) var(--cascade-ease-out);
+
+    &[data-state='entering'],
+    &[data-state='dismissing'],
+    &[data-state='gone'] {
+      opacity: 0;
+      translate: 0 var(--cascade-space-4);
+    }
+
+    &[data-state='visible'] {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    &[data-variant='success'] {
+      border-inline-start-color: var(--cascade-color-success);
+    }
+    &[data-variant='warning'] {
+      border-inline-start-color: var(--cascade-color-warning);
+    }
+    &[data-variant='destructive'] {
+      border-inline-start-color: var(--cascade-color-destructive);
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .title {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text);
+    line-height: var(--cascade-leading-snug);
+  }
+
+  .description {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+    line-height: var(--cascade-leading-normal);
+  }
+
+  .close {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    font-size: var(--cascade-text-xs);
+    color: var(--cascade-color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+}

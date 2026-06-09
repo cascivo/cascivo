@@ -1,0 +1,85 @@
+@layer cascade.component {
+  .root {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .menu {
+    position: absolute;
+    inset-block-start: calc(100% + var(--cascade-space-1));
+    z-index: var(--cascade-z-dropdown);
+    min-inline-size: 10rem;
+    padding: var(--cascade-space-1);
+    background-color: var(--cascade-color-surface-overlay);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-md);
+    box-shadow: var(--cascade-shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -0.25rem;
+    transition:
+      opacity var(--cascade-duration-150) var(--cascade-ease-out),
+      translate var(--cascade-duration-150) var(--cascade-ease-out),
+      visibility var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &[data-placement='bottom-start'] {
+      inset-inline-start: 0;
+    }
+    &[data-placement='bottom-end'] {
+      inset-inline-end: 0;
+    }
+
+    &[data-state='open'] {
+      opacity: 1;
+      visibility: visible;
+      translate: 0 0;
+    }
+
+    @starting-style {
+      &[data-state='open'] {
+        opacity: 0;
+        translate: 0 -0.25rem;
+      }
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-2);
+    inline-size: 100%;
+    padding-inline: var(--cascade-space-3);
+    padding-block: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    text-align: start;
+    color: var(--cascade-color-text);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      outline: none;
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--cascade-color-text-muted);
+  }
+
+  .separator {
+    block-size: 1px;
+    margin-block: var(--cascade-space-1);
+    background-color: var(--cascade-color-border);
+  }
+}

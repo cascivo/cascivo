@@ -1,6 +1,7 @@
 'use client'
 import { cn } from '@cascade-ui/core'
 import type { ButtonHTMLAttributes } from 'react'
+import { Spinner } from '../spinner/spinner'
 import styles from './button.module.css'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,7 +29,7 @@ export function Button({
       aria-busy={loading || undefined}
       {...props}
     >
-      {loading && <span className={styles['spinner']} aria-hidden="true" />}
+      {loading && <Spinner size="sm" aria-hidden="true" />}
       <span>{children}</span>
     </button>
   )

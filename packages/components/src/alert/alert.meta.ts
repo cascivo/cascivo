@@ -1,0 +1,44 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Alert',
+  description: 'Highlights a short, important message inline',
+  category: 'display',
+  states: [],
+  variants: ['default', 'info', 'success', 'warning', 'destructive'],
+  sizes: [],
+  props: [
+    {
+      name: 'variant',
+      type: "'default' | 'info' | 'success' | 'warning' | 'destructive'",
+      required: false,
+      default: 'default',
+    },
+    { name: 'title', type: 'string', required: false },
+    { name: 'icon', type: 'ReactNode', required: false },
+    { name: 'dismissible', type: 'boolean', required: false, default: 'false' },
+    { name: 'onDismiss', type: '() => void', required: false },
+  ],
+  tokens: [
+    '--cascade-color-info',
+    '--cascade-color-success',
+    '--cascade-color-warning',
+    '--cascade-color-destructive',
+    '--cascade-color-border',
+    '--cascade-radius-md',
+  ],
+  accessibility: {
+    role: 'alert',
+    wcag: 'AA',
+    keyboard: [],
+  },
+  examples: [
+    { title: 'Info', code: '<Alert variant="info" title="Heads up">Your trial ends soon.</Alert>' },
+    {
+      title: 'Dismissible',
+      code: '<Alert variant="success" dismissible title="Saved">Changes saved.</Alert>',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['notification', 'message', 'feedback'],
+}

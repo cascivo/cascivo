@@ -1,0 +1,35 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Tabs',
+  description: 'Switch between related panels of content',
+  category: 'navigation',
+  states: ['active', 'inactive'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'defaultValue', type: 'string', required: false },
+    { name: 'value', type: 'string', required: false },
+    { name: 'onValueChange', type: '(value: string) => void', required: false },
+  ],
+  tokens: [
+    '--cascade-color-accent',
+    '--cascade-color-text',
+    '--cascade-color-text-subtle',
+    '--cascade-color-border',
+    '--cascade-focus-ring',
+  ],
+  accessibility: {
+    role: 'tablist',
+    wcag: 'AA',
+    keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['navigation', 'tabs', 'sections'],
+}

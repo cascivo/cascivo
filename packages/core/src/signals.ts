@@ -8,3 +8,4 @@ export {
   useSignalEffect,
 } from '@preact/signals-react'
 export type { Signal, ReadonlySignal } from '@preact/signals-react'
+export { useSignals } from '@preact/signals-react/runtime'

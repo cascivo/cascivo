@@ -1,0 +1,46 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Tooltip',
+  description: 'Contextual label shown on hover or focus',
+  category: 'overlay',
+  states: ['hidden', 'visible'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'content', type: 'ReactNode', required: true },
+    {
+      name: 'placement',
+      type: "'top' | 'right' | 'bottom' | 'left'",
+      required: false,
+      default: 'top',
+    },
+    { name: 'children', type: 'ReactElement', required: true },
+    {
+      name: 'delay',
+      type: 'number',
+      required: false,
+      default: '200',
+      description: 'Milliseconds to wait before showing',
+    },
+  ],
+  tokens: [
+    '--cascade-color-text',
+    '--cascade-color-text-on-accent',
+    '--cascade-radius-sm',
+    '--cascade-z-tooltip',
+  ],
+  accessibility: {
+    role: 'tooltip',
+    wcag: 'AA',
+    keyboard: ['Tab', 'Escape'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['overlay', 'hint', 'popover'],
+}
