@@ -1,4 +1,58 @@
-/* @cascade-ui/themes/warm — placeholder until Plan 2 */
-[data-theme='warm'] {
-  color-scheme: light;
+/* Cascade — Warm Theme */
+/* Organic/approachable, warm neutrals, rounded */
+
+@import '@cascade-ui/tokens';
+
+@layer cascade.theme {
+  [data-theme='warm'] {
+    color-scheme: light;
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascade-color-bg: var(--cascade-warm-50);
+    --cascade-color-bg-subtle: var(--cascade-warm-100);
+    --cascade-color-surface: #ffffff;
+    --cascade-color-surface-raised: var(--cascade-warm-50);
+    --cascade-color-surface-overlay: #ffffff;
+    --cascade-color-border: var(--cascade-warm-200);
+    --cascade-color-border-strong: var(--cascade-warm-300);
+
+    /* ── Text ─────────────────────────────────────────── */
+    --cascade-color-text: var(--cascade-warm-900);
+    --cascade-color-text-subtle: var(--cascade-warm-600);
+    --cascade-color-text-muted: var(--cascade-warm-400);
+    --cascade-color-text-on-accent: #ffffff;
+    --cascade-color-text-on-destructive: #ffffff;
+
+    /* ── Accent ───────────────────────────────────────── */
+    --cascade-color-accent: var(--cascade-orange-500);
+    --cascade-color-accent-hover: var(--cascade-orange-600);
+    --cascade-color-accent-active: #c2410c;
+    --cascade-color-accent-subtle: var(--cascade-orange-50);
+    --cascade-color-accent-muted: var(--cascade-orange-100);
+
+    /* ── Destructive ──────────────────────────────────── */
+    --cascade-color-destructive: var(--cascade-red-600);
+    --cascade-color-destructive-hover: var(--cascade-red-700);
+    --cascade-color-destructive-subtle: var(--cascade-red-50);
+
+    /* ── Success / Warning / Info ─────────────────────── */
+    --cascade-color-success: var(--cascade-green-600);
+    --cascade-color-success-subtle: var(--cascade-green-50);
+    --cascade-color-warning: var(--cascade-yellow-500);
+    --cascade-color-warning-subtle: var(--cascade-yellow-50);
+    --cascade-color-info: var(--cascade-blue-600);
+    --cascade-color-info-subtle: var(--cascade-blue-50);
+
+    /* ── Focus ring ───────────────────────────────────── */
+    --cascade-color-focus-ring: var(--cascade-orange-500);
+    --cascade-focus-ring: 0 0 0 3px rgb(249 115 22 / 0.4);
+
+    /* ── Radius (warmer = rounder) ────────────────────── */
+    --cascade-radius-component: var(--cascade-radius-lg);
+    --cascade-radius-button: var(--cascade-radius-lg);
+    --cascade-radius-input: var(--cascade-radius-lg);
+    --cascade-radius-card: var(--cascade-radius-xl);
+    --cascade-radius-badge: var(--cascade-radius-full);
+    --cascade-radius-modal: var(--cascade-radius-2xl);
+  }
 }

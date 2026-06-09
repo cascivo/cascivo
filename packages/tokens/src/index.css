@@ -1,4 +1,156 @@
-/* @cascade-ui/tokens — placeholder until Plan 2 */
-:root {
-  --cascade-version: '0.0.0';
+/* packages/tokens/src/index.css */
+/* Cascade Design System — Primitive Tokens */
+/* These are raw values. Never use directly in components. Use semantic tokens. */
+
+@layer cascade.tokens {
+  :root {
+    /* ── Color Primitives ─────────────────────────────── */
+
+    /* Gray */
+    --cascade-gray-0: #ffffff;
+    --cascade-gray-50: #f9fafb;
+    --cascade-gray-100: #f3f4f6;
+    --cascade-gray-200: #e5e7eb;
+    --cascade-gray-300: #d1d5db;
+    --cascade-gray-400: #9ca3af;
+    --cascade-gray-500: #6b7280;
+    --cascade-gray-600: #4b5563;
+    --cascade-gray-700: #374151;
+    --cascade-gray-800: #1f2937;
+    --cascade-gray-900: #111827;
+    --cascade-gray-950: #030712;
+
+    /* Blue (primary accent) */
+    --cascade-blue-50: #eff6ff;
+    --cascade-blue-100: #dbeafe;
+    --cascade-blue-200: #bfdbfe;
+    --cascade-blue-300: #93c5fd;
+    --cascade-blue-400: #60a5fa;
+    --cascade-blue-500: #3b82f6;
+    --cascade-blue-600: #2563eb;
+    --cascade-blue-700: #1d4ed8;
+    --cascade-blue-800: #1e40af;
+    --cascade-blue-900: #1e3a8a;
+
+    /* Green */
+    --cascade-green-50: #f0fdf4;
+    --cascade-green-100: #dcfce7;
+    --cascade-green-200: #bbf7d0;
+    --cascade-green-400: #4ade80;
+    --cascade-green-500: #22c55e;
+    --cascade-green-600: #16a34a;
+    --cascade-green-700: #15803d;
+    --cascade-green-900: #14532d;
+
+    /* Red */
+    --cascade-red-50: #fef2f2;
+    --cascade-red-100: #fee2e2;
+    --cascade-red-200: #fecaca;
+    --cascade-red-400: #f87171;
+    --cascade-red-500: #ef4444;
+    --cascade-red-600: #dc2626;
+    --cascade-red-700: #b91c1c;
+    --cascade-red-900: #7f1d1d;
+
+    /* Orange */
+    --cascade-orange-50: #fff7ed;
+    --cascade-orange-100: #ffedd5;
+    --cascade-orange-400: #fb923c;
+    --cascade-orange-500: #f97316;
+    --cascade-orange-600: #ea580c;
+
+    /* Yellow */
+    --cascade-yellow-50: #fefce8;
+    --cascade-yellow-100: #fef9c3;
+    --cascade-yellow-400: #facc15;
+    --cascade-yellow-500: #eab308;
+
+    /* Warm neutrals */
+    --cascade-warm-50: #faf9f7;
+    --cascade-warm-100: #f5f3ef;
+    --cascade-warm-200: #e8e4dc;
+    --cascade-warm-300: #d4cfc5;
+    --cascade-warm-400: #b8b2a7;
+    --cascade-warm-500: #9a9285;
+    --cascade-warm-600: #787062;
+    --cascade-warm-700: #5a5248;
+    --cascade-warm-800: #3d362e;
+    --cascade-warm-900: #241f19;
+
+    /* ── Spacing ──────────────────────────────────────── */
+    --cascade-space-0: 0px;
+    --cascade-space-1: 0.25rem;   /* 4px */
+    --cascade-space-2: 0.5rem;    /* 8px */
+    --cascade-space-3: 0.75rem;   /* 12px */
+    --cascade-space-4: 1rem;      /* 16px */
+    --cascade-space-5: 1.25rem;   /* 20px */
+    --cascade-space-6: 1.5rem;    /* 24px */
+    --cascade-space-8: 2rem;      /* 32px */
+    --cascade-space-10: 2.5rem;   /* 40px */
+    --cascade-space-12: 3rem;     /* 48px */
+    --cascade-space-16: 4rem;     /* 64px */
+    --cascade-space-20: 5rem;     /* 80px */
+    --cascade-space-24: 6rem;     /* 96px */
+
+    /* ── Typography ───────────────────────────────────── */
+    --cascade-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --cascade-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    --cascade-text-xs: 0.75rem;     /* 12px */
+    --cascade-text-sm: 0.875rem;    /* 14px */
+    --cascade-text-base: 1rem;      /* 16px */
+    --cascade-text-lg: 1.125rem;    /* 18px */
+    --cascade-text-xl: 1.25rem;     /* 20px */
+    --cascade-text-2xl: 1.5rem;     /* 24px */
+    --cascade-text-3xl: 1.875rem;   /* 30px */
+
+    --cascade-font-normal: 400;
+    --cascade-font-medium: 500;
+    --cascade-font-semibold: 600;
+    --cascade-font-bold: 700;
+
+    --cascade-leading-none: 1;
+    --cascade-leading-tight: 1.25;
+    --cascade-leading-snug: 1.375;
+    --cascade-leading-normal: 1.5;
+    --cascade-leading-relaxed: 1.625;
+
+    --cascade-tracking-tight: -0.025em;
+    --cascade-tracking-normal: 0em;
+    --cascade-tracking-wide: 0.025em;
+
+    /* ── Border Radius ────────────────────────────────── */
+    --cascade-radius-none: 0px;
+    --cascade-radius-sm: 0.25rem;   /* 4px */
+    --cascade-radius-md: 0.375rem;  /* 6px */
+    --cascade-radius-lg: 0.5rem;    /* 8px */
+    --cascade-radius-xl: 0.75rem;   /* 12px */
+    --cascade-radius-2xl: 1rem;     /* 16px */
+    --cascade-radius-full: 9999px;
+
+    /* ── Shadows ──────────────────────────────────────── */
+    --cascade-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --cascade-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --cascade-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --cascade-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* ── Animation ────────────────────────────────────── */
+    --cascade-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --cascade-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --cascade-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --cascade-duration-75: 75ms;
+    --cascade-duration-100: 100ms;
+    --cascade-duration-150: 150ms;
+    --cascade-duration-200: 200ms;
+    --cascade-duration-300: 300ms;
+
+    /* ── Z-Index ──────────────────────────────────────── */
+    --cascade-z-base: 0;
+    --cascade-z-raised: 10;
+    --cascade-z-dropdown: 100;
+    --cascade-z-overlay: 200;
+    --cascade-z-modal: 300;
+    --cascade-z-toast: 400;
+    --cascade-z-tooltip: 500;
+  }
 }
