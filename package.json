@@ -9,7 +9,7 @@
     "check": "vp check",
     "dev:docs": "vp run @cascade-ui/docs#dev",
     "dev:landing": "vp run @cascade-ui/landing#dev",
-    "ready": "vp check && vp run -r test && vp run -r build"
+    "ready": "vp check && vp run -r check && vp run -r test && vp run -r build"
   },
   "devDependencies": {
     "vite-plus": "catalog:"

@@ -3,19 +3,20 @@
   "version": "0.0.0",
   "private": false,
   "bin": {
-    "cascade": "./dist/index.js"
+    "cascade": "./dist/index.mjs"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
     }
   },
   "scripts": {
     "build": "vp pack",
+    "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"
   },
