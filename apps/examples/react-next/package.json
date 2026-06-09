@@ -12,7 +12,7 @@
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
-    "next": "latest",
+    "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
