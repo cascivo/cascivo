@@ -217,11 +217,10 @@ importers:
         version: 0.1.24(@types/node@25.9.2)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2))
 
   packages/core:
-    dependencies:
+    devDependencies:
       '@preact/signals-react':
         specifier: 'catalog:'
         version: 3.10.1(react@19.2.7)
-    devDependencies:
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
