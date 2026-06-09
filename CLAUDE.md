@@ -110,3 +110,159 @@ Before finishing any task, verify:
 2. Formatting and linting pass.
 3. Type checking passes with zero errors.
 4. All tests pass.
+
+---
+
+## Part 3 — Cascade Design System: Architecture Reference
+
+### Project Identity
+
+- **Name**: cascade / `@cascade-ui`
+- **Tagline**: The CSS-native, signal-driven, AI-first React design system
+- **Competitors**: shadcn/ui, IBM Carbon Design System
+- **Core thesis**: Modern CSS + fine-grained signals + AI-native tooling = zero compromise on quality, performance, or developer experience
+
+### Core Principles
+
+1. **Simplicity** — adoption must be frictionless. No config hell, no wrapper components, no hidden magic.
+2. **Owned code** — components are copy-pasted into user projects (shadcn model). Users own what they use.
+3. **Modern CSS only** — `@layer`, `@container`, `:has()`, CSS custom properties. No Tailwind, no CSS-in-JS.
+4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascade-ui/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
+5. **Beautiful by default** — three first-party themes (light, dark, warm). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
+6. **AI-first** — every component has a machine-readable manifest. MCP server, Claude Code skills, and auto-generated docs all derive from it.
+
+### Dependency Policy
+
+- Always use the **latest stable** version of every dependency (dev or runtime).
+- Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
+- Runtime dependencies in `@cascade-ui/core`: none beyond `@preact/signals-react`.
+- Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
+- vite+ is alpha (v0.1.24) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
+
+### Monorepo Structure
+
+```
+cascade/
+├── packages/
+│   ├── core/           # @cascade-ui/core — micro-FSM, Preact Signals integration, base utilities
+│   ├── tokens/         # @cascade-ui/tokens — CSS design tokens (primitive → semantic → component)
+│   ├── themes/         # @cascade-ui/themes — light.css, dark.css, warm.css
+│   ├── components/     # Registry source — component TSX + CSS + manifest + tests (not published to npm)
+│   ├── icons/          # @cascade-ui/icons — optional SVG icon components
+│   ├── cli/            # cascade CLI — npx cascade init / add / list / update
+│   └── mcp/            # @cascade-ui/mcp — MCP server exposing component registry to AI agents
+├── apps/
+│   ├── docs/           # Vite + Preact + cascade (dogfood) — auto-generated from manifests
+│   ├── storybook/      # Storybook — auto-generated stories from manifests
+│   ├── landing/        # Landing page — built with cascade
+│   └── examples/
+│       ├── react-vite/ # Vite + React example app
+│       └── react-next/ # Next.js App Router example (RSC demo)
+├── skills/             # Claude Code skills — cascade:add, cascade:design-page, cascade:create-theme, cascade:extend
+├── scripts/
+│   ├── factory/        # Dark factory — headless Claude Code agents, factory-supervisor.sh
+│   └── registry/       # registry.json generation + GitHub raw URL map
+├── registry.json       # Component registry manifest — source of truth for CLI + MCP + docs
+└── factory-backlog.json # Queue of component specs for the dark factory
+```
+
+### Tech Stack
+
+Primary CLI: `vp` (vite+, installed globally via `~/.vite-plus/`). Single command for dev, build, test, lint, format, and task running. Alpha software — accepted risk for a greenfield project. Track breaking changes on updates.
+
+| Concern | Tool | Notes |
+|---|---|---|
+| Primary CLI | vite+ (`vp`) | unified toolchain — wraps all tools below |
+| Package manager | pnpm (via `vp install`) | workspaces, fast installs, disk-efficient |
+| Task orchestration | `vp run` | replaces Turborepo — caching + dependency-aware task graph |
+| Build / dev server | Vite + Rolldown (via `vp`) | fastest HMR, Rust bundler |
+| Linting | Oxlint (via `vp lint`) | Rust-based, ~100× faster than ESLint |
+| Formatting | Oxfmt (via `vp fmt`) | Rust-based formatter bundled with vite+ |
+| Type checking | `vp check` | runs fmt + lint + tsc together |
+| Testing (unit) | Vitest (via `vp test`) | native Vite integration |
+| Testing (components) | @testing-library/react (latest) | |
+| Testing (e2e) | Playwright (latest) | |
+| TypeScript | 5.x strict mode | `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
+| React (components) | 18+ | RSC-compatible via `"use client"` |
+| Preact (docs/signals) | latest | `preact/compat` for rendering React components in docs |
+| State (core) | @preact/signals-react (latest) | fine-grained reactivity |
+
+pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism. `vp run` orchestrates tasks across packages with caching, replacing `turbo.json`.
+
+### Token Architecture
+
+Three-level CSS custom property system:
+
+```
+Primitive tokens:  --cascade-color-blue-500: #3b82f6
+        ↓ (theme maps primitive → semantic)
+Semantic tokens:   --cascade-color-accent: var(--cascade-color-blue-500)
+        ↓ (component maps semantic → usage)
+Component tokens:  --cascade-button-bg: var(--cascade-color-accent)
+```
+
+Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.
+
+### Component Manifest Schema
+
+Every component in `packages/components/` ships a `component.meta.ts`:
+
+```ts
+export const meta: ComponentMeta = {
+  name: string,           // 'Button'
+  description: string,    // one-line purpose
+  category: string,       // 'inputs' | 'display' | 'overlay' | 'layout' | 'feedback'
+  states: string[],       // FSM states: ['default', 'hover', 'focus', 'disabled', 'loading']
+  variants: string[],     // visual variants: ['primary', 'secondary', 'ghost', 'destructive']
+  sizes: string[],        // ['sm', 'md', 'lg']
+  props: PropMeta[],      // derived from TypeScript types
+  tokens: string[],       // CSS custom properties this component reads
+  accessibility: {
+    role: string,
+    wcag: 'AA',
+    keyboard: string[],   // ['Enter', 'Space']
+  },
+  examples: ExampleMeta[],     // { title, code, description }
+  dependencies: string[],      // ['@cascade-ui/core']
+  tags: string[],              // for search/discovery
+}
+```
+
+### AI Layer
+
+| Surface | Package | Purpose |
+|---|---|---|
+| Component manifest | `component.meta.ts` per component | Ground truth for all AI surfaces |
+| MCP server | `@cascade-ui/mcp` | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
+| Claude Code skills | `skills/` | `cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend` |
+| Auto-generated docs | `apps/docs/` | Markdown + interactive examples generated from manifests |
+| Registry manifest | `registry.json` | Machine-readable index — CLI + MCP + docs all read from this |
+
+### Dark Factory Pipeline
+
+Tiered automation:
+
+- **New components**: dark factory opens a PR → human reviews design + a11y → merge
+- **Patches, doc regeneration, story updates, lint fixes**: fully automated, auto-merged
+- **Trigger**: `factory-backlog.json` — queue of component specs the factory works through
+- **Loop**: generate → lint → type-check → test → if pass: open PR; if fail: self-heal (max 5 attempts) → escalate
+
+### v1 Component List (~20)
+
+`inputs`: Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider
+`overlay`: Modal/Dialog, Dropdown, Tooltip, Toast
+`display`: Card, Badge, Alert, Avatar, Separator
+`navigation`: Tabs, Accordion
+`feedback`: Spinner
+
+### Distribution Model
+
+- `@cascade-ui/core`, `@cascade-ui/tokens`, `@cascade-ui/themes`, `@cascade-ui/icons`, `@cascade-ui/mcp`: versioned npm packages
+- Components: copy-paste via `npx cascade add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
+- Themes: `import '@cascade-ui/themes/light.css'`
+
+### Browser & Accessibility Targets
+
+- **Browsers**: last 2 versions of Chrome, Firefox, Safari (required for `:has()`, `@container`)
+- **Accessibility**: WCAG 2.1 AA minimum
+- **RTL**: CSS logical properties throughout (`margin-inline-start`, `padding-block`, etc.)
