@@ -1,0 +1,12 @@
+{
+  "name": "@cascade-ui/tokens",
+  "version": "0.0.0",
+  "private": false,
+  "exports": {
+    ".": "./src/index.css"
+  },
+  "scripts": {
+    "build": "echo 'tokens: CSS-only, no build'",
+    "test": "echo 'tokens: no tests yet'"
+  }
+}

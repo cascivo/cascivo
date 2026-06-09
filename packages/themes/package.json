@@ -1,0 +1,17 @@
+{
+  "name": "@cascade-ui/themes",
+  "version": "0.0.0",
+  "private": false,
+  "exports": {
+    "./light": "./src/light.css",
+    "./dark": "./src/dark.css",
+    "./warm": "./src/warm.css"
+  },
+  "scripts": {
+    "build": "echo 'themes: CSS-only, no build'",
+    "test": "echo 'themes: no tests yet'"
+  },
+  "peerDependencies": {
+    "@cascade-ui/tokens": "workspace:*"
+  }
+}

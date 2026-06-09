@@ -1,0 +1,18 @@
+{
+  "name": "@cascade-ui/components",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'components: registry source — no npm build'",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/tokens": "workspace:*",
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
