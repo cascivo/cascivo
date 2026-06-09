@@ -8,7 +8,12 @@ export const meta: ComponentMeta = {
   variants: ['default', 'outlined', 'elevated'],
   sizes: [],
   props: [
-    { name: 'variant', type: "'default' | 'outlined' | 'elevated'", required: false, default: 'default' },
+    {
+      name: 'variant',
+      type: "'default' | 'outlined' | 'elevated'",
+      required: false,
+      default: 'default',
+    },
     { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [

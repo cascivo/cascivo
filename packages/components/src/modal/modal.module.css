@@ -13,9 +13,15 @@
       backdrop-filter: blur(2px);
     }
 
-    &[data-size='sm'] { --_modal-width: 24rem; }
-    &[data-size='md'] { --_modal-width: 32rem; }
-    &[data-size='lg'] { --_modal-width: 48rem; }
+    &[data-size='sm'] {
+      --_modal-width: 24rem;
+    }
+    &[data-size='md'] {
+      --_modal-width: 32rem;
+    }
+    &[data-size='lg'] {
+      --_modal-width: 48rem;
+    }
   }
 
   .panel {
@@ -59,7 +65,8 @@
     border: none;
     border-radius: var(--cascade-radius-sm);
     cursor: pointer;
-    transition: color var(--cascade-duration-150) var(--cascade-ease-out),
+    transition:
+      color var(--cascade-duration-150) var(--cascade-ease-out),
       background-color var(--cascade-duration-150) var(--cascade-ease-out);
 
     &:hover {

@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "allowImportingTsExtensions": true,
+    "types": ["node"],
+    "paths": {
+      "react": ["./node_modules/preact/compat"],
+      "react-dom": ["./node_modules/preact/compat"],
+      "react/jsx-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
+      "react/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
+      "preact/jsx-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
+      "preact/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
+      "@cascade-ui/components/button": ["./src/shims/button.d.ts"],
+      "@cascade-ui/components/input": ["./src/shims/input.d.ts"],
+      "@cascade-ui/components/card": ["./src/shims/card.d.ts"],
+      "@cascade-ui/components/badge": ["./src/shims/badge.d.ts"],
+      "@cascade-ui/components/modal": ["./src/shims/modal.d.ts"]
+    }
+  },
+  "include": ["src"]
+}

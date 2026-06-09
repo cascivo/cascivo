@@ -1,8 +1,10 @@
 import { useSignal } from '@preact/signals-react'
 import type { Machine, MachineConfig } from './types.ts'
 
-export function createMachine<S extends string>(config: MachineConfig<S>): Machine<S> {
-  return config
+export function createMachine<S extends string, I extends S = S>(
+  config: MachineConfig<S, I>,
+): Machine<S> {
+  return config as Machine<S>
 }
 
 export function useMachine<S extends string>(machine: Machine<S>) {

@@ -4,10 +4,18 @@
     border-radius: var(--cascade-radius-card);
     overflow: hidden;
 
-    &[data-padding='none'] { --_card-p: 0; }
-    &[data-padding='sm'] { --_card-p: var(--cascade-space-4); }
-    &[data-padding='md'] { --_card-p: var(--cascade-space-6); }
-    &[data-padding='lg'] { --_card-p: var(--cascade-space-8); }
+    &[data-padding='none'] {
+      --_card-p: 0;
+    }
+    &[data-padding='sm'] {
+      --_card-p: var(--cascade-space-4);
+    }
+    &[data-padding='md'] {
+      --_card-p: var(--cascade-space-6);
+    }
+    &[data-padding='lg'] {
+      --_card-p: var(--cascade-space-8);
+    }
 
     &[data-variant='default'] {
       border: 1px solid var(--cascade-color-border);

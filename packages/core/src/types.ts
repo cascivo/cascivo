@@ -2,8 +2,8 @@ export interface StateConfig {
   on?: Record<string, string>
 }
 
-export interface MachineConfig<S extends string = string> {
-  initial: S
+export interface MachineConfig<S extends string = string, I extends S = S> {
+  initial: I
   states: Record<S, StateConfig>
 }
 

@@ -57,6 +57,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@cascade-ui/components':
+        specifier: workspace:*
+        version: link:../../packages/components
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -70,6 +73,9 @@ importers:
         specifier: 'catalog:'
         version: 10.29.2
     devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

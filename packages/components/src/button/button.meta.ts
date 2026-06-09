@@ -8,7 +8,12 @@ export const meta: ComponentMeta = {
   variants: ['primary', 'secondary', 'ghost', 'destructive'],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'destructive'", required: false, default: 'primary' },
+    {
+      name: 'variant',
+      type: "'primary' | 'secondary' | 'ghost' | 'destructive'",
+      required: false,
+      default: 'primary',
+    },
     { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
     { name: 'loading', type: 'boolean', required: false, default: 'false' },
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },

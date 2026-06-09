@@ -8,7 +8,12 @@ export const meta: ComponentMeta = {
   variants: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
   sizes: ['sm', 'md'],
   props: [
-    { name: 'variant', type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'", required: false, default: 'default' },
+    {
+      name: 'variant',
+      type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
+      required: false,
+      default: 'default',
+    },
     { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
   ],
   tokens: [

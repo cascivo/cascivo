@@ -31,7 +31,8 @@ export function Input({
   ...props
 }: InputProps) {
   const [state, send] = useMachine(machine)
-  const inputId = id ?? (label ? `cascade-input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
+  const inputId =
+    id ?? (label ? `cascade-input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
 
   return (
     <div

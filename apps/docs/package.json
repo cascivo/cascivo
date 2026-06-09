@@ -5,17 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "echo 'docs: app source added in Plan 7'",
+    "build": "vp build",
     "preview": "vp preview",
+    "check": "tsc --noEmit",
     "test": "echo 'docs: no tests yet'"
   },
   "dependencies": {
+    "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
     "preact": "catalog:"
   },
   "devDependencies": {
+    "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }
