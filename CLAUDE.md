@@ -272,3 +272,59 @@ Tiered automation:
 - **Browsers**: last 2 versions of Chrome, Firefox, Safari (required for `:has()`, `@container`)
 - **Accessibility**: WCAG 2.1 AA minimum
 - **RTL**: CSS logical properties throughout (`margin-inline-start`, `padding-block`, etc.)
+
+### Component Authoring Rules
+
+These rules are non-negotiable. Violating them ships broken code.
+
+#### Reactivity — use signals, not React hooks
+
+| Allowed                                                               | Forbidden                                    |
+| --------------------------------------------------------------------- | -------------------------------------------- |
+| `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core` | `useState`                                   |
+| `useRef` for DOM references                                           | `useContext`                                 |
+| `useMachine` / `createMachine` for genuine internal FSM state         | `useEffect`, `useLayoutEffect`, `useReducer` |
+
+`useEffect` is banned in cascade components without exception. Any async DOM side effect (adding event listeners, calling imperative DOM methods like `showModal()`) must use `useSignalEffect` instead.
+
+`useRef` is allowed only for direct DOM element references (`useRef<HTMLElement>(null)`). It is not a state workaround.
+
+#### Syncing a controlled React prop into a signal
+
+When a component accepts a controlled boolean/string prop that needs to drive a signal effect, sync it during render:
+
+```tsx
+const isOpen = useSignal(open)
+isOpen.value = open // no-op if unchanged; triggers effects if changed
+```
+
+For callbacks that must always be current in an effect, use a ref:
+
+```tsx
+const onCloseRef = useRef(onClose)
+onCloseRef.current = onClose // sync during render
+// inside useSignalEffect: onCloseRef.current?.()
+```
+
+#### FSM — only create machines for genuine internal state
+
+A machine is justified when the component **itself drives the transitions** via user interaction. It is not justified when the state is entirely controlled by external props.
+
+**Good:** Input `idle` ↔ `focused` driven by onFocus/onBlur events — the component controls these transitions.
+
+**Bad:** Button `idle` ↔ `loading` when `loading` is a controlled prop passed in by the parent — the machine is never driven and `state.value` is always `'idle'`.
+
+**Bad:** Modal `closed` ↔ `open` when `open` is a controlled prop — same problem. Remove the machine; the signal IS the state.
+
+If a state can only be reached by the parent passing a prop, that state belongs in the parent, not in a machine inside the component.
+
+#### Visual states handled by CSS, not JS
+
+Hover, focus, active, and disabled visual states are handled by CSS (`:hover`, `:focus-visible`, `:active`, `:disabled`). Do not track these in a machine or signal. Use `data-state` attributes only for states that CSS pseudo-classes cannot express (e.g., `loading`, `error`).
+
+#### Checklist before committing a component
+
+1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
+2. Every machine transition is reachable by code inside the component (not just by external props).
+3. DOM side effects use `useSignalEffect`, not `useEffect`.
+4. All tests pass: `vp run @cascade-ui/components#test`.

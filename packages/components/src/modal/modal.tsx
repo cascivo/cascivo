@@ -1,15 +1,7 @@
 'use client'
-import { createMachine, useMachine, cn } from '@cascade-ui/core'
-import { useEffect, useRef, type ReactNode, type KeyboardEvent } from 'react'
+import { useSignal, useSignalEffect, cn } from '@cascade-ui/core'
+import { useRef, type ReactNode, type KeyboardEvent } from 'react'
 import styles from './modal.module.css'
-
-const machine = createMachine({
-  initial: 'closed' as const,
-  states: {
-    closed: { on: { OPEN: 'open' } },
-    open: { on: { CLOSE: 'closed' } },
-  },
-})
 
 export interface ModalProps {
   open?: boolean
@@ -30,30 +22,31 @@ export function Modal({
   className,
   size = 'md',
 }: ModalProps) {
-  const [state, send] = useMachine(machine)
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const isOpen = open || state.value === 'open'
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
 
-  useEffect(() => {
+  const isOpen = useSignal(open)
+  // Sync controlled prop into signal — no-op when value unchanged
+  isOpen.value = open
+
+  useSignalEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
-    if (isOpen) {
+    if (isOpen.value) {
       if (!dialog.open) dialog.showModal()
     } else {
       if (dialog.open) dialog.close()
     }
-  }, [isOpen])
+  })
 
-  useEffect(() => {
+  useSignalEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
-    const handler = () => {
-      send('CLOSE')
-      onClose?.()
-    }
+    const handler = () => onCloseRef.current?.()
     dialog.addEventListener('close', handler)
     return () => dialog.removeEventListener('close', handler)
-  }, [send, onClose])
+  })
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === dialogRef.current) {

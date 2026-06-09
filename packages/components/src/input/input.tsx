@@ -6,9 +6,8 @@ import styles from './input.module.css'
 const machine = createMachine({
   initial: 'idle' as const,
   states: {
-    idle: { on: { FOCUS: 'focused', ERROR: 'error' } },
-    focused: { on: { BLUR: 'idle', ERROR: 'error' } },
-    error: { on: { FOCUS: 'focused', CLEAR: 'idle' } },
+    idle: { on: { FOCUS: 'focused' } },
+    focused: { on: { BLUR: 'idle' } },
   },
 })
 
