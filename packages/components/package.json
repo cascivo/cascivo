@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "echo 'components: registry source — no npm build'",
-    "test": "vp test"
+    "test": "echo 'components: no tests yet (add in Plan 3)'"
   },
   "devDependencies": {
     "@cascade-ui/core": "workspace:*",

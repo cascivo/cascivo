@@ -12,6 +12,6 @@
     "test": "echo 'themes: no tests yet'"
   },
   "peerDependencies": {
-    "@cascade-ui/tokens": "workspace:*"
+    "@cascade-ui/tokens": ">=0.0.0"
   }
 }
