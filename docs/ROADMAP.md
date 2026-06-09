@@ -11,27 +11,27 @@ This document is the ground truth for what has been built and what still needs b
 
 ### Done
 
-| Area | What exists |
-|---|---|
-| Monorepo | pnpm workspace, vite+ toolchain, all packages scaffolded |
-| `@cascade-ui/core` | `createMachine`, `useMachine`, `cn`, `composeRefs`, `mergeProps`, signal re-exports, full type exports |
-| `@cascade-ui/tokens` | Full CSS primitive token set (colors, spacing, typography, radius, shadows, animation, z-index) |
-| `@cascade-ui/themes` | `light.css`, `dark.css`, `warm.css` — semantic layer + `data-theme` scoping |
-| `packages/components` | Button, Input, Card, Badge, Modal — TSX + CSS Modules + `meta.ts` + tests |
-| `apps/docs` | Vite + Preact dev server running at localhost:5173 — component showcase with live theme switcher |
+| Area                  | What exists                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------ |
+| Monorepo              | pnpm workspace, vite+ toolchain, all packages scaffolded                                               |
+| `@cascade-ui/core`    | `createMachine`, `useMachine`, `cn`, `composeRefs`, `mergeProps`, signal re-exports, full type exports |
+| `@cascade-ui/tokens`  | Full CSS primitive token set (colors, spacing, typography, radius, shadows, animation, z-index)        |
+| `@cascade-ui/themes`  | `light.css`, `dark.css`, `warm.css` — semantic layer + `data-theme` scoping                            |
+| `packages/components` | Button, Input, Card, Badge, Modal — TSX + CSS Modules + `meta.ts` + tests                              |
+| `apps/docs`           | Vite + Preact dev server running at localhost:5173 — component showcase with live theme switcher       |
 
 ### Stubs (scaffolded, empty)
 
-| Package | What's missing |
-|---|---|
-| `packages/cli` | All CLI commands — only `VERSION` export exists |
-| `packages/mcp` | All MCP tools — only `VERSION` export exists |
-| `packages/icons` | All icons — only `VERSION` export exists |
-| `scripts/` | Directory doesn't exist yet |
-| `apps/storybook` | No Storybook config or stories |
-| `apps/landing` | No source files |
-| `apps/examples/react-vite` | No source files |
-| `apps/examples/react-next` | No source files |
+| Package                    | What's missing                                  |
+| -------------------------- | ----------------------------------------------- |
+| `packages/cli`             | All CLI commands — only `VERSION` export exists |
+| `packages/mcp`             | All MCP tools — only `VERSION` export exists    |
+| `packages/icons`           | All icons — only `VERSION` export exists        |
+| `scripts/`                 | Directory doesn't exist yet                     |
+| `apps/storybook`           | No Storybook config or stories                  |
+| `apps/landing`             | No source files                                 |
+| `apps/examples/react-vite` | No source files                                 |
+| `apps/examples/react-next` | No source files                                 |
 
 ---
 
@@ -49,6 +49,7 @@ Each component lives at `packages/components/src/<name>/` and consists of four f
 4. `<name>.test.tsx` — vitest + @testing-library/react, setup via `packages/components/src/setup.ts`
 
 After adding each component, add its export to `packages/components/package.json`:
+
 ```json
 "./spinner": "./src/spinner/spinner.tsx"
 ```
@@ -175,6 +176,7 @@ scripts/
 ```
 
 `registry.json` shape per component entry:
+
 ```json
 {
   "name": "button",
@@ -200,14 +202,16 @@ Implement the four commands. CLI has no runtime deps beyond Node built-ins.
 
 **Entry point:** `packages/cli/src/index.ts` — parse `process.argv`, dispatch to command handlers.
 
-**`cascade init`** — `packages/cli/src/commands/init.ts`  
+**`cascade init`** — `packages/cli/src/commands/init.ts`
+
 1. Detect package manager (pnpm/npm/yarn) from lock files
 2. Install `@cascade-ui/core @cascade-ui/tokens` using detected PM
 3. Ask user for theme preference (light/dark/warm) via readline
 4. Create `cascade.config.ts` in project root
 5. Print instructions for importing chosen theme in root CSS
 
-**`cascade add <name...>`** — `packages/cli/src/commands/add.ts`  
+**`cascade add <name...>`** — `packages/cli/src/commands/add.ts`
+
 1. Read `cascade.config.ts` (or use defaults)
 2. Fetch `registry.json` from `config.registry` URL
 3. For each named component: find its entry, fetch each file URL, write to `config.outputDir/<name>/`
@@ -224,6 +228,7 @@ Fetch latest file content from registry URLs, show a unified diff, prompt for co
 Install `@cascade-ui/themes`, print import instruction.
 
 **Shared utilities:**
+
 - `packages/cli/src/utils/config.ts` — find and parse `cascade.config.ts`
 - `packages/cli/src/utils/registry.ts` — fetch + parse registry JSON
 - `packages/cli/src/utils/fs.ts` — safe file write with directory creation
@@ -237,24 +242,26 @@ Install `@cascade-ui/themes`, print import instruction.
 The MCP server implements the Model Context Protocol. Use the `@modelcontextprotocol/sdk` package.
 
 **Package deps to add:**
+
 - `@modelcontextprotocol/sdk` (runtime dep)
 
 **Entry:** `packages/mcp/src/index.ts` — creates an MCP `Server`, registers tools, runs stdio transport.
 
 **Six tools to implement:**
 
-| Tool | Input schema | What it does |
-|---|---|---|
-| `list_components` | `{ category?: string }` | Returns filtered `ComponentMeta[]` from registry.json |
-| `get_component` | `{ name: string }` | Returns full `ComponentMeta` for one component |
-| `search_components` | `{ query: string }` | Fuzzy search name + tags + description |
-| `add_to_project` | `{ name: string, outputDir?: string }` | Runs `cascade add <name>` as a child process |
-| `create_theme` | `{ primary: string, neutral: string, accent: string }` | Generates theme CSS from token mappings |
-| `scaffold_page` | `{ description: string, components?: string[] }` | Returns JSX string for a page layout |
+| Tool                | Input schema                                           | What it does                                          |
+| ------------------- | ------------------------------------------------------ | ----------------------------------------------------- |
+| `list_components`   | `{ category?: string }`                                | Returns filtered `ComponentMeta[]` from registry.json |
+| `get_component`     | `{ name: string }`                                     | Returns full `ComponentMeta` for one component        |
+| `search_components` | `{ query: string }`                                    | Fuzzy search name + tags + description                |
+| `add_to_project`    | `{ name: string, outputDir?: string }`                 | Runs `cascade add <name>` as a child process          |
+| `create_theme`      | `{ primary: string, neutral: string, accent: string }` | Generates theme CSS from token mappings               |
+| `scaffold_page`     | `{ description: string, components?: string[] }`       | Returns JSX string for a page layout                  |
 
 All tools read `registry.json` — accept `registryPath` as a constructor param defaulting to `../../registry.json` relative to the package.
 
 **MCP server config for users** (document in `packages/mcp/README.md`):
+
 ```json
 {
   "mcpServers": {
@@ -292,6 +299,7 @@ apps/docs/src/
 ### `ComponentPage` reads from `meta.ts`
 
 Import the `meta` export from each component's `component.meta.ts`. Generate:
+
 - Title + description from `meta.name` + `meta.description`
 - Props table: columns — Name, Type, Default, Required, Description
 - States list from `meta.states`
@@ -329,7 +337,6 @@ Configure Storybook 8 (or later) for React with Vite builder.
    - `@storybook/addon-essentials`
    - `@cascade-ui/components: workspace:*`
    - `@cascade-ui/themes: workspace:*`
-   
 2. `apps/storybook/.storybook/main.ts` — framework: `@storybook/react-vite`, stories glob
 3. `apps/storybook/.storybook/preview.ts` — import light theme CSS, set `data-theme="light"` on body
 
@@ -338,6 +345,7 @@ Configure Storybook 8 (or later) for React with Vite builder.
 Each component's stories file: `apps/storybook/stories/<Name>.stories.tsx`
 
 Pattern for every component (example: Button):
+
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button } from '@cascade-ui/components/button'
@@ -353,13 +361,15 @@ export const Primary: Story = {}
 export const Secondary: Story = { args: { variant: 'secondary' } }
 export const Loading: Story = { args: { loading: true } }
 export const Disabled: Story = { args: { disabled: true } }
-export const AllSizes: Story = { render: () => (
-  <div style={{ display: 'flex', gap: 8 }}>
-    <Button size="sm">Sm</Button>
-    <Button size="md">Md</Button>
-    <Button size="lg">Lg</Button>
-  </div>
-)}
+export const AllSizes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 8 }}>
+      <Button size="sm">Sm</Button>
+      <Button size="md">Md</Button>
+      <Button size="lg">Lg</Button>
+    </div>
+  ),
+}
 ```
 
 Generate story files for all 20 components using the same pattern. Each story should cover: all variants, all sizes, all interactive states, an accessibility test story.
@@ -399,6 +409,7 @@ Animated demo: live component showcase cycling through Button, Input, Card — t
 ### Features grid
 
 6 cards using the cascade `Card` component:
+
 1. CSS-native — `@layer`, `@container`, `:has()` — zero preprocessors
 2. Signal-driven — Preact Signals micro-FSM, zero re-renders
 3. Owned code — copy-paste via CLI, you own every line
@@ -412,6 +423,7 @@ Animated demo: live component showcase cycling through Button, Input, Card — t
 npx cascade init
 npx cascade add button
 ```
+
 ```tsx
 import { Button } from './components/ui/button/button'
 ```
@@ -475,6 +487,7 @@ Add entries for all 15 remaining components (Textarea, Select, Checkbox, Radio, 
 ### Package publishing
 
 When a release tag is pushed (`v*`):
+
 1. Build all library packages
 2. Publish `@cascade-ui/core`, `@cascade-ui/tokens`, `@cascade-ui/themes`, `@cascade-ui/icons`, `@cascade-ui/mcp`, `cascade` (CLI) to npm
 3. Publish docs to GitHub Pages
@@ -482,6 +495,7 @@ When a release tag is pushed (`v*`):
 ### Icons package (`packages/icons/src/`)
 
 Implement a minimal icon set (20-30 icons) as React components. Each icon:
+
 - Props: `size?: number`, `color?: string`, `className?: string`
 - SVG with `currentColor` fill/stroke
 - Named export: `ChevronDown`, `X`, `Check`, `AlertCircle`, etc.
@@ -496,17 +510,17 @@ Add Playwright to `apps/docs/` devDeps. Screenshot each component at all three t
 
 ## Execution Order (recommended)
 
-| Phase | Estimated effort | Blocks |
-|---|---|---|
-| 1 — Remaining 15 components | Medium (15 × ~30 min each) | Phase 2a (registry needs all components) |
-| 2a — Registry generation script | Small | Phase 2b, Phase 3 |
-| 2b — CLI commands | Medium | Phase 7 (factory uses CLI) |
-| 3 — MCP server | Medium | AI workflows |
-| 4 — Docs full pages | Medium | Phase 5 stories need same data |
-| 5 — Storybook | Small (setup) + Medium (stories) | — |
-| 6 — Landing page | Medium | — |
-| 7 — Dark factory | Large | Phase 1 complete, Phase 2b done |
-| 8 — CI/CD + polish | Small | All other phases |
+| Phase                           | Estimated effort                 | Blocks                                   |
+| ------------------------------- | -------------------------------- | ---------------------------------------- |
+| 1 — Remaining 15 components     | Medium (15 × ~30 min each)       | Phase 2a (registry needs all components) |
+| 2a — Registry generation script | Small                            | Phase 2b, Phase 3                        |
+| 2b — CLI commands               | Medium                           | Phase 7 (factory uses CLI)               |
+| 3 — MCP server                  | Medium                           | AI workflows                             |
+| 4 — Docs full pages             | Medium                           | Phase 5 stories need same data           |
+| 5 — Storybook                   | Small (setup) + Medium (stories) | —                                        |
+| 6 — Landing page                | Medium                           | —                                        |
+| 7 — Dark factory                | Large                            | Phase 1 complete, Phase 2b done          |
+| 8 — CI/CD + polish              | Small                            | All other phases                         |
 
 ---
 
