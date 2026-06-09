@@ -2,6 +2,12 @@
   "name": "@cascade-ui/mcp",
   "version": "0.0.0",
   "private": false,
+  "bin": {
+    "cascade-mcp": "./dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -12,9 +18,13 @@
     }
   },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c);fs.copyFileSync('../../registry.json','dist/registry.json')\" && chmod +x dist/index.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",

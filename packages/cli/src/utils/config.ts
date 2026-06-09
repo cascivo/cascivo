@@ -26,9 +26,22 @@ export function resolveConfig(partial: Partial<CascadeConfig> | null | undefined
   return { ...DEFAULT_CONFIG, ...partial }
 }
 
+/** Let env vars override config — used by the MCP server to pass `outputDir`. */
+export function applyEnvOverrides(
+  config: CascadeConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): CascadeConfig {
+  return {
+    ...config,
+    ...(env.CASCADE_REGISTRY ? { registry: env.CASCADE_REGISTRY } : {}),
+    ...(env.CASCADE_OUTPUT_DIR ? { outputDir: env.CASCADE_OUTPUT_DIR } : {}),
+  }
+}
+
 /**
  * Locate and load `cascade.config.{ts,js,mjs}` from `cwd`. Falls back to the
- * default config when no file is found or the file cannot be loaded.
+ * default config when no file is found or the file cannot be loaded. Env vars
+ * (`CASCADE_REGISTRY`, `CASCADE_OUTPUT_DIR`) take precedence.
  */
 export async function loadConfig(cwd: string = process.cwd()): Promise<CascadeConfig> {
   for (const file of CONFIG_FILES) {
@@ -38,13 +51,13 @@ export async function loadConfig(cwd: string = process.cwd()): Promise<CascadeCo
       const mod = (await import(pathToFileURL(path).href)) as {
         default?: Partial<CascadeConfig>
       }
-      return resolveConfig(mod.default ?? (mod as Partial<CascadeConfig>))
+      return applyEnvOverrides(resolveConfig(mod.default ?? (mod as Partial<CascadeConfig>)))
     } catch {
       // Unloadable config (e.g. unsupported TS syntax) — fall back to defaults.
-      return resolveConfig(null)
+      return applyEnvOverrides(resolveConfig(null))
     }
   }
-  return resolveConfig(null)
+  return applyEnvOverrides(resolveConfig(null))
 }
 
 export type PackageManager = 'pnpm' | 'yarn' | 'npm' | 'bun'

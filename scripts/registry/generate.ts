@@ -33,6 +33,8 @@ interface RegistryComponent {
   files: string[]
   dependencies: string[]
   tags: string[]
+  /** Full component manifest — consumed by the MCP server and docs. */
+  meta: ComponentMeta
 }
 
 /** Files that make up a copy-paste component, in a stable display order. */
@@ -72,6 +74,7 @@ async function buildEntry(name: string, version: string): Promise<RegistryCompon
     files,
     dependencies: meta.dependencies,
     tags: meta.tags,
+    meta,
   }
 }
 

@@ -12,7 +12,58 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/accordion/accordion.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["navigation", "collapse", "disclosure"]
+      "tags": ["navigation", "collapse", "disclosure"],
+      "meta": {
+        "name": "Accordion",
+        "description": "Vertically stacked, collapsible content sections",
+        "category": "navigation",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "type",
+            "type": "'single' | 'multiple'",
+            "required": false,
+            "default": "single"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string | string[]",
+            "required": false
+          },
+          {
+            "name": "value",
+            "type": "string | string[]",
+            "required": false
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string | string[]) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-border",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-text",
+          "--cascade-radius-md",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Single",
+            "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["navigation", "collapse", "disclosure"]
+      }
     },
     {
       "name": "alert",
@@ -24,7 +75,69 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/alert/alert.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["notification", "message", "feedback"]
+      "tags": ["notification", "message", "feedback"],
+      "meta": {
+        "name": "Alert",
+        "description": "Highlights a short, important message inline",
+        "category": "display",
+        "states": [],
+        "variants": ["default", "info", "success", "warning", "destructive"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "variant",
+            "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'",
+            "required": false,
+            "default": "default"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "dismissible",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onDismiss",
+            "type": "() => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-info",
+          "--cascade-color-success",
+          "--cascade-color-warning",
+          "--cascade-color-destructive",
+          "--cascade-color-border",
+          "--cascade-radius-md"
+        ],
+        "accessibility": {
+          "role": "alert",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Info",
+            "code": "<Alert variant=\"info\" title=\"Heads up\">Your trial ends soon.</Alert>"
+          },
+          {
+            "title": "Dismissible",
+            "code": "<Alert variant=\"success\" dismissible title=\"Saved\">Changes saved.</Alert>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["notification", "message", "feedback"]
+      }
     },
     {
       "name": "avatar",
@@ -36,7 +149,71 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/avatar/avatar.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["user", "profile", "image"]
+      "tags": ["user", "profile", "image"],
+      "meta": {
+        "name": "Avatar",
+        "description": "Displays a user image with initials fallback",
+        "category": "display",
+        "states": ["loading", "loaded", "error"],
+        "variants": [],
+        "sizes": ["xs", "sm", "md", "lg", "xl"],
+        "props": [
+          {
+            "name": "src",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "fallback",
+            "type": "string",
+            "required": false,
+            "description": "Initials shown when no image is available"
+          },
+          {
+            "name": "size",
+            "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "status",
+            "type": "'online' | 'offline' | 'busy'",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent-subtle",
+          "--cascade-color-success",
+          "--cascade-color-destructive",
+          "--cascade-radius-full"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Image",
+            "code": "<Avatar src=\"/jane.jpg\" alt=\"Jane Doe\" />"
+          },
+          {
+            "title": "Fallback",
+            "code": "<Avatar fallback=\"JD\" alt=\"Jane Doe\" />"
+          },
+          {
+            "title": "With status",
+            "code": "<Avatar fallback=\"JD\" status=\"online\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["user", "profile", "image"]
+      }
     },
     {
       "name": "badge",
@@ -48,7 +225,57 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/badge/badge.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["label", "status", "tag"]
+      "tags": ["label", "status", "tag"],
+      "meta": {
+        "name": "Badge",
+        "description": "Small status label or category indicator",
+        "category": "display",
+        "states": [],
+        "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "variant",
+            "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
+            "required": false,
+            "default": "default"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-success",
+          "--cascade-color-warning",
+          "--cascade-color-destructive",
+          "--cascade-radius-badge"
+        ],
+        "accessibility": {
+          "role": "status",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Badge>New</Badge>"
+          },
+          {
+            "title": "Success",
+            "code": "<Badge variant=\"success\">Active</Badge>"
+          },
+          {
+            "title": "Destructive",
+            "code": "<Badge variant=\"destructive\">Deprecated</Badge>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["label", "status", "tag"]
+      }
     },
     {
       "name": "button",
@@ -60,7 +287,76 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/button/button.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["action", "form", "interactive"]
+      "tags": ["action", "form", "interactive"],
+      "meta": {
+        "name": "Button",
+        "description": "Triggers an action or event",
+        "category": "inputs",
+        "states": ["idle", "loading"],
+        "variants": ["primary", "secondary", "ghost", "destructive"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "variant",
+            "type": "'primary' | 'secondary' | 'ghost' | 'destructive'",
+            "required": false,
+            "default": "primary"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onClick",
+            "type": "React.MouseEventHandler<HTMLButtonElement>",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-accent-hover",
+          "--cascade-color-accent-active",
+          "--cascade-color-text-on-accent",
+          "--cascade-color-destructive",
+          "--cascade-radius-button",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Primary",
+            "code": "<Button>Click me</Button>"
+          },
+          {
+            "title": "Loading",
+            "code": "<Button loading>Saving…</Button>"
+          },
+          {
+            "title": "Destructive",
+            "code": "<Button variant=\"destructive\">Delete</Button>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["action", "form", "interactive"]
+      }
     },
     {
       "name": "card",
@@ -72,7 +368,48 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/card/card.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["container", "layout", "surface"]
+      "tags": ["container", "layout", "surface"],
+      "meta": {
+        "name": "Card",
+        "description": "Container for grouping related content",
+        "category": "display",
+        "states": [],
+        "variants": ["default", "outlined", "elevated"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "variant",
+            "type": "'default' | 'outlined' | 'elevated'",
+            "required": false,
+            "default": "default"
+          },
+          {
+            "name": "padding",
+            "type": "'none' | 'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-card",
+          "--cascade-shadow-md"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic card",
+            "code": "<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["container", "layout", "surface"]
+      }
     },
     {
       "name": "checkbox",
@@ -84,7 +421,69 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "toggle", "boolean"]
+      "tags": ["form", "toggle", "boolean"],
+      "meta": {
+        "name": "Checkbox",
+        "description": "Binary toggle for forms, with indeterminate support",
+        "category": "inputs",
+        "states": ["unchecked", "checked", "indeterminate"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "indeterminate",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onChange",
+            "type": "React.ChangeEventHandler<HTMLInputElement>",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-accent",
+          "--cascade-color-border-strong",
+          "--cascade-color-text-on-accent",
+          "--cascade-radius-sm",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "checkbox",
+          "wcag": "AA",
+          "keyboard": ["Space"]
+        },
+        "examples": [
+          {
+            "title": "With label",
+            "code": "<Checkbox label=\"Accept terms\" />"
+          },
+          {
+            "title": "Indeterminate",
+            "code": "<Checkbox label=\"Select all\" indeterminate />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "toggle", "boolean"]
+      }
     },
     {
       "name": "dropdown",
@@ -96,7 +495,68 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "menu", "actions"]
+      "tags": ["overlay", "menu", "actions"],
+      "meta": {
+        "name": "Dropdown",
+        "description": "Menu of actions revealed from a trigger",
+        "category": "overlay",
+        "states": ["closed", "open"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "trigger",
+            "type": "ReactElement",
+            "required": true
+          },
+          {
+            "name": "items",
+            "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]",
+            "required": true
+          },
+          {
+            "name": "onSelect",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
+            "name": "placement",
+            "type": "'bottom-start' | 'bottom-end'",
+            "required": false,
+            "default": "bottom-start"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface-overlay",
+          "--cascade-color-border",
+          "--cascade-color-bg-subtle",
+          "--cascade-radius-md",
+          "--cascade-z-dropdown"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Dropdown trigger={<Button>Actions</Button>} items={[{ label: \"Edit\", value: \"edit\" }]} onSelect={handle} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "menu", "actions"]
+      }
     },
     {
       "name": "input",
@@ -108,7 +568,74 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/input/input.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "text", "input"]
+      "tags": ["form", "text", "input"],
+      "meta": {
+        "name": "Input",
+        "description": "Text input field with optional label, hint, and error state",
+        "category": "inputs",
+        "states": ["idle", "focused", "error"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-destructive",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab"]
+        },
+        "examples": [
+          {
+            "title": "With label",
+            "code": "<Input label=\"Email\" placeholder=\"you@example.com\" />"
+          },
+          {
+            "title": "With error",
+            "code": "<Input label=\"Email\" error=\"Invalid email address\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "text", "input"]
+      }
     },
     {
       "name": "modal",
@@ -120,7 +647,64 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/modal/modal.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "dialog", "popup"]
+      "tags": ["overlay", "dialog", "popup"],
+      "meta": {
+        "name": "Modal",
+        "description": "Accessible dialog overlay using native <dialog> element",
+        "category": "overlay",
+        "states": ["closed", "open"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onClose",
+            "type": "() => void",
+            "required": false
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface-overlay",
+          "--cascade-color-border",
+          "--cascade-radius-modal",
+          "--cascade-shadow-xl",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+        },
+        "examples": [
+          {
+            "title": "Basic modal",
+            "code": "<Modal open={isOpen} onClose={() => setIsOpen(false)} title=\"Confirm action\">\n  <p>Are you sure?</p>\n</Modal>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "dialog", "popup"]
+      }
     },
     {
       "name": "radio",
@@ -132,7 +716,59 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/radio/radio.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "choice", "group"]
+      "tags": ["form", "choice", "group"],
+      "meta": {
+        "name": "Radio",
+        "description": "Single choice from a set, grouped with RadioGroup",
+        "category": "inputs",
+        "states": ["unchecked", "checked"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-accent",
+          "--cascade-color-border-strong",
+          "--cascade-color-text-on-accent",
+          "--cascade-radius-full",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "radio",
+          "wcag": "AA",
+          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+        },
+        "examples": [
+          {
+            "title": "Group",
+            "code": "<RadioGroup name=\"plan\" defaultValue=\"pro\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "choice", "group"]
+      }
     },
     {
       "name": "select",
@@ -144,7 +780,79 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/select/select.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "dropdown", "menu"]
+      "tags": ["form", "dropdown", "menu"],
+      "meta": {
+        "name": "Select",
+        "description": "Native select menu styled to match the design system",
+        "category": "inputs",
+        "states": ["idle", "focused", "error"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "options",
+            "type": "{ value: string; label: string; disabled?: boolean }[]",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-text-muted",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "combobox",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Select label=\"Role\" options={[{ value: \"admin\", label: \"Admin\" }]} />"
+          },
+          {
+            "title": "With placeholder",
+            "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "dropdown", "menu"]
+      }
     },
     {
       "name": "separator",
@@ -156,7 +864,48 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/separator/separator.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["divider", "rule", "layout"]
+      "tags": ["divider", "rule", "layout"],
+      "meta": {
+        "name": "Separator",
+        "description": "Visual or semantic divider between content",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal"
+          },
+          {
+            "name": "decorative",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "When true, the separator is purely visual and hidden from assistive tech"
+          }
+        ],
+        "tokens": ["--cascade-color-border"],
+        "accessibility": {
+          "role": "separator",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Horizontal",
+            "code": "<Separator />"
+          },
+          {
+            "title": "Vertical",
+            "code": "<Separator orientation=\"vertical\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["divider", "rule", "layout"]
+      }
     },
     {
       "name": "slider",
@@ -168,7 +917,80 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/slider/slider.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "range", "input"]
+      "tags": ["form", "range", "input"],
+      "meta": {
+        "name": "Slider",
+        "description": "Range input for selecting a value within bounds",
+        "category": "inputs",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "required": false,
+            "default": "1"
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-border-strong",
+          "--cascade-color-surface",
+          "--cascade-radius-full",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "slider",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Slider label=\"Volume\" defaultValue={50} />"
+          },
+          {
+            "title": "Stepped",
+            "code": "<Slider label=\"Rating\" min={0} max={5} step={1} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "range", "input"]
+      }
     },
     {
       "name": "spinner",
@@ -180,7 +1002,48 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/spinner/spinner.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["loading", "progress", "feedback"]
+      "tags": ["loading", "progress", "feedback"],
+      "meta": {
+        "name": "Spinner",
+        "description": "Indeterminate loading indicator",
+        "category": "feedback",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "Loading",
+            "description": "Accessible label announced by screen readers"
+          }
+        ],
+        "tokens": ["--cascade-radius-full"],
+        "accessibility": {
+          "role": "status",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Spinner />"
+          },
+          {
+            "title": "Large",
+            "code": "<Spinner size=\"lg\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["loading", "progress", "feedback"]
+      }
     },
     {
       "name": "tabs",
@@ -192,7 +1055,52 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tabs/tabs.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["navigation", "tabs", "sections"]
+      "tags": ["navigation", "tabs", "sections"],
+      "meta": {
+        "name": "Tabs",
+        "description": "Switch between related panels of content",
+        "category": "navigation",
+        "states": ["active", "inactive"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-border",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "tablist",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Tabs defaultValue=\"account\"><TabsList><TabsTrigger value=\"account\">Account</TabsTrigger></TabsList><TabsContent value=\"account\">…</TabsContent></Tabs>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["navigation", "tabs", "sections"]
+      }
     },
     {
       "name": "textarea",
@@ -204,7 +1112,75 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/textarea/textarea.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "text", "multiline"]
+      "tags": ["form", "text", "multiline"],
+      "meta": {
+        "name": "Textarea",
+        "description": "Multi-line text input with optional label, hint, and error state",
+        "category": "inputs",
+        "states": ["idle", "focused", "error"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "rows",
+            "type": "number",
+            "required": false,
+            "default": "4"
+          },
+          {
+            "name": "resize",
+            "type": "'none' | 'vertical' | 'both'",
+            "required": false,
+            "default": "vertical"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-destructive",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab"]
+        },
+        "examples": [
+          {
+            "title": "With label",
+            "code": "<Textarea label=\"Message\" placeholder=\"Type here…\" />"
+          },
+          {
+            "title": "With error",
+            "code": "<Textarea label=\"Bio\" error=\"Bio is required\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "text", "multiline"]
+      }
     },
     {
       "name": "toast",
@@ -216,7 +1192,60 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toast/toast.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "notification", "feedback"]
+      "tags": ["overlay", "notification", "feedback"],
+      "meta": {
+        "name": "Toast",
+        "description": "Transient notification surfaced via the useToast hook",
+        "category": "overlay",
+        "states": ["entering", "visible", "dismissing", "gone"],
+        "variants": ["default", "success", "warning", "destructive"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "variant",
+            "type": "'default' | 'success' | 'warning' | 'destructive'",
+            "required": false,
+            "default": "default"
+          },
+          {
+            "name": "duration",
+            "type": "number",
+            "required": false,
+            "default": "5000"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface-overlay",
+          "--cascade-color-success",
+          "--cascade-color-warning",
+          "--cascade-color-destructive",
+          "--cascade-radius-md",
+          "--cascade-z-toast"
+        ],
+        "accessibility": {
+          "role": "status",
+          "wcag": "AA",
+          "keyboard": ["Tab"]
+        },
+        "examples": [
+          {
+            "title": "Trigger",
+            "code": "const { toast } = useToast()\ntoast({ title: \"Saved\", variant: \"success\" })"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "notification", "feedback"]
+      }
     },
     {
       "name": "toggle",
@@ -228,7 +1257,74 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toggle/toggle.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["switch", "form", "boolean"]
+      "tags": ["switch", "form", "boolean"],
+      "meta": {
+        "name": "Toggle",
+        "description": "On/off switch built as an accessible button",
+        "category": "inputs",
+        "states": ["off", "on"],
+        "variants": [],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultChecked",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onChange",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-border-strong",
+          "--cascade-color-surface",
+          "--cascade-radius-full",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "switch",
+          "wcag": "AA",
+          "keyboard": ["Space", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "Uncontrolled",
+            "code": "<Toggle label=\"Notifications\" defaultChecked />"
+          },
+          {
+            "title": "Controlled",
+            "code": "<Toggle checked={enabled} onChange={setEnabled} label=\"Dark mode\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["switch", "form", "boolean"]
+      }
     },
     {
       "name": "tooltip",
@@ -240,7 +1336,59 @@
         "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tooltip/tooltip.module.css"
       ],
       "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "hint", "popover"]
+      "tags": ["overlay", "hint", "popover"],
+      "meta": {
+        "name": "Tooltip",
+        "description": "Contextual label shown on hover or focus",
+        "category": "overlay",
+        "states": ["hidden", "visible"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "content",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "placement",
+            "type": "'top' | 'right' | 'bottom' | 'left'",
+            "required": false,
+            "default": "top"
+          },
+          {
+            "name": "children",
+            "type": "ReactElement",
+            "required": true
+          },
+          {
+            "name": "delay",
+            "type": "number",
+            "required": false,
+            "default": "200",
+            "description": "Milliseconds to wait before showing"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-text",
+          "--cascade-color-text-on-accent",
+          "--cascade-radius-sm",
+          "--cascade-z-tooltip"
+        ],
+        "accessibility": {
+          "role": "tooltip",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Tooltip content=\"Copy to clipboard\"><Button>Copy</Button></Tooltip>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "hint", "popover"]
+      }
     }
   ]
 }

@@ -3,12 +3,29 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
+  applyEnvOverrides,
   DEFAULT_CONFIG,
   detectPackageManager,
   installCommand,
   loadConfig,
   resolveConfig,
 } from './config.js'
+
+describe('applyEnvOverrides', () => {
+  it('returns the config unchanged when no env vars are set', () => {
+    expect(applyEnvOverrides(DEFAULT_CONFIG, {})).toEqual(DEFAULT_CONFIG)
+  })
+
+  it('overrides outputDir and registry from env vars', () => {
+    const config = applyEnvOverrides(DEFAULT_CONFIG, {
+      CASCADE_OUTPUT_DIR: 'app/ui',
+      CASCADE_REGISTRY: 'https://example.com/r.json',
+    })
+    expect(config.outputDir).toBe('app/ui')
+    expect(config.registry).toBe('https://example.com/r.json')
+    expect(config.theme).toBe(DEFAULT_CONFIG.theme)
+  })
+})
 
 describe('resolveConfig', () => {
   it('returns defaults for null/undefined', () => {
