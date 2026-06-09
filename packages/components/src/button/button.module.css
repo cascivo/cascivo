@@ -1,0 +1,107 @@
+@layer cascade.component {
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    font-weight: var(--cascade-font-medium);
+    line-height: var(--cascade-leading-none);
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+      background-color var(--cascade-duration-150) var(--cascade-ease-out),
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+    border-radius: var(--cascade-button-radius, var(--cascade-radius-button));
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Sizes */
+    &[data-size='sm'] {
+      height: 2rem;
+      padding-inline: var(--cascade-space-3);
+      font-size: var(--cascade-text-sm);
+    }
+
+    &[data-size='md'] {
+      height: 2.5rem;
+      padding-inline: var(--cascade-space-4);
+      font-size: var(--cascade-text-sm);
+    }
+
+    &[data-size='lg'] {
+      height: 3rem;
+      padding-inline: var(--cascade-space-6);
+      font-size: var(--cascade-text-base);
+    }
+
+    /* Variants */
+    &[data-variant='primary'] {
+      background-color: var(--cascade-color-accent);
+      color: var(--cascade-color-text-on-accent);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascade-color-accent-hover);
+      }
+
+      &:active:not(:disabled) {
+        background-color: var(--cascade-color-accent-active);
+      }
+    }
+
+    &[data-variant='secondary'] {
+      background-color: var(--cascade-color-surface);
+      color: var(--cascade-color-text);
+      border-color: var(--cascade-color-border);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascade-color-bg-subtle);
+      }
+    }
+
+    &[data-variant='ghost'] {
+      background-color: transparent;
+      color: var(--cascade-color-text);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascade-color-bg-subtle);
+      }
+    }
+
+    &[data-variant='destructive'] {
+      background-color: var(--cascade-color-destructive);
+      color: var(--cascade-color-text-on-destructive);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascade-color-destructive-hover);
+      }
+    }
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-block-start-color: transparent;
+    border-radius: var(--cascade-radius-full);
+    animation: cascade-spin 0.6s linear infinite;
+  }
+
+  @keyframes cascade-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

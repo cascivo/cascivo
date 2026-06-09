@@ -1,0 +1,89 @@
+@layer cascade.component {
+  .dialog {
+    padding: 0;
+    border: none;
+    border-radius: var(--cascade-radius-modal);
+    background: transparent;
+    max-height: calc(100dvh - var(--cascade-space-16));
+    overflow: visible;
+
+    /* Backdrop */
+    &::backdrop {
+      background-color: rgb(0 0 0 / 0.5);
+      backdrop-filter: blur(2px);
+    }
+
+    &[data-size='sm'] { --_modal-width: 24rem; }
+    &[data-size='md'] { --_modal-width: 32rem; }
+    &[data-size='lg'] { --_modal-width: 48rem; }
+  }
+
+  .panel {
+    width: var(--_modal-width, 32rem);
+    max-width: calc(100vw - var(--cascade-space-8));
+    background-color: var(--cascade-color-surface-overlay);
+    border-radius: var(--cascade-radius-modal);
+    border: 1px solid var(--cascade-color-border);
+    box-shadow: var(--cascade-shadow-xl);
+    overflow: hidden;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cascade-space-6);
+    padding-block-end: var(--cascade-space-4);
+    border-block-end: 1px solid var(--cascade-color-border);
+  }
+
+  .title {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-lg);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text);
+    margin: 0;
+    line-height: var(--cascade-leading-tight);
+  }
+
+  .close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+    transition: color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+
+  .description {
+    padding-inline: var(--cascade-space-6);
+    padding-block-start: var(--cascade-space-4);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+    margin: 0;
+    line-height: var(--cascade-leading-relaxed);
+  }
+
+  .body {
+    padding: var(--cascade-space-6);
+  }
+}

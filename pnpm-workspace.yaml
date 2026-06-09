@@ -10,7 +10,9 @@ catalog:
   '@types/react': ^19
   '@types/react-dom': ^19
   '@preact/signals-react': ^3
+  '@testing-library/jest-dom': ^6
   '@testing-library/react': ^16
+  '@testing-library/user-event': ^14
   jsdom: ^29
   preact: ^10
   react: ^19

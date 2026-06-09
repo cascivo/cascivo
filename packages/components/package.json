@@ -3,15 +3,28 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./button": "./src/button/button.tsx",
+    "./input": "./src/input/input.tsx",
+    "./card": "./src/card/card.tsx",
+    "./badge": "./src/badge/badge.tsx",
+    "./modal": "./src/modal/modal.tsx"
+  },
   "scripts": {
-    "build": "echo 'components: registry source — no npm build'",
-    "test": "echo 'components: no tests yet (add in Plan 3)'"
+    "build": "echo 'components: copy-paste only, no build'",
+    "check": "tsc --noEmit",
+    "test": "vp test"
   },
   "devDependencies": {
     "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@testing-library/jest-dom": "^6",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "^14",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
     "react": "catalog:",
+    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }
