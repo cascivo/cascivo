@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "echo 'docs: app source added in Plan 7'",
     "preview": "vp preview",
     "test": "echo 'docs: no tests yet'"
   },
   "dependencies": {
     "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
+    "@cascade-ui/tokens": "workspace:*",
     "preact": "catalog:"
   },
   "devDependencies": {

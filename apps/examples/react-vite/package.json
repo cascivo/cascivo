@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "echo 'example: app source added in a later plan'",
     "test": "echo 'example: no tests yet'"
   },
   "dependencies": {
     "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
+    "@cascade-ui/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

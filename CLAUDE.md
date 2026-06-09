@@ -7,6 +7,7 @@
 Don't assume. Don't hide confusion. Surface tradeoffs.
 
 Before implementing:
+
 - State your assumptions explicitly. If uncertain, ask.
 - If multiple interpretations exist, present them — don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
@@ -29,12 +30,14 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 Touch only what you must. Clean up only your own mess.
 
 When editing existing code:
+
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
 - If you notice unrelated dead code, mention it — don't delete it.
 
 When your changes create orphans:
+
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
@@ -45,11 +48,13 @@ The test: Every changed line should trace directly to the user's request.
 Define success criteria. Loop until verified.
 
 Transform tasks into verifiable goals:
+
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
 - "Fix the bug" → "Write a test that reproduces it, then make it pass"
 - "Refactor X" → "Ensure tests pass before and after"
 
 For multi-step tasks, state a brief plan:
+
 ```
 1. [Step] → verify: [check]
 2. [Step] → verify: [check]
@@ -100,12 +105,13 @@ For multi-step tasks, state a brief plan:
 ### Documentation
 
 - Update documentation when your changes affect public APIs or user-facing behavior.
-- Code comments explain *why*, not *what*. The code itself should explain *what*.
+- Code comments explain _why_, not _what_. The code itself should explain _what_.
 - Don't add comments that merely restate the code.
 
 ### Pre-Completion Checklist
 
 Before finishing any task, verify:
+
 1. The project builds with zero warnings and zero errors.
 2. Formatting and linting pass.
 3. Type checking passes with zero errors.
@@ -170,22 +176,22 @@ cascade/
 
 Primary CLI: `vp` (vite+, installed globally via `~/.vite-plus/`). Single command for dev, build, test, lint, format, and task running. Alpha software — accepted risk for a greenfield project. Track breaking changes on updates.
 
-| Concern | Tool | Notes |
-|---|---|---|
-| Primary CLI | vite+ (`vp`) | unified toolchain — wraps all tools below |
-| Package manager | pnpm (via `vp install`) | workspaces, fast installs, disk-efficient |
-| Task orchestration | `vp run` | replaces Turborepo — caching + dependency-aware task graph |
-| Build / dev server | Vite + Rolldown (via `vp`) | fastest HMR, Rust bundler |
-| Linting | Oxlint (via `vp lint`) | Rust-based, ~100× faster than ESLint |
-| Formatting | Oxfmt (via `vp fmt`) | Rust-based formatter bundled with vite+ |
-| Type checking | `vp check` | runs fmt + lint + tsc together |
-| Testing (unit) | Vitest (via `vp test`) | native Vite integration |
-| Testing (components) | @testing-library/react (latest) | |
-| Testing (e2e) | Playwright (latest) | |
-| TypeScript | 5.x strict mode | `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
-| React (components) | 18+ | RSC-compatible via `"use client"` |
-| Preact (docs/signals) | latest | `preact/compat` for rendering React components in docs |
-| State (core) | @preact/signals-react (latest) | fine-grained reactivity |
+| Concern               | Tool                            | Notes                                                      |
+| --------------------- | ------------------------------- | ---------------------------------------------------------- |
+| Primary CLI           | vite+ (`vp`)                    | unified toolchain — wraps all tools below                  |
+| Package manager       | pnpm (via `vp install`)         | workspaces, fast installs, disk-efficient                  |
+| Task orchestration    | `vp run`                        | replaces Turborepo — caching + dependency-aware task graph |
+| Build / dev server    | Vite + Rolldown (via `vp`)      | fastest HMR, Rust bundler                                  |
+| Linting               | Oxlint (via `vp lint`)          | Rust-based, ~100× faster than ESLint                       |
+| Formatting            | Oxfmt (via `vp fmt`)            | Rust-based formatter bundled with vite+                    |
+| Type checking         | `vp check`                      | runs fmt + lint + tsc together                             |
+| Testing (unit)        | Vitest (via `vp test`)          | native Vite integration                                    |
+| Testing (components)  | @testing-library/react (latest) |                                                            |
+| Testing (e2e)         | Playwright (latest)             |                                                            |
+| TypeScript            | 5.x strict mode                 | `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`   |
+| React (components)    | 18+                             | RSC-compatible via `"use client"`                          |
+| Preact (docs/signals) | latest                          | `preact/compat` for rendering React components in docs     |
+| State (core)          | @preact/signals-react (latest)  | fine-grained reactivity                                    |
 
 pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism. `vp run` orchestrates tasks across packages with caching, replacing `turbo.json`.
 
@@ -230,13 +236,13 @@ export const meta: ComponentMeta = {
 
 ### AI Layer
 
-| Surface | Package | Purpose |
-|---|---|---|
-| Component manifest | `component.meta.ts` per component | Ground truth for all AI surfaces |
-| MCP server | `@cascade-ui/mcp` | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
-| Claude Code skills | `skills/` | `cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend` |
-| Auto-generated docs | `apps/docs/` | Markdown + interactive examples generated from manifests |
-| Registry manifest | `registry.json` | Machine-readable index — CLI + MCP + docs all read from this |
+| Surface             | Package                           | Purpose                                                                                      |
+| ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
+| Component manifest  | `component.meta.ts` per component | Ground truth for all AI surfaces                                                             |
+| MCP server          | `@cascade-ui/mcp`                 | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
+| Claude Code skills  | `skills/`                         | `cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend`               |
+| Auto-generated docs | `apps/docs/`                      | Markdown + interactive examples generated from manifests                                     |
+| Registry manifest   | `registry.json`                   | Machine-readable index — CLI + MCP + docs all read from this                                 |
 
 ### Dark Factory Pipeline
 

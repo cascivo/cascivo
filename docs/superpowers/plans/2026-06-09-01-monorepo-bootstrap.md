@@ -84,6 +84,7 @@ cascade/                              ← repo root (already exists as native-ui
 ## Task 1: Root workspace files
 
 **Files:**
+
 - Create: `package.json`
 - Create: `pnpm-workspace.yaml`
 - Create: `vite.config.ts`
@@ -234,6 +235,7 @@ dist/
 **Files:** All files under `packages/core/`, `packages/tokens/`, `packages/themes/`, `packages/components/`, `packages/icons/`, `packages/cli/`, `packages/mcp/`
 
 The pattern for TypeScript library packages is:
+
 - `package.json` with `"build": "vp pack"` and `"test": "vp test"`
 - `vite.config.ts` with `lib` entry config for `vp pack`
 - `tsconfig.json` extending `../../tsconfig.base.json` with `"noEmit": false`
@@ -389,6 +391,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 - [ ] **Step 9: Create placeholder theme CSS files**
 
 Create `packages/themes/src/light.css`:
+
 ```css
 /* @cascade-ui/themes/light — placeholder until Plan 2 */
 [data-theme='light'] {
@@ -397,6 +400,7 @@ Create `packages/themes/src/light.css`:
 ```
 
 Create `packages/themes/src/dark.css`:
+
 ```css
 /* @cascade-ui/themes/dark — placeholder until Plan 2 */
 [data-theme='dark'] {
@@ -405,6 +409,7 @@ Create `packages/themes/src/dark.css`:
 ```
 
 Create `packages/themes/src/warm.css`:
+
 ```css
 /* @cascade-ui/themes/warm — placeholder until Plan 2 */
 [data-theme='warm'] {
@@ -417,6 +422,7 @@ Create `packages/themes/src/warm.css`:
 Private — never published. This is the registry source only. Needs `vite.config.ts` for `vp test` (components are React components requiring jsdom) and a `tsconfig.json` so TypeScript finds source files in Plan 3.
 
 `packages/components/package.json`:
+
 ```json
 {
   "name": "@cascade-ui/components",
@@ -439,6 +445,7 @@ Private — never published. This is the registry source only. Needs `vite.confi
 ```
 
 `packages/components/vite.config.ts`:
+
 ```ts
 import { defineConfig } from 'vite-plus'
 
@@ -450,6 +457,7 @@ export default defineConfig({
 ```
 
 `packages/components/tsconfig.json`:
+
 ```json
 {
   "extends": "../../tsconfig.base.json",
@@ -465,6 +473,7 @@ export default defineConfig({
 - [ ] **Step 11: Create `packages/icons/package.json`, `vite.config.ts`, `tsconfig.json`, `src/index.ts`, `src/index.test.ts`**
 
 `packages/icons/package.json`:
+
 ```json
 {
   "name": "@cascade-ui/icons",
@@ -496,6 +505,7 @@ export default defineConfig({
 ```
 
 `packages/icons/vite.config.ts`:
+
 ```ts
 import { defineConfig } from 'vite-plus'
 
@@ -517,6 +527,7 @@ export default defineConfig({
 ```
 
 `packages/icons/tsconfig.json`:
+
 ```json
 {
   "extends": "../../tsconfig.base.json",
@@ -530,11 +541,13 @@ export default defineConfig({
 ```
 
 `packages/icons/src/index.ts`:
+
 ```ts
 export const VERSION = '0.0.0'
 ```
 
 `packages/icons/src/index.test.ts`:
+
 ```ts
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
@@ -549,6 +562,7 @@ describe('@cascade-ui/icons', () => {
 - [ ] **Step 12: Create `packages/cli/package.json`, `vite.config.ts`, `tsconfig.json`, `src/index.ts`, `src/index.test.ts`**
 
 `packages/cli/package.json`:
+
 ```json
 {
   "name": "cascade",
@@ -575,6 +589,7 @@ describe('@cascade-ui/icons', () => {
 ```
 
 `packages/cli/vite.config.ts`:
+
 ```ts
 import { defineConfig } from 'vite-plus'
 
@@ -596,6 +611,7 @@ export default defineConfig({
 ```
 
 `packages/cli/tsconfig.json`:
+
 ```json
 {
   "extends": "../../tsconfig.base.json",
@@ -608,11 +624,13 @@ export default defineConfig({
 ```
 
 `packages/cli/src/index.ts`:
+
 ```ts
 export const VERSION = '0.0.0'
 ```
 
 `packages/cli/src/index.test.ts`:
+
 ```ts
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
@@ -627,6 +645,7 @@ describe('cascade CLI', () => {
 - [ ] **Step 13: Create `packages/mcp/package.json`, `vite.config.ts`, `tsconfig.json`, `src/index.ts`, `src/index.test.ts`**
 
 `packages/mcp/package.json`:
+
 ```json
 {
   "name": "@cascade-ui/mcp",
@@ -654,6 +673,7 @@ describe('cascade CLI', () => {
 ```
 
 `packages/mcp/vite.config.ts`:
+
 ```ts
 import { defineConfig } from 'vite-plus'
 
@@ -675,6 +695,7 @@ export default defineConfig({
 ```
 
 `packages/mcp/tsconfig.json`:
+
 ```json
 {
   "extends": "../../tsconfig.base.json",
@@ -687,11 +708,13 @@ export default defineConfig({
 ```
 
 `packages/mcp/src/index.ts`:
+
 ```ts
 export const VERSION = '0.0.0'
 ```
 
 `packages/mcp/src/index.test.ts`:
+
 ```ts
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
@@ -912,19 +935,19 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 - [ ] **Step 3: Create `skills/README.md`**
 
-```markdown
+````markdown
 # Cascade Claude Code Skills
 
 Claude Code skills for working with the cascade design system.
 
 ## Available Skills
 
-| Skill | Purpose |
-|---|---|
-| `cascade:add` | Add a component to your project with customization guidance |
-| `cascade:design-page` | Generate a page layout using cascade components |
-| `cascade:create-theme` | Create a custom theme from your brand colors |
-| `cascade:extend` | Extend or fork an existing component |
+| Skill                  | Purpose                                                     |
+| ---------------------- | ----------------------------------------------------------- |
+| `cascade:add`          | Add a component to your project with customization guidance |
+| `cascade:design-page`  | Generate a page layout using cascade components             |
+| `cascade:create-theme` | Create a custom theme from your brand colors                |
+| `cascade:extend`       | Extend or fork an existing component                        |
 
 ## Installation
 
@@ -936,9 +959,11 @@ Add the `skills/` directory from this repository to your Claude Code skills path
   "skills": ["/path/to/cascade/skills"]
 }
 ```
+````
 
 Skills are implemented in Plans 5–6 alongside the MCP server and CLI.
-```
+
+````
 
 ---
 
@@ -948,7 +973,7 @@ Skills are implemented in Plans 5–6 alongside the MCP server and CLI.
 
 ```bash
 vp install
-```
+````
 
 Expected: pnpm resolves all workspace packages and installs dependencies. No errors. A `pnpm-lock.yaml` is created at the root.
 

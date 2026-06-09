@@ -15,12 +15,14 @@
 **One-sentence pitch:** cascade gives you beautifully crafted, fully owned React components powered by fine-grained signals, pure modern CSS, and a built-in AI layer — without Tailwind, without copy-paste sync debt, without performance compromises.
 
 **Core differentiators over shadcn/ui:**
+
 - Signal-driven micro-FSM instead of `useState`/`useContext` — zero unnecessary re-renders
 - Component manifest as machine-readable contract — AI agents understand every component
 - Three first-party themes with `data-theme` scoping, not just a CSS variable list
 - Dark factory generates components at scale post-launch
 
 **Core differentiators over Carbon:**
+
 - Copy-paste ownership model — users own the code, no upstream lock-in
 - Modern CSS only (`@layer`, `@container`, `:has()`) — no preprocessors
 - AI-native from day one — MCP server, Claude Code skills, auto-docs
@@ -43,14 +45,14 @@
 
 **Hybrid:** versioned npm packages for stable infrastructure, copy-paste for components.
 
-| Layer | Distribution | Package |
-|---|---|---|
-| State primitives | npm | `@cascade-ui/core` |
-| Design tokens | npm | `@cascade-ui/tokens` |
-| Themes | npm | `@cascade-ui/themes` |
-| Icons | npm (optional) | `@cascade-ui/icons` |
-| MCP server | npm | `@cascade-ui/mcp` |
-| Components | copy-paste via CLI | fetched from GitHub raw URLs |
+| Layer            | Distribution       | Package                      |
+| ---------------- | ------------------ | ---------------------------- |
+| State primitives | npm                | `@cascade-ui/core`           |
+| Design tokens    | npm                | `@cascade-ui/tokens`         |
+| Themes           | npm                | `@cascade-ui/themes`         |
+| Icons            | npm (optional)     | `@cascade-ui/icons`          |
+| MCP server       | npm                | `@cascade-ui/mcp`            |
+| Components       | copy-paste via CLI | fetched from GitHub raw URLs |
 
 Components are never imported from an npm package. `npx cascade add button` copies source into `src/components/ui/button/`. Users own the code, can modify freely, and receive updates by pulling the latest source.
 
@@ -91,21 +93,21 @@ cascade/
 
 Primary CLI: `vp` (vite+, v0.1.24, installed globally). Single command for dev, build, test, lint, format, and task running. Alpha software — accepted risk for a greenfield project.
 
-| Concern | Tool |
-|---|---|
-| Primary CLI | vite+ (`vp`) |
-| Package manager | pnpm (via `vp install`) |
-| Task orchestration | `vp run` — replaces Turborepo, caching + dep-aware task graph |
-| Build / dev server | Vite + Rolldown (via `vp`) |
-| Linting | Oxlint (via `vp lint`) — Rust-based |
-| Formatting | Oxfmt (via `vp fmt`) — Rust-based |
-| Type checking | `vp check` — runs fmt + lint + tsc |
-| Testing (unit/component) | Vitest + @testing-library/react (via `vp test`) |
-| Testing (e2e) | Playwright |
-| TypeScript | 5.x strict — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
-| React (components) | 18+ — RSC-compatible via `"use client"` |
-| Preact (docs + signals) | latest — `preact/compat` renders React components in docs |
-| Signals | @preact/signals-react (latest) |
+| Concern                  | Tool                                                                  |
+| ------------------------ | --------------------------------------------------------------------- |
+| Primary CLI              | vite+ (`vp`)                                                          |
+| Package manager          | pnpm (via `vp install`)                                               |
+| Task orchestration       | `vp run` — replaces Turborepo, caching + dep-aware task graph         |
+| Build / dev server       | Vite + Rolldown (via `vp`)                                            |
+| Linting                  | Oxlint (via `vp lint`) — Rust-based                                   |
+| Formatting               | Oxfmt (via `vp fmt`) — Rust-based                                     |
+| Type checking            | `vp check` — runs fmt + lint + tsc                                    |
+| Testing (unit/component) | Vitest + @testing-library/react (via `vp test`)                       |
+| Testing (e2e)            | Playwright                                                            |
+| TypeScript               | 5.x strict — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
+| React (components)       | 18+ — RSC-compatible via `"use client"`                               |
+| Preact (docs + signals)  | latest — `preact/compat` renders React components in docs             |
+| Signals                  | @preact/signals-react (latest)                                        |
 
 pnpm workspaces (`pnpm-workspace.yaml`) is the underlying monorepo mechanism. `vp run` orchestrates tasks across packages.
 
@@ -120,7 +122,7 @@ Tiny, stable, purpose-built. The only runtime dep components take on.
 ```ts
 // State machine
 createMachine({ initial, states, transitions })
-useMachine(machine)       // React hook — bridges FSM to component render
+useMachine(machine) // React hook — bridges FSM to component render
 
 // Signals (re-exported from @preact/signals-react)
 signal(initialValue)
@@ -128,9 +130,9 @@ computed(fn)
 effect(fn)
 
 // Base utilities
-composeRefs(...refs)       // merge multiple React refs
-mergeProps(...props)       // merge event handlers without clobbering
-cn(...classes)             // className utility — no external dep
+composeRefs(...refs) // merge multiple React refs
+mergeProps(...props) // merge event handlers without clobbering
+cn(...classes) // className utility — no external dep
 ```
 
 No theme logic, no token values, no component code. Pure behaviour primitives.
@@ -178,7 +180,7 @@ Three-level CSS custom property system:
 --cascade-gray-900: #111827;
 
 /* Level 2 — semantic (themes override this layer only) */
-[data-theme="light"] {
+[data-theme='light'] {
   --cascade-color-accent: var(--cascade-blue-500);
   --cascade-color-surface: #ffffff;
   --cascade-color-text: var(--cascade-gray-900);
@@ -193,6 +195,7 @@ Three-level CSS custom property system:
 ```
 
 **Themes** override the semantic layer only. Shipped in `@cascade-ui/themes`:
+
 - `light.css` — minimal/sharp, neutral grays, clean lines
 - `dark.css` — bold/editorial, high contrast, developer-cool
 - `warm.css` — organic/approachable, warm neutrals, rounded
@@ -261,25 +264,25 @@ No hosting infrastructure — GitHub raw URLs are the CDN. `vp run registry:gene
 
 Six tools, all reading from `registry.json` + component manifests:
 
-| Tool | Input | Output |
-|---|---|---|
-| `list_components` | `category?` | `ComponentMeta[]` |
-| `get_component` | `name` | full `ComponentMeta` |
-| `search_components` | `query` | `ComponentMeta[]` — searches name, tags, description |
-| `add_to_project` | `name, options` | runs `cascade add` in user's project |
-| `create_theme` | `{ primary, neutral, accent }` | generated theme CSS string |
-| `scaffold_page` | `description` | JSX page using cascade components |
+| Tool                | Input                          | Output                                               |
+| ------------------- | ------------------------------ | ---------------------------------------------------- |
+| `list_components`   | `category?`                    | `ComponentMeta[]`                                    |
+| `get_component`     | `name`                         | full `ComponentMeta`                                 |
+| `search_components` | `query`                        | `ComponentMeta[]` — searches name, tags, description |
+| `add_to_project`    | `name, options`                | runs `cascade add` in user's project                 |
+| `create_theme`      | `{ primary, neutral, accent }` | generated theme CSS string                           |
+| `scaffold_page`     | `description`                  | JSX page using cascade components                    |
 
 Users connect the MCP server once in their Claude config. Claude then knows every component's full API and generates correct code without hallucinating props.
 
 ### Claude Code Skills (`skills/`)
 
-| Skill | What it does |
-|---|---|
-| `cascade:add` | Runs `cascade add`, explains props/variants, offers customization guidance |
-| `cascade:design-page` | Uses `scaffold_page` MCP tool, writes JSX + CSS for a full page |
-| `cascade:create-theme` | Uses `create_theme` MCP tool, writes theme CSS file into project |
-| `cascade:extend` | Reads component manifest, guides component fork, updates local manifest |
+| Skill                  | What it does                                                               |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `cascade:add`          | Runs `cascade add`, explains props/variants, offers customization guidance |
+| `cascade:design-page`  | Uses `scaffold_page` MCP tool, writes JSX + CSS for a full page            |
+| `cascade:create-theme` | Uses `create_theme` MCP tool, writes theme CSS file into project           |
+| `cascade:extend`       | Reads component manifest, guides component fork, updates local manifest    |
 
 Skills ship in `skills/` at repo root. Users install by pointing their Claude config at the cascade repo.
 
@@ -329,13 +332,13 @@ Human-edited queue of component specs:
 
 ### Tiered Automation
 
-| Trigger | Action | Human gate? |
-|---|---|---|
-| New component in backlog | Generate + open PR | Yes — design + a11y review |
-| PR merged | Regenerate docs + stories | No |
-| Token value change | Regenerate all theme CSS | No |
-| Test failure on main | Self-heal + PR | No (if tests pass after fix) |
-| `vp check` failure on main | Fix lint/fmt + commit | No |
+| Trigger                    | Action                    | Human gate?                  |
+| -------------------------- | ------------------------- | ---------------------------- |
+| New component in backlog   | Generate + open PR        | Yes — design + a11y review   |
+| PR merged                  | Regenerate docs + stories | No                           |
+| Token value change         | Regenerate all theme CSS  | No                           |
+| Test failure on main       | Self-heal + PR            | No (if tests pass after fix) |
+| `vp check` failure on main | Fix lint/fmt + commit     | No                           |
 
 First 5 components (Button, Input, Modal, Card, Badge) are hand-built to validate the manifest schema and establish the quality bar. All subsequent components run through the factory.
 
@@ -345,13 +348,13 @@ First 5 components (Button, Input, Modal, Card, Badge) are hand-built to validat
 
 ~20 components. First 5 hand-built, remainder via dark factory.
 
-| Category | Components |
-|---|---|
-| `inputs` | Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider |
-| `overlay` | Modal/Dialog, Dropdown, Tooltip, Toast |
-| `display` | Card, Badge, Alert, Avatar, Separator |
-| `navigation` | Tabs, Accordion |
-| `feedback` | Spinner |
+| Category     | Components                                                       |
+| ------------ | ---------------------------------------------------------------- |
+| `inputs`     | Button, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider |
+| `overlay`    | Modal/Dialog, Dropdown, Tooltip, Toast                           |
+| `display`    | Card, Badge, Alert, Avatar, Separator                            |
+| `navigation` | Tabs, Accordion                                                  |
+| `feedback`   | Spinner                                                          |
 
 ---
 

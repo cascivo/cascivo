@@ -9,6 +9,7 @@ This repository houses the architecture, automation engine, and core implementat
 Current industry standards (such as `shadcn/ui`) suffer from significant maintenance overhead (copy-paste sync debt), severe template styling fatigue, hidden accessibility compliance failures, and resource-heavy React Virtual DOM re-render cycles.
 
 This project introduces a new paradigm built on four primary pillars:
+
 1. **The Blueprint:** Replicating the structural, data-dense layouts and 2x grid constraints of IBM's **Carbon Design System**.
 2. **The Architecture:** Adopting a zero-dependency, copy-paste or AST-merging code ownership pattern (inspired by **shadcn/ui**).
 3. **The Styling Layer:** Dropping Tailwind CSS entirely in favor of **Super Modern, Pure Web Standards CSS** (CSS Modules, `@layer`, `@container`, `:has()`).
@@ -19,16 +20,20 @@ This project introduces a new paradigm built on four primary pillars:
 ## 🏗️ Architectural Core Pillars
 
 ### 1. Modern CSS Over Tailwind
+
 To combat utility class bloat and build-tool dependency decay, all components leverage native platform style capabilities:
-* **Container Queries (`@container`):** Allowing components to morph responsively based on where they are dropped, not the browser window size.
-* **Structural Selectors (`:has()`, `:is()`, `:where()`):** Moving visual state logic completely out of JS memory and directly into browser layout engine matching.
-* **Native Popover & Dialog APIs:** Bypassing heavy JavaScript positioning layers for overlays.
+
+- **Container Queries (`@container`):** Allowing components to morph responsively based on where they are dropped, not the browser window size.
+- **Structural Selectors (`:has()`, `:is()`, `:where()`):** Moving visual state logic completely out of JS memory and directly into browser layout engine matching.
+- **Native Popover & Dialog APIs:** Bypassing heavy JavaScript positioning layers for overlays.
 
 ### 2. Fine-Grained Reactive Interactivity
+
 Standard libraries re-render entire components and child trees on micro-interactions (e.g., typing in a combobox, opening a sidebar). This library utilizes an external signal-driven pattern:
-* Interactive primitives hook into atomic, transient state tracking.
-* State modifications update precise DOM nodes directly without triggering a global React Virtual DOM reconciliation cycle.
-* Fully compatible with React Server Components (RSC) by decoupling layout structures (Server) from event handlers and triggers (`"use client"` execution blocks).
+
+- Interactive primitives hook into atomic, transient state tracking.
+- State modifications update precise DOM nodes directly without triggering a global React Virtual DOM reconciliation cycle.
+- Fully compatible with React Server Components (RSC) by decoupling layout structures (Server) from event handlers and triggers (`"use client"` execution blocks).
 
 ---
 
@@ -39,21 +44,21 @@ To accelerate development and reliably copy the immense component library map of
 ### Automated Generation Loop
 
 ┌────────────────────────────────────────────────────────┐
-│                                                        │
-│   1. Input Specs (Carbon Design Tokens / Manifest)     │
-│                       │                                │
-│                       ▼                                │
-│   2. Generation Engine (Headless Claude Code Agent)    │
-│                       │                                │
-│                       ▼                                │
-│   3. Quality Assurance (Linter -> Type-check -> Test) │
-│                       │                                │
-│       ┌───────────────┴───────────────┐                │
-│       │ Test Passes                   │ Test Fails     │
-│       ▼                               ▼                │
-│   4. Ship / Stage Branch     5. Self-Healing Feedback  │
-│                              (Pipe logs back to 2)     │
-│                                                       │
+│ │
+│ 1. Input Specs (Carbon Design Tokens / Manifest) │
+│ │ │
+│ ▼ │
+│ 2. Generation Engine (Headless Claude Code Agent) │
+│ │ │
+│ ▼ │
+│ 3. Quality Assurance (Linter -> Type-check -> Test) │
+│ │ │
+│ ┌───────────────┴───────────────┐ │
+│ │ Test Passes │ Test Fails │
+│ ▼ ▼ │
+│ 4. Ship / Stage Branch 5. Self-Healing Feedback │
+│ (Pipe logs back to 2) │
+│ │
 └────────────────────────────────────────────────────────┘
 
 ### Automation Execution Script
@@ -72,10 +77,10 @@ echo "🤖 Industrial automation initialized: Fabricating components..."
 while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
   # 1. Fire headless agent task
   claude -p "Analyze Carbon UI specs, implement the next target primitive with Modern CSS, and create accompanying Vitest suites." --dangerously-skip-permissions --max-turns 10
-  
+
   # 2. Run industrial quality gates
   npm run lint && npm run test:run && npm run build
-  
+
   if [ $? -eq 0 ]; then
     echo "✅ Component successfully validated on attempt $ATTEMPT!"
     exit 0

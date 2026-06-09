@@ -11,6 +11,9 @@
     "build": "echo 'themes: CSS-only, no build'",
     "test": "echo 'themes: no tests yet'"
   },
+  "devDependencies": {
+    "@cascade-ui/tokens": "workspace:*"
+  },
   "peerDependencies": {
     "@cascade-ui/tokens": ">=0.0.0"
   }

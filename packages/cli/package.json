@@ -2,10 +2,10 @@
   "name": "cascade",
   "version": "0.0.0",
   "private": false,
-  "type": "module",
   "bin": {
     "cascade": "./dist/index.js"
   },
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
