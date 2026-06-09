@@ -1,0 +1,37 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Separator',
+  description: 'Visual or semantic divider between content',
+  category: 'display',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+    },
+    {
+      name: 'decorative',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'When true, the separator is purely visual and hidden from assistive tech',
+    },
+  ],
+  tokens: ['--cascade-color-border'],
+  accessibility: {
+    role: 'separator',
+    wcag: 'AA',
+    keyboard: [],
+  },
+  examples: [
+    { title: 'Horizontal', code: '<Separator />' },
+    { title: 'Vertical', code: '<Separator orientation="vertical" />' },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['divider', 'rule', 'layout'],
+}

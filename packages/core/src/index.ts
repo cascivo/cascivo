@@ -7,6 +7,7 @@ export {
   useSignal,
   useComputed,
   useSignalEffect,
+  useSignals,
 } from './signals.ts'
 export type { Signal, ReadonlySignal } from './signals.ts'
 export { cn, composeRefs, mergeProps } from './utils.ts'

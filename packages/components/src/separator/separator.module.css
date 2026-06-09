@@ -1,0 +1,19 @@
+@layer cascade.component {
+  .separator {
+    margin: 0;
+    border: none;
+    background-color: var(--cascade-color-border);
+    flex-shrink: 0;
+
+    &[data-orientation='horizontal'] {
+      block-size: 1px;
+      inline-size: 100%;
+    }
+
+    &[data-orientation='vertical'] {
+      inline-size: 1px;
+      block-size: 100%;
+      align-self: stretch;
+    }
+  }
+}

@@ -1,0 +1,84 @@
+@layer cascade.component {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+
+    &[data-resize='none'] .textarea {
+      resize: none;
+    }
+    &[data-resize='vertical'] .textarea {
+      resize: vertical;
+    }
+    &[data-resize='both'] .textarea {
+      resize: both;
+    }
+  }
+
+  .label {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text);
+    line-height: var(--cascade-leading-snug);
+  }
+
+  .textarea {
+    width: 100%;
+    min-block-size: 4rem;
+    padding-inline: var(--cascade-space-4);
+    padding-block: var(--cascade-space-3);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    line-height: var(--cascade-leading-normal);
+    color: var(--cascade-color-text);
+    background-color: var(--cascade-color-surface);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-input);
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+    outline: none;
+
+    &::placeholder {
+      color: var(--cascade-color-text-muted);
+    }
+
+    &:hover:not(:disabled):not(:focus) {
+      border-color: var(--cascade-color-border-strong);
+    }
+
+    &:focus {
+      border-color: var(--cascade-color-accent);
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    .wrapper[data-state='error'] & {
+      border-color: var(--cascade-color-destructive);
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgb(from var(--cascade-color-destructive) r g b / 0.3);
+      }
+    }
+  }
+
+  .error {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-destructive);
+    line-height: var(--cascade-leading-snug);
+  }
+
+  .hint {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+    line-height: var(--cascade-leading-snug);
+  }
+}
