@@ -1,5 +1,246 @@
 {
   "version": "0.0.0",
   "generatedAt": "2026-06-09",
-  "components": []
+  "components": [
+    {
+      "name": "accordion",
+      "description": "Vertically stacked, collapsible content sections",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/accordion/accordion.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/accordion/accordion.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["navigation", "collapse", "disclosure"]
+    },
+    {
+      "name": "alert",
+      "description": "Highlights a short, important message inline",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/alert/alert.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/alert/alert.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["notification", "message", "feedback"]
+    },
+    {
+      "name": "avatar",
+      "description": "Displays a user image with initials fallback",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/avatar/avatar.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/avatar/avatar.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["user", "profile", "image"]
+    },
+    {
+      "name": "badge",
+      "description": "Small status label or category indicator",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/badge/badge.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/badge/badge.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["label", "status", "tag"]
+    },
+    {
+      "name": "button",
+      "description": "Triggers an action or event",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/button/button.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/button/button.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["action", "form", "interactive"]
+    },
+    {
+      "name": "card",
+      "description": "Container for grouping related content",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/card/card.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/card/card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["container", "layout", "surface"]
+    },
+    {
+      "name": "checkbox",
+      "description": "Binary toggle for forms, with indeterminate support",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/checkbox/checkbox.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/checkbox/checkbox.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "toggle", "boolean"]
+    },
+    {
+      "name": "dropdown",
+      "description": "Menu of actions revealed from a trigger",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/dropdown/dropdown.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/dropdown/dropdown.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "menu", "actions"]
+    },
+    {
+      "name": "input",
+      "description": "Text input field with optional label, hint, and error state",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/input/input.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/input/input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "text", "input"]
+    },
+    {
+      "name": "modal",
+      "description": "Accessible dialog overlay using native <dialog> element",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/modal/modal.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/modal/modal.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "dialog", "popup"]
+    },
+    {
+      "name": "radio",
+      "description": "Single choice from a set, grouped with RadioGroup",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/radio/radio.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/radio/radio.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "choice", "group"]
+    },
+    {
+      "name": "select",
+      "description": "Native select menu styled to match the design system",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/select/select.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/select/select.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "dropdown", "menu"]
+    },
+    {
+      "name": "separator",
+      "description": "Visual or semantic divider between content",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/separator/separator.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/separator/separator.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["divider", "rule", "layout"]
+    },
+    {
+      "name": "slider",
+      "description": "Range input for selecting a value within bounds",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/slider/slider.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/slider/slider.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "range", "input"]
+    },
+    {
+      "name": "spinner",
+      "description": "Indeterminate loading indicator",
+      "category": "feedback",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/spinner/spinner.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/spinner/spinner.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["loading", "progress", "feedback"]
+    },
+    {
+      "name": "tabs",
+      "description": "Switch between related panels of content",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tabs/tabs.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tabs/tabs.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["navigation", "tabs", "sections"]
+    },
+    {
+      "name": "textarea",
+      "description": "Multi-line text input with optional label, hint, and error state",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/textarea/textarea.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/textarea/textarea.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "text", "multiline"]
+    },
+    {
+      "name": "toast",
+      "description": "Transient notification surfaced via the useToast hook",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toast/toast.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toast/toast.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "notification", "feedback"]
+    },
+    {
+      "name": "toggle",
+      "description": "On/off switch built as an accessible button",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toggle/toggle.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/toggle/toggle.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["switch", "form", "boolean"]
+    },
+    {
+      "name": "tooltip",
+      "description": "Contextual label shown on hover or focus",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tooltip/tooltip.tsx",
+        "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/tooltip/tooltip.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "hint", "popover"]
+    }
+  ]
 }
