@@ -2,6 +2,9 @@
   "name": "@cascade-ui/themes",
   "version": "0.0.0",
   "private": false,
+  "files": [
+    "src"
+  ],
   "exports": {
     "./light": "./src/light.css",
     "./dark": "./src/dark.css",

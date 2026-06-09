@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": false,
   "type": "module",
-  "main": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     }
   },
   "scripts": {
@@ -17,10 +17,8 @@
     "test": "vp test",
     "dev": "vp pack --watch"
   },
-  "dependencies": {
-    "@preact/signals-react": "catalog:"
-  },
   "devDependencies": {
+    "@preact/signals-react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "jsdom": "catalog:",
@@ -30,6 +28,7 @@
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   }
