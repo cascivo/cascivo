@@ -1,0 +1,20 @@
+{
+  "name": "cascade",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vp run -r build",
+    "test": "vp run -r test",
+    "check": "vp check",
+    "dev:docs": "vp run @cascade-ui/docs#dev",
+    "dev:landing": "vp run @cascade-ui/landing#dev",
+    "ready": "vp check && vp run -r test && vp run -r build"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

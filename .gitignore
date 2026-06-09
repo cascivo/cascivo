@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.d.ts.map
+
+# Tooling cache
+.vp-cache/
+.turbo/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+
+# Editor
+.DS_Store
+
+# Brainstorm sessions (already ignored, confirm it's here)
+.superpowers/
