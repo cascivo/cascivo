@@ -1,0 +1,22 @@
+{
+  "name": "@cascade-ui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test": "echo 'docs: no tests yet'"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/tokens": "workspace:*",
+    "@cascade-ui/themes": "workspace:*",
+    "preact": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
