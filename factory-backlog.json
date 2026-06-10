@@ -310,7 +310,7 @@
       "name": "combobox",
       "category": "inputs",
       "priority": 35,
-      "spec": "Filterable select. Props: options {value,label,disabled?}[], value/onChange (string or string[] with multiple), multiple?, label/hint/error like Select, placeholder, loading? (async options driven by onInputChange), renderOption?. Input + popover listbox, built-in filtering, multi mode renders inline dismissible tags. Machine closed/open driven by component. A11y: role=combobox, aria-expanded, aria-activedescendant, full arrow/Enter/Escape keyboard support. Listbox animated with motion tokens.",
+      "spec": "Filterable select. Props: options {value,label,disabled?}[], value/onChange (string or string[] with multiple), multiple?, label/hint/error like Select, placeholder, loading? (async options driven by onInputChange), renderOption?. Input + popover listbox, built-in filtering, multi mode renders inline dismissible tags. Machine closed/open driven by component. A11y: role=combobox, aria-expanded, aria-activedescendant, full arrow/Enter/Escape keyboard support. Listbox animated with motion tokens. NOTE: build on the dropdown open/close machine + positioning pattern and the select field styling; listbox animated with @starting-style; strings via builtin catalog (combobox namespace, en+de).",
       "status": "pending",
       "milestone": null,
       "attempts": 0
@@ -328,7 +328,7 @@
       "name": "time-picker",
       "category": "inputs",
       "priority": 36,
-      "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free.",
+      "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free. NOTE: time-picker.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog).",
       "status": "pending",
       "milestone": null,
       "attempts": 0
@@ -337,7 +337,7 @@
       "name": "date-picker",
       "category": "inputs",
       "priority": 37,
-      "spec": "Date selection with from-scratch calendar grid. Props: mode single/range, value/onChange (Date or {start,end}), min/max, locale? (defaults to browser), label/hint/error, disabled. Read-only input(s) showing Intl.DateTimeFormat-formatted value; popover calendar with month navigation, weekday headers via Intl, today marker. Keyboard: roving tabindex on grid, arrows move focus, Enter selects, Escape closes. A11y: trigger aria-haspopup=dialog, grid role=grid, selected aria-selected. Popover animated with motion tokens + @starting-style.",
+      "spec": "Date selection with from-scratch calendar grid. Props: mode single/range, value/onChange (Date or {start,end}), min/max, locale? (defaults to browser), label/hint/error, disabled. Read-only input(s) showing Intl.DateTimeFormat-formatted value; popover calendar with month navigation, weekday headers via Intl, today marker. Keyboard: roving tabindex on grid, arrows move focus, Enter selects, Escape closes. A11y: trigger aria-haspopup=dialog, grid role=grid, selected aria-selected. Popover animated with motion tokens + @starting-style. NOTE: calendar math from scratch \u2014 month grid via Date arithmetic (UTC-safe; first weekday from Intl.Locale weekInfo when available, fallback Monday), weekday/month names via Intl.DateTimeFormat with the i18n active locale (currentLocale()), roving tabindex grid. TimePicker ships separately (priority 36). All visible strings via builtin catalog (datePicker namespace, en+de).",
       "status": "pending",
       "milestone": null,
       "attempts": 0
@@ -346,7 +346,7 @@
       "name": "file-uploader",
       "category": "inputs",
       "priority": 38,
-      "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status.",
+      "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status. NOTE: file-uploader.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog; UploaderFileStatus strings uploading/complete/error need builtin keys en+de).",
       "status": "pending",
       "milestone": null,
       "attempts": 0
