@@ -1,3 +1,4 @@
+import { effect } from '@cascade-ui/core'
 import { persistedSignal } from '@cascade-ui/storage'
 
 export type Theme = 'light' | 'dark' | 'warm'
@@ -13,6 +14,13 @@ if (legacy === 'light' || legacy === 'dark' || legacy === 'warm') {
 }
 
 export const theme = persistedSignal<Theme>(STORAGE_KEY, 'light')
+
+// Keep data-theme in sync with the signal (covers cross-tab storage events).
+if (typeof document !== 'undefined') {
+  effect(() => {
+    document.documentElement.setAttribute('data-theme', theme.value)
+  })
+}
 
 export function applyTheme(next: Theme): void {
   const apply = () => document.documentElement.setAttribute('data-theme', next)
