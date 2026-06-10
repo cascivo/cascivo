@@ -79,6 +79,14 @@ export const builtin = {
   tag: defineMessages('cascade.tag', {
     dismiss: 'Remove',
   }),
+  fileUploader: defineMessages('cascade.fileUploader', {
+    label: 'Upload files',
+    drop: 'Drag and drop files here or click to upload',
+    remove: 'Remove {name}',
+    uploading: 'Uploading',
+    complete: 'Upload complete',
+    error: 'Upload failed',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -153,4 +161,12 @@ defineCatalog(builtin.numberInput, 'de', {
 })
 defineCatalog(builtin.tag, 'de', {
   dismiss: 'Entfernen',
+})
+defineCatalog(builtin.fileUploader, 'de', {
+  label: 'Dateien hochladen',
+  drop: 'Dateien hier ablegen oder klicken zum Hochladen',
+  remove: '{name} entfernen',
+  uploading: 'Wird hochgeladen',
+  complete: 'Hochladen abgeschlossen',
+  error: 'Hochladen fehlgeschlagen',
 })
