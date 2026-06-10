@@ -25,6 +25,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '@cascade-ui/components/accordion'
+import { Kbd } from '@cascade-ui/components/kbd'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -251,5 +252,13 @@ export const demos: Record<string, () => JSX.Element> = {
         <AccordionContent>Run npx cascade add &lt;component&gt; to copy it in.</AccordionContent>
       </AccordionItem>
     </Accordion>
+  ),
+  kbd: () => (
+    <Row>
+      <span>
+        Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to search
+      </span>
+      <Kbd size="sm">Esc</Kbd>
+    </Row>
   ),
 }

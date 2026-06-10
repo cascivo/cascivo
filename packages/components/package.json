@@ -23,7 +23,8 @@
     "./dropdown": "./src/dropdown/dropdown.tsx",
     "./toast": "./src/toast/toast.tsx",
     "./tabs": "./src/tabs/tabs.tsx",
-    "./accordion": "./src/accordion/accordion.tsx"
+    "./accordion": "./src/accordion/accordion.tsx",
+    "./kbd": "./src/kbd/kbd.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

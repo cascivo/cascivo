@@ -32,7 +32,8 @@
       "@cascade-ui/components/dropdown": ["./src/shims/dropdown.d.ts"],
       "@cascade-ui/components/toast": ["./src/shims/toast.d.ts"],
       "@cascade-ui/components/tabs": ["./src/shims/tabs.d.ts"],
-      "@cascade-ui/components/accordion": ["./src/shims/accordion.d.ts"]
+      "@cascade-ui/components/accordion": ["./src/shims/accordion.d.ts"],
+      "@cascade-ui/components/kbd": ["./src/shims/kbd.d.ts"]
     }
   },
   "include": ["src"]
