@@ -18,6 +18,7 @@ interface ToastRecord extends ToastOptions {
 
 const MAX_VISIBLE = 3
 const DEFAULT_DURATION = 5000
+// must outlast --cascade-motion-exit (150ms)
 const EXIT_DURATION = 160
 
 // App-global queue: toasts are not tied to a single render tree, so a module
@@ -50,9 +51,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 }
 
 const machine = createMachine({
-  initial: 'entering' as const,
+  initial: 'visible' as const,
   states: {
-    entering: { on: { SHOW: 'visible', DISMISS: 'dismissing' } },
     visible: { on: { DISMISS: 'dismissing' } },
     dismissing: { on: { END: 'gone' } },
   },
@@ -69,10 +69,6 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
 
   useSignalEffect(() => {
     const phase = state.value
-    if (phase === 'entering') {
-      const timer = setTimeout(() => send('SHOW'), 20)
-      return () => clearTimeout(timer)
-    }
     if (phase === 'visible') {
       const timer = setTimeout(() => send('DISMISS'), duration)
       return () => clearTimeout(timer)
