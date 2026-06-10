@@ -7,9 +7,7 @@ export const meta: ComponentMeta = {
   states: [],
   variants: [],
   sizes: ['sm', 'md'],
-  props: [
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
-  ],
+  props: [{ name: 'size', type: "'sm' | 'md'", required: false, default: 'md' }],
   tokens: [
     '--cascade-color-text-subtle',
     '--cascade-color-surface-raised',
