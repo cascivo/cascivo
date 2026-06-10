@@ -9,5 +9,10 @@
     "outDir": "./dist/types"
   },
   "include": ["src", "../components/src"],
-  "exclude": ["../components/src/**/*.test.tsx", "src/**/*.test.tsx"]
+  "exclude": [
+    "../components/src/**/*.test.tsx",
+    "../components/src/setup.ts",
+    "../components/src/test-utils",
+    "src/**/*.test.tsx"
+  ]
 }
