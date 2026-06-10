@@ -39,6 +39,7 @@ import { OverflowMenu } from '@cascade-ui/components/overflow-menu'
 import { NumberInput } from '@cascade-ui/components/number-input'
 import { DataTable, type Column } from '@cascade-ui/components/data-table'
 import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
+import { Form, useForm } from '@cascade-ui/components/form'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -128,6 +129,42 @@ function CommandMenuDemo() {
         hotkey={false}
       />
     </Row>
+  )
+}
+
+function FormDemo() {
+  const form = useForm<{ email: string; name: string }>({
+    initialValues: { email: '', name: '' },
+    validate: (v) => {
+      const errs: { email?: string; name?: string } = {}
+      if (!v.name) errs.name = 'Name is required'
+      if (!v.email.includes('@')) errs.email = 'Enter a valid email'
+      return errs
+    },
+  })
+  const name = form.field('name')
+  const email = form.field('email')
+  return (
+    <Col>
+      <Form form={form} onValid={() => {}}>
+        <Input
+          label="Name"
+          value={name.value}
+          onChange={(e) => name.onChange((e.currentTarget as HTMLInputElement).value)}
+          onBlur={name.onBlur}
+          {...(name.error ? { error: name.error } : {})}
+        />
+        <Input
+          label="Email"
+          type="email"
+          value={email.value}
+          onChange={(e) => email.onChange((e.currentTarget as HTMLInputElement).value)}
+          onBlur={email.onBlur}
+          {...(email.error ? { error: email.error } : {})}
+        />
+        <button type="submit">Submit</button>
+      </Form>
+    </Col>
   )
 }
 
@@ -503,4 +540,5 @@ export const demos: Record<string, () => JSX.Element> = {
   'number-input': () => <NumberInputDemo />,
   'data-table': () => <DataTableDemo />,
   'command-menu': () => <CommandMenuDemo />,
+  'form': () => <FormDemo />,
 }

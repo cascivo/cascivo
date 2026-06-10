@@ -356,8 +356,8 @@
       "category": "inputs",
       "priority": 40,
       "spec": "Typed form helper over signals - no react-hook-form, no useState. createForm<T>({initialValues, validate?}) and useForm wrapper returning {values, errors, touched (signals), field(name) -> {value,onChange,onBlur,error} wiring for cascade inputs, handleSubmit(onValid), reset, setValue}. Validation sync or async per submit/blur; zod-compatible via plain validate fn returning partial error map. Plus a thin <Form> element wrapping native <form> with onSubmit prevention wired.",
-      "status": "pending",
-      "milestone": null,
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
