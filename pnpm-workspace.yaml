@@ -33,5 +33,5 @@ overrides:
   vitest: 'npm:@voidzero-dev/vite-plus-test@0.1.24'
 
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: true
   sharp: true
