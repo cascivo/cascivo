@@ -50,7 +50,9 @@
   .input {
     inline-size: 100%;
     block-size: var(--_search-height, 2.5rem);
-    padding-inline-start: calc(var(--_search-px, var(--cascade-space-4)) + 1rem + var(--cascade-space-2));
+    padding-inline-start: calc(
+      var(--_search-px, var(--cascade-space-4)) + 1rem + var(--cascade-space-2)
+    );
     padding-inline-end: calc(var(--_search-px, var(--cascade-space-4)) + 1.5rem);
     font-family: var(--cascade-font-sans);
     font-size: var(--_search-font, var(--cascade-text-sm));

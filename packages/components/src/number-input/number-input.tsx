@@ -11,11 +11,10 @@ const machine = createMachine({
   },
 })
 
-export interface NumberInputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
-  > {
+export interface NumberInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
+> {
   value?: number | null
   defaultValue?: number
   onChange?: (value: number | null) => void
@@ -113,7 +112,9 @@ export function NumberInput({
 
   const format = (next: number | null): string => {
     if (next == null) return ''
-    return formatOptions ? new Intl.NumberFormat(undefined, formatOptions).format(next) : String(next)
+    return formatOptions
+      ? new Intl.NumberFormat(undefined, formatOptions).format(next)
+      : String(next)
   }
 
   const display = state.value === 'focused' ? text.value : format(current)

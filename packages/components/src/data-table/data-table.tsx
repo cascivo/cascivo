@@ -133,7 +133,11 @@ export function DataTable<Row>({
     if (!query) return entries.value
     const cols = columnsSignal.value
     return entries.value.filter((entry) =>
-      cols.some((col) => String(cellValue(entry.row, col.key) ?? '').toLowerCase().includes(query)),
+      cols.some((col) =>
+        String(cellValue(entry.row, col.key) ?? '')
+          .toLowerCase()
+          .includes(query),
+      ),
     )
   })
 
@@ -281,7 +285,10 @@ export function DataTable<Row>({
             {renderExpandedRow && <col className={styles['controlCol']} />}
             {selection && <col className={styles['controlCol']} />}
             {columns.map((col) => (
-              <col key={col.key} style={col.width !== undefined ? { width: col.width } : undefined} />
+              <col
+                key={col.key}
+                style={col.width !== undefined ? { width: col.width } : undefined}
+              />
             ))}
           </colgroup>
           <thead>
@@ -306,7 +313,8 @@ export function DataTable<Row>({
                 </th>
               )}
               {columns.map((col) => {
-                const direction = sortSignal.value?.key === col.key ? sortSignal.value.direction : undefined
+                const direction =
+                  sortSignal.value?.key === col.key ? sortSignal.value.direction : undefined
                 const ariaSort =
                   direction === 'asc' ? 'ascending' : direction === 'desc' ? 'descending' : 'none'
                 return (

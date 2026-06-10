@@ -11,11 +11,10 @@ const machine = createMachine({
   },
 })
 
-export interface TimePickerProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
-  > {
+export interface TimePickerProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
+> {
   value?: string
   defaultValue?: string
   onChange?: (value: string) => void

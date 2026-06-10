@@ -111,7 +111,9 @@ describe('NumberInput', () => {
 
   it('formats the display on blur with formatOptions and shows raw value while focused', async () => {
     const expected = new Intl.NumberFormat(undefined, { useGrouping: true }).format(1234.5)
-    render(<NumberInput label="Amount" defaultValue={1234.5} formatOptions={{ useGrouping: true }} />)
+    render(
+      <NumberInput label="Amount" defaultValue={1234.5} formatOptions={{ useGrouping: true }} />,
+    )
     const input = screen.getByLabelText('Amount')
     expect(input).toHaveValue(expected)
     await userEvent.click(input)
