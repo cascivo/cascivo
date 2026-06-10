@@ -4,7 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Toast',
   description: 'Transient notification surfaced via the useToast hook',
   category: 'overlay',
-  states: ['entering', 'visible', 'dismissing', 'gone'],
+  states: ['visible', 'dismissing', 'gone'],
   variants: ['default', 'success', 'warning', 'destructive'],
   sizes: [],
   props: [
