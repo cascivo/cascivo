@@ -27,6 +27,7 @@ export interface ComponentManifest {
 
 export interface RegistryComponent {
   name: string
+  type?: 'component' | 'layout' | 'block'
   description: string
   category: string
   version: string

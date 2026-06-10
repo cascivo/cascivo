@@ -30,9 +30,13 @@ export async function add(names: string[], config: CascadeConfig): Promise<void>
       continue
     }
 
+    // Strip any type prefix (e.g. "layout/app-shell" → "app-shell") for the
+    // output directory so files land in a clean, flat-ish structure.
+    const outputName = entry.name.includes('/') ? entry.name.split('/').pop()! : entry.name
+
     for (const url of entry.files) {
       const content = await fetchText(url)
-      const dest = resolveOutputPath(config.outputDir, entry.name, fileName(url))
+      const dest = resolveOutputPath(config.outputDir, outputName, fileName(url))
       await writeFileSafe(dest, content)
     }
 
@@ -40,7 +44,7 @@ export async function add(names: string[], config: CascadeConfig): Promise<void>
       if (!ASSUMED_DEPS.has(dep)) missingDeps.add(dep)
     }
 
-    console.log(`Added ${entry.name} to ${config.outputDir}/${entry.name}/`)
+    console.log(`Added ${entry.name} to ${config.outputDir}/${outputName}/`)
   }
 
   if (missingDeps.size > 0) {

@@ -7,11 +7,15 @@ export interface ListOptions {
   installed?: boolean
 }
 
-/** Render the component list as an aligned text table. */
-export function formatList(components: RegistryComponent[]): string {
-  if (components.length === 0) return 'No components found.'
+const TYPE_LABELS: Record<string, string> = {
+  component: 'Components',
+  layout: 'Layouts',
+  block: 'Blocks',
+}
 
-  const rows = components.map((c) => [c.name, c.category, c.description] as const)
+/** Render a group of entries as an aligned text table (no section header). */
+function formatGroup(entries: RegistryComponent[]): string {
+  const rows = entries.map((c) => [c.name, c.category, c.description] as const)
   const headers = ['Name', 'Category', 'Description'] as const
   const widths = headers.map((h, i) => Math.max(h.length, ...rows.map((r) => (r[i] ?? '').length)))
 
@@ -25,12 +29,39 @@ export function formatList(components: RegistryComponent[]): string {
   return [line(headers), sep, ...rows.map(line)].join('\n')
 }
 
+/** Render the component list as an aligned text table, grouped by type. */
+export function formatList(components: RegistryComponent[]): string {
+  if (components.length === 0) return 'No components found.'
+
+  // Determine whether any entry has an explicit type — if not, render flat.
+  const hasTypes = components.some((c) => c.type !== undefined)
+  if (!hasTypes) return formatGroup(components)
+
+  // Group by type, preserving insertion order of first occurrence.
+  const groups = new Map<string, RegistryComponent[]>()
+  for (const c of components) {
+    const key = c.type ?? 'component'
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key)!.push(c)
+  }
+
+  const sections: string[] = []
+  for (const [key, entries] of groups) {
+    const label = TYPE_LABELS[key] ?? key
+    sections.push(`${label}\n${formatGroup(entries)}`)
+  }
+  return sections.join('\n\n')
+}
+
 export async function list(config: CascadeConfig, options: ListOptions = {}): Promise<void> {
   const registry = await fetchRegistry(config.registry)
   let components = registry.components
 
   if (options.installed) {
-    components = components.filter((c) => existsSync(join(process.cwd(), config.outputDir, c.name)))
+    components = components.filter((c) => {
+      const outputName = c.name.includes('/') ? c.name.split('/').pop()! : c.name
+      return existsSync(join(process.cwd(), config.outputDir, outputName))
+    })
   }
 
   console.log(formatList(components))

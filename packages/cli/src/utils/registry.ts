@@ -1,5 +1,6 @@
 export interface RegistryComponent {
   name: string
+  type?: 'component' | 'layout' | 'block'
   description: string
   category: string
   version: string
@@ -36,8 +37,12 @@ export function parseRegistry(raw: unknown): Registry {
     if (typeof c.name !== 'string') {
       throw new Error(`Invalid registry: component at index ${i} is missing "name"`)
     }
+    const rawType = c.type
+    const type: RegistryComponent['type'] =
+      rawType === 'component' || rawType === 'layout' || rawType === 'block' ? rawType : undefined
     return {
       name: c.name,
+      type,
       description: typeof c.description === 'string' ? c.description : '',
       category: typeof c.category === 'string' ? c.category : '',
       version: typeof c.version === 'string' ? c.version : '0.0.0',
@@ -63,10 +68,27 @@ export async function fetchRegistry(url: string): Promise<Registry> {
   return parseRegistry(await res.json())
 }
 
-/** Find a component by name (case-insensitive). */
+/**
+ * Find a component by name (case-insensitive, full name or unambiguous suffix).
+ *
+ * Examples:
+ *   "layout/app-shell" → exact match on full name
+ *   "app-shell"        → suffix match if exactly one entry ends with "/app-shell"
+ *   "button"           → exact match (no slash, no suffix ambiguity)
+ */
 export function findComponent(registry: Registry, name: string): RegistryComponent | undefined {
   const target = name.toLowerCase()
-  return registry.components.find((c) => c.name.toLowerCase() === target)
+
+  // 1. Exact full-name match (case-insensitive).
+  const exact = registry.components.find((c) => c.name.toLowerCase() === target)
+  if (exact) return exact
+
+  // 2. Suffix match: resolve "app-shell" to "layout/app-shell" when unambiguous.
+  const suffix = `/${target}`
+  const matches = registry.components.filter((c) => c.name.toLowerCase().endsWith(suffix))
+  if (matches.length === 1) return matches[0]
+
+  return undefined
 }
 
 /** Fuzzy-ish search over name, tags and description. */
