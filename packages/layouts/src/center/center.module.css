@@ -1,0 +1,8 @@
+@layer cascade.component {
+  .center {
+    margin-inline: auto;
+    max-inline-size: var(--_center-max, 48rem);
+    padding-inline: var(--cascade-space-4);
+    inline-size: 100%;
+  }
+}
