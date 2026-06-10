@@ -1,5 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import styles from './breadcrumb.module.css'
 
 export interface BreadcrumbItem {
@@ -15,12 +16,9 @@ export interface BreadcrumbProps {
   ariaLabel?: string
 }
 
-export function Breadcrumb({
-  items,
-  maxVisible,
-  className,
-  ariaLabel = 'Breadcrumb',
-}: BreadcrumbProps) {
+export function Breadcrumb({ items, maxVisible, className, ariaLabel }: BreadcrumbProps) {
+  useSignals()
+  const resolvedAriaLabel = ariaLabel ?? t(builtin.breadcrumb.nav)
   let visible = items
   const first = items[0]
   if (first !== undefined && maxVisible !== undefined && items.length > maxVisible) {
@@ -28,7 +26,7 @@ export function Breadcrumb({
   }
 
   return (
-    <nav aria-label={ariaLabel} className={cn(styles['breadcrumb'], className)}>
+    <nav aria-label={resolvedAriaLabel} className={cn(styles['breadcrumb'], className)}>
       <ol>
         {visible.map((item, index) => {
           const isLast = index === visible.length - 1

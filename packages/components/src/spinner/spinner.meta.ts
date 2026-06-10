@@ -27,6 +27,6 @@ export const meta: ComponentMeta = {
     { title: 'Default', code: '<Spinner />' },
     { title: 'Large', code: '<Spinner size="lg" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['loading', 'progress', 'feedback'],
 }

@@ -284,6 +284,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../core
+      '@cascade-ui/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       '@testing-library/jest-dom':
         specifier: ^6
         version: 6.9.1
@@ -415,6 +418,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:^
         version: link:../core
+      '@cascade-ui/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       '@preact/signals-react':
         specifier: '>=2.0.0'
         version: 3.10.1(react@19.2.7)

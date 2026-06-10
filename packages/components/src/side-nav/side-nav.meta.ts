@@ -63,6 +63,6 @@ export const meta: ComponentMeta = {
       code: '<SideNav defaultCollapsed items={items} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['navigation', 'sidebar', 'app-shell', 'collapsible'],
 }

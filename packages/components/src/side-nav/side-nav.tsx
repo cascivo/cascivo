@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useId, type ReactNode } from 'react'
 import styles from './side-nav.module.css'
 
@@ -33,12 +34,15 @@ export function SideNav({
   collapsed,
   defaultCollapsed = false,
   onCollapsedChange,
-  ariaLabel = 'Side navigation',
-  collapseLabel = 'Collapse navigation',
-  expandLabel = 'Expand navigation',
+  ariaLabel,
+  collapseLabel,
+  expandLabel,
   className,
 }: SideNavProps) {
   useSignals()
+  const resolvedAriaLabel = ariaLabel ?? t(builtin.sideNav.nav)
+  const resolvedCollapseLabel = collapseLabel ?? t(builtin.sideNav.collapse)
+  const resolvedExpandLabel = expandLabel ?? t(builtin.sideNav.expand)
   const baseId = useId()
 
   const isCollapsed = useSignal(collapsed ?? defaultCollapsed)
@@ -66,7 +70,7 @@ export function SideNav({
 
   return (
     <nav
-      aria-label={ariaLabel}
+      aria-label={resolvedAriaLabel}
       data-state={rail ? 'collapsed' : 'expanded'}
       className={cn(styles['sideNav'], className)}
     >
@@ -155,7 +159,7 @@ export function SideNav({
       </ul>
       <button
         type="button"
-        aria-label={rail ? expandLabel : collapseLabel}
+        aria-label={rail ? resolvedExpandLabel : resolvedCollapseLabel}
         className={styles['collapseToggle']}
         onClick={toggleCollapsed}
       >

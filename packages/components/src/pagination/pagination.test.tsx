@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createLocale } from '@cascade-ui/i18n'
 import { Pagination } from './pagination'
 
 describe('Pagination', () => {
@@ -117,5 +118,14 @@ describe('Pagination', () => {
   it('merges a custom className', () => {
     render(<Pagination {...baseProps} className="custom" />)
     expect(screen.getByRole('navigation', { name: 'Pagination' })).toHaveClass('custom')
+  })
+
+  it('renders built-in strings from the active locale', async () => {
+    const store = createLocale({ default: 'en', supported: ['en', 'de'] })
+    render(<Pagination page={1} pageSize={10} totalItems={30} onPageChange={() => {}} />)
+    expect(screen.getByText('1–10 of 30 items')).toBeInTheDocument()
+    await store.set('de')
+    expect(await screen.findByText('1–10 von 30 Einträgen')).toBeInTheDocument()
+    await store.set('en')
   })
 })

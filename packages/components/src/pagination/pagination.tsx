@@ -1,8 +1,10 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import styles from './pagination.module.css'
 
 export interface PaginationLabels {
+  nav?: string
   itemsPerPage?: string
   pageOf?: (page: number, total: number) => string
   range?: (start: number, end: number, total: number) => string
@@ -33,22 +35,25 @@ export function Pagination({
   labels,
   className,
 }: PaginationProps) {
+  useSignals()
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
   const currentPage = Math.min(Math.max(page, 1), totalPages)
   const rangeStart = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1
   const rangeEnd = Math.min(currentPage * pageSize, totalItems)
 
-  const itemsPerPageLabel = labels?.itemsPerPage ?? 'Items per page'
+  const navLabel = labels?.nav ?? t(builtin.pagination.nav)
+  const itemsPerPageLabel = labels?.itemsPerPage ?? t(builtin.pagination.itemsPerPage)
   const pageOfLabel =
-    labels?.pageOf?.(currentPage, totalPages) ?? `Page ${currentPage} of ${totalPages}`
+    labels?.pageOf?.(currentPage, totalPages) ??
+    t(builtin.pagination.pageOf, { page: currentPage, total: totalPages })
   const rangeLabel =
     labels?.range?.(rangeStart, rangeEnd, totalItems) ??
-    `${rangeStart}–${rangeEnd} of ${totalItems} items`
-  const previousLabel = labels?.previous ?? 'Previous page'
-  const nextLabel = labels?.next ?? 'Next page'
+    t(builtin.pagination.range, { start: rangeStart, end: rangeEnd, total: totalItems })
+  const previousLabel = labels?.previous ?? t(builtin.pagination.previous)
+  const nextLabel = labels?.next ?? t(builtin.pagination.next)
 
   return (
-    <nav aria-label="Pagination" className={cn(styles['pagination'], className)}>
+    <nav aria-label={navLabel} className={cn(styles['pagination'], className)}>
       {onPageSizeChange && (
         <label className={styles['group']}>
           <span className={styles['label']}>{itemsPerPageLabel}</span>

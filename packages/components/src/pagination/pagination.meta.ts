@@ -60,6 +60,6 @@ export const meta: ComponentMeta = {
       code: "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />",
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['pagination', 'navigation', 'table', 'data', 'pages'],
 }

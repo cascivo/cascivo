@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { Kbd } from '../kbd/kbd'
 import styles from './command-menu.module.css'
@@ -69,13 +70,16 @@ export function CommandMenu({
   open,
   onOpenChange,
   groups,
-  placeholder = 'Type a command or search…',
-  emptyLabel = 'No results found',
+  placeholder,
+  emptyLabel,
   hotkey = true,
-  label = 'Command menu',
+  label,
   className,
 }: CommandMenuProps) {
   useSignals()
+  const resolvedLabel = label ?? t(builtin.commandMenu.label)
+  const resolvedPlaceholder = placeholder ?? t(builtin.commandMenu.placeholder)
+  const resolvedEmptyLabel = emptyLabel ?? t(builtin.commandMenu.empty)
   const baseId = useId()
   const listboxId = `${baseId}-listbox`
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -214,7 +218,7 @@ export function CommandMenu({
   return (
     <dialog
       ref={dialogRef}
-      aria-label={label}
+      aria-label={resolvedLabel}
       className={cn(styles['dialog'], className)}
       onClick={handleBackdropClick}
       onKeyDown={handleDialogKeyDown}
@@ -243,11 +247,11 @@ export function CommandMenu({
             aria-controls={listboxId}
             aria-activedescendant={active >= 0 ? optionId(active) : undefined}
             aria-autocomplete="list"
-            aria-label={label}
+            aria-label={resolvedLabel}
             autoComplete="off"
             spellCheck={false}
             className={styles['input']}
-            placeholder={placeholder}
+            placeholder={resolvedPlaceholder}
             value={query.value}
             onChange={(event) => {
               query.value = event.target.value
@@ -314,7 +318,7 @@ export function CommandMenu({
           </div>
           {flatItems.length === 0 && (
             <div role="status" className={styles['empty']}>
-              {emptyLabel}
+              {resolvedEmptyLabel}
             </div>
           )}
         </div>

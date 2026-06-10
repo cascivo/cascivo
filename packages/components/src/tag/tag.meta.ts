@@ -47,6 +47,6 @@ export const meta: ComponentMeta = {
       description: 'Renders a trailing remove button labeled by dismissLabel',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['chip', 'label', 'filter', 'category'],
 }

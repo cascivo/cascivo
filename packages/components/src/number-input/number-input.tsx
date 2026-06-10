@@ -1,5 +1,6 @@
 'use client'
 import { cn, createMachine, useMachine, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { InputHTMLAttributes, KeyboardEvent } from 'react'
 import styles from './number-input.module.css'
 
@@ -70,8 +71,8 @@ export function NumberInput({
   error,
   size = 'md',
   disabled,
-  incrementLabel = 'Increment',
-  decrementLabel = 'Decrement',
+  incrementLabel,
+  decrementLabel,
   className,
   id,
   onFocus,
@@ -80,6 +81,8 @@ export function NumberInput({
   ...props
 }: NumberInputProps) {
   useSignals()
+  const resolvedIncrementLabel = incrementLabel ?? t(builtin.numberInput.increment)
+  const resolvedDecrementLabel = decrementLabel ?? t(builtin.numberInput.decrement)
   const [state, send] = useMachine(machine)
   const isControlled = value !== undefined
   const committed = useSignal<number | null>(defaultValue ?? null)
@@ -180,7 +183,7 @@ export function NumberInput({
           <button
             type="button"
             className={styles['stepper']}
-            aria-label={incrementLabel}
+            aria-label={resolvedIncrementLabel}
             tabIndex={-1}
             disabled={disabled || atMax}
             onMouseDown={(e) => e.preventDefault()}
@@ -200,7 +203,7 @@ export function NumberInput({
           <button
             type="button"
             className={styles['stepper']}
-            aria-label={decrementLabel}
+            aria-label={resolvedDecrementLabel}
             tabIndex={-1}
             disabled={disabled || atMin}
             onMouseDown={(e) => e.preventDefault()}

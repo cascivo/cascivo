@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './alert.module.css'
 
@@ -54,7 +55,7 @@ export function Alert({
         <button
           type="button"
           className={styles['dismiss']}
-          aria-label="Dismiss"
+          aria-label={t(builtin.alert.dismiss)}
           onClick={() => {
             dismissed.value = true
             onDismiss?.()

@@ -58,6 +58,6 @@ export const meta: ComponentMeta = {
       code: '<Header sticky brand="cascade" links={links} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['navigation', 'app-shell', 'top-bar', 'banner'],
 }

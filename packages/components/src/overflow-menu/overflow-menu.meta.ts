@@ -49,6 +49,6 @@ export const meta: ComponentMeta = {
       code: '<OverflowMenu size="sm" placement="bottom-start" items={items} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['overlay', 'menu', 'actions', 'kebab', 'table'],
 }

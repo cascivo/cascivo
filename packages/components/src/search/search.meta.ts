@@ -45,6 +45,6 @@ export const meta: ComponentMeta = {
     },
     { title: 'Large', code: '<Search size="lg" placeholder="Search products…" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['search', 'input', 'filter', 'form'],
 }

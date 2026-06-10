@@ -1,5 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './header.module.css'
 
@@ -9,11 +10,16 @@ export interface HeaderLink {
   active?: boolean
 }
 
+export interface HeaderLabels {
+  nav?: string
+}
+
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   brand?: ReactNode
   links?: HeaderLink[]
   actions?: ReactNode
   sticky?: boolean
+  labels?: HeaderLabels
 }
 
 export function Header({
@@ -21,9 +27,12 @@ export function Header({
   links,
   actions,
   sticky = false,
+  labels,
   className,
   ...props
 }: HeaderProps) {
+  useSignals()
+  const navLabel = labels?.nav ?? t(builtin.header.nav)
   return (
     <header
       role="banner"
@@ -33,7 +42,7 @@ export function Header({
     >
       {brand && <div className={styles['brand']}>{brand}</div>}
       {links && links.length > 0 && (
-        <nav aria-label="Main" className={styles['nav']}>
+        <nav aria-label={navLabel} className={styles['nav']}>
           <ul className={styles['list']}>
             {links.map((link) => (
               <li key={link.href}>

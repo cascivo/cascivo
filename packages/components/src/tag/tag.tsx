@@ -1,5 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { HTMLAttributes } from 'react'
 import styles from './tag.module.css'
 
@@ -14,11 +15,13 @@ export function Tag({
   variant = 'default',
   size = 'md',
   onDismiss,
-  dismissLabel = 'Remove',
+  dismissLabel,
   className,
   children,
   ...props
 }: TagProps) {
+  useSignals()
+  const resolvedDismissLabel = dismissLabel ?? t(builtin.tag.dismiss)
   return (
     <span
       data-variant={variant}
@@ -31,7 +34,7 @@ export function Tag({
         <button
           type="button"
           className={styles['dismiss']}
-          aria-label={dismissLabel}
+          aria-label={resolvedDismissLabel}
           onClick={onDismiss}
         >
           ✕

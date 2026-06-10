@@ -44,6 +44,6 @@ export const meta: ComponentMeta = {
       code: '<Alert variant="warning" title="Update available" action={{ label: \'Update now\', onClick: update }}>A new version is ready.</Alert>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['notification', 'message', 'feedback'],
 }

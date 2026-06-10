@@ -62,6 +62,6 @@ export const meta: ComponentMeta = {
     },
     { title: 'Stepped', code: '<NumberInput label="Opacity" min={0} max={1} step={0.1} />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['form', 'number', 'input', 'spinbutton', 'stepper'],
 }

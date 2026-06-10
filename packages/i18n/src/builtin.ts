@@ -12,12 +12,51 @@ export const builtin = {
     range: '{start}–{end} of {total} items',
     previous: 'Previous page',
     next: 'Next page',
+    nav: 'Pagination',
   }),
   toast: defineMessages('cascade.toast', {
     dismiss: 'Dismiss notification',
+    region: 'Notifications',
   }),
   modal: defineMessages('cascade.modal', {
-    close: 'Close',
+    close: 'Close modal',
+  }),
+  alert: defineMessages('cascade.alert', {
+    dismiss: 'Dismiss',
+  }),
+  header: defineMessages('cascade.header', {
+    nav: 'Main',
+  }),
+  search: defineMessages('cascade.search', {
+    label: 'Search',
+    placeholder: 'Search',
+    clear: 'Clear search',
+  }),
+  commandMenu: defineMessages('cascade.commandMenu', {
+    label: 'Command menu',
+    placeholder: 'Type a command or search…',
+    empty: 'No results found',
+  }),
+  breadcrumb: defineMessages('cascade.breadcrumb', {
+    nav: 'Breadcrumb',
+  }),
+  overflowMenu: defineMessages('cascade.overflowMenu', {
+    trigger: 'More actions',
+  }),
+  sideNav: defineMessages('cascade.sideNav', {
+    nav: 'Side navigation',
+    collapse: 'Collapse navigation',
+    expand: 'Expand navigation',
+  }),
+  spinner: defineMessages('cascade.spinner', {
+    label: 'Loading',
+  }),
+  numberInput: defineMessages('cascade.numberInput', {
+    increment: 'Increment',
+    decrement: 'Decrement',
+  }),
+  tag: defineMessages('cascade.tag', {
+    dismiss: 'Remove',
   }),
 }
 
@@ -27,10 +66,49 @@ defineCatalog(builtin.pagination, 'de', {
   range: '{start}–{end} von {total} Einträgen',
   previous: 'Vorherige Seite',
   next: 'Nächste Seite',
+  nav: 'Seitennavigation',
 })
 defineCatalog(builtin.toast, 'de', {
   dismiss: 'Benachrichtigung schließen',
+  region: 'Benachrichtigungen',
 })
 defineCatalog(builtin.modal, 'de', {
-  close: 'Schließen',
+  close: 'Modal schließen',
+})
+defineCatalog(builtin.alert, 'de', {
+  dismiss: 'Schließen',
+})
+defineCatalog(builtin.header, 'de', {
+  nav: 'Hauptnavigation',
+})
+defineCatalog(builtin.search, 'de', {
+  label: 'Suche',
+  placeholder: 'Suchen',
+  clear: 'Suche löschen',
+})
+defineCatalog(builtin.commandMenu, 'de', {
+  label: 'Befehlsmenü',
+  placeholder: 'Befehl oder Suche eingeben…',
+  empty: 'Keine Ergebnisse',
+})
+defineCatalog(builtin.breadcrumb, 'de', {
+  nav: 'Navigationspfad',
+})
+defineCatalog(builtin.overflowMenu, 'de', {
+  trigger: 'Weitere Aktionen',
+})
+defineCatalog(builtin.sideNav, 'de', {
+  nav: 'Seitennavigation',
+  collapse: 'Navigation einklappen',
+  expand: 'Navigation ausklappen',
+})
+defineCatalog(builtin.spinner, 'de', {
+  label: 'Wird geladen',
+})
+defineCatalog(builtin.numberInput, 'de', {
+  increment: 'Erhöhen',
+  decrement: 'Verringern',
+})
+defineCatalog(builtin.tag, 'de', {
+  dismiss: 'Entfernen',
 })

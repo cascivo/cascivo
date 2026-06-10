@@ -1,5 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { ReactNode } from 'react'
 import { Dropdown, type DropdownItem } from '../dropdown/dropdown'
 import styles from './overflow-menu.module.css'
@@ -36,11 +37,13 @@ export function OverflowMenu({
   items,
   onSelect,
   placement = 'bottom-end',
-  ariaLabel = 'More actions',
+  ariaLabel,
   size = 'md',
   disabled = false,
   className,
 }: OverflowMenuProps) {
+  useSignals()
+  const resolvedAriaLabel = ariaLabel ?? t(builtin.overflowMenu.trigger)
   // Map to Dropdown's item shape. Destructive items carry a hidden marker span
   // inside the icon slot so CSS can target them via :has().
   const dropdownItems: DropdownItem[] = items.map((item) => {
@@ -71,7 +74,7 @@ export function OverflowMenu({
             className={styles['trigger']}
             data-size={size}
             disabled={disabled}
-            aria-label={ariaLabel}
+            aria-label={resolvedAriaLabel}
           >
             <KebabIcon />
           </button>

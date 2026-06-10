@@ -37,6 +37,6 @@ export const meta: ComponentMeta = {
       code: 'const { toast } = useToast()\ntoast({ title: "Saved", variant: "success" })',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['overlay', 'notification', 'feedback'],
 }

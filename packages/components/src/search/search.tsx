@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useRef, type ChangeEvent, type KeyboardEvent } from 'react'
 import styles from './search.module.css'
 
@@ -44,15 +45,18 @@ export function Search({
   onChange,
   onSearch,
   debounceMs = 300,
-  placeholder = 'Search',
+  placeholder,
   size = 'md',
-  label = 'Search',
+  label,
   disabled = false,
-  clearLabel = 'Clear search',
+  clearLabel,
   id,
   className,
 }: SearchProps) {
   useSignals()
+  const resolvedPlaceholder = placeholder ?? t(builtin.search.placeholder)
+  const resolvedLabel = label ?? t(builtin.search.label)
+  const resolvedClearLabel = clearLabel ?? t(builtin.search.clear)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const generatedIdRef = useRef('')
@@ -115,7 +119,7 @@ export function Search({
       data-state={filled ? 'filled' : 'empty'}
     >
       <label className={styles['label']} htmlFor={inputId}>
-        {label}
+        {resolvedLabel}
       </label>
       <span className={styles['icon']}>
         <MagnifierIcon />
@@ -126,7 +130,7 @@ export function Search({
         type="search"
         className={styles['input']}
         value={current.value}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         disabled={disabled}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -135,7 +139,7 @@ export function Search({
         <button
           type="button"
           className={styles['clear']}
-          aria-label={clearLabel}
+          aria-label={resolvedClearLabel}
           disabled={disabled}
           onClick={handleClear}
         >

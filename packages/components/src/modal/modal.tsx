@@ -1,5 +1,6 @@
 'use client'
-import { useSignal, useSignalEffect, cn } from '@cascade-ui/core'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useRef, type ReactNode, type KeyboardEvent } from 'react'
 import styles from './modal.module.css'
 
@@ -22,6 +23,7 @@ export function Modal({
   className,
   size = 'md',
 }: ModalProps) {
+  useSignals()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
@@ -84,7 +86,7 @@ export function Modal({
                 type="button"
                 className={styles['close']}
                 onClick={() => dialogRef.current?.close()}
-                aria-label="Close modal"
+                aria-label={t(builtin.modal.close)}
               >
                 ✕
               </button>

@@ -42,6 +42,6 @@ export const meta: ComponentMeta = {
       description: 'Long trails collapse to the first item, an ellipsis, and the trailing items.',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['breadcrumb', 'navigation', 'hierarchy'],
 }

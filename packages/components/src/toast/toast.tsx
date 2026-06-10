@@ -1,5 +1,6 @@
 'use client'
 import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useRef, type ReactNode } from 'react'
 import styles from './toast.module.css'
 
@@ -41,7 +42,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <div className={styles['viewport']} role="region" aria-label="Notifications">
+      <div className={styles['viewport']} role="region" aria-label={t(builtin.toast.region)}>
         {visible.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={() => dequeue(toast.id)} />
         ))}
@@ -95,7 +96,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
       <button
         type="button"
         className={styles['close']}
-        aria-label="Dismiss notification"
+        aria-label={t(builtin.toast.dismiss)}
         onClick={() => send('DISMISS')}
       >
         ✕

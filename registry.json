@@ -74,7 +74,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["notification", "message", "feedback"],
       "meta": {
         "name": "Alert",
@@ -144,7 +144,7 @@
             "code": "<Alert variant=\"warning\" title=\"Update available\" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["notification", "message", "feedback"]
       }
     },
@@ -295,7 +295,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["breadcrumb", "navigation", "hierarchy"],
       "meta": {
         "name": "Breadcrumb",
@@ -351,7 +351,7 @@
             "description": "Long trails collapse to the first item, an ellipsis, and the trailing items."
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["breadcrumb", "navigation", "hierarchy"]
       }
     },
@@ -572,7 +572,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
       "meta": {
         "name": "CommandMenu",
@@ -652,7 +652,7 @@
             "code": "<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"]
       }
     },
@@ -810,7 +810,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
       "meta": {
         "name": "Header",
@@ -879,7 +879,7 @@
             "code": "<Header sticky brand=\"cascade\" links={links} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["navigation", "app-shell", "top-bar", "banner"]
       }
     },
@@ -1103,7 +1103,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "dialog", "popup"],
       "meta": {
         "name": "Modal",
@@ -1159,7 +1159,7 @@
             "code": "<Modal open={isOpen} onClose={() => setIsOpen(false)} title=\"Confirm action\">\n  <p>Are you sure?</p>\n</Modal>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["overlay", "dialog", "popup"]
       }
     },
@@ -1172,7 +1172,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
       "meta": {
         "name": "NumberInput",
@@ -1295,7 +1295,7 @@
             "code": "<NumberInput label=\"Opacity\" min={0} max={1} step={0.1} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["form", "number", "input", "spinbutton", "stepper"]
       }
     },
@@ -1308,7 +1308,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "meta": {
         "name": "OverflowMenu",
@@ -1382,7 +1382,7 @@
             "code": "<OverflowMenu size=\"sm\" placement=\"bottom-start\" items={items} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"]
       }
     },
@@ -1395,7 +1395,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["pagination", "navigation", "table", "data", "pages"],
       "meta": {
         "name": "Pagination",
@@ -1484,7 +1484,7 @@
             "code": "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["pagination", "navigation", "table", "data", "pages"]
       }
     },
@@ -1723,7 +1723,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["search", "input", "filter", "form"],
       "meta": {
         "name": "Search",
@@ -1831,7 +1831,7 @@
             "code": "<Search size=\"lg\" placeholder=\"Search products…\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["search", "input", "filter", "form"]
       }
     },
@@ -1981,7 +1981,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "meta": {
         "name": "SideNav",
@@ -2073,7 +2073,7 @@
             "code": "<SideNav defaultCollapsed items={items} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["navigation", "sidebar", "app-shell", "collapsible"]
       }
     },
@@ -2246,7 +2246,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["loading", "progress", "feedback"],
       "meta": {
         "name": "Spinner",
@@ -2286,7 +2286,7 @@
             "code": "<Spinner size=\"lg\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["loading", "progress", "feedback"]
       }
     },
@@ -2356,7 +2356,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["chip", "label", "filter", "category"],
       "meta": {
         "name": "Tag",
@@ -2425,7 +2425,7 @@
             "description": "Renders a trailing remove button labeled by dismissLabel"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["chip", "label", "filter", "category"]
       }
     },
@@ -2518,7 +2518,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
         "name": "Toast",
@@ -2570,7 +2570,7 @@
             "code": "const { toast } = useToast()\ntoast({ title: \"Saved\", variant: \"success\" })"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["overlay", "notification", "feedback"]
       }
     },

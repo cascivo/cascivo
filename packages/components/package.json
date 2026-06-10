@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/i18n": "workspace:^",
     "@testing-library/jest-dom": "^6",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "^14",
