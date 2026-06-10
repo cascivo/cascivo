@@ -27,14 +27,10 @@
           }
         }
       },
-      "required": [
-        "regions"
-      ]
+      "required": ["regions"]
     }
   },
-  "required": [
-    "view"
-  ],
+  "required": ["view"],
   "$defs": {
     "TranslationRef": {
       "type": "object",
@@ -45,16 +41,11 @@
         "params": {
           "type": "object",
           "additionalProperties": {
-            "type": [
-              "string",
-              "number"
-            ]
+            "type": ["string", "number"]
           }
         }
       },
-      "required": [
-        "$t"
-      ],
+      "required": ["$t"],
       "additionalProperties": false
     },
     "PropValue": {
@@ -194,9 +185,7 @@
           ]
         }
       },
-      "required": [
-        "component"
-      ],
+      "required": ["component"],
       "allOf": [
         {
           "if": {
@@ -205,9 +194,7 @@
                 "const": "Accordion"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -216,10 +203,7 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "enum": [
-                      "single",
-                      "multiple"
-                    ]
+                    "enum": ["single", "multiple"]
                   }
                 }
               }
@@ -233,9 +217,7 @@
                 "const": "Alert"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -244,22 +226,14 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "default",
-                      "info",
-                      "success",
-                      "warning",
-                      "destructive"
-                    ]
+                    "enum": ["default", "info", "success", "warning", "destructive"]
                   },
                   "title": {
                     "type": "string"
                   },
                   "icon": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "dismissible": {
                     "type": "boolean"
@@ -276,9 +250,7 @@
                 "const": "Avatar"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -296,21 +268,11 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl"
-                    ]
+                    "enum": ["xs", "sm", "md", "lg", "xl"]
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "online",
-                      "offline",
-                      "busy"
-                    ]
+                    "enum": ["online", "offline", "busy"]
                   }
                 }
               }
@@ -324,9 +286,7 @@
                 "const": "Badge"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -335,21 +295,11 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "default",
-                      "secondary",
-                      "success",
-                      "warning",
-                      "destructive",
-                      "outline"
-                    ]
+                    "enum": ["default", "secondary", "success", "warning", "destructive", "outline"]
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   }
                 }
               }
@@ -363,9 +313,7 @@
                 "const": "Breadcrumb"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -382,9 +330,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "items"
-                ]
+                "required": ["items"]
               }
             }
           }
@@ -396,9 +342,7 @@
                 "const": "Button"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -407,20 +351,11 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "primary",
-                      "secondary",
-                      "ghost",
-                      "destructive"
-                    ]
+                    "enum": ["primary", "secondary", "ghost", "destructive"]
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "loading": {
                     "type": "boolean"
@@ -440,9 +375,7 @@
                 "const": "Card"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -451,20 +384,11 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "default",
-                      "outlined",
-                      "elevated"
-                    ]
+                    "enum": ["default", "outlined", "elevated"]
                   },
                   "padding": {
                     "type": "string",
-                    "enum": [
-                      "none",
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["none", "sm", "md", "lg"]
                   }
                 }
               }
@@ -478,9 +402,7 @@
                 "const": "Checkbox"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -511,9 +433,7 @@
                 "const": "Combobox"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -543,28 +463,20 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "disabled": {
                     "type": "boolean"
                   },
                   "labels": {
                     "type": "string",
-                    "enum": [
-                      "ComboboxLabels"
-                    ]
+                    "enum": ["ComboboxLabels"]
                   },
                   "className": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "options"
-                ]
+                "required": ["options"]
               }
             }
           }
@@ -576,9 +488,7 @@
                 "const": "CommandMenu"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -607,11 +517,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "open",
-                  "onOpenChange",
-                  "groups"
-                ]
+                "required": ["open", "onOpenChange", "groups"]
               }
             }
           }
@@ -623,9 +529,7 @@
                 "const": "DataTable"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -634,33 +538,22 @@
                 "properties": {
                   "sort": {
                     "type": "string",
-                    "enum": [
-                      "SortState"
-                    ]
+                    "enum": ["SortState"]
                   },
                   "defaultSort": {
                     "type": "string",
-                    "enum": [
-                      "SortState"
-                    ]
+                    "enum": ["SortState"]
                   },
                   "sortMode": {
                     "type": "string",
-                    "enum": [
-                      "client",
-                      "server"
-                    ]
+                    "enum": ["client", "server"]
                   },
                   "searchable": {
                     "type": "boolean"
                   },
                   "density": {
                     "type": "string",
-                    "enum": [
-                      "compact",
-                      "normal",
-                      "relaxed"
-                    ]
+                    "enum": ["compact", "normal", "relaxed"]
                   },
                   "zebra": {
                     "type": "boolean"
@@ -673,9 +566,7 @@
                   },
                   "emptyState": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "title": {
                     "type": "string"
@@ -685,18 +576,13 @@
                   },
                   "labels": {
                     "type": "string",
-                    "enum": [
-                      "DataTableLabels"
-                    ]
+                    "enum": ["DataTableLabels"]
                   },
                   "className": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "columns",
-                  "rows"
-                ]
+                "required": ["columns", "rows"]
               }
             }
           }
@@ -708,9 +594,7 @@
                 "const": "DatePicker"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -743,20 +627,14 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "disabled": {
                     "type": "boolean"
                   },
                   "labels": {
                     "type": "string",
-                    "enum": [
-                      "DatePickerLabels"
-                    ]
+                    "enum": ["DatePickerLabels"]
                   }
                 }
               }
@@ -770,9 +648,7 @@
                 "const": "Dropdown"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -781,25 +657,17 @@
                 "properties": {
                   "trigger": {
                     "type": "string",
-                    "enum": [
-                      "ReactElement"
-                    ]
+                    "enum": ["ReactElement"]
                   },
                   "placement": {
                     "type": "string",
-                    "enum": [
-                      "bottom-start",
-                      "bottom-end"
-                    ]
+                    "enum": ["bottom-start", "bottom-end"]
                   },
                   "open": {
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "trigger",
-                  "items"
-                ]
+                "required": ["trigger", "items"]
               }
             }
           }
@@ -811,9 +679,7 @@
                 "const": "EmptyState"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -822,9 +688,7 @@
                 "properties": {
                   "icon": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "title": {
                     "type": "string"
@@ -834,21 +698,14 @@
                   },
                   "action": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["md", "lg"]
                   }
                 },
-                "required": [
-                  "title"
-                ]
+                "required": ["title"]
               }
             }
           }
@@ -860,9 +717,7 @@
                 "const": "FileUploader"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -886,9 +741,7 @@
                   },
                   "labels": {
                     "type": "string",
-                    "enum": [
-                      "FileUploaderLabels"
-                    ]
+                    "enum": ["FileUploaderLabels"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -905,9 +758,7 @@
                 "const": "Form"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -916,19 +767,13 @@
                 "properties": {
                   "children": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "className": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "form",
-                  "onValid",
-                  "children"
-                ]
+                "required": ["form", "onValid", "children"]
               }
             }
           }
@@ -940,9 +785,7 @@
                 "const": "Header"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -967,9 +810,7 @@
                 "const": "Input"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -987,11 +828,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "placeholder": {
                     "type": "string"
@@ -1011,9 +848,7 @@
                 "const": "Kbd"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1022,10 +857,7 @@
                 "properties": {
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   }
                 }
               }
@@ -1039,9 +871,7 @@
                 "const": "Link"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1050,18 +880,11 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "standalone",
-                      "inline"
-                    ]
+                    "enum": ["standalone", "inline"]
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "external": {
                     "type": "boolean"
@@ -1081,9 +904,7 @@
                 "const": "Modal"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1101,11 +922,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   }
                 }
               }
@@ -1119,9 +936,7 @@
                 "const": "NumberInput"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1130,10 +945,7 @@
                 "properties": {
                   "value": {
                     "type": "string",
-                    "enum": [
-                      "number",
-                      "null"
-                    ]
+                    "enum": ["number", "null"]
                   },
                   "defaultValue": {
                     "type": "number"
@@ -1161,11 +973,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -1188,9 +996,7 @@
                 "const": "OverflowMenu"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1199,20 +1005,14 @@
                 "properties": {
                   "placement": {
                     "type": "string",
-                    "enum": [
-                      "bottom-start",
-                      "bottom-end"
-                    ]
+                    "enum": ["bottom-start", "bottom-end"]
                   },
                   "ariaLabel": {
                     "type": "string"
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -1221,9 +1021,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "items"
-                ]
+                "required": ["items"]
               }
             }
           }
@@ -1235,9 +1033,7 @@
                 "const": "Pagination"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1255,20 +1051,13 @@
                   },
                   "labels": {
                     "type": "string",
-                    "enum": [
-                      "PaginationLabels"
-                    ]
+                    "enum": ["PaginationLabels"]
                   },
                   "className": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "page",
-                  "pageSize",
-                  "totalItems",
-                  "onPageChange"
-                ]
+                "required": ["page", "pageSize", "totalItems", "onPageChange"]
               }
             }
           }
@@ -1280,9 +1069,7 @@
                 "const": "ProgressBar"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1303,18 +1090,11 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "active",
-                      "success",
-                      "error"
-                    ]
+                    "enum": ["active", "success", "error"]
                   }
                 }
               }
@@ -1328,9 +1108,7 @@
                 "const": "ProgressIndicator"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1347,10 +1125,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "steps",
-                  "currentIndex"
-                ]
+                "required": ["steps", "currentIndex"]
               }
             }
           }
@@ -1362,9 +1137,7 @@
                 "const": "Radio"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1384,9 +1157,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "value"
-                ]
+                "required": ["value"]
               }
             }
           }
@@ -1398,9 +1169,7 @@
                 "const": "Search"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1421,11 +1190,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "label": {
                     "type": "string"
@@ -1454,9 +1219,7 @@
                 "const": "Select"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1477,19 +1240,13 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "disabled": {
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "options"
-                ]
+                "required": ["options"]
               }
             }
           }
@@ -1501,9 +1258,7 @@
                 "const": "Separator"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1512,10 +1267,7 @@
                 "properties": {
                   "orientation": {
                     "type": "string",
-                    "enum": [
-                      "horizontal",
-                      "vertical"
-                    ]
+                    "enum": ["horizontal", "vertical"]
                   },
                   "decorative": {
                     "type": "boolean"
@@ -1532,9 +1284,7 @@
                 "const": "SideNav"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1560,9 +1310,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "items"
-                ]
+                "required": ["items"]
               }
             }
           }
@@ -1574,9 +1322,7 @@
                 "const": "Skeleton"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1585,11 +1331,7 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "text",
-                      "circle",
-                      "rect"
-                    ]
+                    "enum": ["text", "circle", "rect"]
                   },
                   "width": {
                     "type": "string"
@@ -1612,9 +1354,7 @@
                 "const": "Slider"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1654,9 +1394,7 @@
                 "const": "Spinner"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1665,11 +1403,7 @@
                 "properties": {
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "label": {
                     "type": "string"
@@ -1686,9 +1420,7 @@
                 "const": "Tabs"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1713,9 +1445,7 @@
                 "const": "Tag"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1724,20 +1454,11 @@
                 "properties": {
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "default",
-                      "info",
-                      "success",
-                      "warning",
-                      "error"
-                    ]
+                    "enum": ["default", "info", "success", "warning", "error"]
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   },
                   "dismissLabel": {
                     "type": "string"
@@ -1754,9 +1475,7 @@
                 "const": "Textarea"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1777,11 +1496,7 @@
                   },
                   "resize": {
                     "type": "string",
-                    "enum": [
-                      "none",
-                      "vertical",
-                      "both"
-                    ]
+                    "enum": ["none", "vertical", "both"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -1798,9 +1513,7 @@
                 "const": "TimePicker"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1833,11 +1546,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md",
-                      "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -1857,9 +1566,7 @@
                 "const": "Toast"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1874,20 +1581,13 @@
                   },
                   "variant": {
                     "type": "string",
-                    "enum": [
-                      "default",
-                      "success",
-                      "warning",
-                      "destructive"
-                    ]
+                    "enum": ["default", "success", "warning", "destructive"]
                   },
                   "duration": {
                     "type": "number"
                   }
                 },
-                "required": [
-                  "title"
-                ]
+                "required": ["title"]
               }
             }
           }
@@ -1899,9 +1599,7 @@
                 "const": "Toggle"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1919,10 +1617,7 @@
                   },
                   "size": {
                     "type": "string",
-                    "enum": [
-                      "sm",
-                      "md"
-                    ]
+                    "enum": ["sm", "md"]
                   },
                   "disabled": {
                     "type": "boolean"
@@ -1939,9 +1634,7 @@
                 "const": "Tooltip"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1950,33 +1643,21 @@
                 "properties": {
                   "content": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "placement": {
                     "type": "string",
-                    "enum": [
-                      "top",
-                      "right",
-                      "bottom",
-                      "left"
-                    ]
+                    "enum": ["top", "right", "bottom", "left"]
                   },
                   "children": {
                     "type": "string",
-                    "enum": [
-                      "ReactElement"
-                    ]
+                    "enum": ["ReactElement"]
                   },
                   "delay": {
                     "type": "number"
                   }
                 },
-                "required": [
-                  "content",
-                  "children"
-                ]
+                "required": ["content", "children"]
               }
             }
           }
@@ -1988,9 +1669,7 @@
                 "const": "AppShell"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -1999,40 +1678,26 @@
                 "properties": {
                   "header": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "sideNav": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "aside": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "children": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "persistKey": {
                     "type": "string",
-                    "enum": [
-                      "string",
-                      "false"
-                    ]
+                    "enum": ["string", "false"]
                   }
                 },
-                "required": [
-                  "header",
-                  "children"
-                ]
+                "required": ["header", "children"]
               }
             }
           }
@@ -2044,9 +1709,7 @@
                 "const": "AuthLayout"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2055,20 +1718,14 @@
                 "properties": {
                   "children": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "logo": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   }
                 },
-                "required": [
-                  "children"
-                ]
+                "required": ["children"]
               }
             }
           }
@@ -2080,9 +1737,7 @@
                 "const": "Center"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2104,9 +1759,7 @@
                 "const": "Columns"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2124,9 +1777,7 @@
                 "const": "DashboardLayout"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2135,26 +1786,18 @@
                 "properties": {
                   "stats": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "main": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "aside": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   }
                 },
-                "required": [
-                  "main"
-                ]
+                "required": ["main"]
               }
             }
           }
@@ -2166,9 +1809,7 @@
                 "const": "Grid"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2193,9 +1834,7 @@
                 "const": "PageHeader"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2210,23 +1849,17 @@
                   },
                   "breadcrumb": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "actions": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "className": {
                     "type": "string"
                   }
                 },
-                "required": [
-                  "title"
-                ]
+                "required": ["title"]
               }
             }
           }
@@ -2238,9 +1871,7 @@
                 "const": "SettingsLayout"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2249,21 +1880,14 @@
                 "properties": {
                   "menu": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "children": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   }
                 },
-                "required": [
-                  "menu",
-                  "children"
-                ]
+                "required": ["menu", "children"]
               }
             }
           }
@@ -2275,9 +1899,7 @@
                 "const": "Spacer"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2295,9 +1917,7 @@
                 "const": "SplitView"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2306,15 +1926,11 @@
                 "properties": {
                   "start": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "end": {
                     "type": "string",
-                    "enum": [
-                      "ReactNode"
-                    ]
+                    "enum": ["ReactNode"]
                   },
                   "defaultRatio": {
                     "type": "number"
@@ -2329,10 +1945,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "start",
-                  "end"
-                ]
+                "required": ["start", "end"]
               }
             }
           }
@@ -2344,9 +1957,7 @@
                 "const": "Stack"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2355,28 +1966,15 @@
                 "properties": {
                   "direction": {
                     "type": "string",
-                    "enum": [
-                      "vertical",
-                      "horizontal"
-                    ]
+                    "enum": ["vertical", "horizontal"]
                   },
                   "align": {
                     "type": "string",
-                    "enum": [
-                      "start",
-                      "center",
-                      "end",
-                      "stretch"
-                    ]
+                    "enum": ["start", "center", "end", "stretch"]
                   },
                   "justify": {
                     "type": "string",
-                    "enum": [
-                      "start",
-                      "center",
-                      "end",
-                      "between"
-                    ]
+                    "enum": ["start", "center", "end", "between"]
                   },
                   "wrap": {
                     "type": "boolean"
@@ -2393,9 +1991,7 @@
                 "const": "EmptyDashboard"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2413,9 +2009,7 @@
                 "const": "LoginPage"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2433,9 +2027,7 @@
                 "const": "NotificationCenter"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2453,9 +2045,7 @@
                 "const": "PageWithBreadcrumb"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2473,9 +2063,7 @@
                 "const": "SettingsFormPage"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2493,9 +2081,7 @@
                 "const": "SidebarApp"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2513,9 +2099,7 @@
                 "const": "StatsCards"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {
@@ -2533,9 +2117,7 @@
                 "const": "UsersTablePage"
               }
             },
-            "required": [
-              "component"
-            ]
+            "required": ["component"]
           },
           "then": {
             "properties": {

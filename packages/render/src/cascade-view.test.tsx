@@ -34,7 +34,11 @@ describe('<CascadeView />', () => {
       },
     }
     const { container } = render(<CascadeView config={config} />)
-    expect(container.querySelector('[data-variant]') ?? container.querySelector('.badge') ?? container.firstElementChild).toBeTruthy()
+    expect(
+      container.querySelector('[data-variant]') ??
+        container.querySelector('.badge') ??
+        container.firstElementChild,
+    ).toBeTruthy()
   })
 
   it('resolves $t children via translateKey', () => {
@@ -87,9 +91,7 @@ describe('<CascadeView />', () => {
   it('throws on invalid config', () => {
     expect(() =>
       render(
-        <CascadeView
-          config={{ view: { regions: { main: [{ component: 'NoSuchThing' }] } } }}
-        />,
+        <CascadeView config={{ view: { regions: { main: [{ component: 'NoSuchThing' }] } } }} />,
       ),
     ).toThrow('CascadeView: invalid config')
   })

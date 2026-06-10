@@ -33,7 +33,14 @@ describe('view.v1.json schema artifact', () => {
 
   it('contains Badge variant enum as spot-check', () => {
     const schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf-8')) as {
-      $defs: { ComponentNode: { allOf: { if: { properties: { component: { const: string } } }; then: { properties: { props: { properties: Record<string, unknown> } } } }[] } }
+      $defs: {
+        ComponentNode: {
+          allOf: {
+            if: { properties: { component: { const: string } } }
+            then: { properties: { props: { properties: Record<string, unknown> } } }
+          }[]
+        }
+      }
     }
     const badgeBranch = schema.$defs.ComponentNode.allOf.find(
       (b) => b.if.properties.component.const === 'Badge',
