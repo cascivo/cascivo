@@ -66,14 +66,14 @@ defineCatalog(builtin.pagination, 'de', {
   range: '{start}–{end} von {total} Einträgen',
   previous: 'Vorherige Seite',
   next: 'Nächste Seite',
-  nav: 'Seitennavigation',
+  nav: 'Seitennummerierung',
 })
 defineCatalog(builtin.toast, 'de', {
   dismiss: 'Benachrichtigung schließen',
   region: 'Benachrichtigungen',
 })
 defineCatalog(builtin.modal, 'de', {
-  close: 'Modal schließen',
+  close: 'Dialog schließen',
 })
 defineCatalog(builtin.alert, 'de', {
   dismiss: 'Schließen',
