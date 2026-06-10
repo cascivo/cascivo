@@ -4,6 +4,7 @@ export * from './engine/scale-log'
 export * from './engine/scale-time'
 export * from './engine/shape'
 export * from './engine/nearest'
+export * from './engine/stats'
 
 // Chart chrome
 export * from './core/chart-frame'
@@ -21,3 +22,7 @@ export * from './charts/scatter-chart/scatter-chart'
 export * from './charts/sparkline/sparkline'
 export * from './charts/meter/meter'
 export * from './charts/kpi/kpi'
+
+// Wave-2 chart components
+export * from './charts/histogram/histogram'
+export * from './charts/boxplot/boxplot'
