@@ -1,0 +1,59 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Radar',
+  description:
+    'Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.',
+  category: 'chart',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'axes',
+      type: 'string[]',
+      required: true,
+      description: 'Axis labels (one per dimension)',
+    },
+    {
+      name: 'series',
+      type: '{ id: string; label: string; values: number[] }[]',
+      required: true,
+      description: 'One value per axis per series',
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      description: 'Maximum value (defaults to data max)',
+    },
+    { name: 'title', type: 'string', required: true },
+    { name: 'description', type: 'string', required: false },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '320' },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascade-chart-1',
+    '--cascade-chart-2',
+    '--cascade-chart-3',
+    '--cascade-chart-4',
+    '--cascade-chart-5',
+    '--cascade-chart-6',
+    '--cascade-chart-7',
+    '--cascade-chart-8',
+  ],
+  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  examples: [
+    {
+      title: 'Basic radar chart',
+      code: `import { Radar } from '@cascade-ui/charts'
+
+const axes = ['Speed','Power','Range','Efficiency','Cost']
+const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
+<Radar axes={axes} series={series} title="Model comparison" />`,
+    },
+  ],
+  dependencies: ['@cascade-ui/charts'],
+  tags: ['chart', 'radar', 'spider', 'polar', 'data-viz'],
+}
