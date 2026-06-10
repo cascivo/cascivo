@@ -329,8 +329,8 @@
       "category": "inputs",
       "priority": 36,
       "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free. NOTE: time-picker.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog).",
-      "status": "in-progress",
-      "milestone": "scaffold",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {

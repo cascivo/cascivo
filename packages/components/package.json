@@ -40,6 +40,7 @@
     "./tabs": "./src/tabs/tabs.tsx",
     "./tag": "./src/tag/tag.tsx",
     "./textarea": "./src/textarea/textarea.tsx",
+    "./time-picker": "./src/time-picker/time-picker.tsx",
     "./toast": "./src/toast/toast.tsx",
     "./toggle": "./src/toggle/toggle.tsx",
     "./tooltip": "./src/tooltip/tooltip.tsx"

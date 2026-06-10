@@ -41,6 +41,7 @@ import { DataTable, type Column } from '@cascade-ui/components/data-table'
 import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
 import { Form, useForm } from '@cascade-ui/components/form'
 import { Combobox } from '@cascade-ui/components/combobox'
+import { TimePicker } from '@cascade-ui/components/time-picker'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -542,6 +543,13 @@ export const demos: Record<string, () => JSX.Element> = {
   'data-table': () => <DataTableDemo />,
   'command-menu': () => <CommandMenuDemo />,
   'form': () => <FormDemo />,
+  'time-picker': () => (
+    <Col>
+      <TimePicker label="Meeting time" defaultValue="09:00" />
+      <TimePicker label="With error" error="Invalid time" />
+      <TimePicker label="Disabled" defaultValue="14:00" disabled />
+    </Col>
+  ),
   'combobox': () => (
     <Col>
       <Combobox label="Country" options={[{ value: 'us', label: 'United States' }, { value: 'de', label: 'Germany' }, { value: 'fr', label: 'France' }]} />
