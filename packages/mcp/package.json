@@ -2,6 +2,7 @@
   "name": "@cascade-ui/mcp",
   "version": "0.0.0",
   "private": false,
+  "description": "MCP server exposing the cascade component registry to AI agents",
   "bin": {
     "cascade-mcp": "./dist/index.mjs"
   },

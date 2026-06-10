@@ -2,6 +2,7 @@
   "name": "@cascade-ui/components",
   "version": "0.0.0",
   "private": true,
+  "description": "Registry source — copy-paste component TSX + CSS + manifests (not published)",
   "type": "module",
   "exports": {
     "./button": "./src/button/button.tsx",
