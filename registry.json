@@ -4751,6 +4751,474 @@
       "install": "@cascade-ui/charts"
     },
     {
+      "name": "chart/boxplot",
+      "type": "chart",
+      "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+      "meta": {
+        "name": "Boxplot",
+        "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "{ id: string; label: string; values: number[] }[]",
+            "required": true,
+            "description": "Array of series each with raw numeric values"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic boxplot",
+            "code": "import { Boxplot } from '@cascade-ui/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bubble-chart",
+      "type": "chart",
+      "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+      "meta": {
+        "name": "BubbleChart",
+        "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "{ name: string; data: { x: number; y: number; size: number }[] }[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bubble chart",
+            "code": "import { BubbleChart } from '@cascade-ui/charts'\n\nconst series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]\n<BubbleChart series={series} title=\"Bubble\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bullet",
+      "type": "chart",
+      "description": "Bullet chart with background range bands, measure bar, and target tick.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+      "meta": {
+        "name": "Bullet",
+        "description": "Bullet chart with background range bands, measure bar, and target tick.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current measure value"
+          },
+          {
+            "name": "target",
+            "type": "number",
+            "required": true,
+            "description": "Target marker value"
+          },
+          {
+            "name": "ranges",
+            "type": "number[]",
+            "required": true,
+            "description": "Qualitative range breakpoints (sorted ascending)"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain maximum (defaults to last range)"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "40"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-color-neutral-200",
+          "--cascade-color-neutral-300",
+          "--cascade-color-neutral-400"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bullet chart",
+            "code": "import { Bullet } from '@cascade-ui/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bullet", "kpi", "progress", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/combo-chart",
+      "type": "chart",
+      "description": "Combination bar + line chart on shared or dual y-axes.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+      "meta": {
+        "name": "ComboChart",
+        "description": "Combination bar + line chart on shared or dual y-axes.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "bars",
+            "type": "{ label: string; value: number }[]",
+            "required": true,
+            "description": "Bar series data"
+          },
+          {
+            "name": "line",
+            "type": "{ x: number; y: number }[]",
+            "required": true,
+            "description": "Line series data points"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "secondAxis",
+            "type": "boolean",
+            "required": false,
+            "description": "Render line on a secondary right y-axis"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic combo chart",
+            "code": "import { ComboChart } from '@cascade-ui/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/heatmap",
+      "type": "chart",
+      "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "heatmap", "matrix", "data-viz"],
+      "meta": {
+        "name": "Heatmap",
+        "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "{ x: string; y: string; value: number }[]",
+            "required": true,
+            "description": "Array of x/y/value triples"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic heatmap",
+            "code": "import { Heatmap } from '@cascade-ui/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "heatmap", "matrix", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/histogram",
+      "type": "chart",
+      "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+      "meta": {
+        "name": "Histogram",
+        "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "number[]",
+            "required": true,
+            "description": "Array of numeric values to bin"
+          },
+          {
+            "name": "bins",
+            "type": "number",
+            "required": false,
+            "description": "Explicit bin count (defaults to Freedman–Diaconis)"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "X-axis label"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic histogram",
+            "code": "import { Histogram } from '@cascade-ui/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
       "name": "chart/kpi",
       "type": "chart",
       "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
@@ -5124,6 +5592,94 @@
       "install": "@cascade-ui/charts"
     },
     {
+      "name": "chart/radar",
+      "type": "chart",
+      "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+      "meta": {
+        "name": "Radar",
+        "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "axes",
+            "type": "string[]",
+            "required": true,
+            "description": "Axis labels (one per dimension)"
+          },
+          {
+            "name": "series",
+            "type": "{ id: string; label: string; values: number[] }[]",
+            "required": true,
+            "description": "One value per axis per series"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Maximum value (defaults to data max)"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic radar chart",
+            "code": "import { Radar } from '@cascade-ui/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "radar", "spider", "polar", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
       "name": "chart/scatter-chart",
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -5290,6 +5846,81 @@
         ],
         "dependencies": ["@cascade-ui/charts"],
         "tags": ["chart", "sparkline", "inline", "trend", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/treemap",
+      "type": "chart",
+      "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
+      "meta": {
+        "name": "Treemap",
+        "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "{ id: string; label: string; value: number }[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic treemap",
+            "code": "import { Treemap } from '@cascade-ui/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"]
       },
       "install": "@cascade-ui/charts"
     }
