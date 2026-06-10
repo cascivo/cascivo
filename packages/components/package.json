@@ -13,6 +13,7 @@
     "./button": "./src/button/button.tsx",
     "./card": "./src/card/card.tsx",
     "./checkbox": "./src/checkbox/checkbox.tsx",
+    "./combobox": "./src/combobox/combobox.tsx",
     "./command-menu": "./src/command-menu/command-menu.tsx",
     "./data-table": "./src/data-table/data-table.tsx",
     "./dropdown": "./src/dropdown/dropdown.tsx",

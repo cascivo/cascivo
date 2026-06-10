@@ -49,7 +49,8 @@
       "@cascade-ui/components/number-input": ["./src/shims/number-input.d.ts"],
       "@cascade-ui/components/data-table": ["./src/shims/data-table.d.ts"],
       "@cascade-ui/components/command-menu": ["./src/shims/command-menu.d.ts"],
-      "@cascade-ui/components/form": ["./src/shims/form.d.ts"]
+      "@cascade-ui/components/form": ["./src/shims/form.d.ts"],
+      "@cascade-ui/components/combobox": ["./src/shims/combobox.d.ts"]
     }
   },
   "include": ["src"]
