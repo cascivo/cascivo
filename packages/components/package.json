@@ -19,6 +19,7 @@
     "./date-picker": "./src/date-picker/date-picker.tsx",
     "./dropdown": "./src/dropdown/dropdown.tsx",
     "./empty-state": "./src/empty-state/empty-state.tsx",
+    "./file-uploader": "./src/file-uploader/file-uploader.tsx",
     "./form": "./src/form/form.tsx",
     "./header": "./src/header/header.tsx",
     "./input": "./src/input/input.tsx",

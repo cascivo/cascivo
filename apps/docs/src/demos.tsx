@@ -43,6 +43,7 @@ import { Form, useForm } from '@cascade-ui/components/form'
 import { Combobox } from '@cascade-ui/components/combobox'
 import { TimePicker } from '@cascade-ui/components/time-picker'
 import { DatePicker } from '@cascade-ui/components/date-picker'
+import { FileUploader, type UploaderFile } from '@cascade-ui/components/file-uploader'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -566,4 +567,28 @@ export const demos: Record<string, () => JSX.Element> = {
       <DatePicker label="Disabled" defaultValue="2024-01-01" disabled />
     </Col>
   ),
+  'file-uploader': () => <FileUploaderDemo />,
+}
+
+function FileUploaderDemo() {
+  const [files, setFiles] = useState<UploaderFile[]>([
+    { id: '1', name: 'report.pdf', size: 1024 * 102, status: 'complete' },
+    { id: '2', name: 'data.csv', size: 1024 * 5, status: 'uploading' },
+  ])
+  return (
+    <FileUploader
+      files={files}
+      multiple
+      onFilesAdded={(added) => {
+        const next: UploaderFile[] = added.map((f) => ({
+          id: crypto.randomUUID(),
+          name: f.name,
+          size: f.size,
+          status: 'uploading' as const,
+        }))
+        setFiles((prev) => [...prev, ...next])
+      }}
+      onRemove={(id) => setFiles((prev) => prev.filter((f) => f.id !== id))}
+    />
+  )
 }

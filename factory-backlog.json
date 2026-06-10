@@ -347,8 +347,8 @@
       "category": "inputs",
       "priority": 38,
       "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status. NOTE: file-uploader.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog; UploaderFileStatus strings uploading/complete/error need builtin keys en+de).",
-      "status": "pending",
-      "milestone": null,
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {

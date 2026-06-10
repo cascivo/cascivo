@@ -38,6 +38,7 @@ npx cascade add button
 | date-picker        | inputs     | An accessible date-picker with a calendar popover.                                                                                                                    |
 | dropdown           | overlay    | Menu of actions revealed from a trigger                                                                                                                               |
 | empty-state        | display    | Placeholder for views that have no data to display                                                                                                                    |
+| file-uploader      | inputs     | Drag-and-drop file upload zone with file list and status indicators.                                                                                                  |
 | form               | inputs     | Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper                                                         |
 | header             | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
 | input              | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
