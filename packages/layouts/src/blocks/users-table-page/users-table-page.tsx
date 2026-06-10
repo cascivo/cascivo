@@ -29,9 +29,7 @@ export function UsersTablePage({ users = demoUsers, onInvite }: UsersTablePagePr
     {
       key: 'role',
       header: 'Role',
-      render: (u) => (
-        <Badge variant={u.role === 'admin' ? 'default' : 'secondary'}>{u.role}</Badge>
-      ),
+      render: (u) => <Badge variant={u.role === 'admin' ? 'default' : 'secondary'}>{u.role}</Badge>,
     },
     {
       key: 'active',

@@ -3,12 +3,17 @@ import type { ComponentMeta } from '@cascade-ui/core'
 export const meta: ComponentMeta = {
   name: 'SettingsFormPage',
   description: 'Settings page with profile form inside a two-column settings layout.',
-  category: 'block',
+  category: 'display',
   states: [],
   variants: [],
   sizes: [],
   props: [
-    { name: 'onSave', type: '(values: SettingsValues) => void', required: false, description: 'Called with valid form values on submit' },
+    {
+      name: 'onSave',
+      type: '(values: SettingsValues) => void',
+      required: false,
+      description: 'Called with valid form values on submit',
+    },
   ],
   tokens: [],
   accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },

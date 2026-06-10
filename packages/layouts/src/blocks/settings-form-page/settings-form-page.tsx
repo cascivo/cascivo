@@ -40,14 +40,18 @@ export function SettingsFormPage({ onSave }: SettingsFormPageProps) {
       menu={
         <nav aria-label="Settings sections">
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            <li><a href="#profile">Profile</a></li>
-            <li><a href="#notifications">Notifications</a></li>
+            <li>
+              <a href="#profile">Profile</a>
+            </li>
+            <li>
+              <a href="#notifications">Notifications</a>
+            </li>
           </ul>
         </nav>
       }
     >
       <h1>Profile settings</h1>
-      <Form form={form as Parameters<typeof Form>[0]['form']} onValid={(v) => onSave?.(v as SettingsValues)}>
+      <Form form={form} onValid={(v) => onSave?.(v)}>
         <Input
           label="Display name"
           value={String(dnField.value)}

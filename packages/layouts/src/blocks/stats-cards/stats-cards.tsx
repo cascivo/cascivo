@@ -41,9 +41,7 @@ export function StatsCards({ stats = demoStats }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div style={{ fontSize: '2rem', fontWeight: 700 }}>{stat.value}</div>
-            {stat.delta && (
-              <Badge variant={trendVariant(stat.trend)}>{stat.delta}</Badge>
-            )}
+            {stat.delta && <Badge variant={trendVariant(stat.trend)}>{stat.delta}</Badge>}
           </CardContent>
         </Card>
       ))}

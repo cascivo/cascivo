@@ -3,7 +3,7 @@ import type { ComponentMeta } from '@cascade-ui/core'
 export const meta: ComponentMeta = {
   name: 'UsersTablePage',
   description: 'Full users management page with table, search, and invite action.',
-  category: 'block',
+  category: 'display',
   states: [],
   variants: [],
   sizes: [],
