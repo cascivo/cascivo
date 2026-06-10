@@ -27,7 +27,7 @@ export interface ComponentManifest {
 
 export interface RegistryComponent {
   name: string
-  type?: 'component' | 'layout' | 'block'
+  type?: 'component' | 'layout' | 'block' | 'chart'
   description: string
   category: string
   version: string
@@ -73,11 +73,15 @@ export function loadRegistry(path?: string): Registry {
   return raw
 }
 
-/** List component manifests, optionally filtered by category. */
-export function listComponents(registry: Registry, category?: string): ComponentManifest[] {
-  const entries = category
-    ? registry.components.filter((c) => c.category === category)
-    : registry.components
+/** List component manifests, optionally filtered by category and/or type. */
+export function listComponents(
+  registry: Registry,
+  category?: string,
+  type?: string,
+): ComponentManifest[] {
+  let entries = registry.components
+  if (category) entries = entries.filter((c) => c.category === category)
+  if (type) entries = entries.filter((c) => c.type === type)
   return entries.map((c) => c.meta)
 }
 

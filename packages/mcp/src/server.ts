@@ -42,15 +42,19 @@ export function createServer(options: ServerOptions = {}): McpServer {
     'list_components',
     {
       title: 'List components',
-      description: 'List all cascade components, optionally filtered by category.',
+      description: 'List all cascade components, optionally filtered by category and/or type.',
       inputSchema: {
         category: z
-          .enum(['inputs', 'display', 'overlay', 'navigation', 'feedback'])
+          .enum(['inputs', 'display', 'overlay', 'navigation', 'feedback', 'chart'])
           .optional()
           .describe('Filter by component category'),
+        type: z
+          .enum(['component', 'layout', 'block', 'chart'])
+          .optional()
+          .describe('Filter by entry type'),
       },
     },
-    ({ category }) => json(listComponents(registry, category)),
+    ({ category, type }) => json(listComponents(registry, category, type)),
   )
 
   server.registerTool(
