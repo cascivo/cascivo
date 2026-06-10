@@ -2,7 +2,7 @@
 import { Button, Form, Input, Select, Toggle, useForm } from '@cascade-ui/react'
 import { SettingsLayout } from '../../settings-layout/settings-layout'
 
-interface SettingsValues {
+interface SettingsValues extends Record<string, unknown> {
   displayName: string
   email: string
   language: string
@@ -57,7 +57,7 @@ export function SettingsFormPage({ onSave }: SettingsFormPageProps) {
           value={String(dnField.value)}
           onChange={(e) => dnField.onChange(e.target.value)}
           onBlur={dnField.onBlur}
-          error={dnField.error}
+          {...(dnField.error !== undefined ? { error: dnField.error } : {})}
         />
         <Input
           label="Email"
@@ -65,7 +65,7 @@ export function SettingsFormPage({ onSave }: SettingsFormPageProps) {
           value={String(emailField.value)}
           onChange={(e) => emailField.onChange(e.target.value)}
           onBlur={emailField.onBlur}
-          error={emailField.error}
+          {...(emailField.error !== undefined ? { error: emailField.error } : {})}
         />
         <Select
           label="Language"

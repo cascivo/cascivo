@@ -21,9 +21,15 @@ const columns: Column<Person>[] = [
   { key: 'age', header: 'Age', sortable: true, align: 'end' },
 ]
 
+const baseArgs = {
+  columns: columns as Column<unknown>[],
+  rows: people as unknown[],
+  getRowId: (p: unknown) => (p as Person).id,
+}
+
 const meta: Meta<typeof DataTable> = {
   component: DataTable,
-  args: { columns, rows: people, getRowId: (p: Person) => p.id },
+  args: baseArgs,
 }
 export default meta
 type Story = StoryObj<typeof DataTable>
@@ -47,11 +53,14 @@ export const Selection: Story = {
 
 export const Expandable: Story = {
   args: {
-    renderExpandedRow: (p: Person) => (
-      <div style={{ padding: '0.5rem' }}>
-        Details for {p.name}, age {p.age}
-      </div>
-    ),
+    renderExpandedRow: (p: unknown) => {
+      const person = p as Person
+      return (
+        <div style={{ padding: '0.5rem' }}>
+          Details for {person.name}, age {person.age}
+        </div>
+      )
+    },
   },
 }
 

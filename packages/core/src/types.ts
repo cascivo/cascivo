@@ -35,7 +35,7 @@ export interface ExampleMeta {
 export interface ComponentMeta {
   name: string
   description: string
-  category: 'inputs' | 'display' | 'overlay' | 'navigation' | 'feedback'
+  category: 'inputs' | 'display' | 'overlay' | 'navigation' | 'feedback' | 'layout' | 'block'
   states: string[]
   variants: string[]
   sizes: string[]

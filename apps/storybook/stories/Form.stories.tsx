@@ -19,7 +19,7 @@ function BasicDemo() {
           value={email.value}
           onChange={(e) => email.onChange(e.currentTarget.value)}
           onBlur={email.onBlur}
-          error={email.error}
+          {...(email.error !== undefined ? { error: email.error } : {})}
         />
         <button type="submit" style={{ marginTop: '0.5rem' }}>
           Submit

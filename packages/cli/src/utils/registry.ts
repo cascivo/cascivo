@@ -38,11 +38,11 @@ export function parseRegistry(raw: unknown): Registry {
       throw new Error(`Invalid registry: component at index ${i} is missing "name"`)
     }
     const rawType = c.type
-    const type: RegistryComponent['type'] =
+    const type =
       rawType === 'component' || rawType === 'layout' || rawType === 'block' ? rawType : undefined
     return {
       name: c.name,
-      type,
+      ...(type !== undefined ? { type } : {}),
       description: typeof c.description === 'string' ? c.description : '',
       category: typeof c.category === 'string' ? c.category : '',
       version: typeof c.version === 'string' ? c.version : '0.0.0',

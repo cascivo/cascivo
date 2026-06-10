@@ -2,7 +2,7 @@
 import { Button, Form, Input, useForm } from '@cascade-ui/react'
 import { AuthLayout } from '../../auth-layout/auth-layout'
 
-interface LoginValues {
+interface LoginValues extends Record<string, unknown> {
   email: string
   password: string
 }
@@ -35,7 +35,7 @@ export function LoginPage({ onSubmit }: LoginPageProps) {
           value={String(emailField.value)}
           onChange={(e) => emailField.onChange(e.target.value)}
           onBlur={emailField.onBlur}
-          error={emailField.error}
+          {...(emailField.error !== undefined ? { error: emailField.error } : {})}
         />
         <Input
           label="Password"
@@ -43,7 +43,7 @@ export function LoginPage({ onSubmit }: LoginPageProps) {
           value={String(passwordField.value)}
           onChange={(e) => passwordField.onChange(e.target.value)}
           onBlur={passwordField.onBlur}
-          error={passwordField.error}
+          {...(passwordField.error !== undefined ? { error: passwordField.error } : {})}
         />
         <Button type="submit">Sign in</Button>
       </Form>
