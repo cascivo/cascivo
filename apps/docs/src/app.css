@@ -358,6 +358,56 @@ a {
   color: var(--cascade-color-accent);
 }
 
+/* ── Sidebar collapse toggle ──────────────────────────── */
+.sidebar-toggle {
+  display: none;
+  position: absolute;
+  inset-inline-end: calc(-1 * var(--cascade-space-3));
+  inset-block-start: var(--cascade-space-4);
+  inline-size: var(--cascade-space-6);
+  block-size: var(--cascade-space-6);
+  border-radius: 50%;
+  border: 1px solid var(--cascade-color-border);
+  background: var(--cascade-color-surface);
+  color: var(--cascade-color-text-subtle);
+  cursor: pointer;
+  font-size: var(--cascade-text-xs);
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+@media (min-width: 769px) {
+  .sidebar {
+    position: relative;
+  }
+
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  .sidebar.collapsed {
+    inline-size: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .sidebar.collapsed .sidebar-toggle {
+    inset-inline-end: calc(-1 * var(--cascade-space-6));
+    inline-size: var(--cascade-space-6);
+    block-size: var(--cascade-space-6);
+    /* Keep toggle visible even when nav is collapsed */
+    display: flex;
+    position: fixed;
+    inset-block-start: calc(57px + var(--cascade-space-4));
+    inset-inline-start: var(--cascade-space-1);
+  }
+
+  .layout-body[data-sidebar-collapsed] {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+}
+
 /* ── Mobile ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hamburger {
