@@ -96,6 +96,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascade-ui/storage':
+        specifier: workspace:^
+        version: link:../../packages/storage
       '@cascade-ui/themes':
         specifier: workspace:*
         version: link:../../packages/themes

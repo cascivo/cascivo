@@ -1,18 +1,18 @@
 import type { ComponentChildren } from 'preact'
-import { useState } from 'preact/hooks'
+import { useSignals } from '@cascade-ui/core'
 import { useLocation } from 'preact-iso'
+import { useState } from 'preact/hooks'
 import { buildNav } from './nav'
-import { applyTheme, THEMES, type Theme } from './theme'
+import { applyTheme, theme, THEMES } from './theme'
 
-export function Layout({ children, theme }: { children: ComponentChildren; theme: Theme }) {
+export function Layout({ children }: { children: ComponentChildren }) {
+  useSignals()
   const nav = buildNav()
   const { path } = useLocation()
-  const [current, setCurrent] = useState<Theme>(theme)
   const [open, setOpen] = useState(false)
 
-  const selectTheme = (next: Theme) => {
+  const selectTheme = (next: (typeof THEMES)[number]) => {
     applyTheme(next)
-    setCurrent(next)
   }
 
   return (
@@ -33,7 +33,7 @@ export function Layout({ children, theme }: { children: ComponentChildren; theme
           {THEMES.map((t) => (
             <button
               key={t}
-              class={`theme-btn ${current === t ? 'active' : ''}`}
+              class={`theme-btn ${theme.value === t ? 'active' : ''}`}
               onClick={() => selectTheme(t)}
             >
               {t}
