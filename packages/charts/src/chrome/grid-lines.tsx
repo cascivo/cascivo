@@ -9,7 +9,13 @@ export interface GridLinesProps {
   transform?: string
 }
 
-export function GridLines({ scale, orientation, length, tickCount = 5, transform }: GridLinesProps) {
+export function GridLines({
+  scale,
+  orientation,
+  length,
+  tickCount = 5,
+  transform,
+}: GridLinesProps) {
   const ticks = scale.ticks(tickCount)
   const isX = orientation === 'x'
   return (

@@ -27,7 +27,14 @@ function defaultFormat(value: number | string | Date): string {
   return String(value)
 }
 
-export function Axis({ scale, orientation, length, format = defaultFormat, tickCount = 5, transform }: AxisProps) {
+export function Axis({
+  scale,
+  orientation,
+  length,
+  format = defaultFormat,
+  tickCount = 5,
+  transform,
+}: AxisProps) {
   let ticks: Array<{ position: number; label: string }>
 
   if (isBand(scale)) {

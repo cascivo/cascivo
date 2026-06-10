@@ -41,9 +41,7 @@ export function AiPage() {
 
       <section class="doc-section">
         <h2>MCP server setup</h2>
-        <p>
-          Add the cascade MCP server to your Claude Code (or any MCP-compatible agent) config:
-        </p>
+        <p>Add the cascade MCP server to your Claude Code (or any MCP-compatible agent) config:</p>
         <CodeBlock code={MCP_SETUP} lang="bash" />
         <p>Available MCP tools:</p>
         <ul>

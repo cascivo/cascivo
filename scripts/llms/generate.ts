@@ -206,7 +206,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('## Component authoring rules (for cascade:extend)')
   lines.push('')
-  lines.push('- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`')
+  lines.push(
+    '- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`',
+  )
   lines.push('- No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`')
   lines.push('- DOM side effects via `useSignalEffect`, not `useEffect`')
   lines.push('- `useRef` only for DOM element references')

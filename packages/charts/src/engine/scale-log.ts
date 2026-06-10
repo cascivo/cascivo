@@ -8,7 +8,8 @@ export interface LogScale {
 
 export function logScale(domain: [number, number], range: [number, number]): LogScale {
   const [d0, d1] = domain
-  if (d0 <= 0 || d1 <= 0) throw new Error(`logScale: domain must be strictly positive, got [${d0}, ${d1}]`)
+  if (d0 <= 0 || d1 <= 0)
+    throw new Error(`logScale: domain must be strictly positive, got [${d0}, ${d1}]`)
   const [r0, r1] = range
   const logD0 = Math.log10(d0)
   const logD1 = Math.log10(d1)

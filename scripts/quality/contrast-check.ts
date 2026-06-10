@@ -12,7 +12,13 @@ import { readFileSync } from 'node:fs'
 function hexToRgb(hex: string): [number, number, number] | null {
   const clean = hex.replace('#', '')
   if (clean.length !== 3 && clean.length !== 6) return null
-  const full = clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean
+  const full =
+    clean.length === 3
+      ? clean
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : clean
   const n = parseInt(full, 16)
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff]
 }
@@ -57,10 +63,7 @@ function buildPairs(tokens: Map<string, string>): Array<[string, string, string,
   )
   const surfaceKeys = [...tokens.keys()].filter(
     (k) =>
-      k.includes('bg') ||
-      k.includes('background') ||
-      k.includes('surface') ||
-      k.includes('base'),
+      k.includes('bg') || k.includes('background') || k.includes('surface') || k.includes('base'),
   )
 
   for (const tk of textKeys) {

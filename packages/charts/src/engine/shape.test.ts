@@ -11,12 +11,23 @@ describe('linePath', () => {
   })
 
   it('emits M/L for linear', () => {
-    const d = linePath([[0, 0], [10, 5], [20, 10]])
+    const d = linePath([
+      [0, 0],
+      [10, 5],
+      [20, 10],
+    ])
     expect(d).toMatch(/^M0,0L10,5L20,10$/)
   })
 
   it('emits C segments for monotone', () => {
-    const d = linePath([[0, 0], [10, 5], [20, 10]], 'monotone')
+    const d = linePath(
+      [
+        [0, 0],
+        [10, 5],
+        [20, 10],
+      ],
+      'monotone',
+    )
     expect(d).toMatch(/^M/)
     expect(d).toContain('C')
   })
@@ -24,7 +35,13 @@ describe('linePath', () => {
 
 describe('areaPath', () => {
   it('closes to baseline', () => {
-    const d = areaPath([[0, 10], [10, 20]], 0)
+    const d = areaPath(
+      [
+        [0, 10],
+        [10, 20],
+      ],
+      0,
+    )
     expect(d).toContain('L10,0')
     expect(d).toContain('L0,0')
     expect(d).toContain('Z')
@@ -47,9 +64,20 @@ describe('arcPath', () => {
 
 describe('stackSeries', () => {
   it('offsets are cumulative', () => {
-    const result = stackSeries([[1, 2, 3], [4, 5, 6]])
-    expect(result[0]).toEqual([[0, 1], [0, 2], [0, 3]])
-    expect(result[1]).toEqual([[1, 5], [2, 7], [3, 9]])
+    const result = stackSeries([
+      [1, 2, 3],
+      [4, 5, 6],
+    ])
+    expect(result[0]).toEqual([
+      [0, 1],
+      [0, 2],
+      [0, 3],
+    ])
+    expect(result[1]).toEqual([
+      [1, 5],
+      [2, 7],
+      [3, 9],
+    ])
   })
 
   it('handles empty series', () => {
