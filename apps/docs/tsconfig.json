@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "types": ["node"],
     "paths": {
       "react": ["./node_modules/preact/compat"],

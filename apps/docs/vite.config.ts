@@ -15,4 +15,8 @@ export default defineConfig({
       'react-dom': preactCompat,
     },
   },
+  server: {
+    // Allow importing registry.json from the monorepo root.
+    fs: { allow: [path.resolve(__dirname, '../..')] },
+  },
 })

@@ -8,6 +8,18 @@
       name="description"
       content="cascade design system — CSS-native, signal-driven, AI-first React components"
     />
+    <script>
+      // Apply the persisted theme before paint to avoid a flash of the wrong theme.
+      ;(function () {
+        try {
+          var t = localStorage.getItem('cascade-theme')
+          document.documentElement.setAttribute(
+            'data-theme',
+            t === 'dark' || t === 'warm' || t === 'light' ? t : 'light',
+          )
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="app"></div>
