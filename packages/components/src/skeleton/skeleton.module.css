@@ -1,0 +1,69 @@
+@layer cascade.component {
+  .skeleton {
+    &[data-variant='text'] {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascade-space-2);
+      inline-size: var(--cascade-skeleton-width, 100%);
+    }
+
+    &[data-variant='circle'] {
+      inline-size: var(--cascade-skeleton-width, var(--cascade-space-10));
+      block-size: var(--cascade-skeleton-height, var(--cascade-space-10));
+      border-radius: var(--cascade-radius-full);
+    }
+
+    &[data-variant='rect'] {
+      inline-size: var(--cascade-skeleton-width, 100%);
+      block-size: var(--cascade-skeleton-height, var(--cascade-space-24));
+      border-radius: var(--cascade-radius-component);
+    }
+  }
+
+  .line {
+    display: block;
+    inline-size: 100%;
+    block-size: var(--cascade-skeleton-height, 1em);
+    border-radius: var(--cascade-radius-sm);
+
+    /* Multi-line paragraphs end on a shorter bar */
+    &:last-child:not(:first-child) {
+      inline-size: 60%;
+    }
+  }
+
+  /* Continuous shimmer — literal duration; a static fallback below
+     replaces the duration-token opt-out used for one-shot motion. */
+  .skeleton[data-variant='circle'],
+  .skeleton[data-variant='rect'],
+  .line {
+    background-color: var(--cascade-color-border);
+    background-image: linear-gradient(
+      90deg,
+      var(--cascade-color-border) 25%,
+      var(--cascade-color-bg-subtle) 50%,
+      var(--cascade-color-border) 75%
+    );
+    background-size: 200% 100%;
+    animation: cascade-shimmer 1.5s linear infinite;
+  }
+
+  @keyframes cascade-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton[data-variant='circle'],
+    .skeleton[data-variant='rect'],
+    .line {
+      animation: none;
+      background-image: none;
+    }
+  }
+}

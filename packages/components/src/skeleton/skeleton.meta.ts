@@ -1,0 +1,47 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Skeleton',
+  description: 'Animated loading placeholder that mirrors the shape of pending content',
+  category: 'display',
+  states: [],
+  variants: ['text', 'circle', 'rect'],
+  sizes: [],
+  props: [
+    { name: 'variant', type: "'text' | 'circle' | 'rect'", required: false, default: 'text' },
+    {
+      name: 'width',
+      type: 'string',
+      required: false,
+      description: 'CSS length applied as an inline custom property',
+    },
+    {
+      name: 'height',
+      type: 'string',
+      required: false,
+      description: 'CSS length applied as an inline custom property',
+    },
+    {
+      name: 'lines',
+      type: 'number',
+      required: false,
+      default: '1',
+      description: 'Number of bars for the text variant; the last bar renders shorter',
+    },
+  ],
+  tokens: [
+    '--cascade-color-border',
+    '--cascade-color-bg-subtle',
+    '--cascade-radius-sm',
+    '--cascade-radius-full',
+    '--cascade-radius-component',
+  ],
+  accessibility: { role: 'none', wcag: 'AA', keyboard: [] },
+  examples: [
+    { title: 'Text', code: '<Skeleton lines={3} />' },
+    { title: 'Avatar', code: '<Skeleton variant="circle" width="3rem" height="3rem" />' },
+    { title: 'Image', code: '<Skeleton variant="rect" height="12rem" />' },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['loading', 'placeholder', 'shimmer'],
+}
