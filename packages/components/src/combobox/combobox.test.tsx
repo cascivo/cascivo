@@ -33,7 +33,7 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Germany' }))
     expect(onChange).toHaveBeenCalledWith('de')
-    expect(screen.queryByRole('listbox', { hidden: false })).not.toBeVisible()
+    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
   })
 
   it('filters options when typing in the search field', async () => {
@@ -61,7 +61,7 @@ describe('Combobox', () => {
     await user.click(screen.getByRole('combobox'))
     screen.getByRole('textbox', { name: 'Search options' }).focus()
     await user.keyboard('{Escape}')
-    expect(screen.queryByRole('listbox', { hidden: false })).not.toBeVisible()
+    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
   })
 
   it('shows empty state when no options match search', async () => {
@@ -85,7 +85,7 @@ describe('Combobox', () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} disabled />)
     await user.click(screen.getByRole('combobox'))
-    expect(screen.queryByRole('listbox', { hidden: false })).not.toBeVisible()
+    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
   })
 
   it('renders error and hint text', () => {
