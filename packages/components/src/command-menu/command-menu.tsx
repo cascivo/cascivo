@@ -157,7 +157,8 @@ export function CommandMenu({
 
   const setActive = (index: number) => {
     activeIndex.value = index
-    optionRefs.current[index]?.scrollIntoView({ block: 'nearest' })
+    const el = optionRefs.current[index]
+    if (el && typeof el.scrollIntoView === 'function') el.scrollIntoView({ block: 'nearest' })
   }
 
   const moveActive = (delta: number) => {
