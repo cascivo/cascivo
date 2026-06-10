@@ -26,6 +26,19 @@ export const meta: ComponentMeta = {
       description: 'Global Cmd/Ctrl+K toggles the menu via onOpenChange',
     },
     { name: 'label', type: 'string', required: false, default: 'Command menu' },
+    {
+      name: 'loading',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Shows a loading spinner in place of the empty state (for async items)',
+    },
+    {
+      name: 'onQueryChange',
+      type: '(query: string) => void',
+      required: false,
+      description: 'Fires on every query keystroke — use to fetch async items',
+    },
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [

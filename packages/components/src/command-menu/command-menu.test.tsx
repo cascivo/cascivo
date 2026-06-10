@@ -129,3 +129,72 @@ describe('CommandMenu', () => {
     await store.set('en')
   })
 })
+
+describe('CommandMenu nested pages', () => {
+  const onSelect = vi.fn()
+  const pageGroups: CommandGroup[] = [
+    {
+      heading: 'Navigation',
+      items: [
+        {
+          id: 'settings',
+          label: 'Settings',
+          page: {
+            placeholder: 'Settings…',
+            groups: [
+              {
+                heading: 'Settings',
+                items: [
+                  { id: 'theme-setting', label: 'Change theme', onSelect },
+                  { id: 'lang-setting', label: 'Change language', onSelect },
+                ],
+              },
+            ],
+          },
+        },
+        { id: 'home', label: 'Go home', onSelect },
+      ],
+    },
+  ]
+
+  it('selecting an item with page pushes the page and swaps placeholder', async () => {
+    const user = userEvent.setup()
+    render(<CommandMenu open={true} onOpenChange={vi.fn()} groups={pageGroups} />)
+    await user.click(screen.getByText('Settings'))
+    expect(screen.getByPlaceholderText('Settings…')).toBeInTheDocument()
+    expect(screen.getByText('Change theme')).toBeInTheDocument()
+  })
+
+  it('Backspace on empty query pops back to previous page', async () => {
+    const user = userEvent.setup()
+    render(<CommandMenu open={true} onOpenChange={vi.fn()} groups={pageGroups} />)
+    await user.click(screen.getByText('Settings'))
+    expect(screen.getByText('Change theme')).toBeInTheDocument()
+    // focus the input and press Backspace on empty query
+    screen.getByRole('combobox').focus()
+    await user.keyboard('{Backspace}')
+    expect(screen.getByText('Settings')).toBeInTheDocument()
+    expect(screen.queryByText('Change theme')).not.toBeInTheDocument()
+  })
+
+  it('loading prop renders loading row instead of empty state', () => {
+    render(
+      <CommandMenu open={true} onOpenChange={vi.fn()} groups={[]} loading={true} />,
+    )
+    // container has role="status"; spinner inside also has role="status" — use getAllByRole
+    const statuses = screen.getAllByRole('status')
+    const container = statuses.find((el) => el.textContent?.includes('Loading'))
+    expect(container).toBeTruthy()
+  })
+
+  it('onQueryChange fires per keystroke', async () => {
+    const user = userEvent.setup()
+    const onQueryChange = vi.fn()
+    render(
+      <CommandMenu open={true} onOpenChange={vi.fn()} groups={pageGroups} onQueryChange={onQueryChange} />,
+    )
+    await user.type(screen.getByRole('combobox'), 'go')
+    expect(onQueryChange).toHaveBeenCalledTimes(2)
+    expect(onQueryChange).toHaveBeenLastCalledWith('go')
+  })
+})
