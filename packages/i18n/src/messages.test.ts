@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createLocale } from './locale'
-import { defineCatalog, defineMessages, t } from './messages'
+import { defineCatalog, defineMessages, t, translateKey } from './messages'
 
 const messages = defineMessages('test', {
   plain: 'Hello',
@@ -46,5 +46,32 @@ describe('t()', () => {
     t(messages.greeting)
     // @ts-expect-error — plain takes no params
     t(messages.plain, { name: 'x' })
+  })
+})
+
+describe('translateKey()', () => {
+  it('resolves registered defaults by key', () => {
+    createLocale({ default: 'en', supported: ['en', 'de'] })
+    expect(translateKey('test.plain')).toBe('Hello')
+  })
+
+  it('interpolates params via key', () => {
+    expect(translateKey('test.greeting', { name: 'Ada' })).toBe('Hello Ada')
+  })
+
+  it('resolves catalog overrides by locale', async () => {
+    const store = createLocale({ default: 'en', supported: ['en', 'de'] })
+    defineCatalog(messages, 'de', {
+      plain: 'Hallo',
+      greeting: 'Hallo {name}',
+      items: { one: '{count} Eintrag', other: '{count} Einträge' },
+    })
+    await store.set('de')
+    expect(translateKey('test.plain')).toBe('Hallo')
+    await store.set('en')
+  })
+
+  it('falls back to the key for unknown keys', () => {
+    expect(translateKey('nope.missing')).toBe('nope.missing')
   })
 })
