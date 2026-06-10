@@ -26,3 +26,5 @@ export * from './charts/kpi/kpi'
 // Wave-2 chart components
 export * from './charts/histogram/histogram'
 export * from './charts/boxplot/boxplot'
+export * from './charts/bubble-chart/bubble-chart'
+export * from './charts/combo-chart/combo-chart'

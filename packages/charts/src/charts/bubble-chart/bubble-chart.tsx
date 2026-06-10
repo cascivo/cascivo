@@ -1,0 +1,144 @@
+'use client'
+import { useSignal, useSignals } from '@cascade-ui/core'
+import { ChartFrame } from '../../core/chart-frame'
+import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { Axis } from '../../chrome/axis'
+import { GridLines } from '../../chrome/grid-lines'
+import { linearScale, sqrtScale } from '../../engine/scale'
+import { extent } from '../../engine/stats'
+
+export interface BubbleDatum {
+  x: number
+  y: number
+  size: number
+}
+
+export interface BubbleSeries {
+  name: string
+  data: BubbleDatum[]
+}
+
+export interface BubbleChartProps {
+  series: BubbleSeries[]
+  title: string
+  description?: string
+  width?: number
+  height?: number
+  className?: string
+}
+
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const MIN_R = 3
+const MAX_R = 24
+
+export function BubbleChart({
+  series,
+  title,
+  description,
+  width: fixedWidth,
+  height = 320,
+  className,
+}: BubbleChartProps) {
+  useSignals()
+  const hovered = useSignal<string | null>(null)
+  const margins = DEFAULT_MARGINS
+
+  const allData = series.flatMap((s) => s.data)
+  const [xMin, xMax] = allData.length > 0 ? extent(allData.map((d) => d.x)) : [0, 1]
+  const [yMin, yMax] = allData.length > 0 ? extent(allData.map((d) => d.y)) : [0, 1]
+  const [sMin, sMax] = allData.length > 0 ? extent(allData.map((d) => d.size)) : [0, 1]
+  const sizeMap = sqrtScale([sMin, sMax], [MIN_R, MAX_R])
+
+  const fallback = (
+    <table>
+      <caption>{title}</caption>
+      <thead>
+        <tr>
+          <th>Series</th>
+          <th>X</th>
+          <th>Y</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {series.flatMap((s) =>
+          s.data.map((d, i) => (
+            <tr key={`${s.name}-${i}`}>
+              <td>{s.name}</td>
+              <td>{d.x}</td>
+              <td>{d.y}</td>
+              <td>{d.size}</td>
+            </tr>
+          )),
+        )}
+      </tbody>
+    </table>
+  )
+
+  return (
+    <ChartFrame
+      title={title}
+      description={description}
+      width={fixedWidth}
+      height={height}
+      fallback={fallback}
+      className={className}
+    >
+      {({ width, height: h }) => {
+        const inner = {
+          width: width - margins.left - margins.right,
+          height: h - margins.top - margins.bottom,
+        }
+        if (inner.width <= 0 || allData.length === 0) return null
+
+        const xPad = (xMax - xMin) * 0.05 || 1
+        const yPad = (yMax - yMin) * 0.05 || 1
+        const xScale = linearScale([xMin - xPad, xMax + xPad], [0, inner.width])
+        const yScale = linearScale([yMin - yPad, yMax + yPad], [inner.height, 0])
+
+        return (
+          <g transform={`translate(${margins.left},${margins.top})`}>
+            <GridLines scale={yScale} orientation="y" length={inner.width} />
+            {series.map((s, si) => {
+              const color = COLORS[si % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const isHidden = hovered.value !== null && hovered.value !== s.name
+              return (
+                <g
+                  key={s.name}
+                  opacity={isHidden ? 0.2 : 1}
+                  onMouseEnter={() => {
+                    hovered.value = s.name
+                  }}
+                  onMouseLeave={() => {
+                    hovered.value = null
+                  }}
+                >
+                  {s.data.map((d, di) => (
+                    <circle
+                      key={di}
+                      cx={xScale.map(d.x)}
+                      cy={yScale.map(d.y)}
+                      r={sizeMap(d.size)}
+                      fill={color}
+                      fillOpacity={0.6}
+                      stroke={color}
+                      strokeWidth={1}
+                      aria-label={`${s.name}: x=${d.x}, y=${d.y}, size=${d.size}`}
+                    />
+                  ))}
+                </g>
+              )
+            })}
+            <Axis
+              scale={xScale}
+              orientation="x"
+              length={inner.width}
+              transform={`translate(0,${inner.height})`}
+            />
+            <Axis scale={yScale} orientation="y" length={inner.height} />
+          </g>
+        )
+      }}
+    </ChartFrame>
+  )
+}

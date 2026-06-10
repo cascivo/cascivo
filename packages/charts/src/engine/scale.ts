@@ -62,3 +62,19 @@ export function bandScale<T extends string>(
     },
   }
 }
+
+/** Square-root scale for area-proportional bubble sizes. Maps values in sqrt space. */
+export function sqrtScale(
+  domain: [number, number],
+  range: [number, number],
+): (value: number) => number {
+  const [d0, d1] = domain
+  const [r0, r1] = range
+  const sqrtD0 = Math.sqrt(Math.max(0, d0))
+  const sqrtD1 = Math.sqrt(Math.max(0, d1))
+  const span = sqrtD1 - sqrtD0
+  return (value) => {
+    if (span === 0) return (r0 + r1) / 2
+    return r0 + ((Math.sqrt(Math.max(0, value)) - sqrtD0) / span) * (r1 - r0)
+  }
+}
