@@ -54,6 +54,14 @@ Create four files at `packages/components/src/<name>/`:
    `cn(styles[...], className)`, `data-variant`/`data-size`/`data-state` hooks.
 2. `<name>.module.css` — `@layer cascade.component { }`, every value via
    `--cascade-*` tokens, logical properties, `:has()`/`@container` where useful.
+   **Motion is mandatory for open/close/enter/exit components**: CSS-only via
+   `@starting-style` (+ `transition-behavior: allow-discrete` for top-layer or
+   display-toggling elements), using the semantic motion tokens
+   (`--cascade-motion-enter/exit/emphasis`), animating only compositor-safe
+   properties (`opacity`, `transform`/`translate`/`scale`). Never animate from
+   JS. Reduced motion is handled globally by the tokens layer — do not add
+   per-component `prefers-reduced-motion` rules unless opting _out_ (continuous
+   indicators).
 3. `<name>.meta.ts` — a `ComponentMeta` object (`import type` from
    `@cascade-ui/core`). Fill `props`, `tokens`, `accessibility`, `examples`,
    `tags` honestly from what you built.

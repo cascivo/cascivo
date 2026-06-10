@@ -12,7 +12,7 @@ This document is the ground truth for v2. Like the v1 roadmap, it is structured 
 
 v1 made cascade a component library. v2 makes it the fastest way to ship a complete app:
 
-> An AI agent (or a human) should be able to go from *"build me an admin dashboard with a user table, charts, and dark mode"* to a working, accessible, themed, localized app in one step — using only cascade.
+> An AI agent (or a human) should be able to go from _"build me an admin dashboard with a user table, charts, and dark mode"_ to a working, accessible, themed, localized app in one step — using only cascade.
 
 Every v2 workstream serves that sentence: more components (parity), instant layouts, JSON-driven views, built-in i18n, built-in persistence, charts, cmd-k, and DX/AI tooling that never drifts out of date.
 
@@ -22,13 +22,13 @@ Every v2 workstream serves that sentence: more components (parity), instant layo
 
 ## Current State (start of v2)
 
-| Area | Status |
-| --- | --- |
-| Components | 20 v1 components done (`kbd` in review). TSX + CSS Modules + meta + tests per component. |
-| Packages | `core`, `tokens`, `themes`, `icons`, `cli`, `mcp`, `components` (registry source), `react` (prebuilt npm distribution) |
-| Apps | `docs`, `storybook`, `landing`, `examples/react-vite`, `examples/react-next` |
-| Automation | Dark factory (backlog-driven), registry generation, CI (check/test/build/visual/docs/release workflows), changesets |
-| AI layer | MCP server (6 tools), `registry.json`, component manifests. `skills/` contains only a README — skills not yet implemented. |
+| Area       | Status                                                                                                                     |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Components | 20 v1 components done (`kbd` in review). TSX + CSS Modules + meta + tests per component.                                   |
+| Packages   | `core`, `tokens`, `themes`, `icons`, `cli`, `mcp`, `components` (registry source), `react` (prebuilt npm distribution)     |
+| Apps       | `docs`, `storybook`, `landing`, `examples/react-vite`, `examples/react-next`                                               |
+| Automation | Dark factory (backlog-driven), registry generation, CI (check/test/build/visual/docs/release workflows), changesets        |
+| AI layer   | MCP server (6 tools), `registry.json`, component manifests. `skills/` contains only a README — skills not yet implemented. |
 
 ### Carry-over items / housekeeping (do before or alongside Milestone 1)
 
@@ -43,12 +43,12 @@ Every v2 workstream serves that sentence: more components (parity), instant layo
 
 ### New packages
 
-| Package | npm name | Distribution | Purpose |
-| --- | --- | --- | --- |
-| `packages/i18n` | `@cascade-ui/i18n` | npm | Signal-driven locale store, typed message catalogs, `Intl`-based formatting |
-| `packages/storage` | `@cascade-ui/storage` | npm | Persisted signals over localStorage/IndexedDB, SSR-safe |
-| `packages/charts` | `@cascade-ui/charts` | npm | Chart components, built from scratch (scales/axes/shapes included) |
-| `packages/render` | `@cascade-ui/render` | npm | Runtime JSON → UI renderer |
+| Package            | npm name                            | Distribution       | Purpose                                                                          |
+| ------------------ | ----------------------------------- | ------------------ | -------------------------------------------------------------------------------- |
+| `packages/i18n`    | `@cascade-ui/i18n`                  | npm                | Signal-driven locale store, typed message catalogs, `Intl`-based formatting      |
+| `packages/storage` | `@cascade-ui/storage`               | npm                | Persisted signals over localStorage/IndexedDB, SSR-safe                          |
+| `packages/charts`  | `@cascade-ui/charts`                | npm                | Chart components, built from scratch (scales/axes/shapes included)               |
+| `packages/render`  | `@cascade-ui/render`                | npm                | Runtime JSON → UI renderer                                                       |
 | `packages/layouts` | registry source (like `components`) | copy-paste via CLI | App shells and page layouts — owned code, because layouts get customized heavily |
 
 Charts, i18n, storage, and render are **published packages**, not copy-paste: they have real internal complexity, need bugfix delivery via semver, and users don't customize their internals. Components and layouts stay copy-paste (owned code).
@@ -315,18 +315,18 @@ Phase 6.1 drift gate ──→ as early as possible (cheap, protects everything 
 Phase 6.3 skills / 6.4 update story ──→ after Phase 2 (need layouts/blocks to be useful)
 ```
 
-| Order | Item | Size | Why this position |
-| --- | --- | --- | --- |
-| 1 | Housekeeping + 6.1 drift gate | S | Protects all later work; registry URL is actively wrong |
-| 2 | Phase 1.0 motion system + retrofit | S | Sets the motion/perf bar before the component count triples |
-| 3 | Phase 1.1 + 1.4 (shell, nav, display) | M | Factory-friendly, unblocks layouts |
-| 4 | Phase 3 (i18n + storage) | M | Everything downstream consumes them |
-| 5 | Phase 1.2 DataTable + 1.3 forms + 1.5 cmd-k | L | Flagship DX components, need i18n strings |
-| 6 | Phase 2 layouts + blocks | M | Needs 1.1; unblocks JSON renderer demos |
-| 7 | Phase 4.1 + 4.2 charts | L | Longest pole — start engine as soon as DataTable ships |
-| 8 | Phase 5 JSON renderer → codegen | L | Needs component breadth + layouts |
-| 9 | Phase 6.2–6.5 DX/AI completion | M | Gates and skills verify the whole platform |
-| 10 | Phase 4.3 chart parity tail | M | Demand-driven |
+| Order | Item                                        | Size | Why this position                                           |
+| ----- | ------------------------------------------- | ---- | ----------------------------------------------------------- |
+| 1     | Housekeeping + 6.1 drift gate               | S    | Protects all later work; registry URL is actively wrong     |
+| 2     | Phase 1.0 motion system + retrofit          | S    | Sets the motion/perf bar before the component count triples |
+| 3     | Phase 1.1 + 1.4 (shell, nav, display)       | M    | Factory-friendly, unblocks layouts                          |
+| 4     | Phase 3 (i18n + storage)                    | M    | Everything downstream consumes them                         |
+| 5     | Phase 1.2 DataTable + 1.3 forms + 1.5 cmd-k | L    | Flagship DX components, need i18n strings                   |
+| 6     | Phase 2 layouts + blocks                    | M    | Needs 1.1; unblocks JSON renderer demos                     |
+| 7     | Phase 4.1 + 4.2 charts                      | L    | Longest pole — start engine as soon as DataTable ships      |
+| 8     | Phase 5 JSON renderer → codegen             | L    | Needs component breadth + layouts                           |
+| 9     | Phase 6.2–6.5 DX/AI completion              | M    | Gates and skills verify the whole platform                  |
+| 10    | Phase 4.3 chart parity tail                 | M    | Demand-driven                                               |
 
 ---
 

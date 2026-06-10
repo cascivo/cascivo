@@ -22,8 +22,8 @@
     opacity: 0;
     visibility: hidden;
     transition:
-      opacity var(--cascade-duration-150) var(--cascade-ease-out),
-      visibility var(--cascade-duration-150) var(--cascade-ease-out);
+      opacity var(--cascade-motion-enter),
+      visibility var(--cascade-motion-enter);
 
     &[data-state='visible'] {
       opacity: 1;

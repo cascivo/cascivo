@@ -22,7 +22,7 @@ const COMPONENTS_DIR = join(REPO_ROOT, 'packages', 'components', 'src')
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 
 const BASE_URL = (
-  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/cascade-ui/cascade/main'
+  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main'
 ).replace(/\/+$/, '')
 
 interface RegistryComponent {

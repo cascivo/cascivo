@@ -7,10 +7,52 @@
     max-height: calc(100dvh - var(--cascade-space-16));
     overflow: visible;
 
+    /* Exit animation: transitioning `display`/`overlay` with allow-discrete
+       keeps the dialog visible (and in the top layer) until the fade ends */
+    opacity: 0;
+    scale: 0.96;
+    transition:
+      opacity var(--cascade-motion-exit),
+      scale var(--cascade-motion-exit),
+      display var(--cascade-duration-150) allow-discrete,
+      overlay var(--cascade-duration-150) allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      scale: 1;
+      transition:
+        opacity var(--cascade-motion-enter),
+        scale var(--cascade-motion-enter),
+        display var(--cascade-duration-200) allow-discrete,
+        overlay var(--cascade-duration-200) allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+        scale: 0.96;
+      }
+    }
+
     /* Backdrop */
     &::backdrop {
       background-color: rgb(0 0 0 / 0.5);
       backdrop-filter: blur(2px);
+      opacity: 0;
+      transition:
+        opacity var(--cascade-motion-exit),
+        display var(--cascade-duration-150) allow-discrete,
+        overlay var(--cascade-duration-150) allow-discrete;
+    }
+
+    &[open]::backdrop {
+      opacity: 1;
+      transition:
+        opacity var(--cascade-motion-enter),
+        display var(--cascade-duration-200) allow-discrete,
+        overlay var(--cascade-duration-200) allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+      }
     }
 
     &[data-size='sm'] {

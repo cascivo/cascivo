@@ -28,8 +28,8 @@
     box-shadow: var(--cascade-shadow-lg);
     pointer-events: auto;
     transition:
-      opacity var(--cascade-duration-200) var(--cascade-ease-out),
-      translate var(--cascade-duration-200) var(--cascade-ease-out);
+      opacity var(--cascade-motion-enter),
+      translate var(--cascade-motion-enter);
 
     &[data-state='entering'],
     &[data-state='dismissing'],

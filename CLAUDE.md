@@ -154,6 +154,7 @@ cascade/
 │   ├── tokens/         # @cascade-ui/tokens — CSS design tokens (primitive → semantic → component)
 │   ├── themes/         # @cascade-ui/themes — light.css, dark.css, warm.css
 │   ├── components/     # Registry source — component TSX + CSS + manifest + tests (not published to npm)
+│   ├── react/          # @cascade-ui/react — prebuilt npm distribution of all components (use without copying)
 │   ├── icons/          # @cascade-ui/icons — optional SVG icon components
 │   ├── cli/            # cascade CLI — npx cascade init / add / list / update
 │   └── mcp/            # @cascade-ui/mcp — MCP server exposing component registry to AI agents

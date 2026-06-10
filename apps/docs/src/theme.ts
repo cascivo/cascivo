@@ -10,6 +10,15 @@ export function getStoredTheme(): Theme {
 }
 
 export function applyTheme(theme: Theme): void {
-  document.documentElement.setAttribute('data-theme', theme)
+  const apply = () => document.documentElement.setAttribute('data-theme', theme)
+  // Cross-fade the page on theme change where supported (View Transitions API)
+  if (
+    typeof document.startViewTransition === 'function' &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    document.startViewTransition(apply)
+  } else {
+    apply()
+  }
   localStorage.setItem(STORAGE_KEY, theme)
 }
