@@ -1,0 +1,45 @@
+{
+  "name": "@cascade-ui/react",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Prebuilt cascade design system components — use without copying source",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/cascade.css"
+  },
+  "scripts": {
+    "build": "vp build && tsc -p tsconfig.build.json && node scripts/flatten-types.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@cascade-ui/components": "workspace:*",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}
