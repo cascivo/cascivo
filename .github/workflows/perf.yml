@@ -1,0 +1,44 @@
+name: Performance regression
+
+on:
+  pull_request:
+    paths:
+      - 'packages/components/**'
+      - 'packages/core/**'
+      - 'apps/docs/**'
+  workflow_dispatch:
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter @cascade-ui/docs exec playwright install chromium --with-deps
+
+      - name: Build docs
+        run: pnpm exec vp run @cascade-ui/docs#build
+
+      - name: Run latency benchmarks
+        run: pnpm --filter @cascade-ui/docs run test:perf
+        env:
+          PERF_SCALE: 1
+
+      - name: Upload test report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-report
+          path: apps/docs/test-results
+          retention-days: 7

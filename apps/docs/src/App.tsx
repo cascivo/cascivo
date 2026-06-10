@@ -2,6 +2,7 @@ import { LocationProvider, Route, Router } from 'preact-iso'
 import { Layout } from './Layout'
 import { Home } from './pages/Home'
 import { ComponentPage } from './pages/ComponentPage'
+import { PerfDataTable } from './pages/PerfDataTable'
 import { theme } from './theme'
 
 export function App() {
@@ -15,6 +16,7 @@ export function App() {
       <Layout>
         <Router>
           <Route path="/" component={Home} />
+          <Route path="/perf/data-table" component={PerfDataTable} />
           <Route path="/components/:name" component={ComponentPage} />
           <Route default component={ComponentPage} />
         </Router>
