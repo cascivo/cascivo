@@ -3,7 +3,12 @@ node_modules/
 
 # Build output
 dist/
+storybook-static/
 *.d.ts.map
+
+# Playwright
+test-results/
+playwright-report/
 
 # Tooling cache
 .vp-cache/

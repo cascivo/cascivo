@@ -8,7 +8,8 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: [/^node:/],
+      // Keep runtime deps external — they are declared in package.json.
+      external: [/^node:/, /^@modelcontextprotocol\//, 'zod'],
     },
   },
   test: {

@@ -8,17 +8,21 @@
     "build": "vp build",
     "preview": "vp preview",
     "check": "tsc --noEmit",
-    "test": "echo 'docs: no tests yet'"
+    "test": "echo 'docs: no tests yet'",
+    "test:visual": "playwright test"
   },
   "dependencies": {
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
-    "preact": "catalog:"
+    "preact": "catalog:",
+    "preact-iso": "catalog:"
   },
   "devDependencies": {
+    "@playwright/test": "catalog:",
     "@types/node": "catalog:",
+    "shiki": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

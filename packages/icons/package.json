@@ -12,14 +12,18 @@
     }
   },
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack src/index.tsx",
     "check": "tsc --noEmit",
     "test": "vp test"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "jsdom": "catalog:",
     "react": "catalog:",
+    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },

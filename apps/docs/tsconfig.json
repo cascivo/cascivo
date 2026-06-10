@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "types": ["node"],
     "paths": {
       "react": ["./node_modules/preact/compat"],
@@ -31,7 +32,8 @@
       "@cascade-ui/components/dropdown": ["./src/shims/dropdown.d.ts"],
       "@cascade-ui/components/toast": ["./src/shims/toast.d.ts"],
       "@cascade-ui/components/tabs": ["./src/shims/tabs.d.ts"],
-      "@cascade-ui/components/accordion": ["./src/shims/accordion.d.ts"]
+      "@cascade-ui/components/accordion": ["./src/shims/accordion.d.ts"],
+      "@cascade-ui/components/kbd": ["./src/shims/kbd.d.ts"]
     }
   },
   "include": ["src"]

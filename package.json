@@ -7,11 +7,16 @@
     "build": "vp run -r build",
     "test": "vp run -r test",
     "check": "vp check",
+    "registry:generate": "node scripts/registry/generate.ts",
     "dev:docs": "vp run @cascade-ui/docs#dev",
     "dev:landing": "vp run @cascade-ui/landing#dev",
-    "ready": "vp check && vp run -r check && vp run -r test && vp run -r build"
+    "ready": "vp check && vp run -r check && vp run -r test && vp run -r build",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --no-frozen-lockfile",
+    "release": "vp run -r build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {
