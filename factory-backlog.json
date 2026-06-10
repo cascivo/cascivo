@@ -194,8 +194,8 @@
       "category": "navigation",
       "priority": 22,
       "spec": "Styled anchor. Variants: standalone (default) and inline (for use within prose). Optional external prop adds target=_blank, rel=noreferrer and a visual external indicator via CSS. Extends AnchorHTMLAttributes. Pure display - no machine, no signals.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -203,8 +203,8 @@
       "category": "navigation",
       "priority": 23,
       "spec": "Breadcrumb trail. Props: items {label, href?}[], maxVisible? (collapses middle items to an ellipsis when exceeded). Renders nav[aria-label=Breadcrumb] > ol > li with separators via CSS pseudo-elements (logical properties). Last item gets aria-current=page and renders as text.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -212,8 +212,8 @@
       "category": "navigation",
       "priority": 24,
       "spec": "App top bar (UI shell header). Props: brand (ReactNode), links {label, href, active?}[], actions slot (ReactNode), sticky?. role=banner, nav landmark for links. Container-query responsive: link labels collapse at narrow widths.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -221,8 +221,8 @@
       "category": "navigation",
       "priority": 25,
       "spec": "Collapsible sidebar navigation. Props: items NavItem[] ({label, href?, icon?, active?, items? one nesting level}), collapsed (controlled) / defaultCollapsed, onCollapsedChange, ariaLabel. Group expansion is genuine internal state (signal). Rail mode when collapsed shows icons only. Group expand/collapse animates via the grid-template-rows 0fr/1fr trick with motion tokens.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -230,8 +230,8 @@
       "category": "navigation",
       "priority": 26,
       "spec": "Pagination bar. Props: page, pageSize, totalItems, onPageChange, onPageSizeChange?, pageSizeOptions?, labels? (English defaults, all overridable). Renders item-range text, page-size native select, page jumper select, prev/next buttons. nav[aria-label=Pagination], buttons disabled at bounds.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -239,8 +239,8 @@
       "category": "navigation",
       "priority": 27,
       "spec": "Multi-step progress for wizards. Props: steps {label, description?}[], currentIndex, vertical?. Step states complete/current/incomplete derived from currentIndex (no machine). ol with aria-current=step on the current item; check glyph on completed steps.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -248,8 +248,8 @@
       "category": "display",
       "priority": 28,
       "spec": "Compact label chip. Variants: default, info, success, warning, error. Sizes: sm, md. Optional onDismiss renders an accessible close button. Pure display.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -257,8 +257,8 @@
       "category": "display",
       "priority": 29,
       "spec": "Loading placeholder. Variants: text (lines prop), circle, rect; width/height props. Continuous shimmer animation with literal duration plus prefers-reduced-motion static fallback (like Spinner). aria-hidden - screen readers see nothing.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -266,8 +266,8 @@
       "category": "feedback",
       "priority": 30,
       "spec": "Linear progress. Props: value 0-100 or indeterminate, label?, helperText?, size sm/md, status active/success/error. role=progressbar with aria-valuenow/min/max (omitted when indeterminate). Indeterminate sweep uses a literal duration + reduced-motion fallback.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -275,8 +275,8 @@
       "category": "display",
       "priority": 31,
       "spec": "Empty/zero-data placeholder. Props: icon? (ReactNode), title, description?, action? (ReactNode), size md/lg. Centered column layout. Pure display.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -284,8 +284,8 @@
       "category": "overlay",
       "priority": 32,
       "spec": "Kebab icon-button menu for row/card actions. Composes the existing Dropdown menu mechanics with a built-in icon trigger. Props: items (same shape as Dropdown), onSelect, placement bottom-start/bottom-end, ariaLabel (default More actions), size sm/md. Menu open/close animated with motion tokens + @starting-style.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -293,8 +293,8 @@
       "category": "inputs",
       "priority": 33,
       "spec": "Search input. Props: value/defaultValue, onChange, onSearch (debounced, debounceMs default 300), placeholder, size, label?. input[type=search] with leading search glyph and a clear button that appears via CSS :has/value tracking; clear restores focus and fires onSearch with empty string.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 1
     },
     {
@@ -320,8 +320,8 @@
       "category": "inputs",
       "priority": 34,
       "spec": "Numeric input with steppers. Props: value/defaultValue, onChange(number|null), min/max/step, precision?, formatOptions? (Intl.NumberFormat applied on blur, raw while editing), label/hint/error, size, disabled. inputmode=numeric, stepper buttons respect bounds, ArrowUp/ArrowDown step. idle/focused/error machine like Input.",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
