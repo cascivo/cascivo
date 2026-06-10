@@ -14,7 +14,7 @@ export interface CascadeConfig {
 }
 
 export const DEFAULT_CONFIG: CascadeConfig = {
-  registry: 'https://raw.githubusercontent.com/cascade-ui/cascade/main/registry.json',
+  registry: 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/registry.json',
   outputDir: 'src/components/ui',
   theme: 'light',
 }
