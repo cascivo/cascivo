@@ -42,6 +42,11 @@ export const builtin = {
   breadcrumb: defineMessages('cascade.breadcrumb', {
     nav: 'Breadcrumb',
   }),
+  combobox: defineMessages('cascade.combobox', {
+    placeholder: 'Select an option',
+    empty: 'No options found',
+    clear: 'Clear selection',
+  }),
   dataTable: defineMessages('cascade.dataTable', {
     search: 'Search',
     empty: 'No data',
@@ -105,6 +110,11 @@ defineCatalog(builtin.commandMenu, 'de', {
 })
 defineCatalog(builtin.breadcrumb, 'de', {
   nav: 'Navigationspfad',
+})
+defineCatalog(builtin.combobox, 'de', {
+  placeholder: 'Option auswählen',
+  empty: 'Keine Optionen gefunden',
+  clear: 'Auswahl löschen',
 })
 defineCatalog(builtin.dataTable, 'de', {
   search: 'Suchen',
