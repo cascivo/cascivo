@@ -311,7 +311,7 @@
       "category": "inputs",
       "priority": 35,
       "spec": "Filterable select. Props: options {value,label,disabled?}[], value/onChange (string or string[] with multiple), multiple?, label/hint/error like Select, placeholder, loading? (async options driven by onInputChange), renderOption?. Input + popover listbox, built-in filtering, multi mode renders inline dismissible tags. Machine closed/open driven by component. A11y: role=combobox, aria-expanded, aria-activedescendant, full arrow/Enter/Escape keyboard support. Listbox animated with motion tokens. NOTE: build on the dropdown open/close machine + positioning pattern and the select field styling; listbox animated with @starting-style; strings via builtin catalog (combobox namespace, en+de).",
-      "status": "pending",
+      "status": "in-progress",
       "milestone": null,
       "attempts": 0
     },
