@@ -16,6 +16,7 @@
     "./combobox": "./src/combobox/combobox.tsx",
     "./command-menu": "./src/command-menu/command-menu.tsx",
     "./data-table": "./src/data-table/data-table.tsx",
+    "./date-picker": "./src/date-picker/date-picker.tsx",
     "./dropdown": "./src/dropdown/dropdown.tsx",
     "./empty-state": "./src/empty-state/empty-state.tsx",
     "./form": "./src/form/form.tsx",

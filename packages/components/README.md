@@ -16,10 +16,13 @@
 | button             | inputs     | Triggers an action or event                                                                                                                                           |
 | card               | display    | Container for grouping related content                                                                                                                                |
 | checkbox           | inputs     | Binary toggle for forms, with indeterminate support                                                                                                                   |
+| combobox           | inputs     | Filterable single-select with an animated custom listbox, built on the dropdown open/close machine                                                                    |
 | command-menu       | overlay    | Cmd+K command palette with fuzzy search over grouped commands                                                                                                         |
 | data-table         | display    | Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets |
+| date-picker        | inputs     | An accessible date-picker with a calendar popover.                                                                                                                    |
 | dropdown           | overlay    | Menu of actions revealed from a trigger                                                                                                                               |
 | empty-state        | display    | Placeholder for views that have no data to display                                                                                                                    |
+| form               | inputs     | Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper                                                         |
 | header             | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
 | input              | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
 | kbd                | display    | Displays a keyboard key or shortcut                                                                                                                                   |
@@ -41,6 +44,7 @@
 | tabs               | navigation | Switch between related panels of content                                                                                                                              |
 | tag                | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                         |
 | textarea           | inputs     | Multi-line text input with optional label, hint, and error state                                                                                                      |
+| time-picker        | inputs     | Native time input wrapper with label, hint, error, and size variants                                                                                                  |
 | toast              | overlay    | Transient notification surfaced via the useToast hook                                                                                                                 |
 | toggle             | inputs     | On/off switch built as an accessible button                                                                                                                           |
 | tooltip            | overlay    | Contextual label shown on hover or focus                                                                                                                              |

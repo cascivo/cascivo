@@ -42,6 +42,12 @@ export const builtin = {
   breadcrumb: defineMessages('cascade.breadcrumb', {
     nav: 'Breadcrumb',
   }),
+  datePicker: defineMessages('cascade.datePicker', {
+    placeholder: 'Select a date',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    clear: 'Clear date',
+  }),
   combobox: defineMessages('cascade.combobox', {
     placeholder: 'Select an option',
     empty: 'No options found',
@@ -110,6 +116,12 @@ defineCatalog(builtin.commandMenu, 'de', {
 })
 defineCatalog(builtin.breadcrumb, 'de', {
   nav: 'Navigationspfad',
+})
+defineCatalog(builtin.datePicker, 'de', {
+  placeholder: 'Datum auswählen',
+  previousMonth: 'Vorheriger Monat',
+  nextMonth: 'Nächster Monat',
+  clear: 'Datum löschen',
 })
 defineCatalog(builtin.combobox, 'de', {
   placeholder: 'Option auswählen',

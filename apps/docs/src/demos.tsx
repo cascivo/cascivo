@@ -42,6 +42,7 @@ import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-m
 import { Form, useForm } from '@cascade-ui/components/form'
 import { Combobox } from '@cascade-ui/components/combobox'
 import { TimePicker } from '@cascade-ui/components/time-picker'
+import { DatePicker } from '@cascade-ui/components/date-picker'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -555,6 +556,14 @@ export const demos: Record<string, () => JSX.Element> = {
       <Combobox label="Country" options={[{ value: 'us', label: 'United States' }, { value: 'de', label: 'Germany' }, { value: 'fr', label: 'France' }]} />
       <Combobox label="Clearable" options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} defaultValue="a" clearable />
       <Combobox label="With error" options={[{ value: 'x', label: 'Option X' }]} error="Required" />
+    </Col>
+  ),
+  'date-picker': () => (
+    <Col>
+      <DatePicker label="Appointment" />
+      <DatePicker label="Clearable" defaultValue="2024-06-15" clearable />
+      <DatePicker label="With error" error="Date required" />
+      <DatePicker label="Disabled" defaultValue="2024-01-01" disabled />
     </Col>
   ),
 }

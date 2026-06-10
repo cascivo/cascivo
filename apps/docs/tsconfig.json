@@ -51,6 +51,7 @@
       "@cascade-ui/components/command-menu": ["./src/shims/command-menu.d.ts"],
       "@cascade-ui/components/form": ["./src/shims/form.d.ts"],
       "@cascade-ui/components/combobox": ["./src/shims/combobox.d.ts"],
+      "@cascade-ui/components/date-picker": ["./src/shims/date-picker.d.ts"],
       "@cascade-ui/components/time-picker": ["./src/shims/time-picker.d.ts"]
     }
   },
