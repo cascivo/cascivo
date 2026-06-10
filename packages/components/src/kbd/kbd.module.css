@@ -1,0 +1,32 @@
+@layer cascade.component {
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--cascade-font-mono);
+    font-weight: var(--cascade-font-medium);
+    line-height: 1;
+    color: var(--cascade-color-text-subtle);
+    background-color: var(--cascade-color-surface-raised);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-sm);
+    box-shadow: inset 0 -1px 0 var(--cascade-color-border-strong);
+    white-space: nowrap;
+
+    &[data-size='sm'] {
+      min-inline-size: 1.25rem;
+      padding-block: var(--cascade-space-0);
+      padding-inline: var(--cascade-space-1);
+      font-size: var(--cascade-text-xs);
+      block-size: 1.25rem;
+    }
+
+    &[data-size='md'] {
+      min-inline-size: 1.5rem;
+      padding-block: var(--cascade-space-1);
+      padding-inline: var(--cascade-space-2);
+      font-size: var(--cascade-text-sm);
+      block-size: 1.5rem;
+    }
+  }
+}
