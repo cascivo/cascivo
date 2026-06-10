@@ -177,6 +177,9 @@ importers:
 
   apps/landing:
     dependencies:
+      '@cascade-ui/components':
+        specifier: workspace:*
+        version: link:../../packages/components
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core

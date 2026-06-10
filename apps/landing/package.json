@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "echo 'landing: app source added in a later plan'",
+    "build": "vp build",
     "preview": "vp preview",
+    "check": "tsc --noEmit",
     "test": "echo 'landing: no tests yet'"
   },
   "dependencies": {
+    "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
