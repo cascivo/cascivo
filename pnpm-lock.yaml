@@ -131,6 +131,46 @@ importers:
         specifier: 'catalog:'
         version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
 
+  apps/examples/json-playground:
+    dependencies:
+      '@cascade-ui/core':
+        specifier: workspace:*
+        version: link:../../../packages/core
+      '@cascade-ui/i18n':
+        specifier: workspace:*
+        version: link:../../../packages/i18n
+      '@cascade-ui/react':
+        specifier: workspace:*
+        version: link:../../../packages/react
+      '@cascade-ui/render':
+        specifier: workspace:*
+        version: link:../../../packages/render
+      '@cascade-ui/themes':
+        specifier: workspace:*
+        version: link:../../../packages/themes
+      '@cascade-ui/tokens':
+        specifier: workspace:*
+        version: link:../../../packages/tokens
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
+
   apps/examples/react-next:
     dependencies:
       '@cascade-ui/core':
@@ -442,6 +482,9 @@ importers:
 
   packages/layouts:
     devDependencies:
+      '@cascade-ui/charts':
+        specifier: workspace:*
+        version: link:../charts
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../core

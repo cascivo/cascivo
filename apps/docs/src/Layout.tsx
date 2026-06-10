@@ -62,6 +62,15 @@ export function Layout({ children }: { children: ComponentChildren }) {
           onClick={() => setOpen(false)}
         >
           <nav>
+            <div class="nav-group">
+              <div class="nav-group-label">Explore</div>
+              <a href="/ai" class={`nav-link ${path === '/ai' ? 'active' : ''}`}>
+                AI / MCP
+              </a>
+              <a href="/charts" class={`nav-link ${path === '/charts' ? 'active' : ''}`}>
+                Charts
+              </a>
+            </div>
             {nav.map((group) => (
               <div class="nav-group" key={group.category}>
                 <div class="nav-group-label">{group.label}</div>

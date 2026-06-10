@@ -53,7 +53,8 @@
       "@cascade-ui/components/combobox": ["./src/shims/combobox.d.ts"],
       "@cascade-ui/components/date-picker": ["./src/shims/date-picker.d.ts"],
       "@cascade-ui/components/file-uploader": ["./src/shims/file-uploader.d.ts"],
-      "@cascade-ui/components/time-picker": ["./src/shims/time-picker.d.ts"]
+      "@cascade-ui/components/time-picker": ["./src/shims/time-picker.d.ts"],
+      "@cascade-ui/charts": ["./src/shims/charts.d.ts"]
     }
   },
   "include": ["src"]

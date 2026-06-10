@@ -1,6 +1,7 @@
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
+import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
 import { list } from './commands/list.js'
 import { theme } from './commands/theme.js'
@@ -21,6 +22,7 @@ Commands:
   list [--installed]       List available components
   update <component>       Update an installed component to the latest version
   theme add <name>         Install a theme (light | dark | warm)
+  generate <config.json>   Generate TSX from a ViewConfig JSON file
 
 Run "cascade <command> --help" for details.`
 
@@ -42,6 +44,9 @@ export async function run(args: string[]): Promise<void> {
       break
     case 'theme':
       await theme(rest)
+      break
+    case 'generate':
+      await generate(rest, await loadConfig())
       break
     case undefined:
     case '--help':

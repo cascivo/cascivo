@@ -11,6 +11,7 @@
     "test": "vp test"
   },
   "devDependencies": {
+    "@cascade-ui/charts": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/i18n": "workspace:*",
     "@cascade-ui/react": "workspace:*",
