@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -26,7 +26,7 @@ function workspaceDirs(): string[] {
       }
     }
   }
-  return dirs
+  return dirs.sort()
 }
 
 function componentsTable(): string {
@@ -66,5 +66,9 @@ for (const dir of targets) {
   const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')) as Pkg
   writeFileSync(join(dir, 'README.md'), buildReadme(dir, pkg, dir === root))
 }
-execSync('pnpm exec vp fmt "**/README.md"', { cwd: root, stdio: 'inherit' })
+const fmt = spawnSync('pnpm', ['exec', 'vp', 'fmt', '**/README.md'], {
+  cwd: root,
+  stdio: 'inherit',
+})
+if (fmt.status !== 0) process.exit(fmt.status ?? 1)
 console.log(`Generated ${targets.length} READMEs`)
