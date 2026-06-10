@@ -65,6 +65,7 @@ npx cascade add button
 | toast              | overlay    | Transient notification surfaced via the useToast hook                                                                                                                 |
 | toggle             | inputs     | On/off switch built as an accessible button                                                                                                                           |
 | tooltip            | overlay    | Contextual label shown on hover or focus                                                                                                                              |
+| layout/stack       | layout     | Flex layout primitive for vertical or horizontal stacking with gap control.                                                                                           |
 
 ---
 

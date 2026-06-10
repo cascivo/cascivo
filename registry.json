@@ -4,6 +4,7 @@
   "components": [
     {
       "name": "accordion",
+      "type": "component",
       "description": "Vertically stacked, collapsible content sections",
       "category": "navigation",
       "version": "0.0.0",
@@ -67,6 +68,7 @@
     },
     {
       "name": "alert",
+      "type": "component",
       "description": "Highlights a short, important message inline",
       "category": "display",
       "version": "0.0.0",
@@ -150,6 +152,7 @@
     },
     {
       "name": "avatar",
+      "type": "component",
       "description": "Displays a user image with initials fallback",
       "category": "display",
       "version": "0.0.0",
@@ -226,6 +229,7 @@
     },
     {
       "name": "badge",
+      "type": "component",
       "description": "Small status label or category indicator",
       "category": "display",
       "version": "0.0.0",
@@ -288,6 +292,7 @@
     },
     {
       "name": "breadcrumb",
+      "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
       "category": "navigation",
       "version": "0.0.0",
@@ -357,6 +362,7 @@
     },
     {
       "name": "button",
+      "type": "component",
       "description": "Triggers an action or event",
       "category": "inputs",
       "version": "0.0.0",
@@ -438,6 +444,7 @@
     },
     {
       "name": "card",
+      "type": "component",
       "description": "Container for grouping related content",
       "category": "display",
       "version": "0.0.0",
@@ -491,6 +498,7 @@
     },
     {
       "name": "checkbox",
+      "type": "component",
       "description": "Binary toggle for forms, with indeterminate support",
       "category": "inputs",
       "version": "0.0.0",
@@ -565,6 +573,7 @@
     },
     {
       "name": "combobox",
+      "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
       "category": "inputs",
       "version": "0.0.0",
@@ -687,6 +696,7 @@
     },
     {
       "name": "command-menu",
+      "type": "component",
       "description": "Cmd+K command palette with fuzzy search over grouped commands",
       "category": "overlay",
       "version": "0.0.0",
@@ -793,6 +803,7 @@
     },
     {
       "name": "data-table",
+      "type": "component",
       "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
       "category": "display",
       "version": "0.0.0",
@@ -967,6 +978,7 @@
     },
     {
       "name": "date-picker",
+      "type": "component",
       "description": "An accessible date-picker with a calendar popover.",
       "category": "inputs",
       "version": "0.0.0",
@@ -1100,6 +1112,7 @@
     },
     {
       "name": "dropdown",
+      "type": "component",
       "description": "Menu of actions revealed from a trigger",
       "category": "overlay",
       "version": "0.0.0",
@@ -1173,6 +1186,7 @@
     },
     {
       "name": "empty-state",
+      "type": "component",
       "description": "Placeholder for views that have no data to display",
       "category": "display",
       "version": "0.0.0",
@@ -1245,6 +1259,7 @@
     },
     {
       "name": "file-uploader",
+      "type": "component",
       "description": "Drag-and-drop file upload zone with file list and status indicators.",
       "category": "inputs",
       "version": "0.0.0",
@@ -1364,6 +1379,7 @@
     },
     {
       "name": "form",
+      "type": "component",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
       "category": "inputs",
       "version": "0.0.0",
@@ -1420,6 +1436,7 @@
     },
     {
       "name": "header",
+      "type": "component",
       "description": "App top bar with brand, primary navigation links, and an actions slot",
       "category": "navigation",
       "version": "0.0.0",
@@ -1502,6 +1519,7 @@
     },
     {
       "name": "input",
+      "type": "component",
       "description": "Text input field with optional label, hint, and error state",
       "category": "inputs",
       "version": "0.0.0",
@@ -1581,6 +1599,7 @@
     },
     {
       "name": "kbd",
+      "type": "component",
       "description": "Displays a keyboard key or shortcut",
       "category": "display",
       "version": "0.0.0",
@@ -1638,6 +1657,7 @@
     },
     {
       "name": "link",
+      "type": "component",
       "description": "Styled anchor for navigation, standalone or inline within prose",
       "category": "navigation",
       "version": "0.0.0",
@@ -1713,6 +1733,7 @@
     },
     {
       "name": "modal",
+      "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
       "category": "overlay",
       "version": "0.0.0",
@@ -1782,6 +1803,7 @@
     },
     {
       "name": "number-input",
+      "type": "component",
       "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
       "category": "inputs",
       "version": "0.0.0",
@@ -1918,6 +1940,7 @@
     },
     {
       "name": "overflow-menu",
+      "type": "component",
       "description": "Kebab icon button revealing a menu of row-level actions",
       "category": "overlay",
       "version": "0.0.0",
@@ -2005,6 +2028,7 @@
     },
     {
       "name": "pagination",
+      "type": "component",
       "description": "Controls for navigating paged data sets, with page size selection",
       "category": "navigation",
       "version": "0.0.0",
@@ -2107,6 +2131,7 @@
     },
     {
       "name": "progress-bar",
+      "type": "component",
       "description": "Shows determinate or indeterminate progress of a task",
       "category": "feedback",
       "version": "0.0.0",
@@ -2196,6 +2221,7 @@
     },
     {
       "name": "progress-indicator",
+      "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
       "category": "navigation",
       "version": "0.0.0",
@@ -2269,6 +2295,7 @@
     },
     {
       "name": "radio",
+      "type": "component",
       "description": "Single choice from a set, grouped with RadioGroup",
       "category": "inputs",
       "version": "0.0.0",
@@ -2333,6 +2360,7 @@
     },
     {
       "name": "search",
+      "type": "component",
       "description": "Search input with debounced search callback and clear button",
       "category": "inputs",
       "version": "0.0.0",
@@ -2454,6 +2482,7 @@
     },
     {
       "name": "select",
+      "type": "component",
       "description": "Native select menu styled to match the design system",
       "category": "inputs",
       "version": "0.0.0",
@@ -2538,6 +2567,7 @@
     },
     {
       "name": "separator",
+      "type": "component",
       "description": "Visual or semantic divider between content",
       "category": "display",
       "version": "0.0.0",
@@ -2591,6 +2621,7 @@
     },
     {
       "name": "side-nav",
+      "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
       "category": "navigation",
       "version": "0.0.0",
@@ -2696,6 +2727,7 @@
     },
     {
       "name": "skeleton",
+      "type": "component",
       "description": "Animated loading placeholder that mirrors the shape of pending content",
       "category": "display",
       "version": "0.0.0",
@@ -2771,6 +2803,7 @@
     },
     {
       "name": "slider",
+      "type": "component",
       "description": "Range input for selecting a value within bounds",
       "category": "inputs",
       "version": "0.0.0",
@@ -2856,6 +2889,7 @@
     },
     {
       "name": "spinner",
+      "type": "component",
       "description": "Indeterminate loading indicator",
       "category": "feedback",
       "version": "0.0.0",
@@ -2909,6 +2943,7 @@
     },
     {
       "name": "tabs",
+      "type": "component",
       "description": "Switch between related panels of content",
       "category": "navigation",
       "version": "0.0.0",
@@ -2966,6 +3001,7 @@
     },
     {
       "name": "tag",
+      "type": "component",
       "description": "Compact chip for labeling, categorizing, or filtering content",
       "category": "display",
       "version": "0.0.0",
@@ -3048,6 +3084,7 @@
     },
     {
       "name": "textarea",
+      "type": "component",
       "description": "Multi-line text input with optional label, hint, and error state",
       "category": "inputs",
       "version": "0.0.0",
@@ -3128,6 +3165,7 @@
     },
     {
       "name": "time-picker",
+      "type": "component",
       "description": "Native time input wrapper with label, hint, error, and size variants",
       "category": "inputs",
       "version": "0.0.0",
@@ -3237,6 +3275,7 @@
     },
     {
       "name": "toast",
+      "type": "component",
       "description": "Transient notification surfaced via the useToast hook",
       "category": "overlay",
       "version": "0.0.0",
@@ -3302,6 +3341,7 @@
     },
     {
       "name": "toggle",
+      "type": "component",
       "description": "On/off switch built as an accessible button",
       "category": "inputs",
       "version": "0.0.0",
@@ -3381,6 +3421,7 @@
     },
     {
       "name": "tooltip",
+      "type": "component",
       "description": "Contextual label shown on hover or focus",
       "category": "overlay",
       "version": "0.0.0",
@@ -3441,6 +3482,79 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["overlay", "hint", "popover"]
+      }
+    },
+    {
+      "name": "layout/stack",
+      "type": "layout",
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "flex", "stack", "spacing"],
+      "meta": {
+        "name": "Stack",
+        "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "direction",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "description": "Flex direction"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          },
+          {
+            "name": "align",
+            "type": "'start'|'center'|'end'|'stretch'",
+            "required": false,
+            "description": "align-items"
+          },
+          {
+            "name": "justify",
+            "type": "'start'|'center'|'end'|'between'",
+            "required": false,
+            "description": "justify-content"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "description": "Allow wrapping"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Vertical",
+            "code": "<Stack gap={4}><div>A</div><div>B</div></Stack>",
+            "description": "Default vertical stack"
+          },
+          {
+            "title": "Horizontal",
+            "code": "<Stack direction=\"horizontal\" gap={2}><div>A</div><div>B</div></Stack>",
+            "description": "Row layout"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "flex", "stack", "spacing"]
       }
     }
   ]

@@ -1,0 +1,53 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Stack',
+  description: 'Flex layout primitive for vertical or horizontal stacking with gap control.',
+  category: 'layout',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'direction',
+      type: "'vertical' | 'horizontal'",
+      required: false,
+      description: 'Flex direction',
+    },
+    {
+      name: 'gap',
+      type: '1|2|3|4|5|6|8|10|12',
+      required: false,
+      description: 'Spacing token step',
+    },
+    {
+      name: 'align',
+      type: "'start'|'center'|'end'|'stretch'",
+      required: false,
+      description: 'align-items',
+    },
+    {
+      name: 'justify',
+      type: "'start'|'center'|'end'|'between'",
+      required: false,
+      description: 'justify-content',
+    },
+    { name: 'wrap', type: 'boolean', required: false, description: 'Allow wrapping' },
+  ],
+  tokens: ['--cascade-space-*'],
+  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  examples: [
+    {
+      title: 'Vertical',
+      code: '<Stack gap={4}><div>A</div><div>B</div></Stack>',
+      description: 'Default vertical stack',
+    },
+    {
+      title: 'Horizontal',
+      code: '<Stack direction="horizontal" gap={2}><div>A</div><div>B</div></Stack>',
+      description: 'Row layout',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['layout', 'flex', 'stack', 'spacing'],
+}

@@ -1,0 +1,16 @@
+@layer cascade.component {
+  .stack {
+    display: flex;
+    gap: var(--_stack-gap, var(--cascade-space-4));
+
+    &[data-direction='vertical'] {
+      flex-direction: column;
+    }
+    &[data-direction='horizontal'] {
+      flex-direction: row;
+    }
+    &[data-wrap] {
+      flex-wrap: wrap;
+    }
+  }
+}

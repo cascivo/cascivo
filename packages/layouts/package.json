@@ -1,0 +1,29 @@
+{
+  "name": "@cascade-ui/layouts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Registry source — copy-paste app shells and page layouts (not published)",
+  "type": "module",
+  "exports": {},
+  "scripts": {
+    "build": "echo 'layouts: copy-paste only, no build'",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/i18n": "workspace:*",
+    "@cascade-ui/react": "workspace:*",
+    "@cascade-ui/storage": "workspace:*",
+    "@testing-library/jest-dom": "^6",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "^14",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
