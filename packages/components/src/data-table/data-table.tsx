@@ -1,6 +1,7 @@
 'use client'
-import { cn, useComputed, useSignal, useSignals } from '@cascade-ui/core'
-import { Fragment, useId, type ReactNode } from 'react'
+import { batch, cn, useComputed, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
+import { Fragment, useId, type KeyboardEvent, type ReactNode } from 'react'
 import { Button } from '../button/button'
 import { Checkbox } from '../checkbox/checkbox'
 import styles from './data-table.module.css'
@@ -54,15 +55,6 @@ export interface DataTableProps<Row> {
   className?: string
 }
 
-const defaultLabels = {
-  search: 'Search',
-  empty: 'No data',
-  selectAll: 'Select all rows',
-  selectRow: 'Select row',
-  itemsSelected: (n: number) => `${n} selected`,
-  expandRow: 'Expand row',
-}
-
 interface Entry<Row> {
   row: Row
   id: string
@@ -102,7 +94,16 @@ export function DataTable<Row>({
 }: DataTableProps<Row>) {
   useSignals()
   const baseId = useId()
-  const l = { ...defaultLabels, ...labels }
+  const resolvedLabels = {
+    search: labels?.search ?? t(builtin.dataTable.search),
+    empty: labels?.empty ?? t(builtin.dataTable.empty),
+    selectAll: labels?.selectAll ?? t(builtin.dataTable.selectAll),
+    selectRow: labels?.selectRow ?? t(builtin.dataTable.selectRow),
+    itemsSelected: (n: number) =>
+      labels?.itemsSelected?.(n) ?? t(builtin.dataTable.itemsSelected, { count: n }),
+    expandRow: labels?.expandRow ?? t(builtin.dataTable.expandRow),
+  }
+  const l = resolvedLabels
 
   // Sync props into signals during render so computeds see fresh data.
   const rowsSignal = useSignal(rows)
@@ -169,9 +170,39 @@ export function DataTable<Row>({
     if (!current || current.key !== key) next = { key, direction: 'asc' }
     else if (current.direction === 'asc') next = { key, direction: 'desc' }
     else next = undefined
-    if (sort === undefined) sortSignal.value = next
-    pageSignal.value = 1
+    batch(() => {
+      if (sort === undefined) sortSignal.value = next
+      pageSignal.value = 1
+    })
     onSortChange?.(next)
+  }
+
+  const onTableKeyDown = (e: KeyboardEvent<HTMLTableElement>) => {
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return
+    const table = e.currentTarget
+    const focusables = Array.from(
+      table.querySelectorAll<HTMLElement>('th button, td button, td input[type="checkbox"]'),
+    )
+    const index = focusables.indexOf(document.activeElement as HTMLElement)
+    if (index === -1) return
+    e.preventDefault()
+    const row = (el: HTMLElement) => el.closest('tr')
+    let next: HTMLElement | undefined
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      const dir = e.key === 'ArrowRight' ? 1 : -1
+      const candidate = focusables[index + dir]
+      if (candidate && row(candidate) === row(focusables[index]!)) next = candidate
+    } else {
+      const dir = e.key === 'ArrowDown' ? 1 : -1
+      const current = focusables[index]!
+      for (let i = index + dir; i >= 0 && i < focusables.length; i += dir) {
+        if (row(focusables[i]!) !== row(current)) {
+          next = focusables[i]
+          break
+        }
+      }
+    }
+    next?.focus()
   }
 
   const setSelected = (ids: string[]) => {
@@ -226,6 +257,9 @@ export function DataTable<Row>({
       data-zebra={zebra || undefined}
       data-sticky-header={stickyHeader || undefined}
     >
+      <span aria-live="polite" className={styles['srOnly']}>
+        {selectedSignal.value.length > 0 ? l.itemsSelected(selectedSignal.value.length) : ''}
+      </span>
       {(title !== undefined || description !== undefined || searchable) && (
         <div className={styles['toolbar']}>
           {(title !== undefined || description !== undefined) && (
@@ -280,6 +314,7 @@ export function DataTable<Row>({
           aria-labelledby={title !== undefined ? titleId : undefined}
           aria-describedby={description !== undefined ? descriptionId : undefined}
           aria-busy={loading || undefined}
+          onKeyDown={onTableKeyDown}
         >
           <colgroup>
             {renderExpandedRow && <col className={styles['controlCol']} />}

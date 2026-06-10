@@ -36,9 +36,19 @@ export const builtin = {
     label: 'Command menu',
     placeholder: 'Type a command or search…',
     empty: 'No results found',
+    back: 'Back',
+    loading: 'Loading…',
   }),
   breadcrumb: defineMessages('cascade.breadcrumb', {
     nav: 'Breadcrumb',
+  }),
+  dataTable: defineMessages('cascade.dataTable', {
+    search: 'Search',
+    empty: 'No data',
+    selectAll: 'Select all rows',
+    selectRow: 'Select row',
+    itemsSelected: '{count} selected',
+    expandRow: 'Expand row',
   }),
   overflowMenu: defineMessages('cascade.overflowMenu', {
     trigger: 'More actions',
@@ -90,9 +100,19 @@ defineCatalog(builtin.commandMenu, 'de', {
   label: 'Befehlsmenü',
   placeholder: 'Befehl oder Suche eingeben…',
   empty: 'Keine Ergebnisse',
+  back: 'Zurück',
+  loading: 'Wird geladen…',
 })
 defineCatalog(builtin.breadcrumb, 'de', {
   nav: 'Navigationspfad',
+})
+defineCatalog(builtin.dataTable, 'de', {
+  search: 'Suchen',
+  empty: 'Keine Daten',
+  selectAll: 'Alle Zeilen auswählen',
+  selectRow: 'Zeile auswählen',
+  itemsSelected: '{count} ausgewählt',
+  expandRow: 'Zeile aufklappen',
 })
 defineCatalog(builtin.overflowMenu, 'de', {
   trigger: 'Weitere Aktionen',
