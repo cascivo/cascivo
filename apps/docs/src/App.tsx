@@ -1,6 +1,7 @@
 import { LocationProvider, Route, Router } from 'preact-iso'
 import { Layout } from './Layout'
 import { Home } from './pages/Home'
+import { AiPage } from './pages/AiPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { theme } from './theme'
@@ -16,6 +17,7 @@ export function App() {
       <Layout>
         <Router>
           <Route path="/" component={Home} />
+          <Route path="/ai" component={AiPage} />
           <Route path="/perf/data-table" component={PerfDataTable} />
           <Route path="/components/:name" component={ComponentPage} />
           <Route default component={ComponentPage} />

@@ -1,0 +1,51 @@
+# Separator
+
+Visual or semantic divider between content
+
+## Install
+
+```bash
+npx cascade add separator
+```
+
+## Category
+
+`display`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
+| `decorative` | `boolean` | no | `false` | When true, the separator is purely visual and hidden from assistive tech |
+
+## Examples
+
+### Horizontal
+
+```tsx
+<Separator />
+```
+
+### Vertical
+
+```tsx
+<Separator orientation="vertical" />
+```
+
+## Design tokens
+
+- `--cascade-color-border`
+
+## Accessibility
+
+- **WCAG level:** AA
+- **ARIA role:** `separator`
+
+## Dependencies
+
+- `@cascade-ui/core`
+
+## Tags
+
+divider, rule, layout
