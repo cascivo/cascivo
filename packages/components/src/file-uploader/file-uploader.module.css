@@ -32,7 +32,8 @@
     color: var(--cascade-color-text-muted);
     font-size: var(--cascade-font-size-sm);
     cursor: pointer;
-    transition: border-color var(--cascade-duration-150) var(--cascade-ease-out),
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
       background var(--cascade-duration-150) var(--cascade-ease-out);
     inline-size: 100%;
     text-align: center;

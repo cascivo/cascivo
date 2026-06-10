@@ -75,7 +75,9 @@ describe('DataTable', () => {
 
   it('global search filters rows', async () => {
     const user = userEvent.setup()
-    render(<DataTable columns={columns} rows={people.slice(0, 10)} getRowId={(p) => p.id} searchable />)
+    render(
+      <DataTable columns={columns} rows={people.slice(0, 10)} getRowId={(p) => p.id} searchable />,
+    )
     const searchbox = screen.getByRole('searchbox')
     await user.type(searchbox, 'Person 05')
     expect(screen.getByRole('cell', { name: 'Person 05' })).toBeInTheDocument()
@@ -85,7 +87,12 @@ describe('DataTable', () => {
   it('pagination: shows 10 rows and range label, then navigates to next page', async () => {
     const user = userEvent.setup()
     render(
-      <DataTable columns={columns} rows={people} getRowId={(p) => p.id} pagination={{ pageSize: 10 }} />,
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        pagination={{ pageSize: 10 }}
+      />,
     )
     const rows = screen.getAllByRole('row')
     // header + 10 data rows
@@ -135,7 +142,7 @@ describe('DataTable', () => {
     const { container } = render(
       <DataTable columns={columns} rows={[]} getRowId={(p) => p.id} loading />,
     )
-    expect(screen.getByRole("table")).toHaveAttribute("aria-busy", "true")
+    expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
   })
 
   it('locale switch: German empty text after store.set("de")', async () => {

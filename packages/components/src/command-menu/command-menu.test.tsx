@@ -39,9 +39,7 @@ beforeEach(() => {
 
 describe('CommandMenu', () => {
   it('is closed by default; open renders dialog with all groups and headings', () => {
-    const { rerender } = render(
-      <CommandMenu open={false} onOpenChange={vi.fn()} groups={groups} />,
-    )
+    const { rerender } = render(<CommandMenu open={false} onOpenChange={vi.fn()} groups={groups} />)
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
     rerender(<CommandMenu open={true} onOpenChange={vi.fn()} groups={groups} />)
     expect(screen.getByRole('combobox')).toBeInTheDocument()
@@ -178,9 +176,7 @@ describe('CommandMenu nested pages', () => {
   })
 
   it('loading prop renders loading row instead of empty state', () => {
-    render(
-      <CommandMenu open={true} onOpenChange={vi.fn()} groups={[]} loading={true} />,
-    )
+    render(<CommandMenu open={true} onOpenChange={vi.fn()} groups={[]} loading={true} />)
     // container has role="status"; spinner inside also has role="status" — use getAllByRole
     const statuses = screen.getAllByRole('status')
     const container = statuses.find((el) => el.textContent?.includes('Loading'))
@@ -191,7 +187,12 @@ describe('CommandMenu nested pages', () => {
     const user = userEvent.setup()
     const onQueryChange = vi.fn()
     render(
-      <CommandMenu open={true} onOpenChange={vi.fn()} groups={pageGroups} onQueryChange={onQueryChange} />,
+      <CommandMenu
+        open={true}
+        onOpenChange={vi.fn()}
+        groups={pageGroups}
+        onQueryChange={onQueryChange}
+      />,
     )
     await user.type(screen.getByRole('combobox'), 'go')
     expect(onQueryChange).toHaveBeenCalledTimes(2)

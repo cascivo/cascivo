@@ -156,13 +156,21 @@ export function DatePicker({
   }
 
   const prevMonth = () => {
-    if (viewMonth.value === 0) { batch(() => { viewYear.value--; viewMonth.value = 11 }) }
-    else viewMonth.value--
+    if (viewMonth.value === 0) {
+      batch(() => {
+        viewYear.value--
+        viewMonth.value = 11
+      })
+    } else viewMonth.value--
   }
 
   const nextMonth = () => {
-    if (viewMonth.value === 11) { batch(() => { viewYear.value++; viewMonth.value = 0 }) }
-    else viewMonth.value++
+    if (viewMonth.value === 11) {
+      batch(() => {
+        viewYear.value++
+        viewMonth.value = 0
+      })
+    } else viewMonth.value++
   }
 
   const weekStart = getWeekStart(locale)
@@ -184,13 +192,22 @@ export function DatePicker({
     if (!current) return
     const d = fromISO(current)
     let next: Date | undefined
-    if (e.key === 'ArrowRight') next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1))
-    else if (e.key === 'ArrowLeft') next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 1))
-    else if (e.key === 'ArrowDown') next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 7))
-    else if (e.key === 'ArrowUp') next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 7))
-    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(current); return }
-    else if (e.key === 'Escape') { close(); return }
-    else return
+    if (e.key === 'ArrowRight')
+      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1))
+    else if (e.key === 'ArrowLeft')
+      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 1))
+    else if (e.key === 'ArrowDown')
+      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 7))
+    else if (e.key === 'ArrowUp')
+      next = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - 7))
+    else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      select(current)
+      return
+    } else if (e.key === 'Escape') {
+      close()
+      return
+    } else return
     e.preventDefault()
     if (next) {
       const nextISO = toISO(next)
@@ -235,7 +252,9 @@ export function DatePicker({
           <span className={cn(styles['value'], !displayValue ? styles['placeholder'] : undefined)}>
             {displayValue || resolvedPlaceholder}
           </span>
-          <span className={styles['icon']} aria-hidden="true">📅</span>
+          <span className={styles['icon']} aria-hidden="true">
+            📅
+          </span>
         </button>
         {clearable && selectedISO.value !== undefined && (
           <button
@@ -296,7 +315,8 @@ export function DatePicker({
                   const isSelected = iso === selectedISO.value
                   const isToday = iso === todayISO
                   const isActive = iso === activeISO.value
-                  const isDisabled = (min !== undefined && iso < min) || (max !== undefined && iso > max)
+                  const isDisabled =
+                    (min !== undefined && iso < min) || (max !== undefined && iso > max)
                   return (
                     <td key={di} className={styles['cell']}>
                       <button
@@ -309,8 +329,12 @@ export function DatePicker({
                         aria-disabled={isDisabled || undefined}
                         data-selected={isSelected || undefined}
                         data-today={isToday || undefined}
-                        onClick={() => { if (!isDisabled) select(iso) }}
-                        onFocus={() => { activeISO.value = iso }}
+                        onClick={() => {
+                          if (!isDisabled) select(iso)
+                        }}
+                        onFocus={() => {
+                          activeISO.value = iso
+                        }}
                       >
                         {day.getUTCDate()}
                       </button>

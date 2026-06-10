@@ -113,9 +113,7 @@ const commandGroups: CommandGroup[] = [
   },
   {
     heading: 'Actions',
-    items: [
-      { id: 'theme', label: 'Toggle theme', shortcut: ['⌘', 'T'], onSelect: () => {} },
-    ],
+    items: [{ id: 'theme', label: 'Toggle theme', shortcut: ['⌘', 'T'], onSelect: () => {} }],
   },
 ]
 
@@ -126,12 +124,7 @@ function CommandMenuDemo() {
       <button type="button" onClick={() => setOpen(true)}>
         Open CommandMenu <kbd>⌘K</kbd>
       </button>
-      <CommandMenu
-        open={open}
-        onOpenChange={setOpen}
-        groups={commandGroups}
-        hotkey={false}
-      />
+      <CommandMenu open={open} onOpenChange={setOpen} groups={commandGroups} hotkey={false} />
     </Row>
   )
 }
@@ -544,7 +537,7 @@ export const demos: Record<string, () => JSX.Element> = {
   'number-input': () => <NumberInputDemo />,
   'data-table': () => <DataTableDemo />,
   'command-menu': () => <CommandMenuDemo />,
-  'form': () => <FormDemo />,
+  form: () => <FormDemo />,
   'time-picker': () => (
     <Col>
       <TimePicker label="Meeting time" defaultValue="09:00" />
@@ -552,10 +545,25 @@ export const demos: Record<string, () => JSX.Element> = {
       <TimePicker label="Disabled" defaultValue="14:00" disabled />
     </Col>
   ),
-  'combobox': () => (
+  combobox: () => (
     <Col>
-      <Combobox label="Country" options={[{ value: 'us', label: 'United States' }, { value: 'de', label: 'Germany' }, { value: 'fr', label: 'France' }]} />
-      <Combobox label="Clearable" options={[{ value: 'a', label: 'Apple' }, { value: 'b', label: 'Banana' }]} defaultValue="a" clearable />
+      <Combobox
+        label="Country"
+        options={[
+          { value: 'us', label: 'United States' },
+          { value: 'de', label: 'Germany' },
+          { value: 'fr', label: 'France' },
+        ]}
+      />
+      <Combobox
+        label="Clearable"
+        options={[
+          { value: 'a', label: 'Apple' },
+          { value: 'b', label: 'Banana' },
+        ]}
+        defaultValue="a"
+        clearable
+      />
       <Combobox label="With error" options={[{ value: 'x', label: 'Option X' }]} error="Required" />
     </Col>
   ),

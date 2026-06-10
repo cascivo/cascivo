@@ -47,7 +47,11 @@ export const Selection: Story = {
 
 export const Expandable: Story = {
   args: {
-    renderExpandedRow: (p: Person) => <div style={{ padding: '0.5rem' }}>Details for {p.name}, age {p.age}</div>,
+    renderExpandedRow: (p: Person) => (
+      <div style={{ padding: '0.5rem' }}>
+        Details for {p.name}, age {p.age}
+      </div>
+    ),
   },
 }
 

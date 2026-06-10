@@ -42,9 +42,7 @@ describe('DatePicker', () => {
     const onChange = vi.fn()
     render(<DatePicker defaultValue="2024-06-01" onChange={onChange} />)
     fireEvent.click(screen.getByRole('combobox'))
-    const dayButtons = screen.getAllByRole('button').filter(
-      (b) => b.closest('td') !== null,
-    )
+    const dayButtons = screen.getAllByRole('button').filter((b) => b.closest('td') !== null)
     fireEvent.click(dayButtons[0]!)
     expect(onChange).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/))
   })

@@ -95,8 +95,10 @@ export function useForm<T extends Record<string, unknown>>(config: FormConfig<T>
   return store.peek() as FormStore<T>
 }
 
-export interface FormProps<T extends Record<string, unknown>>
-  extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+export interface FormProps<T extends Record<string, unknown>> extends Omit<
+  FormHTMLAttributes<HTMLFormElement>,
+  'onSubmit'
+> {
   form: FormStore<T>
   onValid: (values: T) => void | Promise<void>
   children: ReactNode

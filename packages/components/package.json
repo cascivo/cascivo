@@ -2,7 +2,7 @@
   "name": "@cascade-ui/components",
   "version": "0.0.0",
   "private": true,
-  "description": "Registry source \u2014 copy-paste component TSX + CSS + manifests (not published)",
+  "description": "Registry source — copy-paste component TSX + CSS + manifests (not published)",
   "type": "module",
   "exports": {
     "./accordion": "./src/accordion/accordion.tsx",

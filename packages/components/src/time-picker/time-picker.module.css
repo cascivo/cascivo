@@ -5,9 +5,21 @@
     gap: var(--cascade-space-1);
     font-family: var(--cascade-font-sans);
 
-    &[data-size='sm'] { --_height: 2rem; --_font: var(--cascade-text-sm); --_px: var(--cascade-space-3); }
-    &[data-size='md'] { --_height: 2.5rem; --_font: var(--cascade-text-sm); --_px: var(--cascade-space-4); }
-    &[data-size='lg'] { --_height: 3rem; --_font: var(--cascade-text-base); --_px: var(--cascade-space-4); }
+    &[data-size='sm'] {
+      --_height: 2rem;
+      --_font: var(--cascade-text-sm);
+      --_px: var(--cascade-space-3);
+    }
+    &[data-size='md'] {
+      --_height: 2.5rem;
+      --_font: var(--cascade-text-sm);
+      --_px: var(--cascade-space-4);
+    }
+    &[data-size='lg'] {
+      --_height: 3rem;
+      --_font: var(--cascade-text-base);
+      --_px: var(--cascade-space-4);
+    }
   }
 
   .label {

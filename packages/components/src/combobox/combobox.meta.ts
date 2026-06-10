@@ -2,7 +2,8 @@ import type { ComponentMeta } from '@cascade-ui/core'
 
 export const meta: ComponentMeta = {
   name: 'Combobox',
-  description: 'Filterable single-select with an animated custom listbox, built on the dropdown open/close machine',
+  description:
+    'Filterable single-select with an animated custom listbox, built on the dropdown open/close machine',
   category: 'inputs',
   states: ['closed', 'open', 'error'],
   variants: [],

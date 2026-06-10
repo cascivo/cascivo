@@ -53,9 +53,15 @@
     }
   }
 
-  .wrapper[data-size='sm'] .trigger { block-size: 2rem; }
-  .wrapper[data-size='md'] .trigger { block-size: 2.5rem; }
-  .wrapper[data-size='lg'] .trigger { block-size: 3rem; }
+  .wrapper[data-size='sm'] .trigger {
+    block-size: 2rem;
+  }
+  .wrapper[data-size='md'] .trigger {
+    block-size: 2.5rem;
+  }
+  .wrapper[data-size='lg'] .trigger {
+    block-size: 3rem;
+  }
 
   .wrapper[data-state='error'] .trigger {
     border-color: var(--cascade-color-danger);
@@ -99,8 +105,12 @@
     outline: none;
     border-radius: var(--cascade-radius-sm);
 
-    &:hover { color: var(--cascade-color-text); }
-    &:focus-visible { box-shadow: 0 0 0 2px var(--cascade-color-accent); }
+    &:hover {
+      color: var(--cascade-color-text);
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--cascade-color-accent);
+    }
   }
 
   /* Listbox with @starting-style enter animation */

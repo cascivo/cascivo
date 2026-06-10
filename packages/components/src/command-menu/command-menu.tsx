@@ -366,8 +366,8 @@ export function CommandMenu({
               </div>
             ))}
           </div>
-          {flatItems.length === 0 && (
-            loading ? (
+          {flatItems.length === 0 &&
+            (loading ? (
               <div role="status" className={styles['empty']}>
                 <Spinner size="sm" />
                 {t(builtin.commandMenu.loading)}
@@ -376,8 +376,7 @@ export function CommandMenu({
               <div role="status" className={styles['empty']}>
                 {resolvedEmptyLabel}
               </div>
-            )
-          )}
+            ))}
         </div>
         <div className={styles['footer']} aria-hidden="true">
           <span className={styles['hint']}>

@@ -84,7 +84,9 @@ export function FileUploader({
   const resolvedComplete = labels?.complete ?? t(builtin.fileUploader.complete)
   const resolvedError = labels?.error ?? t(builtin.fileUploader.error)
   const resolveRemove = (name: string) =>
-    labels?.remove ? labels.remove.replace('{name}', name) : t(builtin.fileUploader.remove, { name })
+    labels?.remove
+      ? labels.remove.replace('{name}', name)
+      : t(builtin.fileUploader.remove, { name })
 
   const baseId = `cascade-uploader-${resolvedLabel.toLowerCase().replace(/\s+/g, '-')}`
   const labelId = `${baseId}-label`

@@ -51,7 +51,11 @@ describe('FileUploader', () => {
   })
 
   it('shows error message for failed files', () => {
-    render(<FileUploader files={[{ id: '1', name: 'x.zip', status: 'error', errorMessage: 'Too large' }]} />)
+    render(
+      <FileUploader
+        files={[{ id: '1', name: 'x.zip', status: 'error', errorMessage: 'Too large' }]}
+      />,
+    )
     expect(screen.getByText('Too large')).toBeInTheDocument()
   })
 
@@ -60,7 +64,9 @@ describe('FileUploader', () => {
     render(<FileUploader onFilesAdded={onFilesAdded} />)
     const input = document.querySelector('input[type="file"]') as HTMLInputElement
     const file = new File(['hello'], 'test.txt', { type: 'text/plain' })
-    Object.defineProperty(input, 'files', { value: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] } })
+    Object.defineProperty(input, 'files', {
+      value: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] },
+    })
     fireEvent.change(input)
     expect(onFilesAdded).toHaveBeenCalledWith([file])
   })
@@ -80,7 +86,11 @@ describe('FileUploader', () => {
     render(<FileUploader onFilesAdded={onFilesAdded} />)
     const zone = screen.getByRole('button', { name: /drag and drop/i })
     const file = new File(['data'], 'drop.txt', { type: 'text/plain' })
-    fireEvent.drop(zone, { dataTransfer: { files: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] } } })
+    fireEvent.drop(zone, {
+      dataTransfer: {
+        files: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] },
+      },
+    })
     expect(onFilesAdded).toHaveBeenCalledWith([file])
   })
 
@@ -90,14 +100,20 @@ describe('FileUploader', () => {
     render(<FileUploader onFilesAdded={onFilesAdded} onRejected={onRejected} maxSize={100} />)
     const input = document.querySelector('input[type="file"]') as HTMLInputElement
     const file = new File(['x'.repeat(200)], 'big.txt', { type: 'text/plain' })
-    Object.defineProperty(input, 'files', { value: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] } })
+    Object.defineProperty(input, 'files', {
+      value: { 0: file, length: 1, [Symbol.iterator]: Array.prototype[Symbol.iterator] },
+    })
     fireEvent.change(input)
     expect(onFilesAdded).not.toHaveBeenCalled()
     expect(onRejected).toHaveBeenCalledWith([file], 'size')
   })
 
   it('formats file size correctly', () => {
-    render(<FileUploader files={[{ id: '1', name: 'f.pdf', size: 1024 * 1024 * 2.5, status: 'complete' }]} />)
+    render(
+      <FileUploader
+        files={[{ id: '1', name: 'f.pdf', size: 1024 * 1024 * 2.5, status: 'complete' }]}
+      />,
+    )
     expect(screen.getByText('2.5 MB')).toBeInTheDocument()
   })
 })

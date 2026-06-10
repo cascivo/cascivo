@@ -191,7 +191,9 @@ export function Combobox({
           aria-expanded={isOpen}
           aria-controls={listboxId}
           aria-haspopup="listbox"
-          aria-activedescendant={isOpen && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined}
+          aria-activedescendant={
+            isOpen && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined
+          }
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined}
           className={styles['trigger']}
@@ -199,7 +201,9 @@ export function Combobox({
           onKeyDown={handleTriggerKeyDown}
           onClick={isOpen ? close : open}
         >
-          <span className={cn(styles['value'], !selectedOption ? styles['placeholder'] : undefined)}>
+          <span
+            className={cn(styles['value'], !selectedOption ? styles['placeholder'] : undefined)}
+          >
             {selectedOption?.label ?? resolvedPlaceholder}
           </span>
           <span className={styles['chevron']} aria-hidden="true" />

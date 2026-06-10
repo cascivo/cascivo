@@ -26,11 +26,7 @@ export function DocsSearch() {
       <button type="button" class="search-trigger" onClick={() => (open.value = true)}>
         Search <kbd>⌘K</kbd>
       </button>
-      <CommandMenu
-        open={open.value}
-        onOpenChange={(next) => (open.value = next)}
-        groups={groups}
-      />
+      <CommandMenu open={open.value} onOpenChange={(next) => (open.value = next)} groups={groups} />
     </>
   )
 }

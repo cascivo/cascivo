@@ -43,7 +43,13 @@ function Demo({ loading = false, hotkey = false }) {
       <button type="button" onClick={() => setOpen(true)}>
         Open
       </button>
-      <CommandMenu open={open} onOpenChange={setOpen} groups={groups} loading={loading} hotkey={hotkey} />
+      <CommandMenu
+        open={open}
+        onOpenChange={setOpen}
+        groups={groups}
+        loading={loading}
+        hotkey={hotkey}
+      />
     </div>
   )
 }
