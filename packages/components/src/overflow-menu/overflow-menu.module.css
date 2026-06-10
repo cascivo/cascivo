@@ -1,0 +1,72 @@
+@layer cascade.component {
+  .root {
+    display: inline-flex;
+  }
+
+  .trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--cascade-color-text-muted);
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--cascade-radius-button);
+    cursor: pointer;
+    transition:
+      background-color var(--cascade-duration-150) var(--cascade-ease-out),
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &[data-size='sm'] {
+      inline-size: 2rem;
+      block-size: 2rem;
+    }
+
+    &[data-size='md'] {
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+    }
+
+    &:hover:not(:disabled) {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  /* Invisible marker rendered into the icon slot of destructive items. */
+  .destructive-flag {
+    display: none;
+  }
+
+  .root [role='menuitem']:has(.destructive-flag) {
+    color: var(--cascade-color-destructive);
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background-color: var(--cascade-color-destructive-subtle);
+    }
+
+    /* Dropdown's icon wrapper sets a muted color; make it follow the item. */
+    > span {
+      color: inherit;
+    }
+  }
+
+  /* Hide the icon wrapper when it only contains the marker (no real icon),
+     so destructive items without icons align with the other items. */
+  .root [role='menuitem'] > span:has(> .destructive-flag:only-child) {
+    display: none;
+  }
+}
