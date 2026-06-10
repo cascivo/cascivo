@@ -1,0 +1,32 @@
+{
+  "name": "@cascade-ui/i18n",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade",
+  "type": "module",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "vp pack",
+    "check": "tsc --noEmit",
+    "test": "vp test",
+    "dev": "vp pack --watch"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@preact/signals-react": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0"
+  }
+}
