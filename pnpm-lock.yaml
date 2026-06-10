@@ -450,6 +450,25 @@ importers:
         specifier: npm:@voidzero-dev/vite-plus-test@0.1.24
         version: '@voidzero-dev/vite-plus-test@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))'
 
+  packages/storage:
+    dependencies:
+      '@cascade-ui/core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      '@preact/signals-react':
+        specifier: 'catalog:'
+        version: 3.10.1(react@19.2.7)
+      jsdom:
+        specifier: 'catalog:'
+        version: 29.1.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
+
   packages/themes:
     devDependencies:
       '@cascade-ui/tokens':
