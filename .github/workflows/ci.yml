@@ -28,6 +28,9 @@ jobs:
       - name: Format + lint (vp check)
         run: pnpm exec vp check
 
+      - name: Animation audit
+        run: pnpm run audit:animation
+
       - name: Build (vp run -r build)
         run: pnpm run build
 
