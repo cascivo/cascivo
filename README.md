@@ -65,6 +65,13 @@ npx cascade add button
 | toast              | overlay    | Transient notification surfaced via the useToast hook                                                                                                                 |
 | toggle             | inputs     | On/off switch built as an accessible button                                                                                                                           |
 | tooltip            | overlay    | Contextual label shown on hover or focus                                                                                                                              |
+| layout/app-shell   | layout     | Full-page application shell with persisted collapsible sidebar.                                                                                                       |
+| layout/center      | layout     | Horizontally centered container with a configurable max-width.                                                                                                        |
+| layout/columns     | layout     | Equal-width multi-column layout that collapses to single column on narrow viewports.                                                                                  |
+| layout/grid        | layout     | CSS grid layout primitive with responsive column collapsing.                                                                                                          |
+| layout/page-header | layout     | Page-level header with title, description, breadcrumb, and actions slots.                                                                                             |
+| layout/spacer      | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |
+| layout/split-view  | layout     | Resizable two-pane split layout with keyboard and pointer drag support.                                                                                               |
 | layout/stack       | layout     | Flex layout primitive for vertical or horizontal stacking with gap control.                                                                                           |
 
 ---
