@@ -96,7 +96,10 @@ async function main(): Promise<void> {
   const components: RegistryComponent[] = []
   for (const name of names) {
     const metaPath = join(COMPONENTS_DIR, name, `${name}.meta.ts`)
-    if (!existsSync(metaPath)) continue
+    if (!existsSync(metaPath)) {
+      console.warn(`  skip ${name}: no ${name}.meta.ts found`)
+      continue
+    }
     components.push(await buildEntry(name, version))
   }
 
