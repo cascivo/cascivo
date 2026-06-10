@@ -9,7 +9,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     { name: 'cols', type: 'number', required: false, description: 'Number of grid columns' },
-    { name: 'gap', type: '1|2|3|4|5|6|8|10|12', required: false, description: 'Spacing token step' },
+    {
+      name: 'gap',
+      type: '1|2|3|4|5|6|8|10|12',
+      required: false,
+      description: 'Spacing token step',
+    },
     { name: 'span', type: 'number', required: false, description: 'GridItem: column span count' },
   ],
   tokens: ['--cascade-space-*'],

@@ -3485,6 +3485,427 @@
       }
     },
     {
+      "name": "layout/app-shell",
+      "type": "layout",
+      "description": "Full-page application shell with persisted collapsible sidebar.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+      "tags": ["layout", "shell", "sidebar", "navigation"],
+      "meta": {
+        "name": "AppShell",
+        "description": "Full-page application shell with persisted collapsible sidebar.",
+        "category": "layout",
+        "states": ["expanded", "collapsed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "header",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Top header slot"
+          },
+          {
+            "name": "sideNav",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Side navigation slot"
+          },
+          {
+            "name": "aside",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Right aside slot"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Main content"
+          },
+          {
+            "name": "persistKey",
+            "type": "string | false",
+            "required": false,
+            "description": "localStorage key for sidebar state. Pass false to disable persistence."
+          }
+        ],
+        "tokens": [
+          "--cascade-space-3",
+          "--cascade-space-4",
+          "--cascade-space-6",
+          "--cascade-duration-200",
+          "--cascade-ease-out",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-font-size-xs"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>",
+            "description": "App shell with collapsible nav"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+        "tags": ["layout", "shell", "sidebar", "navigation"]
+      }
+    },
+    {
+      "name": "layout/center",
+      "type": "layout",
+      "description": "Horizontally centered container with a configurable max-width.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "center", "wrapper"],
+      "meta": {
+        "name": "Center",
+        "description": "Horizontally centered container with a configurable max-width.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "maxWidth",
+            "type": "string",
+            "required": false,
+            "description": "CSS max-width value"
+          }
+        ],
+        "tokens": ["--cascade-space-4"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Centered content",
+            "code": "<Center maxWidth=\"60rem\"><p>Content</p></Center>",
+            "description": "Centered container with custom max-width"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "center", "wrapper"]
+      }
+    },
+    {
+      "name": "layout/columns",
+      "type": "layout",
+      "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "grid", "columns"],
+      "meta": {
+        "name": "Columns",
+        "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "count",
+            "type": "2|3|4",
+            "required": false,
+            "description": "Number of equal columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Three columns",
+            "code": "<Columns count={3}><div>A</div><div>B</div><div>C</div></Columns>",
+            "description": "Three equal columns"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "grid", "columns"]
+      }
+    },
+    {
+      "name": "layout/grid",
+      "type": "layout",
+      "description": "CSS grid layout primitive with responsive column collapsing.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "grid", "columns"],
+      "meta": {
+        "name": "Grid",
+        "description": "CSS grid layout primitive with responsive column collapsing.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "cols",
+            "type": "number",
+            "required": false,
+            "description": "Number of grid columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          },
+          {
+            "name": "span",
+            "type": "number",
+            "required": false,
+            "description": "GridItem: column span count"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic grid",
+            "code": "<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>",
+            "description": "3-column grid with spanning item"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "grid", "columns"]
+      }
+    },
+    {
+      "name": "layout/page-header",
+      "type": "layout",
+      "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "header", "page"],
+      "meta": {
+        "name": "PageHeader",
+        "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Page title"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Supporting description"
+          },
+          {
+            "name": "breadcrumb",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Breadcrumb slot"
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Action buttons slot"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "description": "Additional CSS class"
+          }
+        ],
+        "tokens": [
+          "--cascade-space-2",
+          "--cascade-space-4",
+          "--cascade-font-size-2xl",
+          "--cascade-font-weight-bold",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-font-size-sm"
+        ],
+        "accessibility": {
+          "role": "banner",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<PageHeader title=\"Dashboard\" description=\"Welcome back\" />",
+            "description": "Title with description"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "header", "page"]
+      }
+    },
+    {
+      "name": "layout/spacer",
+      "type": "layout",
+      "description": "Fixed-height spacing block using design token steps.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "spacer", "spacing"],
+      "meta": {
+        "name": "Spacer",
+        "description": "Fixed-height spacing block using design token steps.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "size",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Spacer",
+            "code": "<Spacer size={8} />",
+            "description": "Adds vertical space between elements"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "spacer", "spacing"]
+      }
+    },
+    {
+      "name": "layout/split-view",
+      "type": "layout",
+      "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "split", "resizable", "pane"],
+      "meta": {
+        "name": "SplitView",
+        "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "start",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Left pane content"
+          },
+          {
+            "name": "end",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Right pane content"
+          },
+          {
+            "name": "defaultRatio",
+            "type": "number",
+            "required": false,
+            "description": "Initial split ratio (0–1)"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "description": "Minimum ratio for start pane"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Maximum ratio for start pane"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Label for the separator"
+          }
+        ],
+        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+        "accessibility": {
+          "role": "separator",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<SplitView start={<FileTree />} end={<Editor />} />",
+            "description": "Two-pane split with draggable divider"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "split", "resizable", "pane"]
+      }
+    },
+    {
       "name": "layout/stack",
       "type": "layout",
       "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",

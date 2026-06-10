@@ -10,6 +10,8 @@ describe('Spacer', () => {
 
   it('sets size CSS var', () => {
     const { container } = render(<Spacer size={8} />)
-    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_spacer-size')).toBe('var(--cascade-space-8)')
+    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_spacer-size')).toBe(
+      'var(--cascade-space-8)',
+    )
   })
 })

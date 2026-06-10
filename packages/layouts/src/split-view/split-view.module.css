@@ -1,0 +1,28 @@
+@layer cascade.component {
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, calc(var(--_split-ratio, 0.3) * 100%)) auto minmax(0, 1fr);
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  .pane-start,
+  .pane-end {
+    overflow: auto;
+    min-inline-size: 0;
+  }
+
+  .divider {
+    inline-size: 4px;
+    background: var(--cascade-color-border);
+    cursor: col-resize;
+    transition: background var(--cascade-duration-150, 150ms) ease;
+    outline: none;
+    position: relative;
+  }
+
+  .divider:hover,
+  .divider:focus-visible {
+    background: var(--cascade-color-accent);
+  }
+}

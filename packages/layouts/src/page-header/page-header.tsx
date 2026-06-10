@@ -11,7 +11,13 @@ export interface PageHeaderProps {
   className?: string
 }
 
-export function PageHeader({ title, description, breadcrumb, actions, className }: PageHeaderProps) {
+export function PageHeader({
+  title,
+  description,
+  breadcrumb,
+  actions,
+  className,
+}: PageHeaderProps) {
   return (
     <header className={cn(styles['header'], className)}>
       {breadcrumb && <div className={styles['breadcrumb']}>{breadcrumb}</div>}

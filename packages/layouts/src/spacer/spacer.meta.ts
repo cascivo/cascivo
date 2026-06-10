@@ -8,7 +8,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'size', type: '1|2|3|4|5|6|8|10|12', required: false, description: 'Spacing token step' },
+    {
+      name: 'size',
+      type: '1|2|3|4|5|6|8|10|12',
+      required: false,
+      description: 'Spacing token step',
+    },
   ],
   tokens: ['--cascade-space-*'],
   accessibility: { role: 'none', wcag: 'AA', keyboard: [] },

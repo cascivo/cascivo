@@ -4,7 +4,11 @@ import { Grid, GridItem } from './grid'
 
 describe('Grid', () => {
   it('renders children', () => {
-    const { getByText } = render(<Grid><div>Cell</div></Grid>)
+    const { getByText } = render(
+      <Grid>
+        <div>Cell</div>
+      </Grid>,
+    )
     expect(getByText('Cell')).toBeInTheDocument()
   })
 
@@ -15,7 +19,9 @@ describe('Grid', () => {
 
   it('sets gap CSS var', () => {
     const { container } = render(<Grid gap={6} />)
-    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_grid-gap')).toBe('var(--cascade-space-6)')
+    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_grid-gap')).toBe(
+      'var(--cascade-space-6)',
+    )
   })
 })
 

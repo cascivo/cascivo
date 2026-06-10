@@ -14,7 +14,11 @@ export function Columns({ count = 2, gap = 4, className, style, ...props }: Colu
   return (
     <div
       className={cn(styles['columns'], className)}
-      style={{ ['--_cols' as string]: String(count), ['--_gap' as string]: `var(--cascade-space-${gap})`, ...style }}
+      style={{
+        ['--_cols' as string]: String(count),
+        ['--_gap' as string]: `var(--cascade-space-${gap})`,
+        ...style,
+      }}
       {...props}
     />
   )
