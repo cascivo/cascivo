@@ -1,0 +1,34 @@
+@layer cascade.component {
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascade-space-2);
+    padding-block: var(--cascade-space-2);
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-1);
+    padding: var(--cascade-space-1) var(--cascade-space-2);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-sm);
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--cascade-font-size-sm);
+    color: var(--cascade-color-text);
+    transition: opacity var(--cascade-duration-150, 150ms) ease;
+  }
+
+  .item[data-state='off'] {
+    opacity: 0.4;
+  }
+
+  .swatch {
+    display: inline-block;
+    inline-size: 12px;
+    block-size: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+}

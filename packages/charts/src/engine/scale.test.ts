@@ -30,7 +30,8 @@ describe('linearScale', () => {
 describe('niceTicks', () => {
   it('produces round steps for 0-100', () => {
     const ticks = niceTicks(0, 100, 5)
-    expect(ticks).toEqual([0, 25, 50, 75, 100])
+    // rawStep = 20, step = 20 (mantissa 2 × 10^1)
+    expect(ticks).toEqual([0, 20, 40, 60, 80, 100])
   })
 
   it('produces round steps for small ranges', () => {
