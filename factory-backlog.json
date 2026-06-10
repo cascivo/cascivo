@@ -185,8 +185,8 @@
       "category": "display",
       "priority": 21,
       "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display — no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
-      "status": "in-progress",
-      "milestone": "integrate",
+      "status": "review",
+      "milestone": "finished",
       "attempts": 1
     }
   ]
