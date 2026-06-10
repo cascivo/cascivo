@@ -7,16 +7,16 @@ catalogMode: prefer
 
 catalog:
   '@types/node': ^25
-  '@types/react': ^19
-  '@types/react-dom': ^19
+  '@types/react': ^19.2.17
+  '@types/react-dom': ^19.2.3
   '@preact/signals-react': ^3
   '@testing-library/jest-dom': ^6
   '@testing-library/react': ^16
   '@testing-library/user-event': ^14
   jsdom: ^29
   preact: ^10
-  react: ^19
-  react-dom: ^19
+  react: ^19.2.7
+  react-dom: ^19.2.7
   next: ^16
   typescript: ^5
   vite-plus: ^0.1.24
@@ -24,10 +24,14 @@ catalog:
   zod: ^4.4.3
   preact-iso: ^2.12.0
   shiki: ^4.2.0
+  storybook: ^10.4.2
+  '@storybook/react-vite': ^10.4.2
+  '@storybook/addon-a11y': ^10.4.2
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@0.1.24'
   vitest: 'npm:@voidzero-dev/vite-plus-test@0.1.24'
 
 allowBuilds:
+  esbuild: set this to true or false
   sharp: true
