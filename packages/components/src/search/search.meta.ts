@@ -1,0 +1,50 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Search',
+  description: 'Search input with debounced search callback and clear button',
+  category: 'inputs',
+  states: ['empty', 'filled'],
+  variants: [],
+  sizes: ['sm', 'md', 'lg'],
+  props: [
+    { name: 'value', type: 'string', required: false },
+    { name: 'defaultValue', type: 'string', required: false, default: "''" },
+    { name: 'onChange', type: '(value: string) => void', required: false },
+    { name: 'onSearch', type: '(value: string) => void', required: false },
+    { name: 'debounceMs', type: 'number', required: false, default: '300' },
+    { name: 'placeholder', type: 'string', required: false, default: 'Search' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    { name: 'label', type: 'string', required: false, default: 'Search' },
+    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
+    { name: 'clearLabel', type: 'string', required: false, default: 'Clear search' },
+    { name: 'id', type: 'string', required: false },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascade-color-surface',
+    '--cascade-color-border',
+    '--cascade-color-border-strong',
+    '--cascade-color-accent',
+    '--cascade-color-text',
+    '--cascade-color-text-muted',
+    '--cascade-color-bg-subtle',
+    '--cascade-radius-input',
+    '--cascade-focus-ring',
+  ],
+  accessibility: {
+    role: 'searchbox',
+    wcag: 'AA',
+    keyboard: ['Enter'],
+  },
+  examples: [
+    { title: 'Basic', code: '<Search onSearch={(q) => runQuery(q)} />' },
+    {
+      title: 'Controlled',
+      code: '<Search value={query} onChange={setQuery} onSearch={runQuery} debounceMs={500} />',
+    },
+    { title: 'Large', code: '<Search size="lg" placeholder="Search products…" />' },
+  ],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  tags: ['search', 'input', 'filter', 'form'],
+}

@@ -2,6 +2,7 @@
   "name": "@cascade-ui/docs",
   "version": "0.0.0",
   "private": true,
+  "description": "Documentation site for cascade — generated from component manifests",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/storage": "workspace:^",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
     "preact": "catalog:",

@@ -1,15 +1,37 @@
+import { effect } from '@cascade-ui/core'
+import { persistedSignal } from '@cascade-ui/storage'
+
 export type Theme = 'light' | 'dark' | 'warm'
 
 export const THEMES: Theme[] = ['light', 'dark', 'warm']
 
 const STORAGE_KEY = 'cascade-theme'
 
-export function getStoredTheme(): Theme {
-  const stored = localStorage.getItem(STORAGE_KEY)
-  return stored === 'dark' || stored === 'warm' || stored === 'light' ? stored : 'light'
+// Pre-storage versions stored the raw theme string — wrap it once.
+const legacy = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
+if (legacy === 'light' || legacy === 'dark' || legacy === 'warm') {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, value: legacy }))
 }
 
-export function applyTheme(theme: Theme): void {
-  document.documentElement.setAttribute('data-theme', theme)
-  localStorage.setItem(STORAGE_KEY, theme)
+export const theme = persistedSignal<Theme>(STORAGE_KEY, 'light')
+
+// Keep data-theme in sync with the signal (covers cross-tab storage events).
+if (typeof document !== 'undefined') {
+  effect(() => {
+    document.documentElement.setAttribute('data-theme', theme.value)
+  })
+}
+
+export function applyTheme(next: Theme): void {
+  const apply = () => document.documentElement.setAttribute('data-theme', next)
+  // Cross-fade the page on theme change where supported (View Transitions API)
+  if (
+    typeof document.startViewTransition === 'function' &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    document.startViewTransition(apply)
+  } else {
+    apply()
+  }
+  theme.value = next
 }

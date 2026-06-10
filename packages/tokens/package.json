@@ -2,6 +2,7 @@
   "name": "@cascade-ui/tokens",
   "version": "0.0.0",
   "private": false,
+  "description": "Three-level CSS design tokens (primitive → semantic → component)",
   "files": [
     "src"
   ],

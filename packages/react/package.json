@@ -22,7 +22,8 @@
     "test": "vp test"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^"
+    "@cascade-ui/core": "workspace:^",
+    "@cascade-ui/i18n": "workspace:^"
   },
   "devDependencies": {
     "@cascade-ui/components": "workspace:*",

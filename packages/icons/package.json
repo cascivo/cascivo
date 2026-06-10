@@ -2,6 +2,7 @@
   "name": "@cascade-ui/icons",
   "version": "0.0.0",
   "private": false,
+  "description": "Optional SVG icon components",
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {

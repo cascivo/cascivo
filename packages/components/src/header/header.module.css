@@ -1,0 +1,102 @@
+@layer cascade.component {
+  .header {
+    container: cascade-header / inline-size;
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-6);
+    padding-inline: var(--cascade-space-6);
+    padding-block: var(--cascade-space-3);
+    font-family: var(--cascade-font-sans);
+    background-color: var(--cascade-header-bg, var(--cascade-color-surface));
+    border-block-end: 1px solid var(--cascade-color-border);
+
+    &[data-sticky] {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: var(--cascade-z-raised);
+    }
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-2);
+    font-size: var(--cascade-text-base);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text);
+    white-space: nowrap;
+
+    & :any-link {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  .nav {
+    min-inline-size: 0;
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--cascade-space-3);
+    padding-block: var(--cascade-space-2);
+    font-size: var(--cascade-text-sm);
+    line-height: var(--cascade-leading-none);
+    color: var(--cascade-color-text-subtle);
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: var(--cascade-radius-md);
+    transition:
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &[data-state='active'] {
+      color: var(--cascade-color-text);
+      font-weight: var(--cascade-font-medium);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-2);
+  }
+
+  /* Narrow container: tighter, smaller nav link labels */
+  @container cascade-header (inline-size < 40rem) {
+    .list {
+      gap: 0;
+    }
+
+    .link {
+      padding-inline: var(--cascade-space-2);
+      font-size: var(--cascade-text-xs);
+      letter-spacing: var(--cascade-tracking-tight);
+    }
+  }
+}

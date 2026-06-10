@@ -1,0 +1,57 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'CommandMenu',
+  description: 'Cmd+K command palette with fuzzy search over grouped commands',
+  category: 'overlay',
+  states: ['closed', 'open'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'open', type: 'boolean', required: true },
+    { name: 'onOpenChange', type: '(open: boolean) => void', required: true },
+    { name: 'groups', type: 'CommandGroup[]', required: true },
+    {
+      name: 'placeholder',
+      type: 'string',
+      required: false,
+      default: 'Type a command or search…',
+    },
+    { name: 'emptyLabel', type: 'string', required: false, default: 'No results found' },
+    {
+      name: 'hotkey',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Global Cmd/Ctrl+K toggles the menu via onOpenChange',
+    },
+    { name: 'label', type: 'string', required: false, default: 'Command menu' },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascade-color-surface-overlay',
+    '--cascade-color-border',
+    '--cascade-color-bg-subtle',
+    '--cascade-color-text',
+    '--cascade-color-text-muted',
+    '--cascade-color-text-subtle',
+    '--cascade-radius-modal',
+    '--cascade-radius-sm',
+    '--cascade-shadow-xl',
+    '--cascade-motion-enter',
+    '--cascade-motion-exit',
+  ],
+  accessibility: {
+    role: 'combobox',
+    wcag: 'AA',
+    keyboard: ['Cmd/Ctrl+K', 'ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Escape'],
+  },
+  examples: [
+    {
+      title: 'Basic command menu',
+      code: `<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>`,
+    },
+  ],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  tags: ['overlay', 'command', 'palette', 'search', 'cmdk', 'keyboard'],
+}

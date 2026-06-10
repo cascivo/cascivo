@@ -1,0 +1,98 @@
+@layer cascade.component {
+  .progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+    font-family: var(--cascade-font-sans);
+
+    &[data-status='success'] {
+      .fill {
+        background-color: var(--cascade-color-success);
+      }
+
+      .glyph {
+        color: var(--cascade-color-success);
+      }
+    }
+
+    &[data-status='error'] {
+      .fill {
+        background-color: var(--cascade-color-destructive);
+      }
+
+      .glyph {
+        color: var(--cascade-color-destructive);
+      }
+    }
+
+    &[data-size='sm'] .track {
+      block-size: var(--cascade-space-1);
+    }
+
+    &[data-size='md'] .track {
+      block-size: var(--cascade-space-2);
+    }
+
+    &[data-state='indeterminate'] .fill {
+      inline-size: 40%;
+      transition: none;
+      /* Continuous sweep — literal duration; reduced motion slows it below. */
+      animation: cascade-progress-sweep 1.4s var(--cascade-ease-in-out) infinite;
+    }
+  }
+
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascade-space-1);
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text);
+    line-height: var(--cascade-leading-tight);
+  }
+
+  .glyph {
+    font-size: var(--cascade-text-xs);
+    line-height: 1;
+  }
+
+  .track {
+    position: relative;
+    overflow: hidden;
+    inline-size: 100%;
+    background-color: var(--cascade-color-border);
+    border-radius: var(--cascade-radius-full);
+  }
+
+  .fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--cascade-progress-value, 0%);
+    background-color: var(--cascade-color-accent);
+    border-radius: var(--cascade-radius-full);
+    transition: inline-size var(--cascade-motion-enter);
+  }
+
+  .helper {
+    font-size: var(--cascade-text-xs);
+    color: var(--cascade-color-text-subtle);
+    line-height: var(--cascade-leading-tight);
+  }
+
+  @keyframes cascade-progress-sweep {
+    from {
+      inset-inline-start: -40%;
+    }
+
+    to {
+      inset-inline-start: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress[data-state='indeterminate'] .fill {
+      animation-duration: 4s;
+    }
+  }
+}

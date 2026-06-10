@@ -26,6 +26,14 @@ export const Destructive: Story = {
 export const Dismissible: Story = {
   args: { variant: 'success', title: 'Saved', dismissible: true },
 }
+export const Actionable: Story = {
+  args: {
+    variant: 'warning',
+    title: 'Update available',
+    children: 'A new version is ready to install.',
+    action: { label: 'Update now', onClick: () => {} },
+  },
+}
 
 export const Accessibility: Story = {
   args: { variant: 'destructive', title: 'Payment failed', dismissible: true },

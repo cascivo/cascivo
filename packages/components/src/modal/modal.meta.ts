@@ -32,6 +32,6 @@ export const meta: ComponentMeta = {
       code: `<Modal open={isOpen} onClose={() => setIsOpen(false)} title="Confirm action">\n  <p>Are you sure?</p>\n</Modal>`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['overlay', 'dialog', 'popup'],
 }

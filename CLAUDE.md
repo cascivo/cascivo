@@ -154,6 +154,9 @@ cascade/
 │   ├── tokens/         # @cascade-ui/tokens — CSS design tokens (primitive → semantic → component)
 │   ├── themes/         # @cascade-ui/themes — light.css, dark.css, warm.css
 │   ├── components/     # Registry source — component TSX + CSS + manifest + tests (not published to npm)
+│   ├── react/          # @cascade-ui/react — prebuilt npm distribution of all components (use without copying)
+│   ├── i18n/           # @cascade-ui/i18n — signal-driven locale store, typed catalogs, Intl formatting
+│   ├── storage/        # @cascade-ui/storage — persisted signals over localStorage/IndexedDB, SSR-safe
 │   ├── icons/          # @cascade-ui/icons — optional SVG icon components
 │   ├── cli/            # cascade CLI — npx cascade init / add / list / update
 │   └── mcp/            # @cascade-ui/mcp — MCP server exposing component registry to AI agents
@@ -328,3 +331,5 @@ Hover, focus, active, and disabled visual states are handled by CSS (`:hover`, `
 2. Every machine transition is reachable by code inside the component (not just by external props).
 3. DOM side effects use `useSignalEffect`, not `useEffect`.
 4. All tests pass: `vp run @cascade-ui/components#test`.
+5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascade-ui/react` distribution).
+6. User-visible strings default from the `@cascade-ui/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.

@@ -2,6 +2,7 @@
   "name": "@cascade-ui/themes",
   "version": "0.0.0",
   "private": false,
+  "description": "First-party cascade themes: light, dark, warm",
   "files": [
     "src"
   ],

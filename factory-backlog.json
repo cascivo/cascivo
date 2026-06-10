@@ -185,9 +185,189 @@
       "category": "display",
       "priority": 21,
       "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display — no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
+      "status": "done",
+      "milestone": "finished",
+      "attempts": 1
+    },
+    {
+      "name": "link",
+      "category": "navigation",
+      "priority": 22,
+      "spec": "Styled anchor. Variants: standalone (default) and inline (for use within prose). Optional external prop adds target=_blank, rel=noreferrer and a visual external indicator via CSS. Extends AnchorHTMLAttributes. Pure display - no machine, no signals.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "breadcrumb",
+      "category": "navigation",
+      "priority": 23,
+      "spec": "Breadcrumb trail. Props: items {label, href?}[], maxVisible? (collapses middle items to an ellipsis when exceeded). Renders nav[aria-label=Breadcrumb] > ol > li with separators via CSS pseudo-elements (logical properties). Last item gets aria-current=page and renders as text.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "header",
+      "category": "navigation",
+      "priority": 24,
+      "spec": "App top bar (UI shell header). Props: brand (ReactNode), links {label, href, active?}[], actions slot (ReactNode), sticky?. role=banner, nav landmark for links. Container-query responsive: link labels collapse at narrow widths.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "side-nav",
+      "category": "navigation",
+      "priority": 25,
+      "spec": "Collapsible sidebar navigation. Props: items NavItem[] ({label, href?, icon?, active?, items? one nesting level}), collapsed (controlled) / defaultCollapsed, onCollapsedChange, ariaLabel. Group expansion is genuine internal state (signal). Rail mode when collapsed shows icons only. Group expand/collapse animates via the grid-template-rows 0fr/1fr trick with motion tokens.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "pagination",
+      "category": "navigation",
+      "priority": 26,
+      "spec": "Pagination bar. Props: page, pageSize, totalItems, onPageChange, onPageSizeChange?, pageSizeOptions?, labels? (English defaults, all overridable). Renders item-range text, page-size native select, page jumper select, prev/next buttons. nav[aria-label=Pagination], buttons disabled at bounds.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "progress-indicator",
+      "category": "navigation",
+      "priority": 27,
+      "spec": "Multi-step progress for wizards. Props: steps {label, description?}[], currentIndex, vertical?. Step states complete/current/incomplete derived from currentIndex (no machine). ol with aria-current=step on the current item; check glyph on completed steps.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "tag",
+      "category": "display",
+      "priority": 28,
+      "spec": "Compact label chip. Variants: default, info, success, warning, error. Sizes: sm, md. Optional onDismiss renders an accessible close button. Pure display.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "skeleton",
+      "category": "display",
+      "priority": 29,
+      "spec": "Loading placeholder. Variants: text (lines prop), circle, rect; width/height props. Continuous shimmer animation with literal duration plus prefers-reduced-motion static fallback (like Spinner). aria-hidden - screen readers see nothing.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "progress-bar",
+      "category": "feedback",
+      "priority": 30,
+      "spec": "Linear progress. Props: value 0-100 or indeterminate, label?, helperText?, size sm/md, status active/success/error. role=progressbar with aria-valuenow/min/max (omitted when indeterminate). Indeterminate sweep uses a literal duration + reduced-motion fallback.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "empty-state",
+      "category": "display",
+      "priority": 31,
+      "spec": "Empty/zero-data placeholder. Props: icon? (ReactNode), title, description?, action? (ReactNode), size md/lg. Centered column layout. Pure display.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "overflow-menu",
+      "category": "overlay",
+      "priority": 32,
+      "spec": "Kebab icon-button menu for row/card actions. Composes the existing Dropdown menu mechanics with a built-in icon trigger. Props: items (same shape as Dropdown), onSelect, placement bottom-start/bottom-end, ariaLabel (default More actions), size sm/md. Menu open/close animated with motion tokens + @starting-style.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "search",
+      "category": "inputs",
+      "priority": 33,
+      "spec": "Search input. Props: value/defaultValue, onChange, onSearch (debounced, debounceMs default 300), placeholder, size, label?. input[type=search] with leading search glyph and a clear button that appears via CSS :has/value tracking; clear restores focus and fires onSearch with empty string.",
       "status": "review",
       "milestone": "finished",
       "attempts": 1
+    },
+    {
+      "name": "data-table",
+      "category": "display",
+      "priority": 39,
+      "spec": "Flagship generic table: one component, one typed props object. DataTable<Row> with columns Column<Row>[] ({key, header, sortable?, render?, align?, width?}), rows, getRowId?. Built-in prop-toggled: sorting (client or sortMode=server emitting onSortChange), global search toolbar (searchable), client pagination ({pageSize, pageSizeOptions}), selection ({mode single/multi, onChange}) with batch-action toolbar, expandable rows (renderExpandedRow), density compact/normal/relaxed, zebra, stickyHeader, loading skeleton rows, emptyState. Rows get content-visibility:auto + contain-intrinsic-size for large data; sorting/filtering/pagination computed with signals (zero re-render interactions). A11y: aria-sort, full keyboard support, selection announcements.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "combobox",
+      "category": "inputs",
+      "priority": 35,
+      "spec": "Filterable select. Props: options {value,label,disabled?}[], value/onChange (string or string[] with multiple), multiple?, label/hint/error like Select, placeholder, loading? (async options driven by onInputChange), renderOption?. Input + popover listbox, built-in filtering, multi mode renders inline dismissible tags. Machine closed/open driven by component. A11y: role=combobox, aria-expanded, aria-activedescendant, full arrow/Enter/Escape keyboard support. Listbox animated with motion tokens.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "number-input",
+      "category": "inputs",
+      "priority": 34,
+      "spec": "Numeric input with steppers. Props: value/defaultValue, onChange(number|null), min/max/step, precision?, formatOptions? (Intl.NumberFormat applied on blur, raw while editing), label/hint/error, size, disabled. inputmode=numeric, stepper buttons respect bounds, ArrowUp/ArrowDown step. idle/focused/error machine like Input.",
+      "status": "review",
+      "milestone": "finished",
+      "attempts": 0
+    },
+    {
+      "name": "time-picker",
+      "category": "inputs",
+      "priority": 36,
+      "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "date-picker",
+      "category": "inputs",
+      "priority": 37,
+      "spec": "Date selection with from-scratch calendar grid. Props: mode single/range, value/onChange (Date or {start,end}), min/max, locale? (defaults to browser), label/hint/error, disabled. Read-only input(s) showing Intl.DateTimeFormat-formatted value; popover calendar with month navigation, weekday headers via Intl, today marker. Keyboard: roving tabindex on grid, arrows move focus, Enter selects, Escape closes. A11y: trigger aria-haspopup=dialog, grid role=grid, selected aria-selected. Popover animated with motion tokens + @starting-style.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "file-uploader",
+      "category": "inputs",
+      "priority": 38,
+      "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "form",
+      "category": "inputs",
+      "priority": 40,
+      "spec": "Typed form helper over signals - no react-hook-form, no useState. createForm<T>({initialValues, validate?}) and useForm wrapper returning {values, errors, touched (signals), field(name) -> {value,onChange,onBlur,error} wiring for cascade inputs, handleSubmit(onValid), reset, setValue}. Validation sync or async per submit/blur; zod-compatible via plain validate fn returning partial error map. Plus a thin <Form> element wrapping native <form> with onSubmit prevention wired.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "command-menu",
+      "category": "overlay",
+      "priority": 41,
+      "spec": "cmd-k command palette. Props: open/onOpenChange (controlled), groups {heading?, items {id,label,icon?,shortcut?,keywords?,onSelect}[]}[], placeholder, emptyText, hotkey? (default true: global Cmd/Ctrl-K listener via useSignalEffect). Native dialog, animated with motion tokens + @starting-style. Own fuzzy subsequence matcher (no dependency). Query/active-index are signals - typing patches the list without re-rendering the container. A11y: combobox/listbox pattern, aria-activedescendant, arrows/Enter/Escape; Kbd component renders shortcuts.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
     }
   ]
 }

@@ -1,5 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { HTMLAttributes } from 'react'
 import styles from './spinner.module.css'
 
@@ -8,11 +9,13 @@ export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
   label?: string
 }
 
-export function Spinner({ size = 'md', label = 'Loading', className, ...props }: SpinnerProps) {
+export function Spinner({ size = 'md', label, className, ...props }: SpinnerProps) {
+  useSignals()
+  const resolvedLabel = label ?? t(builtin.spinner.label)
   return (
     <span
       role="status"
-      aria-label={label}
+      aria-label={resolvedLabel}
       data-size={size}
       className={cn(styles['spinner'], className)}
       {...props}

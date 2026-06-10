@@ -72,6 +72,45 @@
     line-height: var(--cascade-leading-normal);
   }
 
+  .action {
+    align-self: flex-start;
+    margin-block-start: var(--cascade-space-1);
+    padding-block: var(--cascade-space-1);
+    padding-inline: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-medium);
+    line-height: var(--cascade-leading-none);
+    color: var(--cascade-color-text);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+    transition: background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    .alert[data-variant='info'] & {
+      color: var(--cascade-color-info);
+    }
+    .alert[data-variant='success'] & {
+      color: var(--cascade-color-success);
+    }
+    .alert[data-variant='warning'] & {
+      color: var(--cascade-color-warning);
+    }
+    .alert[data-variant='destructive'] & {
+      color: var(--cascade-color-destructive);
+    }
+  }
+
   .dismiss {
     display: flex;
     flex-shrink: 0;

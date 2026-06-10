@@ -1,0 +1,130 @@
+@layer cascade.component {
+  .root {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    inline-size: 100%;
+
+    &[data-size='sm'] {
+      --_search-height: 2rem;
+      --_search-font: var(--cascade-text-sm);
+      --_search-px: var(--cascade-space-3);
+    }
+
+    &[data-size='md'] {
+      --_search-height: 2.5rem;
+      --_search-font: var(--cascade-text-sm);
+      --_search-px: var(--cascade-space-4);
+    }
+
+    &[data-size='lg'] {
+      --_search-height: 3rem;
+      --_search-font: var(--cascade-text-base);
+      --_search-px: var(--cascade-space-4);
+    }
+  }
+
+  /* Visually hidden but available to assistive technology. */
+  .label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .icon {
+    position: absolute;
+    inset-inline-start: var(--_search-px, var(--cascade-space-4));
+    display: inline-flex;
+    align-items: center;
+    color: var(--cascade-color-text-muted);
+    pointer-events: none;
+  }
+
+  .input {
+    inline-size: 100%;
+    block-size: var(--_search-height, 2.5rem);
+    padding-inline-start: calc(
+      var(--_search-px, var(--cascade-space-4)) + 1rem + var(--cascade-space-2)
+    );
+    padding-inline-end: calc(var(--_search-px, var(--cascade-space-4)) + 1.5rem);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--_search-font, var(--cascade-text-sm));
+    color: var(--cascade-color-text);
+    background-color: var(--cascade-color-surface);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-input);
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+    outline: none;
+
+    /* Suppress the native WebKit search affordances; we render our own. */
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-decoration {
+      display: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    &::placeholder {
+      color: var(--cascade-color-text-muted);
+    }
+
+    &:hover:not(:disabled):not(:focus) {
+      border-color: var(--cascade-color-border-strong);
+    }
+
+    &:focus {
+      border-color: var(--cascade-color-accent);
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: var(--cascade-color-bg-subtle);
+    }
+  }
+
+  .clear {
+    position: absolute;
+    inset-inline-end: var(--cascade-space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    font-size: var(--cascade-text-sm);
+    line-height: var(--cascade-leading-none);
+    color: var(--cascade-color-text-muted);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+    transition:
+      background-color var(--cascade-duration-150) var(--cascade-ease-out),
+      color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover:not(:disabled) {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}

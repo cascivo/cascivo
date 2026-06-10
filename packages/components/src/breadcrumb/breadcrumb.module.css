@@ -1,0 +1,52 @@
+@layer cascade.component {
+  .breadcrumb {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    line-height: var(--cascade-leading-normal);
+
+    & ol {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--cascade-space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    & li {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--cascade-space-2);
+      color: var(--cascade-color-text-muted);
+    }
+
+    /* Separator — alt text '' keeps it out of the accessibility tree */
+    & li + li::before {
+      content: '/' / '';
+      color: var(--cascade-color-text-subtle);
+    }
+
+    & a {
+      color: var(--cascade-color-text-muted);
+      text-decoration: none;
+      border-radius: var(--cascade-radius-sm);
+      transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+
+      &:hover {
+        color: var(--cascade-color-text);
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: var(--cascade-focus-ring);
+      }
+    }
+
+    & [aria-current='page'] {
+      color: var(--cascade-color-text);
+      font-weight: var(--cascade-font-medium);
+    }
+  }
+}

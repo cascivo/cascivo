@@ -96,6 +96,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascade-ui/storage':
+        specifier: workspace:^
+        version: link:../../packages/storage
       '@cascade-ui/themes':
         specifier: workspace:*
         version: link:../../packages/themes
@@ -281,6 +284,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../core
+      '@cascade-ui/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@testing-library/jest-dom':
         specifier: ^6
         version: 6.9.1
@@ -342,6 +348,22 @@ importers:
         specifier: 'catalog:'
         version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
 
+  packages/i18n:
+    dependencies:
+      '@cascade-ui/core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      '@preact/signals-react':
+        specifier: 'catalog:'
+        version: 3.10.1(react@19.2.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
+
   packages/icons:
     devDependencies:
       '@testing-library/jest-dom':
@@ -396,6 +418,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:^
         version: link:../core
+      '@cascade-ui/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       '@preact/signals-react':
         specifier: '>=2.0.0'
         version: 3.10.1(react@19.2.7)
@@ -433,6 +458,25 @@ importers:
       vitest:
         specifier: npm:@voidzero-dev/vite-plus-test@0.1.24
         version: '@voidzero-dev/vite-plus-test@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))'
+
+  packages/storage:
+    dependencies:
+      '@cascade-ui/core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      '@preact/signals-react':
+        specifier: 'catalog:'
+        version: 3.10.1(react@19.2.7)
+      jsdom:
+        specifier: 'catalog:'
+        version: 29.1.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
 
   packages/themes:
     devDependencies:

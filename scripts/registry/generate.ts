@@ -22,7 +22,7 @@ const COMPONENTS_DIR = join(REPO_ROOT, 'packages', 'components', 'src')
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 
 const BASE_URL = (
-  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/cascade-ui/cascade/main'
+  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main'
 ).replace(/\/+$/, '')
 
 interface RegistryComponent {
@@ -95,6 +95,11 @@ async function main(): Promise<void> {
 
   const components: RegistryComponent[] = []
   for (const name of names) {
+    const metaPath = join(COMPONENTS_DIR, name, `${name}.meta.ts`)
+    if (!existsSync(metaPath)) {
+      console.warn(`  skip ${name}: no ${name}.meta.ts found`)
+      continue
+    }
     components.push(await buildEntry(name, version))
   }
 

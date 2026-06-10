@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './alert.module.css'
 
@@ -9,6 +10,7 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
   icon?: ReactNode
   dismissible?: boolean
   onDismiss?: () => void
+  action?: { label: string; onClick: () => void }
 }
 
 const assertiveVariants = new Set(['warning', 'destructive'])
@@ -19,6 +21,7 @@ export function Alert({
   icon,
   dismissible = false,
   onDismiss,
+  action,
   className,
   children,
   ...props
@@ -42,12 +45,17 @@ export function Alert({
       <div className={styles['body']}>
         {title && <div className={styles['title']}>{title}</div>}
         {children && <div className={styles['content']}>{children}</div>}
+        {action && (
+          <button type="button" className={styles['action']} onClick={action.onClick}>
+            {action.label}
+          </button>
+        )}
       </div>
       {dismissible && (
         <button
           type="button"
           className={styles['dismiss']}
-          aria-label="Dismiss"
+          aria-label={t(builtin.alert.dismiss)}
           onClick={() => {
             dismissed.value = true
             onDismiss?.()

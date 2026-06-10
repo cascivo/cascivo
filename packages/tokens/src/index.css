@@ -144,6 +144,12 @@
     --cascade-duration-150: 150ms;
     --cascade-duration-200: 200ms;
     --cascade-duration-300: 300ms;
+    --cascade-duration-500: 500ms;
+
+    /* Semantic motion — components reference intent, themes tune character */
+    --cascade-motion-enter: var(--cascade-duration-200) var(--cascade-ease-out);
+    --cascade-motion-exit: var(--cascade-duration-150) var(--cascade-ease-in);
+    --cascade-motion-emphasis: var(--cascade-duration-300) var(--cascade-ease-in-out);
 
     /* ── Z-Index ──────────────────────────────────────── */
     --cascade-z-base: 0;
@@ -153,5 +159,19 @@
     --cascade-z-modal: 300;
     --cascade-z-toast: 400;
     --cascade-z-tooltip: 500;
+  }
+
+  /* All cascade motion derives from the duration tokens, so collapsing them
+     disables every transition/animation library-wide. Continuous progress
+     indicators (Spinner) use literal durations and opt out deliberately. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --cascade-duration-75: 0.01ms;
+      --cascade-duration-100: 0.01ms;
+      --cascade-duration-150: 0.01ms;
+      --cascade-duration-200: 0.01ms;
+      --cascade-duration-300: 0.01ms;
+      --cascade-duration-500: 0.01ms;
+    }
   }
 }

@@ -1,0 +1,190 @@
+@layer cascade.component {
+  .dialog {
+    padding: 0;
+    border: none;
+    border-radius: var(--cascade-radius-modal);
+    background: transparent;
+    margin-block-start: 15vh;
+    margin-inline: auto;
+    inline-size: min(40rem, calc(100vw - var(--cascade-space-8)));
+    max-block-size: calc(85vh - var(--cascade-space-16));
+    overflow: visible;
+
+    /* Exit animation: transitioning `display`/`overlay` with allow-discrete
+       keeps the dialog visible (and in the top layer) until the fade ends */
+    opacity: 0;
+    scale: 0.96;
+    transition:
+      opacity var(--cascade-motion-exit),
+      scale var(--cascade-motion-exit),
+      display var(--cascade-duration-150) allow-discrete,
+      overlay var(--cascade-duration-150) allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      scale: 1;
+      transition:
+        opacity var(--cascade-motion-enter),
+        scale var(--cascade-motion-enter),
+        display var(--cascade-duration-200) allow-discrete,
+        overlay var(--cascade-duration-200) allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+        scale: 0.96;
+      }
+    }
+
+    /* Backdrop */
+    &::backdrop {
+      background-color: rgb(0 0 0 / 0.5);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition:
+        opacity var(--cascade-motion-exit),
+        display var(--cascade-duration-150) allow-discrete,
+        overlay var(--cascade-duration-150) allow-discrete;
+    }
+
+    &[open]::backdrop {
+      opacity: 1;
+      transition:
+        opacity var(--cascade-motion-enter),
+        display var(--cascade-duration-200) allow-discrete,
+        overlay var(--cascade-duration-200) allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cascade-color-surface-overlay);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-modal);
+    box-shadow: var(--cascade-shadow-xl);
+    overflow: hidden;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-3);
+    padding-inline: var(--cascade-space-4);
+    border-block-end: 1px solid var(--cascade-color-border);
+  }
+
+  .searchIcon {
+    flex-shrink: 0;
+    color: var(--cascade-color-text-muted);
+  }
+
+  .input {
+    flex: 1;
+    block-size: 3rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-base);
+    color: var(--cascade-color-text);
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--cascade-color-text-muted);
+    }
+  }
+
+  .list {
+    overflow-y: auto;
+    max-block-size: 20rem;
+    padding: var(--cascade-space-2);
+  }
+
+  .group + .group {
+    margin-block-start: var(--cascade-space-2);
+  }
+
+  .heading {
+    padding-inline: var(--cascade-space-2);
+    padding-block: var(--cascade-space-1);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-xs);
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text-subtle);
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-3);
+    padding-inline: var(--cascade-space-2);
+    padding-block: var(--cascade-space-2);
+    border-radius: var(--cascade-radius-sm);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text);
+    cursor: pointer;
+    user-select: none;
+
+    &[data-state='active'] {
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &[data-disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    color: var(--cascade-color-text-muted);
+  }
+
+  .label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .shortcut {
+    display: inline-flex;
+    gap: var(--cascade-space-1);
+    margin-inline-start: auto;
+  }
+
+  .empty {
+    padding-block: var(--cascade-space-8);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-muted);
+    text-align: center;
+  }
+
+  .footer {
+    display: flex;
+    gap: var(--cascade-space-4);
+    padding-inline: var(--cascade-space-4);
+    padding-block: var(--cascade-space-2);
+    border-block-start: 1px solid var(--cascade-color-border);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-xs);
+    color: var(--cascade-color-text-subtle);
+  }
+
+  .hint {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascade-space-1);
+  }
+}

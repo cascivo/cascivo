@@ -54,6 +54,17 @@ Create four files at `packages/components/src/<name>/`:
    `cn(styles[...], className)`, `data-variant`/`data-size`/`data-state` hooks.
 2. `<name>.module.css` — `@layer cascade.component { }`, every value via
    `--cascade-*` tokens, logical properties, `:has()`/`@container` where useful.
+   **Motion is mandatory for open/close/enter/exit components**: CSS-only via
+   `@starting-style` (+ `transition-behavior: allow-discrete` for top-layer or
+   display-toggling elements), using the semantic motion tokens
+   (`--cascade-motion-enter/exit/emphasis`), animating only compositor-safe
+   properties (`opacity`, `transform`/`translate`/`scale`). Never animate from
+   JS. Reduced motion is handled globally by the tokens layer — do not add
+   per-component `prefers-reduced-motion` rules unless opting _out_ (continuous
+   indicators).
+   User-visible strings (labels, aria-labels, empty states) must come from the
+   `@cascade-ui/i18n` built-in catalog via `t(builtin...)` with a `labels` prop
+   override — add new keys to `packages/i18n/src/builtin.ts` (en + de) as needed.
 3. `<name>.meta.ts` — a `ComponentMeta` object (`import type` from
    `@cascade-ui/core`). Fill `props`, `tokens`, `accessibility`, `examples`,
    `tags` honestly from what you built.
@@ -84,14 +95,16 @@ Wire the green component into the rest of the monorepo:
 
 1. Add the export to `packages/components/package.json` `exports`:
    `"./<name>": "./src/<name>/<name>.tsx"` (keep the map formatted).
-2. Add a live demo to `apps/docs/src/demos.tsx` (`demos.<name> = () => ( … )`).
+2. Add the prebuilt-distribution export to `packages/react/src/index.ts`:
+   `export * from '../../components/src/<name>/<name>'`
+3. Add a live demo to `apps/docs/src/demos.tsx` (`demos.<name> = () => ( … )`).
    The docs ComponentPage and sidebar are registry-driven and pick it up
    automatically.
-3. Add `apps/storybook/stories/<Name>.stories.tsx` following the existing story
+4. Add `apps/storybook/stories/<Name>.stories.tsx` following the existing story
    pattern: every variant, every size, and an `Accessibility` story with
    `parameters: { a11y: { test: 'error' } }`.
-4. Regenerate the registry: `pnpm registry:generate`.
-5. Run the full gate: `vp check && vp run -r check && vp run -r test`. Fix any
+5. Regenerate the registry: `pnpm registry:generate`.
+6. Run the full gate: `vp check && vp run -r check && vp run -r test`. Fix any
    integration fallout (this also counts against the 5-attempt cap; escalate if
    exceeded).
 

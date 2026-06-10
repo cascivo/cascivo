@@ -1,0 +1,48 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Link',
+  description: 'Styled anchor for navigation, standalone or inline within prose',
+  category: 'navigation',
+  states: [],
+  variants: ['standalone', 'inline'],
+  sizes: ['sm', 'md', 'lg'],
+  props: [
+    {
+      name: 'variant',
+      type: "'standalone' | 'inline'",
+      required: false,
+      default: 'standalone',
+    },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    { name: 'external', type: 'boolean', required: false, default: 'false' },
+    { name: 'href', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascade-color-accent',
+    '--cascade-color-accent-hover',
+    '--cascade-color-accent-active',
+    '--cascade-radius-sm',
+    '--cascade-focus-ring',
+  ],
+  accessibility: {
+    role: 'link',
+    wcag: 'AA',
+    keyboard: ['Enter'],
+  },
+  examples: [
+    { title: 'Standalone', code: '<Link href="/docs">View documentation</Link>' },
+    {
+      title: 'Inline',
+      code: '<p>Read the <Link variant="inline" href="/guide">guide</Link> first.</p>',
+      description: 'Inline links inherit the surrounding font size and stay underlined.',
+    },
+    {
+      title: 'External',
+      code: '<Link external href="https://example.com">Example</Link>',
+      description: 'Opens in a new tab with rel="noreferrer" and a visual indicator.',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['link', 'anchor', 'navigation'],
+}

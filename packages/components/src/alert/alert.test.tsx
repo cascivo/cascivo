@@ -36,4 +36,29 @@ describe('Alert', () => {
     expect(onDismiss).toHaveBeenCalledOnce()
     expect(screen.queryByText('Closable')).not.toBeInTheDocument()
   })
+
+  it('renders the action button when an action is provided', () => {
+    render(
+      <Alert variant="warning" action={{ label: 'Update now', onClick: vi.fn() }}>
+        A new version is ready.
+      </Alert>,
+    )
+    expect(screen.getByRole('button', { name: 'Update now' })).toBeInTheDocument()
+  })
+
+  it('does not render an action button when no action is provided', () => {
+    render(<Alert variant="info">No action</Alert>)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('calls the action onClick when the action button is clicked', async () => {
+    const onClick = vi.fn()
+    render(
+      <Alert variant="info" action={{ label: 'Retry', onClick }}>
+        Failed to load.
+      </Alert>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Retry' }))
+    expect(onClick).toHaveBeenCalledOnce()
+  })
 })

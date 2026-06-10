@@ -1,0 +1,180 @@
+@layer cascade.component {
+  .sideNav {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    inline-size: var(--cascade-sidenav-inline-size, 16rem);
+    min-block-size: 100%;
+    padding: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    background-color: var(--cascade-sidenav-bg, var(--cascade-color-surface));
+    border-inline-end: 1px solid var(--cascade-color-border);
+    overflow: hidden;
+    transition: inline-size var(--cascade-motion-emphasis);
+
+    &[data-state='collapsed'] {
+      inline-size: var(--cascade-sidenav-rail-inline-size, 3.5rem);
+
+      /* Labels stay accessible to assistive tech; sighted users get title tooltips */
+      & .label {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      & .link,
+      & .groupTrigger {
+        justify-content: center;
+        padding-inline: var(--cascade-space-2);
+      }
+
+      & .groupIndicator {
+        display: none;
+      }
+    }
+  }
+
+  .list,
+  .sublistInner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .link,
+  .groupTrigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-2);
+    inline-size: 100%;
+    padding-block: var(--cascade-space-2);
+    padding-inline: var(--cascade-space-3);
+    font-family: inherit;
+    font-size: var(--cascade-text-sm);
+    line-height: var(--cascade-leading-tight);
+    text-align: start;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--cascade-color-text-subtle);
+    background: transparent;
+    border: none;
+    border-inline-start: 2px solid transparent;
+    border-radius: var(--cascade-radius-md);
+    cursor: pointer;
+    transition:
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+
+  .link[data-state='active'] {
+    color: var(--cascade-color-text);
+    font-weight: var(--cascade-font-medium);
+    background-color: var(--cascade-color-accent-subtle);
+    border-inline-start-color: var(--cascade-color-accent);
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    inline-size: var(--cascade-space-4);
+    block-size: var(--cascade-space-4);
+  }
+
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .groupIndicator {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    transition: rotate var(--cascade-motion-emphasis);
+
+    .groupTrigger[data-state='open'] & {
+      rotate: 180deg;
+    }
+  }
+
+  .sublist {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--cascade-motion-exit),
+      visibility var(--cascade-motion-exit);
+
+    &[data-state='open'] {
+      grid-template-rows: 1fr;
+      visibility: visible;
+      transition:
+        grid-template-rows var(--cascade-motion-enter),
+        visibility var(--cascade-motion-enter);
+    }
+  }
+
+  .sublistInner {
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .sublink {
+    padding-inline-start: calc(
+      var(--cascade-space-3) + var(--cascade-space-4) + var(--cascade-space-2)
+    );
+  }
+
+  .collapseToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block-start: auto;
+    padding-block: var(--cascade-space-2);
+    color: var(--cascade-color-text-subtle);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-md);
+    cursor: pointer;
+    transition:
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+
+  .collapseIcon {
+    transition: rotate var(--cascade-motion-emphasis);
+
+    .sideNav[data-state='collapsed'] & {
+      rotate: 180deg;
+    }
+  }
+}

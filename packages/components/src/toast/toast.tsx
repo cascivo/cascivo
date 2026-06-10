@@ -1,5 +1,6 @@
 'use client'
 import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useRef, type ReactNode } from 'react'
 import styles from './toast.module.css'
 
@@ -18,6 +19,7 @@ interface ToastRecord extends ToastOptions {
 
 const MAX_VISIBLE = 3
 const DEFAULT_DURATION = 5000
+// must outlast --cascade-motion-exit (150ms)
 const EXIT_DURATION = 160
 
 // App-global queue: toasts are not tied to a single render tree, so a module
@@ -40,7 +42,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <div className={styles['viewport']} role="region" aria-label="Notifications">
+      <div className={styles['viewport']} role="region" aria-label={t(builtin.toast.region)}>
         {visible.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onDismiss={() => dequeue(toast.id)} />
         ))}
@@ -50,9 +52,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 }
 
 const machine = createMachine({
-  initial: 'entering' as const,
+  initial: 'visible' as const,
   states: {
-    entering: { on: { SHOW: 'visible', DISMISS: 'dismissing' } },
     visible: { on: { DISMISS: 'dismissing' } },
     dismissing: { on: { END: 'gone' } },
   },
@@ -69,10 +70,6 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
 
   useSignalEffect(() => {
     const phase = state.value
-    if (phase === 'entering') {
-      const timer = setTimeout(() => send('SHOW'), 20)
-      return () => clearTimeout(timer)
-    }
     if (phase === 'visible') {
       const timer = setTimeout(() => send('DISMISS'), duration)
       return () => clearTimeout(timer)
@@ -99,7 +96,7 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
       <button
         type="button"
         className={styles['close']}
-        aria-label="Dismiss notification"
+        aria-label={t(builtin.toast.dismiss)}
         onClick={() => send('DISMISS')}
       >
         ✕
