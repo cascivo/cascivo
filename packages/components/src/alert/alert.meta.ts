@@ -18,6 +18,7 @@ export const meta: ComponentMeta = {
     { name: 'icon', type: 'ReactNode', required: false },
     { name: 'dismissible', type: 'boolean', required: false, default: 'false' },
     { name: 'onDismiss', type: '() => void', required: false },
+    { name: 'action', type: '{ label: string; onClick: () => void }', required: false },
   ],
   tokens: [
     '--cascade-color-info',
@@ -37,6 +38,10 @@ export const meta: ComponentMeta = {
     {
       title: 'Dismissible',
       code: '<Alert variant="success" dismissible title="Saved">Changes saved.</Alert>',
+    },
+    {
+      title: 'Actionable',
+      code: '<Alert variant="warning" title="Update available" action={{ label: \'Update now\', onClick: update }}>A new version is ready.</Alert>',
     },
   ],
   dependencies: ['@cascade-ui/core'],

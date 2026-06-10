@@ -1,0 +1,65 @@
+@layer cascade.component {
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--cascade-space-2);
+    padding: var(--cascade-space-8);
+    font-family: var(--cascade-font-sans);
+    color: var(--cascade-color-text);
+
+    &[data-size='lg'] {
+      gap: var(--cascade-space-3);
+      padding: var(--cascade-space-12);
+    }
+  }
+
+  .icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    margin-block-end: var(--cascade-space-2);
+    font-size: var(--cascade-text-xl);
+    line-height: 1;
+    color: var(--cascade-color-text-muted);
+    background-color: var(--cascade-color-bg-subtle);
+    border-radius: var(--cascade-radius-full);
+
+    .empty-state[data-size='lg'] & {
+      inline-size: 4rem;
+      block-size: 4rem;
+      font-size: var(--cascade-text-2xl);
+    }
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--cascade-text-base);
+    font-weight: var(--cascade-font-semibold);
+    line-height: var(--cascade-leading-snug);
+
+    .empty-state[data-size='lg'] & {
+      font-size: var(--cascade-text-lg);
+    }
+  }
+
+  .description {
+    margin: 0;
+    max-inline-size: 40ch;
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+    line-height: var(--cascade-leading-normal);
+
+    .empty-state[data-size='lg'] & {
+      font-size: var(--cascade-text-base);
+    }
+  }
+
+  .action {
+    margin-block-start: var(--cascade-space-2);
+  }
+}
