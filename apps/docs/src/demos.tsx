@@ -26,6 +26,17 @@ import {
   AccordionContent,
 } from '@cascade-ui/components/accordion'
 import { Kbd } from '@cascade-ui/components/kbd'
+import { Link } from '@cascade-ui/components/link'
+import { Breadcrumb } from '@cascade-ui/components/breadcrumb'
+import { SideNav } from '@cascade-ui/components/side-nav'
+import { Pagination } from '@cascade-ui/components/pagination'
+import { ProgressIndicator } from '@cascade-ui/components/progress-indicator'
+import { Tag } from '@cascade-ui/components/tag'
+import { Skeleton } from '@cascade-ui/components/skeleton'
+import { ProgressBar } from '@cascade-ui/components/progress-bar'
+import { EmptyState } from '@cascade-ui/components/empty-state'
+import { OverflowMenu } from '@cascade-ui/components/overflow-menu'
+import { NumberInput } from '@cascade-ui/components/number-input'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -39,6 +50,42 @@ function Col({ children }: { children: ComponentChildren }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: '24rem' }}>
       {children}
+    </div>
+  )
+}
+
+function PaginationDemo() {
+  const [page, setPage] = useState(1)
+  return <Pagination page={page} pageSize={25} totalItems={103} onPageChange={setPage} />
+}
+
+function NumberInputDemo() {
+  const [val, setVal] = useState<number | null>(42)
+  return (
+    <Col>
+      <NumberInput label="Quantity" value={val} onChange={setVal} min={0} max={100} />
+      <NumberInput label="Price" defaultValue={9.99} step={0.01} precision={2} hint="USD" />
+      <NumberInput label="Disabled" defaultValue={5} disabled />
+    </Col>
+  )
+}
+
+function SideNavDemo() {
+  return (
+    <div style={{ height: '240px', display: 'flex' }}>
+      <SideNav
+        items={[
+          { label: 'Dashboard', href: '#', active: true },
+          { label: 'Components', href: '#' },
+          {
+            label: 'Settings',
+            items: [
+              { label: 'General', href: '#' },
+              { label: 'Tokens', href: '#' },
+            ],
+          },
+        ]}
+      />
     </div>
   )
 }
@@ -261,4 +308,120 @@ export const demos: Record<string, () => JSX.Element> = {
       <Kbd size="sm">Esc</Kbd>
     </Row>
   ),
+  link: () => (
+    <Row>
+      <Link href="#">Standalone link</Link>
+      <span>
+        Inline text with an{' '}
+        <Link variant="inline" href="#">
+          inline link
+        </Link>{' '}
+        inside.
+      </span>
+      <Link href="https://example.com" external>
+        External link
+      </Link>
+    </Row>
+  ),
+  breadcrumb: () => (
+    <Col>
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '#' },
+          { label: 'Components', href: '#' },
+          { label: 'Breadcrumb' },
+        ]}
+      />
+      <Breadcrumb
+        maxVisible={3}
+        items={[
+          { label: 'Home', href: '#' },
+          { label: 'Design', href: '#' },
+          { label: 'Tokens', href: '#' },
+          { label: 'Color' },
+        ]}
+      />
+    </Col>
+  ),
+  'side-nav': () => <SideNavDemo />,
+  pagination: () => <PaginationDemo />,
+  'progress-indicator': () => (
+    <Col>
+      <ProgressIndicator
+        currentIndex={1}
+        steps={[
+          { label: 'Account', description: 'Basic info' },
+          { label: 'Profile', description: 'Your details' },
+          { label: 'Review' },
+        ]}
+      />
+      <ProgressIndicator
+        vertical
+        currentIndex={2}
+        steps={[{ label: 'Select plan' }, { label: 'Payment' }, { label: 'Confirm' }]}
+      />
+    </Col>
+  ),
+  tag: () => (
+    <Row>
+      <Tag>Default</Tag>
+      <Tag variant="info">Info</Tag>
+      <Tag variant="success">Success</Tag>
+      <Tag variant="warning">Warning</Tag>
+      <Tag variant="error">Error</Tag>
+      <Tag variant="info" onDismiss={() => {}}>
+        Dismissible
+      </Tag>
+      <Tag size="sm">Small</Tag>
+    </Row>
+  ),
+  skeleton: () => (
+    <Col>
+      <Skeleton variant="text" lines={3} />
+      <Row>
+        <Skeleton variant="circle" width="3rem" height="3rem" />
+        <Skeleton variant="rect" width="8rem" height="3rem" />
+      </Row>
+    </Col>
+  ),
+  'progress-bar': () => (
+    <Col>
+      <ProgressBar label="Uploading" value={65} helperText="65 of 100 MB" />
+      <ProgressBar label="Complete" value={100} status="success" />
+      <ProgressBar label="Failed" value={40} status="error" helperText="Network error" />
+      <ProgressBar label="Loading" size="sm" />
+    </Col>
+  ),
+  'empty-state': () => (
+    <Col>
+      <EmptyState
+        icon="📭"
+        title="No messages yet"
+        description="When you receive messages, they'll appear here."
+        action={<Button size="sm">Compose</Button>}
+      />
+      <EmptyState size="lg" title="No results" description="Try adjusting your search filters." />
+    </Col>
+  ),
+  'overflow-menu': () => (
+    <Row>
+      <OverflowMenu
+        items={[
+          { label: 'Edit', value: 'edit' },
+          { label: 'Duplicate', value: 'duplicate' },
+          { label: 'Delete', value: 'delete', destructive: true },
+        ]}
+        onSelect={() => {}}
+      />
+      <OverflowMenu
+        size="sm"
+        items={[
+          { label: 'View', value: 'view' },
+          { label: 'Archive', value: 'archive' },
+        ]}
+        onSelect={() => {}}
+      />
+    </Row>
+  ),
+  'number-input': () => <NumberInputDemo />,
 }

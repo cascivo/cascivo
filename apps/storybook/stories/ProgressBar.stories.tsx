@@ -9,7 +9,7 @@ export default meta
 type Story = StoryObj<typeof ProgressBar>
 
 export const Determinate: Story = {}
-export const Indeterminate: Story = { args: { value: undefined, label: 'Processing' } }
+export const Indeterminate: Story = { args: { label: 'Processing' } }
 
 export const WithHelperText: Story = {
   args: { value: 30, helperText: '3 of 10 files uploaded' },

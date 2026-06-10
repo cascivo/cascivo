@@ -33,7 +33,20 @@
       "@cascade-ui/components/toast": ["./src/shims/toast.d.ts"],
       "@cascade-ui/components/tabs": ["./src/shims/tabs.d.ts"],
       "@cascade-ui/components/accordion": ["./src/shims/accordion.d.ts"],
-      "@cascade-ui/components/kbd": ["./src/shims/kbd.d.ts"]
+      "@cascade-ui/components/kbd": ["./src/shims/kbd.d.ts"],
+      "@cascade-ui/components/header": ["./src/shims/header.d.ts"],
+      "@cascade-ui/components/search": ["./src/shims/search.d.ts"],
+      "@cascade-ui/components/side-nav": ["./src/shims/side-nav.d.ts"],
+      "@cascade-ui/components/link": ["./src/shims/link.d.ts"],
+      "@cascade-ui/components/breadcrumb": ["./src/shims/breadcrumb.d.ts"],
+      "@cascade-ui/components/pagination": ["./src/shims/pagination.d.ts"],
+      "@cascade-ui/components/progress-indicator": ["./src/shims/progress-indicator.d.ts"],
+      "@cascade-ui/components/tag": ["./src/shims/tag.d.ts"],
+      "@cascade-ui/components/skeleton": ["./src/shims/skeleton.d.ts"],
+      "@cascade-ui/components/progress-bar": ["./src/shims/progress-bar.d.ts"],
+      "@cascade-ui/components/empty-state": ["./src/shims/empty-state.d.ts"],
+      "@cascade-ui/components/overflow-menu": ["./src/shims/overflow-menu.d.ts"],
+      "@cascade-ui/components/number-input": ["./src/shims/number-input.d.ts"]
     }
   },
   "include": ["src"]
