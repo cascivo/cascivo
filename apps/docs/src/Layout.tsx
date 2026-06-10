@@ -3,6 +3,7 @@ import { useSignals } from '@cascade-ui/core'
 import { useLocation } from 'preact-iso'
 import { useState } from 'preact/hooks'
 import { buildNav } from './nav'
+import { DocsSearch } from './search'
 import { applyTheme, theme, THEMES } from './theme'
 
 export function Layout({ children }: { children: ComponentChildren }) {
@@ -29,6 +30,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
         <a class="layout-logo" href="/">
           <span>cascade</span> ui
         </a>
+        <DocsSearch />
         <div class="theme-switcher">
           {THEMES.map((t) => (
             <button

@@ -623,6 +623,19 @@
             "default": "Command menu"
           },
           {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows a loading spinner in place of the empty state (for async items)"
+          },
+          {
+            "name": "onQueryChange",
+            "type": "(query: string) => void",
+            "required": false,
+            "description": "Fires on every query keystroke — use to fetch async items"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
