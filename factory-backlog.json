@@ -184,7 +184,7 @@
       "name": "kbd",
       "category": "display",
       "priority": 21,
-      "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display — no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
+      "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display \u2014 no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
       "status": "done",
       "milestone": "finished",
       "attempts": 1
@@ -302,8 +302,8 @@
       "category": "display",
       "priority": 39,
       "spec": "Flagship generic table: one component, one typed props object. DataTable<Row> with columns Column<Row>[] ({key, header, sortable?, render?, align?, width?}), rows, getRowId?. Built-in prop-toggled: sorting (client or sortMode=server emitting onSortChange), global search toolbar (searchable), client pagination ({pageSize, pageSizeOptions}), selection ({mode single/multi, onChange}) with batch-action toolbar, expandable rows (renderExpandedRow), density compact/normal/relaxed, zebra, stickyHeader, loading skeleton rows, emptyState. Rows get content-visibility:auto + contain-intrinsic-size for large data; sorting/filtering/pagination computed with signals (zero re-render interactions). A11y: aria-sort, full keyboard support, selection announcements.",
-      "status": "pending",
-      "milestone": null,
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     },
     {
@@ -365,8 +365,8 @@
       "category": "overlay",
       "priority": 41,
       "spec": "cmd-k command palette. Props: open/onOpenChange (controlled), groups {heading?, items {id,label,icon?,shortcut?,keywords?,onSelect}[]}[], placeholder, emptyText, hotkey? (default true: global Cmd/Ctrl-K listener via useSignalEffect). Native dialog, animated with motion tokens + @starting-style. Own fuzzy subsequence matcher (no dependency). Query/active-index are signals - typing patches the list without re-rendering the container. A11y: combobox/listbox pattern, aria-activedescendant, arrows/Enter/Escape; Kbd component renders shortcuts.",
-      "status": "pending",
-      "milestone": null,
+      "status": "review",
+      "milestone": "finished",
       "attempts": 0
     }
   ]

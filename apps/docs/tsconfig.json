@@ -46,7 +46,9 @@
       "@cascade-ui/components/progress-bar": ["./src/shims/progress-bar.d.ts"],
       "@cascade-ui/components/empty-state": ["./src/shims/empty-state.d.ts"],
       "@cascade-ui/components/overflow-menu": ["./src/shims/overflow-menu.d.ts"],
-      "@cascade-ui/components/number-input": ["./src/shims/number-input.d.ts"]
+      "@cascade-ui/components/number-input": ["./src/shims/number-input.d.ts"],
+      "@cascade-ui/components/data-table": ["./src/shims/data-table.d.ts"],
+      "@cascade-ui/components/command-menu": ["./src/shims/command-menu.d.ts"]
     }
   },
   "include": ["src"]

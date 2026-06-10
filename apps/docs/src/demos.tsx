@@ -37,6 +37,8 @@ import { ProgressBar } from '@cascade-ui/components/progress-bar'
 import { EmptyState } from '@cascade-ui/components/empty-state'
 import { OverflowMenu } from '@cascade-ui/components/overflow-menu'
 import { NumberInput } from '@cascade-ui/components/number-input'
+import { DataTable, type Column } from '@cascade-ui/components/data-table'
+import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -51,6 +53,81 @@ function Col({ children }: { children: ComponentChildren }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: '24rem' }}>
       {children}
     </div>
+  )
+}
+
+interface DemoRow {
+  id: string
+  name: string
+  role: string
+  status: string
+}
+
+const demoRows: DemoRow[] = [
+  { id: '1', name: 'Alice Chen', role: 'Engineer', status: 'Active' },
+  { id: '2', name: 'Bob Smith', role: 'Designer', status: 'Active' },
+  { id: '3', name: 'Carol Davis', role: 'PM', status: 'Away' },
+  { id: '4', name: 'Dan Wilson', role: 'Engineer', status: 'Active' },
+  { id: '5', name: 'Eve Johnson', role: 'QA', status: 'Inactive' },
+  { id: '6', name: 'Frank Lee', role: 'DevOps', status: 'Active' },
+  { id: '7', name: 'Grace Kim', role: 'Designer', status: 'Active' },
+  { id: '8', name: 'Henry Brown', role: 'Engineer', status: 'Away' },
+]
+
+const demoColumns: Column<DemoRow>[] = [
+  { key: 'name', header: 'Name', sortable: true },
+  { key: 'role', header: 'Role', sortable: true },
+  { key: 'status', header: 'Status' },
+]
+
+function DataTableDemo() {
+  const [selected, setSelected] = useState<string[]>([])
+  return (
+    <DataTable
+      columns={demoColumns}
+      rows={demoRows}
+      getRowId={(r) => r.id}
+      searchable
+      selection={{ mode: 'multi', selected, onChange: setSelected }}
+      pagination={{ pageSize: 5 }}
+      zebra
+      title="Team members"
+      description="8 members"
+    />
+  )
+}
+
+const commandGroups: CommandGroup[] = [
+  {
+    heading: 'Components',
+    items: [
+      { id: 'button', label: 'Button', keywords: ['click'], onSelect: () => {} },
+      { id: 'input', label: 'Input', keywords: ['form', 'text'], onSelect: () => {} },
+      { id: 'modal', label: 'Modal', onSelect: () => {} },
+    ],
+  },
+  {
+    heading: 'Actions',
+    items: [
+      { id: 'theme', label: 'Toggle theme', shortcut: ['⌘', 'T'], onSelect: () => {} },
+    ],
+  },
+]
+
+function CommandMenuDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <Row>
+      <button type="button" onClick={() => setOpen(true)}>
+        Open CommandMenu <kbd>⌘K</kbd>
+      </button>
+      <CommandMenu
+        open={open}
+        onOpenChange={setOpen}
+        groups={commandGroups}
+        hotkey={false}
+      />
+    </Row>
   )
 }
 
@@ -424,4 +501,6 @@ export const demos: Record<string, () => JSX.Element> = {
     </Row>
   ),
   'number-input': () => <NumberInputDemo />,
+  'data-table': () => <DataTableDemo />,
+  'command-menu': () => <CommandMenuDemo />,
 }

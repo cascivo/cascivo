@@ -50,43 +50,44 @@ pnpm add @cascade-ui/react
 
 ## Components
 
-| Name               | Category   | Description                                                                    |
-| ------------------ | ---------- | ------------------------------------------------------------------------------ |
-| accordion          | navigation | Vertically stacked, collapsible content sections                               |
-| alert              | display    | Highlights a short, important message inline                                   |
-| avatar             | display    | Displays a user image with initials fallback                                   |
-| badge              | display    | Small status label or category indicator                                       |
-| breadcrumb         | navigation | Shows the current page location within a navigation hierarchy                  |
-| button             | inputs     | Triggers an action or event                                                    |
-| card               | display    | Container for grouping related content                                         |
-| checkbox           | inputs     | Binary toggle for forms, with indeterminate support                            |
-| command-menu       | overlay    | Cmd+K command palette with fuzzy search over grouped commands                  |
-| dropdown           | overlay    | Menu of actions revealed from a trigger                                        |
-| empty-state        | display    | Placeholder for views that have no data to display                             |
-| header             | navigation | App top bar with brand, primary navigation links, and an actions slot          |
-| input              | inputs     | Text input field with optional label, hint, and error state                    |
-| kbd                | display    | Displays a keyboard key or shortcut                                            |
-| link               | navigation | Styled anchor for navigation, standalone or inline within prose                |
-| modal              | overlay    | Accessible dialog overlay using native <dialog> element                        |
-| number-input       | inputs     | Numeric input with stepper buttons, clamping, precision, and locale formatting |
-| overflow-menu      | overlay    | Kebab icon button revealing a menu of row-level actions                        |
-| pagination         | navigation | Controls for navigating paged data sets, with page size selection              |
-| progress-bar       | feedback   | Shows determinate or indeterminate progress of a task                          |
-| progress-indicator | navigation | Shows progress through the steps of a multi-step flow                          |
-| radio              | inputs     | Single choice from a set, grouped with RadioGroup                              |
-| search             | inputs     | Search input with debounced search callback and clear button                   |
-| select             | inputs     | Native select menu styled to match the design system                           |
-| separator          | display    | Visual or semantic divider between content                                     |
-| side-nav           | navigation | Collapsible sidebar navigation with optional icons and one level of grouping   |
-| skeleton           | display    | Animated loading placeholder that mirrors the shape of pending content         |
-| slider             | inputs     | Range input for selecting a value within bounds                                |
-| spinner            | feedback   | Indeterminate loading indicator                                                |
-| tabs               | navigation | Switch between related panels of content                                       |
-| tag                | display    | Compact chip for labeling, categorizing, or filtering content                  |
-| textarea           | inputs     | Multi-line text input with optional label, hint, and error state               |
-| toast              | overlay    | Transient notification surfaced via the useToast hook                          |
-| toggle             | inputs     | On/off switch built as an accessible button                                    |
-| tooltip            | overlay    | Contextual label shown on hover or focus                                       |
+| Name               | Category   | Description                                                                                                                                                           |
+| ------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| accordion          | navigation | Vertically stacked, collapsible content sections                                                                                                                      |
+| alert              | display    | Highlights a short, important message inline                                                                                                                          |
+| avatar             | display    | Displays a user image with initials fallback                                                                                                                          |
+| badge              | display    | Small status label or category indicator                                                                                                                              |
+| breadcrumb         | navigation | Shows the current page location within a navigation hierarchy                                                                                                         |
+| button             | inputs     | Triggers an action or event                                                                                                                                           |
+| card               | display    | Container for grouping related content                                                                                                                                |
+| checkbox           | inputs     | Binary toggle for forms, with indeterminate support                                                                                                                   |
+| command-menu       | overlay    | Cmd+K command palette with fuzzy search over grouped commands                                                                                                         |
+| data-table         | display    | Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets |
+| dropdown           | overlay    | Menu of actions revealed from a trigger                                                                                                                               |
+| empty-state        | display    | Placeholder for views that have no data to display                                                                                                                    |
+| header             | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
+| input              | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
+| kbd                | display    | Displays a keyboard key or shortcut                                                                                                                                   |
+| link               | navigation | Styled anchor for navigation, standalone or inline within prose                                                                                                       |
+| modal              | overlay    | Accessible dialog overlay using native <dialog> element                                                                                                               |
+| number-input       | inputs     | Numeric input with stepper buttons, clamping, precision, and locale formatting                                                                                        |
+| overflow-menu      | overlay    | Kebab icon button revealing a menu of row-level actions                                                                                                               |
+| pagination         | navigation | Controls for navigating paged data sets, with page size selection                                                                                                     |
+| progress-bar       | feedback   | Shows determinate or indeterminate progress of a task                                                                                                                 |
+| progress-indicator | navigation | Shows progress through the steps of a multi-step flow                                                                                                                 |
+| radio              | inputs     | Single choice from a set, grouped with RadioGroup                                                                                                                     |
+| search             | inputs     | Search input with debounced search callback and clear button                                                                                                          |
+| select             | inputs     | Native select menu styled to match the design system                                                                                                                  |
+| separator          | display    | Visual or semantic divider between content                                                                                                                            |
+| side-nav           | navigation | Collapsible sidebar navigation with optional icons and one level of grouping                                                                                          |
+| skeleton           | display    | Animated loading placeholder that mirrors the shape of pending content                                                                                                |
+| slider             | inputs     | Range input for selecting a value within bounds                                                                                                                       |
+| spinner            | feedback   | Indeterminate loading indicator                                                                                                                                       |
+| tabs               | navigation | Switch between related panels of content                                                                                                                              |
+| tag                | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                         |
+| textarea           | inputs     | Multi-line text input with optional label, hint, and error state                                                                                                      |
+| toast              | overlay    | Transient notification surfaced via the useToast hook                                                                                                                 |
+| toggle             | inputs     | On/off switch built as an accessible button                                                                                                                           |
+| tooltip            | overlay    | Contextual label shown on hover or focus                                                                                                                              |
 
 ---
 
