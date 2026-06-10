@@ -1,6 +1,12 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@cascade-ui/react': resolve(__dirname, '../react/src/index.ts'),
+    },
+  },
   build: {
     lib: {
       entry: './src/index.ts',

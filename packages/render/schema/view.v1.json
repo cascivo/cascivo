@@ -1,0 +1,2552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/render/schema/view.v1.json",
+  "title": "CascadeView v1 Config",
+  "description": "JSON-configured UI layout for @cascade-ui/render <CascadeView />",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "layout": {
+          "type": "string"
+        },
+        "regions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ComponentNode"
+            }
+          }
+        }
+      },
+      "required": [
+        "regions"
+      ]
+    }
+  },
+  "required": [
+    "view"
+  ],
+  "$defs": {
+    "TranslationRef": {
+      "type": "object",
+      "properties": {
+        "$t": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        }
+      },
+      "required": [
+        "$t"
+      ],
+      "additionalProperties": false
+    },
+    "PropValue": {
+      "$anchor": "PropValue",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/TranslationRef"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$dynamicRef": "#PropValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$dynamicRef": "#PropValue"
+          }
+        }
+      ]
+    },
+    "ComponentNode": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string",
+          "enum": [
+            "Accordion",
+            "Alert",
+            "AppShell",
+            "AuthLayout",
+            "Avatar",
+            "Badge",
+            "Breadcrumb",
+            "Button",
+            "Card",
+            "Center",
+            "Checkbox",
+            "Columns",
+            "Combobox",
+            "CommandMenu",
+            "DashboardLayout",
+            "DataTable",
+            "DatePicker",
+            "Dropdown",
+            "EmptyDashboard",
+            "EmptyState",
+            "FileUploader",
+            "Form",
+            "Grid",
+            "Header",
+            "Input",
+            "Kbd",
+            "Link",
+            "LoginPage",
+            "Modal",
+            "NotificationCenter",
+            "NumberInput",
+            "OverflowMenu",
+            "PageHeader",
+            "PageWithBreadcrumb",
+            "Pagination",
+            "ProgressBar",
+            "ProgressIndicator",
+            "Radio",
+            "Search",
+            "Select",
+            "Separator",
+            "SettingsFormPage",
+            "SettingsLayout",
+            "SideNav",
+            "SidebarApp",
+            "Skeleton",
+            "Slider",
+            "Spacer",
+            "Spinner",
+            "SplitView",
+            "Stack",
+            "StatsCards",
+            "Tabs",
+            "Tag",
+            "Textarea",
+            "TimePicker",
+            "Toast",
+            "Toggle",
+            "Tooltip",
+            "UsersTablePage"
+          ]
+        },
+        "props": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/PropValue"
+          }
+        },
+        "bind": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\$data\\."
+          }
+        },
+        "events": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\$actions\\."
+          }
+        },
+        "children": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ComponentNode"
+              }
+            },
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/TranslationRef"
+            }
+          ]
+        }
+      },
+      "required": [
+        "component"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Accordion"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "single",
+                      "multiple"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Alert"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "info",
+                      "success",
+                      "warning",
+                      "destructive"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "dismissible": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Avatar"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "alt": {
+                    "type": "string"
+                  },
+                  "fallback": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "online",
+                      "offline",
+                      "busy"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Badge"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "secondary",
+                      "success",
+                      "warning",
+                      "destructive",
+                      "outline"
+                    ]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Breadcrumb"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "maxVisible": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "items"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Button"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "primary",
+                      "secondary",
+                      "ghost",
+                      "destructive"
+                    ]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Card"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "outlined",
+                      "elevated"
+                    ]
+                  },
+                  "padding": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Checkbox"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "indeterminate": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Combobox"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "clearable": {
+                    "type": "boolean"
+                  },
+                  "searchable": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": [
+                      "ComboboxLabels"
+                    ]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "options"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CommandMenu"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "emptyLabel": {
+                    "type": "string"
+                  },
+                  "hotkey": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "open",
+                  "onOpenChange",
+                  "groups"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "DataTable"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "SortState"
+                    ]
+                  },
+                  "defaultSort": {
+                    "type": "string",
+                    "enum": [
+                      "SortState"
+                    ]
+                  },
+                  "sortMode": {
+                    "type": "string",
+                    "enum": [
+                      "client",
+                      "server"
+                    ]
+                  },
+                  "searchable": {
+                    "type": "boolean"
+                  },
+                  "density": {
+                    "type": "string",
+                    "enum": [
+                      "compact",
+                      "normal",
+                      "relaxed"
+                    ]
+                  },
+                  "zebra": {
+                    "type": "boolean"
+                  },
+                  "stickyHeader": {
+                    "type": "boolean"
+                  },
+                  "loading": {
+                    "type": "boolean"
+                  },
+                  "emptyState": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": [
+                      "DataTableLabels"
+                    ]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "columns",
+                  "rows"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "DatePicker"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "min": {
+                    "type": "string"
+                  },
+                  "max": {
+                    "type": "string"
+                  },
+                  "clearable": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": [
+                      "DatePickerLabels"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Dropdown"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "trigger": {
+                    "type": "string",
+                    "enum": [
+                      "ReactElement"
+                    ]
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "bottom-start",
+                      "bottom-end"
+                    ]
+                  },
+                  "open": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "trigger",
+                  "items"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "EmptyState"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "icon": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "md",
+                      "lg"
+                    ]
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FileUploader"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "multiple": {
+                    "type": "boolean"
+                  },
+                  "accept": {
+                    "type": "string"
+                  },
+                  "maxSize": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": [
+                      "FileUploaderLabels"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Form"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "form",
+                  "onValid",
+                  "children"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Header"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "sticky": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Input"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Kbd"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Link"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "inline"
+                    ]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "external": {
+                    "type": "boolean"
+                  },
+                  "href": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Modal"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "NumberInput"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "defaultValue": {
+                    "type": "number"
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "step": {
+                    "type": "number"
+                  },
+                  "precision": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "incrementLabel": {
+                    "type": "string"
+                  },
+                  "decrementLabel": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "OverflowMenu"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "bottom-start",
+                      "bottom-end"
+                    ]
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "items"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Pagination"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "number"
+                  },
+                  "pageSize": {
+                    "type": "number"
+                  },
+                  "totalItems": {
+                    "type": "number"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": [
+                      "PaginationLabels"
+                    ]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "page",
+                  "pageSize",
+                  "totalItems",
+                  "onPageChange"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ProgressBar"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "helperText": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "success",
+                      "error"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ProgressIndicator"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "currentIndex": {
+                    "type": "number"
+                  },
+                  "vertical": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "steps",
+                  "currentIndex"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Radio"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Search"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "debounceMs": {
+                    "type": "number"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "clearLabel": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Select"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "options"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Separator"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "orientation": {
+                    "type": "string",
+                    "enum": [
+                      "horizontal",
+                      "vertical"
+                    ]
+                  },
+                  "decorative": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SideNav"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "collapsed": {
+                    "type": "boolean"
+                  },
+                  "defaultCollapsed": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "collapseLabel": {
+                    "type": "string"
+                  },
+                  "expandLabel": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "items"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Skeleton"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "circle",
+                      "rect"
+                    ]
+                  },
+                  "width": {
+                    "type": "string"
+                  },
+                  "height": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Slider"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "step": {
+                    "type": "number"
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "defaultValue": {
+                    "type": "number"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Spinner"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Tabs"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Tag"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "info",
+                      "success",
+                      "warning",
+                      "error"
+                    ]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  },
+                  "dismissLabel": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Textarea"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "rows": {
+                    "type": "number"
+                  },
+                  "resize": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "vertical",
+                      "both"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "TimePicker"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "min": {
+                    "type": "string"
+                  },
+                  "max": {
+                    "type": "string"
+                  },
+                  "step": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md",
+                      "lg"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Toast"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": [
+                      "default",
+                      "success",
+                      "warning",
+                      "destructive"
+                    ]
+                  },
+                  "duration": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Toggle"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "defaultChecked": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": [
+                      "sm",
+                      "md"
+                    ]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Tooltip"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "top",
+                      "right",
+                      "bottom",
+                      "left"
+                    ]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": [
+                      "ReactElement"
+                    ]
+                  },
+                  "delay": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "content",
+                  "children"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AppShell"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "header": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "sideNav": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "aside": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "persistKey": {
+                    "type": "string",
+                    "enum": [
+                      "string",
+                      "false"
+                    ]
+                  }
+                },
+                "required": [
+                  "header",
+                  "children"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AuthLayout"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "logo": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  }
+                },
+                "required": [
+                  "children"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Center"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "maxWidth": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Columns"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "DashboardLayout"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "stats": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "main": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "aside": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  }
+                },
+                "required": [
+                  "main"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Grid"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "cols": {
+                    "type": "number"
+                  },
+                  "span": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "PageHeader"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "breadcrumb": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "actions": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SettingsLayout"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "menu": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  }
+                },
+                "required": [
+                  "menu",
+                  "children"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Spacer"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SplitView"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "end": {
+                    "type": "string",
+                    "enum": [
+                      "ReactNode"
+                    ]
+                  },
+                  "defaultRatio": {
+                    "type": "number"
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "aria-label": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "start",
+                  "end"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Stack"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "direction": {
+                    "type": "string",
+                    "enum": [
+                      "vertical",
+                      "horizontal"
+                    ]
+                  },
+                  "align": {
+                    "type": "string",
+                    "enum": [
+                      "start",
+                      "center",
+                      "end",
+                      "stretch"
+                    ]
+                  },
+                  "justify": {
+                    "type": "string",
+                    "enum": [
+                      "start",
+                      "center",
+                      "end",
+                      "between"
+                    ]
+                  },
+                  "wrap": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "EmptyDashboard"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "LoginPage"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "NotificationCenter"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "PageWithBreadcrumb"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SettingsFormPage"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SidebarApp"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "StatsCards"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "UsersTablePage"
+              }
+            },
+            "required": [
+              "component"
+            ]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
