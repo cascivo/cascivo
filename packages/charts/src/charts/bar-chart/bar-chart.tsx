@@ -1,12 +1,12 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
-import { ChartFrame } from '../core/chart-frame'
-import { DEFAULT_MARGINS } from '../core/use-chart'
-import { Axis } from '../chrome/axis'
-import { GridLines } from '../chrome/grid-lines'
-import { Legend } from '../chrome/legend'
-import { linearScale, bandScale } from '../engine/scale'
-import { stackSeries } from '../engine/shape'
+import { ChartFrame } from '../../core/chart-frame'
+import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { Axis } from '../../chrome/axis'
+import { GridLines } from '../../chrome/grid-lines'
+import { Legend } from '../../chrome/legend'
+import { linearScale, bandScale } from '../../engine/scale'
+import { stackSeries } from '../../engine/shape'
 
 export interface BarChartSeries<Datum> {
   id: string

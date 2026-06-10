@@ -1,6 +1,6 @@
 'use client'
 import type { ReactNode } from 'react'
-import { Sparkline } from './sparkline'
+import { Sparkline } from '../sparkline/sparkline'
 
 export interface KpiProps {
   value: string | number

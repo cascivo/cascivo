@@ -21,7 +21,7 @@ const BASE_URL = (
   process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main'
 ).replace(/\/+$/, '')
 
-type EntryType = 'component' | 'layout' | 'block'
+type EntryType = 'component' | 'layout' | 'block' | 'chart'
 
 interface SourceRoot {
   dir: string
@@ -49,6 +49,11 @@ const ROOTS: SourceRoot[] = [
     type: 'block',
     prefix: 'block/',
   },
+  {
+    dir: join(REPO_ROOT, 'packages', 'charts', 'src', 'charts'),
+    type: 'chart',
+    prefix: 'chart/',
+  },
 ]
 
 interface RegistryComponent {
@@ -58,6 +63,8 @@ interface RegistryComponent {
   category: string
   version: string
   files: string[]
+  /** npm package to install instead of copying files (used for type: 'chart'). */
+  install?: string
   dependencies: string[]
   tags: string[]
   /** Full component manifest — consumed by the MCP server and docs. */
@@ -95,12 +102,16 @@ async function buildEntry(
   // Compute the relative path from repo root so URLs are accurate.
   const relDir = dir.slice(REPO_ROOT.length + 1).replace(/\\/g, '/')
 
-  const files = (await readdir(dir))
-    .filter(isSourceFile)
-    .sort(sortFiles)
-    .map((file) => `${BASE_URL}/${relDir}/${file}`)
+  const isChart = root.type === 'chart'
 
-  return {
+  const files = isChart
+    ? []
+    : (await readdir(dir))
+        .filter(isSourceFile)
+        .sort(sortFiles)
+        .map((file) => `${BASE_URL}/${relDir}/${file}`)
+
+  const entry: RegistryComponent = {
     name: `${root.prefix}${localName}`,
     type: root.type,
     description: meta.description,
@@ -111,6 +122,10 @@ async function buildEntry(
     tags: meta.tags,
     meta,
   }
+  if (isChart) {
+    entry.install = '@cascade-ui/charts'
+  }
+  return entry
 }
 
 async function scanRoot(root: SourceRoot, version: string): Promise<RegistryComponent[]> {

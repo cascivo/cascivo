@@ -30,6 +30,15 @@ export async function add(names: string[], config: CascadeConfig): Promise<void>
       continue
     }
 
+    // Charts are npm-distributed — print install instructions instead of copying files.
+    if (entry.type === 'chart') {
+      const pkg = entry.install ?? '@cascade-ui/charts'
+      console.log(`Chart "${entry.name}" is distributed as an npm package.`)
+      console.log(`Install it with: npm install ${pkg}`)
+      console.log(`Then import: import { ${entry.meta.name} } from '${pkg}'`)
+      continue
+    }
+
     // Strip any type prefix (e.g. "layout/app-shell" → "app-shell") for the
     // output directory so files land in a clean, flat-ish structure.
     const outputName = entry.name.includes('/') ? entry.name.split('/').pop()! : entry.name

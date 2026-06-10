@@ -1,5 +1,5 @@
 'use client'
-import { arcPath } from '../engine/shape'
+import { arcPath } from '../../engine/shape'
 
 export interface MeterThresholds {
   warning?: number

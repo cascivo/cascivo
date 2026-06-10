@@ -1,13 +1,13 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
-import { ChartFrame } from '../core/chart-frame'
-import { DEFAULT_MARGINS } from '../core/use-chart'
-import { Axis } from '../chrome/axis'
-import { GridLines } from '../chrome/grid-lines'
-import { Legend } from '../chrome/legend'
-import { linearScale } from '../engine/scale'
-import { areaPath, linePath, stackSeries } from '../engine/shape'
-import type { Point } from '../engine/shape'
+import { ChartFrame } from '../../core/chart-frame'
+import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { Axis } from '../../chrome/axis'
+import { GridLines } from '../../chrome/grid-lines'
+import { Legend } from '../../chrome/legend'
+import { linearScale } from '../../engine/scale'
+import { areaPath, linePath, stackSeries } from '../../engine/shape'
+import type { Point } from '../../engine/shape'
 
 export interface AreaChartSeries<Datum> {
   id: string

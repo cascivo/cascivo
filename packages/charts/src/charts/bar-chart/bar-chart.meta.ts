@@ -1,0 +1,53 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'BarChart',
+  description:
+    'Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.',
+  category: 'chart',
+  states: [],
+  variants: ['grouped', 'stacked'],
+  sizes: [],
+  props: [
+    { name: 'series', type: 'BarChartSeries<Datum>[]', required: true },
+    { name: 'x', type: '(d: Datum) => string', required: true },
+    { name: 'y', type: '(d: Datum) => number', required: true },
+    { name: 'title', type: 'string', required: true },
+    { name: 'description', type: 'string', required: false },
+    {
+      name: 'orientation',
+      type: "'vertical' | 'horizontal'",
+      required: false,
+      default: 'vertical',
+    },
+    { name: 'mode', type: "'grouped' | 'stacked'", required: false, default: 'grouped' },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '300' },
+    { name: 'xTicks', type: 'number', required: false },
+    { name: 'yTicks', type: 'number', required: false, default: '5' },
+    { name: 'legend', type: 'boolean', required: false },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascade-chart-1',
+    '--cascade-chart-2',
+    '--cascade-chart-3',
+    '--cascade-chart-4',
+    '--cascade-chart-5',
+    '--cascade-chart-6',
+    '--cascade-chart-7',
+    '--cascade-chart-8',
+  ],
+  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  examples: [
+    {
+      title: 'Basic bar chart',
+      code: `import { BarChart } from '@cascade-ui/charts'
+
+const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
+<BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />`,
+    },
+  ],
+  dependencies: ['@cascade-ui/charts'],
+  tags: ['chart', 'bar', 'data-viz'],
+}

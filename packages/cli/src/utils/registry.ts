@@ -1,12 +1,15 @@
 export interface RegistryComponent {
   name: string
-  type?: 'component' | 'layout' | 'block'
+  type?: 'component' | 'layout' | 'block' | 'chart'
   description: string
   category: string
   version: string
   files: string[]
+  /** npm package to install (used when type === 'chart'). */
+  install?: string
   dependencies: string[]
   tags: string[]
+  meta: { name: string }
 }
 
 export interface Registry {
@@ -39,17 +42,29 @@ export function parseRegistry(raw: unknown): Registry {
     }
     const rawType = c.type
     const type =
-      rawType === 'component' || rawType === 'layout' || rawType === 'block' ? rawType : undefined
-    return {
+      rawType === 'component' || rawType === 'layout' || rawType === 'block' || rawType === 'chart'
+        ? rawType
+        : undefined
+    const rawMeta = c.meta
+    const metaName =
+      typeof rawMeta === 'object' &&
+      rawMeta !== null &&
+      typeof (rawMeta as Record<string, unknown>).name === 'string'
+        ? ((rawMeta as Record<string, unknown>).name as string)
+        : c.name
+    const result: RegistryComponent = {
       name: c.name,
-      ...(type !== undefined ? { type } : {}),
       description: typeof c.description === 'string' ? c.description : '',
       category: typeof c.category === 'string' ? c.category : '',
       version: typeof c.version === 'string' ? c.version : '0.0.0',
       files: asStringArray(c.files),
       dependencies: asStringArray(c.dependencies),
       tags: asStringArray(c.tags),
+      meta: { name: metaName },
     }
+    if (type !== undefined) result.type = type
+    if (typeof c.install === 'string') result.install = c.install
+    return result
   })
 
   return {

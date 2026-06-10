@@ -1,7 +1,7 @@
 'use client'
-import { linearScale } from '../engine/scale'
-import { linePath } from '../engine/shape'
-import type { Point } from '../engine/shape'
+import { linearScale } from '../../engine/scale'
+import { linePath } from '../../engine/shape'
+import type { Point } from '../../engine/shape'
 
 export interface SparklineProps {
   data: readonly number[]

@@ -4143,6 +4143,42 @@
       }
     },
     {
+      "name": "block/dashboard-charts",
+      "type": "block",
+      "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+      ],
+      "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+      "tags": ["block", "dashboard", "charts", "kpi"],
+      "meta": {
+        "name": "DashboardCharts",
+        "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<DashboardCharts />",
+            "description": "Charts dashboard demo"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+        "tags": ["block", "dashboard", "charts", "kpi"]
+      }
+    },
+    {
       "name": "block/empty-dashboard",
       "type": "block",
       "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -4483,6 +4519,779 @@
         "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
         "tags": ["block", "users", "table", "page"]
       }
+    },
+    {
+      "name": "chart/area-chart",
+      "type": "chart",
+      "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "area", "data-viz"],
+      "meta": {
+        "name": "AreaChart",
+        "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "AreaChartSeries<Datum>[]",
+            "required": true,
+            "description": "Array of data series"
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "X-value accessor"
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "Y-value accessor"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "stacked",
+            "type": "boolean",
+            "required": false,
+            "description": "Stack series areas"
+          },
+          {
+            "name": "curve",
+            "type": "'linear' | 'monotone'",
+            "required": false,
+            "default": "monotone"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic area chart",
+            "code": "import { AreaChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "area", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bar-chart",
+      "type": "chart",
+      "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bar", "data-viz"],
+      "meta": {
+        "name": "BarChart",
+        "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+        "category": "chart",
+        "states": [],
+        "variants": ["grouped", "stacked"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "BarChartSeries<Datum>[]",
+            "required": true
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => string",
+            "required": true
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "orientation",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "default": "vertical"
+          },
+          {
+            "name": "mode",
+            "type": "'grouped' | 'stacked'",
+            "required": false,
+            "default": "grouped"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bar chart",
+            "code": "import { BarChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bar", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/kpi",
+      "type": "chart",
+      "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
+      "meta": {
+        "name": "Kpi",
+        "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string | number",
+            "required": true,
+            "description": "Primary metric value"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Metric label"
+          },
+          {
+            "name": "delta",
+            "type": "number",
+            "required": false,
+            "description": "Change value (positive = up, negative = down)"
+          },
+          {
+            "name": "deltaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Delta context label (e.g. \"vs last week\")"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "sparkline",
+            "type": "number[]",
+            "required": false,
+            "description": "Trend data for embedded sparkline"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "figure",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic KPI card",
+            "code": "import { Kpi } from '@cascade-ui/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/line-chart",
+      "type": "chart",
+      "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "line", "time-series", "data-viz"],
+      "meta": {
+        "name": "LineChart",
+        "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "LineChartSeries<Datum>[]",
+            "required": true,
+            "description": "Array of data series"
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => number | Date",
+            "required": true,
+            "description": "X-value accessor"
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "Y-value accessor"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle shown below title"
+          },
+          {
+            "name": "curve",
+            "type": "'linear' | 'monotone'",
+            "required": false,
+            "default": "monotone",
+            "description": "Line interpolation curve"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "description": "Fixed SVG width (defaults to container width)"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300",
+            "description": "SVG height in px"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Approximate number of X-axis ticks"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Approximate number of Y-axis ticks"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "description": "Show series legend"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip"
+          },
+          {
+            "name": "formatTooltip",
+            "type": "(datum: Datum, series: LineChartSeries<Datum>) => string",
+            "required": false,
+            "description": "Custom tooltip formatter"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic line chart",
+            "code": "import { LineChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "line", "time-series", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/meter",
+      "type": "chart",
+      "description": "Progress meter in bar or gauge variant with threshold coloring.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+      "meta": {
+        "name": "Meter",
+        "description": "Progress meter in bar or gauge variant with threshold coloring.",
+        "category": "chart",
+        "states": [],
+        "variants": ["bar", "gauge"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current value"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "variant",
+            "type": "'bar' | 'gauge'",
+            "required": false,
+            "default": "bar"
+          },
+          {
+            "name": "thresholds",
+            "type": "MeterThresholds",
+            "required": false,
+            "description": "Color breakpoints"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "meter",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic meter",
+            "code": "import { Meter } from '@cascade-ui/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "meter", "gauge", "progress", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/pie-chart",
+      "type": "chart",
+      "description": "Pie or donut chart with hover segments and optional legend.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "pie", "donut", "data-viz"],
+      "meta": {
+        "name": "PieChart",
+        "description": "Pie or donut chart with hover segments and optional legend.",
+        "category": "chart",
+        "states": [],
+        "variants": ["pie", "donut"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "PieChartDatum[]",
+            "required": true,
+            "description": "Array of { label, value } datums"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "donut",
+            "type": "boolean",
+            "required": false,
+            "description": "Render as donut chart"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic pie chart",
+            "code": "import { PieChart } from '@cascade-ui/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "pie", "donut", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/scatter-chart",
+      "type": "chart",
+      "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "scatter", "plot", "data-viz"],
+      "meta": {
+        "name": "ScatterChart",
+        "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "ScatterChartSeries[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "r",
+            "type": "number | ((d: ScatterDatum) => number)",
+            "required": false,
+            "default": "4",
+            "description": "Point radius or accessor"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic scatter chart",
+            "code": "import { ScatterChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "scatter", "plot", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/sparkline",
+      "type": "chart",
+      "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+      "meta": {
+        "name": "Sparkline",
+        "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "number[]",
+            "required": true,
+            "description": "Array of numeric values"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible label"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "default": "80"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "32"
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Stroke color (CSS value)"
+          },
+          {
+            "name": "endDot",
+            "type": "boolean",
+            "required": false,
+            "description": "Show dot at last data point"
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Inline sparkline",
+            "code": "import { Sparkline } from '@cascade-ui/charts'\n\n<Sparkline data={[10, 20, 15, 30, 25]} label=\"Trend\" endDot />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "sparkline", "inline", "trend", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
     }
   ]
 }

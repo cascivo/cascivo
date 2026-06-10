@@ -1,8 +1,8 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
-import { ChartFrame } from '../core/chart-frame'
-import { Legend } from '../chrome/legend'
-import { arcPath } from '../engine/shape'
+import { ChartFrame } from '../../core/chart-frame'
+import { Legend } from '../../chrome/legend'
+import { arcPath } from '../../engine/shape'
 
 export interface PieChartDatum {
   id: string
