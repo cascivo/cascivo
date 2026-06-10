@@ -47,6 +47,10 @@
     --cascade-color-focus-ring: var(--cascade-blue-400);
     --cascade-focus-ring: 0 0 0 3px rgb(96 165 250 / 0.4);
 
+    /* ── Chart overrides ─────────────────────────────── */
+    --cascade-chart-grid: var(--cascade-gray-800);
+    --cascade-chart-axis: var(--cascade-gray-600);
+
     /* ── Radius ───────────────────────────────────────── */
     --cascade-radius-component: var(--cascade-radius-md);
     --cascade-radius-button: var(--cascade-radius-sm);

@@ -83,6 +83,9 @@ export const builtin = {
     collapse: 'Collapse navigation',
     expand: 'Expand navigation',
   }),
+  charts: defineMessages('cascade.charts', {
+    legendToggle: 'Toggle series {name}',
+  }),
   fileUploader: defineMessages('cascade.fileUploader', {
     label: 'Upload files',
     drop: 'Drag and drop files here or click to upload',
@@ -169,6 +172,9 @@ defineCatalog(builtin.tag, 'de', {
 defineCatalog(builtin.appShell, 'de', {
   collapse: 'Navigation einklappen',
   expand: 'Navigation ausklappen',
+})
+defineCatalog(builtin.charts, 'de', {
+  legendToggle: 'Reihe {name} umschalten',
 })
 defineCatalog(builtin.fileUploader, 'de', {
   label: 'Dateien hochladen',

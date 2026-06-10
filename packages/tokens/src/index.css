@@ -151,6 +151,18 @@
     --cascade-motion-exit: var(--cascade-duration-150) var(--cascade-ease-in);
     --cascade-motion-emphasis: var(--cascade-duration-300) var(--cascade-ease-in-out);
 
+    /* ── Chart Categorical Color Ramp ───────────────── */
+    --cascade-chart-1: var(--cascade-blue-500);
+    --cascade-chart-2: var(--cascade-green-500);
+    --cascade-chart-3: var(--cascade-orange-500);
+    --cascade-chart-4: var(--cascade-red-500);
+    --cascade-chart-5: var(--cascade-yellow-500);
+    --cascade-chart-6: var(--cascade-blue-300);
+    --cascade-chart-7: var(--cascade-green-400);
+    --cascade-chart-8: var(--cascade-gray-500);
+    --cascade-chart-grid: var(--cascade-gray-200);
+    --cascade-chart-axis: var(--cascade-gray-400);
+
     /* ── Z-Index ──────────────────────────────────────── */
     --cascade-z-base: 0;
     --cascade-z-raised: 10;
