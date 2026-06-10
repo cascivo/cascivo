@@ -4141,6 +4141,348 @@
         "dependencies": ["@cascade-ui/core"],
         "tags": ["layout", "flex", "stack", "spacing"]
       }
+    },
+    {
+      "name": "block/empty-dashboard",
+      "type": "block",
+      "description": "Dashboard page showing an empty state with a call-to-action button.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+      "tags": ["block", "dashboard", "empty-state", "page"],
+      "meta": {
+        "name": "EmptyDashboard",
+        "description": "Dashboard page showing an empty state with a call-to-action button.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onCreateItem",
+            "type": "() => void",
+            "required": false,
+            "description": "Create item button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<EmptyDashboard />",
+            "description": "Empty dashboard"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+        "tags": ["block", "dashboard", "empty-state", "page"]
+      }
+    },
+    {
+      "name": "block/login-page",
+      "type": "block",
+      "description": "Authentication login page with email and password form.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+      "tags": ["block", "login", "auth", "form", "page"],
+      "meta": {
+        "name": "LoginPage",
+        "description": "Authentication login page with email and password form.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onSubmit",
+            "type": "(values: LoginValues) => void",
+            "required": false,
+            "description": "Called with valid form values on submit"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<LoginPage />",
+            "description": "Login page"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+        "tags": ["block", "login", "auth", "form", "page"]
+      }
+    },
+    {
+      "name": "block/notification-center",
+      "type": "block",
+      "description": "A list of notification alerts with a mark-all-read action.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/stack"],
+      "tags": ["block", "notifications", "alerts"],
+      "meta": {
+        "name": "NotificationCenter",
+        "description": "A list of notification alerts with a mark-all-read action.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "notifications",
+            "type": "Notification[]",
+            "required": false,
+            "description": "Notification items to display"
+          },
+          {
+            "name": "onMarkAllRead",
+            "type": "() => void",
+            "required": false,
+            "description": "Mark all read button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<NotificationCenter />",
+            "description": "Notification center"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/stack"],
+        "tags": ["block", "notifications", "alerts"]
+      }
+    },
+    {
+      "name": "block/page-with-breadcrumb",
+      "type": "block",
+      "description": "A centered content page with a breadcrumb navigation and page header.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+      "tags": ["block", "breadcrumb", "page", "navigation"],
+      "meta": {
+        "name": "PageWithBreadcrumb",
+        "description": "A centered content page with a breadcrumb navigation and page header.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<PageWithBreadcrumb />",
+            "description": "Page with breadcrumb"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+        "tags": ["block", "breadcrumb", "page", "navigation"]
+      }
+    },
+    {
+      "name": "block/settings-form-page",
+      "type": "block",
+      "description": "Settings page with profile form inside a two-column settings layout.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+      "tags": ["block", "settings", "form", "page"],
+      "meta": {
+        "name": "SettingsFormPage",
+        "description": "Settings page with profile form inside a two-column settings layout.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onSave",
+            "type": "(values: SettingsValues) => void",
+            "required": false,
+            "description": "Called with valid form values on submit"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<SettingsFormPage />",
+            "description": "Settings form page"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+        "tags": ["block", "settings", "form", "page"]
+      }
+    },
+    {
+      "name": "block/sidebar-app",
+      "type": "block",
+      "description": "Full app shell with collapsible side navigation and top header.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+      "tags": ["block", "sidebar", "navigation", "app-shell"],
+      "meta": {
+        "name": "SidebarApp",
+        "description": "Full app shell with collapsible side navigation and top header.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<SidebarApp />",
+            "description": "App with sidebar navigation"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+        "tags": ["block", "sidebar", "navigation", "app-shell"]
+      }
+    },
+    {
+      "name": "block/stats-cards",
+      "type": "block",
+      "description": "Grid of KPI stat cards with trend badges.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react"],
+      "tags": ["block", "stats", "kpi", "cards"],
+      "meta": {
+        "name": "StatsCards",
+        "description": "Grid of KPI stat cards with trend badges.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "stats",
+            "type": "Stat[]",
+            "required": false,
+            "description": "KPI stat data"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<StatsCards />",
+            "description": "Demo KPI stats"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react"],
+        "tags": ["block", "stats", "kpi", "cards"]
+      }
+    },
+    {
+      "name": "block/users-table-page",
+      "type": "block",
+      "description": "Full users management page with table, search, and invite action.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+      "tags": ["block", "users", "table", "page"],
+      "meta": {
+        "name": "UsersTablePage",
+        "description": "Full users management page with table, search, and invite action.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "users",
+            "type": "User[]",
+            "required": false,
+            "description": "User data"
+          },
+          {
+            "name": "onInvite",
+            "type": "() => void",
+            "required": false,
+            "description": "Invite button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<UsersTablePage />",
+            "description": "Demo users table"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+        "tags": ["block", "users", "table", "page"]
+      }
     }
   ]
 }
