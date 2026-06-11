@@ -1,0 +1,70 @@
+@layer cascade.component {
+  .wrapper {
+    display: inline-flex;
+    gap: var(--cascade-space-1);
+    padding: var(--cascade-space-1);
+    background-color: var(--cascade-color-bg-subtle);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-md);
+
+    &[data-size='sm'] {
+      --_seg-h: 1.75rem;
+      --_seg-font: var(--cascade-text-xs);
+      --_seg-px: var(--cascade-space-2);
+    }
+
+    &[data-size='md'] {
+      --_seg-h: 2.25rem;
+      --_seg-font: var(--cascade-text-sm);
+      --_seg-px: var(--cascade-space-3);
+    }
+
+    &[data-size='lg'] {
+      --_seg-h: 2.75rem;
+      --_seg-font: var(--cascade-text-base);
+      --_seg-px: var(--cascade-space-4);
+    }
+
+    &[data-disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  .segment {
+    height: var(--_seg-h, 2.25rem);
+    padding-inline: var(--_seg-px, var(--cascade-space-3));
+    font-family: var(--cascade-font-sans);
+    font-size: var(--_seg-font, var(--cascade-text-sm));
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text-subtle);
+    background: none;
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    cursor: pointer;
+    transition:
+      background-color var(--cascade-duration-150) var(--cascade-ease-out),
+      color var(--cascade-duration-150) var(--cascade-ease-out);
+    white-space: nowrap;
+
+    &:hover:not(:disabled):not([data-selected]) {
+      color: var(--cascade-color-text);
+      background-color: rgb(from var(--cascade-color-text) r g b / 0.05);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cascade-color-accent);
+      outline-offset: 1px;
+    }
+
+    &[data-selected] {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-surface);
+      box-shadow: var(--cascade-shadow-sm);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}

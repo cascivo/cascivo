@@ -408,7 +408,7 @@
     {
       "name": "segmented-control",
       "status": "in-progress",
-      "milestone": null,
+      "milestone": "scaffold",
       "priority": 46,
       "category": "inputs",
       "attempts": 0,
