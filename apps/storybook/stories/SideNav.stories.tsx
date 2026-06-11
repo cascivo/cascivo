@@ -12,7 +12,9 @@ import {
 } from '@cascade-ui/icons'
 
 const meta: Meta<typeof SideNav> = {
+  title: 'Shell/SideNav',
   component: SideNav,
+  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <div style={{ display: 'flex', blockSize: 400 }}>

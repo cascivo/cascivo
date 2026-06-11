@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
 
 const meta: Meta<typeof ShellHeader> = {
+  title: 'Shell/ShellHeader',
   component: ShellHeader,
+  parameters: { layout: 'fullscreen' },
 }
 export default meta
 type Story = StoryObj<typeof ShellHeader>

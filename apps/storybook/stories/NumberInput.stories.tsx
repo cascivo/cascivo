@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NumberInput } from '@cascade-ui/components/number-input'
 
 const meta: Meta<typeof NumberInput> = {
+  title: 'Inputs/NumberInput',
   component: NumberInput,
   args: {
     label: 'Quantity',

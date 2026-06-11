@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { FileUploader } from '@cascade-ui/components/file-uploader'
 
 const meta: Meta<typeof FileUploader> = {
+  title: 'Inputs/FileUploader',
   component: FileUploader,
 }
 export default meta

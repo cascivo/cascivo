@@ -4,6 +4,7 @@ import { Button } from '@cascade-ui/components/button'
 import { Modal } from '@cascade-ui/components/modal'
 
 const meta: Meta<typeof Modal> = {
+  title: 'Overlay/Modal',
   component: Modal,
 }
 export default meta

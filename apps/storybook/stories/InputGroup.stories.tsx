@@ -4,6 +4,7 @@ import { Input } from '@cascade-ui/components/input'
 import { Button } from '@cascade-ui/components/button'
 
 const meta: Meta<typeof InputGroup> = {
+  title: 'Inputs/InputGroup',
   component: InputGroup,
 }
 export default meta

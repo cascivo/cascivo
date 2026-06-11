@@ -30,7 +30,7 @@ function BasicDemo() {
   )
 }
 
-const meta: Meta = { title: 'Form', component: Form }
+const meta: Meta = { title: 'Inputs/Form', component: Form, parameters: { layout: 'fullscreen' } }
 export default meta
 type Story = StoryObj
 

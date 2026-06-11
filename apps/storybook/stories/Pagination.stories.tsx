@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Pagination } from '@cascade-ui/components/pagination'
 
 const meta: Meta<typeof Pagination> = {
+  title: 'Navigation/Pagination',
   component: Pagination,
+  parameters: { layout: 'fullscreen' },
   args: {
     page: 1,
     pageSize: 25,

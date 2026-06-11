@@ -10,6 +10,7 @@ const options = [
 ]
 
 const meta: Meta<typeof Combobox> = {
+  title: 'Inputs/Combobox',
   component: Combobox,
   args: { options, label: 'Country' },
 }

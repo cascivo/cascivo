@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Kbd } from '@cascade-ui/components/kbd'
 
 const meta: Meta<typeof Kbd> = {
+  title: 'Display/Kbd',
   component: Kbd,
   args: { children: 'K' },
 }

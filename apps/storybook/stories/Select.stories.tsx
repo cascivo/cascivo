@@ -9,6 +9,7 @@ const options = [
 ]
 
 const meta: Meta<typeof Select> = {
+  title: 'Inputs/Select',
   component: Select,
   args: { label: 'Role', placeholder: 'Choose a role', options },
 }

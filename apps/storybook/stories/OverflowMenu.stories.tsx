@@ -9,6 +9,7 @@ const items = [
 ]
 
 const meta: Meta<typeof OverflowMenu> = {
+  title: 'Overlay/OverflowMenu',
   component: OverflowMenu,
   args: { items },
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PasswordInput } from '@cascade-ui/components/password-input'
 
 const meta: Meta<typeof PasswordInput> = {
+  title: 'Inputs/PasswordInput',
   component: PasswordInput,
   args: { placeholder: 'Enter password' },
 }

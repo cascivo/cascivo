@@ -12,6 +12,7 @@ function ToastTrigger(options: ToastOptions) {
 }
 
 const meta: Meta<typeof ToastProvider> = {
+  title: 'Overlay/Toast',
   component: ToastProvider,
 }
 export default meta

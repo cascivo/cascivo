@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tag } from '@cascade-ui/components/tag'
 
 const meta: Meta<typeof Tag> = {
+  title: 'Display/Tag',
   component: Tag,
   args: { children: 'Tag' },
 }

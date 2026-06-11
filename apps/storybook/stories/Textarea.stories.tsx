@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Textarea } from '@cascade-ui/components/textarea'
 
 const meta: Meta<typeof Textarea> = {
+  title: 'Inputs/Textarea',
   component: Textarea,
   args: { label: 'Message', placeholder: 'Tell us what you think…' },
 }

@@ -3,6 +3,7 @@ import { Switcher } from '@cascade-ui/components/switcher'
 import { Grid, BarChart, Settings } from '@cascade-ui/icons'
 
 const meta: Meta<typeof Switcher> = {
+  title: 'Shell/Switcher',
   component: Switcher,
   decorators: [
     (Story) => (

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Radio, RadioGroup } from '@cascade-ui/components/radio'
 
 const meta: Meta<typeof Radio> = {
+  title: 'Inputs/Radio',
   component: Radio,
 }
 export default meta

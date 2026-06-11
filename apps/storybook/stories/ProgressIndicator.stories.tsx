@@ -9,6 +9,7 @@ const steps = [
 ]
 
 const meta: Meta<typeof ProgressIndicator> = {
+  title: 'Navigation/ProgressIndicator',
   component: ProgressIndicator,
   args: {
     steps,

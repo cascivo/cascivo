@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { RatingGroup } from '@cascade-ui/components/rating-group'
 
 const meta: Meta<typeof RatingGroup> = {
+  title: 'Inputs/RatingGroup',
   component: RatingGroup,
   args: { value: 3, onValueChange: () => {} },
 }

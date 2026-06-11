@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DatePicker } from '@cascade-ui/components/date-picker'
 
 const meta: Meta<typeof DatePicker> = {
+  title: 'Inputs/DatePicker',
   component: DatePicker,
   args: { label: 'Date' },
 }

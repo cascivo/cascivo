@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ProgressBar } from '@cascade-ui/components/progress-bar'
 
 const meta: Meta<typeof ProgressBar> = {
+  title: 'Feedback/ProgressBar',
   component: ProgressBar,
   args: { value: 60, label: 'Uploading' },
 }

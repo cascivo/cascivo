@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '@cascade-ui/components/button'
 
 const meta: Meta<typeof Button> = {
+  title: 'Inputs/Button',
   component: Button,
   args: { children: 'Button' },
 }

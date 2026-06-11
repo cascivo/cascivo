@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AiLabel } from '@cascade-ui/ai'
 
 const meta: Meta<typeof AiLabel> = {
+  title: 'AI/AiLabel',
   component: AiLabel,
   args: { variant: 'generating' },
 }

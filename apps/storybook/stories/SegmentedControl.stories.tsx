@@ -8,6 +8,7 @@ const options = [
 ]
 
 const meta: Meta<typeof SegmentedControl> = {
+  title: 'Inputs/SegmentedControl',
   component: SegmentedControl,
   args: { options, value: 'day', onValueChange: () => {} },
 }

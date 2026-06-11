@@ -5,6 +5,7 @@ import { Switcher } from '@cascade-ui/components/switcher'
 import { Button } from '@cascade-ui/components/button'
 
 const meta: Meta<typeof HeaderPanel> = {
+  title: 'Shell/HeaderPanel',
   component: HeaderPanel,
   parameters: { layout: 'fullscreen' },
 }

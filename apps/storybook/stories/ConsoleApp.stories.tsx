@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ConsoleApp } from '@cascade-ui/layouts/blocks/console-app/console-app'
 
 const meta: Meta<typeof ConsoleApp> = {
+  title: 'Shell/ConsoleApp',
   component: ConsoleApp,
   parameters: { layout: 'fullscreen' },
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Input } from '@cascade-ui/components/input'
 
 const meta: Meta<typeof Input> = {
+  title: 'Inputs/Input',
   component: Input,
   args: { label: 'Email address', placeholder: 'you@example.com' },
 }

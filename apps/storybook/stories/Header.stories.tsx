@@ -3,7 +3,9 @@ import { Header } from '@cascade-ui/components/header'
 import { Button } from '@cascade-ui/components/button'
 
 const meta: Meta<typeof Header> = {
+  title: 'Navigation/Header',
   component: Header,
+  parameters: { layout: 'fullscreen' },
 }
 export default meta
 type Story = StoryObj<typeof Header>
