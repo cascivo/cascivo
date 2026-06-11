@@ -113,6 +113,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [select](/llms/select.md) — Native select menu styled to match the design system
 - [separator](/llms/separator.md) — Visual or semantic divider between content
 - [sheet](/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations
+- [shell-header](/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content
 - [side-nav](/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping
 - [skeleton](/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content
 - [slider](/llms/slider.md) — Range input for selecting a value within bounds

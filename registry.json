@@ -3393,6 +3393,101 @@
       }
     },
     {
+      "name": "shell-header",
+      "type": "component",
+      "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+      "meta": {
+        "name": "ShellHeader",
+        "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+        "category": "navigation",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "brand",
+            "type": "ShellHeaderBrand | ReactNode",
+            "required": false,
+            "description": "Brand: { prefix?, name, href? } or free-form node"
+          },
+          {
+            "name": "nav",
+            "type": "ShellHeaderNavItem[]",
+            "required": false,
+            "description": "Top nav: links or dropdown menus ({ label, items })"
+          },
+          {
+            "name": "actions",
+            "type": "ShellHeaderAction[]",
+            "required": false,
+            "description": "Right-aligned global icon actions with aria-pressed"
+          },
+          {
+            "name": "end",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Free-form trailing slot (user menu, theme switcher)"
+          },
+          {
+            "name": "onMenuClick",
+            "type": "() => void",
+            "required": false,
+            "description": "Renders the hamburger button; call shell.toggleSideNav"
+          },
+          {
+            "name": "menuExpanded",
+            "type": "boolean",
+            "required": false,
+            "description": "aria-expanded for the hamburger button"
+          },
+          {
+            "name": "skipToContentHref",
+            "type": "string | false",
+            "required": false,
+            "default": "'#cascade-main'",
+            "description": "Skip-link target; false disables the link"
+          },
+          {
+            "name": "labels",
+            "type": "ShellHeaderLabels",
+            "required": false,
+            "description": "i18n overrides for built-in strings"
+          }
+        ],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-accent",
+          "--cascade-radius-control"
+        ],
+        "accessibility": {
+          "role": "banner",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Console header",
+            "code": "<ShellHeader\n  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+            "description": "Brand with prefix, dropdown nav, global icon action"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"]
+      }
+    },
+    {
       "name": "side-nav",
       "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",

@@ -95,6 +95,7 @@ pnpm add @cascade-ui/react
 | select                     | inputs     | Native select menu styled to match the design system                                                                                                                  |
 | separator                  | display    | Visual or semantic divider between content                                                                                                                            |
 | sheet                      | overlay    | Slide-in panel from any edge, using popover=manual and @starting-style animations                                                                                     |
+| shell-header               | navigation | Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content                                                    |
 | side-nav                   | navigation | Collapsible sidebar navigation with optional icons and one level of grouping                                                                                          |
 | skeleton                   | display    | Animated loading placeholder that mirrors the shape of pending content                                                                                                |
 | slider                     | inputs     | Range input for selecting a value within bounds                                                                                                                       |
