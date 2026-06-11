@@ -65,7 +65,7 @@ export function Hero() {
 
   return (
     <header className="hero">
-      <Badge variant="outline">v1 — 20 components</Badge>
+      <Badge variant="outline">v1 — 97+ components</Badge>
       <h1>
         The design system that ships like <em>shadcn</em>, performs like a <em>signal</em>, and
         thinks like an <em>agent</em>.
