@@ -11,7 +11,7 @@ const rows: Row[] = Array.from({ length: 10_000 }, (_, i) => ({
   id: `r${i}`,
   name: `User ${String(i).padStart(5, '0')}`,
   email: `user${i}@example.com`,
-  score: (i * 2654435761) % 1000,
+  score: (i * 2654435761 + 500) % 1000,
 }))
 
 const columns: Column<Row>[] = [
