@@ -11,7 +11,7 @@
     min-width: 10rem;
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-md);
 
     /* Position at pointer coordinates set via JS custom properties */
@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     padding: var(--cascade-space-2) var(--cascade-space-3);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
     font-size: var(--cascade-text-sm);
     color: var(--cascade-color-text);
     cursor: pointer;

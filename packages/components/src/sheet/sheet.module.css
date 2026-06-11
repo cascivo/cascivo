@@ -29,7 +29,7 @@
       width: min(24rem, 90vw);
       height: 100%;
       border-inline-start: 1px solid var(--cascade-color-border);
-      border-radius: var(--cascade-radius-lg) 0 0 var(--cascade-radius-lg);
+      border-radius: var(--cascade-radius-overlay) 0 0 var(--cascade-radius-overlay);
       translate: 100% 0;
 
       &[data-state='open'] {
@@ -50,7 +50,7 @@
       width: min(24rem, 90vw);
       height: 100%;
       border-inline-end: 1px solid var(--cascade-color-border);
-      border-radius: 0 var(--cascade-radius-lg) var(--cascade-radius-lg) 0;
+      border-radius: 0 var(--cascade-radius-overlay) var(--cascade-radius-overlay) 0;
       translate: -100% 0;
 
       &[data-state='open'] {
@@ -72,7 +72,7 @@
       height: auto;
       max-height: 80vh;
       border-block-end: 1px solid var(--cascade-color-border);
-      border-radius: 0 0 var(--cascade-radius-lg) var(--cascade-radius-lg);
+      border-radius: 0 0 var(--cascade-radius-overlay) var(--cascade-radius-overlay);
       translate: 0 -100%;
 
       &[data-state='open'] {
@@ -94,7 +94,7 @@
       height: auto;
       max-height: 80vh;
       border-block-start: 1px solid var(--cascade-color-border);
-      border-radius: var(--cascade-radius-lg) var(--cascade-radius-lg) 0 0;
+      border-radius: var(--cascade-radius-overlay) var(--cascade-radius-overlay) 0 0;
       translate: 0 100%;
 
       &[data-state='open'] {
@@ -156,7 +156,7 @@
     color: var(--cascade-color-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),

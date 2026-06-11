@@ -62,7 +62,7 @@
     color: var(--cascade-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition: color var(--cascade-duration-150) var(--cascade-ease-out);
 

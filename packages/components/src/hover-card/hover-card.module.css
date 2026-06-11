@@ -12,7 +12,7 @@
     width: 18rem;
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-md);
 
     @supports (anchor-name: --a) {

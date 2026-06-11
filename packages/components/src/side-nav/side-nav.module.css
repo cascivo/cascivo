@@ -91,7 +91,7 @@
     background: transparent;
     border: none;
     border-inline-start: 2px solid transparent;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-item);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),
@@ -196,7 +196,7 @@
     color: var(--cascade-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),
@@ -231,7 +231,7 @@
     padding: var(--cascade-space-1);
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-md);
 
     &:popover-open {

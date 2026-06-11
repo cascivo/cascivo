@@ -24,7 +24,7 @@
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
     border-inline-start-width: 3px;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-lg);
     pointer-events: auto;
     opacity: 1;
@@ -94,7 +94,7 @@
     color: var(--cascade-color-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition: color var(--cascade-duration-150) var(--cascade-ease-out);
 

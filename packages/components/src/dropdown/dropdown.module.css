@@ -12,7 +12,7 @@
     padding: var(--cascade-space-1);
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-lg);
     opacity: 0;
     visibility: hidden;
@@ -56,7 +56,7 @@
     color: var(--cascade-color-text);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
     cursor: pointer;
 
     &:hover:not(:disabled),

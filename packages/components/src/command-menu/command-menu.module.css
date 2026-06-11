@@ -2,7 +2,7 @@
   .dialog {
     padding: 0;
     border: none;
-    border-radius: var(--cascade-radius-modal);
+    border-radius: var(--cascade-radius-overlay);
     background: transparent;
     margin-block-start: 15vh;
     margin-inline: auto;
@@ -64,7 +64,7 @@
     flex-direction: column;
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-modal);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-xl);
     overflow: hidden;
   }
@@ -126,7 +126,7 @@
     gap: var(--cascade-space-3);
     padding-inline: var(--cascade-space-2);
     padding-block: var(--cascade-space-2);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
     font-family: var(--cascade-font-sans);
     font-size: var(--cascade-text-sm);
     color: var(--cascade-color-text);

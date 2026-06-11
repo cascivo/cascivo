@@ -56,7 +56,7 @@
     &:focus-visible {
       outline: 2px solid var(--cascade-color-accent);
       outline-offset: 2px;
-      border-radius: var(--cascade-radius-sm);
+      border-radius: var(--cascade-radius-control);
     }
 
     &:disabled {

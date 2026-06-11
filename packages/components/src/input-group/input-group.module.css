@@ -46,7 +46,7 @@
     color: var(--cascade-color-text-subtle);
     background-color: var(--cascade-color-bg-subtle);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input);
+    border-radius: var(--cascade-radius-field);
     white-space: nowrap;
     flex-shrink: 0;
   }

@@ -16,7 +16,7 @@
     &[data-variant='rect'] {
       inline-size: var(--cascade-skeleton-width, 100%);
       block-size: var(--cascade-skeleton-height, var(--cascade-space-24));
-      border-radius: var(--cascade-radius-component);
+      border-radius: var(--cascade-radius-surface);
     }
   }
 
@@ -24,7 +24,7 @@
     display: block;
     inline-size: 100%;
     block-size: var(--cascade-skeleton-height, 1em);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-indicator);
 
     /* Multi-line paragraphs end on a shorter bar */
     &:last-child:not(:first-child) {
