@@ -21,3 +21,13 @@ export type {
   ExampleMeta,
 } from './types.ts'
 export const VERSION = '0.0.0'
+export { ErrorBoundary } from './error-boundary.tsx'
+export type { ErrorBoundaryProps } from './error-boundary.tsx'
+export { SuspenseBoundary } from './suspense-boundary.tsx'
+export type { SuspenseBoundaryProps } from './suspense-boundary.tsx'
+export { Portal } from './portal.tsx'
+export type { PortalProps } from './portal.tsx'
+export { VisuallyHidden } from './visually-hidden.tsx'
+export type { VisuallyHiddenProps } from './visually-hidden.tsx'
+export { FocusScope } from './focus-scope.tsx'
+export type { FocusScopeProps } from './focus-scope.tsx'

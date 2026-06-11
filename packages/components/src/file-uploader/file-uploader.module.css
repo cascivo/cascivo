@@ -1,0 +1,140 @@
+@layer cascade.component {
+  .uploader {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-2);
+    inline-size: 100%;
+  }
+
+  .label {
+    font-size: var(--cascade-font-size-sm);
+    font-weight: var(--cascade-font-weight-medium);
+    color: var(--cascade-color-text);
+  }
+
+  .input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cascade-space-8) var(--cascade-space-4);
+    border: 2px dashed var(--cascade-color-border);
+    border-radius: var(--cascade-radius-md);
+    background: var(--cascade-color-surface);
+    color: var(--cascade-color-text-muted);
+    font-size: var(--cascade-font-size-sm);
+    cursor: pointer;
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      background var(--cascade-duration-150) var(--cascade-ease-out);
+    inline-size: 100%;
+    text-align: center;
+  }
+
+  .zone:hover:not(:disabled) {
+    border-color: var(--cascade-color-accent);
+    background: var(--cascade-color-accent-subtle);
+  }
+
+  .zone[data-state='dragover'] {
+    border-color: var(--cascade-color-accent);
+    background: var(--cascade-color-accent-subtle);
+  }
+
+  .zone:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .hint {
+    font-size: var(--cascade-font-size-xs);
+    color: var(--cascade-color-text-muted);
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-2);
+  }
+
+  .file {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: 'status name size remove' 'status error error error';
+    align-items: center;
+    gap: var(--cascade-space-2);
+    padding: var(--cascade-space-2) var(--cascade-space-3);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-sm);
+    background: var(--cascade-color-surface);
+    font-size: var(--cascade-font-size-sm);
+  }
+
+  .file[data-state='error'] {
+    border-color: var(--cascade-color-danger);
+  }
+
+  .status {
+    grid-area: status;
+    display: flex;
+    align-items: center;
+  }
+
+  .glyph-complete {
+    color: var(--cascade-color-success);
+  }
+
+  .glyph-error {
+    color: var(--cascade-color-danger);
+  }
+
+  .name {
+    grid-area: name;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .size {
+    grid-area: size;
+    color: var(--cascade-color-text-muted);
+    font-size: var(--cascade-font-size-xs);
+  }
+
+  .remove {
+    grid-area: remove;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cascade-space-1);
+    border: none;
+    border-radius: var(--cascade-radius-sm);
+    background: transparent;
+    color: var(--cascade-color-text-muted);
+    cursor: pointer;
+    font-size: var(--cascade-font-size-xs);
+    line-height: 1;
+  }
+
+  .remove:hover {
+    color: var(--cascade-color-danger);
+    background: var(--cascade-color-danger-subtle);
+  }
+
+  .error-message {
+    grid-area: error;
+    font-size: var(--cascade-font-size-xs);
+    color: var(--cascade-color-danger);
+  }
+}

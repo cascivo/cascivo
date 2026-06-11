@@ -1,0 +1,41 @@
+{
+  "name": "@cascade-ui/render",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Runtime JSON → UI renderer for cascade",
+  "type": "module",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "vp pack",
+    "check": "tsc --noEmit",
+    "test": "vp test",
+    "dev": "vp pack --watch"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:^",
+    "@cascade-ui/i18n": "workspace:^",
+    "@cascade-ui/react": "workspace:^"
+  },
+  "devDependencies": {
+    "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

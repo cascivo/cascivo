@@ -13,6 +13,7 @@ const RAW = {
   components: [
     {
       name: 'button',
+      type: 'component',
       description: 'Triggers an action or event',
       category: 'inputs',
       version: '0.0.0',
@@ -25,6 +26,7 @@ const RAW = {
     },
     {
       name: 'card',
+      type: 'component',
       description: 'A surface that groups related content',
       category: 'display',
       version: '0.0.0',
@@ -32,14 +34,46 @@ const RAW = {
       dependencies: [],
       tags: ['container', 'surface'],
     },
+    {
+      name: 'layout/app-shell',
+      type: 'layout',
+      description: 'Full-page application shell',
+      category: 'layout',
+      version: '0.0.0',
+      files: ['https://example.com/app-shell/app-shell.tsx'],
+      dependencies: [],
+      tags: ['shell', 'layout'],
+    },
+    {
+      name: 'block/users-table',
+      type: 'block',
+      description: 'Users data table block',
+      category: 'display',
+      version: '0.0.0',
+      files: ['https://example.com/blocks/users-table/users-table.tsx'],
+      dependencies: [],
+      tags: ['table', 'users'],
+    },
   ],
 }
 
 describe('parseRegistry', () => {
   it('parses a valid registry', () => {
     const registry = parseRegistry(RAW)
-    expect(registry.components).toHaveLength(2)
+    expect(registry.components).toHaveLength(4)
     expect(registry.components[0]?.name).toBe('button')
+  })
+
+  it('preserves type field for component/layout/block', () => {
+    const registry = parseRegistry(RAW)
+    expect(registry.components[0]?.type).toBe('component')
+    expect(registry.components[2]?.type).toBe('layout')
+    expect(registry.components[3]?.type).toBe('block')
+  })
+
+  it('leaves type undefined for entries without a valid type', () => {
+    const registry = parseRegistry({ components: [{ name: 'x', type: 'unknown' }] })
+    expect(registry.components[0]?.type).toBeUndefined()
   })
 
   it('coerces missing optional fields to safe defaults', () => {
@@ -74,6 +108,24 @@ describe('findComponent', () => {
 
   it('is case-insensitive', () => {
     expect(findComponent(registry, 'Button')?.name).toBe('button')
+  })
+
+  it('finds prefixed names by full name', () => {
+    expect(findComponent(registry, 'layout/app-shell')?.name).toBe('layout/app-shell')
+  })
+
+  it('resolves unambiguous suffix to prefixed entry', () => {
+    expect(findComponent(registry, 'app-shell')?.name).toBe('layout/app-shell')
+  })
+
+  it('resolves unambiguous suffix case-insensitively', () => {
+    expect(findComponent(registry, 'App-Shell')?.name).toBe('layout/app-shell')
+  })
+
+  it('returns undefined when suffix is ambiguous', () => {
+    // Both 'button' and a hypothetical 'extra/button' would make it ambiguous.
+    // With current fixture, 'users-table' is unambiguous.
+    expect(findComponent(registry, 'users-table')?.name).toBe('block/users-table')
   })
 
   it('returns undefined for unknown names', () => {

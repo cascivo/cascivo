@@ -1,0 +1,51 @@
+# Columns
+
+Equal-width multi-column layout that collapses to single column on narrow viewports.
+
+## Install
+
+```bash
+npx cascade add layout/columns
+```
+
+## Category
+
+`layout`
+
+## Props
+
+| Prop    | Type | Required | Default | Description |
+| ------- | ---- | -------- | ------- | ----------- | --- | ----------------------- | --- | --- | --- | --- | --- | ------------------ |
+| `count` | `2   | 3        | 4`      | no          | —   | Number of equal columns |
+| `gap`   | `1   | 2        | 3       | 4           | 5   | 6                       | 8   | 10  | 12` | no  | —   | Spacing token step |
+
+## Examples
+
+### Three columns
+
+Three equal columns
+
+```tsx
+<Columns count={3}>
+  <div>A</div>
+  <div>B</div>
+  <div>C</div>
+</Columns>
+```
+
+## Design tokens
+
+- `--cascade-space-*`
+
+## Accessibility
+
+- **WCAG level:** AA
+- **ARIA role:** `generic`
+
+## Dependencies
+
+- `@cascade-ui/core`
+
+## Tags
+
+layout, grid, columns

@@ -1,6 +1,8 @@
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
+import { runDoctor } from './commands/doctor.js'
+import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
 import { list } from './commands/list.js'
 import { theme } from './commands/theme.js'
@@ -21,6 +23,8 @@ Commands:
   list [--installed]       List available components
   update <component>       Update an installed component to the latest version
   theme add <name>         Install a theme (light | dark | warm)
+  generate <config.json>   Generate TSX from a ViewConfig JSON file
+  doctor [--ci]            Check components for rule violations
 
 Run "cascade <command> --help" for details.`
 
@@ -43,6 +47,22 @@ export async function run(args: string[]): Promise<void> {
     case 'theme':
       await theme(rest)
       break
+    case 'generate':
+      await generate(rest, await loadConfig())
+      break
+    case 'doctor': {
+      const ci = rest.includes('--ci')
+      const result = await runDoctor(process.cwd())
+      if (result.passed) {
+        console.log('No violations found.')
+      } else {
+        for (const v of result.violations) {
+          console.error(`[${v.rule}] ${v.detail}\n  ${v.file}`)
+        }
+        if (ci) process.exitCode = 1
+      }
+      break
+    }
     case undefined:
     case '--help':
     case '-h':

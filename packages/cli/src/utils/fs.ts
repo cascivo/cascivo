@@ -1,5 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 
 /** Resolve where a component file should be written. */
 export function resolveOutputPath(
@@ -8,7 +8,7 @@ export function resolveOutputPath(
   file: string,
   cwd: string = process.cwd(),
 ): string {
-  return join(cwd, outputDir, component, file)
+  return join(resolve(cwd, outputDir), component, file)
 }
 
 /** Write a file, creating parent directories as needed. */

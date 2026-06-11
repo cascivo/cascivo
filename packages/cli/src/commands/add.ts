@@ -30,9 +30,22 @@ export async function add(names: string[], config: CascadeConfig): Promise<void>
       continue
     }
 
+    // Charts are npm-distributed — print install instructions instead of copying files.
+    if (entry.type === 'chart') {
+      const pkg = entry.install ?? '@cascade-ui/charts'
+      console.log(`Chart "${entry.name}" is distributed as an npm package.`)
+      console.log(`Install it with: npm install ${pkg}`)
+      console.log(`Then import: import { ${entry.meta.name} } from '${pkg}'`)
+      continue
+    }
+
+    // Strip any type prefix (e.g. "layout/app-shell" → "app-shell") for the
+    // output directory so files land in a clean, flat-ish structure.
+    const outputName = entry.name.includes('/') ? entry.name.split('/').pop()! : entry.name
+
     for (const url of entry.files) {
       const content = await fetchText(url)
-      const dest = resolveOutputPath(config.outputDir, entry.name, fileName(url))
+      const dest = resolveOutputPath(config.outputDir, outputName, fileName(url))
       await writeFileSafe(dest, content)
     }
 
@@ -40,7 +53,7 @@ export async function add(names: string[], config: CascadeConfig): Promise<void>
       if (!ASSUMED_DEPS.has(dep)) missingDeps.add(dep)
     }
 
-    console.log(`Added ${entry.name} to ${config.outputDir}/${entry.name}/`)
+    console.log(`Added ${entry.name} to ${config.outputDir}/${outputName}/`)
   }
 
   if (missingDeps.size > 0) {

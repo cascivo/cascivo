@@ -1,0 +1,129 @@
+# cascade — The CSS-native, signal-driven, AI-first React design system
+
+cascade is a copy-paste component library (shadcn model). Users own the code they install.
+Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 AA.
+
+## Key resources
+
+- Registry JSON: https://cascade-ui.dev/registry.json
+- View schema: https://cascade-ui.dev/view.v1.json
+- MCP server: npx @cascade-ui/mcp
+- llms.txt: https://cascade-ui.dev/llms.txt
+
+## MCP tools
+
+- `list_components` — list all components with category/tags
+- `get_component` — full component manifest
+- `scaffold_view` — natural language → JSON view config
+- `validate_view` — validate a view config against the schema
+- `add_to_project` — install components into the user project
+
+## Component authoring rules (for cascade:extend)
+
+- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`
+- No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`
+- DOM side effects via `useSignalEffect`, not `useEffect`
+- `useRef` only for DOM element references
+- CSS custom properties only — no Tailwind, no inline styles, no CSS-in-JS
+- Visual states (hover/focus/active) via CSS pseudo-classes — not JS
+- `data-state` attributes only for states CSS cannot express (e.g. loading, error)
+- FSM (`useMachine`) only when the component itself drives transitions
+- CSS logical properties throughout (RTL-safe): `margin-inline-start`, etc.
+- User-visible strings via `@cascade-ui/i18n` — no hardcoded English fallbacks
+- WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested
+
+## Component index
+
+- [accordion](/llms/accordion.md) — Vertically stacked, collapsible content sections
+- [alert](/llms/alert.md) — Highlights a short, important message inline
+- [alert-dialog](/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
+- [avatar](/llms/avatar.md) — Displays a user image with initials fallback
+- [badge](/llms/badge.md) — Small status label or category indicator
+- [block/dashboard-charts](/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
+- [block/empty-dashboard](/llms/block/empty-dashboard.md) — Dashboard page showing an empty state with a call-to-action button.
+- [block/login-page](/llms/block/login-page.md) — Authentication login page with email and password form.
+- [block/notification-center](/llms/block/notification-center.md) — A list of notification alerts with a mark-all-read action.
+- [block/page-with-breadcrumb](/llms/block/page-with-breadcrumb.md) — A centered content page with a breadcrumb navigation and page header.
+- [block/settings-form-page](/llms/block/settings-form-page.md) — Settings page with profile form inside a two-column settings layout.
+- [block/sidebar-app](/llms/block/sidebar-app.md) — Full app shell with collapsible side navigation and top header.
+- [block/stats-cards](/llms/block/stats-cards.md) — Grid of KPI stat cards with trend badges.
+- [block/users-table-page](/llms/block/users-table-page.md) — Full users management page with table, search, and invite action.
+- [breadcrumb](/llms/breadcrumb.md) — Shows the current page location within a navigation hierarchy
+- [button](/llms/button.md) — Triggers an action or event
+- [card](/llms/card.md) — Container for grouping related content
+- [chart/area-chart](/llms/chart/area-chart.md) — Area chart with optional stacking, multi-series support, and hover tooltip.
+- [chart/bar-chart](/llms/chart/bar-chart.md) — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.
+- [chart/boxplot](/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series.
+- [chart/bubble-chart](/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
+- [chart/bullet](/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick.
+- [chart/combo-chart](/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes.
+- [chart/heatmap](/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation.
+- [chart/histogram](/llms/chart/histogram.md) — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
+- [chart/kpi](/llms/chart/kpi.md) — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
+- [chart/line-chart](/llms/chart/line-chart.md) — Time-series or numeric line chart with multi-series support, hover tooltip, and legend.
+- [chart/meter](/llms/chart/meter.md) — Progress meter in bar or gauge variant with threshold coloring.
+- [chart/pie-chart](/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend.
+- [chart/radar](/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
+- [chart/scatter-chart](/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
+- [chart/sparkline](/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
+- [chart/treemap](/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
+- [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
+- [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
+- [command-menu](/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
+- [context-menu](/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
+- [data-table](/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
+- [date-picker](/llms/date-picker.md) — An accessible date-picker with a calendar popover.
+- [dropdown](/llms/dropdown.md) — Menu of actions revealed from a trigger
+- [editable](/llms/editable.md) — Inline click-to-edit text field
+- [empty-state](/llms/empty-state.md) — Placeholder for views that have no data to display
+- [file-uploader](/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
+- [form](/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
+- [header](/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot
+- [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
+- [input](/llms/input.md) — Text input field with optional label, hint, and error state
+- [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders
+- [kbd](/llms/kbd.md) — Displays a keyboard key or shortcut
+- [layout/app-shell](/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar.
+- [layout/auth-layout](/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password).
+- [layout/center](/llms/layout/center.md) — Horizontally centered container with a configurable max-width.
+- [layout/columns](/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports.
+- [layout/dashboard-layout](/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside.
+- [layout/grid](/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing.
+- [layout/page-header](/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots.
+- [layout/settings-layout](/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area.
+- [layout/spacer](/llms/layout/spacer.md) — Fixed-height spacing block using design token steps.
+- [layout/split-view](/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support.
+- [layout/stack](/llms/layout/stack.md) — Flex layout primitive for vertical or horizontal stacking with gap control.
+- [link](/llms/link.md) — Styled anchor for navigation, standalone or inline within prose
+- [menu](/llms/menu.md) — Dropdown menu with keyboard navigation, built on usePopover
+- [modal](/llms/modal.md) — Accessible dialog overlay using native <dialog> element
+- [multi-select](/llms/multi-select.md) — Searchable multi-value select with popover listbox
+- [number-input](/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting
+- [otp-input](/llms/otp-input.md) — Segmented one-time code input
+- [overflow-menu](/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions
+- [pagination](/llms/pagination.md) — Controls for navigating paged data sets, with page size selection
+- [password-input](/llms/password-input.md) — Password input with reveal toggle and optional strength meter
+- [popover](/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API
+- [progress-bar](/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
+- [progress-indicator](/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
+- [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
+- [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
+- [search](/llms/search.md) — Search input with debounced search callback and clear button
+- [segmented-control](/llms/segmented-control.md) — Mutually exclusive toggle group
+- [select](/llms/select.md) — Native select menu styled to match the design system
+- [separator](/llms/separator.md) — Visual or semantic divider between content
+- [sheet](/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations
+- [side-nav](/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping
+- [skeleton](/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content
+- [slider](/llms/slider.md) — Range input for selecting a value within bounds
+- [spinner](/llms/spinner.md) — Indeterminate loading indicator
+- [tabs](/llms/tabs.md) — Switch between related panels of content
+- [tag](/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
+- [tags-input](/llms/tags-input.md) — Free-form multi-value chip input
+- [textarea](/llms/textarea.md) — Multi-line text input with optional label, hint, and error state
+- [time-picker](/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants
+- [toast](/llms/toast.md) — Transient notification surfaced via the useToast hook
+- [toggle](/llms/toggle.md) — On/off switch built as an accessible button
+- [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
+
+_Generated: 2026-06-11 from registry v0.0.0_

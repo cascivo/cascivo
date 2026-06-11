@@ -1,0 +1,42 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Editable',
+  description: 'Inline click-to-edit text field',
+  category: 'inputs',
+  states: ['preview', 'editing', 'disabled'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'value', type: 'string', required: true },
+    { name: 'onValueChange', type: '(v: string) => void', required: true },
+    { name: 'placeholder', type: 'string', required: false },
+    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
+    { name: 'submitOnBlur', type: 'boolean', required: false, default: 'true' },
+    { name: 'onCancel', type: '() => void', required: false },
+  ],
+  tokens: [
+    '--cascade-color-surface',
+    '--cascade-color-border',
+    '--cascade-color-accent',
+    '--cascade-color-text',
+    '--cascade-color-text-muted',
+    '--cascade-color-bg-subtle',
+    '--cascade-radius-sm',
+    '--cascade-focus-ring',
+  ],
+  accessibility: {
+    role: 'button',
+    wcag: 'AA',
+    keyboard: ['Enter', 'Escape'],
+  },
+  examples: [
+    { title: 'Basic', code: '<Editable value="Click to edit" onValueChange={() => {}} />' },
+    {
+      title: 'With placeholder',
+      code: '<Editable value="" onValueChange={() => {}} placeholder="Enter text" />',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['form', 'editable', 'inline', 'input', 'text'],
+}

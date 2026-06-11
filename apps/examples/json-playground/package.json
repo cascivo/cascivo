@@ -1,0 +1,28 @@
+{
+  "name": "@cascade-ui/json-playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Live JSON → UI renderer playground using @cascade-ui/render",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/i18n": "workspace:*",
+    "@cascade-ui/react": "workspace:*",
+    "@cascade-ui/render": "workspace:*",
+    "@cascade-ui/themes": "workspace:*",
+    "@cascade-ui/tokens": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

@@ -1,9 +1,10 @@
 {
   "version": "0.0.0",
-  "generatedAt": "2026-06-10",
+  "generatedAt": "2026-06-11",
   "components": [
     {
       "name": "accordion",
+      "type": "component",
       "description": "Vertically stacked, collapsible content sections",
       "category": "navigation",
       "version": "0.0.0",
@@ -67,6 +68,7 @@
     },
     {
       "name": "alert",
+      "type": "component",
       "description": "Highlights a short, important message inline",
       "category": "display",
       "version": "0.0.0",
@@ -149,7 +151,48 @@
       }
     },
     {
+      "name": "alert-dialog",
+      "type": "component",
+      "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["overlay", "dialog", "confirm", "destructive"],
+      "meta": {
+        "name": "AlertDialog",
+        "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": ["default", "destructive"],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-lg",
+          "--cascade-shadow-xl",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-accent",
+          "--cascade-color-destructive"
+        ],
+        "accessibility": {
+          "role": "alertdialog",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["overlay", "dialog", "confirm", "destructive"]
+      }
+    },
+    {
       "name": "avatar",
+      "type": "component",
       "description": "Displays a user image with initials fallback",
       "category": "display",
       "version": "0.0.0",
@@ -226,6 +269,7 @@
     },
     {
       "name": "badge",
+      "type": "component",
       "description": "Small status label or category indicator",
       "category": "display",
       "version": "0.0.0",
@@ -288,6 +332,7 @@
     },
     {
       "name": "breadcrumb",
+      "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
       "category": "navigation",
       "version": "0.0.0",
@@ -357,6 +402,7 @@
     },
     {
       "name": "button",
+      "type": "component",
       "description": "Triggers an action or event",
       "category": "inputs",
       "version": "0.0.0",
@@ -438,6 +484,7 @@
     },
     {
       "name": "card",
+      "type": "component",
       "description": "Container for grouping related content",
       "category": "display",
       "version": "0.0.0",
@@ -491,6 +538,7 @@
     },
     {
       "name": "checkbox",
+      "type": "component",
       "description": "Binary toggle for forms, with indeterminate support",
       "category": "inputs",
       "version": "0.0.0",
@@ -564,7 +612,131 @@
       }
     },
     {
+      "name": "combobox",
+      "type": "component",
+      "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["select", "combobox", "dropdown", "filter", "search"],
+      "meta": {
+        "name": "Combobox",
+        "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
+        "category": "inputs",
+        "states": ["closed", "open", "error"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "options",
+            "type": "ComboboxOption[]",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "type": "(value: string | undefined) => void",
+            "required": false
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "'md'"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "labels",
+            "type": "ComboboxLabels",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-surface-overlay",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-border-strong",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-color-text-subtle",
+          "--cascade-color-accent",
+          "--cascade-color-danger",
+          "--cascade-radius-input",
+          "--cascade-radius-md",
+          "--cascade-radius-sm",
+          "--cascade-shadow-lg",
+          "--cascade-motion-enter",
+          "--cascade-z-dropdown"
+        ],
+        "accessibility": {
+          "role": "combobox",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"]
+        },
+        "examples": [
+          {
+            "title": "Basic combobox",
+            "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onChange={(value) => console.log(value)}\n/>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["select", "combobox", "dropdown", "filter", "search"]
+      }
+    },
+    {
       "name": "command-menu",
+      "type": "component",
       "description": "Cmd+K command palette with fuzzy search over grouped commands",
       "category": "overlay",
       "version": "0.0.0",
@@ -623,6 +795,19 @@
             "default": "Command menu"
           },
           {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows a loading spinner in place of the empty state (for async items)"
+          },
+          {
+            "name": "onQueryChange",
+            "type": "(query: string) => void",
+            "required": false,
+            "description": "Fires on every query keystroke — use to fetch async items"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -657,7 +842,356 @@
       }
     },
     {
+      "name": "context-menu",
+      "type": "component",
+      "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "menu", "context", "right-click"],
+      "meta": {
+        "name": "ContextMenu",
+        "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-bg-subtle"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "menu", "context", "right-click"]
+      }
+    },
+    {
+      "name": "data-table",
+      "type": "component",
+      "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+      "meta": {
+        "name": "DataTable",
+        "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
+        "category": "display",
+        "states": ["default", "loading", "empty"],
+        "variants": [],
+        "sizes": ["compact", "normal", "relaxed"],
+        "props": [
+          {
+            "name": "columns",
+            "type": "Column<Row>[]",
+            "required": true
+          },
+          {
+            "name": "rows",
+            "type": "Row[]",
+            "required": true
+          },
+          {
+            "name": "getRowId",
+            "type": "(row: Row) => string",
+            "required": false
+          },
+          {
+            "name": "sort",
+            "type": "SortState",
+            "required": false
+          },
+          {
+            "name": "defaultSort",
+            "type": "SortState",
+            "required": false
+          },
+          {
+            "name": "sortMode",
+            "type": "'client' | 'server'",
+            "required": false,
+            "default": "'client'"
+          },
+          {
+            "name": "onSortChange",
+            "type": "(sort: SortState | undefined) => void",
+            "required": false
+          },
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "pagination",
+            "type": "{ pageSize: number; pageSizeOptions?: number[] }",
+            "required": false
+          },
+          {
+            "name": "selection",
+            "type": "{ mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }",
+            "required": false
+          },
+          {
+            "name": "batchActions",
+            "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
+            "required": false
+          },
+          {
+            "name": "renderExpandedRow",
+            "type": "(row: Row) => ReactNode",
+            "required": false
+          },
+          {
+            "name": "density",
+            "type": "'compact' | 'normal' | 'relaxed'",
+            "required": false,
+            "default": "'normal'"
+          },
+          {
+            "name": "zebra",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "stickyHeader",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "emptyState",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "type": "DataTableLabels",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-border-strong",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-color-accent",
+          "--cascade-font-sans",
+          "--cascade-text-sm",
+          "--cascade-text-xs",
+          "--cascade-font-semibold",
+          "--cascade-font-medium",
+          "--cascade-radius-lg",
+          "--cascade-radius-sm",
+          "--cascade-space-2",
+          "--cascade-space-3",
+          "--cascade-space-4",
+          "--cascade-data-table-max-height",
+          "--cascade-duration-150",
+          "--cascade-duration-500",
+          "--cascade-ease-out",
+          "--cascade-ease-in-out"
+        ],
+        "accessibility": {
+          "role": "table",
+          "wcag": "AA",
+          "keyboard": ["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Basic table",
+            "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Name', sortable: true },\n    { key: 'role', header: 'Role' },\n  ]}\n  rows={[\n    { name: 'Alice', role: 'Engineer' },\n    { name: 'Bob', role: 'Designer' },\n  ]}\n  getRowId={(r) => r.name}\n/>"
+          },
+          {
+            "title": "Full-featured: selection, pagination, search",
+            "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"]
+      }
+    },
+    {
+      "name": "date-picker",
+      "type": "component",
+      "description": "An accessible date-picker with a calendar popover.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["date", "calendar", "picker", "input", "form"],
+      "meta": {
+        "name": "DatePicker",
+        "description": "An accessible date-picker with a calendar popover.",
+        "category": "inputs",
+        "states": ["default", "open", "error", "disabled"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "description": "Controlled ISO date value (YYYY-MM-DD)"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "description": "Uncontrolled default value"
+          },
+          {
+            "name": "onChange",
+            "type": "(value: string | undefined) => void",
+            "required": false,
+            "description": "Called on date selection or clear"
+          },
+          {
+            "name": "min",
+            "type": "string",
+            "required": false,
+            "description": "Minimum ISO date"
+          },
+          {
+            "name": "max",
+            "type": "string",
+            "required": false,
+            "description": "Maximum ISO date"
+          },
+          {
+            "name": "clearable",
+            "type": "boolean",
+            "required": false,
+            "description": "Shows a clear button"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Field label"
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "description": "Hint text"
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false,
+            "description": "Error message"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "description": "Field size"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the picker"
+          },
+          {
+            "name": "labels",
+            "type": "DatePickerLabels",
+            "required": false,
+            "description": "i18n label overrides"
+          }
+        ],
+        "tokens": [
+          "--cascade-date-picker-bg",
+          "--cascade-date-picker-border",
+          "--cascade-date-picker-radius",
+          "--cascade-date-picker-day-selected-bg",
+          "--cascade-date-picker-day-today-color"
+        ],
+        "accessibility": {
+          "role": "combobox",
+          "wcag": "AA",
+          "keyboard": [
+            "Enter",
+            "Space",
+            "Escape",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<DatePicker label=\"Date\" />",
+            "description": "Uncontrolled date picker"
+          },
+          {
+            "title": "Clearable",
+            "code": "<DatePicker label=\"Date\" clearable />",
+            "description": "With clear button"
+          },
+          {
+            "title": "With constraints",
+            "code": "<DatePicker min=\"2024-01-01\" max=\"2024-12-31\" />",
+            "description": "Date range constraint"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["date", "calendar", "picker", "input", "form"]
+      }
+    },
+    {
       "name": "dropdown",
+      "type": "component",
       "description": "Menu of actions revealed from a trigger",
       "category": "overlay",
       "version": "0.0.0",
@@ -730,7 +1264,90 @@
       }
     },
     {
+      "name": "editable",
+      "type": "component",
+      "description": "Inline click-to-edit text field",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "editable", "inline", "input", "text"],
+      "meta": {
+        "name": "Editable",
+        "description": "Inline click-to-edit text field",
+        "category": "inputs",
+        "states": ["preview", "editing", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string) => void",
+            "required": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "submitOnBlur",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "onCancel",
+            "type": "() => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-color-bg-subtle",
+          "--cascade-radius-sm",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Editable value=\"Click to edit\" onValueChange={() => {}} />"
+          },
+          {
+            "title": "With placeholder",
+            "code": "<Editable value=\"\" onValueChange={() => {}} placeholder=\"Enter text\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "editable", "inline", "input", "text"]
+      }
+    },
+    {
       "name": "empty-state",
+      "type": "component",
       "description": "Placeholder for views that have no data to display",
       "category": "display",
       "version": "0.0.0",
@@ -802,7 +1419,185 @@
       }
     },
     {
+      "name": "file-uploader",
+      "type": "component",
+      "description": "Drag-and-drop file upload zone with file list and status indicators.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["upload", "file", "drop", "drag", "input", "form"],
+      "meta": {
+        "name": "FileUploader",
+        "description": "Drag-and-drop file upload zone with file list and status indicators.",
+        "category": "inputs",
+        "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "files",
+            "type": "UploaderFile[]",
+            "required": false,
+            "description": "Controlled file list"
+          },
+          {
+            "name": "onFilesAdded",
+            "type": "(files: File[]) => void",
+            "required": false,
+            "description": "Called with accepted files"
+          },
+          {
+            "name": "onRemove",
+            "type": "(id: string) => void",
+            "required": false,
+            "description": "Called when a file is removed"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "required": false,
+            "description": "Allow multiple files"
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "required": false,
+            "description": "Accepted file types (MIME or extension)"
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "required": false,
+            "description": "Maximum file size in bytes"
+          },
+          {
+            "name": "onRejected",
+            "type": "(files: File[], reason: 'size' | 'type') => void",
+            "required": false,
+            "description": "Called with rejected files"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Field label"
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "description": "Hint text below the drop zone"
+          },
+          {
+            "name": "labels",
+            "type": "FileUploaderLabels",
+            "required": false,
+            "description": "i18n label overrides"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the upload zone"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-accent-subtle",
+          "--cascade-color-success",
+          "--cascade-color-danger",
+          "--cascade-color-danger-subtle"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<FileUploader onFilesAdded={console.log} />",
+            "description": "Single file upload zone"
+          },
+          {
+            "title": "Multiple",
+            "code": "<FileUploader multiple onFilesAdded={console.log} />",
+            "description": "Accept multiple files"
+          },
+          {
+            "title": "With files",
+            "code": "<FileUploader files={[{ id:'1', name:'report.pdf', size:102400, status:'complete' }]} />",
+            "description": "Shows file list"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["upload", "file", "drop", "drag", "input", "form"]
+      }
+    },
+    {
+      "name": "form",
+      "type": "component",
+      "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "validation", "signals", "input"],
+      "meta": {
+        "name": "Form",
+        "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+        "category": "inputs",
+        "states": ["idle", "submitting"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "form",
+            "type": "FormStore<T>",
+            "required": true
+          },
+          {
+            "name": "onValid",
+            "type": "(values: T) => void | Promise<void>",
+            "required": true
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-space-4"],
+        "accessibility": {
+          "role": "form",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "Basic form with validation",
+            "code": "function Demo() {\n  const form = useForm({\n    initialValues: { email: '' },\n    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },\n  })\n  const email = form.field('email')\n  return (\n    <Form form={form} onValid={console.log}>\n      <Input\n        label=\"Email\"\n        value={email.value}\n        onChange={(e) => email.onChange(e.currentTarget.value)}\n        onBlur={email.onBlur}\n        error={email.error}\n      />\n      <Button type=\"submit\">Save</Button>\n    </Form>\n  )\n}"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "validation", "signals", "input"]
+      }
+    },
+    {
       "name": "header",
+      "type": "component",
       "description": "App top bar with brand, primary navigation links, and an actions slot",
       "category": "navigation",
       "version": "0.0.0",
@@ -884,7 +1679,46 @@
       }
     },
     {
+      "name": "hover-card",
+      "type": "component",
+      "description": "Hover-triggered popover with configurable open/close delay",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "hover", "preview", "floating"],
+      "meta": {
+        "name": "HoverCard",
+        "description": "Hover-triggered popover with configurable open/close delay",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "complementary",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "hover", "preview", "floating"]
+      }
+    },
+    {
       "name": "input",
+      "type": "component",
       "description": "Text input field with optional label, hint, and error state",
       "category": "inputs",
       "version": "0.0.0",
@@ -963,7 +1797,69 @@
       }
     },
     {
+      "name": "input-group",
+      "type": "component",
+      "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "input", "addon", "group", "layout"],
+      "meta": {
+        "name": "InputGroup",
+        "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+        "category": "inputs",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true
+          }
+        ],
+        "tokens": [
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-text-subtle",
+          "--cascade-radius-input"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "With prefix",
+            "code": "<InputGroup prefix=\"https://\"><Input placeholder=\"example.com\" /></InputGroup>"
+          },
+          {
+            "title": "ButtonGroup",
+            "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "input", "addon", "group", "layout"]
+      }
+    },
+    {
       "name": "kbd",
+      "type": "component",
       "description": "Displays a keyboard key or shortcut",
       "category": "display",
       "version": "0.0.0",
@@ -1021,6 +1917,7 @@
     },
     {
       "name": "link",
+      "type": "component",
       "description": "Styled anchor for navigation, standalone or inline within prose",
       "category": "navigation",
       "version": "0.0.0",
@@ -1095,7 +1992,47 @@
       }
     },
     {
+      "name": "menu",
+      "type": "component",
+      "description": "Dropdown menu with keyboard navigation, built on usePopover",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "menu", "dropdown", "floating"],
+      "meta": {
+        "name": "Menu",
+        "description": "Dropdown menu with keyboard navigation, built on usePopover",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-bg-subtle"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "menu", "dropdown", "floating"]
+      }
+    },
+    {
       "name": "modal",
+      "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
       "category": "overlay",
       "version": "0.0.0",
@@ -1164,7 +2101,85 @@
       }
     },
     {
+      "name": "multi-select",
+      "type": "component",
+      "description": "Searchable multi-value select with popover listbox",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "select", "multi", "input", "popover"],
+      "meta": {
+        "name": "MultiSelect",
+        "description": "Searchable multi-value select with popover listbox",
+        "category": "inputs",
+        "states": ["closed", "open"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "options",
+            "type": "MultiSelectOption[]",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string[]) => void",
+            "required": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "labels",
+            "type": "MultiSelectLabels",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-radius-input",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-focus-ring",
+          "--cascade-motion-enter"
+        ],
+        "accessibility": {
+          "role": "listbox",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Space", "Enter", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "select", "multi", "input", "popover"]
+      }
+    },
+    {
       "name": "number-input",
+      "type": "component",
       "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
       "category": "inputs",
       "version": "0.0.0",
@@ -1300,7 +2315,84 @@
       }
     },
     {
+      "name": "otp-input",
+      "type": "component",
+      "description": "Segmented one-time code input",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "otp", "code", "input", "verification"],
+      "meta": {
+        "name": "OtpInput",
+        "description": "Segmented one-time code input",
+        "category": "inputs",
+        "states": ["idle", "focused", "filled", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "6"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string) => void",
+            "required": true
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "type",
+            "type": "'numeric' | 'alphanumeric'",
+            "required": false,
+            "default": "numeric"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-bg-subtle",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<OtpInput value=\"\" onValueChange={() => {}} />"
+          },
+          {
+            "title": "4-digit",
+            "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "otp", "code", "input", "verification"]
+      }
+    },
+    {
       "name": "overflow-menu",
+      "type": "component",
       "description": "Kebab icon button revealing a menu of row-level actions",
       "category": "overlay",
       "version": "0.0.0",
@@ -1388,6 +2480,7 @@
     },
     {
       "name": "pagination",
+      "type": "component",
       "description": "Controls for navigating paged data sets, with page size selection",
       "category": "navigation",
       "version": "0.0.0",
@@ -1489,7 +2582,134 @@
       }
     },
     {
+      "name": "password-input",
+      "type": "component",
+      "description": "Password input with reveal toggle and optional strength meter",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "password", "input", "security"],
+      "meta": {
+        "name": "PasswordInput",
+        "description": "Password input with reveal toggle and optional strength meter",
+        "category": "inputs",
+        "states": ["idle", "revealed"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "showStrengthMeter",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "labels",
+            "type": "PasswordInputLabels",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "type": "(e: React.ChangeEvent<HTMLInputElement>) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-destructive",
+          "--cascade-color-warning",
+          "--cascade-color-success",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<PasswordInput placeholder=\"Enter password\" />"
+          },
+          {
+            "title": "With strength meter",
+            "code": "<PasswordInput showStrengthMeter placeholder=\"Create password\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "password", "input", "security"]
+      }
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "floating", "anchor", "popover"],
+      "meta": {
+        "name": "Popover",
+        "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "AA",
+          "keyboard": ["Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "floating", "anchor", "popover"]
+      }
+    },
+    {
       "name": "progress-bar",
+      "type": "component",
       "description": "Shows determinate or indeterminate progress of a task",
       "category": "feedback",
       "version": "0.0.0",
@@ -1579,6 +2799,7 @@
     },
     {
       "name": "progress-indicator",
+      "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
       "category": "navigation",
       "version": "0.0.0",
@@ -1652,6 +2873,7 @@
     },
     {
       "name": "radio",
+      "type": "component",
       "description": "Single choice from a set, grouped with RadioGroup",
       "category": "inputs",
       "version": "0.0.0",
@@ -1715,7 +2937,93 @@
       }
     },
     {
+      "name": "rating-group",
+      "type": "component",
+      "description": "Star rating input with accessible radio group pattern",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "rating", "stars", "input", "feedback"],
+      "meta": {
+        "name": "RatingGroup",
+        "description": "Star rating input with accessible radio group pattern",
+        "category": "inputs",
+        "states": ["idle", "disabled", "readOnly"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: number) => void",
+            "required": false
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "labels",
+            "type": "RatingGroupLabels",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-warning",
+          "--cascade-color-border-strong",
+          "--cascade-color-accent",
+          "--cascade-radius-sm"
+        ],
+        "accessibility": {
+          "role": "radiogroup",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Space", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<RatingGroup value={3} onValueChange={() => {}} />"
+          },
+          {
+            "title": "Read only",
+            "code": "<RatingGroup value={4} readOnly />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "rating", "stars", "input", "feedback"]
+      }
+    },
+    {
       "name": "search",
+      "type": "component",
       "description": "Search input with debounced search callback and clear button",
       "category": "inputs",
       "version": "0.0.0",
@@ -1836,7 +3144,80 @@
       }
     },
     {
+      "name": "segmented-control",
+      "type": "component",
+      "description": "Mutually exclusive toggle group",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "toggle", "group", "segmented", "input"],
+      "meta": {
+        "name": "SegmentedControl",
+        "description": "Mutually exclusive toggle group",
+        "category": "inputs",
+        "states": ["idle", "selected", "disabled"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "options",
+            "type": "SegmentedControlOption[]",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string) => void",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-color-text",
+          "--cascade-radius-md",
+          "--cascade-radius-sm",
+          "--cascade-shadow-sm"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "toggle", "group", "segmented", "input"]
+      }
+    },
+    {
       "name": "select",
+      "type": "component",
       "description": "Native select menu styled to match the design system",
       "category": "inputs",
       "version": "0.0.0",
@@ -1921,6 +3302,7 @@
     },
     {
       "name": "separator",
+      "type": "component",
       "description": "Visual or semantic divider between content",
       "category": "display",
       "version": "0.0.0",
@@ -1973,7 +3355,46 @@
       }
     },
     {
+      "name": "sheet",
+      "type": "component",
+      "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["overlay", "drawer", "panel", "slide"],
+      "meta": {
+        "name": "Sheet",
+        "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-lg",
+          "--cascade-shadow-xl",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["overlay", "drawer", "panel", "slide"]
+      }
+    },
+    {
       "name": "side-nav",
+      "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
       "category": "navigation",
       "version": "0.0.0",
@@ -2079,6 +3500,7 @@
     },
     {
       "name": "skeleton",
+      "type": "component",
       "description": "Animated loading placeholder that mirrors the shape of pending content",
       "category": "display",
       "version": "0.0.0",
@@ -2154,6 +3576,7 @@
     },
     {
       "name": "slider",
+      "type": "component",
       "description": "Range input for selecting a value within bounds",
       "category": "inputs",
       "version": "0.0.0",
@@ -2239,6 +3662,7 @@
     },
     {
       "name": "spinner",
+      "type": "component",
       "description": "Indeterminate loading indicator",
       "category": "feedback",
       "version": "0.0.0",
@@ -2292,6 +3716,7 @@
     },
     {
       "name": "tabs",
+      "type": "component",
       "description": "Switch between related panels of content",
       "category": "navigation",
       "version": "0.0.0",
@@ -2349,6 +3774,7 @@
     },
     {
       "name": "tag",
+      "type": "component",
       "description": "Compact chip for labeling, categorizing, or filtering content",
       "category": "display",
       "version": "0.0.0",
@@ -2430,7 +3856,85 @@
       }
     },
     {
+      "name": "tags-input",
+      "type": "component",
+      "description": "Free-form multi-value chip input",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "tags", "chips", "multi", "input"],
+      "meta": {
+        "name": "TagsInput",
+        "description": "Free-form multi-value chip input",
+        "category": "inputs",
+        "states": ["idle", "focused", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string[]) => void",
+            "required": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "validate",
+            "type": "(tag: string) => boolean",
+            "required": false
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-destructive",
+          "--cascade-color-bg-subtle",
+          "--cascade-radius-input",
+          "--cascade-radius-full",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Enter", ",", "Backspace"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag…\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "tags", "chips", "multi", "input"]
+      }
+    },
+    {
       "name": "textarea",
+      "type": "component",
       "description": "Multi-line text input with optional label, hint, and error state",
       "category": "inputs",
       "version": "0.0.0",
@@ -2510,7 +4014,118 @@
       }
     },
     {
+      "name": "time-picker",
+      "type": "component",
+      "description": "Native time input wrapper with label, hint, error, and size variants",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["time", "input", "form"],
+      "meta": {
+        "name": "TimePicker",
+        "description": "Native time input wrapper with label, hint, error, and size variants",
+        "category": "inputs",
+        "states": ["idle", "focused", "error"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "description": "Controlled value (HH:mm)"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
+            "name": "min",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "max",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "'md'"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-border-strong",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-color-accent",
+          "--cascade-color-danger",
+          "--cascade-radius-input",
+          "--cascade-radius-md"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Tab"]
+        },
+        "examples": [
+          {
+            "title": "Basic time picker",
+            "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["time", "input", "form"]
+      }
+    },
+    {
       "name": "toast",
+      "type": "component",
       "description": "Transient notification surfaced via the useToast hook",
       "category": "overlay",
       "version": "0.0.0",
@@ -2576,6 +4191,7 @@
     },
     {
       "name": "toggle",
+      "type": "component",
       "description": "On/off switch built as an accessible button",
       "category": "inputs",
       "version": "0.0.0",
@@ -2655,6 +4271,7 @@
     },
     {
       "name": "tooltip",
+      "type": "component",
       "description": "Contextual label shown on hover or focus",
       "category": "overlay",
       "version": "0.0.0",
@@ -2716,6 +4333,2446 @@
         "dependencies": ["@cascade-ui/core"],
         "tags": ["overlay", "hint", "popover"]
       }
+    },
+    {
+      "name": "layout/app-shell",
+      "type": "layout",
+      "description": "Full-page application shell with persisted collapsible sidebar.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+      "tags": ["layout", "shell", "sidebar", "navigation"],
+      "meta": {
+        "name": "AppShell",
+        "description": "Full-page application shell with persisted collapsible sidebar.",
+        "category": "layout",
+        "states": ["expanded", "collapsed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "header",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Top header slot"
+          },
+          {
+            "name": "sideNav",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Side navigation slot"
+          },
+          {
+            "name": "aside",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Right aside slot"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Main content"
+          },
+          {
+            "name": "persistKey",
+            "type": "string | false",
+            "required": false,
+            "description": "localStorage key for sidebar state. Pass false to disable persistence."
+          }
+        ],
+        "tokens": [
+          "--cascade-space-3",
+          "--cascade-space-4",
+          "--cascade-space-6",
+          "--cascade-duration-200",
+          "--cascade-ease-out",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-font-size-xs"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>",
+            "description": "App shell with collapsible nav"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+        "tags": ["layout", "shell", "sidebar", "navigation"]
+      }
+    },
+    {
+      "name": "layout/auth-layout",
+      "type": "layout",
+      "description": "Centered card layout for authentication pages (login, register, forgot password).",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "auth", "login", "page"],
+      "meta": {
+        "name": "AuthLayout",
+        "description": "Centered card layout for authentication pages (login, register, forgot password).",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Auth form content"
+          },
+          {
+            "name": "logo",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional logo displayed above the form"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-bg-subtle",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-lg",
+          "--cascade-space-4",
+          "--cascade-space-6",
+          "--cascade-space-8"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Login",
+            "code": "<AuthLayout logo={<img src=\"/logo.svg\" alt=\"Logo\" />}><form>...</form></AuthLayout>",
+            "description": "Centered auth card with logo"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "auth", "login", "page"]
+      }
+    },
+    {
+      "name": "layout/center",
+      "type": "layout",
+      "description": "Horizontally centered container with a configurable max-width.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "center", "wrapper"],
+      "meta": {
+        "name": "Center",
+        "description": "Horizontally centered container with a configurable max-width.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "maxWidth",
+            "type": "string",
+            "required": false,
+            "description": "CSS max-width value"
+          }
+        ],
+        "tokens": ["--cascade-space-4"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Centered content",
+            "code": "<Center maxWidth=\"60rem\"><p>Content</p></Center>",
+            "description": "Centered container with custom max-width"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "center", "wrapper"]
+      }
+    },
+    {
+      "name": "layout/columns",
+      "type": "layout",
+      "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "grid", "columns"],
+      "meta": {
+        "name": "Columns",
+        "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "count",
+            "type": "2|3|4",
+            "required": false,
+            "description": "Number of equal columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Three columns",
+            "code": "<Columns count={3}><div>A</div><div>B</div><div>C</div></Columns>",
+            "description": "Three equal columns"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "grid", "columns"]
+      }
+    },
+    {
+      "name": "layout/dashboard-layout",
+      "type": "layout",
+      "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "dashboard", "page"],
+      "meta": {
+        "name": "DashboardLayout",
+        "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "stats",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Stats/KPI row (auto-fit grid)"
+          },
+          {
+            "name": "main",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Main content area"
+          },
+          {
+            "name": "aside",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional aside panel (20rem)"
+          }
+        ],
+        "tokens": ["--cascade-space-4", "--cascade-space-6"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "With stats",
+            "code": "<DashboardLayout stats={<div>KPIs</div>} main={<div>Content</div>} />",
+            "description": "Stats + main layout"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "dashboard", "page"]
+      }
+    },
+    {
+      "name": "layout/grid",
+      "type": "layout",
+      "description": "CSS grid layout primitive with responsive column collapsing.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "grid", "columns"],
+      "meta": {
+        "name": "Grid",
+        "description": "CSS grid layout primitive with responsive column collapsing.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "cols",
+            "type": "number",
+            "required": false,
+            "description": "Number of grid columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          },
+          {
+            "name": "span",
+            "type": "number",
+            "required": false,
+            "description": "GridItem: column span count"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic grid",
+            "code": "<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>",
+            "description": "3-column grid with spanning item"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "grid", "columns"]
+      }
+    },
+    {
+      "name": "layout/page-header",
+      "type": "layout",
+      "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "header", "page"],
+      "meta": {
+        "name": "PageHeader",
+        "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Page title"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Supporting description"
+          },
+          {
+            "name": "breadcrumb",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Breadcrumb slot"
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Action buttons slot"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "description": "Additional CSS class"
+          }
+        ],
+        "tokens": [
+          "--cascade-space-2",
+          "--cascade-space-4",
+          "--cascade-font-size-2xl",
+          "--cascade-font-weight-bold",
+          "--cascade-color-text",
+          "--cascade-color-text-muted",
+          "--cascade-font-size-sm"
+        ],
+        "accessibility": {
+          "role": "banner",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<PageHeader title=\"Dashboard\" description=\"Welcome back\" />",
+            "description": "Title with description"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "header", "page"]
+      }
+    },
+    {
+      "name": "layout/settings-layout",
+      "type": "layout",
+      "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "settings", "page"],
+      "meta": {
+        "name": "SettingsLayout",
+        "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "menu",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Side navigation menu"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Settings content area"
+          }
+        ],
+        "tokens": ["--cascade-space-8"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>",
+            "description": "Menu + content layout"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "settings", "page"]
+      }
+    },
+    {
+      "name": "layout/spacer",
+      "type": "layout",
+      "description": "Fixed-height spacing block using design token steps.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "spacer", "spacing"],
+      "meta": {
+        "name": "Spacer",
+        "description": "Fixed-height spacing block using design token steps.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "size",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Spacer",
+            "code": "<Spacer size={8} />",
+            "description": "Adds vertical space between elements"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "spacer", "spacing"]
+      }
+    },
+    {
+      "name": "layout/split-view",
+      "type": "layout",
+      "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "split", "resizable", "pane"],
+      "meta": {
+        "name": "SplitView",
+        "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "start",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Left pane content"
+          },
+          {
+            "name": "end",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Right pane content"
+          },
+          {
+            "name": "defaultRatio",
+            "type": "number",
+            "required": false,
+            "description": "Initial split ratio (0–1)"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "description": "Minimum ratio for start pane"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Maximum ratio for start pane"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Label for the separator"
+          }
+        ],
+        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+        "accessibility": {
+          "role": "separator",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<SplitView start={<FileTree />} end={<Editor />} />",
+            "description": "Two-pane split with draggable divider"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "split", "resizable", "pane"]
+      }
+    },
+    {
+      "name": "layout/stack",
+      "type": "layout",
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "flex", "stack", "spacing"],
+      "meta": {
+        "name": "Stack",
+        "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "direction",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "description": "Flex direction"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          },
+          {
+            "name": "align",
+            "type": "'start'|'center'|'end'|'stretch'",
+            "required": false,
+            "description": "align-items"
+          },
+          {
+            "name": "justify",
+            "type": "'start'|'center'|'end'|'between'",
+            "required": false,
+            "description": "justify-content"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "description": "Allow wrapping"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Vertical",
+            "code": "<Stack gap={4}><div>A</div><div>B</div></Stack>",
+            "description": "Default vertical stack"
+          },
+          {
+            "title": "Horizontal",
+            "code": "<Stack direction=\"horizontal\" gap={2}><div>A</div><div>B</div></Stack>",
+            "description": "Row layout"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "flex", "stack", "spacing"]
+      }
+    },
+    {
+      "name": "block/dashboard-charts",
+      "type": "block",
+      "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+      ],
+      "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+      "tags": ["block", "dashboard", "charts", "kpi"],
+      "meta": {
+        "name": "DashboardCharts",
+        "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<DashboardCharts />",
+            "description": "Charts dashboard demo"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+        "tags": ["block", "dashboard", "charts", "kpi"]
+      }
+    },
+    {
+      "name": "block/empty-dashboard",
+      "type": "block",
+      "description": "Dashboard page showing an empty state with a call-to-action button.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+      "tags": ["block", "dashboard", "empty-state", "page"],
+      "meta": {
+        "name": "EmptyDashboard",
+        "description": "Dashboard page showing an empty state with a call-to-action button.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onCreateItem",
+            "type": "() => void",
+            "required": false,
+            "description": "Create item button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<EmptyDashboard />",
+            "description": "Empty dashboard"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+        "tags": ["block", "dashboard", "empty-state", "page"]
+      }
+    },
+    {
+      "name": "block/login-page",
+      "type": "block",
+      "description": "Authentication login page with email and password form.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+      "tags": ["block", "login", "auth", "form", "page"],
+      "meta": {
+        "name": "LoginPage",
+        "description": "Authentication login page with email and password form.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onSubmit",
+            "type": "(values: LoginValues) => void",
+            "required": false,
+            "description": "Called with valid form values on submit"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<LoginPage />",
+            "description": "Login page"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+        "tags": ["block", "login", "auth", "form", "page"]
+      }
+    },
+    {
+      "name": "block/notification-center",
+      "type": "block",
+      "description": "A list of notification alerts with a mark-all-read action.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/stack"],
+      "tags": ["block", "notifications", "alerts"],
+      "meta": {
+        "name": "NotificationCenter",
+        "description": "A list of notification alerts with a mark-all-read action.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "notifications",
+            "type": "Notification[]",
+            "required": false,
+            "description": "Notification items to display"
+          },
+          {
+            "name": "onMarkAllRead",
+            "type": "() => void",
+            "required": false,
+            "description": "Mark all read button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<NotificationCenter />",
+            "description": "Notification center"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/stack"],
+        "tags": ["block", "notifications", "alerts"]
+      }
+    },
+    {
+      "name": "block/page-with-breadcrumb",
+      "type": "block",
+      "description": "A centered content page with a breadcrumb navigation and page header.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+      "tags": ["block", "breadcrumb", "page", "navigation"],
+      "meta": {
+        "name": "PageWithBreadcrumb",
+        "description": "A centered content page with a breadcrumb navigation and page header.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<PageWithBreadcrumb />",
+            "description": "Page with breadcrumb"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+        "tags": ["block", "breadcrumb", "page", "navigation"]
+      }
+    },
+    {
+      "name": "block/settings-form-page",
+      "type": "block",
+      "description": "Settings page with profile form inside a two-column settings layout.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+      "tags": ["block", "settings", "form", "page"],
+      "meta": {
+        "name": "SettingsFormPage",
+        "description": "Settings page with profile form inside a two-column settings layout.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onSave",
+            "type": "(values: SettingsValues) => void",
+            "required": false,
+            "description": "Called with valid form values on submit"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<SettingsFormPage />",
+            "description": "Settings form page"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+        "tags": ["block", "settings", "form", "page"]
+      }
+    },
+    {
+      "name": "block/sidebar-app",
+      "type": "block",
+      "description": "Full app shell with collapsible side navigation and top header.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+      "tags": ["block", "sidebar", "navigation", "app-shell"],
+      "meta": {
+        "name": "SidebarApp",
+        "description": "Full app shell with collapsible side navigation and top header.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<SidebarApp />",
+            "description": "App with sidebar navigation"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+        "tags": ["block", "sidebar", "navigation", "app-shell"]
+      }
+    },
+    {
+      "name": "block/stats-cards",
+      "type": "block",
+      "description": "Grid of KPI stat cards with trend badges.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react"],
+      "tags": ["block", "stats", "kpi", "cards"],
+      "meta": {
+        "name": "StatsCards",
+        "description": "Grid of KPI stat cards with trend badges.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "stats",
+            "type": "Stat[]",
+            "required": false,
+            "description": "KPI stat data"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<StatsCards />",
+            "description": "Demo KPI stats"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react"],
+        "tags": ["block", "stats", "kpi", "cards"]
+      }
+    },
+    {
+      "name": "block/users-table-page",
+      "type": "block",
+      "description": "Full users management page with table, search, and invite action.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+      ],
+      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+      "tags": ["block", "users", "table", "page"],
+      "meta": {
+        "name": "UsersTablePage",
+        "description": "Full users management page with table, search, and invite action.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "users",
+            "type": "User[]",
+            "required": false,
+            "description": "User data"
+          },
+          {
+            "name": "onInvite",
+            "type": "() => void",
+            "required": false,
+            "description": "Invite button handler"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<UsersTablePage />",
+            "description": "Demo users table"
+          }
+        ],
+        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+        "tags": ["block", "users", "table", "page"]
+      }
+    },
+    {
+      "name": "chart/area-chart",
+      "type": "chart",
+      "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "area", "data-viz"],
+      "meta": {
+        "name": "AreaChart",
+        "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "AreaChartSeries<Datum>[]",
+            "required": true,
+            "description": "Array of data series"
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "X-value accessor"
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "Y-value accessor"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "stacked",
+            "type": "boolean",
+            "required": false,
+            "description": "Stack series areas"
+          },
+          {
+            "name": "curve",
+            "type": "'linear' | 'monotone'",
+            "required": false,
+            "default": "monotone"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic area chart",
+            "code": "import { AreaChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "area", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bar-chart",
+      "type": "chart",
+      "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bar", "data-viz"],
+      "meta": {
+        "name": "BarChart",
+        "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+        "category": "chart",
+        "states": [],
+        "variants": ["grouped", "stacked"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "BarChartSeries<Datum>[]",
+            "required": true
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => string",
+            "required": true
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "orientation",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "default": "vertical"
+          },
+          {
+            "name": "mode",
+            "type": "'grouped' | 'stacked'",
+            "required": false,
+            "default": "grouped"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bar chart",
+            "code": "import { BarChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bar", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/boxplot",
+      "type": "chart",
+      "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+      "meta": {
+        "name": "Boxplot",
+        "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "{ id: string; label: string; values: number[] }[]",
+            "required": true,
+            "description": "Array of series each with raw numeric values"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic boxplot",
+            "code": "import { Boxplot } from '@cascade-ui/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bubble-chart",
+      "type": "chart",
+      "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+      "meta": {
+        "name": "BubbleChart",
+        "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "{ name: string; data: { x: number; y: number; size: number }[] }[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bubble chart",
+            "code": "import { BubbleChart } from '@cascade-ui/charts'\n\nconst series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]\n<BubbleChart series={series} title=\"Bubble\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/bullet",
+      "type": "chart",
+      "description": "Bullet chart with background range bands, measure bar, and target tick.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+      "meta": {
+        "name": "Bullet",
+        "description": "Bullet chart with background range bands, measure bar, and target tick.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current measure value"
+          },
+          {
+            "name": "target",
+            "type": "number",
+            "required": true,
+            "description": "Target marker value"
+          },
+          {
+            "name": "ranges",
+            "type": "number[]",
+            "required": true,
+            "description": "Qualitative range breakpoints (sorted ascending)"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain maximum (defaults to last range)"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "40"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-color-neutral-200",
+          "--cascade-color-neutral-300",
+          "--cascade-color-neutral-400"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic bullet chart",
+            "code": "import { Bullet } from '@cascade-ui/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "bullet", "kpi", "progress", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/combo-chart",
+      "type": "chart",
+      "description": "Combination bar + line chart on shared or dual y-axes.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+      "meta": {
+        "name": "ComboChart",
+        "description": "Combination bar + line chart on shared or dual y-axes.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "bars",
+            "type": "{ label: string; value: number }[]",
+            "required": true,
+            "description": "Bar series data"
+          },
+          {
+            "name": "line",
+            "type": "{ x: number; y: number }[]",
+            "required": true,
+            "description": "Line series data points"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "secondAxis",
+            "type": "boolean",
+            "required": false,
+            "description": "Render line on a secondary right y-axis"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic combo chart",
+            "code": "import { ComboChart } from '@cascade-ui/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/heatmap",
+      "type": "chart",
+      "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "heatmap", "matrix", "data-viz"],
+      "meta": {
+        "name": "Heatmap",
+        "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "{ x: string; y: string; value: number }[]",
+            "required": true,
+            "description": "Array of x/y/value triples"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic heatmap",
+            "code": "import { Heatmap } from '@cascade-ui/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "heatmap", "matrix", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/histogram",
+      "type": "chart",
+      "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+      "meta": {
+        "name": "Histogram",
+        "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "number[]",
+            "required": true,
+            "description": "Array of numeric values to bin"
+          },
+          {
+            "name": "bins",
+            "type": "number",
+            "required": false,
+            "description": "Explicit bin count (defaults to Freedman–Diaconis)"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "X-axis label"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic histogram",
+            "code": "import { Histogram } from '@cascade-ui/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/kpi",
+      "type": "chart",
+      "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
+      "meta": {
+        "name": "Kpi",
+        "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string | number",
+            "required": true,
+            "description": "Primary metric value"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Metric label"
+          },
+          {
+            "name": "delta",
+            "type": "number",
+            "required": false,
+            "description": "Change value (positive = up, negative = down)"
+          },
+          {
+            "name": "deltaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Delta context label (e.g. \"vs last week\")"
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "sparkline",
+            "type": "number[]",
+            "required": false,
+            "description": "Trend data for embedded sparkline"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "figure",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic KPI card",
+            "code": "import { Kpi } from '@cascade-ui/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/line-chart",
+      "type": "chart",
+      "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "line", "time-series", "data-viz"],
+      "meta": {
+        "name": "LineChart",
+        "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "LineChartSeries<Datum>[]",
+            "required": true,
+            "description": "Array of data series"
+          },
+          {
+            "name": "x",
+            "type": "(d: Datum) => number | Date",
+            "required": true,
+            "description": "X-value accessor"
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": true,
+            "description": "Y-value accessor"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle shown below title"
+          },
+          {
+            "name": "curve",
+            "type": "'linear' | 'monotone'",
+            "required": false,
+            "default": "monotone",
+            "description": "Line interpolation curve"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "description": "Fixed SVG width (defaults to container width)"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300",
+            "description": "SVG height in px"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Approximate number of X-axis ticks"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Approximate number of Y-axis ticks"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "description": "Show series legend"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip"
+          },
+          {
+            "name": "formatTooltip",
+            "type": "(datum: Datum, series: LineChartSeries<Datum>) => string",
+            "required": false,
+            "description": "Custom tooltip formatter"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic line chart",
+            "code": "import { LineChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "line", "time-series", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/meter",
+      "type": "chart",
+      "description": "Progress meter in bar or gauge variant with threshold coloring.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+      "meta": {
+        "name": "Meter",
+        "description": "Progress meter in bar or gauge variant with threshold coloring.",
+        "category": "chart",
+        "states": [],
+        "variants": ["bar", "gauge"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current value"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "variant",
+            "type": "'bar' | 'gauge'",
+            "required": false,
+            "default": "bar"
+          },
+          {
+            "name": "thresholds",
+            "type": "MeterThresholds",
+            "required": false,
+            "description": "Color breakpoints"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "meter",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic meter",
+            "code": "import { Meter } from '@cascade-ui/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "meter", "gauge", "progress", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/pie-chart",
+      "type": "chart",
+      "description": "Pie or donut chart with hover segments and optional legend.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "pie", "donut", "data-viz"],
+      "meta": {
+        "name": "PieChart",
+        "description": "Pie or donut chart with hover segments and optional legend.",
+        "category": "chart",
+        "states": [],
+        "variants": ["pie", "donut"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "PieChartDatum[]",
+            "required": true,
+            "description": "Array of { label, value } datums"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "donut",
+            "type": "boolean",
+            "required": false,
+            "description": "Render as donut chart"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic pie chart",
+            "code": "import { PieChart } from '@cascade-ui/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "pie", "donut", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/radar",
+      "type": "chart",
+      "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+      "meta": {
+        "name": "Radar",
+        "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "axes",
+            "type": "string[]",
+            "required": true,
+            "description": "Axis labels (one per dimension)"
+          },
+          {
+            "name": "series",
+            "type": "{ id: string; label: string; values: number[] }[]",
+            "required": true,
+            "description": "One value per axis per series"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Maximum value (defaults to data max)"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic radar chart",
+            "code": "import { Radar } from '@cascade-ui/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "radar", "spider", "polar", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/scatter-chart",
+      "type": "chart",
+      "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "scatter", "plot", "data-viz"],
+      "meta": {
+        "name": "ScatterChart",
+        "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "ScatterChartSeries[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "r",
+            "type": "number | ((d: ScatterDatum) => number)",
+            "required": false,
+            "default": "4",
+            "description": "Point radius or accessor"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "xTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic scatter chart",
+            "code": "import { ScatterChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "scatter", "plot", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/sparkline",
+      "type": "chart",
+      "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+      "meta": {
+        "name": "Sparkline",
+        "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "number[]",
+            "required": true,
+            "description": "Array of numeric values"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible label"
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false,
+            "default": "80"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "32"
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Stroke color (CSS value)"
+          },
+          {
+            "name": "endDot",
+            "type": "boolean",
+            "required": false,
+            "description": "Show dot at last data point"
+          }
+        ],
+        "tokens": ["--cascade-chart-1"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Inline sparkline",
+            "code": "import { Sparkline } from '@cascade-ui/charts'\n\n<Sparkline data={[10, 20, 15, 30, 25]} label=\"Trend\" endDot />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "sparkline", "inline", "trend", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
+    },
+    {
+      "name": "chart/treemap",
+      "type": "chart",
+      "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascade-ui/charts"],
+      "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
+      "meta": {
+        "name": "Treemap",
+        "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "{ id: string; label: string; value: number }[]",
+            "required": true
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2",
+          "--cascade-chart-3",
+          "--cascade-chart-4",
+          "--cascade-chart-5",
+          "--cascade-chart-6",
+          "--cascade-chart-7",
+          "--cascade-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic treemap",
+            "code": "import { Treemap } from '@cascade-ui/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/charts"],
+        "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"]
+      },
+      "install": "@cascade-ui/charts"
     }
   ]
 }

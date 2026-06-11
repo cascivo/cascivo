@@ -1,0 +1,75 @@
+@layer cascade.component {
+  .input-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+
+    /* Remove adjacent border radii for connected look */
+    &[data-has-prefix] .input-wrap > * {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
+
+    &[data-has-suffix] .input-wrap > * {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    &[data-has-prefix] .addon[data-position='prefix'] {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+      border-inline-end: none;
+    }
+
+    &[data-has-suffix] .addon[data-position='suffix'] {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      border-inline-start: none;
+    }
+  }
+
+  .input-wrap {
+    flex: 1;
+    min-width: 0;
+
+    & > * {
+      width: 100%;
+    }
+  }
+
+  .addon {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--cascade-space-3);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+    background-color: var(--cascade-color-bg-subtle);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-input);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .button-group {
+    display: inline-flex;
+    align-items: stretch;
+
+    /* Collapse internal borders between buttons */
+    & > *:not(:first-child) {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      margin-inline-start: -1px;
+    }
+
+    & > *:not(:last-child) {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    & > *:focus-visible {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

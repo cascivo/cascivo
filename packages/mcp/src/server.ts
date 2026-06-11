@@ -10,6 +10,8 @@ import {
 } from './registry.js'
 import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
+import { validateView } from '../../render/src/validate.js'
+import { scaffoldView } from './scaffold-view.js'
 
 export interface ServerOptions {
   registryPath?: string
@@ -40,15 +42,19 @@ export function createServer(options: ServerOptions = {}): McpServer {
     'list_components',
     {
       title: 'List components',
-      description: 'List all cascade components, optionally filtered by category.',
+      description: 'List all cascade components, optionally filtered by category and/or type.',
       inputSchema: {
         category: z
-          .enum(['inputs', 'display', 'overlay', 'navigation', 'feedback'])
+          .enum(['inputs', 'display', 'overlay', 'navigation', 'feedback', 'chart'])
           .optional()
           .describe('Filter by component category'),
+        type: z
+          .enum(['component', 'layout', 'block', 'chart'])
+          .optional()
+          .describe('Filter by entry type'),
       },
     },
-    ({ category }) => json(listComponents(registry, category)),
+    ({ category, type }) => json(listComponents(registry, category, type)),
   )
 
   server.registerTool(
@@ -114,15 +120,62 @@ export function createServer(options: ServerOptions = {}): McpServer {
   server.registerTool(
     'scaffold_page',
     {
-      title: 'Scaffold page',
-      description: 'Generate a JSX page layout from a description and a list of components.',
+      title: 'Scaffold page (deprecated)',
+      description:
+        '[Deprecated — use scaffold_view instead] Generate a JSX page layout from a description.',
       inputSchema: {
         description: z.string().describe('What the page is for'),
         components: z.array(z.string()).optional().describe('Components to include'),
       },
     },
-    ({ description, components }) =>
-      text(scaffoldPage(components ? { description, components } : { description })),
+    ({ description, components }) => {
+      const { config } = scaffoldView(
+        { description, ...(components ? { components } : {}) },
+        registry,
+      )
+      return text(
+        `[Deprecated] Use scaffold_view for config-first output. JSX scaffold:\n\n${scaffoldPage(components ? { description, components } : { description })}\n\n--- scaffold_view output ---\n${JSON.stringify(config, null, 2)}`,
+      )
+    },
+  )
+
+  server.registerTool(
+    'validate_view',
+    {
+      title: 'Validate view config',
+      description:
+        'Validate a CascadeView JSON config against the registry. Returns errors with exact paths.',
+      inputSchema: {
+        config: z.record(z.string(), z.unknown()).describe('The ViewConfig object to validate'),
+      },
+    },
+    ({ config }) => {
+      const result = validateView(config)
+      return json(result)
+    },
+  )
+
+  server.registerTool(
+    'scaffold_view',
+    {
+      title: 'Scaffold view config',
+      description:
+        'Generate a valid starter ViewConfig from a description. Always validates before returning.',
+      inputSchema: {
+        description: z.string().describe('What the page/view is for'),
+        components: z.array(z.string()).optional().describe('Component names to include'),
+      },
+    },
+    ({ description, components }) => {
+      const { config, errors } = scaffoldView(
+        { description, ...(components ? { components } : {}) },
+        registry,
+      )
+      if (errors.length > 0) {
+        return json({ valid: false, errors, config })
+      }
+      return json({ valid: true, config })
+    },
   )
 
   return server

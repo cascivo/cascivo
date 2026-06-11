@@ -3,8 +3,10 @@ import type { Decorator, Preview } from '@storybook/react-vite'
 import '@cascade-ui/themes/light'
 import '@cascade-ui/themes/dark'
 import '@cascade-ui/themes/warm'
+import '@cascade-ui/themes/flat'
+import '@cascade-ui/themes/minimal'
 
-const THEMES = ['light', 'dark', 'warm'] as const
+const THEMES = ['light', 'dark', 'warm', 'flat', 'minimal'] as const
 
 const frame: React.CSSProperties = {
   padding: '1.5rem',
@@ -45,7 +47,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
-        items: ['light', 'dark', 'warm', 'side-by-side'],
+        items: ['light', 'dark', 'warm', 'flat', 'minimal', 'side-by-side'],
         dynamicTitle: true,
       },
     },

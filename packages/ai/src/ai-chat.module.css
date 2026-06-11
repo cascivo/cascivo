@@ -1,0 +1,79 @@
+@layer cascade.component {
+  .root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 400px;
+    background: var(--cascade-color-background);
+    border: 1px solid var(--cascade-border-default);
+    border-radius: var(--cascade-radius-surface);
+    overflow: hidden;
+  }
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--cascade-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-3);
+  }
+  .message {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+    max-width: 80%;
+  }
+  .message[data-role='user'] {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+  .message[data-role='assistant'] {
+    align-self: flex-start;
+  }
+  .roleLabel {
+    font-size: var(--cascade-font-size-xs, 0.75rem);
+    color: var(--cascade-color-foreground-muted);
+    font-weight: 500;
+  }
+  .content {
+    padding: var(--cascade-space-2) var(--cascade-space-3);
+    border-radius: var(--cascade-radius-control);
+    background: var(--cascade-color-surface);
+    line-height: 1.5;
+  }
+  .message[data-role='user'] .content {
+    background: var(--cascade-color-accent);
+    color: var(--cascade-color-accent-foreground);
+  }
+  .inputArea {
+    display: flex;
+    gap: var(--cascade-space-2);
+    padding: var(--cascade-space-3);
+    border-block-start: 1px solid var(--cascade-border-subtle);
+    background: var(--cascade-color-surface);
+  }
+  .textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid var(--cascade-border-default);
+    border-radius: var(--cascade-radius-control);
+    padding: var(--cascade-space-2) var(--cascade-space-3);
+    font: inherit;
+    background: var(--cascade-color-background);
+    color: var(--cascade-color-foreground);
+  }
+  .sendButton {
+    padding: var(--cascade-space-2) var(--cascade-space-4);
+    background: var(--cascade-color-accent);
+    color: var(--cascade-color-accent-foreground);
+    border: none;
+    border-radius: var(--cascade-radius-control);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .sendButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,21 @@
+@layer cascade.component {
+  .layout {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: var(--cascade-space-8);
+    align-items: start;
+    container-type: inline-size;
+
+    @container (max-width: 40rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .menu {
+    min-inline-size: 0;
+  }
+
+  .content {
+    min-inline-size: 0;
+  }
+}

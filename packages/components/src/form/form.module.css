@@ -1,0 +1,7 @@
+@layer cascade.component {
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-4);
+  }
+}

@@ -34,6 +34,9 @@ jobs:
       - name: Build (vp run -r build)
         run: pnpm run build
 
+      - name: Bundle budgets
+        run: pnpm run audit:bundle
+
       - name: Type check (vp run -r check)
         run: pnpm exec vp run -r check
 
@@ -59,11 +62,22 @@ jobs:
         run: |
           pnpm run registry:generate
           pnpm run readme:generate
+          pnpm run llms:generate
 
       - name: Fail if generated artifacts drifted
         run: |
           if ! git diff --exit-code || [ -n "$(git status --porcelain)" ]; then
             git status --porcelain
-            echo '::error::Generated artifacts are stale. Run `pnpm registry:generate && pnpm readme:generate` and commit the result.'
+            echo '::error::Generated artifacts are stale. Run `pnpm registry:generate && pnpm readme:generate && pnpm llms:generate` and commit the result.'
             exit 1
           fi
+
+      - name: Registry count check
+        run: |
+          COUNT=$(node -e "const r=JSON.parse(require('fs').readFileSync('registry.json','utf8')); \
+            console.log((r.components?.length??0)+(r.charts?.length??0)+(r.layouts?.length??0)+(r.blocks?.length??0))")
+          if [ "$COUNT" -lt 49 ]; then
+            echo "::error::Registry has $COUNT entries — expected >= 49 (note: T3 display components are factory-queued but not yet built)"
+            exit 1
+          fi
+          echo "Registry count: $COUNT (>= 49)"

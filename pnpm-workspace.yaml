@@ -27,6 +27,8 @@ catalog:
   storybook: ^10.4.2
   '@storybook/react-vite': ^10.4.2
   '@storybook/addon-a11y': ^10.4.2
+  'fast-check': ^4.0.0
+  '@tsdown/css': ^0.22.2
   '@changesets/cli': ^2.31.0
   '@playwright/test': ^1.60.0
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.24

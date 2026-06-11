@@ -1,0 +1,16 @@
+@layer cascade.component {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--_grid-cols, 12), minmax(0, 1fr));
+    gap: var(--_grid-gap, var(--cascade-space-4));
+    container-type: inline-size;
+
+    @container (max-width: 40rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .grid-item {
+    grid-column: span var(--_span, 1);
+  }
+}

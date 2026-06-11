@@ -1,9 +1,15 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { batch, cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import { builtin, t } from '@cascade-ui/i18n'
 import { useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { Kbd } from '../kbd/kbd'
+import { Spinner } from '../spinner/spinner'
 import styles from './command-menu.module.css'
+
+export interface CommandPage {
+  placeholder?: string
+  groups: CommandGroup[]
+}
 
 export interface CommandItem {
   id: string
@@ -11,8 +17,10 @@ export interface CommandItem {
   icon?: ReactNode
   shortcut?: string[]
   keywords?: string[]
-  onSelect: () => void
+  /** Exactly one of onSelect or page is required */
+  onSelect?: () => void
   disabled?: boolean
+  page?: CommandPage
 }
 
 export interface CommandGroup {
@@ -28,6 +36,8 @@ export interface CommandMenuProps {
   emptyLabel?: string
   hotkey?: boolean
   label?: string
+  loading?: boolean
+  onQueryChange?: (query: string) => void
   className?: string
 }
 
@@ -74,11 +84,12 @@ export function CommandMenu({
   emptyLabel,
   hotkey = true,
   label,
+  loading = false,
+  onQueryChange,
   className,
 }: CommandMenuProps) {
   useSignals()
   const resolvedLabel = label ?? t(builtin.commandMenu.label)
-  const resolvedPlaceholder = placeholder ?? t(builtin.commandMenu.placeholder)
   const resolvedEmptyLabel = emptyLabel ?? t(builtin.commandMenu.empty)
   const baseId = useId()
   const listboxId = `${baseId}-listbox`
@@ -88,6 +99,8 @@ export function CommandMenu({
 
   const onOpenChangeRef = useRef(onOpenChange)
   onOpenChangeRef.current = onOpenChange
+  const onQueryChangeRef = useRef(onQueryChange)
+  onQueryChangeRef.current = onQueryChange
 
   // Sync controlled props into signals — no-op when unchanged
   const isOpen = useSignal(open)
@@ -97,9 +110,14 @@ export function CommandMenu({
 
   const query = useSignal('')
   const activeIndex = useSignal(0)
+  const pageStack = useSignal<CommandPage[]>([])
+
+  const activeGroups = pageStack.value.at(-1)?.groups ?? groups
+  const activePlaceholder =
+    placeholder ?? pageStack.value.at(-1)?.placeholder ?? t(builtin.commandMenu.placeholder)
 
   // Filter + rank: groups with no matching items disappear
-  const filteredGroups = groups
+  const filteredGroups = activeGroups
     .map((group) => ({
       heading: group.heading,
       items: group.items
@@ -117,18 +135,22 @@ export function CommandMenu({
     : (enabledIndexes[0] ?? -1)
   const optionId = (index: number) => `${baseId}-option-${index}`
 
-  // Open / close the native dialog; opening resets query + active and focuses the input
+  // Open / close the native dialog; opening resets query + active + stack and focuses the input
   useSignalEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
     if (isOpen.value) {
       if (!dialog.open) {
-        query.value = ''
-        activeIndex.value = 0
-        dialog.showModal()
+        batch(() => {
+          query.value = ''
+          activeIndex.value = 0
+          pageStack.value = []
+        })
+        if (typeof dialog.showModal === 'function') dialog.showModal()
         inputRef.current?.focus()
       }
     } else if (dialog.open) {
+      pageStack.value = []
       dialog.close()
     }
   })
@@ -157,7 +179,8 @@ export function CommandMenu({
 
   const setActive = (index: number) => {
     activeIndex.value = index
-    optionRefs.current[index]?.scrollIntoView({ block: 'nearest' })
+    const el = optionRefs.current[index]
+    if (el && typeof el.scrollIntoView === 'function') el.scrollIntoView({ block: 'nearest' })
   }
 
   const moveActive = (delta: number) => {
@@ -169,8 +192,24 @@ export function CommandMenu({
 
   const selectItem = (item: CommandItem | undefined) => {
     if (!item || item.disabled) return
-    item.onSelect()
-    onOpenChange(false)
+    if (item.page) {
+      batch(() => {
+        pageStack.value = [...pageStack.value, item.page!]
+        query.value = ''
+        activeIndex.value = 0
+      })
+    } else {
+      item.onSelect?.()
+      onOpenChange(false)
+    }
+  }
+
+  const popPage = () => {
+    batch(() => {
+      pageStack.value = pageStack.value.slice(0, -1)
+      query.value = ''
+      activeIndex.value = 0
+    })
   }
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -197,13 +236,23 @@ export function CommandMenu({
         event.preventDefault()
         if (active >= 0) selectItem(flatItems[active])
         break
+      case 'Backspace':
+        if (query.value === '' && pageStack.value.length > 0) {
+          event.preventDefault()
+          popPage()
+        }
+        break
     }
   }
 
   const handleDialogKeyDown = (event: KeyboardEvent<HTMLDialogElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault()
-      dialogRef.current?.close()
+      if (pageStack.value.length > 0) {
+        popPage()
+      } else {
+        dialogRef.current?.close()
+      }
     }
   }
 
@@ -251,11 +300,12 @@ export function CommandMenu({
             autoComplete="off"
             spellCheck={false}
             className={styles['input']}
-            placeholder={resolvedPlaceholder}
+            placeholder={activePlaceholder}
             value={query.value}
             onChange={(event) => {
               query.value = event.target.value
               activeIndex.value = 0
+              onQueryChangeRef.current?.(event.target.value)
             }}
             onKeyDown={handleInputKeyDown}
           />
@@ -316,11 +366,17 @@ export function CommandMenu({
               </div>
             ))}
           </div>
-          {flatItems.length === 0 && (
-            <div role="status" className={styles['empty']}>
-              {resolvedEmptyLabel}
-            </div>
-          )}
+          {flatItems.length === 0 &&
+            (loading ? (
+              <div role="status" className={styles['empty']}>
+                <Spinner size="sm" />
+                {t(builtin.commandMenu.loading)}
+              </div>
+            ) : (
+              <div role="status" className={styles['empty']}>
+                {resolvedEmptyLabel}
+              </div>
+            ))}
         </div>
         <div className={styles['footer']} aria-hidden="true">
           <span className={styles['hint']}>

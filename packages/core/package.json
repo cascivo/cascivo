@@ -21,6 +21,7 @@
   "devDependencies": {
     "@preact/signals-react": "catalog:",
     "@testing-library/react": "catalog:",
+    "@tsdown/css": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "jsdom": "catalog:",

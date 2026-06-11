@@ -1,0 +1,31 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'Columns',
+  description:
+    'Equal-width multi-column layout that collapses to single column on narrow viewports.',
+  category: 'layout',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'count', type: '2|3|4', required: false, description: 'Number of equal columns' },
+    {
+      name: 'gap',
+      type: '1|2|3|4|5|6|8|10|12',
+      required: false,
+      description: 'Spacing token step',
+    },
+  ],
+  tokens: ['--cascade-space-*'],
+  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  examples: [
+    {
+      title: 'Three columns',
+      code: '<Columns count={3}><div>A</div><div>B</div><div>C</div></Columns>',
+      description: 'Three equal columns',
+    },
+  ],
+  dependencies: ['@cascade-ui/core'],
+  tags: ['layout', 'grid', 'columns'],
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@cascade-ui/react": ["../../../packages/react/src/index.ts"]
+    }
+  },
+  "include": [
+    "src",
+    "../../../packages/components/src/css-modules.d.ts",
+    "../../../packages/react/src/css-modules.d.ts"
+  ]
+}

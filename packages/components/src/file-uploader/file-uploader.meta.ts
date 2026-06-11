@@ -1,0 +1,79 @@
+import type { ComponentMeta } from '@cascade-ui/core'
+
+export const meta: ComponentMeta = {
+  name: 'FileUploader',
+  description: 'Drag-and-drop file upload zone with file list and status indicators.',
+  category: 'inputs',
+  states: ['idle', 'dragover', 'uploading', 'complete', 'error', 'disabled'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'files', type: 'UploaderFile[]', required: false, description: 'Controlled file list' },
+    {
+      name: 'onFilesAdded',
+      type: '(files: File[]) => void',
+      required: false,
+      description: 'Called with accepted files',
+    },
+    {
+      name: 'onRemove',
+      type: '(id: string) => void',
+      required: false,
+      description: 'Called when a file is removed',
+    },
+    { name: 'multiple', type: 'boolean', required: false, description: 'Allow multiple files' },
+    {
+      name: 'accept',
+      type: 'string',
+      required: false,
+      description: 'Accepted file types (MIME or extension)',
+    },
+    { name: 'maxSize', type: 'number', required: false, description: 'Maximum file size in bytes' },
+    {
+      name: 'onRejected',
+      type: "(files: File[], reason: 'size' | 'type') => void",
+      required: false,
+      description: 'Called with rejected files',
+    },
+    { name: 'label', type: 'string', required: false, description: 'Field label' },
+    { name: 'hint', type: 'string', required: false, description: 'Hint text below the drop zone' },
+    {
+      name: 'labels',
+      type: 'FileUploaderLabels',
+      required: false,
+      description: 'i18n label overrides',
+    },
+    { name: 'disabled', type: 'boolean', required: false, description: 'Disables the upload zone' },
+  ],
+  tokens: [
+    '--cascade-color-accent',
+    '--cascade-color-accent-subtle',
+    '--cascade-color-success',
+    '--cascade-color-danger',
+    '--cascade-color-danger-subtle',
+  ],
+  accessibility: {
+    role: 'button',
+    wcag: 'AA',
+    keyboard: ['Enter', 'Space'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<FileUploader onFilesAdded={console.log} />',
+      description: 'Single file upload zone',
+    },
+    {
+      title: 'Multiple',
+      code: '<FileUploader multiple onFilesAdded={console.log} />',
+      description: 'Accept multiple files',
+    },
+    {
+      title: 'With files',
+      code: `<FileUploader files={[{ id:'1', name:'report.pdf', size:102400, status:'complete' }]} />`,
+      description: 'Shows file list',
+    },
+  ],
+  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  tags: ['upload', 'file', 'drop', 'drag', 'input', 'form'],
+}

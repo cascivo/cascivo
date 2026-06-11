@@ -6,76 +6,77 @@
   :root {
     /* ── Color Primitives ─────────────────────────────── */
 
-    /* Gray */
-    --cascade-gray-0: #ffffff;
-    --cascade-gray-50: #f9fafb;
-    --cascade-gray-100: #f3f4f6;
-    --cascade-gray-200: #e5e7eb;
-    --cascade-gray-300: #d1d5db;
-    --cascade-gray-400: #9ca3af;
-    --cascade-gray-500: #6b7280;
-    --cascade-gray-600: #4b5563;
-    --cascade-gray-700: #374151;
-    --cascade-gray-800: #1f2937;
-    --cascade-gray-900: #111827;
-    --cascade-gray-950: #030712;
+    /* Gray (near-achromatic, hue ≈ 264) */
+    --cascade-gray-0: oklch(1 0 0);
+    --cascade-gray-50: oklch(0.985 0.002 264);
+    --cascade-gray-100: oklch(0.967 0.003 264);
+    --cascade-gray-200: oklch(0.928 0.006 264);
+    --cascade-gray-300: oklch(0.872 0.008 264);
+    --cascade-gray-400: oklch(0.707 0.015 264);
+    --cascade-gray-500: oklch(0.554 0.018 264);
+    --cascade-gray-600: oklch(0.446 0.018 264);
+    --cascade-gray-700: oklch(0.373 0.015 264);
+    --cascade-gray-800: oklch(0.269 0.01 264);
+    --cascade-gray-900: oklch(0.205 0.007 264);
+    --cascade-gray-950: oklch(0.145 0.005 264);
 
-    /* Blue (primary accent) */
-    --cascade-blue-50: #eff6ff;
-    --cascade-blue-100: #dbeafe;
-    --cascade-blue-200: #bfdbfe;
-    --cascade-blue-300: #93c5fd;
-    --cascade-blue-400: #60a5fa;
-    --cascade-blue-500: #3b82f6;
-    --cascade-blue-600: #2563eb;
-    --cascade-blue-700: #1d4ed8;
-    --cascade-blue-800: #1e40af;
-    --cascade-blue-900: #1e3a8a;
+    /* Blue / accent (hue ≈ 250) */
+    --cascade-blue-50: oklch(0.97 0.025 250);
+    --cascade-blue-100: oklch(0.932 0.055 250);
+    --cascade-blue-200: oklch(0.882 0.095 250);
+    --cascade-blue-300: oklch(0.808 0.14 250);
+    --cascade-blue-400: oklch(0.707 0.18 250);
+    --cascade-blue-500: oklch(0.623 0.214 250);
+    --cascade-blue-600: oklch(0.546 0.224 250);
+    --cascade-blue-700: oklch(0.452 0.196 250);
+    --cascade-blue-800: oklch(0.373 0.155 250);
+    --cascade-blue-900: oklch(0.29 0.105 250);
+    --cascade-blue-950: oklch(0.205 0.065 250);
 
-    /* Green */
-    --cascade-green-50: #f0fdf4;
-    --cascade-green-100: #dcfce7;
-    --cascade-green-200: #bbf7d0;
-    --cascade-green-400: #4ade80;
-    --cascade-green-500: #22c55e;
-    --cascade-green-600: #16a34a;
-    --cascade-green-700: #15803d;
-    --cascade-green-900: #14532d;
+    /* Green (hue ≈ 145) */
+    --cascade-green-50: oklch(0.982 0.018 145);
+    --cascade-green-100: oklch(0.962 0.044 145);
+    --cascade-green-200: oklch(0.925 0.084 145);
+    --cascade-green-400: oklch(0.75 0.15 145);
+    --cascade-green-500: oklch(0.648 0.15 145);
+    --cascade-green-600: oklch(0.548 0.14 145);
+    --cascade-green-700: oklch(0.448 0.12 145);
+    --cascade-green-900: oklch(0.28 0.075 145);
 
-    /* Red */
-    --cascade-red-50: #fef2f2;
-    --cascade-red-100: #fee2e2;
-    --cascade-red-200: #fecaca;
-    --cascade-red-400: #f87171;
-    --cascade-red-500: #ef4444;
-    --cascade-red-600: #dc2626;
-    --cascade-red-700: #b91c1c;
-    --cascade-red-900: #7f1d1d;
+    /* Red (hue ≈ 22) */
+    --cascade-red-50: oklch(0.971 0.013 22);
+    --cascade-red-100: oklch(0.936 0.032 22);
+    --cascade-red-200: oklch(0.885 0.062 22);
+    --cascade-red-400: oklch(0.72 0.16 22);
+    --cascade-red-500: oklch(0.628 0.188 22);
+    --cascade-red-600: oklch(0.54 0.188 22);
+    --cascade-red-700: oklch(0.448 0.17 22);
+    --cascade-red-900: oklch(0.28 0.1 22);
 
-    /* Orange */
-    --cascade-orange-50: #fff7ed;
-    --cascade-orange-100: #ffedd5;
-    --cascade-orange-400: #fb923c;
-    --cascade-orange-500: #f97316;
-    --cascade-orange-600: #ea580c;
+    /* Orange (hue ≈ 40) */
+    --cascade-orange-50: oklch(0.98 0.02 75);
+    --cascade-orange-100: oklch(0.96 0.045 75);
+    --cascade-orange-400: oklch(0.82 0.13 60);
+    --cascade-orange-500: oklch(0.768 0.145 55);
+    --cascade-orange-600: oklch(0.68 0.155 50);
 
-    /* Yellow */
-    --cascade-yellow-50: #fefce8;
-    --cascade-yellow-100: #fef9c3;
-    --cascade-yellow-400: #facc15;
-    --cascade-yellow-500: #eab308;
+    /* Yellow / amber (hue ≈ 75) */
+    --cascade-yellow-50: oklch(0.987 0.026 95);
+    --cascade-yellow-100: oklch(0.973 0.05 95);
+    --cascade-yellow-400: oklch(0.868 0.145 80);
+    --cascade-yellow-500: oklch(0.768 0.145 75);
 
     /* Warm neutrals */
-    --cascade-warm-50: #faf9f7;
-    --cascade-warm-100: #f5f3ef;
-    --cascade-warm-200: #e8e4dc;
-    --cascade-warm-300: #d4cfc5;
-    --cascade-warm-400: #b8b2a7;
-    --cascade-warm-500: #9a9285;
-    --cascade-warm-600: #787062;
-    --cascade-warm-700: #5a5248;
-    --cascade-warm-800: #3d362e;
-    --cascade-warm-900: #241f19;
+    --cascade-warm-50: oklch(0.982 0.008 80);
+    --cascade-warm-100: oklch(0.962 0.016 80);
+    --cascade-warm-200: oklch(0.92 0.025 78);
+    --cascade-warm-300: oklch(0.87 0.035 75);
+    --cascade-warm-400: oklch(0.76 0.045 70);
+    --cascade-warm-500: oklch(0.64 0.045 65);
+    --cascade-warm-600: oklch(0.52 0.04 60);
+    --cascade-warm-700: oklch(0.42 0.03 55);
+    --cascade-warm-800: oklch(0.31 0.022 50);
+    --cascade-warm-900: oklch(0.21 0.015 50);
 
     /* ── Spacing ──────────────────────────────────────── */
     --cascade-space-0: 0px;
@@ -120,7 +121,7 @@
     --cascade-tracking-normal: 0em;
     --cascade-tracking-wide: 0.025em;
 
-    /* ── Border Radius ────────────────────────────────── */
+    /* ── Border Radius — Primitive ───────────────────── */
     --cascade-radius-none: 0px;
     --cascade-radius-sm: 0.25rem; /* 4px */
     --cascade-radius-md: 0.375rem; /* 6px */
@@ -129,11 +130,33 @@
     --cascade-radius-2xl: 1rem; /* 16px */
     --cascade-radius-full: 9999px;
 
-    /* ── Shadows ──────────────────────────────────────── */
-    --cascade-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --cascade-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --cascade-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --cascade-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    /* ── Border Radius — Semantic ────────────────────── */
+    --cascade-radius-base: 0.375rem;
+    --cascade-radius-control: var(--cascade-radius-base);
+    --cascade-radius-surface: calc(var(--cascade-radius-base) * 2);
+    --cascade-radius-indicator: calc(var(--cascade-radius-base) / 2);
+
+    /* ── Shadows — Primitive ─────────────────────────── */
+    --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08), 0 1px 2px oklch(0 0 0 / 0.05);
+    --cascade-shadow-md: 0 4px 6px oklch(0 0 0 / 0.07), 0 2px 4px oklch(0 0 0 / 0.05);
+    --cascade-shadow-lg: 0 10px 15px oklch(0 0 0 / 0.1), 0 4px 6px oklch(0 0 0 / 0.05);
+    --cascade-shadow-xl: 0 20px 25px oklch(0 0 0 / 0.1), 0 8px 10px oklch(0 0 0 / 0.06);
+    --cascade-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+
+    /* ── Focus Ring ──────────────────────────────────── */
+    --cascade-ring-width: 3px;
+    --cascade-ring-offset: 2px;
+    --cascade-ring-color: oklch(0.623 0.214 250 / 0.5);
+
+    /* ── Density Controls ────────────────────────────── */
+    --cascade-control-height-sm: 1.75rem;
+    --cascade-control-height-md: 2.25rem;
+    --cascade-control-height-lg: 2.75rem;
+
+    /* ── Semantic Borders ────────────────────────────── */
+    --cascade-border-subtle: oklch(0.928 0.006 264);
+    --cascade-border-default: oklch(0.872 0.008 264);
+    --cascade-border-strong: oklch(0.707 0.015 264);
 
     /* ── Animation ────────────────────────────────────── */
     --cascade-ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -150,6 +173,18 @@
     --cascade-motion-enter: var(--cascade-duration-200) var(--cascade-ease-out);
     --cascade-motion-exit: var(--cascade-duration-150) var(--cascade-ease-in);
     --cascade-motion-emphasis: var(--cascade-duration-300) var(--cascade-ease-in-out);
+
+    /* ── Chart Categorical Color Ramp ───────────────── */
+    --cascade-chart-1: oklch(0.65 0.2 250);
+    --cascade-chart-2: oklch(0.7 0.16 145);
+    --cascade-chart-3: oklch(0.72 0.15 22);
+    --cascade-chart-4: oklch(0.768 0.145 75);
+    --cascade-chart-5: oklch(0.65 0.19 300);
+    --cascade-chart-6: oklch(0.7 0.16 190);
+    --cascade-chart-7: oklch(0.65 0.2 330);
+    --cascade-chart-8: oklch(0.65 0.16 60);
+    --cascade-chart-grid: var(--cascade-gray-200);
+    --cascade-chart-axis: var(--cascade-gray-400);
 
     /* ── Z-Index ──────────────────────────────────────── */
     --cascade-z-base: 0;

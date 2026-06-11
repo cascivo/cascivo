@@ -1,0 +1,64 @@
+@layer cascade.component {
+  .shell {
+    display: grid;
+    grid-template:
+      'header header header' auto
+      'nav main aside' 1fr
+      / auto minmax(0, 1fr) auto;
+    min-block-size: 100dvh;
+  }
+
+  .header {
+    grid-area: header;
+  }
+
+  .nav {
+    grid-area: nav;
+    position: relative;
+    overflow: hidden;
+    transition:
+      opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
+      translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .nav[data-state='collapsed'] .nav-content {
+    opacity: 0;
+    translate: -100% 0;
+  }
+
+  .nav[data-state='expanded'] .nav-content {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .nav-content {
+    transition:
+      opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
+      translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .toggle {
+    position: absolute;
+    inset-inline-end: calc(-1 * var(--cascade-space-3));
+    inset-block-start: var(--cascade-space-4);
+    inline-size: var(--cascade-space-6);
+    block-size: var(--cascade-space-6);
+    border-radius: 50%;
+    border: 1px solid var(--cascade-color-border);
+    background: var(--cascade-color-surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--cascade-font-size-xs);
+  }
+
+  .main {
+    grid-area: main;
+    min-inline-size: 0;
+  }
+
+  .aside {
+    grid-area: aside;
+  }
+}

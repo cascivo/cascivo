@@ -37,6 +37,27 @@ import { ProgressBar } from '@cascade-ui/components/progress-bar'
 import { EmptyState } from '@cascade-ui/components/empty-state'
 import { OverflowMenu } from '@cascade-ui/components/overflow-menu'
 import { NumberInput } from '@cascade-ui/components/number-input'
+import { DataTable, type Column } from '@cascade-ui/components/data-table'
+import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
+import { Form, useForm } from '@cascade-ui/components/form'
+import { Combobox } from '@cascade-ui/components/combobox'
+import { TimePicker } from '@cascade-ui/components/time-picker'
+import { DatePicker } from '@cascade-ui/components/date-picker'
+import { FileUploader, type UploaderFile } from '@cascade-ui/components/file-uploader'
+import { Popover, PopoverContent, PopoverTrigger } from '@cascade-ui/components/popover'
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
+import { AlertDialog } from '@cascade-ui/components/alert-dialog'
+import { Sheet } from '@cascade-ui/components/sheet'
+import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-menu'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
+import { PasswordInput } from '@cascade-ui/components/password-input'
+import { MultiSelect } from '@cascade-ui/components/multi-select'
+import { TagsInput } from '@cascade-ui/components/tags-input'
+import { OtpInput } from '@cascade-ui/components/otp-input'
+import { SegmentedControl } from '@cascade-ui/components/segmented-control'
+import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
+import { RatingGroup } from '@cascade-ui/components/rating-group'
+import { Editable } from '@cascade-ui/components/editable'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -51,6 +72,110 @@ function Col({ children }: { children: ComponentChildren }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: '24rem' }}>
       {children}
     </div>
+  )
+}
+
+interface DemoRow {
+  id: string
+  name: string
+  role: string
+  status: string
+}
+
+const demoRows: DemoRow[] = [
+  { id: '1', name: 'Alice Chen', role: 'Engineer', status: 'Active' },
+  { id: '2', name: 'Bob Smith', role: 'Designer', status: 'Active' },
+  { id: '3', name: 'Carol Davis', role: 'PM', status: 'Away' },
+  { id: '4', name: 'Dan Wilson', role: 'Engineer', status: 'Active' },
+  { id: '5', name: 'Eve Johnson', role: 'QA', status: 'Inactive' },
+  { id: '6', name: 'Frank Lee', role: 'DevOps', status: 'Active' },
+  { id: '7', name: 'Grace Kim', role: 'Designer', status: 'Active' },
+  { id: '8', name: 'Henry Brown', role: 'Engineer', status: 'Away' },
+]
+
+const demoColumns: Column<DemoRow>[] = [
+  { key: 'name', header: 'Name', sortable: true },
+  { key: 'role', header: 'Role', sortable: true },
+  { key: 'status', header: 'Status' },
+]
+
+function DataTableDemo() {
+  const [selected, setSelected] = useState<string[]>([])
+  return (
+    <DataTable
+      columns={demoColumns}
+      rows={demoRows}
+      getRowId={(r) => r.id}
+      searchable
+      selection={{ mode: 'multi', selected, onChange: setSelected }}
+      pagination={{ pageSize: 5 }}
+      zebra
+      title="Team members"
+      description="8 members"
+    />
+  )
+}
+
+const commandGroups: CommandGroup[] = [
+  {
+    heading: 'Components',
+    items: [
+      { id: 'button', label: 'Button', keywords: ['click'], onSelect: () => {} },
+      { id: 'input', label: 'Input', keywords: ['form', 'text'], onSelect: () => {} },
+      { id: 'modal', label: 'Modal', onSelect: () => {} },
+    ],
+  },
+  {
+    heading: 'Actions',
+    items: [{ id: 'theme', label: 'Toggle theme', shortcut: ['⌘', 'T'], onSelect: () => {} }],
+  },
+]
+
+function CommandMenuDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <Row>
+      <button type="button" onClick={() => setOpen(true)}>
+        Open CommandMenu <kbd>⌘K</kbd>
+      </button>
+      <CommandMenu open={open} onOpenChange={setOpen} groups={commandGroups} hotkey={false} />
+    </Row>
+  )
+}
+
+function FormDemo() {
+  const form = useForm<{ email: string; name: string }>({
+    initialValues: { email: '', name: '' },
+    validate: (v) => {
+      const errs: { email?: string; name?: string } = {}
+      if (!v.name) errs.name = 'Name is required'
+      if (!v.email.includes('@')) errs.email = 'Enter a valid email'
+      return errs
+    },
+  })
+  const name = form.field('name')
+  const email = form.field('email')
+  return (
+    <Col>
+      <Form form={form} onValid={() => {}}>
+        <Input
+          label="Name"
+          value={name.value}
+          onChange={(e) => name.onChange((e.currentTarget as HTMLInputElement).value)}
+          onBlur={name.onBlur}
+          {...(name.error ? { error: name.error } : {})}
+        />
+        <Input
+          label="Email"
+          type="email"
+          value={email.value}
+          onChange={(e) => email.onChange((e.currentTarget as HTMLInputElement).value)}
+          onBlur={email.onBlur}
+          {...(email.error ? { error: email.error } : {})}
+        />
+        <button type="submit">Submit</button>
+      </Form>
+    </Col>
   )
 }
 
@@ -424,4 +549,219 @@ export const demos: Record<string, () => JSX.Element> = {
     </Row>
   ),
   'number-input': () => <NumberInputDemo />,
+  'data-table': () => <DataTableDemo />,
+  'command-menu': () => <CommandMenuDemo />,
+  form: () => <FormDemo />,
+  'time-picker': () => (
+    <Col>
+      <TimePicker label="Meeting time" defaultValue="09:00" />
+      <TimePicker label="With error" error="Invalid time" />
+      <TimePicker label="Disabled" defaultValue="14:00" disabled />
+    </Col>
+  ),
+  combobox: () => (
+    <Col>
+      <Combobox
+        label="Country"
+        options={[
+          { value: 'us', label: 'United States' },
+          { value: 'de', label: 'Germany' },
+          { value: 'fr', label: 'France' },
+        ]}
+      />
+      <Combobox
+        label="Clearable"
+        options={[
+          { value: 'a', label: 'Apple' },
+          { value: 'b', label: 'Banana' },
+        ]}
+        defaultValue="a"
+        clearable
+      />
+      <Combobox label="With error" options={[{ value: 'x', label: 'Option X' }]} error="Required" />
+    </Col>
+  ),
+  'date-picker': () => (
+    <Col>
+      <DatePicker label="Appointment" />
+      <DatePicker label="Clearable" defaultValue="2024-06-15" clearable />
+      <DatePicker label="With error" error="Date required" />
+      <DatePicker label="Disabled" defaultValue="2024-01-01" disabled />
+    </Col>
+  ),
+  'file-uploader': () => <FileUploaderDemo />,
+  popover: () => (
+    <Popover>
+      <PopoverTrigger>
+        <Button variant="secondary">Open popover</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <p style={{ margin: 0 }}>Anchored floating panel via CSS Anchor Positioning.</p>
+      </PopoverContent>
+    </Popover>
+  ),
+  menu: () => (
+    <Menu>
+      <MenuTrigger>
+        <Button variant="secondary">Actions ▾</Button>
+      </MenuTrigger>
+      <MenuItem onSelect={() => {}}>Edit</MenuItem>
+      <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
+      <MenuSeparator />
+      <MenuItem onSelect={() => {}}>Delete</MenuItem>
+    </Menu>
+  ),
+  'alert-dialog': () => <AlertDialogDemo />,
+  sheet: () => <SheetDemo />,
+  'context-menu': () => (
+    <ContextMenu>
+      <div
+        style={{
+          padding: '2rem',
+          border: '2px dashed',
+          borderRadius: '0.5rem',
+          textAlign: 'center',
+          userSelect: 'none',
+        }}
+      >
+        Right-click anywhere here
+      </div>
+      <ContextMenuItem onSelect={() => {}}>Copy</ContextMenuItem>
+      <ContextMenuItem onSelect={() => {}}>Paste</ContextMenuItem>
+    </ContextMenu>
+  ),
+  'hover-card': () => (
+    <HoverCard openDelay={200} closeDelay={100}>
+      <HoverCardTrigger>
+        <a href="#" style={{ textDecoration: 'underline' }}>
+          @cascade-ui
+        </a>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div>
+          <strong>cascade-ui</strong>
+          <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem' }}>
+            CSS-native, signal-driven, AI-first React design system.
+          </p>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  ),
+  'password-input': () => (
+    <Col>
+      <PasswordInput placeholder="Enter password" />
+      <PasswordInput showStrengthMeter placeholder="Create password" />
+    </Col>
+  ),
+  'multi-select': () => (
+    <MultiSelect
+      options={[
+        { label: 'React', value: 'react' },
+        { label: 'Vue', value: 'vue' },
+        { label: 'Svelte', value: 'svelte' },
+        { label: 'Angular', value: 'angular' },
+      ]}
+      value={['react']}
+      onValueChange={() => {}}
+      placeholder="Select frameworks"
+    />
+  ),
+  'tags-input': () => (
+    <TagsInput value={['react', 'typescript']} onValueChange={() => {}} placeholder="Add tag…" />
+  ),
+  'otp-input': () => <OtpInput value="123" onValueChange={() => {}} />,
+  'segmented-control': () => (
+    <SegmentedControl
+      options={[
+        { label: 'Day', value: 'day' },
+        { label: 'Week', value: 'week' },
+        { label: 'Month', value: 'month' },
+      ]}
+      value="week"
+      onValueChange={() => {}}
+    />
+  ),
+  'input-group': () => (
+    <Col>
+      <InputGroup prefix="https://">
+        <Input placeholder="example.com" />
+      </InputGroup>
+      <InputGroup suffix=".com">
+        <Input placeholder="Enter domain" />
+      </InputGroup>
+      <ButtonGroup>
+        <Button variant="secondary">Left</Button>
+        <Button variant="secondary">Center</Button>
+        <Button variant="secondary">Right</Button>
+      </ButtonGroup>
+    </Col>
+  ),
+  'rating-group': () => (
+    <Col>
+      <RatingGroup value={3} onValueChange={() => {}} />
+      <RatingGroup value={4} readOnly size="lg" />
+    </Col>
+  ),
+  editable: () => (
+    <Col>
+      <Editable value="Click to edit this text" onValueChange={() => {}} />
+      <Editable value="" onValueChange={() => {}} placeholder="Add a title…" />
+    </Col>
+  ),
+}
+
+function AlertDialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete item
+      </Button>
+      <AlertDialog
+        open={open}
+        title="Delete item"
+        description="This cannot be undone. The item will be permanently deleted."
+        variant="destructive"
+        onConfirm={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
+      />
+    </>
+  )
+}
+
+function SheetDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Open settings
+      </Button>
+      <Sheet open={open} onClose={() => setOpen(false)} title="Settings">
+        <p>Configure your preferences here.</p>
+      </Sheet>
+    </>
+  )
+}
+
+function FileUploaderDemo() {
+  const [files, setFiles] = useState<UploaderFile[]>([
+    { id: '1', name: 'report.pdf', size: 1024 * 102, status: 'complete' },
+    { id: '2', name: 'data.csv', size: 1024 * 5, status: 'uploading' },
+  ])
+  return (
+    <FileUploader
+      files={files}
+      multiple
+      onFilesAdded={(added) => {
+        const next: UploaderFile[] = added.map((f) => ({
+          id: crypto.randomUUID(),
+          name: f.name,
+          size: f.size,
+          status: 'uploading' as const,
+        }))
+        setFiles((prev) => [...prev, ...next])
+      }}
+      onRemove={(id) => setFiles((prev) => prev.filter((f) => f.id !== id))}
+    />
+  )
 }

@@ -1,3 +1,7 @@
+/**
+ * @deprecated OverflowMenu is deprecated. Use Menu from @cascade-ui/components/menu instead.
+ * OverflowMenu is kept for registry compatibility and will be removed in v4.
+ */
 'use client'
 import { cn, useSignals } from '@cascade-ui/core'
 import { builtin, t } from '@cascade-ui/i18n'

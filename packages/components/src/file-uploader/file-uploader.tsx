@@ -1,5 +1,6 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascade-ui/core'
+import { builtin, t } from '@cascade-ui/i18n'
 import { useRef, type ChangeEvent, type DragEvent } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './file-uploader.module.css'
@@ -12,6 +13,15 @@ export interface UploaderFile {
   errorMessage?: string
 }
 
+export interface FileUploaderLabels {
+  label?: string
+  drop?: string
+  remove?: string
+  uploading?: string
+  complete?: string
+  error?: string
+}
+
 export interface FileUploaderProps {
   files?: UploaderFile[]
   onFilesAdded?: (files: File[]) => void
@@ -22,8 +32,7 @@ export interface FileUploaderProps {
   onRejected?: (files: File[], reason: 'size' | 'type') => void
   label?: string
   hint?: string
-  dropLabel?: string
-  removeLabel?: (name: string) => string
+  labels?: FileUploaderLabels
   disabled?: boolean
   className?: string
 }
@@ -59,10 +68,9 @@ export function FileUploader({
   accept,
   maxSize,
   onRejected,
-  label = 'Upload files',
+  label,
   hint,
-  dropLabel = 'Drag and drop files here or click to upload',
-  removeLabel = (name) => `Remove ${name}`,
+  labels,
   disabled = false,
   className,
 }: FileUploaderProps) {
@@ -70,7 +78,17 @@ export function FileUploader({
   const inputRef = useRef<HTMLInputElement>(null)
   const dragOver = useSignal(false)
 
-  const baseId = `cascade-uploader-${label.toLowerCase().replace(/\s+/g, '-')}`
+  const resolvedLabel = label ?? labels?.label ?? t(builtin.fileUploader.label)
+  const resolvedDrop = labels?.drop ?? t(builtin.fileUploader.drop)
+  const resolvedUploading = labels?.uploading ?? t(builtin.fileUploader.uploading)
+  const resolvedComplete = labels?.complete ?? t(builtin.fileUploader.complete)
+  const resolvedError = labels?.error ?? t(builtin.fileUploader.error)
+  const resolveRemove = (name: string) =>
+    labels?.remove
+      ? labels.remove.replace('{name}', name)
+      : t(builtin.fileUploader.remove, { name })
+
+  const baseId = `cascade-uploader-${resolvedLabel.toLowerCase().replace(/\s+/g, '-')}`
   const labelId = `${baseId}-label`
   const hintId = `${baseId}-hint`
 
@@ -109,7 +127,7 @@ export function FileUploader({
   return (
     <div className={cn(styles['uploader'], className)}>
       <span id={labelId} className={styles['label']}>
-        {label}
+        {resolvedLabel}
       </span>
       <input
         ref={inputRef}
@@ -139,7 +157,7 @@ export function FileUploader({
         }}
         onDrop={handleDrop}
       >
-        {dropLabel}
+        {resolvedDrop}
       </button>
       {hint && (
         <span id={hintId} className={styles['hint']}>
@@ -151,14 +169,14 @@ export function FileUploader({
           {files.map((file) => (
             <li key={file.id} className={styles['file']} data-state={file.status}>
               <span className={styles['status']}>
-                {file.status === 'uploading' && <Spinner size="sm" label="Uploading" />}
+                {file.status === 'uploading' && <Spinner size="sm" label={resolvedUploading} />}
                 {file.status === 'complete' && (
-                  <span className={styles['glyph-complete']} aria-hidden="true">
+                  <span className={styles['glyph-complete']} aria-label={resolvedComplete}>
                     ✓
                   </span>
                 )}
                 {file.status === 'error' && (
-                  <span className={styles['glyph-error']} aria-hidden="true">
+                  <span className={styles['glyph-error']} aria-label={resolvedError}>
                     ✕
                   </span>
                 )}
@@ -170,7 +188,7 @@ export function FileUploader({
               <button
                 type="button"
                 className={styles['remove']}
-                aria-label={removeLabel(file.name)}
+                aria-label={resolveRemove(file.name)}
                 onClick={() => onRemove?.(file.id)}
               >
                 ✕
