@@ -78,7 +78,9 @@
 
   .panel {
     position-area: block-end span-inline-end;
-    position-try-fallbacks: --bottom-start, block-start span-inline-end;
+    position-try-fallbacks:
+      --bottom-start,
+      block-start span-inline-end;
     margin-block-start: var(--cascade-space-1);
     padding: var(--cascade-space-1);
     min-width: 12rem;

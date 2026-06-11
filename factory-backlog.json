@@ -381,7 +381,7 @@
     {
       "name": "multi-select",
       "status": "in-progress",
-      "milestone": "scaffold",
+      "milestone": "verify",
       "priority": 43,
       "category": "inputs",
       "attempts": 0,

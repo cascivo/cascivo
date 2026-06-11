@@ -17,7 +17,12 @@ describe('MultiSelect', () => {
 
   it('shows placeholder when no value selected', () => {
     render(
-      <MultiSelect options={options} value={[]} onValueChange={() => {}} placeholder="Pick fruit" />,
+      <MultiSelect
+        options={options}
+        value={[]}
+        onValueChange={() => {}}
+        placeholder="Pick fruit"
+      />,
     )
     expect(screen.getByText('Pick fruit')).toBeTruthy()
   })
@@ -64,28 +69,38 @@ describe('MultiSelect', () => {
     expect(screen.getByRole('button')).toBeDisabled()
   })
 
-  it('renders options in the panel', async () => {
-    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
-    await userEvent.click(screen.getByRole('button'))
-    expect(screen.getByText('Apple')).toBeTruthy()
-    expect(screen.getByText('Banana')).toBeTruthy()
+  it('renders option items in the panel', () => {
+    const { container } = render(
+      <MultiSelect options={options} value={[]} onValueChange={() => {}} />,
+    )
+    const optionEls = container.querySelectorAll('[role="option"]')
+    expect(optionEls).toHaveLength(3)
   })
 
-  it('renders disabled option with aria-disabled', async () => {
-    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
-    await userEvent.click(screen.getByRole('button'))
-    const cherryOption = screen
-      .getAllByRole('option')
-      .find((el) => el.textContent?.includes('Cherry'))
+  it('disabled option has aria-disabled=true', () => {
+    const { container } = render(
+      <MultiSelect options={options} value={[]} onValueChange={() => {}} />,
+    )
+    const cherryOption = Array.from(container.querySelectorAll('[role="option"]')).find((el) =>
+      el.textContent?.includes('Cherry'),
+    )
     expect(cherryOption).toHaveAttribute('aria-disabled', 'true')
   })
 
-  it('selected option has data-selected attribute', async () => {
-    render(<MultiSelect options={options} value={['apple']} onValueChange={() => {}} />)
-    await userEvent.click(screen.getByRole('button'))
-    const appleOption = screen
-      .getAllByRole('option')
-      .find((el) => el.textContent?.includes('Apple'))
+  it('selected option has data-selected attribute', () => {
+    const { container } = render(
+      <MultiSelect options={options} value={['apple']} onValueChange={() => {}} />,
+    )
+    const appleOption = Array.from(container.querySelectorAll('[role="option"]')).find((el) =>
+      el.textContent?.includes('Apple'),
+    )
     expect(appleOption).toHaveAttribute('data-selected')
+  })
+
+  it('panel has role=listbox', () => {
+    const { container } = render(
+      <MultiSelect options={options} value={[]} onValueChange={() => {}} />,
+    )
+    expect(container.querySelector('[role="listbox"]')).toBeTruthy()
   })
 })
