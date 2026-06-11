@@ -9,6 +9,8 @@ export interface AppShellProps {
   header: ReactNode
   sideNav?: ReactNode
   aside?: ReactNode
+  /** Optional sticky footer rendered below the content area. */
+  footer?: ReactNode
   children: ReactNode
   persistKey?: string | false
   /** External shell state (from createShellState). Created internally when omitted. */
@@ -20,6 +22,7 @@ export function AppShell({
   header,
   sideNav,
   aside,
+  footer,
   children,
   persistKey = 'cascade.appshell',
   state,
@@ -86,6 +89,7 @@ export function AppShell({
           {aside}
         </div>
       )}
+      {footer && <div className={styles['footer']}>{footer}</div>}
     </div>
   )
 }

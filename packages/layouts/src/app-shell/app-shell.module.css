@@ -3,19 +3,30 @@
     display: grid;
     grid-template:
       'header header header' auto
-      'nav main aside' 1fr
+      'nav    main    aside ' 1fr
+      'footer footer  footer' auto
       / auto minmax(0, 1fr) auto;
-    min-block-size: 100dvh;
+    block-size: 100dvh;
+    overflow: hidden;
   }
 
   .header {
     grid-area: header;
+    /* Naturally stays at top — grid row is auto, shell is overflow:hidden */
+    z-index: var(--cascade-z-raised, 10);
+  }
+
+  .footer {
+    grid-area: footer;
+    /* Naturally stays at bottom — grid row is auto after the 1fr content row */
+    z-index: var(--cascade-z-raised, 10);
   }
 
   .nav {
     grid-area: nav;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition:
       opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
@@ -56,11 +67,13 @@
   .main {
     grid-area: main;
     min-inline-size: 0;
+    overflow-y: auto;
   }
 
   .aside {
     grid-area: aside;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     inline-size: var(--cascade-shell-aside-inline-size, 18rem);
     transition: inline-size var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
   }
@@ -78,7 +91,8 @@
     .shell {
       grid-template:
         'header' auto
-        'main' 1fr / minmax(0, 1fr);
+        'main' 1fr
+        'footer' auto / minmax(0, 1fr);
     }
 
     .aside {
