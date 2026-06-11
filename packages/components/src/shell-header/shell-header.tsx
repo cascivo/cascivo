@@ -145,7 +145,6 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
       </button>
       <div
         ref={popoverRef as RefObject<HTMLDivElement>}
-        // @ts-expect-error — popover attr (house pattern, same as menu.tsx)
         popover="auto"
         role="menu"
         aria-label={item.label}
