@@ -1,17 +1,11 @@
 'use client'
 
-import { createContext, useContext, useRef, type ReactNode } from 'react'
+import { createContext, useRef, type ReactNode } from 'react'
 import { useSignalEffect, useSignals } from '@cascade-ui/core'
 import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
 import styles from './hover-card.module.css'
 
 const HoverCardContext = createContext<UsePopoverReturn | null>(null)
-
-function useHoverCardContext(): UsePopoverReturn {
-  const ctx = useContext(HoverCardContext)
-  if (!ctx) throw new Error('HoverCard compound components must be inside <HoverCard>')
-  return ctx
-}
 
 export interface HoverCardProps {
   children: ReactNode
@@ -60,9 +54,9 @@ export interface HoverCardTriggerProps {
   children: ReactNode
 }
 
-export function HoverCardTrigger({ children }: HoverCardTriggerProps) {
+function HoverCardTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; children: ReactNode }) {
   useSignals()
-  const { triggerRef, anchorName, open, close } = useHoverCardContext()
+  const { triggerRef, anchorName, open, close } = ctx
   return (
     <span
       ref={triggerRef as React.RefObject<HTMLSpanElement>}
@@ -78,14 +72,33 @@ export function HoverCardTrigger({ children }: HoverCardTriggerProps) {
   )
 }
 
+export function HoverCardTrigger({ children }: HoverCardTriggerProps) {
+  return (
+    <HoverCardContext.Consumer>
+      {(ctx) => {
+        if (!ctx) throw new Error('HoverCardTrigger must be inside <HoverCard>')
+        return <HoverCardTriggerInner ctx={ctx}>{children}</HoverCardTriggerInner>
+      }}
+    </HoverCardContext.Consumer>
+  )
+}
+
 export interface HoverCardContentProps {
   children: ReactNode
   className?: string
 }
 
-export function HoverCardContent({ children, className }: HoverCardContentProps) {
+function HoverCardContentInner({
+  ctx,
+  children,
+  className,
+}: {
+  ctx: UsePopoverReturn
+  children: ReactNode
+  className?: string
+}) {
   useSignals()
-  const { popoverRef, anchorName, isOpen, open, close } = useHoverCardContext()
+  const { popoverRef, anchorName, isOpen, open, close } = ctx
   return (
     <div
       ref={popoverRef as React.RefObject<HTMLDivElement>}
@@ -101,5 +114,20 @@ export function HoverCardContent({ children, className }: HoverCardContentProps)
     >
       {children}
     </div>
+  )
+}
+
+export function HoverCardContent({ children, className }: HoverCardContentProps) {
+  return (
+    <HoverCardContext.Consumer>
+      {(ctx) => {
+        if (!ctx) throw new Error('HoverCardContent must be inside <HoverCard>')
+        return (
+          <HoverCardContentInner ctx={ctx} className={className}>
+            {children}
+          </HoverCardContentInner>
+        )
+      }}
+    </HoverCardContext.Consumer>
   )
 }

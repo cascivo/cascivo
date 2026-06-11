@@ -1,25 +1,25 @@
 'use client'
 
-import { createContext, useContext, type KeyboardEvent, type ReactNode } from 'react'
+import { createContext, type KeyboardEvent, type ReactNode } from 'react'
 import { useSignalEffect, useSignals } from '@cascade-ui/core'
 import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
 import styles from './menu.module.css'
 
 const MenuContext = createContext<UsePopoverReturn | null>(null)
 
-function useMenuContext() {
-  const ctx = useContext(MenuContext)
-  if (!ctx) throw new Error('Menu compound components must be inside <Menu>')
-  return ctx
-}
-
 export interface MenuProps {
   children: ReactNode
 }
 
-function MenuPanel({ children }: { children: ReactNode }) {
+function MenuPanelInner({
+  ctx,
+  children,
+}: {
+  ctx: UsePopoverReturn
+  children: ReactNode
+}) {
   useSignals()
-  const { popoverRef, anchorName, isOpen } = useMenuContext()
+  const { popoverRef, anchorName, isOpen } = ctx
 
   useSignalEffect(() => {
     if (!isOpen.value) return
@@ -45,6 +45,17 @@ function MenuPanel({ children }: { children: ReactNode }) {
   )
 }
 
+function MenuPanel({ children }: { children: ReactNode }) {
+  return (
+    <MenuContext.Consumer>
+      {(ctx) => {
+        if (!ctx) throw new Error('MenuPanel must be inside <Menu>')
+        return <MenuPanelInner ctx={ctx}>{children}</MenuPanelInner>
+      }}
+    </MenuContext.Consumer>
+  )
+}
+
 export function Menu({ children }: MenuProps) {
   const popover = usePopover()
   const childArray = Array.isArray(children) ? children : [children]
@@ -61,9 +72,9 @@ export interface MenuTriggerProps {
   children: ReactNode
 }
 
-export function MenuTrigger({ children }: MenuTriggerProps) {
+function MenuTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; children: ReactNode }) {
   useSignals()
-  const { triggerRef, toggle, anchorName, isOpen } = useMenuContext()
+  const { triggerRef, toggle, anchorName, isOpen } = ctx
   return (
     <button
       ref={triggerRef as React.RefObject<HTMLButtonElement>}
@@ -79,6 +90,17 @@ export function MenuTrigger({ children }: MenuTriggerProps) {
   )
 }
 
+export function MenuTrigger({ children }: MenuTriggerProps) {
+  return (
+    <MenuContext.Consumer>
+      {(ctx) => {
+        if (!ctx) throw new Error('MenuTrigger must be inside <Menu>')
+        return <MenuTriggerInner ctx={ctx}>{children}</MenuTriggerInner>
+      }}
+    </MenuContext.Consumer>
+  )
+}
+
 export interface MenuItemProps {
   children: ReactNode
   onSelect: () => void
@@ -86,39 +108,46 @@ export interface MenuItemProps {
 }
 
 export function MenuItem({ children, onSelect, disabled }: MenuItemProps) {
-  const { close } = useMenuContext()
-  function handleClick() {
-    if (disabled) return
-    onSelect()
-    close()
-  }
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      handleClick()
-    }
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      const next = (e.currentTarget as HTMLElement).nextElementSibling as HTMLElement | null
-      next?.focus()
-    }
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      const prev = (e.currentTarget as HTMLElement).previousElementSibling as HTMLElement | null
-      prev?.focus()
-    }
-  }
   return (
-    <div
-      role="menuitem"
-      tabIndex={disabled ? -1 : 0}
-      aria-disabled={disabled}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      className={styles.item}
-    >
-      {children}
-    </div>
+    <MenuContext.Consumer>
+      {(ctx) => {
+        if (!ctx) throw new Error('MenuItem must be inside <Menu>')
+        const { close } = ctx
+        function handleClick() {
+          if (disabled) return
+          onSelect()
+          close()
+        }
+        function handleKeyDown(e: KeyboardEvent) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            handleClick()
+          }
+          if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            const next = (e.currentTarget as HTMLElement).nextElementSibling as HTMLElement | null
+            next?.focus()
+          }
+          if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            const prev = (e.currentTarget as HTMLElement).previousElementSibling as HTMLElement | null
+            prev?.focus()
+          }
+        }
+        return (
+          <div
+            role="menuitem"
+            tabIndex={disabled ? -1 : 0}
+            aria-disabled={disabled}
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            className={styles.item}
+          >
+            {children}
+          </div>
+        )
+      }}
+    </MenuContext.Consumer>
   )
 }
 
