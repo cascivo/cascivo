@@ -8,6 +8,8 @@
     "test": "vp run -r test",
     "check": "vp check",
     "audit:animation": "node scripts/quality/animation-audit.ts",
+    "audit:bundle": "node scripts/quality/bundle-check.ts",
+    "audit:stories": "node scripts/quality/story-check.ts",
     "llms:generate": "node scripts/llms/generate.ts",
     "registry:generate": "node scripts/registry/generate.ts",
     "readme:generate": "node scripts/readme/generate.ts",
