@@ -69,6 +69,7 @@
     gap: var(--cascade-space-1);
     margin: 0;
     padding: 0;
+    padding-inline: var(--cascade-space-2);
     list-style: none;
   }
 
@@ -90,7 +91,6 @@
     color: var(--cascade-color-text-subtle);
     background: transparent;
     border: none;
-    border-inline-start: 2px solid transparent;
     border-radius: var(--cascade-radius-item);
     cursor: pointer;
     transition:
@@ -111,8 +111,7 @@
   .link[data-state='active'] {
     color: var(--cascade-color-text);
     font-weight: var(--cascade-font-medium);
-    background-color: var(--cascade-color-accent-subtle);
-    border-inline-start-color: var(--cascade-color-accent);
+    background-color: var(--cascade-color-active-bg);
   }
 
   .icon {
