@@ -20,6 +20,7 @@
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/icons": "workspace:*",
     "@cascade-ui/layouts": "workspace:*",
+    "@cascade-ui/render": "workspace:*",
     "@cascade-ui/storage": "workspace:^",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",

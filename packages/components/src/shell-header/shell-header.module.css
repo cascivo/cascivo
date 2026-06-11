@@ -111,8 +111,8 @@
 
     &[data-state='active'] {
       color: var(--cascade-color-text);
-      font-weight: var(--cascade-font-medium);
-      box-shadow: inset 0 -2px 0 var(--cascade-color-accent);
+      font-weight: var(--cascade-font-semibold);
+      background: var(--cascade-color-bg-subtle);
     }
   }
 
@@ -148,8 +148,8 @@
 
     &[data-state='active'] {
       color: var(--cascade-color-text);
-      font-weight: var(--cascade-font-medium);
-      box-shadow: inset 0 -2px 0 var(--cascade-color-accent);
+      font-weight: var(--cascade-font-semibold);
+      background: var(--cascade-color-bg-subtle);
     }
   }
 

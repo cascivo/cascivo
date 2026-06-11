@@ -5,6 +5,7 @@ import { AiPage } from './pages/AiPage'
 import { ChartsPage } from './pages/ChartsPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { PerfDataTable } from './pages/PerfDataTable'
+import { PlaygroundPage } from './pages/PlaygroundPage'
 import { theme } from './theme'
 
 export function App() {
@@ -20,6 +21,7 @@ export function App() {
           <Route path="/" component={Home} />
           <Route path="/ai" component={AiPage} />
           <Route path="/charts" component={ChartsPage} />
+          <Route path="/playground" component={PlaygroundPage} />
           <Route path="/perf/data-table" component={PerfDataTable} />
           <Route path="/components/:name" component={ComponentPage} />
           <Route default component={ComponentPage} />

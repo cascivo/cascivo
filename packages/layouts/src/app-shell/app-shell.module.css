@@ -25,8 +25,8 @@
   .nav {
     grid-area: nav;
     position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
     transition:
       opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
@@ -43,25 +43,51 @@
   }
 
   .nav-content {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition:
       opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
   }
 
   .toggle {
-    position: absolute;
-    inset-inline-end: calc(-1 * var(--cascade-space-3));
-    inset-block-start: var(--cascade-space-4);
-    inline-size: var(--cascade-space-6);
-    block-size: var(--cascade-space-6);
-    border-radius: 50%;
-    border: 1px solid var(--cascade-color-border);
-    background: var(--cascade-color-surface);
-    cursor: pointer;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: var(--cascade-font-size-xs);
+    justify-content: flex-start;
+    gap: var(--cascade-space-2);
+    padding-inline: var(--cascade-space-3);
+    padding-block: var(--cascade-space-2);
+    inline-size: 100%;
+    border: none;
+    border-block-start: 1px solid var(--cascade-color-border);
+    background: transparent;
+    color: var(--cascade-color-text-subtle);
+    cursor: pointer;
+    transition:
+      background var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease),
+      color var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease);
+  }
+
+  .toggle:hover {
+    background: var(--cascade-color-bg-subtle);
+    color: var(--cascade-color-text);
+  }
+
+  .toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--cascade-focus-ring);
+  }
+
+  .toggle svg {
+    flex-shrink: 0;
+    transition: transform var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .shell[data-collapsed] .toggle svg {
+    transform: rotate(180deg);
   }
 
   .main {
@@ -96,6 +122,10 @@
     }
 
     .aside {
+      display: none;
+    }
+
+    .toggle {
       display: none;
     }
 

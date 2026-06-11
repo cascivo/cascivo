@@ -68,7 +68,17 @@ export function AppShell({
                 : t(builtin.appShell.collapse)
             }
             onClick={() => shell.toggleSideNav()}
-          />
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <polyline
+                points="10,4 6,8 10,12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
       )}
       {sideNav && (

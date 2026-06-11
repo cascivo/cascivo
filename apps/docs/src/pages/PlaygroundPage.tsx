@@ -1,29 +1,49 @@
-'use client'
 import { signal, useSignals } from '@cascade-ui/core'
 import { CascadeView } from '@cascade-ui/render'
 import type { ViewConfig } from '@cascade-ui/render'
-import React, { useRef } from 'react'
-import { exampleConfigJson } from './example-config'
 
-import '@cascade-ui/themes/light'
-import '@cascade-ui/themes/dark'
-import '@cascade-ui/themes/warm'
-
-const configSignal = signal<ViewConfig | null>(null)
-const parseErrorSignal = signal<string | null>(null)
-
-try {
-  configSignal.value = JSON.parse(exampleConfigJson) as ViewConfig
-} catch {
-  parseErrorSignal.value = 'Failed to parse example config'
+const EXAMPLE_CONFIG: ViewConfig = {
+  version: 1,
+  view: {
+    regions: {
+      status: [
+        { component: 'Badge', props: { variant: 'success' }, children: 'Published' },
+        { component: 'Badge', props: { variant: 'warning' }, children: 'Draft' },
+        { component: 'Badge', props: { variant: 'destructive' }, children: 'Archived' },
+      ],
+      actions: [
+        { component: 'Button', props: { variant: 'primary' }, children: 'Save changes' },
+        { component: 'Button', props: { variant: 'secondary' }, children: 'Cancel' },
+      ],
+      content: [
+        {
+          component: 'Alert',
+          props: { variant: 'info', title: 'AI-generated layout' },
+          children: 'This UI was described in JSON and rendered live by CascadeView.',
+        },
+        { component: 'Separator' },
+        {
+          component: 'Card',
+          children: [
+            { component: 'Input', props: { label: 'Name', placeholder: 'Your name' } },
+            { component: 'Spinner' },
+          ],
+        },
+      ],
+    },
+  },
 }
 
-function App() {
-  useSignals()
-  const themeRef = useRef<HTMLDivElement>(null)
+const EXAMPLE_JSON = JSON.stringify(EXAMPLE_CONFIG, null, 2)
 
-  function handleInput(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const raw = e.target.value
+const configSignal = signal<ViewConfig | null>(EXAMPLE_CONFIG)
+const parseErrorSignal = signal<string | null>(null)
+
+export function PlaygroundPage() {
+  useSignals()
+
+  function handleInput(e: Event) {
+    const raw = (e.target as HTMLTextAreaElement).value
     try {
       const parsed = JSON.parse(raw) as ViewConfig
       configSignal.value = parsed
@@ -33,68 +53,48 @@ function App() {
     }
   }
 
-  function setTheme(theme: string) {
-    themeRef.current?.setAttribute('data-theme', theme)
-  }
-
   return (
     <div
-      ref={themeRef}
-      data-theme="light"
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100dvh',
-        background: 'var(--cascade-color-background)',
-        color: 'var(--cascade-color-text)',
-        fontFamily: 'var(--cascade-font-sans)',
+        flex: 1,
+        minBlockSize: 0,
+        marginBlockStart: 'calc(-1 * var(--cascade-space-6))',
+        marginInline: 'calc(-1 * var(--cascade-space-6))',
       }}
     >
-      {/* Toolbar */}
+      {/* Pane header */}
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'var(--cascade-space-2)',
-          padding: `var(--cascade-space-2) var(--cascade-space-4)`,
+          padding: 'var(--cascade-space-4) var(--cascade-space-6)',
           borderBottom: '1px solid var(--cascade-color-border)',
           background: 'var(--cascade-color-surface)',
           flexShrink: 0,
         }}
       >
-        <strong style={{ flex: 1, fontSize: 'var(--cascade-text-sm)' }}>
-          cascade JSON Playground
-        </strong>
-        <span
+        <h1
           style={{
-            fontSize: 'var(--cascade-text-xs)',
-            color: 'var(--cascade-color-text-subtle)',
+            fontSize: 'var(--cascade-text-xl)',
+            fontWeight: 'var(--cascade-font-semibold)',
+            margin: 0,
           }}
         >
-          Theme:
-        </span>
-        {(['light', 'dark', 'warm'] as const).map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTheme(t)}
-            style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
-              borderRadius: 'var(--cascade-radius-control)',
-              border: '1px solid var(--cascade-color-border)',
-              background: 'var(--cascade-color-surface)',
-              color: 'var(--cascade-color-text)',
-              cursor: 'pointer',
-              fontSize: 'var(--cascade-text-xs)',
-            }}
-          >
-            {t}
-          </button>
-        ))}
+          JSON Playground
+        </h1>
+        <p
+          style={{
+            fontSize: 'var(--cascade-text-sm)',
+            color: 'var(--cascade-color-text-subtle)',
+            margin: 'var(--cascade-space-1) 0 0',
+          }}
+        >
+          Describe a UI in JSON — CascadeView renders it live using cascade components.
+        </p>
       </div>
 
-      {/* Main panes */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      {/* Split pane */}
+      <div style={{ display: 'flex', flex: 1, minBlockSize: 0, overflow: 'hidden' }}>
         {/* Left: editor */}
         <div
           style={{
@@ -106,7 +106,7 @@ function App() {
         >
           <div
             style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
+              padding: 'var(--cascade-space-1) var(--cascade-space-3)',
               fontSize: 'var(--cascade-text-xs)',
               fontWeight: 600,
               color: 'var(--cascade-color-text-subtle)',
@@ -119,9 +119,9 @@ function App() {
             CONFIG (JSON)
           </div>
           <textarea
-            defaultValue={exampleConfigJson}
-            onChange={handleInput}
-            spellCheck={false}
+            defaultValue={EXAMPLE_JSON}
+            onInput={handleInput}
+            spellcheck={false}
             style={{
               flex: 1,
               padding: 'var(--cascade-space-4)',
@@ -137,7 +137,7 @@ function App() {
           {parseErrorSignal.value && (
             <div
               style={{
-                padding: `var(--cascade-space-2) var(--cascade-space-3)`,
+                padding: 'var(--cascade-space-2) var(--cascade-space-3)',
                 background:
                   'color-mix(in oklch, var(--cascade-color-destructive) 10%, transparent)',
                 borderTop:
@@ -156,7 +156,7 @@ function App() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div
             style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
+              padding: 'var(--cascade-space-1) var(--cascade-space-3)',
               fontSize: 'var(--cascade-text-xs)',
               fontWeight: 600,
               color: 'var(--cascade-color-text-subtle)',
@@ -176,5 +176,3 @@ function App() {
     </div>
   )
 }
-
-export default App

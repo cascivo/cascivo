@@ -6,15 +6,28 @@ export const exampleConfig: ViewConfig = {
   version: 1,
   view: {
     regions: {
-      stats: [
-        { component: 'Badge', props: { variant: 'success' }, children: 'Active' },
-        { component: 'Badge', props: { variant: 'secondary' }, children: 'Beta' },
-        { component: 'Badge', props: { variant: 'warning' }, children: 'Pending' },
+      status: [
+        { component: 'Badge', props: { variant: 'success' }, children: 'Published' },
+        { component: 'Badge', props: { variant: 'warning' }, children: 'Draft' },
+        { component: 'Badge', props: { variant: 'destructive' }, children: 'Archived' },
+      ],
+      actions: [
+        { component: 'Button', props: { variant: 'primary' }, children: 'Save changes' },
+        { component: 'Button', props: { variant: 'secondary' }, children: 'Cancel' },
       ],
       content: [
         {
+          component: 'Alert',
+          props: { variant: 'info', title: 'AI-generated layout' },
+          children: 'This UI was described in JSON and rendered live by CascadeView.',
+        },
+        { component: 'Separator' },
+        {
           component: 'Card',
-          children: [{ component: 'Spinner' }, { component: 'Separator' }],
+          children: [
+            { component: 'Input', props: { label: 'Name', placeholder: 'Your name' } },
+            { component: 'Spinner' },
+          ],
         },
       ],
     },
