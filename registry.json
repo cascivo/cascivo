@@ -4637,7 +4637,13 @@
             "name": "persistKey",
             "type": "string | false",
             "required": false,
-            "description": "localStorage key for sidebar state. Pass false to disable persistence."
+            "description": "localStorage key prefix. Pass false to disable persistence."
+          },
+          {
+            "name": "state",
+            "type": "ShellState",
+            "required": false,
+            "description": "External shell state from createShellState(). Created internally when omitted."
           }
         ],
         "tokens": [
@@ -5245,6 +5251,61 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["layout", "flex", "stack", "spacing"]
+      }
+    },
+    {
+      "name": "block/console-app",
+      "type": "block",
+      "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+      ],
+      "dependencies": [
+        "@cascade-ui/react",
+        "@cascade-ui/icons",
+        "layout/app-shell",
+        "layout/page-header"
+      ],
+      "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+      "meta": {
+        "name": "ConsoleApp",
+        "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-shell-panel-inline-size",
+          "--cascade-shell-aside-inline-size",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-color-scrim",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab"]
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<ConsoleApp />",
+            "description": "Full console shell demo"
+          }
+        ],
+        "dependencies": [
+          "@cascade-ui/react",
+          "@cascade-ui/icons",
+          "layout/app-shell",
+          "layout/page-header"
+        ],
+        "tags": ["block", "console", "shell", "navigation", "carbon-parity"]
       }
     },
     {

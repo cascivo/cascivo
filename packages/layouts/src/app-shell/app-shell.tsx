@@ -1,9 +1,9 @@
 'use client'
-import { cn, signal, useSignal, useSignals, type Signal } from '@cascade-ui/core'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import { builtin, t } from '@cascade-ui/i18n'
-import { persistedSignal } from '@cascade-ui/storage'
 import type { ReactNode } from 'react'
 import styles from './app-shell.module.css'
+import { createShellState, type ShellState } from './shell-state'
 
 export interface AppShellProps {
   header: ReactNode
@@ -11,7 +11,9 @@ export interface AppShellProps {
   aside?: ReactNode
   children: ReactNode
   persistKey?: string | false
-  className?: string
+  /** External shell state (from createShellState). Created internally when omitted. */
+  state?: ShellState
+  className?: string | undefined
 }
 
 export function AppShell({
@@ -19,38 +21,71 @@ export function AppShell({
   sideNav,
   aside,
   children,
-  persistKey = 'cascade.appshell.sidenav',
+  persistKey = 'cascade.appshell',
+  state,
   className,
 }: AppShellProps) {
   useSignals()
 
-  // Lazy-init persisted signal (same pattern as useForm)
-  const store = useSignal<Signal<boolean> | null>(null)
+  // Lazy-init shell state (house pattern)
+  const store = useSignal<ShellState | null>(null)
   if (store.peek() === null) {
-    store.value = persistKey === false ? signal(false) : persistedSignal(persistKey, false)
+    store.value = state ?? createShellState({ persistKey })
   }
-  const collapsed = store.peek() as Signal<boolean>
+  const shell = store.peek()!
 
-  const toggle = () => {
-    collapsed.value = !collapsed.value
-  }
+  useSignalEffect(() => {
+    if (!shell.sideNavOpen.value) return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') shell.sideNavOpen.value = false
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  })
 
   return (
-    <div className={cn(styles['shell'], className)} data-collapsed={collapsed.value || undefined}>
+    <div
+      className={cn(styles['shell'], className)}
+      data-collapsed={shell.sideNavCollapsed.value || undefined}
+      data-drawer={shell.sideNavOpen.value ? 'open' : undefined}
+    >
       <div className={styles['header']}>{header}</div>
       {sideNav && (
-        <div className={styles['nav']} data-state={collapsed.value ? 'collapsed' : 'expanded'}>
+        <div
+          className={styles['nav']}
+          data-state={shell.sideNavCollapsed.value ? 'collapsed' : 'expanded'}
+        >
           <div className={styles['nav-content']}>{sideNav}</div>
           <button
             type="button"
             className={styles['toggle']}
-            aria-label={collapsed.value ? t(builtin.appShell.expand) : t(builtin.appShell.collapse)}
-            onClick={toggle}
+            aria-label={
+              shell.sideNavCollapsed.value
+                ? t(builtin.appShell.expand)
+                : t(builtin.appShell.collapse)
+            }
+            onClick={() => shell.toggleSideNav()}
           />
         </div>
       )}
-      <main className={styles['main']}>{children}</main>
-      {aside && <div className={styles['aside']}>{aside}</div>}
+      {sideNav && (
+        <div
+          data-testid="cascade-shell-scrim"
+          aria-hidden="true"
+          className={styles['scrim']}
+          onClick={() => {
+            shell.sideNavOpen.value = false
+          }}
+        />
+      )}
+      <main id="cascade-main" tabIndex={-1} className={styles['main']}>
+        {children}
+      </main>
+      {aside && (
+        <div className={styles['aside']} data-state={shell.asideOpen.value ? 'open' : 'closed'}>
+          {aside}
+        </div>
+      )}
     </div>
   )
 }

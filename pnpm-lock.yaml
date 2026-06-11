@@ -111,6 +111,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascade-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@cascade-ui/storage':
         specifier: workspace:^
         version: link:../../packages/storage
@@ -290,6 +293,12 @@ importers:
       '@cascade-ui/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@cascade-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@cascade-ui/layouts':
+        specifier: workspace:*
+        version: link:../../packages/layouts
       '@cascade-ui/themes':
         specifier: workspace:*
         version: link:../../packages/themes
@@ -546,6 +555,9 @@ importers:
       '@cascade-ui/i18n':
         specifier: workspace:*
         version: link:../i18n
+      '@cascade-ui/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@cascade-ui/react':
         specifier: workspace:*
         version: link:../react

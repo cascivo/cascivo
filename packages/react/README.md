@@ -121,6 +121,7 @@ pnpm add @cascade-ui/react
 | layout/spacer              | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |
 | layout/split-view          | layout     | Resizable two-pane split layout with keyboard and pointer drag support.                                                                                               |
 | layout/stack               | layout     | Flex layout primitive for vertical or horizontal stacking with gap control.                                                                                           |
+| block/console-app          | display    | Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.                                 |
 | block/dashboard-charts     | display    | Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.                                                                                                |
 | block/empty-dashboard      | display    | Dashboard page showing an empty state with a call-to-action button.                                                                                                   |
 | block/login-page           | display    | Authentication login page with email and password form.                                                                                                               |

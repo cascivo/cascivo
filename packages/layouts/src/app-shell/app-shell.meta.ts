@@ -16,7 +16,13 @@ export const meta: ComponentMeta = {
       name: 'persistKey',
       type: 'string | false',
       required: false,
-      description: 'localStorage key for sidebar state. Pass false to disable persistence.',
+      description: 'localStorage key prefix. Pass false to disable persistence.',
+    },
+    {
+      name: 'state',
+      type: 'ShellState',
+      required: false,
+      description: 'External shell state from createShellState(). Created internally when omitted.',
     },
   ],
   tokens: [

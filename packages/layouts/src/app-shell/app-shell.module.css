@@ -60,5 +60,64 @@
 
   .aside {
     grid-area: aside;
+    overflow: hidden;
+    inline-size: var(--cascade-shell-aside-inline-size, 18rem);
+    transition: inline-size var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .aside[data-state='closed'] {
+    inline-size: 0;
+    visibility: hidden;
+  }
+
+  .scrim {
+    display: none;
+  }
+
+  @media (max-width: 64rem) {
+    .shell {
+      grid-template:
+        'header' auto
+        'main' 1fr / minmax(0, 1fr);
+    }
+
+    .aside {
+      display: none;
+    }
+
+    .nav {
+      position: fixed;
+      inset-block: 0;
+      inset-inline-start: 0;
+      z-index: 40;
+      inline-size: var(--cascade-sidenav-inline-size, 16rem);
+      background: var(--cascade-color-surface);
+      translate: -100% 0;
+      transition: translate var(--cascade-motion-exit, 200ms ease);
+      overscroll-behavior: contain;
+    }
+
+    :dir(rtl) .nav {
+      translate: 100% 0;
+    }
+
+    .shell[data-drawer='open'] .nav {
+      translate: 0 0;
+      transition: translate var(--cascade-motion-enter, 200ms ease);
+    }
+
+    .shell[data-drawer='open'] .scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      background: var(--cascade-color-scrim, oklch(0 0 0 / 40%));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav {
+      transition: none;
+    }
   }
 }

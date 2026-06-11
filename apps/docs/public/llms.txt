@@ -39,6 +39,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [alert-dialog](/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
 - [avatar](/llms/avatar.md) — Displays a user image with initials fallback
 - [badge](/llms/badge.md) — Small status label or category indicator
+- [block/console-app](/llms/block/console-app.md) — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.
 - [block/dashboard-charts](/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
 - [block/empty-dashboard](/llms/block/empty-dashboard.md) — Dashboard page showing an empty state with a call-to-action button.
 - [block/login-page](/llms/block/login-page.md) — Authentication login page with email and password form.

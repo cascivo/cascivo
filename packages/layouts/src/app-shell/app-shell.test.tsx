@@ -1,10 +1,13 @@
 import { render, screen, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AppShell } from './app-shell'
+import { createShellState } from './shell-state'
 
 // suppress storage errors in jsdom
 beforeEach(() => {
   vi.spyOn(console, 'warn').mockImplementation(() => {})
+  localStorage.clear()
 })
 
 describe('AppShell', () => {
@@ -54,5 +57,79 @@ describe('AppShell', () => {
       </AppShell>,
     )
     expect(screen.getByText('Aside')).toBeInTheDocument()
+  })
+})
+
+describe('AppShell v2', () => {
+  it('main has the skip-link target id and is focusable', () => {
+    render(
+      <AppShell header={<div>h</div>} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    const main = screen.getByRole('main')
+    expect(main).toHaveAttribute('id', 'cascade-main')
+    expect(main).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('hides the aside when state.asideOpen is false', () => {
+    const state = createShellState({ persistKey: false })
+    state.asideOpen.value = false
+    render(
+      <AppShell header={<div>h</div>} aside={<p>details</p>} state={state} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    expect(document.querySelector('[data-state="closed"]')).toBeInTheDocument()
+  })
+
+  it('external state drives the nav collapse', () => {
+    const state = createShellState({ persistKey: false })
+    state.sideNavCollapsed.value = true
+    render(
+      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    expect(screen.getByText('nav').closest('[data-state]')).toHaveAttribute(
+      'data-state',
+      'collapsed',
+    )
+  })
+
+  it('keeps working with no state prop (back-compat)', () => {
+    render(
+      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    expect(screen.getByText('nav')).toBeInTheDocument()
+  })
+})
+
+describe('AppShell mobile drawer', () => {
+  it('renders a scrim that closes the drawer on click', async () => {
+    const state = createShellState({ persistKey: false })
+    state.sideNavOpen.value = true
+    render(
+      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    const scrim = screen.getByTestId('cascade-shell-scrim')
+    await userEvent.click(scrim)
+    expect(state.sideNavOpen.value).toBe(false)
+  })
+
+  it('closes the drawer on Escape', async () => {
+    const state = createShellState({ persistKey: false })
+    state.sideNavOpen.value = true
+    render(
+      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+        <p>content</p>
+      </AppShell>,
+    )
+    await userEvent.keyboard('{Escape}')
+    expect(state.sideNavOpen.value).toBe(false)
   })
 })
