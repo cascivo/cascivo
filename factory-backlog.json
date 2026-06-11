@@ -426,7 +426,7 @@
     {
       "name": "rating-group",
       "status": "in-progress",
-      "milestone": "scaffold",
+      "milestone": "verify",
       "priority": 48,
       "category": "inputs",
       "attempts": 0,

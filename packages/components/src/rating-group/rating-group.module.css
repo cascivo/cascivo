@@ -25,7 +25,8 @@
     border: none;
     cursor: pointer;
     color: var(--cascade-color-border-strong);
-    transition: color var(--cascade-duration-100) var(--cascade-ease-out),
+    transition:
+      color var(--cascade-duration-100) var(--cascade-ease-out),
       transform var(--cascade-duration-100) var(--cascade-ease-out);
 
     /* Star shape via clip-path or mask */

@@ -36,12 +36,7 @@ export function RatingGroup({
   const isInteractive = !disabled && !readOnly && onValueChange !== undefined
 
   return (
-    <div
-      className={cn(styles['wrapper'], className)}
-      data-size={size}
-      role="radiogroup"
-      {...props}
-    >
+    <div className={cn(styles['wrapper'], className)} data-size={size} role="radiogroup" {...props}>
       {Array.from({ length: max }, (_, i) => {
         const starValue = i + 1
         const isFilled = starValue <= value
