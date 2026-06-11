@@ -35,7 +35,7 @@ Why current perf story doesn't convince anyone:
 2. **No competitor baseline.** Nobody has published a credible shadcn-vs-Carbon-vs-anything
    runtime comparison. That's an opening — and it means we set the methodology bar.
 3. **Bundle numbers exist but aren't comparative.** `audit:bundle` enforces 50KB gzip on
-   `@cascade-ui/react`, but a consumer cares about *app cost*: what does the same page cost
+   `@cascade-ui/react`, but a consumer cares about _app cost_: what does the same page cost
    built with cascade vs shadcn vs Carbon?
 4. **The re-render story is our strongest, least-told claim.** Signal-driven components commit
    ≤1 re-render per interaction; useState-world re-renders cascade through the tree. Re-render
@@ -47,14 +47,14 @@ Why current perf story doesn't convince anyone:
 
 ## Workstreams
 
-| #   | Workstream             | Tranche | Summary                                                                                                                                                              |
-| --- | ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Bench harness + protocol | T1    | `apps/bench/` workspace: shared scenario protocol (PROTOCOL.md), cascade reference app (table/form/dialog routes), runner skeleton (app lifecycle, stats lib, results schema), protocol conformance Playwright spec. |
-| B   | Competitor apps        | T2      | `bench-app-shadcn` (Tailwind v4 + Radix + TanStack Table, components committed) and `bench-app-carbon` (`@carbon/react` + Sass) implementing the identical protocol. Pinned versions, idiomatic usage per library's own docs. |
-| C   | Bundle suite           | T3      | Whole-app JS/CSS min+gzip per library; per-component incremental-cost matrix (app-with minus baseline); `sideEffects` fix + treeshake gate for `@cascade-ui/react`.   |
-| D   | Runtime suite          | T4      | CDP-trace click→paint for 8 scenarios × 3 libraries, 4× CPU throttle, 12 samples, median+IQR, Mann-Whitney significance; React Profiler commit counts per scenario.   |
-| E   | Lighthouse + a11y      | T5      | LHCI median-of-5 (FCP/LCP/TBT/transfer) per app; axe-core sweep — cascade gated at zero violations, competitors reported as parity context, never as a score.         |
-| —   | Publish + CI + DoD     | T6      | `results.json` → `BENCHMARKS.md` + docs Benchmarks page + landing link + `METHODOLOGY.md`; `bench.yml` workflow (smoke on CI, headline numbers from a disclosed dedicated machine); DoD checklist. |
+| #   | Workstream               | Tranche | Summary                                                                                                                                                                                                                       |
+| --- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Bench harness + protocol | T1      | `apps/bench/` workspace: shared scenario protocol (PROTOCOL.md), cascade reference app (table/form/dialog routes), runner skeleton (app lifecycle, stats lib, results schema), protocol conformance Playwright spec.          |
+| B   | Competitor apps          | T2      | `bench-app-shadcn` (Tailwind v4 + Radix + TanStack Table, components committed) and `bench-app-carbon` (`@carbon/react` + Sass) implementing the identical protocol. Pinned versions, idiomatic usage per library's own docs. |
+| C   | Bundle suite             | T3      | Whole-app JS/CSS min+gzip per library; per-component incremental-cost matrix (app-with minus baseline); `sideEffects` fix + treeshake gate for `@cascade-ui/react`.                                                           |
+| D   | Runtime suite            | T4      | CDP-trace click→paint for 8 scenarios × 3 libraries, 4× CPU throttle, 12 samples, median+IQR, Mann-Whitney significance; React Profiler commit counts per scenario.                                                           |
+| E   | Lighthouse + a11y        | T5      | LHCI median-of-5 (FCP/LCP/TBT/transfer) per app; axe-core sweep — cascade gated at zero violations, competitors reported as parity context, never as a score.                                                                 |
+| —   | Publish + CI + DoD       | T6      | `results.json` → `BENCHMARKS.md` + docs Benchmarks page + landing link + `METHODOLOGY.md`; `bench.yml` workflow (smoke on CI, headline numbers from a disclosed dedicated machine); DoD checklist.                            |
 
 ## Decisions baked in
 

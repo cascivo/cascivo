@@ -69,7 +69,7 @@ parity, no virtual scrolling, keyed/non-keyed declared.
 
 **Bundle:** convention is **min+gzip** (Bundlephobia reports gzip; quoting brotli against a
 competitor's gzip is a documented dark pattern — thoughtspile "bundle size lies"). size-limit
-(esbuild-based) measures *import cost to consumer*; `preactjs/compressed-size-action` and
+(esbuild-based) measures _import cost to consumer_; `preactjs/compressed-size-action` and
 `andresz1/size-limit-action` are the CI patterns. agadoo proves treeshakeability (bundle a bare
 import, expect ~empty). For copy-paste vs npm comparisons, the only defensible method is
 **identical consumer apps measured whole** (the andreipfeiffer/css-in-js format: one directory
@@ -106,50 +106,50 @@ pinned lockfile.
   MUI ~120–180KB gz. No published shadcn-vs-Carbon runtime comparison exists.
 
 **Signals caution (Electric UI benchmark):** `@preact/signals-react` (the React adapter, which
-patches React internals) measured *slower* than plain `useState` in micro-benchmarks. Defensible
+patches React internals) measured _slower_ than plain `useState` in micro-benchmarks. Defensible
 claims: deterministic re-render counts and measured click→paint of real components. Forbidden
 claim: "signals make React N× faster".
 
 **a11y:** axe-core detects ~57% of WCAG issues by Deque's own figure (20–40% per independent
-assessments). Comparative *scoring* invites attack — especially vs Carbon, IBM's a11y flagship.
+assessments). Comparative _scoring_ invites attack — especially vs Carbon, IBM's a11y flagship.
 Frame: zero-violations parity gate for cascade; competitor numbers as context only.
 
 ---
 
 ## Decisions
 
-| #   | Decision                                                                                                                                                                                                  | Rationale                                                                                  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| 1   | New workspace family `apps/bench/{runner,app-cascade,app-shadcn,app-carbon}` (private packages `bench-runner`, `bench-app-*`); add `apps/bench/*` to pnpm-workspace.yaml                                  | Isolates competitor deps (tailwind, carbon, sass, radix) from library packages             |
-| 2   | One shared protocol (`apps/bench/PROTOCOL.md`): routes `/table` `/form` `/dialog`, `data-bench="<op>"` controls, `data-bench-root` containers, `body[data-bench-ready]` mount flag, all rows in DOM       | Apples-to-apples; conformance is testable (one Playwright spec runs against all 3 apps)    |
-| 3   | Idiomatic usage per library: cascade = signals + DataTable; shadcn = useState + TanStack Table + Radix; Carbon = useState + Carbon DataTable. Each app mirrors the library's own docs examples            | "Real user code" is the only strawman-proof framing; disclosed in METHODOLOGY.md           |
-| 4   | 8 runtime scenarios: create-1k (cold), create-10k (cold), update-every-10th (warm), select-row (warm), clear (warm), open-dialog (warm), type-20-chars (warm), toggle-50-checkboxes (warm)                | krausest core ops adapted to component-library reality + the three signal-showcase ops     |
-| 5   | Timing = CDP trace parse (first matching `EventDispatch` → last `Paint`/`Commit` end), 4× `Emulation.setCPUThrottlingRate`, 5 warmups for warm ops, 12 samples, median + p25/p75, Mann-Whitney U vs cascade; p ≥ 0.05 ⇒ tie | js-framework-benchmark standard; ties reported honestly                                    |
-| 6   | Re-render counts = `<Profiler onRender>` root-commit counters (`window.__commits`) read per scenario **against dev builds**, disclosed; timings always against production builds                          | Profiler is a prod no-op; counts are deterministic so dev mode doesn't taint them          |
-| 7   | Bundle = build each app with its own Vite prod config, gzip level 6 over dist `.js`/`.css` separately + combined; per-component incremental matrix = 8 single-component entries + empty baseline per app, incremental = entry − baseline | min+gzip convention; CSS reported separately because "CSS-native" invites the hidden-CSS attack |
-| 8   | Fix `@cascade-ui/react` + `core` `sideEffects` (`["**/*.css"]` / `false`) and add `scripts/quality/treeshake-check.ts` gate (bare import <1KB gz; `import { Button }` < 40% of full bundle, threshold tuned to measured) | A benchmark suite that exposes our own broken treeshaking is worse than no suite           |
-| 9   | Lighthouse via `@lhci/cli` `collect --numberOfRuns=5`, median run per app on `/table`; report FCP/LCP/TBT/transferred bytes; TBT labeled "lab INP proxy"; no INP claims                                   | LHCI default median aggregation; lab-INP claims are the canonical callout                  |
-| 10  | a11y via `@axe-core/playwright` sweep over all 3 routes × 3 apps; **gate**: cascade 0 violations (CI-enforced); competitor counts reported as parity context with detection-ceiling disclaimer            | Decision 6 in roadmap — never a scoreboard vs Carbon                                       |
-| 11  | One results artifact: `apps/bench/results/results.json` (schema in `runner/src/types.ts`) with `meta` block (cpu/cores/mem/os/chrome/node/lockfileHash/throttle/date). Generated reports: root `BENCHMARKS.md`, docs page, landing link | Single source of truth; metadata makes runs auditable                                      |
-| 12  | Report generator renders every measured metric — zero filtering logic; ties/losses shown with the same prominence as wins                                                                                 | Roadmap decision 8; the credibility feature                                                |
-| 13  | CI `bench.yml`: workflow_dispatch + weekly cron; enforces deterministic metrics only (bundle ±2%, a11y zero, render counts exact); timing suite runs as informational artifact; committed `results.json` timings must come from a local disclosed machine | Hosted-runner variance makes CI timing gates dishonest                                     |
-| 14  | Competitor versions pinned exactly in each app's package.json (not catalog): react 19.2.7 everywhere, `@carbon/react` 1.109.x, tailwindcss 4.x, shadcn-emitted radix versions; shadcn components are committed source | Reproducibility; shadcn model is owned code anyway                                         |
+| #   | Decision                                                                                                                                                                                                                                                  | Rationale                                                                                       |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | New workspace family `apps/bench/{runner,app-cascade,app-shadcn,app-carbon}` (private packages `bench-runner`, `bench-app-*`); add `apps/bench/*` to pnpm-workspace.yaml                                                                                  | Isolates competitor deps (tailwind, carbon, sass, radix) from library packages                  |
+| 2   | One shared protocol (`apps/bench/PROTOCOL.md`): routes `/table` `/form` `/dialog`, `data-bench="<op>"` controls, `data-bench-root` containers, `body[data-bench-ready]` mount flag, all rows in DOM                                                       | Apples-to-apples; conformance is testable (one Playwright spec runs against all 3 apps)         |
+| 3   | Idiomatic usage per library: cascade = signals + DataTable; shadcn = useState + TanStack Table + Radix; Carbon = useState + Carbon DataTable. Each app mirrors the library's own docs examples                                                            | "Real user code" is the only strawman-proof framing; disclosed in METHODOLOGY.md                |
+| 4   | 8 runtime scenarios: create-1k (cold), create-10k (cold), update-every-10th (warm), select-row (warm), clear (warm), open-dialog (warm), type-20-chars (warm), toggle-50-checkboxes (warm)                                                                | krausest core ops adapted to component-library reality + the three signal-showcase ops          |
+| 5   | Timing = CDP trace parse (first matching `EventDispatch` → last `Paint`/`Commit` end), 4× `Emulation.setCPUThrottlingRate`, 5 warmups for warm ops, 12 samples, median + p25/p75, Mann-Whitney U vs cascade; p ≥ 0.05 ⇒ tie                               | js-framework-benchmark standard; ties reported honestly                                         |
+| 6   | Re-render counts = `<Profiler onRender>` root-commit counters (`window.__commits`) read per scenario **against dev builds**, disclosed; timings always against production builds                                                                          | Profiler is a prod no-op; counts are deterministic so dev mode doesn't taint them               |
+| 7   | Bundle = build each app with its own Vite prod config, gzip level 6 over dist `.js`/`.css` separately + combined; per-component incremental matrix = 8 single-component entries + empty baseline per app, incremental = entry − baseline                  | min+gzip convention; CSS reported separately because "CSS-native" invites the hidden-CSS attack |
+| 8   | Fix `@cascade-ui/react` + `core` `sideEffects` (`["**/*.css"]` / `false`) and add `scripts/quality/treeshake-check.ts` gate (bare import <1KB gz; `import { Button }` < 40% of full bundle, threshold tuned to measured)                                  | A benchmark suite that exposes our own broken treeshaking is worse than no suite                |
+| 9   | Lighthouse via `@lhci/cli` `collect --numberOfRuns=5`, median run per app on `/table`; report FCP/LCP/TBT/transferred bytes; TBT labeled "lab INP proxy"; no INP claims                                                                                   | LHCI default median aggregation; lab-INP claims are the canonical callout                       |
+| 10  | a11y via `@axe-core/playwright` sweep over all 3 routes × 3 apps; **gate**: cascade 0 violations (CI-enforced); competitor counts reported as parity context with detection-ceiling disclaimer                                                            | Decision 6 in roadmap — never a scoreboard vs Carbon                                            |
+| 11  | One results artifact: `apps/bench/results/results.json` (schema in `runner/src/types.ts`) with `meta` block (cpu/cores/mem/os/chrome/node/lockfileHash/throttle/date). Generated reports: root `BENCHMARKS.md`, docs page, landing link                   | Single source of truth; metadata makes runs auditable                                           |
+| 12  | Report generator renders every measured metric — zero filtering logic; ties/losses shown with the same prominence as wins                                                                                                                                 | Roadmap decision 8; the credibility feature                                                     |
+| 13  | CI `bench.yml`: workflow_dispatch + weekly cron; enforces deterministic metrics only (bundle ±2%, a11y zero, render counts exact); timing suite runs as informational artifact; committed `results.json` timings must come from a local disclosed machine | Hosted-runner variance makes CI timing gates dishonest                                          |
+| 14  | Competitor versions pinned exactly in each app's package.json (not catalog): react 19.2.7 everywhere, `@carbon/react` 1.109.x, tailwindcss 4.x, shadcn-emitted radix versions; shadcn components are committed source                                     | Reproducibility; shadcn model is owned code anyway                                              |
 
 ## Tranche map
 
-| Tranche | File                         | Contents                                                                                                                | Risk                                                  |
-| ------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| T1      | `2026-06-11-v6-tranche-1.md` | Workspace + PROTOCOL.md + cascade app (3 routes) + runner skeleton (app registry, build/serve lifecycle, stats lib + tests, results schema) + protocol conformance spec | Medium (foundations; DataTable API fit)               |
-| T2      | `2026-06-11-v6-tranche-2.md` | shadcn app + carbon app implementing the protocol; conformance green ×3                                                  | Medium (third-party toolchains: tailwind v4, sass)    |
-| T3      | `2026-06-11-v6-tranche-3.md` | Bundle suite: whole-app sizes, component matrix, `sideEffects` fix + treeshake gate                                      | Medium (treeshake findings may force build change)    |
-| T4      | `2026-06-11-v6-tranche-4.md` | Runtime suite: CDP trace measurement + parser tests, scenario runner, render-count suite                                 | High (trace parsing, throttle, flake control)         |
-| T5      | `2026-06-11-v6-tranche-5.md` | Lighthouse suite + a11y parity sweep                                                                                     | Low                                                   |
-| T6      | `2026-06-11-v6-tranche-6.md` | Report generator (BENCHMARKS.md), METHODOLOGY.md, docs page, landing link, bench.yml, first real run, DoD                | Low                                                   |
+| Tranche | File                         | Contents                                                                                                                                                                | Risk                                               |
+| ------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| T1      | `2026-06-11-v6-tranche-1.md` | Workspace + PROTOCOL.md + cascade app (3 routes) + runner skeleton (app registry, build/serve lifecycle, stats lib + tests, results schema) + protocol conformance spec | Medium (foundations; DataTable API fit)            |
+| T2      | `2026-06-11-v6-tranche-2.md` | shadcn app + carbon app implementing the protocol; conformance green ×3                                                                                                 | Medium (third-party toolchains: tailwind v4, sass) |
+| T3      | `2026-06-11-v6-tranche-3.md` | Bundle suite: whole-app sizes, component matrix, `sideEffects` fix + treeshake gate                                                                                     | Medium (treeshake findings may force build change) |
+| T4      | `2026-06-11-v6-tranche-4.md` | Runtime suite: CDP trace measurement + parser tests, scenario runner, render-count suite                                                                                | High (trace parsing, throttle, flake control)      |
+| T5      | `2026-06-11-v6-tranche-5.md` | Lighthouse suite + a11y parity sweep                                                                                                                                    | Low                                                |
+| T6      | `2026-06-11-v6-tranche-6.md` | Report generator (BENCHMARKS.md), METHODOLOGY.md, docs page, landing link, bench.yml, first real run, DoD                                                               | Low                                                |
 
 ## Cross-cutting rules (every tranche)
 
 1. **CLAUDE.md applies to library code only.** `bench-app-shadcn` / `bench-app-carbon` are
-   *competitor consumer apps* — `useState`/`useEffect` there is the point (idiomatic usage).
+   _competitor consumer apps_ — `useState`/`useEffect` there is the point (idiomatic usage).
    `bench-app-cascade` uses signals (idiomatic cascade). None of the bench apps are components —
    the component authoring rules don't bind them, but lint/format must still pass.
 2. **Gate before committing** (from CLAUDE.md): `pnpm exec vp check` → `pnpm build` →
@@ -174,8 +174,8 @@ Frame: zero-violations parity gate for cascade; competitor numbers as context on
 1. **cascade DataTable API fit**: the protocol needs "all N rows in the DOM". DataTable
    paginates internally — T1 must re-verify its props (`packages/components/src/data-table/
 data-table.tsx`) and set page size = row count (or the documented "no pagination" mode). If
-   `content-visibility: auto` rows skew paint timings vs competitors, that's *the library
-   shipping CSS* — keep it, disclose it in METHODOLOGY.md.
+   `content-visibility: auto` rows skew paint timings vs competitors, that's _the library
+   shipping CSS_ — keep it, disclose it in METHODOLOGY.md.
 2. **shadcn CLI is interactive/network-dependent**: run `pnpm dlx shadcn@latest init` +
    `add` with non-interactive flags; if that fails in the sandbox, vendor the component sources
    from the shadcn registry (they're owned code by design). Either way the result is committed.
@@ -185,7 +185,7 @@ data-table.tsx`) and set page size = row count (or the documented "no pagination
 4. **Sass compile in vp/Vite**: needs `sass` (or `sass-embedded`) dev dep and modern-compiler
    API; Carbon docs require `includePaths: ['node_modules']` equivalents (`loadPaths`).
 5. **Trace parsing flake**: traces can contain stray `EventDispatch` events. Scope parsing to
-   events after an explicit `performance.mark`-injected trace event or take the *last* click
+   events after an explicit `performance.mark`-injected trace event or take the _last_ click
    dispatch before the paint cluster; 200ms quiet window before `stopTracing`. The parser ships
    with fixture-based unit tests (T4).
 6. **Profiler counts in dev mode**: dev builds double-invoke render functions in StrictMode —

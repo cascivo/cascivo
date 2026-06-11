@@ -8,7 +8,7 @@
 
 ## Vision
 
-The landing page must do what ui.shadcn.com does — make visitors *feel* the quality in the
+The landing page must do what ui.shadcn.com does — make visitors _feel_ the quality in the
 first two seconds — without copying it. shadcn's homepage is a dense, realistic finance
 dashboard built from its own components, ~40 words of marketing copy, one CTA. Our equivalent
 is **a live ops console rendered by cascade, where the page itself demonstrates the three
@@ -33,13 +33,13 @@ in the master plan.
 
 ## The diagnosis
 
-The current landing is *correct* but not *felt*:
+The current landing is _correct_ but not _felt_:
 
 1. **It tells.** "Six reasons to switch" is a feature-card wall — the weakest pattern in the
    Evil Martians study. shadcn ships zero feature cards.
 2. **The component grid shows parts, not products.** 12 isolated tiles prove we have buttons;
    they don't prove buttons compose into software. Visitors evaluate composition quality.
-3. **The hero leads with a competitor's name** ("ships like *shadcn*") — derivative framing
+3. **The hero leads with a competitor's name** ("ships like _shadcn_") — derivative framing
    for a page whose job is to establish identity.
 4. **The AI story is a sentence, not an artifact.** We genuinely have manifests, MCP, skills,
    llms.txt, CascadeView — none are clickable/copyable on the page. Mantine puts its AI section
@@ -53,13 +53,13 @@ The current landing is *correct* but not *felt*:
 
 ## Workstreams
 
-| #   | Workstream                | Tranche | Summary                                                                                                                                                                                                       |
-| --- | ------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Shell, hero, brand        | T1      | Slim sticky header (dogfooded ShellHeader: Docs/Storybook/GitHub + 5-theme switcher), new hero copy ("Native to the web. Fluent in agent."), copyable install command, principles strip replacing the six feature cards, footer with llms.txt/registry.json links, favicon + OG image + meta. |
-| B   | Demo wall                 | T2      | "Relay" deploy-ops console: AppShell/SideNav/ShellHeader frame, KPI cards, area chart + sparklines, deploys DataTable, incident Alert, feature-flag Switch card, deploy Modal + Toast — realistic fixture data, one warm-scoped card proving per-region theming. Replaces ComponentGrid. |
-| C   | Signals proof             | T3      | "Count the re-renders" section: cascade input/form vs useState twin, live Profiler commit counters, honest microcopy; conditional benchmark teaser reading v6 `results.json` when present.                     |
-| D   | Agent layer               | T4      | "Your agent already knows cascade": real Button `component.meta.ts` excerpt, MCP install tabs (Claude Code/Cursor/VS Code) with copy buttons, example agent prompt, CascadeView JSON→UI demo retargeted to a slice of the Relay console.                                                  |
-| E   | Quality gates + polish    | T5      | Landing Playwright suite (smoke + axe zero violations), Lighthouse pass, prefers-reduced-motion audit, responsive pass, screenshot-driven design review loop, copy edit, DoD verification.                     |
+| #   | Workstream             | Tranche | Summary                                                                                                                                                                                                                                                                                       |
+| --- | ---------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Shell, hero, brand     | T1      | Slim sticky header (dogfooded ShellHeader: Docs/Storybook/GitHub + 5-theme switcher), new hero copy ("Native to the web. Fluent in agent."), copyable install command, principles strip replacing the six feature cards, footer with llms.txt/registry.json links, favicon + OG image + meta. |
+| B   | Demo wall              | T2      | "Relay" deploy-ops console: AppShell/SideNav/ShellHeader frame, KPI cards, area chart + sparklines, deploys DataTable, incident Alert, feature-flag Switch card, deploy Modal + Toast — realistic fixture data, one warm-scoped card proving per-region theming. Replaces ComponentGrid.      |
+| C   | Signals proof          | T3      | "Count the re-renders" section: cascade input/form vs useState twin, live Profiler commit counters, honest microcopy; conditional benchmark teaser reading v6 `results.json` when present.                                                                                                    |
+| D   | Agent layer            | T4      | "Your agent already knows cascade": real Button `component.meta.ts` excerpt, MCP install tabs (Claude Code/Cursor/VS Code) with copy buttons, example agent prompt, CascadeView JSON→UI demo retargeted to a slice of the Relay console.                                                      |
+| E   | Quality gates + polish | T5      | Landing Playwright suite (smoke + axe zero violations), Lighthouse pass, prefers-reduced-motion audit, responsive pass, screenshot-driven design review loop, copy edit, DoD verification.                                                                                                    |
 
 ## Decisions baked in
 
@@ -72,7 +72,7 @@ The current landing is *correct* but not *felt*:
    (docs) + GitHub; copyable `npx cascade add button` beneath.
 4. **Feature cards die.** Replaced by a four-item principles strip (one line each: Platform
    CSS / Signals, counted / Owned code / Agent-ready) — each line links to the section that
-   *demonstrates* it.
+   _demonstrates_ it.
 5. **The theme switcher is the hero interaction.** All five themes (not three), defaulting to
    `prefers-color-scheme`; the demo wall re-skins live; one card stays warm-scoped to prove
    `data-theme` works on any element.
@@ -82,7 +82,7 @@ The current landing is *correct* but not *felt*:
 7. **No testimonials, no logos, no stats we don't have.** Absence beats weak proof (shadcn
    model). GitHub link carries the social weight.
 8. **Anti-slop constraints are hard rules**: no gradients, no glassmorphism, no emoji bullets,
-   no icon-grid features, system font stack stays (zero webfonts — the performance *is* the
+   no icon-grid features, system font stack stays (zero webfonts — the performance _is_ the
    brand), mono accents via `--cascade-font-mono` for eyebrows/labels/numbers.
 9. **The page is the benchmark.** Landing keeps dogfooding cascade exclusively; served CSS
    shows `@layer`/`:has()`/`@container` to anyone who opens DevTools; motion is CSS-only and
@@ -120,7 +120,7 @@ The current landing is *correct* but not *felt*:
 ## Deferred (do not re-litigate in v7)
 
 - Blocks gallery page (`/blocks`-style) — needs block registry entries first; v8 candidate.
-- Interactive theme *builder* on landing (shadcn `/create`-style customizer) — big; the
+- Interactive theme _builder_ on landing (shadcn `/create`-style customizer) — big; the
   `cascade:create-theme` skill covers the workflow for now.
 - "Open in playground" per demo region (depends on docs playground deep-linking).
 - Benchmark headline numbers hard-wired into the hero — only the conditional teaser ships in
