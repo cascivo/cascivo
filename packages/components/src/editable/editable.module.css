@@ -1,0 +1,84 @@
+@layer cascade.component {
+  .wrapper {
+    display: inline-flex;
+    align-items: center;
+    min-width: 4rem;
+  }
+
+  .preview {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascade-space-1-5);
+    padding-block: var(--cascade-space-0-5);
+    padding-inline: var(--cascade-space-1);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--cascade-radius-sm);
+    font-family: var(--cascade-font-sans);
+    font-size: inherit;
+    color: var(--cascade-color-text);
+    cursor: pointer;
+    text-align: start;
+    transition: border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover:not(:disabled) {
+      border-color: var(--cascade-color-border);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cascade-color-accent);
+      outline-offset: 1px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .preview-text {
+    min-width: 1ch;
+  }
+
+  .placeholder {
+    color: var(--cascade-color-text-muted);
+  }
+
+  .edit-icon {
+    display: block;
+    width: 0.875rem;
+    height: 0.875rem;
+    background-color: var(--cascade-color-text-muted);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/%3E%3Cpath d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/%3E%3Cpath d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    opacity: 0;
+    transition: opacity var(--cascade-duration-100) var(--cascade-ease-out);
+
+    .preview:hover & {
+      opacity: 1;
+    }
+  }
+
+  .editing {
+    .input {
+      width: 100%;
+      min-width: 4rem;
+      padding-block: var(--cascade-space-0-5);
+      padding-inline: var(--cascade-space-1);
+      font-family: var(--cascade-font-sans);
+      font-size: inherit;
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-surface);
+      border: 1px solid var(--cascade-color-accent);
+      border-radius: var(--cascade-radius-sm);
+      box-shadow: var(--cascade-focus-ring);
+      outline: none;
+    }
+  }
+}
