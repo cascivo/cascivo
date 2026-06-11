@@ -25,15 +25,15 @@ mid-stream (decision 7).
 
 **Left-border state indicators (the cliché to remove):**
 
-| Component | File | Rule | Width |
-|---|---|---|---|
-| Alert | `packages/components/src/alert/alert.module.css:7,13-31` | `border-inline-start-width: 3px` + variant colors | 3px |
-| Toast | `packages/components/src/toast/toast.module.css:26,51-59` | same pattern | 3px |
-| SideNav | `packages/components/src/side-nav/side-nav.module.css:93,115` | `2px solid transparent` → accent when active | 2px |
-| ShellHeader `.navLink` | `shell-header.module.css:100,116` | `3px solid transparent` → accent | 3px |
-| ShellHeader `.navMenuTrigger` | `shell-header.module.css:135,154` | same | 3px |
-| ShellHeader `.navMenuItem` | `shell-header.module.css:206,217` | same | 3px |
-| Switcher | `packages/components/src/switcher/switcher.module.css:20,36` | `2px solid transparent` → accent | 2px |
+| Component                     | File                                                          | Rule                                              | Width |
+| ----------------------------- | ------------------------------------------------------------- | ------------------------------------------------- | ----- |
+| Alert                         | `packages/components/src/alert/alert.module.css:7,13-31`      | `border-inline-start-width: 3px` + variant colors | 3px   |
+| Toast                         | `packages/components/src/toast/toast.module.css:26,51-59`     | same pattern                                      | 3px   |
+| SideNav                       | `packages/components/src/side-nav/side-nav.module.css:93,115` | `2px solid transparent` → accent when active      | 2px   |
+| ShellHeader `.navLink`        | `shell-header.module.css:100,116`                             | `3px solid transparent` → accent                  | 3px   |
+| ShellHeader `.navMenuTrigger` | `shell-header.module.css:135,154`                             | same                                              | 3px   |
+| ShellHeader `.navMenuItem`    | `shell-header.module.css:206,217`                             | same                                              | 3px   |
+| Switcher                      | `packages/components/src/switcher/switcher.module.css:20,36`  | `2px solid transparent` → accent                  | 2px   |
 
 Structural 1px `border-inline-start` (KEEP): number-input stepper divider, header-panel edge,
 sheet edge.
@@ -56,9 +56,10 @@ none/sm/md/lg, sub-components CardHeader/Title/Content/Footer. No selection capa
 
 **Input** (`packages/components/src/input/`): label/hint/error/size only, bare `<input>`. No icon
 support. **InputGroup** (`packages/components/src/input-group/`): `prefix`/`suffix` ReactNode
-rendered as *boxed addons* (bordered, bg-subtle, outside the field) — not inline icons.
+rendered as _boxed addons_ (bordered, bg-subtle, outside the field) — not inline icons.
 
 **Storybook** (`apps/storybook/`, SB 10.4.2, addon-a11y only):
+
 - Theme switching: custom `withTheme` decorator (`.storybook/preview.tsx:19-40`) wraps stories in
   `<div data-theme=…>`. Two defects: (a) Popover-API/top-layer elements (Menu, Tooltip, Modal,
   HeaderPanel…) escape the wrapper → unthemed; (b) document `<html>/<body>` never themed. Themes
@@ -71,6 +72,7 @@ rendered as *boxed addons* (bordered, bg-subtle, outside the field) — not inli
 
 **Docs** (`apps/docs/`, Preact + preact-iso, React components via preact/compat alias in
 `vite.config.ts:11-23`):
+
 - Sidebar/headers are hand-rolled HTML/CSS in `src/Layout.tsx:33-97` (not the library's SideNav).
 - Nav from `src/nav.ts` (registry-driven, grouped by category, 5 categories shown, charts/layouts
   excluded). Theme on `document.documentElement` (`App.tsx`).
@@ -99,45 +101,45 @@ tiles, headline literally says "All 20 components, three themes" — stale (95 e
   top-nav = 2px bottom underline + animated hover pill; Radix TabNav = 2px accent underline;
   alerts without left border = full 1px border, colored icon + title, clean bg (shadcn/Geist).
 - **Input adornments**: modern shape is composition — shadcn `InputGroup > InputGroupAddon
-  (align inline-start/inline-end)`, Radix `TextField.Slot side`. Props-based (`startAdornment`)
+(align inline-start/inline-end)`, Radix `TextField.Slot side`. Props-based (`startAdornment`)
   survives only in MUI.
 - **Selectable cards**: hidden native input inside a label-styled card (Ark/Carbon) or Radix
   RadioGroup + `sr-only` item; selected = border color/weight + subtle tint; control glyph stays
   visible; `role=radiogroup` + arrow keys for single-select.
 - **Storybook theming**: `@storybook/addon-themes` → `withThemeByDataAttribute({ themes,
-  defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
+defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
 
 ---
 
 ## Decisions
 
-| # | Decision | Rationale |
-|---|----------|-----------|
-| 1 | Radius one-knob: semantic tokens derive from `--cascade-radius-base` via multipliers; component CSS migrates off primitive radius tokens onto semantic ones | Makes the theme radius knob actually work (34 hard-wired `radius-sm` uses today); matches shadcn/Radix |
-| 2 | Light/dark `--cascade-radius-base: 0.375rem` (6px controls), card ≈ 10px, modal 12px. Warm stays rounder (base 8px). Flat 0, Minimal unchanged | The "too rounded" fix with theme character preserved |
-| 3 | New `--cascade-color-primary` / `--cascade-color-primary-fg` semantic pair; Button primary + primary-actions consume it. Light: near-black; dark: near-white; warm: warm accent. `--cascade-color-accent` keeps focus/links/active-tint/info | Monochrome-primary modern look without breaking accent-dependent components |
-| 4 | Dark theme borders → alpha hairlines (`oklch(1 0 0 / 10%)`, strong 16%) | shadcn/Linear dark-mode signature |
-| 5 | Shadow rationing: surfaces ≤ xs; new `--cascade-shadow-overlay` (one soft large shadow) for all floating layers; elevated card keeps a restrained md | "lowest elevation that reads as elevated" (Geist) |
-| 6 | Focus ring: `0 0 0 3px color-mix(in oklch, var(--cascade-color-accent) 55%, transparent)` + border-color recolor on the control | Soft halo, passes 3:1 unlike shadcn's 50% |
-| 7 | Active states: nav/list = bg-tint + font-medium (token `--cascade-color-active-bg`); horizontal header nav = 2px **bottom** underline; alerts/toasts = full hairline + colored icon/title + 6% tinted bg | Per-context pattern palette, no bars |
-| 8 | Input adornments via composition: new `InputGroupAddon` (`align`) child of existing `InputGroup`; boxed `prefix`/`suffix` props stay for back-compat | shadcn-familiar; zero breaking change |
-| 9 | Selectable cards = new components `RadioCardGroup`/`RadioCard`/`CheckboxCard` (not a Card prop): hidden native inputs, visible glyph, group manages name/value | Form semantics + a11y come free; Card stays presentational |
-| 10 | Storybook theming replaced wholesale by addon-themes with `parentSelector: 'html'`; custom side-by-side toolbar item dropped (deferred) | Fixes top-layer popovers; standard tooling |
-| 11 | Storybook default `layout: 'centered'`; shared `widthFor` decorator caps form-control stories at 24rem; shell/page stories opt into `fullscreen` | Realistic widths |
-| 12 | One taxonomy: registry `meta.category` → Storybook title prefix and docs sidebar groups. Shell family gets `Shell/` prefix in Storybook (still `navigation` in registry) | "Same grouping on docs and landing page" |
-| 13 | Landing curated (12 tiles + live registry count); docs stay complete | Decision 6 in roadmap; flagged as assumption |
-| 14 | Visual baselines regenerate **once**, in T6, with human review | Avoid churning 285 PNGs every tranche |
+| #   | Decision                                                                                                                                                                                                                                     | Rationale                                                                                              |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1   | Radius one-knob: semantic tokens derive from `--cascade-radius-base` via multipliers; component CSS migrates off primitive radius tokens onto semantic ones                                                                                  | Makes the theme radius knob actually work (34 hard-wired `radius-sm` uses today); matches shadcn/Radix |
+| 2   | Light/dark `--cascade-radius-base: 0.375rem` (6px controls), card ≈ 10px, modal 12px. Warm stays rounder (base 8px). Flat 0, Minimal unchanged                                                                                               | The "too rounded" fix with theme character preserved                                                   |
+| 3   | New `--cascade-color-primary` / `--cascade-color-primary-fg` semantic pair; Button primary + primary-actions consume it. Light: near-black; dark: near-white; warm: warm accent. `--cascade-color-accent` keeps focus/links/active-tint/info | Monochrome-primary modern look without breaking accent-dependent components                            |
+| 4   | Dark theme borders → alpha hairlines (`oklch(1 0 0 / 10%)`, strong 16%)                                                                                                                                                                      | shadcn/Linear dark-mode signature                                                                      |
+| 5   | Shadow rationing: surfaces ≤ xs; new `--cascade-shadow-overlay` (one soft large shadow) for all floating layers; elevated card keeps a restrained md                                                                                         | "lowest elevation that reads as elevated" (Geist)                                                      |
+| 6   | Focus ring: `0 0 0 3px color-mix(in oklch, var(--cascade-color-accent) 55%, transparent)` + border-color recolor on the control                                                                                                              | Soft halo, passes 3:1 unlike shadcn's 50%                                                              |
+| 7   | Active states: nav/list = bg-tint + font-medium (token `--cascade-color-active-bg`); horizontal header nav = 2px **bottom** underline; alerts/toasts = full hairline + colored icon/title + 6% tinted bg                                     | Per-context pattern palette, no bars                                                                   |
+| 8   | Input adornments via composition: new `InputGroupAddon` (`align`) child of existing `InputGroup`; boxed `prefix`/`suffix` props stay for back-compat                                                                                         | shadcn-familiar; zero breaking change                                                                  |
+| 9   | Selectable cards = new components `RadioCardGroup`/`RadioCard`/`CheckboxCard` (not a Card prop): hidden native inputs, visible glyph, group manages name/value                                                                               | Form semantics + a11y come free; Card stays presentational                                             |
+| 10  | Storybook theming replaced wholesale by addon-themes with `parentSelector: 'html'`; custom side-by-side toolbar item dropped (deferred)                                                                                                      | Fixes top-layer popovers; standard tooling                                                             |
+| 11  | Storybook default `layout: 'centered'`; shared `widthFor` decorator caps form-control stories at 24rem; shell/page stories opt into `fullscreen`                                                                                             | Realistic widths                                                                                       |
+| 12  | One taxonomy: registry `meta.category` → Storybook title prefix and docs sidebar groups. Shell family gets `Shell/` prefix in Storybook (still `navigation` in registry)                                                                     | "Same grouping on docs and landing page"                                                               |
+| 13  | Landing curated (12 tiles + live registry count); docs stay complete                                                                                                                                                                         | Decision 6 in roadmap; flagged as assumption                                                           |
+| 14  | Visual baselines regenerate **once**, in T6, with human review                                                                                                                                                                               | Avoid churning 285 PNGs every tranche                                                                  |
 
 ## Tranche map
 
-| Tranche | File | Contents | Risk |
-|---|---|---|---|
-| T1 | `2026-06-11-v5-tranche-1.md` | Tokens + themes: radius knob, primary split, alpha borders, shadow rationing, focus ring, semantic-token migration in component CSS | Medium (visual blast radius, mechanical) |
-| T2 | `2026-06-11-v5-tranche-2.md` | Active-state redesign: Alert, Toast, SideNav, Switcher, ShellHeader (3 elements) | Low (CSS only, tests assert data-attrs) |
-| T3 | `2026-06-11-v5-tranche-3.md` | InputGroupAddon; RadioCardGroup/RadioCard/CheckboxCard + meta/registry/stories/docs | Medium (new API surface) |
-| T4 | `2026-06-11-v5-tranche-4.md` | Storybook: addon-themes, layout/widths, grouping all stories, 16 chart stories | Low |
-| T5 | `2026-06-11-v5-tranche-5.md` | Docs shell dogfood (ShellHeader+AppShell+SideNav), landing curation | Medium (Preact compat, snapshot selectors) |
-| T6 | `2026-06-11-v5-tranche-6.md` | Compliance audit, drift sweep, visual baseline regeneration + review, DoD verification | Low |
+| Tranche | File                         | Contents                                                                                                                            | Risk                                       |
+| ------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| T1      | `2026-06-11-v5-tranche-1.md` | Tokens + themes: radius knob, primary split, alpha borders, shadow rationing, focus ring, semantic-token migration in component CSS | Medium (visual blast radius, mechanical)   |
+| T2      | `2026-06-11-v5-tranche-2.md` | Active-state redesign: Alert, Toast, SideNav, Switcher, ShellHeader (3 elements)                                                    | Low (CSS only, tests assert data-attrs)    |
+| T3      | `2026-06-11-v5-tranche-3.md` | InputGroupAddon; RadioCardGroup/RadioCard/CheckboxCard + meta/registry/stories/docs                                                 | Medium (new API surface)                   |
+| T4      | `2026-06-11-v5-tranche-4.md` | Storybook: addon-themes, layout/widths, grouping all stories, 16 chart stories                                                      | Low                                        |
+| T5      | `2026-06-11-v5-tranche-5.md` | Docs shell dogfood (ShellHeader+AppShell+SideNav), landing curation                                                                 | Medium (Preact compat, snapshot selectors) |
+| T6      | `2026-06-11-v5-tranche-6.md` | Compliance audit, drift sweep, visual baseline regeneration + review, DoD verification                                              | Low                                        |
 
 ## Cross-cutting rules (every tranche)
 

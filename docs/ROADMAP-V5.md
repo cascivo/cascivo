@@ -24,7 +24,7 @@ Untitled UI focus rings. Full findings are embedded in the master plan.
 What makes the current design read as "standard / AI generated":
 
 1. **Too round.** Light theme radius base is 10px with 16px cards. The 2026 dev-tool look is
-   4–6px controls, ≤10px cards (shadcn base 10px *but* 6px sm-controls; Linear 2–6px; Geist 6px).
+   4–6px controls, ≤10px cards (shadcn base 10px _but_ 6px sm-controls; Linear 2–6px; Geist 6px).
 2. **The thick left border.** Seven components mark active/emphasis with a 2–3px
    `border-inline-start` (Alert, Toast, SideNav, Switcher, ShellHeader ×3). It's Carbon's 2018
    signature and the single most recognizable "design-system default" cliché. Modern systems use
@@ -39,14 +39,14 @@ What makes the current design read as "standard / AI generated":
 
 ## Workstreams
 
-| # | Workstream | Tranche | Summary |
-|---|-----------|---------|---------|
-| A | Design language "sharp & quiet" | T1 | Radius retune (6px controls), primary/accent split (monochrome primary), alpha hairline dark borders, shadow rationing, focus halo. Theme files + tokens only. |
-| B | Active-state redesign | T2 | Kill the left-border pattern in all 7 components. Alert/Toast → full hairline + tinted icon/title. SideNav/Switcher → bg-tint pill + font-medium. ShellHeader nav → bottom underline (it's a *horizontal* nav — a left border there was always wrong). |
-| C | Component capabilities | T3 | InputGroup v2: inline icon adornments (`InputGroupAddon align="inline-start|inline-end"`, shadcn-style composition). Selectable cards: `RadioCardGroup`/`RadioCard` + `CheckboxCard` with hidden native inputs and always-visible control glyph (Carbon v11 guidance). |
-| D | Storybook overhaul | T4 | Theme switcher via `@storybook/addon-themes` (`withThemeByDataAttribute`, `parentSelector: 'html'` so top-layer popovers are themed too). Centered layout with realistic widths. Category grouping for all ~63 stories (same taxonomy as docs). 16 chart stories. |
-| E | Docs + landing | T5 | Docs app dogfoods the v4 shell (ShellHeader + AppShell + SideNav) instead of its custom sidebar. Shared category grouping. Landing: curated showcase instead of the stale hardcoded "All 20 components" grid. |
-| — | Integration sweep + DoD | T6 | Visual baseline regeneration (95×3 snapshots) with human-eye review, drift gates, CLAUDE.md compliance audit, this roadmap's DoD checklist. |
+| #   | Workstream                      | Tranche | Summary                                                                                                                                                                                                                                                           |
+| --- | ------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Design language "sharp & quiet" | T1      | Radius retune (6px controls), primary/accent split (monochrome primary), alpha hairline dark borders, shadow rationing, focus halo. Theme files + tokens only.                                                                                                    |
+| B   | Active-state redesign           | T2      | Kill the left-border pattern in all 7 components. Alert/Toast → full hairline + tinted icon/title. SideNav/Switcher → bg-tint pill + font-medium. ShellHeader nav → bottom underline (it's a _horizontal_ nav — a left border there was always wrong).            |
+| C   | Component capabilities          | T3      | InputGroup v2: inline icon adornments (`InputGroupAddon align="inline-start                                                                                                                                                                                       | inline-end"`, shadcn-style composition). Selectable cards: `RadioCardGroup`/`RadioCard`+`CheckboxCard` with hidden native inputs and always-visible control glyph (Carbon v11 guidance). |
+| D   | Storybook overhaul              | T4      | Theme switcher via `@storybook/addon-themes` (`withThemeByDataAttribute`, `parentSelector: 'html'` so top-layer popovers are themed too). Centered layout with realistic widths. Category grouping for all ~63 stories (same taxonomy as docs). 16 chart stories. |
+| E   | Docs + landing                  | T5      | Docs app dogfoods the v4 shell (ShellHeader + AppShell + SideNav) instead of its custom sidebar. Shared category grouping. Landing: curated showcase instead of the stale hardcoded "All 20 components" grid.                                                     |
+| —   | Integration sweep + DoD         | T6      | Visual baseline regeneration (95×3 snapshots) with human-eye review, drift gates, CLAUDE.md compliance audit, this roadmap's DoD checklist.                                                                                                                       |
 
 ## Decisions baked in
 
@@ -80,7 +80,7 @@ What makes the current design read as "standard / AI generated":
       ≥3:1 contrast against adjacent surface.
 - [ ] Dark theme borders are alpha hairlines.
 - [ ] `<InputGroup><InputGroupAddon><Search/></InputGroupAddon><Input/></InputGroup>` renders a
-      leading icon *inside* the field border; trailing variant works; focus ring sits on the group.
+      leading icon _inside_ the field border; trailing variant works; focus ring sits on the group.
 - [ ] `RadioCardGroup` (single) and `CheckboxCard` (multi) ship with hidden native inputs,
       arrow-key/Space keyboard support, visible control glyph, registry + stories + docs entries.
 - [ ] Storybook: toolbar theme switcher works for all five themes including popover/menu
@@ -96,5 +96,5 @@ What makes the current design read as "standard / AI generated":
 - Storybook "side-by-side" theme view (was a custom toolbar item; addon-themes doesn't support
   it — re-add later as a dedicated ThemeGallery story/decorator if missed).
 - Landing migration to Preact (stays native React).
-- New chart types or chart redesign (only *stories* for existing 16 charts are in scope).
+- New chart types or chart redesign (only _stories_ for existing 16 charts are in scope).
 - Docs live demos for the ~70 components that show "No live preview" (separate effort).
