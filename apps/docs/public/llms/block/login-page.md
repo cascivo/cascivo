@@ -14,9 +14,9 @@ npx cascade add block/login-page
 
 ## Props
 
-| Prop       | Type                            | Required | Default | Description                             |
-| ---------- | ------------------------------- | -------- | ------- | --------------------------------------- |
-| `onSubmit` | `(values: LoginValues) => void` | no       | —       | Called with valid form values on submit |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onSubmit` | `(values: LoginValues) => void` | no | — | Called with valid form values on submit |
 
 ## Examples
 

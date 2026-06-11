@@ -20,14 +20,14 @@ npx cascade add textarea
 
 ## Props
 
-| Prop       | Type      | Required   | Default | Description |
-| ---------- | --------- | ---------- | ------- | ----------- | ---------- | --- |
-| `label`    | `string`  | no         | —       | —           |
-| `hint`     | `string`  | no         | —       | —           |
-| `error`    | `string`  | no         | —       | —           |
-| `rows`     | `number`  | no         | `4`     | —           |
-| `resize`   | `'none'   | 'vertical' | 'both'` | no          | `vertical` | —   |
-| `disabled` | `boolean` | no         | `false` | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | — |
+| `hint` | `string` | no | — | — |
+| `error` | `string` | no | — | — |
+| `rows` | `number` | no | `4` | — |
+| `resize` | `'none' | 'vertical' | 'both'` | no | `vertical` | — |
+| `disabled` | `boolean` | no | `false` | — |
 
 ## Examples
 

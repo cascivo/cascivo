@@ -19,28 +19,23 @@ npx cascade add side-nav
 
 ## Props
 
-| Prop                | Type                           | Required | Default               | Description                                                                                    |
-| ------------------- | ------------------------------ | -------- | --------------------- | ---------------------------------------------------------------------------------------------- |
-| `items`             | `SideNavItem[]`                | yes      | —                     | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
-| `collapsed`         | `boolean`                      | no       | —                     | Controlled collapsed state (rail mode)                                                         |
-| `defaultCollapsed`  | `boolean`                      | no       | `false`               | —                                                                                              |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | no       | —                     | —                                                                                              |
-| `ariaLabel`         | `string`                       | no       | `Side navigation`     | —                                                                                              |
-| `collapseLabel`     | `string`                       | no       | `Collapse navigation` | —                                                                                              |
-| `expandLabel`       | `string`                       | no       | `Expand navigation`   | —                                                                                              |
-| `className`         | `string`                       | no       | —                     | —                                                                                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `SideNavItem[]` | yes | — | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
+| `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
+| `defaultCollapsed` | `boolean` | no | `false` | — |
+| `onCollapsedChange` | `(collapsed: boolean) => void` | no | — | — |
+| `ariaLabel` | `string` | no | `Side navigation` | — |
+| `collapseLabel` | `string` | no | `Collapse navigation` | — |
+| `expandLabel` | `string` | no | `Expand navigation` | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<SideNav
-  items={[
-    { label: 'Home', href: '/', active: true },
-    { label: 'Reports', href: '/reports' },
-  ]}
-/>
+<SideNav items={[{ label: 'Home', href: '/', active: true }, { label: 'Reports', href: '/reports' }]} />
 ```
 
 ### With a group

@@ -19,22 +19,19 @@ npx cascade add radio
 
 ## Props
 
-| Prop       | Type      | Required | Default | Description |
-| ---------- | --------- | -------- | ------- | ----------- |
-| `label`    | `string`  | no       | —       | —           |
-| `value`    | `string`  | yes      | —       | —           |
-| `disabled` | `boolean` | no       | `false` | —           |
-| `name`     | `string`  | no       | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | — |
+| `value` | `string` | yes | — | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `name` | `string` | no | — | — |
 
 ## Examples
 
 ### Group
 
 ```tsx
-<RadioGroup name="plan" defaultValue="pro">
-  <Radio value="pro" label="Pro" />
-  <Radio value="team" label="Team" />
-</RadioGroup>
+<RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>
 ```
 
 ## Design tokens
