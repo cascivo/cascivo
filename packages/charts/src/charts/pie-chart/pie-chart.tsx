@@ -99,7 +99,7 @@ export function PieChart({
                     key={d.id}
                     d={path}
                     fill={color}
-                    stroke="var(--cascade-color-surface, white)"
+                    stroke="var(--cascade-color-surface)"
                     strokeWidth={1}
                     data-series={d.id}
                   />

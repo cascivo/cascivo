@@ -31,7 +31,11 @@ export function niceTicks(min: number, max: number, count = 5): number[] {
   const startIdx = Math.ceil(min / step)
   const endIdx = Math.floor(max / step + 1e-9)
   const ticks: number[] = []
-  for (let i = startIdx; i <= endIdx; i++) ticks.push(i * step)
+  // Round to avoid float noise from large-integer × small-step multiplication
+  const precision = Math.max(0, Math.ceil(-Math.log10(step)) + 2)
+  for (let i = startIdx; i <= endIdx; i++) {
+    ticks.push(parseFloat((i * step).toFixed(precision)))
+  }
   return ticks
 }
 

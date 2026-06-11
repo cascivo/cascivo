@@ -1,24 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { BarChart } from '@cascade-ui/charts'
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 const series = [
   {
-    id: 'q1',
-    label: 'Q1',
-    data: [
-      { x: 'Jan', y: 400 },
-      { x: 'Feb', y: 520 },
-      { x: 'Mar', y: 480 },
-    ],
+    id: 'revenue',
+    label: 'Revenue',
+    data: [42000, 38500, 51200, 47800, 63400, 72100, 68900, 81200, 74600, 89300, 95100, 102400].map(
+      (y, i) => ({ x: MONTHS[i]!, y }),
+    ),
   },
   {
-    id: 'q2',
-    label: 'Q2',
-    data: [
-      { x: 'Jan', y: 340 },
-      { x: 'Feb', y: 460 },
-      { x: 'Mar', y: 510 },
-    ],
+    id: 'cost',
+    label: 'Cost',
+    data: [28000, 25100, 33400, 31200, 41800, 46500, 44200, 52300, 48100, 57600, 61400, 65800].map(
+      (y, i) => ({ x: MONTHS[i]!, y }),
+    ),
   },
 ]
 
@@ -28,7 +26,7 @@ const meta: Meta<typeof BarChart> = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 'min(40rem, 90vw)', padding: '2rem' }}>
+      <div style={{ inlineSize: 'min(48rem, 90vw)', padding: '2rem' }}>
         <Story />
       </div>
     ),
@@ -43,7 +41,7 @@ export const Default: Story = {
     series,
     x: (d) => (d as Pt).x,
     y: (d) => (d as Pt).y,
-    title: 'Quarterly Sales',
+    title: 'Annual Revenue vs Cost',
     legend: true,
   },
 }
@@ -53,7 +51,7 @@ export const Stacked: Story = {
     series,
     x: (d) => (d as Pt).x,
     y: (d) => (d as Pt).y,
-    title: 'Stacked quarterly sales',
+    title: 'Stacked annual revenue vs cost',
     mode: 'stacked',
     legend: true,
   },
@@ -61,10 +59,19 @@ export const Stacked: Story = {
 
 export const Horizontal: Story = {
   args: {
-    series: [series[0]!],
+    series: [
+      {
+        id: 'revenue',
+        label: 'Revenue',
+        data: ['Q1', 'Q2', 'Q3', 'Q4'].map((x, i) => ({
+          x,
+          y: [131700, 183300, 224700, 262900][i]!,
+        })),
+      },
+    ],
     x: (d) => (d as Pt).x,
     y: (d) => (d as Pt).y,
-    title: 'Horizontal bar',
+    title: 'Quarterly revenue',
     orientation: 'horizontal',
   },
 }
