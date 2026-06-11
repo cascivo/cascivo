@@ -1,7 +1,9 @@
-/* Import tokens + all three themes (switching + scoped containers) */
+/* Import tokens + all five themes (switching + scoped containers) */
 @import '@cascade-ui/themes/light';
 @import '@cascade-ui/themes/dark';
 @import '@cascade-ui/themes/warm';
+@import '@cascade-ui/themes/flat';
+@import '@cascade-ui/themes/minimal';
 
 *,
 *::before,

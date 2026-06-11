@@ -1,0 +1,52 @@
+/* Cascade — Flat Theme */
+/* Zero shadows, zero radius, high-contrast borders, vivid green accent */
+
+@import '@cascade-ui/tokens';
+
+@layer cascade.theme {
+  [data-theme='flat'] {
+    color-scheme: light;
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascade-color-background: oklch(1 0 0);
+    --cascade-color-surface: oklch(0.97 0 0);
+    --cascade-color-surface-2: oklch(0.94 0 0);
+
+    /* ── Foreground ───────────────────────────────────── */
+    --cascade-color-foreground: oklch(0.1 0 0);
+    --cascade-color-foreground-muted: oklch(0.4 0 0);
+
+    /* ── Accent — vivid green ────────────────────────── */
+    --cascade-color-accent: oklch(0.5 0.2 145);
+    --cascade-color-accent-foreground: oklch(1 0 0);
+    --cascade-color-accent-hover: oklch(0.45 0.21 145);
+
+    /* ── Borders — high contrast ─────────────────────── */
+    --cascade-border-subtle: oklch(0.7 0 0);
+    --cascade-border-default: oklch(0.4 0 0);
+    --cascade-border-strong: oklch(0.1 0 0);
+
+    /* ── Radius — zero ───────────────────────────────── */
+    --cascade-radius-base: 0;
+    --cascade-radius-control: 0;
+    --cascade-radius-surface: 0;
+    --cascade-radius-indicator: 0;
+    --cascade-radius-full: 0;
+
+    /* ── Shadows — none ──────────────────────────────── */
+    --cascade-shadow-xs: none;
+    --cascade-shadow-sm: none;
+    --cascade-shadow-md: none;
+    --cascade-shadow-lg: none;
+
+    /* ── Focus ring ───────────────────────────────────── */
+    --cascade-ring-width: 2px;
+    --cascade-ring-offset: 0px;
+    --cascade-ring-color: oklch(0.5 0.2 145);
+
+    /* ── Status colors ───────────────────────────────── */
+    --cascade-color-error: oklch(0.52 0.2 22);
+    --cascade-color-warning: oklch(0.6 0.16 75);
+    --cascade-color-success: oklch(0.52 0.18 145);
+  }
+}

@@ -1,0 +1,52 @@
+/* Cascade — Minimal Theme */
+/* Very subtle shadows, rounder radius, near-invisible borders, monochrome accent */
+
+@import '@cascade-ui/tokens';
+
+@layer cascade.theme {
+  [data-theme='minimal'] {
+    color-scheme: light;
+
+    /* ── Surface — warm off-white ─────────────────────── */
+    --cascade-color-background: oklch(0.98 0.005 80);
+    --cascade-color-surface: oklch(0.965 0.006 80);
+    --cascade-color-surface-2: oklch(0.95 0.007 80);
+
+    /* ── Foreground ───────────────────────────────────── */
+    --cascade-color-foreground: oklch(0.2 0.01 80);
+    --cascade-color-foreground-muted: oklch(0.55 0.015 80);
+
+    /* ── Accent — monochrome ─────────────────────────── */
+    --cascade-color-accent: oklch(0.25 0.01 80);
+    --cascade-color-accent-foreground: oklch(0.98 0.005 80);
+    --cascade-color-accent-hover: oklch(0.2 0.01 80);
+
+    /* ── Borders — near invisible ────────────────────── */
+    --cascade-border-subtle: oklch(0.92 0.005 80);
+    --cascade-border-default: oklch(0.88 0.008 80);
+    --cascade-border-strong: oklch(0.8 0.012 80);
+
+    /* ── Radius — rounder ────────────────────────────── */
+    --cascade-radius-base: 0.75rem;
+    --cascade-radius-control: 0.75rem;
+    --cascade-radius-surface: 1.25rem;
+    --cascade-radius-indicator: 0.375rem;
+    --cascade-radius-full: 9999px;
+
+    /* ── Shadows — very subtle ───────────────────────── */
+    --cascade-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.03);
+    --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.05), 0 1px 2px oklch(0 0 0 / 0.03);
+    --cascade-shadow-md: 0 4px 6px oklch(0 0 0 / 0.04), 0 2px 4px oklch(0 0 0 / 0.03);
+    --cascade-shadow-lg: 0 10px 15px oklch(0 0 0 / 0.05), 0 4px 6px oklch(0 0 0 / 0.03);
+
+    /* ── Focus ring ───────────────────────────────────── */
+    --cascade-ring-width: 2px;
+    --cascade-ring-offset: 3px;
+    --cascade-ring-color: oklch(0.25 0.01 80 / 0.4);
+
+    /* ── Status colors — muted ───────────────────────── */
+    --cascade-color-error: oklch(0.55 0.14 22);
+    --cascade-color-warning: oklch(0.65 0.12 75);
+    --cascade-color-success: oklch(0.55 0.13 145);
+  }
+}

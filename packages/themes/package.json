@@ -9,7 +9,9 @@
   "exports": {
     "./light": "./src/light.css",
     "./dark": "./src/dark.css",
-    "./warm": "./src/warm.css"
+    "./warm": "./src/warm.css",
+    "./flat": "./src/flat.css",
+    "./minimal": "./src/minimal.css"
   },
   "scripts": {
     "build": "echo 'themes: CSS-only, no build'",
