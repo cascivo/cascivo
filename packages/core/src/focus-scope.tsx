@@ -1,6 +1,6 @@
 'use client'
 import { useRef, type ReactNode } from 'react'
-import { useSignalEffect } from './signals.ts'
+import { useSignalEffect, useSignals } from './signals.ts'
 
 const FOCUSABLE = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
@@ -12,6 +12,7 @@ export interface FocusScopeProps {
 }
 
 export function FocusScope({ children, trapped, restoreFocus, autoFocus }: FocusScopeProps) {
+  useSignals()
   const containerRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<Element | null>(null)
 

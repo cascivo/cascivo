@@ -1,6 +1,6 @@
 'use client'
-import { useSignal, cn } from '@cascade-ui/core'
-import { useRef } from 'react'
+import { useSignal, useSignals, cn } from '@cascade-ui/core'
+import { useId } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import { t, builtin } from '@cascade-ui/i18n'
 import styles from './password-input.module.css'
@@ -18,7 +18,7 @@ export interface PasswordInputProps
   labels?: PasswordInputLabels
 }
 
-function getStrengthLevel(value: string): { score: number; label: string } {
+function getStrengthLevel(value: string): { score: number; label: 'weak' | 'fair' | 'good' | 'strong' } {
   if (!value) return { score: 0, label: 'weak' }
   let score = 0
   if (/[a-z]/.test(value)) score++
@@ -27,8 +27,8 @@ function getStrengthLevel(value: string): { score: number; label: string } {
   if (/[^a-zA-Z0-9]/.test(value)) score++
   if (value.length >= 12) score = Math.min(4, score + 1)
   score = Math.min(4, score)
-  const labels = ['weak', 'weak', 'fair', 'good', 'strong'] as const
-  return { score, label: labels[score] }
+  const levels = ['weak', 'weak', 'fair', 'good', 'strong'] as const
+  return { score, label: levels[score] }
 }
 
 export function PasswordInput({
@@ -42,19 +42,19 @@ export function PasswordInput({
   onChange,
   ...props
 }: PasswordInputProps) {
+  useSignals()
   const isRevealed = useSignal(false)
   const inputValue = useSignal(
     typeof value === 'string' ? value : typeof defaultValue === 'string' ? defaultValue : '',
   )
 
-  // Sync controlled value
+  // Sync controlled value during render
   if (typeof value === 'string') {
     inputValue.value = value
   }
 
-  const inputId =
-    id ?? `cascade-password-${Math.random().toString(36).slice(2, 8)}`
-  const idRef = useRef(inputId)
+  const generatedId = useId()
+  const inputId = id ?? `cascade-password-${generatedId}`
 
   const strength = showStrengthMeter ? getStrengthLevel(inputValue.value) : null
 
@@ -77,7 +77,7 @@ export function PasswordInput({
       <div className={styles['input-row']}>
         <input
           {...props}
-          id={idRef.current}
+          id={inputId}
           type={isRevealed.value ? 'text' : 'password'}
           className={styles['input']}
           value={value}
@@ -96,7 +96,6 @@ export function PasswordInput({
           onClick={() => {
             isRevealed.value = !isRevealed.value
           }}
-          tabIndex={0}
         >
           <span className={styles['reveal-icon']} aria-hidden="true" />
         </button>

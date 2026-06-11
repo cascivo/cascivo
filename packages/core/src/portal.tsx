@@ -1,7 +1,7 @@
 'use client'
 import { useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { useSignal, useSignalEffect } from './signals.ts'
+import { useSignal, useSignalEffect, useSignals } from './signals.ts'
 
 export interface PortalProps {
   children: ReactNode
@@ -9,6 +9,7 @@ export interface PortalProps {
 }
 
 export function Portal({ children, container }: PortalProps) {
+  useSignals()
   const mounted = useSignal(false)
   const containerRef = useRef<Element | null>(null)
 
