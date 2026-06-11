@@ -61,6 +61,8 @@ import { ShellHeader } from '@cascade-ui/components/shell-header'
 import { HeaderPanel } from '@cascade-ui/components/header-panel'
 import { Switcher } from '@cascade-ui/components/switcher'
 import { Editable } from '@cascade-ui/components/editable'
+import { RadioCard, RadioCardGroup } from '@cascade-ui/components/radio-card'
+import { CheckboxCard } from '@cascade-ui/components/checkbox-card'
 import { Home, BarChart, Settings, Users, Server, Grid } from '@cascade-ui/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
@@ -749,6 +751,24 @@ export const demos: Record<string, () => JSX.Element> = {
         { label: 'Documentation', href: '#' },
       ]}
     />
+  ),
+  'radio-card': () => (
+    <RadioCardGroup name="plan-demo" defaultValue="pro" label="Plan">
+      <RadioCard value="free" title="Free" description="2 projects, community support" />
+      <RadioCard value="pro" title="Pro" description="Unlimited projects, email support" />
+      <RadioCard value="team" title="Team" description="SSO, audit log, priority support" />
+    </RadioCardGroup>
+  ),
+  'checkbox-card': () => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <CheckboxCard
+        title="Automated backups"
+        description="Daily snapshots, 30-day retention"
+        defaultChecked
+      />
+      <CheckboxCard title="Monitoring" description="Metrics + alerting" />
+      <CheckboxCard title="Audit log" description="Requires Team plan" disabled />
+    </div>
   ),
   'header-panel': () => <HeaderPanelDemo />,
   // ShellHeader is the console application header. Header is the marketing/landing header.
