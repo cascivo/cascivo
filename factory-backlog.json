@@ -380,7 +380,7 @@
     },
     {
       "name": "multi-select",
-      "status": "pending",
+      "status": "in-progress",
       "milestone": null,
       "priority": 43,
       "category": "inputs",
