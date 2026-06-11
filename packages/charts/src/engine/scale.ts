@@ -28,9 +28,10 @@ export function niceTicks(min: number, max: number, count = 5): number[] {
   const candidates = [1, 2, 2.5, 5, 10]
   const mantissa = rawStep / magnitude
   const step = (candidates.find((c) => c >= mantissa) ?? 10) * magnitude
-  const start = Math.ceil(min / step) * step
+  const startIdx = Math.ceil(min / step)
+  const endIdx = Math.floor(max / step + 1e-9)
   const ticks: number[] = []
-  for (let v = start; v <= max + step * 1e-9; v += step) ticks.push(Math.round(v / step) * step)
+  for (let i = startIdx; i <= endIdx; i++) ticks.push(i * step)
   return ticks
 }
 
