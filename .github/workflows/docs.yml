@@ -29,9 +29,6 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Build workspace deps
-        run: pnpm --filter "@cascade-ui/docs^..." run build
-
       - name: Build docs
         run: pnpm exec vp run @cascade-ui/docs#build
 
