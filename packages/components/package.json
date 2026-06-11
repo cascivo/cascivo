@@ -59,7 +59,8 @@
     "./segmented-control": "./src/segmented-control/segmented-control.tsx",
     "./input-group": "./src/input-group/input-group.tsx",
     "./rating-group": "./src/rating-group/rating-group.tsx",
-    "./editable": "./src/editable/editable.tsx"
+    "./editable": "./src/editable/editable.tsx",
+    "./shell-header": "./src/shell-header/shell-header.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
