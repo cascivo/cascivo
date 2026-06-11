@@ -21,6 +21,13 @@
     --cascade-color-accent-foreground: oklch(1 0 0);
     --cascade-color-accent-hover: oklch(0.45 0.21 145);
 
+    /* ── Primary — accent-mapped ─────────────────────── */
+    --cascade-color-primary: var(--cascade-color-accent);
+    --cascade-color-primary-fg: var(--cascade-color-accent-foreground);
+    --cascade-color-primary-hover: var(--cascade-color-accent-hover);
+    --cascade-color-primary-active: oklch(0.4 0.21 145);
+    --cascade-color-active-bg: oklch(0.1 0 0 / 8%);
+
     /* ── Borders — high contrast ─────────────────────── */
     --cascade-border-subtle: oklch(0.7 0 0);
     --cascade-border-default: oklch(0.4 0 0);

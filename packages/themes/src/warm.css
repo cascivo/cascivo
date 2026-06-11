@@ -38,6 +38,13 @@
     --cascade-color-accent-subtle: oklch(0.768 0.145 75 / 0.1);
     --cascade-color-accent-muted: oklch(0.768 0.145 75 / 0.2);
 
+    /* ── Primary — warm keeps its warm fill ── */
+    --cascade-color-primary: var(--cascade-color-accent);
+    --cascade-color-primary-fg: var(--cascade-color-accent-foreground);
+    --cascade-color-primary-hover: var(--cascade-color-accent-hover);
+    --cascade-color-primary-active: var(--cascade-color-accent-active);
+    --cascade-color-active-bg: oklch(0.18 0.015 50 / 7%);
+
     /* ── Destructive ──────────────────────────────────── */
     --cascade-color-destructive: var(--cascade-red-600);
     --cascade-color-destructive-hover: var(--cascade-red-700);
@@ -52,23 +59,21 @@
     --cascade-color-info: var(--cascade-blue-600);
     --cascade-color-info-subtle: var(--cascade-blue-50);
 
-    /* ── Radius (warmer = rounder) ────────────────────── */
+    /* ── Radius — one knob, warmer = rounder (8px) ────── */
     --cascade-radius-base: 0.5rem;
-    --cascade-radius-control: var(--cascade-radius-base);
-    --cascade-radius-surface: calc(var(--cascade-radius-base) * 2);
-    --cascade-radius-component: var(--cascade-radius-lg);
-    --cascade-radius-button: var(--cascade-radius-lg);
-    --cascade-radius-input: var(--cascade-radius-lg);
-    --cascade-radius-card: var(--cascade-radius-xl);
+    --cascade-radius-component: var(--cascade-radius-base);
+    --cascade-radius-button: var(--cascade-radius-base);
+    --cascade-radius-input: var(--cascade-radius-base);
+    --cascade-radius-card: calc(var(--cascade-radius-base) * 1.66);
     --cascade-radius-badge: var(--cascade-radius-full);
-    --cascade-radius-modal: var(--cascade-radius-2xl);
+    --cascade-radius-modal: calc(var(--cascade-radius-base) * 2);
 
     /* ── Shadows ─────────────────────────────────────── */
     --cascade-shadow-sm: 0 1px 3px oklch(0.2 0.04 60 / 0.12);
     --cascade-shadow-md: 0 4px 6px oklch(0.2 0.04 60 / 0.1), 0 2px 4px oklch(0.2 0.04 60 / 0.06);
 
     /* ── Focus ring ───────────────────────────────────── */
-    --cascade-ring-color: oklch(0.768 0.145 75 / 0.5);
+    --cascade-ring-color: color-mix(in oklch, var(--cascade-color-accent) 55%, transparent);
     --cascade-color-focus-ring: oklch(0.768 0.145 75);
     --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
 
