@@ -2916,6 +2916,78 @@
       }
     },
     {
+      "name": "segmented-control",
+      "type": "component",
+      "description": "Mutually exclusive toggle group",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "toggle", "group", "segmented", "input"],
+      "meta": {
+        "name": "SegmentedControl",
+        "description": "Mutually exclusive toggle group",
+        "category": "inputs",
+        "states": ["idle", "selected", "disabled"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "options",
+            "type": "SegmentedControlOption[]",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string) => void",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-color-text",
+          "--cascade-radius-md",
+          "--cascade-radius-sm",
+          "--cascade-shadow-sm"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "toggle", "group", "segmented", "input"]
+      }
+    },
+    {
       "name": "select",
       "type": "component",
       "description": "Native select menu styled to match the design system",

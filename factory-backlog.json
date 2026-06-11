@@ -407,8 +407,8 @@
     },
     {
       "name": "segmented-control",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 46,
       "category": "inputs",
       "attempts": 0,
