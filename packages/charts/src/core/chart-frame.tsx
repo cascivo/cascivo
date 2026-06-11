@@ -6,12 +6,13 @@ import styles from './chart-frame.module.css'
 
 export interface ChartFrameProps {
   title: string
-  description?: string
-  width?: number
-  height?: number
+  description?: string | undefined
+  width?: number | undefined
+  height?: number | undefined
   fallback?: ReactNode
   children: (size: { width: number; height: number }) => ReactNode
-  className?: string
+  className?: string | undefined
+  'data-state'?: string | undefined
 }
 
 export function ChartFrame({
@@ -22,6 +23,7 @@ export function ChartFrame({
   fallback,
   children,
   className,
+  'data-state': dataState,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -32,7 +34,11 @@ export function ChartFrame({
   const h = fixedHeight ?? height.value
 
   return (
-    <div ref={ref} className={[styles['frame'], className].filter(Boolean).join(' ')}>
+    <div
+      ref={ref}
+      className={[styles['frame'], className].filter(Boolean).join(' ')}
+      {...(dataState !== undefined && { 'data-state': dataState })}
+    >
       <svg
         role="img"
         aria-label={title}

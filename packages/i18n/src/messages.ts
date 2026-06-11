@@ -53,8 +53,9 @@ export function translateKey(key: string, params?: Record<string, string | numbe
   const locale = currentLocale()
   const value = catalogs.get(locale)?.get(key) ?? defaults.get(key)
   if (value === undefined) return key
-  // Reuse t's resolution by constructing a transient Message; cast silences variadic-tuple type
-  return t({ key, value }, ...([params] as never))
+  // Reuse t's resolution by constructing a transient Message; untyped by design
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (t as (...a: any[]) => string)({ key, value }, params)
 }
 
 export function t<V extends MessageValue>(message: Message<V>, ...args: TArgs<V>): string {

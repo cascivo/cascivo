@@ -128,8 +128,9 @@ export function LineChart<Datum = { x: number; y: number }>({
             : (series[0]?.data ?? []).map((d) => x(d) as number)
 
           // Pointer move handler — zero React re-renders
-          const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
-            const svgEl = e.currentTarget
+          const handlePointerMove = (e: React.PointerEvent<SVGRectElement>) => {
+            const svgEl = e.currentTarget.closest('svg')
+            if (!svgEl) return
             const rect = svgEl.getBoundingClientRect()
             const pointerX = e.clientX - rect.left - margins.left
             const xVal = usesDate

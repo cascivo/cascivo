@@ -119,7 +119,30 @@ Before finishing any task, verify:
 
 ### Gate Before Committing
 
-**`pnpm build`, `pnpm test`, and `vp check` must all pass before committing.** No exceptions. If any gate fails, fix it before pushing — do not commit broken state.
+**All gates below must pass before committing.** No exceptions. If any fails, fix it before pushing — do not commit broken state.
+
+Run these commands to reproduce CI locally:
+
+```sh
+# 1. Format + lint (mirrors CI "Format + lint" step)
+pnpm exec vp check
+
+# 2. Build all packages (mirrors CI "Build" step)
+pnpm build
+
+# 3. Type check all packages (mirrors CI "Type check" step)
+pnpm exec vp run -r check
+
+# 4. Tests (mirrors CI "Test" step)
+pnpm test
+
+# 5. Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
+pnpm registry:generate && pnpm readme:generate && pnpm llms:generate
+pnpm exec vp check --fix
+git diff --exit-code
+```
+
+All five must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
 ---
 

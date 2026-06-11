@@ -23,10 +23,7 @@ test('10k-row DataTable stays within latency budgets', async ({ page }) => {
   expect(Date.now() - sortStart).toBeLessThan(BUDGET.sort)
 
   // Keystroke feedback: typing must paint the character within budget.
-  const search = page
-    .getByRole('searchbox')
-    .or(page.getByPlaceholder(/search/i))
-    .first()
+  const search = page.locator('main[data-perf-ready] input[type="search"]')
   const typeStart = Date.now()
   await search.pressSequentially('u')
   await expect(search).toHaveValue('u')
