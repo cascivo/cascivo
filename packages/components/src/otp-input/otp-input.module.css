@@ -1,0 +1,44 @@
+@layer cascade.component {
+  .wrapper {
+    display: flex;
+    gap: var(--cascade-space-2);
+    align-items: center;
+  }
+
+  .slot {
+    width: 2.75rem;
+    height: 3rem;
+    font-family: var(--cascade-font-mono, var(--cascade-font-sans));
+    font-size: var(--cascade-text-xl);
+    font-weight: var(--cascade-font-semibold);
+    text-align: center;
+    color: var(--cascade-color-text);
+    background-color: var(--cascade-color-surface);
+    border: 1.5px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-input);
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+    outline: none;
+    caret-color: transparent;
+
+    &:hover:not(:disabled) {
+      border-color: var(--cascade-color-border-strong);
+    }
+
+    &:focus {
+      border-color: var(--cascade-color-accent);
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &[data-filled] {
+      border-color: var(--cascade-color-border-strong);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
