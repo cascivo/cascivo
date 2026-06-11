@@ -46,7 +46,12 @@ describe('Editable', () => {
     const handler = vi.fn()
     const cancelHandler = vi.fn()
     render(
-      <Editable value="Hello" onValueChange={handler} onCancel={cancelHandler} submitOnBlur={false} />,
+      <Editable
+        value="Hello"
+        onValueChange={handler}
+        onCancel={cancelHandler}
+        submitOnBlur={false}
+      />,
     )
     await userEvent.click(screen.getByRole('button'))
     const input = screen.getByRole('textbox')

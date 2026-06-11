@@ -19,7 +19,8 @@
     color: var(--cascade-color-text);
     cursor: pointer;
     text-align: start;
-    transition: border-color var(--cascade-duration-150) var(--cascade-ease-out),
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
       background-color var(--cascade-duration-150) var(--cascade-ease-out);
 
     &:hover:not(:disabled) {
