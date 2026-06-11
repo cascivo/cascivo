@@ -11,13 +11,7 @@ export interface MenuProps {
   children: ReactNode
 }
 
-function MenuPanelInner({
-  ctx,
-  children,
-}: {
-  ctx: UsePopoverReturn
-  children: ReactNode
-}) {
+function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: ReactNode }) {
   useSignals()
   const { popoverRef, anchorName, isOpen } = ctx
 
@@ -130,7 +124,8 @@ export function MenuItem({ children, onSelect, disabled }: MenuItemProps) {
           }
           if (e.key === 'ArrowUp') {
             e.preventDefault()
-            const prev = (e.currentTarget as HTMLElement).previousElementSibling as HTMLElement | null
+            const prev = (e.currentTarget as HTMLElement)
+              .previousElementSibling as HTMLElement | null
             prev?.focus()
           }
         }

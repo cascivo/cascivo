@@ -3,7 +3,7 @@ import { cn } from '@cascade-ui/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './input-group.module.css'
 
-export interface InputGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface InputGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'prefix' | 'suffix'> {
   prefix?: ReactNode
   suffix?: ReactNode
   children: ReactNode

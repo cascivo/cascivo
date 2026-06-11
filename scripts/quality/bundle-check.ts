@@ -16,7 +16,9 @@ async function gzipSize(filePath: string): Promise<number> {
     let size = 0
     const gzip = createGzip()
     const stream = createReadStream(filePath)
-    gzip.on('data', (chunk: Buffer) => { size += chunk.length })
+    gzip.on('data', (chunk: Buffer) => {
+      size += chunk.length
+    })
     gzip.on('end', () => resolve(size))
     gzip.on('error', reject)
     stream.on('error', reject)
@@ -43,7 +45,7 @@ for (const { pkg, distFile, maxGzipKB } of BUDGETS) {
 }
 
 if (failures.length > 0) {
-  console.error('\nBundle budget failures:\n' + failures.map(f => `  ✗ ${f}`).join('\n'))
+  console.error('\nBundle budget failures:\n' + failures.map((f) => `  ✗ ${f}`).join('\n'))
   process.exit(1)
 }
 console.log('\nAll checked bundles within budget.')

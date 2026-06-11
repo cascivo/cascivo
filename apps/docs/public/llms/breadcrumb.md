@@ -14,19 +14,21 @@ npx cascade add breadcrumb
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ label: string; href?: string }[]` | yes | — | — |
-| `maxVisible` | `number` | no | — | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
-| `className` | `string` | no | — | — |
-| `ariaLabel` | `string` | no | `Breadcrumb` | — |
+| Prop         | Type                                 | Required | Default      | Description                                                                                   |
+| ------------ | ------------------------------------ | -------- | ------------ | --------------------------------------------------------------------------------------------- |
+| `items`      | `{ label: string; href?: string }[]` | yes      | —            | —                                                                                             |
+| `maxVisible` | `number`                             | no       | —            | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
+| `className`  | `string`                             | no       | —            | —                                                                                             |
+| `ariaLabel`  | `string`                             | no       | `Breadcrumb` | —                                                                                             |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]} />
+<Breadcrumb
+  items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]}
+/>
 ```
 
 ### Collapsed
@@ -34,7 +36,15 @@ npx cascade add breadcrumb
 Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ```tsx
-<Breadcrumb maxVisible={3} items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]} />
+<Breadcrumb
+  maxVisible={3}
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Docs', href: '/docs' },
+    { label: 'Components', href: '/docs/components' },
+    { label: 'Breadcrumb' },
+  ]}
+/>
 ```
 
 ## Design tokens

@@ -117,6 +117,10 @@ Before finishing any task, verify:
 3. Type checking passes with zero errors.
 4. All tests pass.
 
+### Gate Before Committing
+
+**`pnpm build`, `pnpm test`, and `vp check` must all pass before committing.** No exceptions. If any gate fails, fix it before pushing — do not commit broken state.
+
 ---
 
 ## Part 3 — Cascade Design System: Architecture Reference

@@ -14,14 +14,14 @@ npx cascade add chart/treemap
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `{ id: string; label: string; value: number }[]` | yes | — | — |
-| `title` | `string` | yes | — | — |
-| `description` | `string` | no | — | — |
-| `width` | `number` | no | — | — |
-| `height` | `number` | no | `320` | — |
-| `className` | `string` | no | — | — |
+| Prop          | Type                                             | Required | Default | Description |
+| ------------- | ------------------------------------------------ | -------- | ------- | ----------- |
+| `data`        | `{ id: string; label: string; value: number }[]` | yes      | —       | —           |
+| `title`       | `string`                                         | yes      | —       | —           |
+| `description` | `string`                                         | no       | —       | —           |
+| `width`       | `number`                                         | no       | —       | —           |
+| `height`      | `number`                                         | no       | `320`   | —           |
+| `className`   | `string`                                         | no       | —       | —           |
 
 ## Examples
 

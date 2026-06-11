@@ -33,7 +33,7 @@ function getStrengthLevel(value: string): {
   if (value.length >= 12) score = Math.min(4, score + 1)
   score = Math.min(4, score)
   const levels = ['weak', 'weak', 'fair', 'good', 'strong'] as const
-  return { score, label: levels[score] }
+  return { score, label: levels[score]! }
 }
 
 export function PasswordInput({

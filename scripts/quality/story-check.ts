@@ -35,7 +35,7 @@ for (const { name } of components) {
 
 if (missing.length > 0) {
   console.log(`Missing stories (${missing.length}):`)
-  missing.forEach(m => console.log(`  - ${m}`))
+  missing.forEach((m) => console.log(`  - ${m}`))
   // Don't exit 1 — just report; human decides if these are blocking
 } else {
   console.log(`All ${components.length} registry components have Storybook stories.`)

@@ -123,7 +123,7 @@ export function HoverCardContent({ children, className }: HoverCardContentProps)
       {(ctx) => {
         if (!ctx) throw new Error('HoverCardContent must be inside <HoverCard>')
         return (
-          <HoverCardContentInner ctx={ctx} className={className}>
+          <HoverCardContentInner ctx={ctx} {...(className !== undefined && { className })}>
             {children}
           </HoverCardContentInner>
         )

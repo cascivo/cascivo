@@ -7,6 +7,7 @@
     "build": "vp run -r build",
     "test": "vp run -r test",
     "check": "vp check",
+    "check:fix": "vp check --fix",
     "audit:animation": "node scripts/quality/animation-audit.ts",
     "audit:bundle": "node scripts/quality/bundle-check.ts",
     "audit:stories": "node scripts/quality/story-check.ts",

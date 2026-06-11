@@ -14,6 +14,8 @@
     "test:perf": "playwright test perf.spec.ts"
   },
   "dependencies": {
+    "@cascade-ui/ai": "workspace:*",
+    "@cascade-ui/charts": "workspace:*",
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/storage": "workspace:^",
