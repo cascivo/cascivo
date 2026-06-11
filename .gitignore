@@ -3,6 +3,8 @@ node_modules/
 
 # Build output
 dist/
+dist-matrix/
+.lighthouseci/
 storybook-static/
 *.d.ts.map
 

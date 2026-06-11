@@ -4,6 +4,7 @@
   "private": false,
   "description": "Micro-FSM and Preact Signals primitives powering every cascade component",
   "type": "module",
+  "sideEffects": false,
   "types": "./dist/index.d.mts",
   "exports": {
     ".": {

@@ -1,0 +1,22 @@
+{
+  "name": "bench-runner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node src/cli.ts",
+    "test": "vp test",
+    "test:protocol": "playwright test",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "catalog:",
+    "@lhci/cli": "catalog:",
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "esbuild": "catalog:",
+    "playwright": "^1.50.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

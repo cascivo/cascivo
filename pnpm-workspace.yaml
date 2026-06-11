@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
   - 'apps/*'
   - 'apps/examples/*'
+  - 'apps/bench/*'
 
 catalogMode: prefer
 
@@ -33,11 +34,36 @@ catalog:
   '@changesets/cli': ^2.31.0
   '@playwright/test': ^1.60.0
   vitest: npm:@voidzero-dev/vite-plus-test@0.1.24
+  esbuild: ^0.28.0
+  '@lhci/cli': ^0.15.1
+  '@axe-core/playwright': ^4.11.3
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@0.1.24'
   vitest: 'npm:@voidzero-dev/vite-plus-test@0.1.24'
 
 allowBuilds:
+  '@carbon/colors': true
+  '@carbon/feature-flags': true
+  '@carbon/grid': true
+  '@carbon/icon-helpers': true
+  '@carbon/icons-react': true
+  '@carbon/layout': true
+  '@carbon/motion': true
+  '@carbon/react': true
+  '@carbon/styles': true
+  '@carbon/themes': true
+  '@carbon/type': true
+  '@carbon/utilities': true
+  '@ibm/plex': true
+  '@ibm/plex-mono': true
+  '@ibm/plex-sans': true
+  '@ibm/plex-sans-arabic': true
+  '@ibm/plex-sans-devanagari': true
+  '@ibm/plex-sans-hebrew': true
+  '@ibm/plex-sans-thai': true
+  '@ibm/plex-sans-thai-looped': true
+  '@ibm/plex-serif': true
+  '@parcel/watcher': true
   esbuild: true
   sharp: true

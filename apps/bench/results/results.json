@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "date": "2026-06-11",
+    "cpu": "placeholder — run pnpm bench to populate",
+    "cores": 0,
+    "memGb": 0,
+    "os": "placeholder",
+    "chrome": "placeholder",
+    "cpuThrottle": 4,
+    "lockfileHash": "placeholder",
+    "source": "placeholder"
+  }
+}
