@@ -19,18 +19,23 @@ npx cascade add tabs
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `defaultValue` | `string` | no | — | — |
-| `value` | `string` | no | — | — |
-| `onValueChange` | `(value: string) => void` | no | — | — |
+| Prop            | Type                      | Required | Default | Description |
+| --------------- | ------------------------- | -------- | ------- | ----------- |
+| `defaultValue`  | `string`                  | no       | —       | —           |
+| `value`         | `string`                  | no       | —       | —           |
+| `onValueChange` | `(value: string) => void` | no       | —       | —           |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>
+<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">…</TabsContent>
+</Tabs>
 ```
 
 ## Design tokens

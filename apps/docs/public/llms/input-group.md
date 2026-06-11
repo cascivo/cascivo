@@ -14,24 +14,29 @@ npx cascade add input-group
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `prefix` | `ReactNode` | no | — | — |
-| `suffix` | `ReactNode` | no | — | — |
-| `children` | `ReactNode` | yes | — | — |
+| Prop       | Type        | Required | Default | Description |
+| ---------- | ----------- | -------- | ------- | ----------- |
+| `prefix`   | `ReactNode` | no       | —       | —           |
+| `suffix`   | `ReactNode` | no       | —       | —           |
+| `children` | `ReactNode` | yes      | —       | —           |
 
 ## Examples
 
 ### With prefix
 
 ```tsx
-<InputGroup prefix="https://"><Input placeholder="example.com" /></InputGroup>
+<InputGroup prefix="https://">
+  <Input placeholder="example.com" />
+</InputGroup>
 ```
 
 ### ButtonGroup
 
 ```tsx
-<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>
+<ButtonGroup>
+  <Button>Left</Button>
+  <Button>Right</Button>
+</ButtonGroup>
 ```
 
 ## Design tokens
