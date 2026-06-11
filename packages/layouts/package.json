@@ -5,6 +5,8 @@
   "description": "Registry source — copy-paste app shells and page layouts (not published)",
   "type": "module",
   "exports": {
+    "./app-shell": "./src/app-shell/app-shell.tsx",
+    "./shell-state": "./src/app-shell/shell-state.ts",
     "./blocks/console-app/console-app": "./src/blocks/console-app/console-app.tsx"
   },
   "scripts": {
