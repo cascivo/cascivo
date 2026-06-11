@@ -425,8 +425,8 @@
     },
     {
       "name": "rating-group",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 48,
       "category": "inputs",
       "attempts": 0,

@@ -56,6 +56,7 @@ import { TagsInput } from '@cascade-ui/components/tags-input'
 import { OtpInput } from '@cascade-ui/components/otp-input'
 import { SegmentedControl } from '@cascade-ui/components/segmented-control'
 import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
+import { RatingGroup } from '@cascade-ui/components/rating-group'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -692,6 +693,12 @@ export const demos: Record<string, () => JSX.Element> = {
         <Button variant="secondary">Center</Button>
         <Button variant="secondary">Right</Button>
       </ButtonGroup>
+    </Col>
+  ),
+  'rating-group': () => (
+    <Col>
+      <RatingGroup value={3} onValueChange={() => {}} />
+      <RatingGroup value={4} readOnly size="lg" />
     </Col>
   ),
 }
