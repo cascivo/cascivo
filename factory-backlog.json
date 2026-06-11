@@ -407,7 +407,7 @@
     },
     {
       "name": "segmented-control",
-      "status": "pending",
+      "status": "in-progress",
       "milestone": null,
       "priority": 46,
       "category": "inputs",
