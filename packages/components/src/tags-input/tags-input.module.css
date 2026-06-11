@@ -9,7 +9,8 @@
     border: 1px solid var(--cascade-color-border);
     border-radius: var(--cascade-radius-input);
     cursor: text;
-    transition: border-color var(--cascade-duration-150) var(--cascade-ease-out),
+    transition:
+      border-color var(--cascade-duration-150) var(--cascade-ease-out),
       box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
 
     &:focus-within {

@@ -390,7 +390,7 @@
     {
       "name": "tags-input",
       "status": "in-progress",
-      "milestone": "scaffold",
+      "milestone": "verify",
       "priority": 44,
       "category": "inputs",
       "attempts": 0,

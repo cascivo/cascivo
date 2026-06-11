@@ -54,11 +54,7 @@ export function TagsInput({
       {value.map((tag, i) => {
         const isInvalid = validate ? !validate(tag) : false
         return (
-          <span
-            key={i}
-            className={styles['tag']}
-            data-state={isInvalid ? 'invalid' : undefined}
-          >
+          <span key={i} className={styles['tag']} data-state={isInvalid ? 'invalid' : undefined}>
             {tag}
             <button
               type="button"
