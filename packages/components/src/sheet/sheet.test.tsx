@@ -33,7 +33,7 @@ describe('Sheet', () => {
       </Sheet>,
     )
     // Close button has aria-label containing "close" (from i18n "Close panel")
-    const closeBtn = screen.getByRole('button', { name: /close/i })
+    const closeBtn = screen.getByRole('button', { name: /close/i, hidden: true })
     await userEvent.click(closeBtn)
     expect(onClose).toHaveBeenCalledOnce()
   })

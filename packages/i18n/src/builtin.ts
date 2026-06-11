@@ -124,6 +124,15 @@ export const builtin = {
     label: 'One-time code',
     digit: 'Digit {n}',
   }),
+  ai: defineMessages('cascade.ai', {
+    generating: 'Generating…',
+    done: 'Done',
+    error: 'Error',
+    send: 'Send',
+    placeholder: 'Type a message…',
+    you: 'You',
+    assistant: 'Assistant',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -243,4 +252,13 @@ defineCatalog(builtin.tagsInput, 'de', {
 defineCatalog(builtin.otpInput, 'de', {
   label: 'Einmalcode',
   digit: 'Ziffer {n}',
+})
+defineCatalog(builtin.ai, 'de', {
+  generating: 'Wird generiert…',
+  done: 'Fertig',
+  error: 'Fehler',
+  send: 'Senden',
+  placeholder: 'Nachricht eingeben…',
+  you: 'Du',
+  assistant: 'Assistent',
 })

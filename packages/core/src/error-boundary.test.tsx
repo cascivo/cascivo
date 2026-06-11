@@ -10,13 +10,13 @@ function Bomb({ throw: shouldThrow }: { throw: boolean }) {
 describe('ErrorBoundary', () => {
   it('renders children when no error', () => {
     render(<ErrorBoundary fallback={<div>Error</div>}><Bomb throw={false} /></ErrorBoundary>)
-    expect(screen.getByText('Safe')).toBeInTheDocument()
+    expect(screen.getByText('Safe')).toBeTruthy()
   })
 
   it('renders fallback on error', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<ErrorBoundary fallback={<div>Oops</div>}><Bomb throw={true} /></ErrorBoundary>)
-    expect(screen.getByText('Oops')).toBeInTheDocument()
+    expect(screen.getByText('Oops')).toBeTruthy()
     spy.mockRestore()
   })
 
@@ -27,7 +27,7 @@ describe('ErrorBoundary', () => {
         <Bomb throw={true} />
       </ErrorBoundary>
     )
-    expect(screen.getByText('Reset')).toBeInTheDocument()
+    expect(screen.getByText('Reset')).toBeTruthy()
     spy.mockRestore()
   })
 })

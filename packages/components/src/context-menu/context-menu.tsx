@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, type ReactNode, type MouseEvent as ReactMouseEvent } from 'react'
-import { useSignal, useSignalEffect } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import styles from './context-menu.module.css'
 
 export interface ContextMenuProps {
@@ -9,6 +9,7 @@ export interface ContextMenuProps {
 }
 
 export function ContextMenu({ children }: ContextMenuProps) {
+  useSignals()
   const menuRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const isOpen = useSignal(false)

@@ -5,6 +5,7 @@ import { Portal } from './portal'
 describe('Portal', () => {
   it('renders children into document.body', () => {
     render(<Portal><div>Portal content</div></Portal>)
-    expect(document.body).toContainElement(screen.getByText('Portal content'))
+    const el = screen.getByText('Portal content')
+    expect(document.body.contains(el)).toBe(true)
   })
 })

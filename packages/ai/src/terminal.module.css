@@ -1,0 +1,29 @@
+@layer cascade.component {
+  .root {
+    background: oklch(0.12 0.01 250);
+    color: oklch(0.90 0.02 145);
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    font-size: var(--cascade-font-size-sm, 0.875rem);
+    line-height: 1.6;
+    padding: var(--cascade-space-4);
+    border-radius: var(--cascade-radius-surface);
+    overflow-x: auto;
+  }
+  .line { display: flex; gap: var(--cascade-space-2); }
+  .prefix { color: oklch(0.70 0.15 145); user-select: none; }
+  .text { flex: 1; }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: oklch(0.90 0.02 145);
+    animation: cascade-cursor-blink 1s step-end infinite;
+  }
+  .line[data-type='command'] .text { color: oklch(0.90 0.10 250); }
+  .line[data-type='error'] .text { color: oklch(0.75 0.15 22); }
+  .line[data-type='comment'] .text { color: oklch(0.60 0.02 145); }
+}
+@keyframes cascade-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

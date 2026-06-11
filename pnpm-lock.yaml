@@ -272,6 +272,9 @@ importers:
 
   apps/storybook:
     dependencies:
+      '@cascade-ui/ai':
+        specifier: workspace:^
+        version: link:../../packages/ai
       '@cascade-ui/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -303,6 +306,37 @@ importers:
       storybook:
         specifier: 'catalog:'
         version: 10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7)))
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
+
+  packages/ai:
+    dependencies:
+      '@cascade-ui/core':
+        specifier: workspace:^
+        version: link:../core
+      '@cascade-ui/i18n':
+        specifier: workspace:^
+        version: link:../i18n
+      '@cascade-ui/tokens':
+        specifier: workspace:^
+        version: link:../tokens
+      '@preact/signals-react':
+        specifier: '>=2.0.0'
+        version: 3.10.1(react@19.2.7)
+    devDependencies:
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

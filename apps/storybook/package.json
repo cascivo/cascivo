@@ -11,6 +11,7 @@
     "test": "echo 'storybook: no tests yet'"
   },
   "dependencies": {
+    "@cascade-ui/ai": "workspace:^",
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*"

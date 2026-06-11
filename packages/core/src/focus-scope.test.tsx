@@ -7,6 +7,6 @@ describe('FocusScope', () => {
     const { container } = render(
       <FocusScope><button type="button">Test</button></FocusScope>
     )
-    expect(container.querySelector('button')).toBeInTheDocument()
+    expect(container.querySelector('button')).toBeTruthy()
   })
 })

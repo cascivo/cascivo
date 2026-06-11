@@ -1,4 +1,5 @@
 import { CodeBlock } from './components/CodeBlock'
+import { StreamingText, AiLabel, Terminal, AiChat } from '@cascade-ui/ai'
 
 const MCP_SETUP = `// .claude/settings.json
 {
@@ -126,6 +127,46 @@ export function AiPage() {
             <code>cascade:extend</code> — scaffold a new component following cascade authoring rules
           </li>
         </ul>
+      </section>
+
+      <section class="doc-section">
+        <h2>AI components</h2>
+        <p>The <code>@cascade-ui/ai</code> package ships four AI-native components.</p>
+
+        <h3>StreamingText</h3>
+        <p>Animates text character-by-character, mimicking token-by-token LLM output.</p>
+        <StreamingText text="Hello, I am cascade — the AI-first design system." speed={3} />
+
+        <h3>AiLabel</h3>
+        <p>Status badge for AI operations.</p>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBlock: '0.75rem' }}>
+          <AiLabel variant="generating" />
+          <AiLabel variant="done" />
+          <AiLabel variant="error" />
+        </div>
+
+        <h3>Terminal</h3>
+        <p>Animated terminal output for showing CLI commands.</p>
+        <Terminal
+          lines={[
+            { text: 'npx cascade add button', prefix: '$', type: 'command' },
+            { text: '✓ Button added to src/components/Button.tsx', type: 'output' },
+            { text: '✓ Done in 0.12s', type: 'output' },
+          ]}
+          speed={4}
+        />
+
+        <h3>AiChat</h3>
+        <p>A minimal chat interface for AI assistant interactions.</p>
+        <div style={{ height: '400px', maxWidth: '640px' }}>
+          <AiChat
+            messages={[
+              { id: '1', role: 'user', content: 'How do I add a Button component?' },
+              { id: '2', role: 'assistant', content: 'Run: npx cascade add button' },
+            ]}
+            onSend={() => {}}
+          />
+        </div>
       </section>
     </article>
   )

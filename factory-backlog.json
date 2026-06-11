@@ -184,7 +184,7 @@
       "name": "kbd",
       "category": "display",
       "priority": 21,
-      "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display \u2014 no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
+      "spec": "Keyboard key indicator. Renders a <kbd> element styled like a physical key (subtle border, inset shadow, mono font). Props: size (sm | md). Pure display — no machine, no signals, no interactive state. A11y: native <kbd> semantics, no extra role.",
       "status": "done",
       "milestone": "finished",
       "attempts": 1
@@ -328,7 +328,7 @@
       "name": "time-picker",
       "category": "inputs",
       "priority": 36,
-      "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free. NOTE: time-picker.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog).",
+      "spec": "Time input. Wraps native input[type=time] with cascade field styling: label/hint/error, size, min/max/step. idle/focused/error machine like Input. Native semantics give a11y and locale handling for free. NOTE: time-picker.tsx already exists and is close to spec — complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings → builtin catalog).",
       "status": "review",
       "milestone": "finished",
       "attempts": 0
@@ -337,7 +337,7 @@
       "name": "date-picker",
       "category": "inputs",
       "priority": 37,
-      "spec": "Date selection with from-scratch calendar grid. Props: mode single/range, value/onChange (Date or {start,end}), min/max, locale? (defaults to browser), label/hint/error, disabled. Read-only input(s) showing Intl.DateTimeFormat-formatted value; popover calendar with month navigation, weekday headers via Intl, today marker. Keyboard: roving tabindex on grid, arrows move focus, Enter selects, Escape closes. A11y: trigger aria-haspopup=dialog, grid role=grid, selected aria-selected. Popover animated with motion tokens + @starting-style. NOTE: calendar math from scratch \u2014 month grid via Date arithmetic (UTC-safe; first weekday from Intl.Locale weekInfo when available, fallback Monday), weekday/month names via Intl.DateTimeFormat with the i18n active locale (currentLocale()), roving tabindex grid. TimePicker ships separately (priority 36). All visible strings via builtin catalog (datePicker namespace, en+de).",
+      "spec": "Date selection with from-scratch calendar grid. Props: mode single/range, value/onChange (Date or {start,end}), min/max, locale? (defaults to browser), label/hint/error, disabled. Read-only input(s) showing Intl.DateTimeFormat-formatted value; popover calendar with month navigation, weekday headers via Intl, today marker. Keyboard: roving tabindex on grid, arrows move focus, Enter selects, Escape closes. A11y: trigger aria-haspopup=dialog, grid role=grid, selected aria-selected. Popover animated with motion tokens + @starting-style. NOTE: calendar math from scratch — month grid via Date arithmetic (UTC-safe; first weekday from Intl.Locale weekInfo when available, fallback Monday), weekday/month names via Intl.DateTimeFormat with the i18n active locale (currentLocale()), roving tabindex grid. TimePicker ships separately (priority 36). All visible strings via builtin catalog (datePicker namespace, en+de).",
       "status": "review",
       "milestone": "finished",
       "attempts": 0
@@ -346,7 +346,7 @@
       "name": "file-uploader",
       "category": "inputs",
       "priority": 38,
-      "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status. NOTE: file-uploader.tsx already exists and is close to spec \u2014 complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings \u2192 builtin catalog; UploaderFileStatus strings uploading/complete/error need builtin keys en+de).",
+      "spec": "Drag-and-drop file input. Props: files UploaderFile[] ({id,name,size,status uploading/complete/error,errorMessage?}), onFilesAdded(File[]), onRemove(id), multiple?, accept?, maxSize? (oversize files surface as error status via onFilesAdded contract), label/hint, disabled. Hidden input[type=file] + drop zone; drag-over visual state via signal; file list with per-status icon/spinner and remove buttons. A11y: zone is a labelled button, list announces status. NOTE: file-uploader.tsx already exists and is close to spec — complete the missing .module.css/.meta.ts/.test.tsx around it; refine the tsx only where the spec or rules demand (strings → builtin catalog; UploaderFileStatus strings uploading/complete/error need builtin keys en+de).",
       "status": "review",
       "milestone": "finished",
       "attempts": 0
@@ -440,6 +440,114 @@
       "category": "inputs",
       "attempts": 0,
       "spec": "Editable — inline click-to-edit text. Props: value: string, onValueChange: (v: string) => void, placeholder?: string, disabled?: boolean, submitOnBlur?: boolean (default true), onCancel?: () => void. Two states driven by signals: isEditing=useSignal(false), editValue=useSignal(value). Preview state: shows text + pencil icon on :hover. Click activates: set isEditing=true, useSignalEffect focuses the input. Input shown when isEditing=true. Confirm: Enter key or blur (if submitOnBlur) calls onValueChange(editValue.value) + isEditing=false. Cancel: Escape resets editValue to value + isEditing=false. No useState/useEffect."
+    },
+    {
+      "name": "icon-button",
+      "status": "pending",
+      "milestone": null,
+      "priority": 50,
+      "category": "inputs",
+      "attempts": 0,
+      "spec": "IconButton — square icon-only button. Props: icon: ReactNode, label: string (aria-label + tooltip text), size?: 'sm'|'md'|'lg', variant?: 'ghost'|'outline'|'filled', disabled?: boolean, onClick?: () => void. Renders button with aria-label=label. No signals needed — purely structural. Sizes use --cascade-control-height-sm/md/lg tokens. No useState/useEffect."
+    },
+    {
+      "name": "copy-button",
+      "status": "pending",
+      "milestone": null,
+      "priority": 51,
+      "category": "inputs",
+      "attempts": 0,
+      "spec": "CopyButton — copy-to-clipboard with feedback. Props: text: string, size?: 'sm'|'md'|'lg'. Signal: copied=useSignal(false). On click: navigator.clipboard.writeText(text) called in a regular click handler (not useSignalEffect). After copy: set copied=true; useSignalEffect watches copied and schedules reset after 2000ms via setTimeout (returns cleanup). data-state='copied' attribute drives CSS icon swap. i18n: add builtin.copyButton.copy/copied. No useState/useEffect."
+    },
+    {
+      "name": "code-snippet",
+      "status": "pending",
+      "milestone": null,
+      "priority": 52,
+      "category": "display",
+      "attempts": 0,
+      "spec": "CodeSnippet — code display block. Variants: 'inline' (span), 'single-line' (pre, horizontal scroll), 'multi-line' (pre, optional line numbers). Props: code: string, variant?: 'inline'|'single'|'multi', showLineNumbers?: boolean, showCopyButton?: boolean. Uses CopyButton internally when showCopyButton. data-language attribute for styling (no syntax highlighting). No useState/useEffect."
+    },
+    {
+      "name": "notification",
+      "status": "pending",
+      "milestone": null,
+      "priority": 53,
+      "category": "feedback",
+      "attempts": 0,
+      "spec": "Notification — inline alert/banner. Props: title: string, description?: string, variant?: 'info'|'success'|'warning'|'error', onDismiss?: () => void, icon?: ReactNode. role='alert' for error/warning, role='status' for info/success. Dismiss button with aria-label from builtin.notification.dismiss. No signals, no useState/useEffect."
+    },
+    {
+      "name": "collapsible",
+      "status": "pending",
+      "milestone": null,
+      "priority": 54,
+      "category": "display",
+      "attempts": 0,
+      "spec": "Collapsible — animated show/hide region. Props: open: boolean, onOpenChange: (v: boolean) => void, children: ReactNode, disabled?: boolean. Signal: isOpen=useSignal(open); sync: isOpen.value=open. Trigger is a slot (children[0] if array). Content area: grid-template-rows 0fr→1fr animation (documented height exception). @starting-style for enter. data-state='open'|'closed'. No useState/useEffect."
+    },
+    {
+      "name": "structured-list",
+      "status": "pending",
+      "milestone": null,
+      "priority": 55,
+      "category": "display",
+      "attempts": 0,
+      "spec": "StructuredList — lightweight list of rows. Props: items: {id: string, cells: ReactNode[], selected?: boolean}[], headers?: ReactNode[], selectable?: boolean, onSelect?: (id: string) => void. Renders as semantic list (ul/li). Selectable rows: role='button', Enter/Space calls onSelect. CSS: hover via :hover, selected via data-selected. No signals needed. No useState/useEffect."
+    },
+    {
+      "name": "tile",
+      "status": "pending",
+      "milestone": null,
+      "priority": 56,
+      "category": "inputs",
+      "attempts": 0,
+      "spec": "Tile — selectable card choice. Props: value: string, selected: boolean, onSelect: (v: string) => void, children: ReactNode, selectable?: 'single'|'multi', disabled?: boolean, icon?: ReactNode. role='radio' for single, role='checkbox' for multi. data-selected drives CSS. Keyboard: Space/Enter toggle. No useState/useEffect."
+    },
+    {
+      "name": "tree-view",
+      "status": "pending",
+      "milestone": null,
+      "priority": 57,
+      "category": "navigation",
+      "attempts": 0,
+      "spec": "TreeView — hierarchical tree. Props: items: {id: string, label: string, icon?: ReactNode, children?: TreeItem[]}[], onSelect?: (id: string) => void, selected?: string[], expanded?: string[], onExpandedChange?: (ids: string[]) => void. Signal: expandedSet=useSignal(new Set(expanded)). WAI-ARIA tree keyboard pattern (ArrowDown/Up move focus, ArrowRight expands, ArrowLeft collapses/moves to parent). No useState/useEffect."
+    },
+    {
+      "name": "scroll-area",
+      "status": "pending",
+      "milestone": null,
+      "priority": 58,
+      "category": "layout",
+      "attempts": 0,
+      "spec": "ScrollArea — styled scrollbars. Props: children: ReactNode, height?: string, width?: string, orientation?: 'vertical'|'horizontal'|'both'. CSS: scrollbar-width: thin + scrollbar-color for modern browsers; ::-webkit-scrollbar for WebKit. Optional scroll shadows: useSignalEffect subscribes to scroll events and sets data-scroll-start/end attributes on the container that CSS reads for shadow gradients. No useState/useEffect."
+    },
+    {
+      "name": "typography",
+      "status": "pending",
+      "milestone": null,
+      "priority": 59,
+      "category": "display",
+      "attempts": 0,
+      "spec": "Typography — Heading, Text, Prose. Heading: props level: 1|2|3|4|5|6, size?: 'xs'|'sm'|'md'|'lg'|'xl'|'2xl', weight?: 'normal'|'medium'|'semibold'|'bold', children. Renders h{level}. Text: renders p with variant='body'|'caption'|'label'|'code'. Prose: renders div with data-prose that styles descendant HTML (p, ul, ol, code, blockquote) via CSS. Export: { Heading, Text, Prose }. No signals needed. No useState/useEffect."
+    },
+    {
+      "name": "data-list",
+      "status": "pending",
+      "milestone": null,
+      "priority": 60,
+      "category": "display",
+      "attempts": 0,
+      "spec": "DataList — key-value display. Props: items: {label: ReactNode, value: ReactNode, id?: string}[], orientation?: 'horizontal'|'vertical', dividers?: boolean. Renders dl/dt/dd. Horizontal: CSS grid two-column. Vertical: stacked. No signals. No useState/useEffect."
+    },
+    {
+      "name": "calendar",
+      "status": "pending",
+      "milestone": null,
+      "priority": 61,
+      "category": "inputs",
+      "attempts": 0,
+      "spec": "Calendar — standalone month-grid date picker. Props: value?: Date | null, onValueChange: (v: Date) => void, min?: Date, max?: Date. Signals: viewMonth=useSignal(value?.getMonth() ?? new Date().getMonth()), viewYear=useSignal(value?.getFullYear() ?? new Date().getFullYear()). Renders a grid of day buttons. Prev/next month buttons update viewMonth/viewYear. Keyboard: arrow keys move focus day, Enter selects. i18n: add builtin.calendar.prevMonth/nextMonth. No useState/useEffect."
     }
   ]
 }

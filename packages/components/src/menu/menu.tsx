@@ -18,6 +18,7 @@ export interface MenuProps {
 }
 
 function MenuPanel({ children }: { children: ReactNode }) {
+  useSignals()
   const { popoverRef, anchorName, isOpen } = useMenuContext()
 
   useSignalEffect(() => {
