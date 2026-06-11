@@ -101,6 +101,29 @@ export const builtin = {
     complete: 'Upload complete',
     error: 'Upload failed',
   }),
+  passwordInput: defineMessages('cascade.passwordInput', {
+    reveal: 'Show password',
+    hide: 'Hide password',
+    strengthWeak: 'weak',
+    strengthFair: 'fair',
+    strengthGood: 'good',
+    strengthStrong: 'strong',
+    strengthLabel: 'Password strength: {level}',
+  }),
+  multiSelect: defineMessages('cascade.multiSelect', {
+    placeholder: 'Select options',
+    selected: '{count} selected',
+    search: 'Search options',
+    noResults: 'No options found',
+  }),
+  tagsInput: defineMessages('cascade.tagsInput', {
+    remove: 'Remove {tag}',
+    placeholder: 'Add tag…',
+  }),
+  otpInput: defineMessages('cascade.otpInput', {
+    label: 'One-time code',
+    digit: 'Digit {n}',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -197,4 +220,27 @@ defineCatalog(builtin.fileUploader, 'de', {
   uploading: 'Wird hochgeladen',
   complete: 'Hochladen abgeschlossen',
   error: 'Hochladen fehlgeschlagen',
+})
+defineCatalog(builtin.passwordInput, 'de', {
+  reveal: 'Passwort anzeigen',
+  hide: 'Passwort verbergen',
+  strengthWeak: 'schwach',
+  strengthFair: 'mäßig',
+  strengthGood: 'gut',
+  strengthStrong: 'stark',
+  strengthLabel: 'Passwortstärke: {level}',
+})
+defineCatalog(builtin.multiSelect, 'de', {
+  placeholder: 'Optionen auswählen',
+  selected: '{count} ausgewählt',
+  search: 'Optionen durchsuchen',
+  noResults: 'Keine Optionen gefunden',
+})
+defineCatalog(builtin.tagsInput, 'de', {
+  remove: '{tag} entfernen',
+  placeholder: 'Tag hinzufügen…',
+})
+defineCatalog(builtin.otpInput, 'de', {
+  label: 'Einmalcode',
+  digit: 'Ziffer {n}',
 })
