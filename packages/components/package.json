@@ -56,7 +56,8 @@
     "./multi-select": "./src/multi-select/multi-select.tsx",
     "./tags-input": "./src/tags-input/tags-input.tsx",
     "./otp-input": "./src/otp-input/otp-input.tsx",
-    "./segmented-control": "./src/segmented-control/segmented-control.tsx"
+    "./segmented-control": "./src/segmented-control/segmented-control.tsx",
+    "./input-group": "./src/input-group/input-group.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

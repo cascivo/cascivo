@@ -1715,6 +1715,67 @@
       }
     },
     {
+      "name": "input-group",
+      "type": "component",
+      "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["form", "input", "addon", "group", "layout"],
+      "meta": {
+        "name": "InputGroup",
+        "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+        "category": "inputs",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true
+          }
+        ],
+        "tokens": [
+          "--cascade-color-bg-subtle",
+          "--cascade-color-border",
+          "--cascade-color-text-subtle",
+          "--cascade-radius-input"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "With prefix",
+            "code": "<InputGroup prefix=\"https://\"><Input placeholder=\"example.com\" /></InputGroup>"
+          },
+          {
+            "title": "ButtonGroup",
+            "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["form", "input", "addon", "group", "layout"]
+      }
+    },
+    {
       "name": "kbd",
       "type": "component",
       "description": "Displays a keyboard key or shortcut",

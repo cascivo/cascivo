@@ -416,8 +416,8 @@
     },
     {
       "name": "input-group",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 47,
       "category": "inputs",
       "attempts": 0,
