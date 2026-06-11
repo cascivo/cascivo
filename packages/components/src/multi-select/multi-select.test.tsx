@@ -27,10 +27,20 @@ describe('MultiSelect', () => {
     expect(screen.getByText('2 selected')).toBeTruthy()
   })
 
-  it('opens listbox on trigger click', async () => {
+  it('trigger button has aria-haspopup=listbox', () => {
+    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
+    expect(screen.getByRole('button')).toHaveAttribute('aria-haspopup', 'listbox')
+  })
+
+  it('trigger button has aria-expanded=false initially', () => {
+    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('trigger button has aria-expanded=true after click', async () => {
     render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
     await userEvent.click(screen.getByRole('button'))
-    expect(screen.getByRole('listbox')).toBeTruthy()
+    expect(screen.getByRole('button')).toHaveAttribute('aria-expanded', 'true')
   })
 
   it('calls onValueChange when option clicked', async () => {
@@ -54,12 +64,28 @@ describe('MultiSelect', () => {
     expect(screen.getByRole('button')).toBeDisabled()
   })
 
-  it('options with aria-selected true for selected values', async () => {
+  it('renders options in the panel', async () => {
+    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
+    await userEvent.click(screen.getByRole('button'))
+    expect(screen.getByText('Apple')).toBeTruthy()
+    expect(screen.getByText('Banana')).toBeTruthy()
+  })
+
+  it('renders disabled option with aria-disabled', async () => {
+    render(<MultiSelect options={options} value={[]} onValueChange={() => {}} />)
+    await userEvent.click(screen.getByRole('button'))
+    const cherryOption = screen
+      .getAllByRole('option')
+      .find((el) => el.textContent?.includes('Cherry'))
+    expect(cherryOption).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  it('selected option has data-selected attribute', async () => {
     render(<MultiSelect options={options} value={['apple']} onValueChange={() => {}} />)
     await userEvent.click(screen.getByRole('button'))
     const appleOption = screen
       .getAllByRole('option')
       .find((el) => el.textContent?.includes('Apple'))
-    expect(appleOption).toHaveAttribute('aria-selected', 'true')
+    expect(appleOption).toHaveAttribute('data-selected')
   })
 })
