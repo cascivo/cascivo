@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SideNav, type SideNavItem } from '@cascade-ui/components/side-nav'
+import {
+  Home,
+  BarChart,
+  Settings,
+  Users,
+  Database,
+  Server,
+  Shield,
+  Activity,
+} from '@cascade-ui/icons'
 
 const meta: Meta<typeof SideNav> = {
   component: SideNav,
@@ -14,92 +24,122 @@ const meta: Meta<typeof SideNav> = {
 export default meta
 type Story = StoryObj<typeof SideNav>
 
-const homeIcon = (
-  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-    <path
-      d="M2 7l6-5 6 5v7H2z"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-const chartIcon = (
-  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-    <path
-      d="M2 14V8m4 6V2m4 12V6m4 8v-4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-)
-
-const gearIcon = (
-  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-    <circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M8 1v2.5M8 12.5V15M1 8h2.5M12.5 8H15M3 3l1.8 1.8M11.2 11.2L13 13M13 3l-1.8 1.8M4.8 11.2L3 13"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-)
-
-const items: SideNavItem[] = [
-  { label: 'Home', href: '#home', icon: homeIcon, active: true },
-  { label: 'Reports', href: '#reports', icon: chartIcon },
+const consoleItems: SideNavItem[] = [
+  { label: 'Home', href: '#home', icon: <Home size={16} />, active: true },
+  { label: 'Activity', href: '#activity', icon: <Activity size={16} /> },
+  {
+    label: 'Resources',
+    icon: <Server size={16} />,
+    items: [
+      { label: 'Databases', href: '#db' },
+      { label: 'Servers', href: '#srv' },
+    ],
+  },
+  { label: 'Analytics', href: '#analytics', icon: <BarChart size={16} /> },
+  { label: 'Users', href: '#users', icon: <Users size={16} /> },
   {
     label: 'Settings',
-    icon: gearIcon,
+    icon: <Settings size={16} />,
     items: [
       { label: 'Profile', href: '#profile' },
+      { label: 'Security', href: '#security' },
       { label: 'Billing', href: '#billing' },
-      { label: 'Team', href: '#team' },
     ],
   },
 ]
 
 export const Default: Story = {
-  args: { items },
+  args: { items: consoleItems },
 }
 
 export const Collapsed: Story = {
-  args: { items, defaultCollapsed: true },
+  args: { items: consoleItems, defaultCollapsed: true },
+}
+
+export const IconRail: Story = {
+  name: 'Icon Rail (collapsed)',
+  args: {
+    items: consoleItems,
+    collapsed: true,
+    ariaLabel: 'Console navigation',
+  },
+}
+
+export const RailWithFallbacks: Story = {
+  name: 'Rail with grapheme fallbacks',
+  args: {
+    items: [
+      { label: 'Overview', href: '#overview', active: true },
+      { label: 'Analytics', href: '#analytics', icon: <BarChart size={16} /> },
+      { label: 'Database', href: '#db', icon: <Database size={16} /> },
+      { label: 'Members', href: '#members' },
+      { label: 'Permissions', href: '#permissions' },
+    ],
+    collapsed: true,
+  },
+}
+
+export const RailFlyout: Story = {
+  name: 'Rail flyout (groups)',
+  args: {
+    items: [
+      { label: 'Home', href: '#', icon: <Home size={16} />, active: true },
+      {
+        label: 'Resources',
+        icon: <Server size={16} />,
+        items: [
+          { label: 'Databases', href: '#db' },
+          { label: 'Servers', href: '#srv' },
+          { label: 'Storage', href: '#storage' },
+        ],
+      },
+      {
+        label: 'Security',
+        icon: <Shield size={16} />,
+        items: [
+          { label: 'Firewall', href: '#fw' },
+          { label: 'Certificates', href: '#certs' },
+        ],
+      },
+    ],
+    collapsed: true,
+  },
+}
+
+export const ExpandOnHover: Story = {
+  name: 'Expand on hover',
+  args: {
+    items: consoleItems,
+    collapsed: true,
+    expandOnHover: true,
+  },
+}
+
+export const WithFooter: Story = {
+  args: {
+    items: consoleItems,
+    footer: <span style={{ fontSize: 11, padding: '4px 8px' }}>v2.1.0</span>,
+  },
 }
 
 export const ActiveInGroup: Story = {
   args: {
     items: [
-      { label: 'Home', href: '#home', icon: homeIcon },
+      { label: 'Home', href: '#home', icon: <Home size={16} /> },
       {
         label: 'Settings',
-        icon: gearIcon,
+        icon: <Settings size={16} />,
         items: [
           { label: 'Profile', href: '#profile', active: true },
-          { label: 'Billing', href: '#billing' },
+          { label: 'Security', href: '#security' },
         ],
       },
     ],
   },
 }
 
-export const WithoutIcons: Story = {
-  args: {
-    items: [
-      { label: 'Overview', href: '#overview', active: true },
-      { label: 'Activity', href: '#activity' },
-      { label: 'Members', href: '#members' },
-    ],
-  },
-}
-
 export const Accessibility: Story = {
-  args: { items },
+  args: { items: consoleItems },
   parameters: {
     a11y: { test: 'error' },
   },

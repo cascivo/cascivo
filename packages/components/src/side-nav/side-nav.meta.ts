@@ -26,6 +26,20 @@ export const meta: ComponentMeta = {
     { name: 'ariaLabel', type: 'string', required: false, default: 'Side navigation' },
     { name: 'collapseLabel', type: 'string', required: false, default: 'Collapse navigation' },
     { name: 'expandLabel', type: 'string', required: false, default: 'Expand navigation' },
+    {
+      name: 'expandOnHover',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts',
+    },
+    {
+      name: 'footer',
+      type: 'ReactNode',
+      required: false,
+      description: 'Content rendered above the collapse toggle (e.g. version string, user info)',
+    },
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
@@ -47,7 +61,7 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'navigation',
     wcag: 'AA',
-    keyboard: ['Tab', 'Enter', 'Space'],
+    keyboard: ['Tab', 'Enter', 'Space', 'ArrowDown', 'ArrowUp', 'Escape'],
   },
   examples: [
     {
@@ -59,8 +73,15 @@ export const meta: ComponentMeta = {
       code: "<SideNav items={[{ label: 'Settings', items: [{ label: 'Profile', href: '/profile' }] }]} />",
     },
     {
-      title: 'Collapsed rail',
-      code: '<SideNav defaultCollapsed items={items} />',
+      title: 'Icon rail',
+      code: "<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />",
+      description:
+        'Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups',
+    },
+    {
+      title: 'Expand on hover',
+      code: '<SideNav collapsed expandOnHover items={items} />',
+      description: 'Rail widens as CSS overlay on hover without reflowing adjacent content',
     },
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],

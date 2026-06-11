@@ -28,6 +28,8 @@ npx cascade add side-nav
 | `ariaLabel`         | `string`                       | no       | `Side navigation`     | —                                                                                              |
 | `collapseLabel`     | `string`                       | no       | `Collapse navigation` | —                                                                                              |
 | `expandLabel`       | `string`                       | no       | `Expand navigation`   | —                                                                                              |
+| `expandOnHover`     | `boolean`                      | no       | `false`               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts               |
+| `footer`            | `ReactNode`                    | no       | —                     | Content rendered above the collapse toggle (e.g. version string, user info)                    |
 | `className`         | `string`                       | no       | —                     | —                                                                                              |
 
 ## Examples
@@ -49,10 +51,20 @@ npx cascade add side-nav
 <SideNav items={[{ label: 'Settings', items: [{ label: 'Profile', href: '/profile' }] }]} />
 ```
 
-### Collapsed rail
+### Icon rail
+
+Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups
 
 ```tsx
-<SideNav defaultCollapsed items={items} />
+<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
+```
+
+### Expand on hover
+
+Rail widens as CSS overlay on hover without reflowing adjacent content
+
+```tsx
+<SideNav collapsed expandOnHover items={items} />
 ```
 
 ## Design tokens
@@ -76,7 +88,7 @@ npx cascade add side-nav
 
 - **WCAG level:** AA
 - **ARIA role:** `navigation`
-- **Keyboard:** Tab, Enter, Space
+- **Keyboard:** Tab, Enter, Space, ArrowDown, ArrowUp, Escape
 
 ## Dependencies
 

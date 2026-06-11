@@ -1,7 +1,13 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascade-ui/core'
 import { builtin, t } from '@cascade-ui/i18n'
-import { useId, type CSSProperties, type KeyboardEvent, type ReactNode, type RefObject } from 'react'
+import {
+  useId,
+  type CSSProperties,
+  type KeyboardEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { Tooltip } from '../tooltip/tooltip'
 import { usePopover } from '../popover/use-popover'
 import styles from './side-nav.module.css'

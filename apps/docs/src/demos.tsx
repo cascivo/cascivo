@@ -59,6 +59,7 @@ import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
 import { RatingGroup } from '@cascade-ui/components/rating-group'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
 import { Editable } from '@cascade-ui/components/editable'
+import { Home, BarChart, Settings, Users, Server } from '@cascade-ui/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -198,18 +199,37 @@ function NumberInputDemo() {
 
 function SideNavDemo() {
   return (
-    <div style={{ height: '240px', display: 'flex' }}>
+    <div style={{ height: '280px', display: 'flex', gap: '1rem' }}>
       <SideNav
         items={[
-          { label: 'Dashboard', href: '#', active: true },
-          { label: 'Components', href: '#' },
+          { label: 'Home', href: '#', icon: <Home size={16} />, active: true },
+          { label: 'Analytics', href: '#', icon: <BarChart size={16} /> },
           {
-            label: 'Settings',
+            label: 'Resources',
+            icon: <Server size={16} />,
             items: [
-              { label: 'General', href: '#' },
-              { label: 'Tokens', href: '#' },
+              { label: 'Databases', href: '#' },
+              { label: 'Servers', href: '#' },
             ],
           },
+          { label: 'Users', href: '#', icon: <Users size={16} /> },
+          {
+            label: 'Settings',
+            icon: <Settings size={16} />,
+            items: [
+              { label: 'General', href: '#' },
+              { label: 'Security', href: '#' },
+            ],
+          },
+        ]}
+      />
+      <SideNav
+        collapsed
+        items={[
+          { label: 'Home', href: '#', icon: <Home size={16} />, active: true },
+          { label: 'Analytics', href: '#', icon: <BarChart size={16} /> },
+          { label: 'Users', href: '#', icon: <Users size={16} /> },
+          { label: 'Ungrouped', href: '#' },
         ]}
       />
     </div>
