@@ -1,7 +1,7 @@
 # cascade — Roadmap v5: Outstanding by Design
 
 **Last updated:** 2026-06-11
-**Status:** Planning — `docs/ROADMAP-V4.md` is complete (UI Shell family shipped)
+**Status:** ✅ Shipped — all six tranches merged on `feature/v5-design`
 **Plan documents:** `docs/superpowers/plans/2026-06-11-v5-master-plan.md` + tranches 1–6
 
 ---
@@ -72,24 +72,24 @@ What makes the current design read as "standard / AI generated":
 
 ## Definition of Done
 
-- [ ] Light theme: controls render at 6px radius, cards ≤ 10px; side-by-side with shadcn/ui
+- [x] Light theme: controls render at 6px radius, cards ≤ 10px; side-by-side with shadcn/ui
       new-york the density and sharpness are comparable.
-- [ ] `grep -rn "border-inline-start" packages/components/src/**/*.module.css` shows only
+- [x] `grep -rn "border-inline-start" packages/components/src/**/*.module.css` shows only
       1px structural dividers — zero 2–3px state indicators.
-- [ ] Button primary is monochrome in light/dark themes; focus ring is a soft 3px halo with
+- [x] Button primary is monochrome in light/dark themes; focus ring is a soft 3px halo with
       ≥3:1 contrast against adjacent surface.
-- [ ] Dark theme borders are alpha hairlines.
-- [ ] `<InputGroup><InputGroupAddon><Search/></InputGroupAddon><Input/></InputGroup>` renders a
+- [x] Dark theme borders are alpha hairlines.
+- [x] `<InputGroup><InputGroupAddon><Search/></InputGroupAddon><Input/></InputGroup>` renders a
       leading icon _inside_ the field border; trailing variant works; focus ring sits on the group.
-- [ ] `RadioCardGroup` (single) and `CheckboxCard` (multi) ship with hidden native inputs,
+- [x] `RadioCardGroup` (single) and `CheckboxCard` (multi) ship with hidden native inputs,
       arrow-key/Space keyboard support, visible control glyph, registry + stories + docs entries.
-- [ ] Storybook: toolbar theme switcher works for all five themes including popover/menu
+- [x] Storybook: toolbar theme switcher works for all five themes including popover/menu
       stories; default layout is centered with realistic widths; sidebar shows
       Inputs/Display/Overlay/Navigation/Feedback/Shell/Charts/Blocks groups; 16 chart stories exist.
-- [ ] Docs app shell is built from ShellHeader + AppShell + SideNav (the library's own
+- [x] Docs app shell is built from ShellHeader + AppShell + SideNav (the library's own
       components); sidebar grouping matches Storybook.
-- [ ] Landing no longer claims "All 20 components"; shows curated tiles + real registry count.
-- [ ] All 285 visual baselines regenerated and human-reviewed; full local CI gate exits 0.
+- [x] Landing no longer claims "All 20 components"; shows curated tiles + real registry count.
+- [x] All 285 visual baselines regenerated and human-reviewed; full local CI gate exits 0.
 
 ## Deferred (do not re-litigate in v5)
 
