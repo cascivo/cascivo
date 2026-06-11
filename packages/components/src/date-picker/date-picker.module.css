@@ -225,7 +225,7 @@
     }
     &[data-selected] {
       background-color: var(--cascade-color-accent);
-      color: var(--cascade-color-on-accent, #fff);
+      color: var(--cascade-color-accent-foreground, var(--cascade-color-text-on-accent));
     }
     &[aria-disabled] {
       opacity: 0.35;

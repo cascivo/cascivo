@@ -9,24 +9,32 @@
     color-scheme: light;
 
     /* ── Surface ──────────────────────────────────────── */
-    --cascade-color-bg: var(--cascade-gray-0);
-    --cascade-color-bg-subtle: var(--cascade-gray-50);
-    --cascade-color-surface: var(--cascade-gray-0);
-    --cascade-color-surface-raised: var(--cascade-gray-50);
-    --cascade-color-surface-overlay: var(--cascade-gray-0);
+    --cascade-color-background: oklch(1 0 0);
+    --cascade-color-surface: oklch(0.985 0.002 264);
+    --cascade-color-surface-2: oklch(0.967 0.003 264);
+    --cascade-color-bg: var(--cascade-color-background);
+    --cascade-color-bg-subtle: var(--cascade-color-surface);
+    --cascade-color-surface-raised: var(--cascade-color-surface);
+    --cascade-color-surface-overlay: var(--cascade-color-background);
     --cascade-color-border: var(--cascade-gray-200);
     --cascade-color-border-strong: var(--cascade-gray-300);
+    --cascade-border-subtle: oklch(0.928 0.006 264);
+    --cascade-border-default: oklch(0.872 0.008 264);
+    --cascade-border-strong: oklch(0.707 0.015 264);
 
     /* ── Text ─────────────────────────────────────────── */
-    --cascade-color-text: var(--cascade-gray-900);
+    --cascade-color-foreground: oklch(0.145 0.005 264);
+    --cascade-color-foreground-muted: oklch(0.554 0.018 264);
+    --cascade-color-text: var(--cascade-color-foreground);
     --cascade-color-text-subtle: var(--cascade-gray-600);
     --cascade-color-text-muted: var(--cascade-gray-400);
-    --cascade-color-text-on-accent: #ffffff;
-    --cascade-color-text-on-destructive: #ffffff;
+    --cascade-color-text-on-accent: oklch(1 0 0);
+    --cascade-color-text-on-destructive: oklch(1 0 0);
 
     /* ── Accent (primary interactive) ────────────────── */
-    --cascade-color-accent: var(--cascade-blue-600);
-    --cascade-color-accent-hover: var(--cascade-blue-700);
+    --cascade-color-accent: oklch(0.623 0.214 250);
+    --cascade-color-accent-foreground: oklch(1 0 0);
+    --cascade-color-accent-hover: oklch(0.546 0.224 250);
     --cascade-color-accent-active: var(--cascade-blue-800);
     --cascade-color-accent-subtle: var(--cascade-blue-50);
     --cascade-color-accent-muted: var(--cascade-blue-100);
@@ -36,28 +44,37 @@
     --cascade-color-destructive-hover: var(--cascade-red-700);
     --cascade-color-destructive-subtle: var(--cascade-red-50);
 
-    /* ── Success / Warning / Info ─────────────────────── */
-    --cascade-color-success: var(--cascade-green-600);
+    /* ── Semantic status colors ───────────────────────── */
+    --cascade-color-error: oklch(0.628 0.188 22);
+    --cascade-color-warning: oklch(0.768 0.145 75);
+    --cascade-color-success: oklch(0.648 0.15 145);
     --cascade-color-success-subtle: var(--cascade-green-50);
-    --cascade-color-warning: var(--cascade-orange-500);
     --cascade-color-warning-subtle: var(--cascade-orange-50);
     --cascade-color-info: var(--cascade-blue-600);
     --cascade-color-info-subtle: var(--cascade-blue-50);
 
+    /* ── Radius ──────────────────────────────────────── */
+    --cascade-radius-base: 0.625rem;
+    --cascade-radius-control: var(--cascade-radius-base);
+    --cascade-radius-surface: calc(var(--cascade-radius-base) * 2);
+    --cascade-radius-component: var(--cascade-radius-base);
+    --cascade-radius-button: var(--cascade-radius-base);
+    --cascade-radius-input: var(--cascade-radius-base);
+    --cascade-radius-card: calc(var(--cascade-radius-base) * 1.6);
+    --cascade-radius-badge: var(--cascade-radius-full);
+    --cascade-radius-modal: calc(var(--cascade-radius-base) * 1.9);
+
+    /* ── Shadows ─────────────────────────────────────── */
+    --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08), 0 1px 2px oklch(0 0 0 / 0.05);
+    --cascade-shadow-md: 0 4px 6px oklch(0 0 0 / 0.07), 0 2px 4px oklch(0 0 0 / 0.05);
+
     /* ── Focus ring ───────────────────────────────────── */
+    --cascade-ring-color: oklch(0.623 0.214 250 / 0.5);
     --cascade-color-focus-ring: var(--cascade-blue-500);
-    --cascade-focus-ring: 0 0 0 3px rgb(59 130 246 / 0.4);
+    --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
 
     /* ── Chart overrides ─────────────────────────────── */
     --cascade-chart-grid: var(--cascade-gray-200);
     --cascade-chart-axis: var(--cascade-gray-400);
-
-    /* ── Radius (theme-level override for personality) ── */
-    --cascade-radius-component: var(--cascade-radius-md);
-    --cascade-radius-button: var(--cascade-radius-md);
-    --cascade-radius-input: var(--cascade-radius-md);
-    --cascade-radius-card: var(--cascade-radius-lg);
-    --cascade-radius-badge: var(--cascade-radius-full);
-    --cascade-radius-modal: var(--cascade-radius-xl);
   }
 }
