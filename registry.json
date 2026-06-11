@@ -2172,6 +2172,82 @@
       }
     },
     {
+      "name": "otp-input",
+      "type": "component",
+      "description": "Segmented one-time code input",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "otp", "code", "input", "verification"],
+      "meta": {
+        "name": "OtpInput",
+        "description": "Segmented one-time code input",
+        "category": "inputs",
+        "states": ["idle", "focused", "filled", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "length",
+            "type": "number",
+            "required": false,
+            "default": "6"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(v: string) => void",
+            "required": true
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "type",
+            "type": "'numeric' | 'alphanumeric'",
+            "required": false,
+            "default": "numeric"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-bg-subtle",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<OtpInput value=\"\" onValueChange={() => {}} />"
+          },
+          {
+            "title": "4-digit",
+            "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "otp", "code", "input", "verification"]
+      }
+    },
+    {
       "name": "overflow-menu",
       "type": "component",
       "description": "Kebab icon button revealing a menu of row-level actions",

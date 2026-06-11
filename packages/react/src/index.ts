@@ -64,3 +64,4 @@ export {
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'
+export * from '../../components/src/otp-input/otp-input'

@@ -54,7 +54,8 @@
     "./hover-card": "./src/hover-card/hover-card.tsx",
     "./password-input": "./src/password-input/password-input.tsx",
     "./multi-select": "./src/multi-select/multi-select.tsx",
-    "./tags-input": "./src/tags-input/tags-input.tsx"
+    "./tags-input": "./src/tags-input/tags-input.tsx",
+    "./otp-input": "./src/otp-input/otp-input.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

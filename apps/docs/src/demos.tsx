@@ -53,6 +53,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/compo
 import { PasswordInput } from '@cascade-ui/components/password-input'
 import { MultiSelect } from '@cascade-ui/components/multi-select'
 import { TagsInput } from '@cascade-ui/components/tags-input'
+import { OtpInput } from '@cascade-ui/components/otp-input'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -664,6 +665,7 @@ export const demos: Record<string, () => JSX.Element> = {
   'tags-input': () => (
     <TagsInput value={['react', 'typescript']} onValueChange={() => {}} placeholder="Add tag…" />
   ),
+  'otp-input': () => <OtpInput value="123" onValueChange={() => {}} />,
 }
 
 function AlertDialogDemo() {
