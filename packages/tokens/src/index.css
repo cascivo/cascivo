@@ -194,6 +194,11 @@
     --cascade-z-modal: 300;
     --cascade-z-toast: 400;
     --cascade-z-tooltip: 500;
+
+    /* ── Shell ──────────────────────────────────────────── */
+    --cascade-shell-header-block-size: 3rem;
+    --cascade-shell-panel-inline-size: 20rem;
+    --cascade-shell-aside-inline-size: 18rem;
   }
 
   /* All cascade motion derives from the duration tokens, so collapsing them
