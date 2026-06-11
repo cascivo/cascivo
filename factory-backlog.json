@@ -398,7 +398,7 @@
     },
     {
       "name": "otp-input",
-      "status": "pending",
+      "status": "in-progress",
       "milestone": null,
       "priority": 45,
       "category": "inputs",
