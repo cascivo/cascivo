@@ -51,7 +51,8 @@
     "./alert-dialog": "./src/alert-dialog/alert-dialog.tsx",
     "./sheet": "./src/sheet/sheet.tsx",
     "./context-menu": "./src/context-menu/context-menu.tsx",
-    "./hover-card": "./src/hover-card/hover-card.tsx"
+    "./hover-card": "./src/hover-card/hover-card.tsx",
+    "./password-input": "./src/password-input/password-input.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
