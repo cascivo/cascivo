@@ -25,7 +25,7 @@
     border: 1px solid var(--cascade-color-border);
     border-inline-start-width: 3px;
     border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-lg);
+    box-shadow: var(--cascade-shadow-overlay);
     pointer-events: auto;
     opacity: 1;
     translate: 0 0;

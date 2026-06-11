@@ -125,7 +125,7 @@
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
     border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-lg);
+    box-shadow: var(--cascade-shadow-overlay);
     opacity: 0;
     visibility: hidden;
     translate: 0 -0.25rem;

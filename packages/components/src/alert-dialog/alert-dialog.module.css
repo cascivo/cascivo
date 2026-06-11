@@ -61,7 +61,7 @@
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
     border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-xl);
+    box-shadow: var(--cascade-shadow-overlay);
     padding: var(--cascade-space-6);
     display: flex;
     flex-direction: column;
