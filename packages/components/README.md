@@ -28,6 +28,7 @@
 | file-uploader              | inputs     | Drag-and-drop file upload zone with file list and status indicators.                                                                                                  |
 | form                       | inputs     | Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper                                                         |
 | header                     | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
+| header-panel               | navigation | Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings                                             |
 | hover-card                 | overlay    | Hover-triggered popover with configurable open/close delay                                                                                                            |
 | input                      | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
 | input-group                | inputs     | Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders                                                                                  |
@@ -56,6 +57,7 @@
 | skeleton                   | display    | Animated loading placeholder that mirrors the shape of pending content                                                                                                |
 | slider                     | inputs     | Range input for selecting a value within bounds                                                                                                                       |
 | spinner                    | feedback   | Indeterminate loading indicator                                                                                                                                       |
+| switcher                   | navigation | App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers                                                       |
 | tabs                       | navigation | Switch between related panels of content                                                                                                                              |
 | tag                        | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                         |
 | tags-input                 | inputs     | Free-form multi-value chip input                                                                                                                                      |

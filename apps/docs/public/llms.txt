@@ -79,6 +79,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [file-uploader](/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
 - [form](/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
 - [header](/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot
+- [header-panel](/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
 - [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
 - [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders
@@ -118,6 +119,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [skeleton](/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content
 - [slider](/llms/slider.md) — Range input for selecting a value within bounds
 - [spinner](/llms/spinner.md) — Indeterminate loading indicator
+- [switcher](/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
 - [tabs](/llms/tabs.md) — Switch between related panels of content
 - [tag](/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
 - [tags-input](/llms/tags-input.md) — Free-form multi-value chip input

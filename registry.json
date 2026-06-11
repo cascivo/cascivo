@@ -1679,6 +1679,85 @@
       }
     },
     {
+      "name": "header-panel",
+      "type": "component",
+      "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+      "meta": {
+        "name": "HeaderPanel",
+        "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+        "category": "navigation",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": true,
+            "description": "Controlled open state"
+          },
+          {
+            "name": "onClose",
+            "type": "() => void",
+            "required": true,
+            "description": "Called on close button click or light-dismiss"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible label for the region (shown as header title)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "type": "HeaderPanelLabels",
+            "required": false,
+            "description": "i18n overrides"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-shell-panel-inline-size",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab"]
+        },
+        "examples": [
+          {
+            "title": "Notification panel",
+            "code": "<HeaderPanel open={open} onClose={() => setOpen(false)} label=\"Notifications\">\n  <p>3 unread messages</p>\n</HeaderPanel>",
+            "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"]
+      }
+    },
+    {
       "name": "hover-card",
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
@@ -3826,6 +3905,68 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["loading", "progress", "feedback"]
+      }
+    },
+    {
+      "name": "switcher",
+      "type": "component",
+      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
+      "meta": {
+        "name": "Switcher",
+        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "category": "navigation",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "SwitcherEntry[]",
+            "required": true,
+            "description": "SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "Switch application"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-text",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-accent",
+          "--cascade-color-accent-subtle",
+          "--cascade-color-border",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "App switcher",
+            "code": "<Switcher\n  items={[\n    { label: 'Console', href: '/console', active: true },\n    { label: 'Billing', href: '/billing' },\n    { divider: true },\n    { label: 'Docs', href: 'https://docs.example.com' },\n  ]}\n/>",
+            "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "switcher", "shell", "console", "app-switcher"]
       }
     },
     {

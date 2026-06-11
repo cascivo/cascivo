@@ -60,7 +60,9 @@
     "./input-group": "./src/input-group/input-group.tsx",
     "./rating-group": "./src/rating-group/rating-group.tsx",
     "./editable": "./src/editable/editable.tsx",
-    "./shell-header": "./src/shell-header/shell-header.tsx"
+    "./shell-header": "./src/shell-header/shell-header.tsx",
+    "./header-panel": "./src/header-panel/header-panel.tsx",
+    "./switcher": "./src/switcher/switcher.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

@@ -58,8 +58,10 @@ import { SegmentedControl } from '@cascade-ui/components/segmented-control'
 import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
 import { RatingGroup } from '@cascade-ui/components/rating-group'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
+import { HeaderPanel } from '@cascade-ui/components/header-panel'
+import { Switcher } from '@cascade-ui/components/switcher'
 import { Editable } from '@cascade-ui/components/editable'
-import { Home, BarChart, Settings, Users, Server } from '@cascade-ui/icons'
+import { Home, BarChart, Settings, Users, Server, Grid } from '@cascade-ui/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -729,6 +731,17 @@ export const demos: Record<string, () => JSX.Element> = {
       <Editable value="" onValueChange={() => {}} placeholder="Add a title…" />
     </Col>
   ),
+  switcher: () => (
+    <Switcher
+      items={[
+        { label: 'Console', href: '#', active: true, icon: <Grid size={16} /> },
+        { label: 'Billing', href: '#' },
+        { divider: true },
+        { label: 'Documentation', href: '#' },
+      ]}
+    />
+  ),
+  'header-panel': () => <HeaderPanelDemo />,
   // ShellHeader is the console application header. Header is the marketing/landing header.
   // Use ShellHeader for console apps; use Header for landing pages.
   'shell-header': () => (
@@ -763,6 +776,18 @@ export const demos: Record<string, () => JSX.Element> = {
       ]}
     />
   ),
+}
+
+function HeaderPanelDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div style={{ minBlockSize: '120px' }}>
+      <Button onClick={() => setOpen((v) => !v)}>Toggle panel</Button>
+      <HeaderPanel open={open} onClose={() => setOpen(false)} label="Notifications">
+        <p style={{ margin: 0 }}>3 unread notifications</p>
+      </HeaderPanel>
+    </div>
+  )
 }
 
 function AlertDialogDemo() {
