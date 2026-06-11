@@ -21,7 +21,10 @@ export interface UsePopoverReturn {
   toggle: () => void
 }
 
-const supportsAnchor = typeof CSS !== 'undefined' && CSS.supports('anchor-name: --cascade-a')
+const supportsAnchor =
+  typeof CSS !== 'undefined' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('anchor-name: --cascade-a')
 
 export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
   const anchorName = useRef(`--cascade-popover-${++anchorCounter}`).current

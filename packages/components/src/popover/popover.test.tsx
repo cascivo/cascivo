@@ -5,26 +5,29 @@ import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 describe('Popover', () => {
   it('shows content on trigger click', async () => {
-    render(
+    const { container } = render(
       <Popover>
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent>Content</PopoverContent>
       </Popover>,
     )
-    // Content exists in DOM but is hidden via popover attribute
+    // Content exists in DOM but is hidden initially
+    const popoverEl = container.querySelector('[role="dialog"]')
+    expect(popoverEl?.getAttribute('data-state')).toBe('closed')
     await userEvent.click(screen.getByText('Open'))
     // After click, data-state should be open
-    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('open')
+    expect(popoverEl?.getAttribute('data-state')).toBe('open')
   })
 
   it('respects controlled open prop', () => {
-    render(
+    const { container } = render(
       <Popover open={true}>
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent>Content</PopoverContent>
       </Popover>,
     )
-    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('open')
+    const popoverEl = container.querySelector('[role="dialog"]')
+    expect(popoverEl?.getAttribute('data-state')).toBe('open')
   })
 
   it('toggle button has aria-expanded', async () => {

@@ -5,7 +5,7 @@ import { AlertDialog } from './alert-dialog'
 
 describe('AlertDialog', () => {
   it('shows on open=true', () => {
-    render(
+    const { container } = render(
       <AlertDialog
         open={true}
         title="Delete item"
@@ -14,12 +14,14 @@ describe('AlertDialog', () => {
         onCancel={() => {}}
       />,
     )
-    expect(screen.getByRole('alertdialog')).toBeDefined()
-    expect(screen.getByRole('alertdialog').getAttribute('data-state')).toBe('open')
+    // jsdom hides popover elements from accessibility tree; query by attribute
+    const el = container.querySelector('[role="alertdialog"]')
+    expect(el).not.toBeNull()
+    expect(el?.getAttribute('data-state')).toBe('open')
   })
 
   it('is hidden when open=false', () => {
-    render(
+    const { container } = render(
       <AlertDialog
         open={false}
         title="Delete item"
@@ -28,7 +30,8 @@ describe('AlertDialog', () => {
         onCancel={() => {}}
       />,
     )
-    expect(screen.getByRole('alertdialog').getAttribute('data-state')).toBe('closed')
+    const el = container.querySelector('[role="alertdialog"]')
+    expect(el?.getAttribute('data-state')).toBe('closed')
   })
 
   it('calls onCancel on cancel button click', async () => {

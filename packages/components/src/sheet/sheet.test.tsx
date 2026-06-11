@@ -5,22 +5,24 @@ import { Sheet } from './sheet'
 
 describe('Sheet', () => {
   it('renders children when open', () => {
-    render(
+    const { container } = render(
       <Sheet open={true} onClose={() => {}} title="Settings">
         <p>Sheet content</p>
       </Sheet>,
     )
     expect(screen.getByText('Sheet content')).toBeDefined()
-    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('open')
+    const el = container.querySelector('[role="dialog"]')
+    expect(el?.getAttribute('data-state')).toBe('open')
   })
 
   it('is hidden when open=false', () => {
-    render(
+    const { container } = render(
       <Sheet open={false} onClose={() => {}} title="Settings">
         <p>Sheet content</p>
       </Sheet>,
     )
-    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('closed')
+    const el = container.querySelector('[role="dialog"]')
+    expect(el?.getAttribute('data-state')).toBe('closed')
   })
 
   it('calls onClose on close button click', async () => {
@@ -30,16 +32,19 @@ describe('Sheet', () => {
         <p>Content</p>
       </Sheet>,
     )
-    await userEvent.click(screen.getByRole('button', { name: /close/i }))
+    // Close button has aria-label containing "close" (from i18n "Close panel")
+    const closeBtn = screen.getByRole('button', { name: /close/i })
+    await userEvent.click(closeBtn)
     expect(onClose).toHaveBeenCalledOnce()
   })
 
   it('renders with correct side', () => {
-    render(
+    const { container } = render(
       <Sheet open={true} onClose={() => {}} title="Nav" side="start">
         <p>Nav content</p>
       </Sheet>,
     )
-    expect(screen.getByRole('dialog').getAttribute('data-side')).toBe('start')
+    const el = container.querySelector('[role="dialog"]')
+    expect(el?.getAttribute('data-side')).toBe('start')
   })
 })

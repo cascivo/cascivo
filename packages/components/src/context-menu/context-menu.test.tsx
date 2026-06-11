@@ -4,7 +4,7 @@ import { ContextMenu, ContextMenuItem } from './context-menu'
 
 describe('ContextMenu', () => {
   it('opens on right-click', () => {
-    render(
+    const { container } = render(
       <ContextMenu>
         <div>Right click me</div>
         <ContextMenuItem onSelect={() => {}}>Copy</ContextMenuItem>
@@ -14,7 +14,9 @@ describe('ContextMenu', () => {
     target.dispatchEvent(
       new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
     )
-    expect(screen.getByRole('menu').getAttribute('data-state')).toBe('open')
+    // jsdom doesn't support popover API, so check data-state attribute directly
+    const menu = container.querySelector('[role="menu"]')
+    expect(menu?.getAttribute('data-state')).toBe('open')
   })
 
   it('calls onSelect when item is clicked', async () => {

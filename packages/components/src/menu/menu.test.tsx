@@ -5,20 +5,23 @@ import { Menu, MenuItem, MenuSeparator, MenuTrigger } from './menu'
 
 describe('Menu', () => {
   it('opens on trigger click', async () => {
-    render(
+    const { container } = render(
       <Menu>
         <MenuTrigger>Actions</MenuTrigger>
         <MenuItem onSelect={() => {}}>Edit</MenuItem>
         <MenuItem onSelect={() => {}}>Delete</MenuItem>
       </Menu>,
     )
+    // jsdom hides popover elements from accessibility tree; query directly
+    const panel = container.querySelector('[role="menu"]')
+    expect(panel?.getAttribute('data-state')).toBe('closed')
     await userEvent.click(screen.getByText('Actions'))
-    expect(screen.getByRole('menu').getAttribute('data-state')).toBe('open')
+    expect(panel?.getAttribute('data-state')).toBe('open')
   })
 
   it('calls onSelect and closes on item click', async () => {
     const onSelect = vi.fn()
-    render(
+    const { container } = render(
       <Menu>
         <MenuTrigger>Actions</MenuTrigger>
         <MenuItem onSelect={onSelect}>Edit</MenuItem>
@@ -27,6 +30,8 @@ describe('Menu', () => {
     await userEvent.click(screen.getByText('Actions'))
     await userEvent.click(screen.getByText('Edit'))
     expect(onSelect).toHaveBeenCalledOnce()
+    const panel = container.querySelector('[role="menu"]')
+    expect(panel?.getAttribute('data-state')).toBe('closed')
   })
 
   it('navigates items with arrow keys', async () => {
@@ -45,7 +50,7 @@ describe('Menu', () => {
   })
 
   it('renders separator', () => {
-    render(
+    const { container } = render(
       <Menu>
         <MenuTrigger>Actions</MenuTrigger>
         <MenuItem onSelect={() => {}}>Edit</MenuItem>
@@ -53,7 +58,7 @@ describe('Menu', () => {
         <MenuItem onSelect={() => {}}>Delete</MenuItem>
       </Menu>,
     )
-    expect(screen.getByRole('separator')).toBeDefined()
+    expect(container.querySelector('[role="separator"]')).toBeDefined()
   })
 
   it('disabled item does not call onSelect', async () => {
