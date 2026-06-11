@@ -1,7 +1,7 @@
 # cascade — Roadmap v4: Console-Grade UI Shell
 
 **Last updated:** 2026-06-11
-**Status:** Planning — `docs/ROADMAP-V3.md` is complete (all seven tranches landed)
+**Status:** Shipped 2026-06-11 — all five tranches complete on `feature/v4-shell`
 **Decisions baked in:** ShellHeader is a NEW component, the existing Header stays for marketing pages · SideNav is upgraded in place (API-additive) · all floating pieces build on the v3 `usePopover` primitive · compound wiring uses the established `createContext` + `Context.Consumer` render-prop pattern (never the `useContext` hook) · shell state is a plain signals object (`createShellState`), no React context
 
 This document is the ground truth for v4. Like v1–v3, it is structured so an agent can pick up any milestone and execute it without additional context. Gap analysis source: `@carbon/react` UI Shell (Header, HeaderName, HeaderNavigation, HeaderMenu, HeaderMenuButton, HeaderGlobalBar, HeaderGlobalAction, HeaderPanel, Switcher, SideNav, SideNavItems, SideNavMenu, SideNavLink, rail variant, SkipToContent) compared against cascade `main` (2026-06-11).
