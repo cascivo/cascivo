@@ -32,6 +32,7 @@
     "./progress-bar": "./src/progress-bar/progress-bar.tsx",
     "./progress-indicator": "./src/progress-indicator/progress-indicator.tsx",
     "./radio": "./src/radio/radio.tsx",
+    "./radio-card": "./src/radio-card/radio-card.tsx",
     "./search": "./src/search/search.tsx",
     "./select": "./src/select/select.tsx",
     "./separator": "./src/separator/separator.tsx",
@@ -62,7 +63,8 @@
     "./editable": "./src/editable/editable.tsx",
     "./shell-header": "./src/shell-header/shell-header.tsx",
     "./header-panel": "./src/header-panel/header-panel.tsx",
-    "./switcher": "./src/switcher/switcher.tsx"
+    "./switcher": "./src/switcher/switcher.tsx",
+    "./checkbox-card": "./src/checkbox-card/checkbox-card.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

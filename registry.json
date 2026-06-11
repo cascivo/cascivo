@@ -612,6 +612,80 @@
       }
     },
     {
+      "name": "checkbox-card",
+      "type": "component",
+      "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["checkbox", "card", "selectable", "form"],
+      "meta": {
+        "name": "CheckboxCard",
+        "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+        "category": "inputs",
+        "states": ["default", "checked", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Card title"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional description"
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false,
+            "description": "Controlled checked state"
+          },
+          {
+            "name": "defaultChecked",
+            "type": "boolean",
+            "required": false,
+            "description": "Uncontrolled default"
+          },
+          {
+            "name": "onCheckedChange",
+            "type": "(checked: boolean) => void",
+            "required": false,
+            "description": "Change callback"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the card"
+          }
+        ],
+        "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
+        "accessibility": {
+          "role": "checkbox",
+          "wcag": "AA",
+          "keyboard": ["Space"]
+        },
+        "examples": [
+          {
+            "title": "Feature toggles",
+            "code": "<div style={{ display: 'grid', gap: 12 }}>\n  <CheckboxCard title=\"Automated backups\" description=\"Daily snapshots, 30-day retention\" defaultChecked />\n  <CheckboxCard title=\"Monitoring\" description=\"Metrics + alerting\" />\n  <CheckboxCard title=\"Audit log\" description=\"Requires Team plan\" disabled />\n</div>",
+            "description": "Multi-select feature toggles"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["checkbox", "card", "selectable", "form"]
+      }
+    },
+    {
       "name": "combobox",
       "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -3021,6 +3095,73 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["form", "choice", "group"]
+      }
+    },
+    {
+      "name": "radio-card",
+      "type": "component",
+      "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["radio", "card", "selectable", "form"],
+      "meta": {
+        "name": "RadioCard",
+        "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+        "category": "inputs",
+        "states": ["default", "checked", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "Radio value"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Card title"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional description"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the card"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-border",
+          "--cascade-radius-surface",
+          "--cascade-color-active-bg"
+        ],
+        "accessibility": {
+          "role": "radiogroup",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Plan selector",
+            "code": "<RadioCardGroup name=\"plan\" defaultValue=\"pro\" label=\"Plan\">\n  <RadioCard value=\"free\" title=\"Free\" description=\"For hobbyists\" />\n  <RadioCard value=\"pro\" title=\"Pro\" description=\"For professionals\" />\n  <RadioCard value=\"team\" title=\"Team\" description=\"For teams\" />\n</RadioCardGroup>",
+            "description": "Single-select plan picker"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["radio", "card", "selectable", "form"]
       }
     },
     {
