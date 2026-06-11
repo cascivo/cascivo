@@ -293,6 +293,9 @@ importers:
       '@cascade-ui/ai':
         specifier: workspace:^
         version: link:../../packages/ai
+      '@cascade-ui/charts':
+        specifier: workspace:*
+        version: link:../../packages/charts
       '@cascade-ui/components':
         specifier: workspace:*
         version: link:../../packages/components
