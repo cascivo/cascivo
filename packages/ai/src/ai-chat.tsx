@@ -19,7 +19,13 @@ export interface AiChatProps {
   className?: string
 }
 
-export function AiChat({ messages, onSend, isStreaming = false, streamingText, className }: AiChatProps) {
+export function AiChat({
+  messages,
+  onSend,
+  isStreaming = false,
+  streamingText,
+  className,
+}: AiChatProps) {
   useSignals()
   const inputValue = useSignal('')
   const listRef = useRef<HTMLDivElement>(null)
@@ -41,14 +47,16 @@ export function AiChat({ messages, onSend, isStreaming = false, streamingText, c
   return (
     <div className={[styles.root, className].filter(Boolean).join(' ')}>
       <div ref={listRef} className={styles.messages} role="log" aria-live="polite">
-        {messages.filter(m => m.role !== 'system').map(msg => (
-          <div key={msg.id} className={styles.message} data-role={msg.role}>
-            <span className={styles.roleLabel}>
-              {msg.role === 'user' ? t(builtin.ai.you) : t(builtin.ai.assistant)}
-            </span>
-            <div className={styles.content}>{msg.content}</div>
-          </div>
-        ))}
+        {messages
+          .filter((m) => m.role !== 'system')
+          .map((msg) => (
+            <div key={msg.id} className={styles.message} data-role={msg.role}>
+              <span className={styles.roleLabel}>
+                {msg.role === 'user' ? t(builtin.ai.you) : t(builtin.ai.assistant)}
+              </span>
+              <div className={styles.content}>{msg.content}</div>
+            </div>
+          ))}
         {isStreaming && streamingText !== undefined && (
           <div className={styles.message} data-role="assistant">
             <span className={styles.roleLabel}>{t(builtin.ai.assistant)}</span>
@@ -63,7 +71,9 @@ export function AiChat({ messages, onSend, isStreaming = false, streamingText, c
           className={styles.textarea}
           placeholder={t(builtin.ai.placeholder)}
           value={inputValue.value}
-          onChange={e => { inputValue.value = e.target.value }}
+          onChange={(e) => {
+            inputValue.value = e.target.value
+          }}
           onKeyDown={handleKeyDown}
           rows={1}
           aria-label={t(builtin.ai.placeholder)}

@@ -17,7 +17,9 @@ export function Portal({ children, container }: PortalProps) {
     if (typeof document === 'undefined') return
     containerRef.current = container ?? document.body
     mounted.value = true
-    return () => { mounted.value = false }
+    return () => {
+      mounted.value = false
+    }
   })
 
   if (!mounted.value || containerRef.current === null) return null

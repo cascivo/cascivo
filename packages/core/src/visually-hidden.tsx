@@ -6,7 +6,18 @@ export interface VisuallyHiddenProps extends HTMLAttributes<HTMLSpanElement> {
   showOnFocus?: boolean
 }
 
-export function VisuallyHidden({ children, showOnFocus, className, ...props }: VisuallyHiddenProps) {
-  const classes = [styles.root, showOnFocus && styles.focusable, className].filter(Boolean).join(' ')
-  return <span className={classes} {...props}>{children}</span>
+export function VisuallyHidden({
+  children,
+  showOnFocus,
+  className,
+  ...props
+}: VisuallyHiddenProps) {
+  const classes = [styles.root, showOnFocus && styles.focusable, className]
+    .filter(Boolean)
+    .join(' ')
+  return (
+    <span className={classes} {...props}>
+      {children}
+    </span>
+  )
 }

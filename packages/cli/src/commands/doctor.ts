@@ -20,8 +20,8 @@ export async function runDoctor(root: string): Promise<DoctorResult> {
   if (!existsSync(componentsDir)) return { violations: [], passed: true }
 
   const components = readdirSync(componentsDir, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => d.name)
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
 
   const reactIndex = join(root, 'packages', 'react', 'src', 'index.ts')
   const indexContent = existsSync(reactIndex) ? readFileSync(reactIndex, 'utf8') : ''
@@ -33,16 +33,28 @@ export async function runDoctor(root: string): Promise<DoctorResult> {
 
     for (const hook of BANNED_HOOKS) {
       if (new RegExp(`\\b${hook}\\b`).test(content)) {
-        violations.push({ file: tsxPath, rule: 'no-react-hooks', detail: `Banned hook '${hook}' in ${name}.tsx` })
+        violations.push({
+          file: tsxPath,
+          rule: 'no-react-hooks',
+          detail: `Banned hook '${hook}' in ${name}.tsx`,
+        })
       }
     }
 
     if (/aria-label="[A-Z]/.test(content)) {
-      violations.push({ file: tsxPath, rule: 'no-hardcoded-strings', detail: `Hardcoded aria-label in ${name}.tsx — use t(builtin.*)` })
+      violations.push({
+        file: tsxPath,
+        rule: 'no-hardcoded-strings',
+        detail: `Hardcoded aria-label in ${name}.tsx — use t(builtin.*)`,
+      })
     }
 
     if (!new RegExp(`from.*components/src/${name}`).test(indexContent)) {
-      violations.push({ file: tsxPath, rule: 'missing-react-export', detail: `${name} not exported from @cascade-ui/react` })
+      violations.push({
+        file: tsxPath,
+        rule: 'missing-react-export',
+        detail: `${name} not exported from @cascade-ui/react`,
+      })
     }
   }
 

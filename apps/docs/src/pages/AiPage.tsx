@@ -131,7 +131,9 @@ export function AiPage() {
 
       <section class="doc-section">
         <h2>AI components</h2>
-        <p>The <code>@cascade-ui/ai</code> package ships four AI-native components.</p>
+        <p>
+          The <code>@cascade-ui/ai</code> package ships four AI-native components.
+        </p>
 
         <h3>StreamingText</h3>
         <p>Animates text character-by-character, mimicking token-by-token LLM output.</p>

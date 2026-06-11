@@ -5,7 +5,9 @@ import { FocusScope } from './focus-scope'
 describe('FocusScope', () => {
   it('renders children', () => {
     const { container } = render(
-      <FocusScope><button type="button">Test</button></FocusScope>
+      <FocusScope>
+        <button type="button">Test</button>
+      </FocusScope>,
     )
     expect(container.querySelector('button')).toBeTruthy()
   })

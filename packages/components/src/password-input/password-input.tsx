@@ -11,14 +11,19 @@ export interface PasswordInputLabels {
   strengthLabel?: (level: string) => string
 }
 
-export interface PasswordInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
+export interface PasswordInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'size'
+> {
   showStrengthMeter?: boolean
   size?: 'sm' | 'md' | 'lg'
   labels?: PasswordInputLabels
 }
 
-function getStrengthLevel(value: string): { score: number; label: 'weak' | 'fair' | 'good' | 'strong' } {
+function getStrengthLevel(value: string): {
+  score: number
+  label: 'weak' | 'fair' | 'good' | 'strong'
+} {
   if (!value) return { score: 0, label: 'weak' }
   let score = 0
   if (/[a-z]/.test(value)) score++
@@ -63,9 +68,9 @@ export function PasswordInput({
     : (labels?.reveal ?? t(builtin.passwordInput.reveal))
 
   const strengthLabelStr = strength
-    ? (labels?.strengthLabel
-        ? labels.strengthLabel(strength.label)
-        : t(builtin.passwordInput.strengthLabel, { level: strength.label }))
+    ? labels?.strengthLabel
+      ? labels.strengthLabel(strength.label)
+      : t(builtin.passwordInput.strengthLabel, { level: strength.label })
     : undefined
 
   return (

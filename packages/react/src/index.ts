@@ -54,4 +54,10 @@ export * from '../../components/src/alert-dialog/alert-dialog'
 export * from '../../components/src/sheet/sheet'
 export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/hover-card/hover-card'
-export { ErrorBoundary, SuspenseBoundary, Portal, VisuallyHidden, FocusScope } from '@cascade-ui/core'
+export {
+  ErrorBoundary,
+  SuspenseBoundary,
+  Portal,
+  VisuallyHidden,
+  FocusScope,
+} from '@cascade-ui/core'

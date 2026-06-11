@@ -4,7 +4,11 @@ import { Portal } from './portal'
 
 describe('Portal', () => {
   it('renders children into document.body', async () => {
-    render(<Portal><div data-testid="portal-child">Portal content</div></Portal>)
+    render(
+      <Portal>
+        <div data-testid="portal-child">Portal content</div>
+      </Portal>,
+    )
     await waitFor(() => {
       expect(document.querySelector('[data-testid="portal-child"]')).toBeTruthy()
     })

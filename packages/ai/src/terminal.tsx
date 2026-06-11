@@ -34,7 +34,10 @@ export function Terminal({ lines, speed = 3, loop = false, onComplete, className
       const ci = charIndex.value
       if (li >= lines.length) {
         onCompleteRef.current?.()
-        if (loop) { lineIndex.value = 0; charIndex.value = 0 }
+        if (loop) {
+          lineIndex.value = 0
+          charIndex.value = 0
+        }
         return
       }
       const line = lines[li]!

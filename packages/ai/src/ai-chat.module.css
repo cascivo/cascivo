@@ -23,8 +23,13 @@
     gap: var(--cascade-space-1);
     max-width: 80%;
   }
-  .message[data-role='user'] { align-self: flex-end; align-items: flex-end; }
-  .message[data-role='assistant'] { align-self: flex-start; }
+  .message[data-role='user'] {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+  .message[data-role='assistant'] {
+    align-self: flex-start;
+  }
   .roleLabel {
     font-size: var(--cascade-font-size-xs, 0.75rem);
     color: var(--cascade-color-foreground-muted);
@@ -67,5 +72,8 @@
     font-weight: 500;
     cursor: pointer;
   }
-  .sendButton:disabled { opacity: 0.5; cursor: not-allowed; }
+  .sendButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

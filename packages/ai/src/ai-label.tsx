@@ -12,9 +12,12 @@ export interface AiLabelProps extends HTMLAttributes<HTMLSpanElement> {
 
 export function AiLabel({ variant = 'generating', className, ...props }: AiLabelProps) {
   useSignals()
-  const label = variant === 'generating' ? t(builtin.ai.generating)
-    : variant === 'done' ? t(builtin.ai.done)
-    : t(builtin.ai.error)
+  const label =
+    variant === 'generating'
+      ? t(builtin.ai.generating)
+      : variant === 'done'
+        ? t(builtin.ai.done)
+        : t(builtin.ai.error)
 
   return (
     <span

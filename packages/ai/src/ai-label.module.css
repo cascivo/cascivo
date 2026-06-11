@@ -15,7 +15,7 @@
     animation: cascade-ai-pulse 1.5s ease-in-out infinite;
   }
   .root[data-variant='done'] {
-    background: var(--cascade-color-success, oklch(0.648 0.150 145));
+    background: var(--cascade-color-success, oklch(0.648 0.15 145));
     color: oklch(1 0 0);
   }
   .root[data-variant='error'] {
@@ -24,6 +24,11 @@
   }
 }
 @keyframes cascade-ai-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
