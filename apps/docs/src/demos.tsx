@@ -55,7 +55,7 @@ import { MultiSelect } from '@cascade-ui/components/multi-select'
 import { TagsInput } from '@cascade-ui/components/tags-input'
 import { OtpInput } from '@cascade-ui/components/otp-input'
 import { SegmentedControl } from '@cascade-ui/components/segmented-control'
-import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
+import { InputGroup, ButtonGroup, InputGroupAddon } from '@cascade-ui/components/input-group'
 import { RatingGroup } from '@cascade-ui/components/rating-group'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
 import { HeaderPanel } from '@cascade-ui/components/header-panel'
@@ -711,6 +711,15 @@ export const demos: Record<string, () => JSX.Element> = {
       </InputGroup>
       <InputGroup suffix=".com">
         <Input placeholder="Enter domain" />
+      </InputGroup>
+      <InputGroup>
+        <InputGroupAddon>
+          <svg viewBox="0 0 16 16" width="16" height="16">
+            <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M10 10l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </InputGroupAddon>
+        <Input placeholder="Search…" aria-label="Search" />
       </InputGroup>
       <ButtonGroup>
         <Button variant="secondary">Left</Button>

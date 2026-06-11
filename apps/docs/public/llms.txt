@@ -83,7 +83,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [header-panel](/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
 - [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
-- [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders
+- [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
 - [kbd](/llms/kbd.md) — Displays a keyboard key or shortcut
 - [layout/app-shell](/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar.
 - [layout/auth-layout](/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password).

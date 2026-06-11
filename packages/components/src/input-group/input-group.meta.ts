@@ -3,7 +3,7 @@ import type { ComponentMeta } from '@cascade-ui/core'
 export const meta: ComponentMeta = {
   name: 'InputGroup',
   description:
-    'Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders',
+    'Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders',
   category: 'inputs',
   states: [],
   variants: [],
@@ -28,6 +28,14 @@ export const meta: ComponentMeta = {
     {
       title: 'With prefix',
       code: `<InputGroup prefix="https://"><Input placeholder="example.com" /></InputGroup>`,
+    },
+    {
+      title: 'With leading icon addon',
+      code: `<InputGroup><InputGroupAddon><svg viewBox="0 0 16 16" width="16" height="16"><circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1.5"/><path d="M10 10l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></InputGroupAddon><Input placeholder="Search…" aria-label="Search" /></InputGroup>`,
+    },
+    {
+      title: 'With trailing unit addon',
+      code: `<InputGroup><Input placeholder="0.00" aria-label="Weight" /><InputGroupAddon align="inline-end">kg</InputGroupAddon></InputGroup>`,
     },
     {
       title: 'ButtonGroup',

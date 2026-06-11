@@ -31,7 +31,7 @@
 | header-panel               | navigation | Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings                                             |
 | hover-card                 | overlay    | Hover-triggered popover with configurable open/close delay                                                                                                            |
 | input                      | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
-| input-group                | inputs     | Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders                                                                                  |
+| input-group                | inputs     | Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders              |
 | kbd                        | display    | Displays a keyboard key or shortcut                                                                                                                                   |
 | link                       | navigation | Styled anchor for navigation, standalone or inline within prose                                                                                                       |
 | menu                       | overlay    | Dropdown menu with keyboard navigation, built on usePopover                                                                                                           |

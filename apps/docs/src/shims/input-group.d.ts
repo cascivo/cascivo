@@ -12,3 +12,9 @@ export declare function ButtonGroup(props: {
   className?: string
   [key: string]: unknown
 }): JSX.Element
+export declare function InputGroupAddon(props: {
+  children?: ComponentChildren
+  align?: 'inline-start' | 'inline-end'
+  className?: string
+  [key: string]: unknown
+}): JSX.Element
