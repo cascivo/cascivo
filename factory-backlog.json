@@ -425,7 +425,7 @@
     },
     {
       "name": "rating-group",
-      "status": "pending",
+      "status": "in-progress",
       "milestone": null,
       "priority": 48,
       "category": "inputs",
