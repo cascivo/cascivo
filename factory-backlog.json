@@ -380,8 +380,8 @@
     },
     {
       "name": "multi-select",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 43,
       "category": "inputs",
       "attempts": 0,

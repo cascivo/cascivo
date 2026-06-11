@@ -51,6 +51,7 @@ import { Sheet } from '@cascade-ui/components/sheet'
 import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-menu'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
 import { PasswordInput } from '@cascade-ui/components/password-input'
+import { MultiSelect } from '@cascade-ui/components/multi-select'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -645,6 +646,19 @@ export const demos: Record<string, () => JSX.Element> = {
       <PasswordInput placeholder="Enter password" />
       <PasswordInput showStrengthMeter placeholder="Create password" />
     </Col>
+  ),
+  'multi-select': () => (
+    <MultiSelect
+      options={[
+        { label: 'React', value: 'react' },
+        { label: 'Vue', value: 'vue' },
+        { label: 'Svelte', value: 'svelte' },
+        { label: 'Angular', value: 'angular' },
+      ]}
+      value={['react']}
+      onValueChange={() => {}}
+      placeholder="Select frameworks"
+    />
   ),
 }
 

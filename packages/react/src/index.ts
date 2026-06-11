@@ -62,3 +62,4 @@ export {
   FocusScope,
 } from '@cascade-ui/core'
 export * from '../../components/src/password-input/password-input'
+export * from '../../components/src/multi-select/multi-select'
