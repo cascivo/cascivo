@@ -69,6 +69,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [chart/sparkline](/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 - [chart/treemap](/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
 - [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
+- [checkbox-card](/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
 - [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
 - [command-menu](/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
 - [context-menu](/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
@@ -109,6 +110,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [progress-bar](/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
 - [progress-indicator](/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
 - [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
+- [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
 - [search](/llms/search.md) — Search input with debounced search callback and clear button
 - [segmented-control](/llms/segmented-control.md) — Mutually exclusive toggle group

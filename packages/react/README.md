@@ -61,6 +61,7 @@ pnpm add @cascade-ui/react
 | button                     | inputs     | Triggers an action or event                                                                                                                                           |
 | card                       | display    | Container for grouping related content                                                                                                                                |
 | checkbox                   | inputs     | Binary toggle for forms, with indeterminate support                                                                                                                   |
+| checkbox-card              | inputs     | Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.                                                 |
 | combobox                   | inputs     | Filterable single-select with an animated custom listbox, built on the dropdown open/close machine                                                                    |
 | command-menu               | overlay    | Cmd+K command palette with fuzzy search over grouped commands                                                                                                         |
 | context-menu               | overlay    | Right-click context menu anchored at pointer coordinates via CSS custom properties                                                                                    |
@@ -90,6 +91,7 @@ pnpm add @cascade-ui/react
 | progress-bar               | feedback   | Shows determinate or indeterminate progress of a task                                                                                                                 |
 | progress-indicator         | navigation | Shows progress through the steps of a multi-step flow                                                                                                                 |
 | radio                      | inputs     | Single choice from a set, grouped with RadioGroup                                                                                                                     |
+| radio-card                 | inputs     | Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.                                                                          |
 | rating-group               | inputs     | Star rating input with accessible radio group pattern                                                                                                                 |
 | search                     | inputs     | Search input with debounced search callback and clear button                                                                                                          |
 | segmented-control          | inputs     | Mutually exclusive toggle group                                                                                                                                       |

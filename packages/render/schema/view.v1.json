@@ -103,6 +103,7 @@
             "Card",
             "Center",
             "Checkbox",
+            "CheckboxCard",
             "Columns",
             "ComboChart",
             "Combobox",
@@ -150,6 +151,7 @@
             "ProgressIndicator",
             "Radar",
             "Radio",
+            "RadioCard",
             "RatingGroup",
             "ScatterChart",
             "Search",
@@ -475,6 +477,43 @@
                     "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CheckboxCard"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "defaultChecked": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["title"]
               }
             }
           }
@@ -1486,6 +1525,40 @@
                   }
                 },
                 "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "RadioCard"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["value", "title"]
               }
             }
           }
