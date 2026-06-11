@@ -389,8 +389,8 @@
     },
     {
       "name": "tags-input",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 44,
       "category": "inputs",
       "attempts": 0,

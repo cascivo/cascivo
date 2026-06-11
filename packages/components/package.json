@@ -53,7 +53,8 @@
     "./context-menu": "./src/context-menu/context-menu.tsx",
     "./hover-card": "./src/hover-card/hover-card.tsx",
     "./password-input": "./src/password-input/password-input.tsx",
-    "./multi-select": "./src/multi-select/multi-select.tsx"
+    "./multi-select": "./src/multi-select/multi-select.tsx",
+    "./tags-input": "./src/tags-input/tags-input.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

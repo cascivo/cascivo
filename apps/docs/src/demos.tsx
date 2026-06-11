@@ -52,6 +52,7 @@ import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-men
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
 import { PasswordInput } from '@cascade-ui/components/password-input'
 import { MultiSelect } from '@cascade-ui/components/multi-select'
+import { TagsInput } from '@cascade-ui/components/tags-input'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -659,6 +660,9 @@ export const demos: Record<string, () => JSX.Element> = {
       onValueChange={() => {}}
       placeholder="Select frameworks"
     />
+  ),
+  'tags-input': () => (
+    <TagsInput value={['react', 'typescript']} onValueChange={() => {}} placeholder="Add tag…" />
   ),
 }
 
