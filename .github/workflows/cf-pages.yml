@@ -1,0 +1,138 @@
+name: Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: cf-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Detect which apps changed ─────────────────────────────────────────────
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs:        ${{ steps.filter.outputs.docs }}
+      landing:     ${{ steps.filter.outputs.landing }}
+      storybook:   ${{ steps.filter.outputs.storybook }}
+      playground:  ${{ steps.filter.outputs.playground }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            docs:
+              - 'apps/docs/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            landing:
+              - 'apps/landing/**'
+              - 'packages/tokens/**'
+              - 'packages/themes/**'
+              - 'pnpm-lock.yaml'
+            storybook:
+              - 'apps/storybook/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            playground:
+              - 'apps/examples/json-playground/**'
+              - 'packages/render/**'
+              - 'packages/react/**'
+              - 'pnpm-lock.yaml'
+
+  # ── Shared install + build step ───────────────────────────────────────────
+  # Each app builds in its own job so failures are isolated and CF Pages
+  # deployments happen in parallel.
+
+  deploy-docs:
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascade-ui/docs#build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: >
+            pages deploy apps/docs/dist
+            --project-name=${{ vars.CF_PROJECT_DOCS || 'cascade-ui-docs' }}
+            ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+
+  deploy-landing:
+    needs: changes
+    if: needs.changes.outputs.landing == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascade-ui/landing#build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: >
+            pages deploy apps/landing/dist
+            --project-name=${{ vars.CF_PROJECT_LANDING || 'cascade-ui-landing' }}
+            ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+
+  deploy-storybook:
+    needs: changes
+    if: needs.changes.outputs.storybook == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build Storybook
+        run: pnpm --filter @cascade-ui/storybook exec storybook build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: >
+            pages deploy apps/storybook/storybook-static
+            --project-name=${{ vars.CF_PROJECT_STORYBOOK || 'cascade-ui-storybook' }}
+            ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+
+  deploy-playground:
+    needs: changes
+    if: needs.changes.outputs.playground == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascade-ui/json-playground#build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: >
+            pages deploy apps/examples/json-playground/dist
+            --project-name=${{ vars.CF_PROJECT_PLAYGROUND || 'cascade-ui-playground' }}
+            ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
