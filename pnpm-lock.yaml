@@ -120,6 +120,9 @@ importers:
       '@cascade-ui/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
+      '@cascade-ui/render':
+        specifier: workspace:*
+        version: link:../../packages/render
       '@cascade-ui/storage':
         specifier: workspace:^
         version: link:../../packages/storage
@@ -265,6 +268,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascade-ui/render':
+        specifier: workspace:*
+        version: link:../../packages/render
       '@cascade-ui/themes':
         specifier: workspace:*
         version: link:../../packages/themes
