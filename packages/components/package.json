@@ -45,7 +45,13 @@
     "./time-picker": "./src/time-picker/time-picker.tsx",
     "./toast": "./src/toast/toast.tsx",
     "./toggle": "./src/toggle/toggle.tsx",
-    "./tooltip": "./src/tooltip/tooltip.tsx"
+    "./tooltip": "./src/tooltip/tooltip.tsx",
+    "./popover": "./src/popover/index.ts",
+    "./menu": "./src/menu/menu.tsx",
+    "./alert-dialog": "./src/alert-dialog/alert-dialog.tsx",
+    "./sheet": "./src/sheet/sheet.tsx",
+    "./context-menu": "./src/context-menu/context-menu.tsx",
+    "./hover-card": "./src/hover-card/hover-card.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

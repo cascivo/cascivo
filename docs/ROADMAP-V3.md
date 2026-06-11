@@ -10,7 +10,7 @@ This document is the ground truth for v3. Like v1/v2, it is structured so an age
 
 ## Vision
 
-v2 made cascade an application platform. v3 makes it the design system you *prefer* — deep enough that no real app hits a missing component, distinctive enough that an AI-built product doesn't look like a template:
+v2 made cascade an application platform. v3 makes it the design system you _prefer_ — deep enough that no real app hits a missing component, distinctive enough that an AI-built product doesn't look like a template:
 
 > A cascade app should be visibly better-looking than a shadcn app, materially more complete than one built on shadcn's catalog, and the only system where "add an AI chat to my dashboard" is a one-component answer.
 
@@ -26,13 +26,13 @@ Everything inherits the v2 cross-cutting rules: signals not hooks, CSS-only moti
 
 ## Current State (start of v3)
 
-| Area       | Status                                                                                                                          |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Components | 41 components in registry; 16 charts; 11 layouts; 9 blocks — 77 registry entries                                                 |
-| Packages   | `core`, `tokens`, `themes`, `icons`, `i18n`, `storage`, `charts`, `render`, `cli`, `mcp`, `components`, `layouts`, `react`        |
-| Themes     | `light`, `dark`, `warm` — Tailwind-era hex grays, 4–6px radius, conventional shadow scale                                         |
-| AI layer   | MCP (validate_view/scaffold_view + registry tools), 4 skills, llms.txt + per-component md, JSON renderer + codegen                |
-| Gates      | check/test/build, drift (registry/readme/schema/llms), visual, perf, animation audit                                              |
+| Area       | Status                                                                                                                     |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Components | 41 components in registry; 16 charts; 11 layouts; 9 blocks — 77 registry entries                                           |
+| Packages   | `core`, `tokens`, `themes`, `icons`, `i18n`, `storage`, `charts`, `render`, `cli`, `mcp`, `components`, `layouts`, `react` |
+| Themes     | `light`, `dark`, `warm` — Tailwind-era hex grays, 4–6px radius, conventional shadow scale                                  |
+| AI layer   | MCP (validate_view/scaffold_view + registry tools), 4 skills, llms.txt + per-component md, JSON renderer + codegen         |
+| Gates      | check/test/build, drift (registry/readme/schema/llms), visual, perf, animation audit                                       |
 
 ---
 
@@ -44,7 +44,7 @@ Everything inherits the v2 cross-cutting rules: signals not hooks, CSS-only moti
 
 **High-priority single-source gaps:** Calendar (shadcn), InputGroup/ButtonGroup (shadcn), Collapsible (shadcn), CodeSnippet (Carbon), inline Notification with actions (Carbon), TagsInput (Ark — neither competitor has it; enterprise-forms win).
 
-**Deliberately skipped (recorded so we don't re-litigate):** Carbon Layer (Carbon-specific elevation model), Menubar (desktop-app niche), Carousel (marketing niche; revisit on demand), AspectRatio (one line of CSS), Marquee/QR/SignaturePad/Timer (novelty), Carbon Fluid* variants (style variants, not components).
+**Deliberately skipped (recorded so we don't re-litigate):** Carbon Layer (Carbon-specific elevation model), Menubar (desktop-app niche), Carousel (marketing niche; revisit on demand), AspectRatio (one line of CSS), Marquee/QR/SignaturePad/Timer (novelty), Carbon Fluid\* variants (style variants, not components).
 
 ---
 
@@ -101,7 +101,7 @@ Everything inherits the v2 cross-cutting rules: signals not hooks, CSS-only moti
 
 ### Milestone 2.3 — Utility components (the "proper error boundary" workstream)
 
-- [ ] **ErrorBoundary** — a *real* one, not a stub: class component internally (the only place React forces it; documented exception to the no-classes rule), `fallback` render prop receiving `{ error, reset }`, `onError` reporting hook, `resetKeys` for automatic recovery, optional default fallback UI built from EmptyState + Button ("Something went wrong — Try again"). Ships in `@cascade-ui/core` or `components` (decide: it has no styling of its own → lean `core`).
+- [ ] **ErrorBoundary** — a _real_ one, not a stub: class component internally (the only place React forces it; documented exception to the no-classes rule), `fallback` render prop receiving `{ error, reset }`, `onError` reporting hook, `resetKeys` for automatic recovery, optional default fallback UI built from EmptyState + Button ("Something went wrong — Try again"). Ships in `@cascade-ui/core` or `components` (decide: it has no styling of its own → lean `core`).
 - [ ] **Suspense affordances** — `SuspenseBoundary` convenience wrapping `Suspense` with a Skeleton/Spinner default fallback and a minimum-display-time signal (no flash-of-spinner).
 - [ ] **Portal** — declarative top-layer/portal helper used by Toast/Modal internally; exported because user code needs it for custom overlays.
 - [ ] **VisuallyHidden** + **FocusScope** (focus trap/restore used by Modal/Sheet/Menu) — extracted, exported, documented.
@@ -174,15 +174,15 @@ The user-requested set. These are first-party, signal-driven, and exist in neith
 
 ## Sequencing & Tranche Sketch
 
-| Tranche | Content | Depends on |
-| ------- | ------------------------------------------------------------------ | ---------- |
-| T1      | Popover primitive + Menu + AlertDialog + Sheet + migrations         | —          |
-| T2      | Inputs wave (2.1) via dark factory                                  | T1 (MultiSelect floats on Popover) |
-| T3      | Display/structure wave (2.2) + utilities (2.3)                      | T1 (ContextMenu, Toggletip) |
-| T4      | Token foundation refresh (4.1) + restyle existing themes (4.2)      | — (parallel to T2/T3) |
-| T5      | `flat` + `minimal` themes (4.3)                                     | T4 |
-| T6      | Terminal + AiChat + StreamingText + ai-chat-page block (Phase 3)    | T1 (Menu in chat actions), benefits from T4 look |
-| T7      | Integration sweep, perf benchmark, DoD verification (Phase 5)       | all |
+| Tranche | Content                                                          | Depends on                                       |
+| ------- | ---------------------------------------------------------------- | ------------------------------------------------ |
+| T1      | Popover primitive + Menu + AlertDialog + Sheet + migrations      | —                                                |
+| T2      | Inputs wave (2.1) via dark factory                               | T1 (MultiSelect floats on Popover)               |
+| T3      | Display/structure wave (2.2) + utilities (2.3)                   | T1 (ContextMenu, Toggletip)                      |
+| T4      | Token foundation refresh (4.1) + restyle existing themes (4.2)   | — (parallel to T2/T3)                            |
+| T5      | `flat` + `minimal` themes (4.3)                                  | T4                                               |
+| T6      | Terminal + AiChat + StreamingText + ai-chat-page block (Phase 3) | T1 (Menu in chat actions), benefits from T4 look |
+| T7      | Integration sweep, perf benchmark, DoD verification (Phase 5)    | all                                              |
 
 Open questions for the human before T1 planning:
 

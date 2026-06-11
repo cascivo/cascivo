@@ -86,6 +86,13 @@ export const builtin = {
   charts: defineMessages('cascade.charts', {
     legendToggle: 'Toggle series {name}',
   }),
+  alertDialog: defineMessages('cascade.alertDialog', {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+  }),
+  sheet: defineMessages('cascade.sheet', {
+    close: 'Close panel',
+  }),
   fileUploader: defineMessages('cascade.fileUploader', {
     label: 'Upload files',
     drop: 'Drag and drop files here or click to upload',
@@ -175,6 +182,13 @@ defineCatalog(builtin.appShell, 'de', {
 })
 defineCatalog(builtin.charts, 'de', {
   legendToggle: 'Reihe {name} umschalten',
+})
+defineCatalog(builtin.alertDialog, 'de', {
+  confirm: 'Bestätigen',
+  cancel: 'Abbrechen',
+})
+defineCatalog(builtin.sheet, 'de', {
+  close: 'Bereich schließen',
 })
 defineCatalog(builtin.fileUploader, 'de', {
   label: 'Dateien hochladen',

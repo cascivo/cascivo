@@ -15,10 +15,10 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      docs:        ${{ steps.filter.outputs.docs }}
-      landing:     ${{ steps.filter.outputs.landing }}
-      storybook:   ${{ steps.filter.outputs.storybook }}
-      playground:  ${{ steps.filter.outputs.playground }}
+      docs: ${{ steps.filter.outputs.docs }}
+      landing: ${{ steps.filter.outputs.landing }}
+      storybook: ${{ steps.filter.outputs.storybook }}
+      playground: ${{ steps.filter.outputs.playground }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
