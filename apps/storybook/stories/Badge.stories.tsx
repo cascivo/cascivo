@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from '@cascade-ui/components/badge'
 
 const meta: Meta<typeof Badge> = {
+  title: 'Display/Badge',
   component: Badge,
   args: { children: 'Badge' },
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Alert } from '@cascade-ui/components/alert'
 
 const meta: Meta<typeof Alert> = {
+  title: 'Display/Alert',
   component: Alert,
   args: { title: 'Heads up', children: 'Your trial ends in 3 days.' },
 }

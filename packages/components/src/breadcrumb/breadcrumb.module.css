@@ -30,7 +30,7 @@
     & a {
       color: var(--cascade-color-text-muted);
       text-decoration: none;
-      border-radius: var(--cascade-radius-sm);
+      border-radius: var(--cascade-radius-item);
       transition: color var(--cascade-duration-150) var(--cascade-ease-out);
 
       &:hover {

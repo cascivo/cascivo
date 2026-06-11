@@ -47,7 +47,7 @@
     color: var(--cascade-color-text);
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input);
+    border-radius: var(--cascade-radius-field);
     transition:
       border-color var(--cascade-duration-150) var(--cascade-ease-out),
       box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
@@ -88,8 +88,8 @@
     display: flex;
     flex-direction: column;
     inline-size: var(--_stepper-width);
-    border-start-end-radius: calc(var(--cascade-radius-input) - 1px);
-    border-end-end-radius: calc(var(--cascade-radius-input) - 1px);
+    border-start-end-radius: calc(var(--cascade-radius-field) - 1px);
+    border-end-end-radius: calc(var(--cascade-radius-field) - 1px);
     overflow: hidden;
   }
 

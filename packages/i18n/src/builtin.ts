@@ -133,6 +133,18 @@ export const builtin = {
     you: 'You',
     assistant: 'Assistant',
   }),
+  shellHeader: defineMessages('cascade.shellHeader', {
+    skipToContent: 'Skip to main content',
+    nav: 'Main',
+    openMenu: 'Open navigation',
+    closeMenu: 'Close navigation',
+  }),
+  headerPanel: defineMessages('cascade.headerPanel', {
+    close: 'Close panel',
+  }),
+  switcher: defineMessages('cascade.switcher', {
+    label: 'Switch application',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -261,4 +273,16 @@ defineCatalog(builtin.ai, 'de', {
   placeholder: 'Nachricht eingeben…',
   you: 'Du',
   assistant: 'Assistent',
+})
+defineCatalog(builtin.shellHeader, 'de', {
+  skipToContent: 'Zum Hauptinhalt springen',
+  nav: 'Hauptnavigation',
+  openMenu: 'Navigation öffnen',
+  closeMenu: 'Navigation schließen',
+})
+defineCatalog(builtin.headerPanel, 'de', {
+  close: 'Panel schließen',
+})
+defineCatalog(builtin.switcher, 'de', {
+  label: 'Anwendung wechseln',
 })

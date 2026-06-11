@@ -101,10 +101,9 @@ describe('SideNav', () => {
     expect(screen.getByRole('button', { name: 'Expand navigation' })).toBeInTheDocument()
   })
 
-  it('adds title attributes to items when collapsed', () => {
-    render(<SideNav items={items} defaultCollapsed />)
-    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('title', 'Home')
-    expect(screen.getByRole('button', { name: 'Settings' })).toHaveAttribute('title', 'Settings')
+  it('adds aria-label to items when collapsed', () => {
+    render(<SideNav items={[{ label: 'Home', href: '/' }]} defaultCollapsed />)
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-label', 'Home')
   })
 
   it('does not change state itself when controlled, but reports the intent', async () => {
@@ -131,5 +130,95 @@ describe('SideNav', () => {
     render(<SideNav items={items} collapseLabel="Zuklappen" expandLabel="Aufklappen" />)
     await userEvent.click(screen.getByRole('button', { name: 'Zuklappen' }))
     expect(screen.getByRole('button', { name: 'Aufklappen' })).toBeInTheDocument()
+  })
+})
+
+describe('SideNav rail mode', () => {
+  const railItems: SideNavItem[] = [
+    { label: 'Dashboard', href: '/dash', icon: <svg data-testid="dash-icon" /> },
+    { label: 'Settings', href: '/settings' },
+  ]
+
+  it('hides labels from the visual layout when collapsed', () => {
+    render(<SideNav items={railItems} collapsed />)
+    const link = screen.getByRole('link', { name: 'Dashboard' })
+    expect(link).toHaveAttribute('aria-label', 'Dashboard')
+    expect(link.querySelector('[data-rail-hidden]')).not.toBeNull()
+  })
+
+  it('renders a grapheme badge for icon-less items when collapsed', () => {
+    render(<SideNav items={railItems} collapsed />)
+    const link = screen.getByRole('link', { name: 'Settings' })
+    expect(link.querySelector('[data-fallback-icon]')).toHaveTextContent('S')
+  })
+
+  it('does not render fallback badges when expanded', () => {
+    render(<SideNav items={railItems} />)
+    const link = screen.getByRole('link', { name: 'Settings' })
+    expect(link.querySelector('[data-fallback-icon]')).toBeNull()
+  })
+
+  it('shows a tooltip with the label on rail-item hover', async () => {
+    render(<SideNav items={[{ label: 'Dashboard', href: '/d', icon: <svg /> }]} collapsed />)
+    await userEvent.hover(screen.getByRole('link', { name: 'Dashboard' }))
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Dashboard')
+  })
+})
+
+describe('SideNav rail flyout', () => {
+  const groupItems: SideNavItem[] = [
+    {
+      label: 'Manage',
+      icon: <svg />,
+      items: [
+        { label: 'Users', href: '/users' },
+        { label: 'Billing', href: '/billing' },
+      ],
+    },
+  ]
+
+  it('opens a flyout with sublinks on group click when collapsed', async () => {
+    const { container } = render(<SideNav items={groupItems} collapsed />)
+    const trigger = screen.getByRole('button', { name: 'Manage' })
+    expect(trigger).toHaveAttribute('aria-haspopup', 'menu')
+    await userEvent.click(trigger)
+    const flyout = container.querySelector('[role="menu"]')
+    expect(flyout).not.toBeNull()
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByText('Users')).toBeInTheDocument()
+  })
+
+  it('closes the flyout on Escape and restores trigger focus', async () => {
+    render(<SideNav items={groupItems} collapsed />)
+    const trigger = screen.getByRole('button', { name: 'Manage' })
+    await userEvent.click(trigger)
+    await userEvent.keyboard('{Escape}')
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('keeps inline expansion when not collapsed', async () => {
+    render(<SideNav items={groupItems} />)
+    await userEvent.click(screen.getByRole('button', { name: 'Manage' }))
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Users' })).toBeVisible()
+  })
+})
+
+describe('SideNav footer + expandOnHover', () => {
+  it('renders footer content above the collapse toggle', () => {
+    render(<SideNav items={[]} footer={<span>v2.1.0</span>} />)
+    expect(screen.getByText('v2.1.0')).toBeInTheDocument()
+  })
+
+  it('sets data-expand-on-hover when enabled and collapsed', () => {
+    render(<SideNav items={[]} collapsed expandOnHover ariaLabel="nav" />)
+    expect(screen.getByRole('navigation', { name: 'nav' })).toHaveAttribute('data-expand-on-hover')
+  })
+
+  it('does not set data-expand-on-hover when expanded', () => {
+    render(<SideNav items={[]} expandOnHover ariaLabel="nav" />)
+    expect(screen.getByRole('navigation', { name: 'nav' })).not.toHaveAttribute(
+      'data-expand-on-hover',
+    )
   })
 })

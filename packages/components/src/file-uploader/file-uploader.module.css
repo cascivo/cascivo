@@ -27,7 +27,7 @@
     justify-content: center;
     padding: var(--cascade-space-8) var(--cascade-space-4);
     border: 2px dashed var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-surface);
     background: var(--cascade-color-surface);
     color: var(--cascade-color-text-muted);
     font-size: var(--cascade-font-size-sm);
@@ -76,7 +76,7 @@
     gap: var(--cascade-space-2);
     padding: var(--cascade-space-2) var(--cascade-space-3);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-surface);
     background: var(--cascade-color-surface);
     font-size: var(--cascade-font-size-sm);
   }
@@ -119,7 +119,7 @@
     justify-content: center;
     padding: var(--cascade-space-1);
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     background: transparent;
     color: var(--cascade-color-text-muted);
     cursor: pointer;

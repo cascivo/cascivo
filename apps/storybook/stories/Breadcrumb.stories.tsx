@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Breadcrumb } from '@cascade-ui/components/breadcrumb'
 
 const meta: Meta<typeof Breadcrumb> = {
+  title: 'Navigation/Breadcrumb',
   component: Breadcrumb,
+  parameters: { layout: 'fullscreen' },
   args: {
     items: [
       { label: 'Home', href: '#' },

@@ -34,7 +34,7 @@
     color: var(--cascade-color-text);
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input);
+    border-radius: var(--cascade-radius-field);
     transition:
       border-color var(--cascade-duration-150) var(--cascade-ease-out),
       box-shadow var(--cascade-duration-150) var(--cascade-ease-out);

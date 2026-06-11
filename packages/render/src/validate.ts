@@ -1,5 +1,5 @@
-import type { ComponentNode, PropValue } from './types'
-import { componentByName, knownComponentNames } from './registry-data'
+import type { ComponentNode } from './types'
+import { componentMap } from './component-map'
 
 export interface ValidationError {
   path: string
@@ -41,68 +41,6 @@ function levenshtein(a: string, b: string): number {
   return dp[m]![n]!
 }
 
-/**
- * Parse union literal types like `'sm' | 'md' | 'lg'` or `sm | md | lg`.
- * Returns the literal values if all branches are quoted or unquoted identifiers, else null.
- */
-function parseUnionLiterals(typeStr: string): string[] | null {
-  const branches = typeStr.split('|').map((s) => s.trim())
-  const literals: string[] = []
-  for (const branch of branches) {
-    // Handle quoted strings: 'sm' or "sm"
-    const quoted = branch.match(/^['"](.+)['"]$/)
-    if (quoted?.[1] !== undefined) {
-      literals.push(quoted[1])
-      continue
-    }
-    // Handle unquoted identifiers (no spaces/parens)
-    if (/^[a-zA-Z_$][\w$-]*$/.test(branch)) {
-      literals.push(branch)
-      continue
-    }
-    return null // complex type — skip
-  }
-  return literals
-}
-
-function checkPropType(
-  value: PropValue,
-  typeStr: string,
-  path: string,
-  errors: ValidationError[],
-): void {
-  const t = typeStr.trim()
-  if (t === 'string') {
-    if (typeof value !== 'string') {
-      errors.push({ path, message: `Expected string, got ${typeof value}` })
-    }
-    return
-  }
-  if (t === 'number') {
-    if (typeof value !== 'number') {
-      errors.push({ path, message: `Expected number, got ${typeof value}` })
-    }
-    return
-  }
-  if (t === 'boolean') {
-    if (typeof value !== 'boolean') {
-      errors.push({ path, message: `Expected boolean, got ${typeof value}` })
-    }
-    return
-  }
-  // Try union literals
-  const literals = parseUnionLiterals(t)
-  if (literals && literals.length > 0) {
-    if (typeof value !== 'string' || !literals.includes(value)) {
-      errors.push({
-        path,
-        message: `${path.split('.').pop()} — expected one of ${literals.map((l) => `'${l}'`).join(' | ')}, got ${typeof value}${typeof value === 'string' ? ` ('${value}')` : ''}`,
-      })
-    }
-  }
-  // Otherwise (ReactNode, function, object generics, etc.) — skip check
-}
-
 function validateNode(node: unknown, path: string, errors: ValidationError[]): void {
   if (typeof node !== 'object' || node === null) {
     errors.push({ path, message: 'Expected a component node object' })
@@ -114,9 +52,8 @@ function validateNode(node: unknown, path: string, errors: ValidationError[]): v
     return
   }
   const componentName = n['component'] as string
-  const entry = componentByName(componentName)
-  if (!entry) {
-    const suggestion = closestName(componentName, knownComponentNames())
+  if (!(componentName in componentMap)) {
+    const suggestion = closestName(componentName, Object.keys(componentMap))
     const hint = suggestion ? ` Did you mean "${suggestion}"?` : ''
     errors.push({
       path: `${path}.component`,
@@ -125,36 +62,7 @@ function validateNode(node: unknown, path: string, errors: ValidationError[]): v
     return
   }
 
-  const propMetas = entry.meta.props ?? []
-  const propMetaByName = new Map(propMetas.map((p) => [p.name, p]))
-
-  // Check required props
-  const nodeProps = (n['props'] ?? {}) as Record<string, PropValue>
   const nodeBind = (n['bind'] ?? {}) as Record<string, string>
-  for (const meta of propMetas) {
-    if (meta.required && meta.default === undefined) {
-      if (!(meta.name in nodeProps) && !(meta.name in nodeBind)) {
-        errors.push({
-          path: `${path}.props.${meta.name}`,
-          message: `Required prop "${meta.name}" is missing`,
-        })
-      }
-    }
-  }
-
-  // Check prop types
-  for (const [key, value] of Object.entries(nodeProps)) {
-    const meta = propMetaByName.get(key)
-    if (!meta) {
-      const valid = propMetas.map((p) => p.name)
-      errors.push({
-        path: `${path}.props.${key}`,
-        message: `Unknown prop "${key}" for ${componentName}. Valid props: ${valid.join(', ')}`,
-      })
-      continue
-    }
-    checkPropType(value, meta.type, `${path}.props.${key}`, errors)
-  }
 
   // Validate bind refs
   for (const [key, value] of Object.entries(nodeBind)) {

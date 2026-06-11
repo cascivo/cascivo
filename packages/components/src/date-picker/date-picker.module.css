@@ -50,7 +50,7 @@
     color: var(--cascade-color-text);
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input, var(--cascade-radius-md));
+    border-radius: var(--cascade-radius-field);
     cursor: pointer;
     outline: none;
     text-align: start;
@@ -98,7 +98,7 @@
     color: var(--cascade-color-text-muted);
     font-size: var(--cascade-text-xs);
     padding: var(--cascade-space-1);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     outline: none;
     &:hover {
       color: var(--cascade-color-text);
@@ -117,8 +117,8 @@
     padding: var(--cascade-space-3);
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-lg);
-    box-shadow: var(--cascade-shadow-lg);
+    border-radius: var(--cascade-radius-overlay);
+    box-shadow: var(--cascade-shadow-overlay);
     opacity: 0;
     visibility: hidden;
     translate: 0 -0.25rem;
@@ -162,7 +162,7 @@
     block-size: 2rem;
     background: none;
     border: 1px solid transparent;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     color: var(--cascade-color-text-muted);
     font-size: var(--cascade-text-base);
@@ -209,7 +209,7 @@
     color: var(--cascade-color-text);
     background: none;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     outline: none;
 

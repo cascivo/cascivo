@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Terminal } from '@cascade-ui/ai'
 
 const meta: Meta<typeof Terminal> = {
+  title: 'Display/Terminal',
   component: Terminal,
+  parameters: { layout: 'fullscreen' },
   args: {
     lines: [
       { text: 'npx cascade add button', prefix: '$', type: 'command' },

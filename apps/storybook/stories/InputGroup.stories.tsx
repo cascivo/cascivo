@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
+import { InputGroup, ButtonGroup, InputGroupAddon } from '@cascade-ui/components/input-group'
 import { Input } from '@cascade-ui/components/input'
 import { Button } from '@cascade-ui/components/button'
 
 const meta: Meta<typeof InputGroup> = {
+  title: 'Inputs/InputGroup',
   component: InputGroup,
 }
 export default meta
@@ -40,6 +41,29 @@ export const WithButtonGroup: Story = {
       <Button variant="secondary">Center</Button>
       <Button variant="secondary">Right</Button>
     </ButtonGroup>
+  ),
+}
+
+export const WithLeadingIcon: Story = {
+  render: () => (
+    <InputGroup>
+      <InputGroupAddon>
+        <svg viewBox="0 0 16 16" width="16" height="16">
+          <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M10 10l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </InputGroupAddon>
+      <Input placeholder="Search components…" aria-label="Search" />
+    </InputGroup>
+  ),
+}
+
+export const WithTrailingUnit: Story = {
+  render: () => (
+    <InputGroup>
+      <Input placeholder="0.00" aria-label="Weight" />
+      <InputGroupAddon align="inline-end">kg</InputGroupAddon>
+    </InputGroup>
   ),
 }
 

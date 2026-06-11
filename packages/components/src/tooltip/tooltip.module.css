@@ -16,7 +16,7 @@
     line-height: var(--cascade-leading-snug);
     color: var(--cascade-color-text-on-accent);
     background-color: var(--cascade-color-text);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-overlay);
     box-shadow: var(--cascade-shadow-md);
     pointer-events: none;
     opacity: 0;

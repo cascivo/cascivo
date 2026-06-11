@@ -7,7 +7,7 @@
     padding: var(--cascade-space-2);
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input);
+    border-radius: var(--cascade-radius-field);
     cursor: text;
     transition:
       border-color var(--cascade-duration-150) var(--cascade-ease-out),

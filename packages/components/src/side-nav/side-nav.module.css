@@ -15,16 +15,8 @@
     &[data-state='collapsed'] {
       inline-size: var(--cascade-sidenav-rail-inline-size, 3.5rem);
 
-      /* Labels stay accessible to assistive tech; sighted users get title tooltips */
-      & .label {
-        position: absolute;
-        inline-size: 1px;
-        block-size: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
+      & .label[data-rail-hidden] {
+        display: none;
       }
 
       & .link,
@@ -37,6 +29,37 @@
         display: none;
       }
     }
+
+    &[data-expand-on-hover][data-state='collapsed'] {
+      position: relative;
+
+      &:hover,
+      &:focus-within {
+        inline-size: var(--cascade-sidenav-inline-size, 16rem);
+        position: absolute;
+        inset-block: 0;
+        z-index: 10;
+        box-shadow: var(--cascade-shadow-md);
+
+        & .label[data-rail-hidden] {
+          display: initial;
+        }
+
+        & .link,
+        & .groupTrigger {
+          justify-content: flex-start;
+          padding-inline: var(--cascade-space-3);
+        }
+
+        & .groupIndicator {
+          display: initial;
+        }
+
+        & .fallbackIcon {
+          display: none;
+        }
+      }
+    }
   }
 
   .list,
@@ -46,6 +69,7 @@
     gap: var(--cascade-space-1);
     margin: 0;
     padding: 0;
+    padding-inline: var(--cascade-space-2);
     list-style: none;
   }
 
@@ -67,8 +91,7 @@
     color: var(--cascade-color-text-subtle);
     background: transparent;
     border: none;
-    border-inline-start: 2px solid transparent;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-item);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),
@@ -88,8 +111,7 @@
   .link[data-state='active'] {
     color: var(--cascade-color-text);
     font-weight: var(--cascade-font-medium);
-    background-color: var(--cascade-color-accent-subtle);
-    border-inline-start-color: var(--cascade-color-accent);
+    background-color: var(--cascade-color-active-bg);
   }
 
   .icon {
@@ -99,6 +121,20 @@
     flex-shrink: 0;
     inline-size: var(--cascade-space-4);
     block-size: var(--cascade-space-4);
+  }
+
+  .fallbackIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    border-radius: 50%;
+    background: var(--cascade-color-bg-subtle);
+    font-size: 0.6875rem;
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text);
   }
 
   .label {
@@ -144,6 +180,12 @@
     );
   }
 
+  .footer {
+    padding-block: var(--cascade-space-2);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+  }
+
   .collapseToggle {
     display: flex;
     align-items: center;
@@ -153,7 +195,7 @@
     color: var(--cascade-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),
@@ -176,5 +218,53 @@
     .sideNav[data-state='collapsed'] & {
       rotate: 180deg;
     }
+  }
+
+  /* Rail flyout — anchored popover for group items in collapsed mode */
+  .railFlyout {
+    position: absolute;
+    inset-block-start: anchor(start);
+    inset-inline-start: anchor(end);
+    margin: 0;
+    min-inline-size: 11rem;
+    padding: var(--cascade-space-1);
+    background: var(--cascade-color-surface);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-overlay);
+    box-shadow: var(--cascade-shadow-md);
+
+    &:popover-open {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    @starting-style {
+      &:popover-open {
+        opacity: 0;
+        translate: -4px 0;
+      }
+    }
+
+    transition:
+      opacity var(--cascade-duration-150) var(--cascade-ease-out),
+      translate var(--cascade-duration-150) var(--cascade-ease-out),
+      display var(--cascade-duration-150) var(--cascade-ease-out) allow-discrete,
+      overlay var(--cascade-duration-150) var(--cascade-ease-out) allow-discrete;
+  }
+
+  .railFlyoutCaption {
+    padding-block: var(--cascade-space-1);
+    padding-inline: var(--cascade-space-3);
+    font-size: var(--cascade-text-xs);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .flyoutItem {
+    padding-inline-start: var(--cascade-space-3);
+    border-inline-start: none;
   }
 }

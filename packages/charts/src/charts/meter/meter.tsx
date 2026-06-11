@@ -20,9 +20,9 @@ export interface MeterProps {
 function fillColor(value: number, min: number, max: number, thresholds?: MeterThresholds): string {
   if (!thresholds) return 'var(--cascade-chart-1)'
   const { warning, critical } = thresholds
-  if (critical != null && value >= critical) return 'var(--cascade-color-destructive, #ef4444)'
-  if (warning != null && value >= warning) return 'var(--cascade-color-warning, #f59e0b)'
-  return 'var(--cascade-color-success, #22c55e)'
+  if (critical != null && value >= critical) return 'var(--cascade-color-destructive)'
+  if (warning != null && value >= warning) return 'var(--cascade-color-warning)'
+  return 'var(--cascade-color-success)'
 }
 
 export function Meter({
@@ -62,14 +62,14 @@ export function Meter({
         aria-valuemax={max}
       >
         <svg width={svgW} height={svgH} aria-hidden="true">
-          <path d={totalPath} fill="var(--cascade-color-border, #e5e7eb)" />
+          <path d={totalPath} fill="var(--cascade-color-border)" />
           {fillPath && <path d={fillPath} fill={color} />}
         </svg>
         <div
           style={{
             textAlign: 'center',
-            fontSize: '0.875rem',
-            color: 'var(--cascade-color-text-muted)',
+            fontSize: 'var(--cascade-text-sm)',
+            color: 'var(--cascade-color-foreground-muted)',
           }}
         >
           {label}: {value}
@@ -98,7 +98,7 @@ export function Meter({
           width={barW}
           height={barH}
           rx={barH / 2}
-          fill="var(--cascade-color-border, #e5e7eb)"
+          fill="var(--cascade-color-border)"
         />
         <rect
           x={0}
@@ -117,9 +117,9 @@ export function Meter({
       </svg>
       <div
         style={{
-          marginTop: '0.25rem',
-          fontSize: '0.75rem',
-          color: 'var(--cascade-color-text-muted)',
+          marginTop: 'var(--cascade-space-1)',
+          fontSize: 'var(--cascade-text-xs)',
+          color: 'var(--cascade-color-foreground-muted)',
         }}
       >
         {label}

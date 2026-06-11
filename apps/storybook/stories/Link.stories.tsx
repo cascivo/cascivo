@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Link } from '@cascade-ui/components/link'
 
 const meta: Meta<typeof Link> = {
+  title: 'Navigation/Link',
   component: Link,
   args: { children: 'View documentation', href: '#' },
 }

@@ -11,7 +11,7 @@
     color: var(--cascade-color-text-muted);
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: var(--cascade-radius-button);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       background-color var(--cascade-duration-150) var(--cascade-ease-out),

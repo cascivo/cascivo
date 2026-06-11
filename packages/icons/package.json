@@ -4,6 +4,7 @@
   "private": false,
   "description": "Optional SVG icon components",
   "type": "module",
+  "sideEffects": false,
   "types": "./dist/index.d.mts",
   "exports": {
     ".": {

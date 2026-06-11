@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Editable } from '@cascade-ui/components/editable'
 
 const meta: Meta<typeof Editable> = {
+  title: 'Inputs/Editable',
   component: Editable,
   args: { value: 'Click to edit', onValueChange: () => {} },
 }

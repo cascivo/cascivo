@@ -2,7 +2,7 @@
   .dialog {
     padding: 0;
     border: none;
-    border-radius: var(--cascade-radius-modal);
+    border-radius: var(--cascade-radius-overlay);
     background: transparent;
     max-height: calc(100dvh - var(--cascade-space-16));
     overflow: visible;
@@ -70,9 +70,9 @@
     width: var(--_modal-width, 32rem);
     max-width: calc(100vw - var(--cascade-space-8));
     background-color: var(--cascade-color-surface-overlay);
-    border-radius: var(--cascade-radius-modal);
+    border-radius: var(--cascade-radius-overlay);
     border: 1px solid var(--cascade-color-border);
-    box-shadow: var(--cascade-shadow-xl);
+    box-shadow: var(--cascade-shadow-overlay);
     overflow: hidden;
   }
 
@@ -105,7 +105,7 @@
     color: var(--cascade-color-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),

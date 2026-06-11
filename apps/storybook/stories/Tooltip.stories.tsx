@@ -3,6 +3,7 @@ import { Button } from '@cascade-ui/components/button'
 import { Tooltip } from '@cascade-ui/components/tooltip'
 
 const meta: Meta<typeof Tooltip> = {
+  title: 'Overlay/Tooltip',
   component: Tooltip,
   args: { content: 'Copied to clipboard' },
 }

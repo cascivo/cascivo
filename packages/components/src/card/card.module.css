@@ -1,7 +1,7 @@
 @layer cascade.component {
   .card {
     background-color: var(--cascade-color-surface);
-    border-radius: var(--cascade-radius-card);
+    border-radius: var(--cascade-radius-surface);
     overflow: hidden;
 
     &[data-padding='none'] {

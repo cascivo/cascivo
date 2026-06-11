@@ -342,3 +342,63 @@ code {
   font-size: var(--cascade-text-sm);
   color: var(--cascade-color-text-muted);
 }
+
+/* ── JSON Playground demo ─────────────────────────────── */
+.json-playground-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  overflow: hidden;
+  background: var(--cascade-color-background);
+}
+
+@media (max-width: 48rem) {
+  .json-playground-demo {
+    grid-template-columns: 1fr;
+  }
+}
+
+.json-playground-editor {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--cascade-color-border);
+}
+
+@media (max-width: 48rem) {
+  .json-playground-editor {
+    border-right: none;
+    border-bottom: 1px solid var(--cascade-color-border);
+  }
+}
+
+.json-playground-label {
+  padding: var(--cascade-space-1) var(--cascade-space-3);
+  font-size: var(--cascade-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--cascade-color-text-subtle);
+  background: var(--cascade-color-bg-subtle);
+  border-bottom: 1px solid var(--cascade-color-border);
+}
+
+.json-playground-code {
+  margin: 0;
+  padding: var(--cascade-space-4);
+  font-family: var(--cascade-font-mono, monospace);
+  font-size: var(--cascade-text-xs);
+  color: var(--cascade-color-text);
+  background: var(--cascade-color-background);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.json-playground-preview {
+  display: flex;
+  flex-direction: column;
+}
+
+.json-playground-output {
+  padding: var(--cascade-space-6);
+}

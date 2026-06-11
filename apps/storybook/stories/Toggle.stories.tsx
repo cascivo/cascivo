@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Toggle } from '@cascade-ui/components/toggle'
 
 const meta: Meta<typeof Toggle> = {
+  title: 'Inputs/Toggle',
   component: Toggle,
   args: { label: 'Notifications' },
 }

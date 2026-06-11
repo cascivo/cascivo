@@ -9,7 +9,7 @@
     color: var(--cascade-color-text-subtle);
     background-color: var(--cascade-color-surface-raised);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-indicator);
     box-shadow: inset 0 -1px 0 var(--cascade-color-border-strong);
     white-space: nowrap;
 

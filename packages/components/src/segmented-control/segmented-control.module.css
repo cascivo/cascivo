@@ -5,7 +5,7 @@
     padding: var(--cascade-space-1);
     background-color: var(--cascade-color-bg-subtle);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-control);
 
     &[data-size='sm'] {
       --_seg-h: 1.75rem;
@@ -39,7 +39,7 @@
     color: var(--cascade-color-text-subtle);
     background: none;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
     cursor: pointer;
     transition:
       background-color var(--cascade-duration-150) var(--cascade-ease-out),

@@ -14,7 +14,7 @@
       background-color var(--cascade-duration-150) var(--cascade-ease-out),
       color var(--cascade-duration-150) var(--cascade-ease-out),
       box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
-    border-radius: var(--cascade-button-radius, var(--cascade-radius-button));
+    border-radius: var(--cascade-button-radius, var(--cascade-radius-control));
 
     &:focus-visible {
       outline: none;
@@ -48,15 +48,15 @@
 
     /* Variants */
     &[data-variant='primary'] {
-      background-color: var(--cascade-color-accent);
-      color: var(--cascade-color-text-on-accent);
+      background-color: var(--cascade-color-primary);
+      color: var(--cascade-color-primary-fg);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascade-color-accent-hover);
+        background-color: var(--cascade-color-primary-hover);
       }
 
       &:active:not(:disabled) {
-        background-color: var(--cascade-color-accent-active);
+        background-color: var(--cascade-color-primary-active);
       }
     }
 

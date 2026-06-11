@@ -33,6 +33,7 @@ npx cascade add button
 | button                     | inputs     | Triggers an action or event                                                                                                                                           |
 | card                       | display    | Container for grouping related content                                                                                                                                |
 | checkbox                   | inputs     | Binary toggle for forms, with indeterminate support                                                                                                                   |
+| checkbox-card              | inputs     | Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.                                                 |
 | combobox                   | inputs     | Filterable single-select with an animated custom listbox, built on the dropdown open/close machine                                                                    |
 | command-menu               | overlay    | Cmd+K command palette with fuzzy search over grouped commands                                                                                                         |
 | context-menu               | overlay    | Right-click context menu anchored at pointer coordinates via CSS custom properties                                                                                    |
@@ -44,9 +45,10 @@ npx cascade add button
 | file-uploader              | inputs     | Drag-and-drop file upload zone with file list and status indicators.                                                                                                  |
 | form                       | inputs     | Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper                                                         |
 | header                     | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
+| header-panel               | navigation | Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings                                             |
 | hover-card                 | overlay    | Hover-triggered popover with configurable open/close delay                                                                                                            |
 | input                      | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
-| input-group                | inputs     | Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders                                                                                  |
+| input-group                | inputs     | Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders              |
 | kbd                        | display    | Displays a keyboard key or shortcut                                                                                                                                   |
 | link                       | navigation | Styled anchor for navigation, standalone or inline within prose                                                                                                       |
 | menu                       | overlay    | Dropdown menu with keyboard navigation, built on usePopover                                                                                                           |
@@ -61,16 +63,19 @@ npx cascade add button
 | progress-bar               | feedback   | Shows determinate or indeterminate progress of a task                                                                                                                 |
 | progress-indicator         | navigation | Shows progress through the steps of a multi-step flow                                                                                                                 |
 | radio                      | inputs     | Single choice from a set, grouped with RadioGroup                                                                                                                     |
+| radio-card                 | inputs     | Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.                                                                          |
 | rating-group               | inputs     | Star rating input with accessible radio group pattern                                                                                                                 |
 | search                     | inputs     | Search input with debounced search callback and clear button                                                                                                          |
 | segmented-control          | inputs     | Mutually exclusive toggle group                                                                                                                                       |
 | select                     | inputs     | Native select menu styled to match the design system                                                                                                                  |
 | separator                  | display    | Visual or semantic divider between content                                                                                                                            |
 | sheet                      | overlay    | Slide-in panel from any edge, using popover=manual and @starting-style animations                                                                                     |
+| shell-header               | navigation | Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content                                                    |
 | side-nav                   | navigation | Collapsible sidebar navigation with optional icons and one level of grouping                                                                                          |
 | skeleton                   | display    | Animated loading placeholder that mirrors the shape of pending content                                                                                                |
 | slider                     | inputs     | Range input for selecting a value within bounds                                                                                                                       |
 | spinner                    | feedback   | Indeterminate loading indicator                                                                                                                                       |
+| switcher                   | navigation | App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers                                                       |
 | tabs                       | navigation | Switch between related panels of content                                                                                                                              |
 | tag                        | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                         |
 | tags-input                 | inputs     | Free-form multi-value chip input                                                                                                                                      |
@@ -90,6 +95,7 @@ npx cascade add button
 | layout/spacer              | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |
 | layout/split-view          | layout     | Resizable two-pane split layout with keyboard and pointer drag support.                                                                                               |
 | layout/stack               | layout     | Flex layout primitive for vertical or horizontal stacking with gap control.                                                                                           |
+| block/console-app          | display    | Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.                                 |
 | block/dashboard-charts     | display    | Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.                                                                                                |
 | block/empty-dashboard      | display    | Dashboard page showing an empty state with a call-to-action button.                                                                                                   |
 | block/login-page           | display    | Authentication login page with email and password form.                                                                                                               |

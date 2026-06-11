@@ -30,7 +30,7 @@
     color: var(--cascade-color-text);
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input, var(--cascade-radius-md));
+    border-radius: var(--cascade-radius-field);
     cursor: pointer;
     outline: none;
     text-align: start;
@@ -103,7 +103,7 @@
     font-size: var(--cascade-text-xs);
     padding: var(--cascade-space-1);
     outline: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
 
     &:hover {
       color: var(--cascade-color-text);
@@ -124,8 +124,8 @@
     overflow-y: auto;
     background-color: var(--cascade-color-surface-overlay);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-md);
-    box-shadow: var(--cascade-shadow-lg);
+    border-radius: var(--cascade-radius-overlay);
+    box-shadow: var(--cascade-shadow-overlay);
     opacity: 0;
     visibility: hidden;
     translate: 0 -0.25rem;
@@ -162,7 +162,7 @@
     color: var(--cascade-color-text);
     background-color: var(--cascade-color-bg-subtle);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-field);
     outline: none;
 
     &:focus-visible {
@@ -176,7 +176,7 @@
     font-size: var(--cascade-text-sm);
     color: var(--cascade-color-text);
     cursor: pointer;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
 
     &[data-state='active'] {
       background-color: var(--cascade-color-bg-subtle);

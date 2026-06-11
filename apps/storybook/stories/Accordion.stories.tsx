@@ -7,6 +7,7 @@ import {
 } from '@cascade-ui/components/accordion'
 
 const meta: Meta<typeof Accordion> = {
+  title: 'Navigation/Accordion',
   component: Accordion,
 }
 export default meta

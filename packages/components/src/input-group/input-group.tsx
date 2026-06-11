@@ -3,6 +3,31 @@ import { cn } from '@cascade-ui/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './input-group.module.css'
 
+export interface InputGroupAddonProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Visual side, logical: 'inline-start' (leading) or 'inline-end' (trailing). */
+  align?: 'inline-start' | 'inline-end'
+  children: ReactNode
+}
+
+/** Inline adornment (icon, unit) rendered INSIDE the field border. Decorative by default. */
+export function InputGroupAddon({
+  align = 'inline-start',
+  children,
+  className,
+  ...props
+}: InputGroupAddonProps) {
+  return (
+    <span
+      className={cn(styles['inline-addon'], className)}
+      data-align={align}
+      aria-hidden="true"
+      {...props}
+    >
+      {children}
+    </span>
+  )
+}
+
 export interface InputGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'prefix' | 'suffix'> {
   prefix?: ReactNode
   suffix?: ReactNode

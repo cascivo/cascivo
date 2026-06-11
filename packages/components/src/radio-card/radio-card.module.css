@@ -1,0 +1,81 @@
+@layer cascade.component {
+  .group {
+    display: grid;
+    gap: var(--cascade-space-3);
+  }
+
+  .card {
+    display: flex;
+    gap: var(--cascade-space-3);
+    align-items: flex-start;
+    padding: var(--cascade-space-4);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-surface);
+    background: var(--cascade-color-bg);
+    cursor: pointer;
+    transition:
+      border-color 120ms ease,
+      background-color 120ms ease;
+  }
+
+  .card:hover:not([data-disabled]) {
+    border-color: var(--cascade-color-border-strong);
+  }
+
+  .card:has(input:checked) {
+    border-color: var(--cascade-color-accent);
+    background: color-mix(in oklch, var(--cascade-color-accent) 4%, var(--cascade-color-bg));
+  }
+
+  .card:has(input:focus-visible) {
+    box-shadow: var(--cascade-focus-ring);
+  }
+
+  .card[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .glyph {
+    flex: none;
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin-block-start: 2px;
+    border: 1px solid var(--cascade-color-border-strong);
+    border-radius: var(--cascade-radius-full);
+    transition:
+      border-color 120ms ease,
+      background-color 120ms ease;
+  }
+
+  .card:has(input:checked) .glyph {
+    border-color: var(--cascade-color-accent);
+    background: radial-gradient(circle, var(--cascade-color-accent) 0 35%, transparent 40%);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+  }
+
+  .title {
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-medium);
+    color: var(--cascade-color-text);
+  }
+
+  .description {
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text-subtle);
+  }
+}

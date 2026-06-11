@@ -13,7 +13,7 @@
     padding-inline: var(--cascade-space-1);
     background: none;
     border: 1px solid transparent;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     font-family: var(--cascade-font-sans);
     font-size: inherit;
     color: var(--cascade-color-text);
@@ -77,7 +77,7 @@
       color: var(--cascade-color-text);
       background-color: var(--cascade-color-surface);
       border: 1px solid var(--cascade-color-accent);
-      border-radius: var(--cascade-radius-sm);
+      border-radius: var(--cascade-radius-control);
       box-shadow: var(--cascade-focus-ring);
       outline: none;
     }

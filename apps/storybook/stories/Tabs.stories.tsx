@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
 
 const meta: Meta<typeof Tabs> = {
+  title: 'Navigation/Tabs',
   component: Tabs,
+  parameters: { layout: 'fullscreen' },
 }
 export default meta
 type Story = StoryObj<typeof Tabs>

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Slider } from '@cascade-ui/components/slider'
 
 const meta: Meta<typeof Slider> = {
+  title: 'Inputs/Slider',
   component: Slider,
   args: { label: 'Volume', defaultValue: 60 },
 }

@@ -2,7 +2,7 @@
   .link {
     color: var(--cascade-link-color, var(--cascade-color-accent));
     cursor: pointer;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-item);
     text-underline-offset: 0.2em;
     transition: color var(--cascade-duration-150) var(--cascade-ease-out);
 

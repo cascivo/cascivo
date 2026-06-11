@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TimePicker } from '@cascade-ui/components/time-picker'
 
 const meta: Meta<typeof TimePicker> = {
+  title: 'Inputs/TimePicker',
   component: TimePicker,
   args: { label: 'Time' },
 }

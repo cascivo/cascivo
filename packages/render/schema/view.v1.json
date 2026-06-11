@@ -103,10 +103,12 @@
             "Card",
             "Center",
             "Checkbox",
+            "CheckboxCard",
             "Columns",
             "ComboChart",
             "Combobox",
             "CommandMenu",
+            "ConsoleApp",
             "ContextMenu",
             "DashboardCharts",
             "DashboardLayout",
@@ -120,6 +122,7 @@
             "Form",
             "Grid",
             "Header",
+            "HeaderPanel",
             "Heatmap",
             "Histogram",
             "HoverCard",
@@ -148,6 +151,7 @@
             "ProgressIndicator",
             "Radar",
             "Radio",
+            "RadioCard",
             "RatingGroup",
             "ScatterChart",
             "Search",
@@ -157,6 +161,7 @@
             "SettingsFormPage",
             "SettingsLayout",
             "Sheet",
+            "ShellHeader",
             "SideNav",
             "SidebarApp",
             "Skeleton",
@@ -167,6 +172,7 @@
             "SplitView",
             "Stack",
             "StatsCards",
+            "Switcher",
             "Tabs",
             "Tag",
             "TagsInput",
@@ -471,6 +477,43 @@
                     "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CheckboxCard"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "defaultChecked": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["title"]
               }
             }
           }
@@ -898,6 +941,43 @@
                     "type": "string"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "HeaderPanel"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["HeaderPanelLabels"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["open", "onClose", "label", "children"]
               }
             }
           }
@@ -1453,6 +1533,40 @@
           "if": {
             "properties": {
               "component": {
+                "const": "RadioCard"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["value", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "RatingGroup"
               }
             },
@@ -1656,6 +1770,44 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ShellHeader"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "brand": {
+                    "type": "string",
+                    "enum": ["ShellHeaderBrand", "ReactNode"]
+                  },
+                  "end": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "menuExpanded": {
+                    "type": "boolean"
+                  },
+                  "skipToContentHref": {
+                    "type": "string",
+                    "enum": ["string", "false"]
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["ShellHeaderLabels"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "SideNav"
               }
             },
@@ -1680,6 +1832,13 @@
                   },
                   "expandLabel": {
                     "type": "string"
+                  },
+                  "expandOnHover": {
+                    "type": "boolean"
+                  },
+                  "footer": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
                   },
                   "className": {
                     "type": "string"
@@ -1784,6 +1943,32 @@
                     "type": "string"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Switcher"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
               }
             }
           }
@@ -2099,6 +2284,10 @@
                   "persistKey": {
                     "type": "string",
                     "enum": ["string", "false"]
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": ["ShellState"]
                   }
                 },
                 "required": ["header", "children"]
@@ -2384,6 +2573,24 @@
                     "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ConsoleApp"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
               }
             }
           }

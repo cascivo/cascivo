@@ -4,7 +4,11 @@
   "private": true,
   "description": "Registry source — copy-paste app shells and page layouts (not published)",
   "type": "module",
-  "exports": {},
+  "exports": {
+    "./app-shell": "./src/app-shell/app-shell.tsx",
+    "./shell-state": "./src/app-shell/shell-state.ts",
+    "./blocks/console-app/console-app": "./src/blocks/console-app/console-app.tsx"
+  },
   "scripts": {
     "build": "echo 'layouts: copy-paste only, no build'",
     "check": "tsc --noEmit",
@@ -14,6 +18,7 @@
     "@cascade-ui/charts": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/i18n": "workspace:*",
+    "@cascade-ui/icons": "workspace:*",
     "@cascade-ui/react": "workspace:*",
     "@cascade-ui/storage": "workspace:*",
     "@testing-library/jest-dom": "^6",

@@ -10,6 +10,7 @@ const items = [
 ]
 
 const meta: Meta<typeof Dropdown> = {
+  title: 'Overlay/Dropdown',
   component: Dropdown,
 }
 export default meta

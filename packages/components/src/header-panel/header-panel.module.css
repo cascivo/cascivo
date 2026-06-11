@@ -1,0 +1,85 @@
+@layer cascade.component {
+  .panel {
+    position: fixed;
+    inset-block-start: var(--cascade-shell-header-block-size, 3rem);
+    inset-inline-end: 0;
+    inset-inline-start: auto;
+    inset-block-end: 0;
+    margin: 0;
+    inline-size: var(--cascade-shell-panel-inline-size, 20rem);
+    max-inline-size: 100vw;
+    display: none;
+    flex-direction: column;
+    padding: 0;
+    background: var(--cascade-color-surface);
+    border: none;
+    border-inline-start: 1px solid var(--cascade-color-border);
+    box-shadow: var(--cascade-shadow-md);
+    overscroll-behavior: contain;
+
+    &:popover-open {
+      display: flex;
+    }
+
+    translate: 100% 0;
+    transition:
+      translate var(--cascade-motion-enter),
+      display var(--cascade-motion-enter) allow-discrete,
+      overlay var(--cascade-motion-enter) allow-discrete;
+
+    @starting-style {
+      &:popover-open {
+        translate: 100% 0;
+      }
+    }
+
+    &:popover-open {
+      translate: 0 0;
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    padding: var(--cascade-space-3);
+    border-block-end: 1px solid var(--cascade-color-border);
+  }
+
+  .title {
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text);
+  }
+
+  .close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cascade-space-1);
+    color: var(--cascade-color-text-subtle);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-control);
+    cursor: pointer;
+    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+
+  .body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--cascade-space-3);
+  }
+}

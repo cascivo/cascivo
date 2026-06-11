@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Checkbox } from '@cascade-ui/components/checkbox'
 
 const meta: Meta<typeof Checkbox> = {
+  title: 'Inputs/Checkbox',
   component: Checkbox,
   args: { label: 'Email notifications' },
 }

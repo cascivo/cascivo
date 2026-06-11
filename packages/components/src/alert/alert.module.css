@@ -4,30 +4,61 @@
     gap: var(--cascade-space-3);
     padding: var(--cascade-space-4);
     border: 1px solid var(--cascade-color-border);
-    border-inline-start-width: 3px;
-    border-radius: var(--cascade-radius-md);
+    border-radius: var(--cascade-radius-surface);
     background-color: var(--cascade-color-surface);
     font-family: var(--cascade-font-sans);
     color: var(--cascade-color-text);
 
     &[data-variant='info'] {
-      border-inline-start-color: var(--cascade-color-info);
-      background-color: var(--cascade-color-info-subtle);
+      border-color: color-mix(in oklch, var(--cascade-color-info) 35%, var(--cascade-color-border));
+      background: color-mix(in oklch, var(--cascade-color-info) 5%, var(--cascade-color-bg));
+    }
+
+    &[data-variant='info'] .icon,
+    &[data-variant='info'] .title {
+      color: var(--cascade-color-info);
     }
 
     &[data-variant='success'] {
-      border-inline-start-color: var(--cascade-color-success);
-      background-color: var(--cascade-color-success-subtle);
+      border-color: color-mix(
+        in oklch,
+        var(--cascade-color-success) 35%,
+        var(--cascade-color-border)
+      );
+      background: color-mix(in oklch, var(--cascade-color-success) 5%, var(--cascade-color-bg));
+    }
+
+    &[data-variant='success'] .icon,
+    &[data-variant='success'] .title {
+      color: var(--cascade-color-success);
     }
 
     &[data-variant='warning'] {
-      border-inline-start-color: var(--cascade-color-warning);
-      background-color: var(--cascade-color-warning-subtle);
+      border-color: color-mix(
+        in oklch,
+        var(--cascade-color-warning) 35%,
+        var(--cascade-color-border)
+      );
+      background: color-mix(in oklch, var(--cascade-color-warning) 5%, var(--cascade-color-bg));
+    }
+
+    &[data-variant='warning'] .icon,
+    &[data-variant='warning'] .title {
+      color: var(--cascade-color-warning);
     }
 
     &[data-variant='destructive'] {
-      border-inline-start-color: var(--cascade-color-destructive);
-      background-color: var(--cascade-color-destructive-subtle);
+      border-color: color-mix(
+        in oklch,
+        var(--cascade-color-destructive) 35%,
+        var(--cascade-color-border)
+      );
+      background: color-mix(in oklch, var(--cascade-color-destructive) 5%, var(--cascade-color-bg));
+    }
+
+    &[data-variant='destructive'] .icon,
+    &[data-variant='destructive'] .title {
+      color: var(--cascade-color-destructive);
     }
   }
 
@@ -84,7 +115,7 @@
     color: var(--cascade-color-text);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition: background-color var(--cascade-duration-150) var(--cascade-ease-out);
 
@@ -123,7 +154,7 @@
     color: var(--cascade-color-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     cursor: pointer;
     transition:
       color var(--cascade-duration-150) var(--cascade-ease-out),

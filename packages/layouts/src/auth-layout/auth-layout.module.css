@@ -12,7 +12,7 @@
     max-inline-size: 24rem;
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-lg);
+    border-radius: var(--cascade-radius-surface);
     padding: var(--cascade-space-8);
     display: flex;
     flex-direction: column;

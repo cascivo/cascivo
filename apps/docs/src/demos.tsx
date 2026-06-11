@@ -55,9 +55,15 @@ import { MultiSelect } from '@cascade-ui/components/multi-select'
 import { TagsInput } from '@cascade-ui/components/tags-input'
 import { OtpInput } from '@cascade-ui/components/otp-input'
 import { SegmentedControl } from '@cascade-ui/components/segmented-control'
-import { InputGroup, ButtonGroup } from '@cascade-ui/components/input-group'
+import { InputGroup, ButtonGroup, InputGroupAddon } from '@cascade-ui/components/input-group'
 import { RatingGroup } from '@cascade-ui/components/rating-group'
+import { ShellHeader } from '@cascade-ui/components/shell-header'
+import { HeaderPanel } from '@cascade-ui/components/header-panel'
+import { Switcher } from '@cascade-ui/components/switcher'
 import { Editable } from '@cascade-ui/components/editable'
+import { RadioCard, RadioCardGroup } from '@cascade-ui/components/radio-card'
+import { CheckboxCard } from '@cascade-ui/components/checkbox-card'
+import { Home, BarChart, Settings, Users, Server, Grid } from '@cascade-ui/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -197,18 +203,37 @@ function NumberInputDemo() {
 
 function SideNavDemo() {
   return (
-    <div style={{ height: '240px', display: 'flex' }}>
+    <div style={{ height: '280px', display: 'flex', gap: '1rem' }}>
       <SideNav
         items={[
-          { label: 'Dashboard', href: '#', active: true },
-          { label: 'Components', href: '#' },
+          { label: 'Home', href: '#', icon: <Home size={16} />, active: true },
+          { label: 'Analytics', href: '#', icon: <BarChart size={16} /> },
           {
-            label: 'Settings',
+            label: 'Resources',
+            icon: <Server size={16} />,
             items: [
-              { label: 'General', href: '#' },
-              { label: 'Tokens', href: '#' },
+              { label: 'Databases', href: '#' },
+              { label: 'Servers', href: '#' },
             ],
           },
+          { label: 'Users', href: '#', icon: <Users size={16} /> },
+          {
+            label: 'Settings',
+            icon: <Settings size={16} />,
+            items: [
+              { label: 'General', href: '#' },
+              { label: 'Security', href: '#' },
+            ],
+          },
+        ]}
+      />
+      <SideNav
+        collapsed
+        items={[
+          { label: 'Home', href: '#', icon: <Home size={16} />, active: true },
+          { label: 'Analytics', href: '#', icon: <BarChart size={16} /> },
+          { label: 'Users', href: '#', icon: <Users size={16} /> },
+          { label: 'Ungrouped', href: '#' },
         ]}
       />
     </div>
@@ -689,6 +714,15 @@ export const demos: Record<string, () => JSX.Element> = {
       <InputGroup suffix=".com">
         <Input placeholder="Enter domain" />
       </InputGroup>
+      <InputGroup>
+        <InputGroupAddon>
+          <svg viewBox="0 0 16 16" width="16" height="16">
+            <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M10 10l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </InputGroupAddon>
+        <Input placeholder="Search…" aria-label="Search" />
+      </InputGroup>
       <ButtonGroup>
         <Button variant="secondary">Left</Button>
         <Button variant="secondary">Center</Button>
@@ -708,6 +742,81 @@ export const demos: Record<string, () => JSX.Element> = {
       <Editable value="" onValueChange={() => {}} placeholder="Add a title…" />
     </Col>
   ),
+  switcher: () => (
+    <Switcher
+      items={[
+        { label: 'Console', href: '#', active: true, icon: <Grid size={16} /> },
+        { label: 'Billing', href: '#' },
+        { divider: true },
+        { label: 'Documentation', href: '#' },
+      ]}
+    />
+  ),
+  'radio-card': () => (
+    <RadioCardGroup name="plan-demo" defaultValue="pro" label="Plan">
+      <RadioCard value="free" title="Free" description="2 projects, community support" />
+      <RadioCard value="pro" title="Pro" description="Unlimited projects, email support" />
+      <RadioCard value="team" title="Team" description="SSO, audit log, priority support" />
+    </RadioCardGroup>
+  ),
+  'checkbox-card': () => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <CheckboxCard
+        title="Automated backups"
+        description="Daily snapshots, 30-day retention"
+        defaultChecked
+      />
+      <CheckboxCard title="Monitoring" description="Metrics + alerting" />
+      <CheckboxCard title="Audit log" description="Requires Team plan" disabled />
+    </div>
+  ),
+  'header-panel': () => <HeaderPanelDemo />,
+  // ShellHeader is the console application header. Header is the marketing/landing header.
+  // Use ShellHeader for console apps; use Header for landing pages.
+  'shell-header': () => (
+    <ShellHeader
+      brand={{ prefix: 'cascade', name: 'Console', href: '#' }}
+      nav={[
+        { label: 'Overview', href: '#', active: true },
+        {
+          label: 'Resources',
+          items: [
+            { label: 'Instances', href: '#' },
+            { label: 'Volumes', href: '#' },
+          ],
+        },
+      ]}
+      actions={[
+        {
+          id: 'help',
+          label: 'Help',
+          icon: (
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <path
+                d="M6.5 6a1.5 1.5 0 0 1 3 .5c0 .8-.8 1.2-1.5 2M8 11.5v.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          ),
+        },
+      ]}
+    />
+  ),
+}
+
+function HeaderPanelDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div style={{ minBlockSize: '120px' }}>
+      <Button onClick={() => setOpen((v) => !v)}>Toggle panel</Button>
+      <HeaderPanel open={open} onClose={() => setOpen(false)} label="Notifications">
+        <p style={{ margin: 0 }}>3 unread notifications</p>
+      </HeaderPanel>
+    </div>
+  )
 }
 
 function AlertDialogDemo() {

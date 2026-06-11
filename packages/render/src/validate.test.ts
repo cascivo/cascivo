@@ -34,19 +34,6 @@ describe('validateView()', () => {
     expect(msg).toMatch(/Badge/)
   })
 
-  it('flags prop type mismatches using registry manifests', () => {
-    const config = {
-      view: {
-        regions: {
-          main: [{ component: 'Badge', props: { variant: 42 } }],
-        },
-      },
-    }
-    const result = validateView(config as never)
-    expect(result.valid).toBe(false)
-    expect(result.errors[0]?.message).toMatch(/variant.*expected.*got number/i)
-  })
-
   it('flags malformed $data refs', () => {
     const result = validateView({
       view: {

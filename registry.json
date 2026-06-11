@@ -612,6 +612,80 @@
       }
     },
     {
+      "name": "checkbox-card",
+      "type": "component",
+      "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["checkbox", "card", "selectable", "form"],
+      "meta": {
+        "name": "CheckboxCard",
+        "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+        "category": "inputs",
+        "states": ["default", "checked", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Card title"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional description"
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false,
+            "description": "Controlled checked state"
+          },
+          {
+            "name": "defaultChecked",
+            "type": "boolean",
+            "required": false,
+            "description": "Uncontrolled default"
+          },
+          {
+            "name": "onCheckedChange",
+            "type": "(checked: boolean) => void",
+            "required": false,
+            "description": "Change callback"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the card"
+          }
+        ],
+        "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
+        "accessibility": {
+          "role": "checkbox",
+          "wcag": "AA",
+          "keyboard": ["Space"]
+        },
+        "examples": [
+          {
+            "title": "Feature toggles",
+            "code": "<div style={{ display: 'grid', gap: 12 }}>\n  <CheckboxCard title=\"Automated backups\" description=\"Daily snapshots, 30-day retention\" defaultChecked />\n  <CheckboxCard title=\"Monitoring\" description=\"Metrics + alerting\" />\n  <CheckboxCard title=\"Audit log\" description=\"Requires Team plan\" disabled />\n</div>",
+            "description": "Multi-select feature toggles"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["checkbox", "card", "selectable", "form"]
+      }
+    },
+    {
       "name": "combobox",
       "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -1679,6 +1753,85 @@
       }
     },
     {
+      "name": "header-panel",
+      "type": "component",
+      "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+      "meta": {
+        "name": "HeaderPanel",
+        "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+        "category": "navigation",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": true,
+            "description": "Controlled open state"
+          },
+          {
+            "name": "onClose",
+            "type": "() => void",
+            "required": true,
+            "description": "Called on close button click or light-dismiss"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible label for the region (shown as header title)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "type": "HeaderPanelLabels",
+            "required": false,
+            "description": "i18n overrides"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-shell-panel-inline-size",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab"]
+        },
+        "examples": [
+          {
+            "title": "Notification panel",
+            "code": "<HeaderPanel open={open} onClose={() => setOpen(false)} label=\"Notifications\">\n  <p>3 unread messages</p>\n</HeaderPanel>",
+            "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"]
+      }
+    },
+    {
       "name": "hover-card",
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
@@ -1799,7 +1952,7 @@
     {
       "name": "input-group",
       "type": "component",
-      "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
       "category": "inputs",
       "version": "0.0.0",
       "files": [
@@ -1810,7 +1963,7 @@
       "tags": ["form", "input", "addon", "group", "layout"],
       "meta": {
         "name": "InputGroup",
-        "description": "Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders",
+        "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
         "category": "inputs",
         "states": [],
         "variants": [],
@@ -1847,6 +2000,14 @@
           {
             "title": "With prefix",
             "code": "<InputGroup prefix=\"https://\"><Input placeholder=\"example.com\" /></InputGroup>"
+          },
+          {
+            "title": "With leading icon addon",
+            "code": "<InputGroup><InputGroupAddon><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><circle cx=\"6\" cy=\"6\" r=\"4\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\"/><path d=\"M10 10l3 3\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\"/></svg></InputGroupAddon><Input placeholder=\"Search…\" aria-label=\"Search\" /></InputGroup>"
+          },
+          {
+            "title": "With trailing unit addon",
+            "code": "<InputGroup><Input placeholder=\"0.00\" aria-label=\"Weight\" /><InputGroupAddon align=\"inline-end\">kg</InputGroupAddon></InputGroup>"
           },
           {
             "title": "ButtonGroup",
@@ -2937,6 +3098,73 @@
       }
     },
     {
+      "name": "radio-card",
+      "type": "component",
+      "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["radio", "card", "selectable", "form"],
+      "meta": {
+        "name": "RadioCard",
+        "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+        "category": "inputs",
+        "states": ["default", "checked", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "Radio value"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Card title"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional description"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "description": "Disables the card"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-border",
+          "--cascade-radius-surface",
+          "--cascade-color-active-bg"
+        ],
+        "accessibility": {
+          "role": "radiogroup",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Plan selector",
+            "code": "<RadioCardGroup name=\"plan\" defaultValue=\"pro\" label=\"Plan\">\n  <RadioCard value=\"free\" title=\"Free\" description=\"For hobbyists\" />\n  <RadioCard value=\"pro\" title=\"Pro\" description=\"For professionals\" />\n  <RadioCard value=\"team\" title=\"Team\" description=\"For teams\" />\n</RadioCardGroup>",
+            "description": "Single-select plan picker"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["radio", "card", "selectable", "form"]
+      }
+    },
+    {
       "name": "rating-group",
       "type": "component",
       "description": "Star rating input with accessible radio group pattern",
@@ -3393,6 +3621,101 @@
       }
     },
     {
+      "name": "shell-header",
+      "type": "component",
+      "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+      "meta": {
+        "name": "ShellHeader",
+        "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+        "category": "navigation",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "brand",
+            "type": "ShellHeaderBrand | ReactNode",
+            "required": false,
+            "description": "Brand: { prefix?, name, href? } or free-form node"
+          },
+          {
+            "name": "nav",
+            "type": "ShellHeaderNavItem[]",
+            "required": false,
+            "description": "Top nav: links or dropdown menus ({ label, items })"
+          },
+          {
+            "name": "actions",
+            "type": "ShellHeaderAction[]",
+            "required": false,
+            "description": "Right-aligned global icon actions with aria-pressed"
+          },
+          {
+            "name": "end",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Free-form trailing slot (user menu, theme switcher)"
+          },
+          {
+            "name": "onMenuClick",
+            "type": "() => void",
+            "required": false,
+            "description": "Renders the hamburger button; call shell.toggleSideNav"
+          },
+          {
+            "name": "menuExpanded",
+            "type": "boolean",
+            "required": false,
+            "description": "aria-expanded for the hamburger button"
+          },
+          {
+            "name": "skipToContentHref",
+            "type": "string | false",
+            "required": false,
+            "default": "'#cascade-main'",
+            "description": "Skip-link target; false disables the link"
+          },
+          {
+            "name": "labels",
+            "type": "ShellHeaderLabels",
+            "required": false,
+            "description": "i18n overrides for built-in strings"
+          }
+        ],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-accent",
+          "--cascade-radius-control"
+        ],
+        "accessibility": {
+          "role": "banner",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+        },
+        "examples": [
+          {
+            "title": "Console header",
+            "code": "<ShellHeader\n  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+            "description": "Brand with prefix, dropdown nav, global icon action"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"]
+      }
+    },
+    {
       "name": "side-nav",
       "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
@@ -3454,6 +3777,19 @@
             "default": "Expand navigation"
           },
           {
+            "name": "expandOnHover",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts"
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Content rendered above the collapse toggle (e.g. version string, user info)"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -3478,7 +3814,7 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter", "Space"]
+          "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
         },
         "examples": [
           {
@@ -3490,8 +3826,14 @@
             "code": "<SideNav items={[{ label: 'Settings', items: [{ label: 'Profile', href: '/profile' }] }]} />"
           },
           {
-            "title": "Collapsed rail",
-            "code": "<SideNav defaultCollapsed items={items} />"
+            "title": "Icon rail",
+            "code": "<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />",
+            "description": "Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups"
+          },
+          {
+            "title": "Expand on hover",
+            "code": "<SideNav collapsed expandOnHover items={items} />",
+            "description": "Rail widens as CSS overlay on hover without reflowing adjacent content"
           }
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -3712,6 +4054,68 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["loading", "progress", "feedback"]
+      }
+    },
+    {
+      "name": "switcher",
+      "type": "component",
+      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
+      "meta": {
+        "name": "Switcher",
+        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "category": "navigation",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "SwitcherEntry[]",
+            "required": true,
+            "description": "SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "default": "Switch application"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-text",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-accent",
+          "--cascade-color-accent-subtle",
+          "--cascade-color-border",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "App switcher",
+            "code": "<Switcher\n  items={[\n    { label: 'Console', href: '/console', active: true },\n    { label: 'Billing', href: '/billing' },\n    { divider: true },\n    { label: 'Docs', href: 'https://docs.example.com' },\n  ]}\n/>",
+            "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["navigation", "switcher", "shell", "console", "app-switcher"]
       }
     },
     {
@@ -4382,7 +4786,13 @@
             "name": "persistKey",
             "type": "string | false",
             "required": false,
-            "description": "localStorage key for sidebar state. Pass false to disable persistence."
+            "description": "localStorage key prefix. Pass false to disable persistence."
+          },
+          {
+            "name": "state",
+            "type": "ShellState",
+            "required": false,
+            "description": "External shell state from createShellState(). Created internally when omitted."
           }
         ],
         "tokens": [
@@ -4990,6 +5400,61 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["layout", "flex", "stack", "spacing"]
+      }
+    },
+    {
+      "name": "block/console-app",
+      "type": "block",
+      "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+      ],
+      "dependencies": [
+        "@cascade-ui/react",
+        "@cascade-ui/icons",
+        "layout/app-shell",
+        "layout/page-header"
+      ],
+      "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+      "meta": {
+        "name": "ConsoleApp",
+        "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-shell-header-block-size",
+          "--cascade-shell-panel-inline-size",
+          "--cascade-shell-aside-inline-size",
+          "--cascade-color-border",
+          "--cascade-color-surface",
+          "--cascade-color-scrim",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab"]
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<ConsoleApp />",
+            "description": "Full console shell demo"
+          }
+        ],
+        "dependencies": [
+          "@cascade-ui/react",
+          "@cascade-ui/icons",
+          "layout/app-shell",
+          "layout/page-header"
+        ],
+        "tags": ["block", "console", "shell", "navigation", "carbon-parity"]
       }
     },
     {

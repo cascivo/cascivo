@@ -31,13 +31,20 @@
     --cascade-color-text-on-accent: oklch(1 0 0);
     --cascade-color-text-on-destructive: oklch(1 0 0);
 
-    /* ── Accent (primary interactive) ────────────────── */
+    /* ── Accent (links, focus, info, active tint) ───────── */
     --cascade-color-accent: oklch(0.623 0.214 250);
     --cascade-color-accent-foreground: oklch(1 0 0);
     --cascade-color-accent-hover: oklch(0.546 0.224 250);
     --cascade-color-accent-active: var(--cascade-blue-800);
     --cascade-color-accent-subtle: var(--cascade-blue-50);
     --cascade-color-accent-muted: var(--cascade-blue-100);
+
+    /* ── Primary (filled actions — monochrome, shadcn/Linear style) ── */
+    --cascade-color-primary: oklch(0.205 0 0);
+    --cascade-color-primary-fg: oklch(0.985 0 0);
+    --cascade-color-primary-hover: oklch(0.27 0 0);
+    --cascade-color-primary-active: oklch(0.32 0 0);
+    --cascade-color-active-bg: oklch(0.145 0.005 264 / 6%);
 
     /* ── Destructive ──────────────────────────────────── */
     --cascade-color-destructive: var(--cascade-red-600);
@@ -53,23 +60,22 @@
     --cascade-color-info: var(--cascade-blue-600);
     --cascade-color-info-subtle: var(--cascade-blue-50);
 
-    /* ── Radius ──────────────────────────────────────── */
-    --cascade-radius-base: 0.625rem;
-    --cascade-radius-control: var(--cascade-radius-base);
-    --cascade-radius-surface: calc(var(--cascade-radius-base) * 2);
+    /* ── Radius — one knob; semantic scale derives in tokens ── */
+    --cascade-radius-base: 0.375rem; /* 6px */
     --cascade-radius-component: var(--cascade-radius-base);
     --cascade-radius-button: var(--cascade-radius-base);
     --cascade-radius-input: var(--cascade-radius-base);
-    --cascade-radius-card: calc(var(--cascade-radius-base) * 1.6);
+    --cascade-radius-card: calc(var(--cascade-radius-base) * 1.66); /* ~10px */
     --cascade-radius-badge: var(--cascade-radius-full);
-    --cascade-radius-modal: calc(var(--cascade-radius-base) * 1.9);
+    --cascade-radius-modal: calc(var(--cascade-radius-base) * 2); /* ~12px */
 
     /* ── Shadows ─────────────────────────────────────── */
-    --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08), 0 1px 2px oklch(0 0 0 / 0.05);
-    --cascade-shadow-md: 0 4px 6px oklch(0 0 0 / 0.07), 0 2px 4px oklch(0 0 0 / 0.05);
+    --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+    --cascade-shadow-md: 0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+    --cascade-shadow-overlay: 0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04);
 
     /* ── Focus ring ───────────────────────────────────── */
-    --cascade-ring-color: oklch(0.623 0.214 250 / 0.5);
+    --cascade-ring-color: color-mix(in oklch, var(--cascade-color-accent) 55%, transparent);
     --cascade-color-focus-ring: var(--cascade-blue-500);
     --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
 

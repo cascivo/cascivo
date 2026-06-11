@@ -28,8 +28,10 @@ const baseArgs = {
 }
 
 const meta: Meta<typeof DataTable> = {
+  title: 'Display/DataTable',
   component: DataTable,
   args: baseArgs,
+  parameters: { layout: 'fullscreen' },
 }
 export default meta
 type Story = StoryObj<typeof DataTable>

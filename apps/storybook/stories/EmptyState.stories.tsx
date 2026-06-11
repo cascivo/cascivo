@@ -3,6 +3,7 @@ import { Button } from '@cascade-ui/components/button'
 import { EmptyState } from '@cascade-ui/components/empty-state'
 
 const meta: Meta<typeof EmptyState> = {
+  title: 'Display/EmptyState',
   component: EmptyState,
   args: { title: 'No results', description: 'Try adjusting your filters.' },
 }

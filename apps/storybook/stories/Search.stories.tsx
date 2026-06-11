@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Search } from '@cascade-ui/components/search'
 
 const meta: Meta<typeof Search> = {
+  title: 'Inputs/Search',
   component: Search,
 }
 export default meta

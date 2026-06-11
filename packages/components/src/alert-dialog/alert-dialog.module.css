@@ -60,8 +60,8 @@
     max-width: calc(100vw - var(--cascade-space-8));
     background: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-lg);
-    box-shadow: var(--cascade-shadow-xl);
+    border-radius: var(--cascade-radius-overlay);
+    box-shadow: var(--cascade-shadow-overlay);
     padding: var(--cascade-space-6);
     display: flex;
     flex-direction: column;
@@ -91,7 +91,7 @@
   .cancel,
   .confirm {
     padding: var(--cascade-space-2) var(--cascade-space-4);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-control);
     font-size: var(--cascade-text-sm);
     font-weight: var(--cascade-font-medium);
     cursor: pointer;

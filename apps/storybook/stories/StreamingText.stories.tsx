@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { StreamingText } from '@cascade-ui/ai'
 
 const meta: Meta<typeof StreamingText> = {
+  title: 'Display/StreamingText',
   component: StreamingText,
   args: { text: 'Hello, I am cascade AI.' },
 }

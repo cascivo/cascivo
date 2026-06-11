@@ -3,19 +3,30 @@
     display: grid;
     grid-template:
       'header header header' auto
-      'nav main aside' 1fr
+      'nav    main    aside ' 1fr
+      'footer footer  footer' auto
       / auto minmax(0, 1fr) auto;
-    min-block-size: 100dvh;
+    block-size: 100dvh;
+    overflow: hidden;
   }
 
   .header {
     grid-area: header;
+    /* Naturally stays at top — grid row is auto, shell is overflow:hidden */
+    z-index: var(--cascade-z-raised, 10);
+  }
+
+  .footer {
+    grid-area: footer;
+    /* Naturally stays at bottom — grid row is auto after the 1fr content row */
+    z-index: var(--cascade-z-raised, 10);
   }
 
   .nav {
     grid-area: nav;
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     transition:
       opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
@@ -32,33 +43,125 @@
   }
 
   .nav-content {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition:
       opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
   }
 
   .toggle {
-    position: absolute;
-    inset-inline-end: calc(-1 * var(--cascade-space-3));
-    inset-block-start: var(--cascade-space-4);
-    inline-size: var(--cascade-space-6);
-    block-size: var(--cascade-space-6);
-    border-radius: 50%;
-    border: 1px solid var(--cascade-color-border);
-    background: var(--cascade-color-surface);
-    cursor: pointer;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: var(--cascade-font-size-xs);
+    justify-content: flex-start;
+    gap: var(--cascade-space-2);
+    padding-inline: var(--cascade-space-3);
+    padding-block: var(--cascade-space-2);
+    inline-size: 100%;
+    border: none;
+    border-block-start: 1px solid var(--cascade-color-border);
+    background: transparent;
+    color: var(--cascade-color-text-subtle);
+    cursor: pointer;
+    transition:
+      background var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease),
+      color var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease);
+  }
+
+  .toggle:hover {
+    background: var(--cascade-color-bg-subtle);
+    color: var(--cascade-color-text);
+  }
+
+  .toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--cascade-focus-ring);
+  }
+
+  .toggle svg {
+    flex-shrink: 0;
+    transition: transform var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .shell[data-collapsed] .toggle svg {
+    transform: rotate(180deg);
   }
 
   .main {
     grid-area: main;
     min-inline-size: 0;
+    overflow-y: auto;
   }
 
   .aside {
     grid-area: aside;
+    overflow-y: auto;
+    overflow-x: hidden;
+    inline-size: var(--cascade-shell-aside-inline-size, 18rem);
+    transition: inline-size var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
+  }
+
+  .aside[data-state='closed'] {
+    inline-size: 0;
+    visibility: hidden;
+  }
+
+  .scrim {
+    display: none;
+  }
+
+  @media (max-width: 64rem) {
+    .shell {
+      grid-template:
+        'header' auto
+        'main' 1fr
+        'footer' auto / minmax(0, 1fr);
+    }
+
+    .aside {
+      display: none;
+    }
+
+    .toggle {
+      display: none;
+    }
+
+    .nav {
+      position: fixed;
+      inset-block: 0;
+      inset-inline-start: 0;
+      z-index: 40;
+      inline-size: var(--cascade-sidenav-inline-size, 16rem);
+      background: var(--cascade-color-surface);
+      translate: -100% 0;
+      transition: translate var(--cascade-motion-exit, 200ms ease);
+      overscroll-behavior: contain;
+    }
+
+    :dir(rtl) .nav {
+      translate: 100% 0;
+    }
+
+    .shell[data-drawer='open'] .nav {
+      translate: 0 0;
+      transition: translate var(--cascade-motion-enter, 200ms ease);
+    }
+
+    .shell[data-drawer='open'] .scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      background: var(--cascade-color-scrim, oklch(0 0 0 / 40%));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav {
+      transition: none;
+    }
   }
 }

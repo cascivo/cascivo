@@ -54,7 +54,11 @@ function Demo({ loading = false, hotkey = false }) {
   )
 }
 
-const meta: Meta = { component: CommandMenu }
+const meta: Meta = {
+  title: 'Overlay/CommandMenu',
+  component: CommandMenu,
+  parameters: { layout: 'fullscreen' },
+}
 export default meta
 type Story = StoryObj
 

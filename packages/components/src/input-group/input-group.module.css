@@ -46,9 +46,56 @@
     color: var(--cascade-color-text-subtle);
     background-color: var(--cascade-color-bg-subtle);
     border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-input);
+    border-radius: var(--cascade-radius-field);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  /* ── Inline addons: group renders the border, input goes naked ── */
+  .input-group:has(.inline-addon) {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-field, var(--cascade-radius-control));
+    background: var(--cascade-color-bg);
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .input-group:has(.inline-addon):focus-within {
+    border-color: var(--cascade-color-accent);
+    box-shadow: var(--cascade-focus-ring);
+  }
+
+  /* strip the inner input chrome — the group owns it now */
+  .input-group:has(.inline-addon) .input-wrap input {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    outline: none;
+  }
+
+  .inline-addon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--cascade-color-text-subtle);
+    pointer-events: none;
+  }
+
+  .inline-addon[data-align='inline-start'] {
+    order: -1;
+    padding-inline-start: var(--cascade-space-3);
+  }
+
+  .inline-addon[data-align='inline-end'] {
+    order: 1;
+    padding-inline-end: var(--cascade-space-3);
+  }
+
+  .inline-addon svg {
+    inline-size: 1rem;
+    block-size: 1rem;
   }
 
   .button-group {

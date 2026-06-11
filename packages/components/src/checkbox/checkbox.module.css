@@ -33,7 +33,7 @@
     block-size: 1.125rem;
     background-color: var(--cascade-color-surface);
     border: 1px solid var(--cascade-color-border-strong);
-    border-radius: var(--cascade-radius-sm);
+    border-radius: var(--cascade-radius-indicator);
     transition:
       background-color var(--cascade-duration-150) var(--cascade-ease-out),
       border-color var(--cascade-duration-150) var(--cascade-ease-out),

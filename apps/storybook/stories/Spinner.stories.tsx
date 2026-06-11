@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Spinner } from '@cascade-ui/components/spinner'
 
 const meta: Meta<typeof Spinner> = {
+  title: 'Feedback/Spinner',
   component: Spinner,
 }
 export default meta

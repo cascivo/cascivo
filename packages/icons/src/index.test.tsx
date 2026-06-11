@@ -38,4 +38,36 @@ describe('@cascade-ui/icons', () => {
     expect(svg).toHaveAttribute('aria-label', 'Done')
     expect(svg).not.toHaveAttribute('aria-hidden')
   })
+
+  const newIcons = [
+    'Bell',
+    'Home',
+    'Dashboard',
+    'Users',
+    'Grid',
+    'HelpCircle',
+    'LogOut',
+    'Folder',
+    'File',
+    'Filter',
+    'BarChart',
+    'Globe',
+    'Lock',
+    'Server',
+    'Terminal',
+    'Database',
+    'Key',
+    'Shield',
+    'CreditCard',
+    'Inbox',
+    'Tag',
+    'Zap',
+    'Layers',
+    'Activity',
+  ] as const
+
+  it.each(newIcons)('exports %s icon', (name) => {
+    const Icon = (icons as Record<string, unknown>)[name]
+    expect(Icon).toBeTypeOf('function')
+  })
 })

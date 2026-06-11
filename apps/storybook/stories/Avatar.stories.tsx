@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar } from '@cascade-ui/components/avatar'
 
 const meta: Meta<typeof Avatar> = {
+  title: 'Display/Avatar',
   component: Avatar,
   args: { fallback: 'JD' },
 }
