@@ -14,14 +14,14 @@ npx cascade add chart/heatmap
 
 ## Props
 
-| Prop          | Type                                        | Required | Default | Description                |
-| ------------- | ------------------------------------------- | -------- | ------- | -------------------------- |
-| `data`        | `{ x: string; y: string; value: number }[]` | yes      | —       | Array of x/y/value triples |
-| `title`       | `string`                                    | yes      | —       | —                          |
-| `description` | `string`                                    | no       | —       | —                          |
-| `width`       | `number`                                    | no       | —       | —                          |
-| `height`      | `number`                                    | no       | `320`   | —                          |
-| `className`   | `string`                                    | no       | —       | —                          |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `{ x: string; y: string; value: number }[]` | yes | — | Array of x/y/value triples |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `320` | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 

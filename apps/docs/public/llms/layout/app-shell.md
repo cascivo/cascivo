@@ -19,13 +19,13 @@ npx cascade add layout/app-shell
 
 ## Props
 
-| Prop         | Type        | Required | Default | Description          |
-| ------------ | ----------- | -------- | ------- | -------------------- | ---------------------------------------------------------------------- |
-| `header`     | `ReactNode` | yes      | —       | Top header slot      |
-| `sideNav`    | `ReactNode` | no       | —       | Side navigation slot |
-| `aside`      | `ReactNode` | no       | —       | Right aside slot     |
-| `children`   | `ReactNode` | yes      | —       | Main content         |
-| `persistKey` | `string     | false`   | no      | —                    | localStorage key for sidebar state. Pass false to disable persistence. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `header` | `ReactNode` | yes | — | Top header slot |
+| `sideNav` | `ReactNode` | no | — | Side navigation slot |
+| `aside` | `ReactNode` | no | — | Right aside slot |
+| `children` | `ReactNode` | yes | — | Main content |
+| `persistKey` | `string | false` | no | — | localStorage key for sidebar state. Pass false to disable persistence. |
 
 ## Examples
 
@@ -34,9 +34,7 @@ npx cascade add layout/app-shell
 App shell with collapsible nav
 
 ```tsx
-<AppShell header={<Header />} sideNav={<Nav />}>
-  content
-</AppShell>
+<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>
 ```
 
 ## Design tokens

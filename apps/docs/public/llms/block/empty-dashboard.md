@@ -14,9 +14,9 @@ npx cascade add block/empty-dashboard
 
 ## Props
 
-| Prop           | Type         | Required | Default | Description                |
-| -------------- | ------------ | -------- | ------- | -------------------------- |
-| `onCreateItem` | `() => void` | no       | —       | Create item button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onCreateItem` | `() => void` | no | — | Create item button handler |
 
 ## Examples
 

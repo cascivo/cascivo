@@ -9,7 +9,7 @@ export default meta
 type Story = StoryObj<typeof RatingGroup>
 
 export const Default: Story = {}
-export const ReadOnly: Story = { args: { value: 4, readOnly: true, onValueChange: undefined } }
+export const ReadOnly: Story = { args: { value: 4, readOnly: true } }
 export const Small: Story = { args: { size: 'sm' } }
 export const Large: Story = { args: { size: 'lg' } }
 export const TenStars: Story = { args: { max: 10, value: 7 } }

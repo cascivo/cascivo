@@ -14,21 +14,21 @@ npx cascade add chart/area-chart
 
 ## Props
 
-| Prop          | Type                       | Required    | Default | Description          |
-| ------------- | -------------------------- | ----------- | ------- | -------------------- | --- |
-| `series`      | `AreaChartSeries<Datum>[]` | yes         | —       | Array of data series |
-| `x`           | `(d: Datum) => number`     | yes         | —       | X-value accessor     |
-| `y`           | `(d: Datum) => number`     | yes         | —       | Y-value accessor     |
-| `title`       | `string`                   | yes         | —       | —                    |
-| `description` | `string`                   | no          | —       | —                    |
-| `stacked`     | `boolean`                  | no          | —       | Stack series areas   |
-| `curve`       | `'linear'                  | 'monotone'` | no      | `monotone`           | —   |
-| `width`       | `number`                   | no          | —       | —                    |
-| `height`      | `number`                   | no          | `300`   | —                    |
-| `xTicks`      | `number`                   | no          | `5`     | —                    |
-| `yTicks`      | `number`                   | no          | `5`     | —                    |
-| `legend`      | `boolean`                  | no          | —       | —                    |
-| `className`   | `string`                   | no          | —       | —                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `AreaChartSeries<Datum>[]` | yes | — | Array of data series |
+| `x` | `(d: Datum) => number` | yes | — | X-value accessor |
+| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `stacked` | `boolean` | no | — | Stack series areas |
+| `curve` | `'linear' | 'monotone'` | no | `monotone` | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `300` | — |
+| `xTicks` | `number` | no | `5` | — |
+| `yTicks` | `number` | no | `5` | — |
+| `legend` | `boolean` | no | — | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 

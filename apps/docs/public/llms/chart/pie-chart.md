@@ -19,16 +19,16 @@ npx cascade add chart/pie-chart
 
 ## Props
 
-| Prop          | Type              | Required | Default | Description                      |
-| ------------- | ----------------- | -------- | ------- | -------------------------------- |
-| `data`        | `PieChartDatum[]` | yes      | —       | Array of { label, value } datums |
-| `title`       | `string`          | yes      | —       | —                                |
-| `description` | `string`          | no       | —       | —                                |
-| `donut`       | `boolean`         | no       | —       | Render as donut chart            |
-| `width`       | `number`          | no       | —       | —                                |
-| `height`      | `number`          | no       | `300`   | —                                |
-| `legend`      | `boolean`         | no       | —       | —                                |
-| `className`   | `string`          | no       | —       | —                                |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `PieChartDatum[]` | yes | — | Array of { label, value } datums |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `donut` | `boolean` | no | — | Render as donut chart |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `300` | — |
+| `legend` | `boolean` | no | — | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -36,13 +36,8 @@ npx cascade add chart/pie-chart
 
 ```tsx
 import { PieChart } from '@cascade-ui/charts'
-;<PieChart
-  data={[
-    { label: 'A', value: 60 },
-    { label: 'B', value: 40 },
-  ]}
-  title="Market share"
-/>
+
+<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />
 ```
 
 ## Design tokens

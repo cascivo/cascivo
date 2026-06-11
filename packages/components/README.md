@@ -10,6 +10,7 @@
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | accordion                  | navigation | Vertically stacked, collapsible content sections                                                                                                                      |
 | alert                      | display    | Highlights a short, important message inline                                                                                                                          |
+| alert-dialog               | overlay    | Confirmation dialog requiring explicit user action; no light-dismiss                                                                                                  |
 | avatar                     | display    | Displays a user image with initials fallback                                                                                                                          |
 | badge                      | display    | Small status label or category indicator                                                                                                                              |
 | breadcrumb                 | navigation | Shows the current page location within a navigation hierarchy                                                                                                         |
@@ -18,32 +19,45 @@
 | checkbox                   | inputs     | Binary toggle for forms, with indeterminate support                                                                                                                   |
 | combobox                   | inputs     | Filterable single-select with an animated custom listbox, built on the dropdown open/close machine                                                                    |
 | command-menu               | overlay    | Cmd+K command palette with fuzzy search over grouped commands                                                                                                         |
+| context-menu               | overlay    | Right-click context menu anchored at pointer coordinates via CSS custom properties                                                                                    |
 | data-table                 | display    | Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets |
 | date-picker                | inputs     | An accessible date-picker with a calendar popover.                                                                                                                    |
 | dropdown                   | overlay    | Menu of actions revealed from a trigger                                                                                                                               |
+| editable                   | inputs     | Inline click-to-edit text field                                                                                                                                       |
 | empty-state                | display    | Placeholder for views that have no data to display                                                                                                                    |
 | file-uploader              | inputs     | Drag-and-drop file upload zone with file list and status indicators.                                                                                                  |
 | form                       | inputs     | Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper                                                         |
 | header                     | navigation | App top bar with brand, primary navigation links, and an actions slot                                                                                                 |
+| hover-card                 | overlay    | Hover-triggered popover with configurable open/close delay                                                                                                            |
 | input                      | inputs     | Text input field with optional label, hint, and error state                                                                                                           |
+| input-group                | inputs     | Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders                                                                                  |
 | kbd                        | display    | Displays a keyboard key or shortcut                                                                                                                                   |
 | link                       | navigation | Styled anchor for navigation, standalone or inline within prose                                                                                                       |
+| menu                       | overlay    | Dropdown menu with keyboard navigation, built on usePopover                                                                                                           |
 | modal                      | overlay    | Accessible dialog overlay using native <dialog> element                                                                                                               |
+| multi-select               | inputs     | Searchable multi-value select with popover listbox                                                                                                                    |
 | number-input               | inputs     | Numeric input with stepper buttons, clamping, precision, and locale formatting                                                                                        |
+| otp-input                  | inputs     | Segmented one-time code input                                                                                                                                         |
 | overflow-menu              | overlay    | Kebab icon button revealing a menu of row-level actions                                                                                                               |
 | pagination                 | navigation | Controls for navigating paged data sets, with page size selection                                                                                                     |
+| password-input             | inputs     | Password input with reveal toggle and optional strength meter                                                                                                         |
+| popover                    | overlay    | Anchored floating panel built on CSS Anchor Positioning + Popover API                                                                                                 |
 | progress-bar               | feedback   | Shows determinate or indeterminate progress of a task                                                                                                                 |
 | progress-indicator         | navigation | Shows progress through the steps of a multi-step flow                                                                                                                 |
 | radio                      | inputs     | Single choice from a set, grouped with RadioGroup                                                                                                                     |
+| rating-group               | inputs     | Star rating input with accessible radio group pattern                                                                                                                 |
 | search                     | inputs     | Search input with debounced search callback and clear button                                                                                                          |
+| segmented-control          | inputs     | Mutually exclusive toggle group                                                                                                                                       |
 | select                     | inputs     | Native select menu styled to match the design system                                                                                                                  |
 | separator                  | display    | Visual or semantic divider between content                                                                                                                            |
+| sheet                      | overlay    | Slide-in panel from any edge, using popover=manual and @starting-style animations                                                                                     |
 | side-nav                   | navigation | Collapsible sidebar navigation with optional icons and one level of grouping                                                                                          |
 | skeleton                   | display    | Animated loading placeholder that mirrors the shape of pending content                                                                                                |
 | slider                     | inputs     | Range input for selecting a value within bounds                                                                                                                       |
 | spinner                    | feedback   | Indeterminate loading indicator                                                                                                                                       |
 | tabs                       | navigation | Switch between related panels of content                                                                                                                              |
 | tag                        | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                         |
+| tags-input                 | inputs     | Free-form multi-value chip input                                                                                                                                      |
 | textarea                   | inputs     | Multi-line text input with optional label, hint, and error state                                                                                                      |
 | time-picker                | inputs     | Native time input wrapper with label, hint, error, and size variants                                                                                                  |
 | toast                      | overlay    | Transient notification surfaced via the useToast hook                                                                                                                 |
@@ -60,6 +74,7 @@
 | layout/spacer              | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |
 | layout/split-view          | layout     | Resizable two-pane split layout with keyboard and pointer drag support.                                                                                               |
 | layout/stack               | layout     | Flex layout primitive for vertical or horizontal stacking with gap control.                                                                                           |
+| block/dashboard-charts     | display    | Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.                                                                                                |
 | block/empty-dashboard      | display    | Dashboard page showing an empty state with a call-to-action button.                                                                                                   |
 | block/login-page           | display    | Authentication login page with email and password form.                                                                                                               |
 | block/notification-center  | display    | A list of notification alerts with a mark-all-read action.                                                                                                            |
@@ -68,6 +83,22 @@
 | block/sidebar-app          | display    | Full app shell with collapsible side navigation and top header.                                                                                                       |
 | block/stats-cards          | display    | Grid of KPI stat cards with trend badges.                                                                                                                             |
 | block/users-table-page     | display    | Full users management page with table, search, and invite action.                                                                                                     |
+| chart/area-chart           | chart      | Area chart with optional stacking, multi-series support, and hover tooltip.                                                                                           |
+| chart/bar-chart            | chart      | Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.                                                                   |
+| chart/boxplot              | chart      | Box-and-whisker plot with five-number summary and outlier dots per series.                                                                                            |
+| chart/bubble-chart         | chart      | Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.                                                                           |
+| chart/bullet               | chart      | Bullet chart with background range bands, measure bar, and target tick.                                                                                               |
+| chart/combo-chart          | chart      | Combination bar + line chart on shared or dual y-axes.                                                                                                                |
+| chart/heatmap              | chart      | Two-dimensional heatmap with band scales and color-mix cell interpolation.                                                                                            |
+| chart/histogram            | chart      | Frequency histogram using Freedman–Diaconis binning with hover tooltips.                                                                                              |
+| chart/kpi                  | chart      | KPI card showing a primary metric with optional delta indicator, icon, and sparkline.                                                                                 |
+| chart/line-chart           | chart      | Time-series or numeric line chart with multi-series support, hover tooltip, and legend.                                                                               |
+| chart/meter                | chart      | Progress meter in bar or gauge variant with threshold coloring.                                                                                                       |
+| chart/pie-chart            | chart      | Pie or donut chart with hover segments and optional legend.                                                                                                           |
+| chart/radar                | chart      | Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.                                                                                |
+| chart/scatter-chart        | chart      | Scatter plot with variable point radius, multi-series, and hover tooltip.                                                                                             |
+| chart/sparkline            | chart      | Compact inline sparkline for embedding trend data in dashboards or KPI cards.                                                                                         |
+| chart/treemap              | chart      | Squarified treemap for visualizing part-to-whole hierarchical data.                                                                                                   |
 
 ---
 

@@ -19,16 +19,16 @@ npx cascade add chart/meter
 
 ## Props
 
-| Prop         | Type              | Required | Default | Description       |
-| ------------ | ----------------- | -------- | ------- | ----------------- | --- |
-| `value`      | `number`          | yes      | —       | Current value     |
-| `label`      | `string`          | yes      | —       | —                 |
-| `min`        | `number`          | no       | `0`     | —                 |
-| `max`        | `number`          | no       | `100`   | —                 |
-| `variant`    | `'bar'            | 'gauge'` | no      | `bar`             | —   |
-| `thresholds` | `MeterThresholds` | no       | —       | Color breakpoints |
-| `width`      | `number`          | no       | —       | —                 |
-| `height`     | `number`          | no       | —       | —                 |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | Current value |
+| `label` | `string` | yes | — | — |
+| `min` | `number` | no | `0` | — |
+| `max` | `number` | no | `100` | — |
+| `variant` | `'bar' | 'gauge'` | no | `bar` | — |
+| `thresholds` | `MeterThresholds` | no | — | Color breakpoints |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | — | — |
 
 ## Examples
 
@@ -36,7 +36,8 @@ npx cascade add chart/meter
 
 ```tsx
 import { Meter } from '@cascade-ui/charts'
-;<Meter value={72} label="CPU usage" />
+
+<Meter value={72} label="CPU usage" />
 ```
 
 ## Design tokens

@@ -14,14 +14,14 @@ npx cascade add chart/boxplot
 
 ## Props
 
-| Prop          | Type                                                | Required | Default | Description                                  |
-| ------------- | --------------------------------------------------- | -------- | ------- | -------------------------------------------- |
-| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | Array of series each with raw numeric values |
-| `title`       | `string`                                            | yes      | —       | —                                            |
-| `description` | `string`                                            | no       | —       | —                                            |
-| `width`       | `number`                                            | no       | —       | —                                            |
-| `height`      | `number`                                            | no       | `320`   | —                                            |
-| `className`   | `string`                                            | no       | —       | —                                            |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `{ id: string; label: string; values: number[] }[]` | yes | — | Array of series each with raw numeric values |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `320` | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 

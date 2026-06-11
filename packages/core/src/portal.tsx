@@ -11,7 +11,7 @@ export interface PortalProps {
 export function Portal({ children, container }: PortalProps) {
   useSignals()
   const mounted = useSignal(false)
-  const containerRef = useRef<Element | null>(null)
+  const containerRef = useRef<Element | DocumentFragment | null>(null)
 
   useSignalEffect(() => {
     if (typeof document === 'undefined') return

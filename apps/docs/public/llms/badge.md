@@ -28,10 +28,10 @@ npx cascade add badge
 
 ## Props
 
-| Prop      | Type       | Required    | Default   | Description |
-| --------- | ---------- | ----------- | --------- | ----------- | ------------- | ---------- | --- | --------- | --- |
-| `variant` | `'default' | 'secondary' | 'success' | 'warning'   | 'destructive' | 'outline'` | no  | `default` | —   |
-| `size`    | `'sm'      | 'md'`       | no        | `md`        | —             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'` | no | `default` | — |
+| `size` | `'sm' | 'md'` | no | `md` | — |
 
 ## Examples
 

@@ -7,7 +7,7 @@ export interface DashboardLayoutProps {
   stats?: ReactNode
   main: ReactNode
   aside?: ReactNode
-  className?: string
+  className?: string | undefined
 }
 
 export function DashboardLayout({ stats, main, aside, className }: DashboardLayoutProps) {
