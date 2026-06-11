@@ -1,0 +1,96 @@
+@layer cascade.component {
+  .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascade-space-1);
+    min-height: 2.5rem;
+    padding: var(--cascade-space-2);
+    background-color: var(--cascade-color-surface);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-input);
+    cursor: text;
+    transition: border-color var(--cascade-duration-150) var(--cascade-ease-out),
+      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:focus-within {
+      border-color: var(--cascade-color-accent);
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &[data-disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: var(--cascade-color-bg-subtle);
+    }
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascade-space-1);
+    padding-block: var(--cascade-space-0-5);
+    padding-inline: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text);
+    background-color: var(--cascade-color-bg-subtle);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-full);
+    line-height: 1.25;
+
+    &[data-state='invalid'] {
+      color: var(--cascade-color-destructive);
+      background-color: rgb(from var(--cascade-color-destructive) r g b / 0.08);
+      border-color: var(--cascade-color-destructive);
+    }
+  }
+
+  .dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--cascade-radius-full);
+    color: var(--cascade-color-text-muted);
+    cursor: pointer;
+    font-size: var(--cascade-text-sm);
+    line-height: 1;
+
+    &:hover {
+      color: var(--cascade-color-text);
+      background-color: var(--cascade-color-border);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cascade-color-accent);
+      outline-offset: 1px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .input {
+    flex: 1;
+    min-width: 4rem;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text);
+
+    &::placeholder {
+      color: var(--cascade-color-text-muted);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
