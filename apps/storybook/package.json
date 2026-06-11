@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@storybook/addon-a11y": "catalog:",
+    "@storybook/addon-themes": "catalog:",
     "@storybook/react-vite": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

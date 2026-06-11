@@ -21,6 +21,9 @@ catalogs:
     '@storybook/addon-a11y':
       specifier: ^10.4.2
       version: 10.4.2
+    '@storybook/addon-themes':
+      specifier: ^10.4.2
+      version: 10.4.3
     '@storybook/react-vite':
       specifier: ^10.4.2
       version: 10.4.2
@@ -309,6 +312,9 @@ importers:
       '@storybook/addon-a11y':
         specifier: 'catalog:'
         version: 10.4.2(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))))
+      '@storybook/addon-themes':
+        specifier: 'catalog:'
+        version: 10.4.3(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))))
       '@storybook/react-vite':
         specifier: 'catalog:'
         version: 10.4.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.27.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))))(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))
@@ -2176,6 +2182,11 @@ packages:
     resolution: {integrity: sha512-9Bm41peswHVPXm8iDBEA/sCXx+MUQV8Q10yFgNC2zTbtxKamMDb8HZCPIRDxvjBQ5v13eaXA2yZGTwQ+D8S6+g==}
     peerDependencies:
       storybook: ^10.4.2
+
+  '@storybook/addon-themes@10.4.3':
+    resolution: {integrity: sha512-pL73C5h6uyIpeLXjptefjo52Kjhq6ZQh+XgTs8b93ytYy5fkupvQeoGjUnMknTjoIabNPSOhvb0Mcj5OUA+XCw==}
+    peerDependencies:
+      storybook: ^10.4.3
 
   '@storybook/builder-vite@10.4.2':
     resolution: {integrity: sha512-d3+i9vbbUfV6hvT90qabmy1WmC4bEJ7iAYDm0217doeA+S6awF25GF0qOy9gN9waU4NMntHoVpdB1YQO2wUj/w==}
@@ -5232,6 +5243,11 @@ snapshots:
       '@storybook/global': 5.0.0
       axe-core: 4.12.0
       storybook: 10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7)))
+
+  '@storybook/addon-themes@10.4.3(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))))':
+    dependencies:
+      storybook: 10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7)))
+      ts-dedent: 2.2.0
 
   '@storybook/builder-vite@10.4.2(esbuild@0.27.7)(storybook@10.4.2(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite-plus@0.1.24(@types/node@25.9.2)(esbuild@0.27.7)(jsdom@29.1.1)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))))(vite@8.0.16(@types/node@25.9.2)(esbuild@0.27.7))':
     dependencies:
