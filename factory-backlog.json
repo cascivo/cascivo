@@ -399,7 +399,7 @@
     {
       "name": "otp-input",
       "status": "in-progress",
-      "milestone": "scaffold",
+      "milestone": "verify",
       "priority": 45,
       "category": "inputs",
       "attempts": 0,
