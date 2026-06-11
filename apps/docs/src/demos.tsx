@@ -44,6 +44,12 @@ import { Combobox } from '@cascade-ui/components/combobox'
 import { TimePicker } from '@cascade-ui/components/time-picker'
 import { DatePicker } from '@cascade-ui/components/date-picker'
 import { FileUploader, type UploaderFile } from '@cascade-ui/components/file-uploader'
+import { Popover, PopoverContent, PopoverTrigger } from '@cascade-ui/components/popover'
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
+import { AlertDialog } from '@cascade-ui/components/alert-dialog'
+import { Sheet } from '@cascade-ui/components/sheet'
+import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-menu'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -576,6 +582,96 @@ export const demos: Record<string, () => JSX.Element> = {
     </Col>
   ),
   'file-uploader': () => <FileUploaderDemo />,
+  popover: () => (
+    <Popover>
+      <PopoverTrigger>
+        <Button variant="secondary">Open popover</Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <p style={{ margin: 0 }}>Anchored floating panel via CSS Anchor Positioning.</p>
+      </PopoverContent>
+    </Popover>
+  ),
+  menu: () => (
+    <Menu>
+      <MenuTrigger>
+        <Button variant="secondary">Actions ▾</Button>
+      </MenuTrigger>
+      <MenuItem onSelect={() => {}}>Edit</MenuItem>
+      <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
+      <MenuSeparator />
+      <MenuItem onSelect={() => {}}>Delete</MenuItem>
+    </Menu>
+  ),
+  'alert-dialog': () => <AlertDialogDemo />,
+  sheet: () => <SheetDemo />,
+  'context-menu': () => (
+    <ContextMenu>
+      <div
+        style={{
+          padding: '2rem',
+          border: '2px dashed',
+          borderRadius: '0.5rem',
+          textAlign: 'center',
+          userSelect: 'none',
+        }}
+      >
+        Right-click anywhere here
+      </div>
+      <ContextMenuItem onSelect={() => {}}>Copy</ContextMenuItem>
+      <ContextMenuItem onSelect={() => {}}>Paste</ContextMenuItem>
+    </ContextMenu>
+  ),
+  'hover-card': () => (
+    <HoverCard openDelay={200} closeDelay={100}>
+      <HoverCardTrigger>
+        <a href="#" style={{ textDecoration: 'underline' }}>
+          @cascade-ui
+        </a>
+      </HoverCardTrigger>
+      <HoverCardContent>
+        <div>
+          <strong>cascade-ui</strong>
+          <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem' }}>
+            CSS-native, signal-driven, AI-first React design system.
+          </p>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  ),
+}
+
+function AlertDialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete item
+      </Button>
+      <AlertDialog
+        open={open}
+        title="Delete item"
+        description="This cannot be undone. The item will be permanently deleted."
+        variant="destructive"
+        onConfirm={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
+      />
+    </>
+  )
+}
+
+function SheetDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Open settings
+      </Button>
+      <Sheet open={open} onClose={() => setOpen(false)} title="Settings">
+        <p>Configure your preferences here.</p>
+      </Sheet>
+    </>
+  )
 }
 
 function FileUploaderDemo() {

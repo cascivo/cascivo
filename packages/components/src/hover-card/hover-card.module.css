@@ -16,7 +16,10 @@
     box-shadow: var(--cascade-shadow-md);
 
     @supports (anchor-name: --a) {
-      position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+      position-try-fallbacks:
+        flip-block,
+        flip-inline,
+        flip-block flip-inline;
       inset-block-start: anchor(end);
       inset-inline-start: anchor(start);
     }

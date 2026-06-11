@@ -17,9 +17,17 @@ export function ContextMenu({ children }: ContextMenuProps) {
     const el = menuRef.current
     if (!el) return
     if (isOpen.value) {
-      try { el.showPopover() } catch { /* noop */ }
+      try {
+        el.showPopover()
+      } catch {
+        /* noop */
+      }
     } else {
-      try { el.hidePopover() } catch { /* noop */ }
+      try {
+        el.hidePopover()
+      } catch {
+        /* noop */
+      }
     }
   })
 
@@ -79,7 +87,9 @@ export function ContextMenuItem({ children, onSelect, disabled }: ContextMenuIte
       role="menuitem"
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled}
-      onClick={() => { if (!disabled) onSelect() }}
+      onClick={() => {
+        if (!disabled) onSelect()
+      }}
       className={styles.item}
     >
       {children}

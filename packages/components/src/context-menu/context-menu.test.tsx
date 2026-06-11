@@ -11,7 +11,9 @@ describe('ContextMenu', () => {
       </ContextMenu>,
     )
     const target = screen.getByText('Right click me')
-    target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }))
+    target.dispatchEvent(
+      new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
+    )
     expect(screen.getByRole('menu').getAttribute('data-state')).toBe('open')
   })
 
@@ -24,7 +26,9 @@ describe('ContextMenu', () => {
       </ContextMenu>,
     )
     const target = screen.getByText('Right click me')
-    target.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }))
+    target.dispatchEvent(
+      new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
+    )
     screen.getByText('Copy').click()
     expect(onSelect).toHaveBeenCalledOnce()
   })

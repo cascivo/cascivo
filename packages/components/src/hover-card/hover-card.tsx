@@ -33,11 +33,15 @@ export function HoverCard({ children, openDelay = 300, closeDelay = 100 }: Hover
     ...popover,
     open: () => {
       clearTimeout(closeTimer.current)
-      openTimer.current = setTimeout(() => { popover.isOpen.value = true }, openDelayRef.current)
+      openTimer.current = setTimeout(() => {
+        popover.isOpen.value = true
+      }, openDelayRef.current)
     },
     close: () => {
       clearTimeout(openTimer.current)
-      closeTimer.current = setTimeout(() => { popover.isOpen.value = false }, closeDelayRef.current)
+      closeTimer.current = setTimeout(() => {
+        popover.isOpen.value = false
+      }, closeDelayRef.current)
     },
   }
 
