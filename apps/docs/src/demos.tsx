@@ -50,6 +50,7 @@ import { AlertDialog } from '@cascade-ui/components/alert-dialog'
 import { Sheet } from '@cascade-ui/components/sheet'
 import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-menu'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
+import { PasswordInput } from '@cascade-ui/components/password-input'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -638,6 +639,12 @@ export const demos: Record<string, () => JSX.Element> = {
         </div>
       </HoverCardContent>
     </HoverCard>
+  ),
+  'password-input': () => (
+    <Col>
+      <PasswordInput placeholder="Enter password" />
+      <PasswordInput showStrengthMeter placeholder="Create password" />
+    </Col>
   ),
 }
 

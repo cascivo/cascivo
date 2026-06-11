@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "generatedAt": "2026-06-10",
+  "generatedAt": "2026-06-11",
   "components": [
     {
       "name": "accordion",
@@ -148,6 +148,46 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["notification", "message", "feedback"]
+      }
+    },
+    {
+      "name": "alert-dialog",
+      "type": "component",
+      "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["overlay", "dialog", "confirm", "destructive"],
+      "meta": {
+        "name": "AlertDialog",
+        "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": ["default", "destructive"],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-lg",
+          "--cascade-shadow-xl",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-accent",
+          "--cascade-color-destructive"
+        ],
+        "accessibility": {
+          "role": "alertdialog",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["overlay", "dialog", "confirm", "destructive"]
       }
     },
     {
@@ -799,6 +839,45 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"]
+      }
+    },
+    {
+      "name": "context-menu",
+      "type": "component",
+      "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "menu", "context", "right-click"],
+      "meta": {
+        "name": "ContextMenu",
+        "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-bg-subtle"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "menu", "context", "right-click"]
       }
     },
     {
@@ -1518,6 +1597,44 @@
       }
     },
     {
+      "name": "hover-card",
+      "type": "component",
+      "description": "Hover-triggered popover with configurable open/close delay",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "hover", "preview", "floating"],
+      "meta": {
+        "name": "HoverCard",
+        "description": "Hover-triggered popover with configurable open/close delay",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "complementary",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "hover", "preview", "floating"]
+      }
+    },
+    {
       "name": "input",
       "type": "component",
       "description": "Text input field with optional label, hint, and error state",
@@ -1729,6 +1846,45 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["link", "anchor", "navigation"]
+      }
+    },
+    {
+      "name": "menu",
+      "type": "component",
+      "description": "Dropdown menu with keyboard navigation, built on usePopover",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "menu", "dropdown", "floating"],
+      "meta": {
+        "name": "Menu",
+        "description": "Dropdown menu with keyboard navigation, built on usePopover",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit",
+          "--cascade-color-bg-subtle"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "menu", "dropdown", "floating"]
       }
     },
     {
@@ -2127,6 +2283,132 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["pagination", "navigation", "table", "data", "pages"]
+      }
+    },
+    {
+      "name": "password-input",
+      "type": "component",
+      "description": "Password input with reveal toggle and optional strength meter",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["form", "password", "input", "security"],
+      "meta": {
+        "name": "PasswordInput",
+        "description": "Password input with reveal toggle and optional strength meter",
+        "category": "inputs",
+        "states": ["idle", "revealed"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "showStrengthMeter",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "labels",
+            "type": "PasswordInputLabels",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "type": "(e: React.ChangeEvent<HTMLInputElement>) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-destructive",
+          "--cascade-color-warning",
+          "--cascade-color-success",
+          "--cascade-radius-input",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "textbox",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Shift+Tab"]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<PasswordInput placeholder=\"Enter password\" />"
+          },
+          {
+            "title": "With strength meter",
+            "code": "<PasswordInput showStrengthMeter placeholder=\"Create password\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["form", "password", "input", "security"]
+      }
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["overlay", "floating", "anchor", "popover"],
+      "meta": {
+        "name": "Popover",
+        "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-md",
+          "--cascade-shadow-md",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "AA",
+          "keyboard": ["Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["overlay", "floating", "anchor", "popover"]
       }
     },
     {
@@ -2617,6 +2899,44 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["divider", "rule", "layout"]
+      }
+    },
+    {
+      "name": "sheet",
+      "type": "component",
+      "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["overlay", "drawer", "panel", "slide"],
+      "meta": {
+        "name": "Sheet",
+        "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-lg",
+          "--cascade-shadow-xl",
+          "--cascade-motion-enter",
+          "--cascade-motion-exit"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "AA",
+          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["overlay", "drawer", "panel", "slide"]
       }
     },
     {

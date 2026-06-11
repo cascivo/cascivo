@@ -371,8 +371,8 @@
     },
     {
       "name": "password-input",
-      "status": "in-progress",
-      "milestone": "verify",
+      "status": "review",
+      "milestone": "finished",
       "priority": 42,
       "category": "inputs",
       "attempts": 0,
