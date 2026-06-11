@@ -15,6 +15,7 @@ const config: StorybookConfig = {
       ...cfg.resolve,
       alias: {
         ...(cfg.resolve?.alias as Record<string, string> | undefined),
+        '@cascade-ui/charts': resolve(root, 'packages/charts/src/index.ts'),
         '@cascade-ui/core': resolve(root, 'packages/core/src/index.ts'),
         '@cascade-ui/storage': resolve(root, 'packages/storage/src/index.ts'),
         '@cascade-ui/i18n': resolve(root, 'packages/i18n/src/index.ts'),

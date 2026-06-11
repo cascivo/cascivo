@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@cascade-ui/ai": "workspace:^",
+    "@cascade-ui/charts": "workspace:*",
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/icons": "workspace:*",
     "@cascade-ui/layouts": "workspace:*",
