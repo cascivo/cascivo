@@ -2,7 +2,8 @@ import type { ComponentMeta } from '@cascade-ui/core'
 
 export const meta: ComponentMeta = {
   name: 'InputGroup',
-  description: 'Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders',
+  description:
+    'Prefix/suffix addon wrapper for Input; ButtonGroup collapses adjacent button borders',
   category: 'inputs',
   states: [],
   variants: [],

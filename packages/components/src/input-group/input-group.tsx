@@ -17,9 +17,17 @@ export function InputGroup({ prefix, suffix, children, className, ...props }: In
       data-has-suffix={suffix ? '' : undefined}
       {...props}
     >
-      {prefix && <span className={styles['addon']} data-position="prefix">{prefix}</span>}
+      {prefix && (
+        <span className={styles['addon']} data-position="prefix">
+          {prefix}
+        </span>
+      )}
       <span className={styles['input-wrap']}>{children}</span>
-      {suffix && <span className={styles['addon']} data-position="suffix">{suffix}</span>}
+      {suffix && (
+        <span className={styles['addon']} data-position="suffix">
+          {suffix}
+        </span>
+      )}
     </div>
   )
 }
