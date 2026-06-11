@@ -3,6 +3,7 @@ name: Cloudflare Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: cf-pages-${{ github.ref }}
@@ -13,14 +14,15 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      docs: ${{ steps.filter.outputs.docs }}
-      landing: ${{ steps.filter.outputs.landing }}
-      storybook: ${{ steps.filter.outputs.storybook }}
-      playground: ${{ steps.filter.outputs.playground }}
+      docs: ${{ steps.out.outputs.docs }}
+      landing: ${{ steps.out.outputs.landing }}
+      storybook: ${{ steps.out.outputs.storybook }}
+      playground: ${{ steps.out.outputs.playground }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
+        if: github.event_name == 'push'
         with:
           filters: |
             docs:
@@ -41,6 +43,18 @@ jobs:
               - 'packages/render/**'
               - 'packages/react/**'
               - 'pnpm-lock.yaml'
+      - id: out
+        env:
+          FORCE: ${{ github.event_name == 'workflow_dispatch' }}
+          DOCS: ${{ steps.filter.outputs.docs }}
+          LANDING: ${{ steps.filter.outputs.landing }}
+          STORYBOOK: ${{ steps.filter.outputs.storybook }}
+          PLAYGROUND: ${{ steps.filter.outputs.playground }}
+        run: |
+          echo "docs=$(     [ "$FORCE" = "true" ] && echo true || echo "$DOCS"      )" >> $GITHUB_OUTPUT
+          echo "landing=$(  [ "$FORCE" = "true" ] && echo true || echo "$LANDING"   )" >> $GITHUB_OUTPUT
+          echo "storybook=$([ "$FORCE" = "true" ] && echo true || echo "$STORYBOOK" )" >> $GITHUB_OUTPUT
+          echo "playground=$([ "$FORCE" = "true" ] && echo true || echo "$PLAYGROUND" )" >> $GITHUB_OUTPUT
 
   # ── Shared install + build step ───────────────────────────────────────────
   # Each app builds in its own job so failures are isolated and CF Pages
