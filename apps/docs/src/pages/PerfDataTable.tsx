@@ -23,7 +23,13 @@ const columns: Column<Row>[] = [
 export function PerfDataTable() {
   return (
     <main data-perf-ready style={{ padding: '1rem' }}>
-      <DataTable columns={columns} rows={rows} getRowId={(r) => r.id} searchable />
+      <DataTable
+        columns={columns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        searchable
+        pagination={{ pageSize: 50 }}
+      />
     </main>
   )
 }
