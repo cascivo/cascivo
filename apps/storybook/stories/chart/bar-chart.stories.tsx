@@ -36,12 +36,13 @@ const meta: Meta<typeof BarChart> = {
 }
 export default meta
 type Story = StoryObj<typeof BarChart>
+type Pt = { x: string; y: number }
 
 export const Default: Story = {
   args: {
     series,
-    x: (d: { x: string; y: number }) => d.x,
-    y: (d: { x: string; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Quarterly Sales',
     legend: true,
   },
@@ -50,8 +51,8 @@ export const Default: Story = {
 export const Stacked: Story = {
   args: {
     series,
-    x: (d: { x: string; y: number }) => d.x,
-    y: (d: { x: string; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Stacked quarterly sales',
     mode: 'stacked',
     legend: true,
@@ -61,8 +62,8 @@ export const Stacked: Story = {
 export const Horizontal: Story = {
   args: {
     series: [series[0]!],
-    x: (d: { x: string; y: number }) => d.x,
-    y: (d: { x: string; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Horizontal bar',
     orientation: 'horizontal',
   },

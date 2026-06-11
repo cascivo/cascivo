@@ -44,12 +44,13 @@ const meta: Meta<typeof LineChart> = {
 }
 export default meta
 type Story = StoryObj<typeof LineChart>
+type Pt = { x: number; y: number }
 
 export const Default: Story = {
   args: {
     series,
-    x: (d: { x: number; y: number }) => d.x,
-    y: (d: { x: number; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Revenue vs Cost',
     legend: true,
     tooltip: true,
@@ -59,8 +60,8 @@ export const Default: Story = {
 export const SingleSeries: Story = {
   args: {
     series: [series[0]!],
-    x: (d: { x: number; y: number }) => d.x,
-    y: (d: { x: number; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Monthly Revenue',
     tooltip: true,
   },
@@ -69,8 +70,8 @@ export const SingleSeries: Story = {
 export const LinearCurve: Story = {
   args: {
     series,
-    x: (d: { x: number; y: number }) => d.x,
-    y: (d: { x: number; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Linear interpolation',
     curve: 'linear',
     legend: true,

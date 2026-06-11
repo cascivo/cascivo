@@ -45,11 +45,13 @@ const meta: Meta<typeof AreaChart> = {
 export default meta
 type Story = StoryObj<typeof AreaChart>
 
+type Pt = { x: number; y: number }
+
 export const Default: Story = {
   args: {
     series,
-    x: (d: { x: number; y: number }) => d.x,
-    y: (d: { x: number; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Downloads & Installs',
     legend: true,
   },
@@ -58,8 +60,8 @@ export const Default: Story = {
 export const Stacked: Story = {
   args: {
     series,
-    x: (d: { x: number; y: number }) => d.x,
-    y: (d: { x: number; y: number }) => d.y,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
     title: 'Stacked area',
     stacked: true,
     legend: true,

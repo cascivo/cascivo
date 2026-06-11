@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { PieChart } from '@cascade-ui/charts'
 
 const data = [
-  { label: 'Chrome', value: 62 },
-  { label: 'Safari', value: 20 },
-  { label: 'Firefox', value: 10 },
-  { label: 'Edge', value: 5 },
-  { label: 'Other', value: 3 },
+  { id: 'chrome', label: 'Chrome', value: 62 },
+  { id: 'safari', label: 'Safari', value: 20 },
+  { id: 'firefox', label: 'Firefox', value: 10 },
+  { id: 'edge', label: 'Edge', value: 5 },
+  { id: 'other', label: 'Other', value: 3 },
 ]
 
 const meta: Meta<typeof PieChart> = {
