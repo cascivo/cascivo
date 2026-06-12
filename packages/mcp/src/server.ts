@@ -2,9 +2,13 @@ import { spawnSync } from 'node:child_process'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
 import {
+  fetchDirectory,
+  fetchRegistryIndex,
   getComponent,
+  getEnvRegistries,
   listComponents,
   loadRegistry,
+  mergeRegistries,
   searchComponents,
   type Registry,
 } from './registry.js'
@@ -13,9 +17,13 @@ import { scaffoldPage } from './scaffold.js'
 import { validateView } from '../../render/src/validate.js'
 import { scaffoldView } from './scaffold-view.js'
 
+type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
+
 export interface ServerOptions {
   registryPath?: string
   version?: string
+  /** Injectable fetch function — used for testing multi-registry features. */
+  fetchFn?: FetchFn
 }
 
 const json = (value: unknown) => ({
@@ -32,11 +40,36 @@ const error = (message: string) => ({
 /** Build a configured McpServer exposing the cascade component registry. */
 export function createServer(options: ServerOptions = {}): McpServer {
   const registry: Registry = loadRegistry(options.registryPath)
+  const fetchFn = options.fetchFn
 
   const server = new McpServer({
     name: '@cascade-ui/mcp',
     version: options.version ?? '0.0.0',
   })
+
+  server.registerTool(
+    'list_registries',
+    {
+      title: 'List registries',
+      description:
+        'List available component registries: the cascade directory plus any configured via CASCADE_REGISTRIES env.',
+      inputSchema: {},
+    },
+    async () => {
+      const [directory] = await Promise.all([fetchDirectory(fetchFn)])
+      const env = getEnvRegistries()
+      const entries = mergeRegistries(directory, env)
+      return json(
+        entries.map(({ namespace, name, description, verified, homepage }) => ({
+          namespace,
+          name,
+          description,
+          verified: verified ?? false,
+          homepage,
+        })),
+      )
+    },
+  )
 
   server.registerTool(
     'list_components',
@@ -63,9 +96,26 @@ export function createServer(options: ServerOptions = {}): McpServer {
       title: 'Get component',
       description:
         'Get the full manifest (props, states, tokens, a11y, examples) for one component.',
-      inputSchema: { name: z.string().describe('Component name, e.g. "button"') },
+      inputSchema: {
+        name: z.string().describe('Component name, e.g. "button"'),
+        registry: z
+          .string()
+          .optional()
+          .describe('Namespace of an external registry, e.g. "@myns". Omit for the default.'),
+      },
     },
-    ({ name }) => {
+    async ({ name, registry: ns }) => {
+      if (ns) {
+        const env = getEnvRegistries()
+        const directory = await fetchDirectory(fetchFn)
+        const entries = mergeRegistries(directory, env)
+        const entry = entries.find((e) => e.namespace === ns)
+        if (!entry) return error(`Registry "${ns}" not found.`)
+        const remoteRegistry = await fetchRegistryIndex(entry.registryUrl, fetchFn)
+        if (!remoteRegistry) return error(`Failed to fetch registry index for "${ns}".`)
+        const meta = getComponent(remoteRegistry, name)
+        return meta ? json(meta) : error(`Component "${name}" not found in registry "${ns}".`)
+      }
       const meta = getComponent(registry, name)
       return meta ? json(meta) : error(`Component "${name}" not found.`)
     },
@@ -76,9 +126,27 @@ export function createServer(options: ServerOptions = {}): McpServer {
     {
       title: 'Search components',
       description: 'Fuzzy search components by name, tags, or description.',
-      inputSchema: { query: z.string().describe('Search query') },
+      inputSchema: {
+        query: z.string().describe('Search query'),
+        registry: z
+          .string()
+          .optional()
+          .describe('Namespace of an external registry, e.g. "@myns". Omit for the default.'),
+      },
     },
-    ({ query }) => json(searchComponents(registry, query)),
+    async ({ query, registry: ns }) => {
+      if (ns) {
+        const env = getEnvRegistries()
+        const directory = await fetchDirectory(fetchFn)
+        const entries = mergeRegistries(directory, env)
+        const entry = entries.find((e) => e.namespace === ns)
+        if (!entry) return error(`Registry "${ns}" not found.`)
+        const remoteRegistry = await fetchRegistryIndex(entry.registryUrl, fetchFn)
+        if (!remoteRegistry) return error(`Failed to fetch registry index for "${ns}".`)
+        return json(searchComponents(remoteRegistry, query))
+      }
+      return json(searchComponents(registry, query))
+    },
   )
 
   server.registerTool(
