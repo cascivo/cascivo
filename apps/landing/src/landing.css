@@ -1091,3 +1091,45 @@ code {
       translate var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease);
   }
 }
+
+/* ── Proof pages (shared hero + a11y sections) ────────── */
+.proof-hero {
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--cascade-space-12) var(--cascade-space-6) var(--cascade-space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-4);
+}
+
+.proof-hero h1 {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: var(--cascade-font-bold);
+  letter-spacing: var(--cascade-tracking-tight);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.proof-hero-accent {
+  color: var(--cascade-color-accent);
+}
+
+.proof-hero-sub {
+  margin: 0;
+  max-width: 44rem;
+  font-size: var(--cascade-text-lg);
+  color: var(--cascade-color-text-subtle);
+}
+
+.proof-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--cascade-space-5);
+  margin-block-start: var(--cascade-space-6);
+  padding: var(--cascade-space-6);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg-subtle);
+}
