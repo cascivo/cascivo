@@ -1,14 +1,14 @@
 declare module 'virtual:bench' {
   type LibId = 'cascade' | 'shadcn' | 'carbon'
   type ScenarioId =
-    | 'mount-100'
-    | 'mount-1000'
-    | 'update-100'
-    | 'update-1000'
-    | 'toggle'
-    | 'destroy-100'
-    | 'destroy-1000'
-    | 'mixed'
+    | 'create-1k'
+    | 'create-10k'
+    | 'update-every-10th'
+    | 'select-row'
+    | 'clear'
+    | 'open-dialog'
+    | 'type-20-chars'
+    | 'toggle-50-checkboxes'
 
   type TimingStats = {
     median: number
@@ -33,14 +33,17 @@ declare module 'virtual:bench' {
       source: 'local' | 'ci'
     }
     bundle?: {
-      apps: Record<LibId, { gzipKb: number; brotliKb: number; rawKb: number; treeshakeKb?: number }>
-      matrix: Record<LibId, Record<string, { gzipKb: number; brotliKb: number; rawKb: number }>>
-      treeshake?: Record<string, { gzipKb: number }>
+      apps: Record<
+        LibId,
+        { jsGzKb: number; cssGzKb: number; totalGzKb: number; jsRawKb: number; cssRawKb: number }
+      >
+      matrix: Record<LibId, Record<string, { totalGzKb: number; incrementalGzKb: number }>>
+      treeshake?: { bareImportGzBytes: number; buttonOnlyGzKb: number; fullGzKb: number }
     }
     runtime?: Record<
       ScenarioId,
       Partial<Record<LibId, TimingStats>> & {
-        pVsCascade?: Partial<Record<Exclude<LibId, 'cascade'>, number>>
+        pVsCascade?: Partial<Record<LibId, number>>
       }
     >
     renders?: Record<ScenarioId, Partial<Record<LibId, number>>>

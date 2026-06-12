@@ -5,6 +5,7 @@
     "cores": 0,
     "memGb": 0,
     "os": "placeholder",
+    "node": "placeholder",
     "chrome": "placeholder",
     "cpuThrottle": 4,
     "lockfileHash": "placeholder",
