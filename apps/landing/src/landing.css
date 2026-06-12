@@ -1211,3 +1211,82 @@ code {
   line-height: 1.6;
   overflow-x: auto;
 }
+
+/* ── Performance page ─────────────────────────────────── */
+.perf-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--cascade-space-4);
+  inline-size: 100%;
+  max-width: 64rem;
+  margin-block-start: var(--cascade-space-6);
+}
+
+.perf-note,
+.perf-footnote {
+  margin: var(--cascade-space-4) 0 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.perf-table {
+  inline-size: 100%;
+  margin-block-start: var(--cascade-space-8);
+  border-collapse: collapse;
+  font-size: var(--cascade-text-sm);
+}
+
+.perf-table caption {
+  margin-block-end: var(--cascade-space-3);
+  text-align: start;
+  font-weight: var(--cascade-font-bold);
+}
+
+.perf-table th,
+.perf-table td {
+  padding: var(--cascade-space-2) var(--cascade-space-3);
+  border-block-end: 1px solid var(--cascade-color-border);
+  text-align: start;
+}
+
+.perf-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+.perf-iqr {
+  color: var(--cascade-color-text-subtle);
+}
+
+.perf-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--cascade-space-4);
+  margin: var(--cascade-space-6) 0 0;
+  padding: var(--cascade-space-6);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background: var(--cascade-color-bg-subtle);
+}
+
+.perf-meta dt {
+  font-size: var(--cascade-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cascade-color-text-muted);
+}
+
+.perf-meta dd {
+  margin: var(--cascade-space-1) 0 0;
+  font-size: var(--cascade-text-sm);
+  overflow-wrap: anywhere;
+}
+
+.perf-disclosures {
+  display: grid;
+  gap: var(--cascade-space-2);
+  max-width: 48rem;
+  margin: var(--cascade-space-6) 0 0;
+  padding-inline-start: var(--cascade-space-5);
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
