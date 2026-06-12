@@ -955,6 +955,81 @@
       }
     },
     {
+      "name": "copy-button",
+      "type": "component",
+      "description": "Icon button that copies a value to the clipboard with copied feedback",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["clipboard", "copy", "button", "snippet"],
+      "meta": {
+        "name": "CopyButton",
+        "description": "Icon button that copies a value to the clipboard with copied feedback",
+        "category": "inputs",
+        "states": ["idle", "copied"],
+        "variants": [],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "The text written to the clipboard on click"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "labels",
+            "type": "{ copy?: string; copied?: string }",
+            "required": false,
+            "description": "Overrides the built-in i18n labels per instance"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-text-subtle",
+          "--cascade-color-text",
+          "--cascade-color-border",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-success",
+          "--cascade-radius-control",
+          "--cascade-focus-ring",
+          "--cascade-control-height-sm",
+          "--cascade-control-height-md"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<CopyButton value=\"npx cascade add button\" />"
+          },
+          {
+            "title": "Small",
+            "code": "<CopyButton value=\"pnpm install\" size=\"sm\" />"
+          },
+          {
+            "title": "Custom labels",
+            "code": "<CopyButton value=\"token\" labels={{ copy: 'Copy token', copied: 'Token copied' }} />",
+            "description": "Override the built-in copy/copied strings per instance"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["clipboard", "copy", "button", "snippet"]
+      }
+    },
+    {
       "name": "data-table",
       "type": "component",
       "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
@@ -2959,6 +3034,82 @@
       }
     },
     {
+      "name": "progress-circle",
+      "type": "component",
+      "description": "Circular determinate progress indicator rendered as an SVG arc",
+      "category": "feedback",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["progress", "loading", "circle", "feedback"],
+      "meta": {
+        "name": "ProgressCircle",
+        "description": "Circular determinate progress indicator rendered as an SVG arc",
+        "category": "feedback",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current value from 0 to max — clamped"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Renders the rounded percentage in the center — pairs best with md and lg"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible name announced by screen readers"
+          }
+        ],
+        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+        "accessibility": {
+          "role": "progressbar",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<ProgressCircle value={40} label=\"Loading\" />"
+          },
+          {
+            "title": "With value",
+            "code": "<ProgressCircle value={72} showValue size=\"lg\" label=\"Upload progress\" />"
+          },
+          {
+            "title": "Custom max",
+            "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["progress", "loading", "circle", "feedback"]
+      }
+    },
+    {
       "name": "progress-indicator",
       "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
@@ -3917,6 +4068,74 @@
       }
     },
     {
+      "name": "skip-nav",
+      "type": "component",
+      "description": "Skip link that jumps keyboard users past the navigation to the main content",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+      "meta": {
+        "name": "SkipNav",
+        "description": "Skip link that jumps keyboard users past the navigation to the main content",
+        "category": "navigation",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "targetId",
+            "type": "string",
+            "required": false,
+            "default": "cascade-skip-target",
+            "description": "SkipNavLink: id of the SkipNavTarget to jump to"
+          },
+          {
+            "name": "labels",
+            "type": "{ label?: string }",
+            "required": false,
+            "description": "SkipNavLink: overrides the built-in i18n label per instance"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "cascade-skip-target",
+            "description": "SkipNavTarget: anchor id — must match the link targetId"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-text",
+          "--cascade-radius-control",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "link",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "Default pair",
+            "code": "<><SkipNavLink /><nav>…</nav><SkipNavTarget /><main>…</main></>",
+            "description": "SkipNavLink must be the first focusable element on the page"
+          },
+          {
+            "title": "Custom target",
+            "code": "<><SkipNavLink targetId=\"main-content\" /><SkipNavTarget id=\"main-content\" /></>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["accessibility", "skip-link", "keyboard", "navigation"]
+      }
+    },
+    {
       "name": "slider",
       "type": "component",
       "description": "Range input for selecting a value within bounds",
@@ -4054,6 +4273,154 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["loading", "progress", "feedback"]
+      }
+    },
+    {
+      "name": "stat",
+      "type": "component",
+      "description": "Displays a key metric with optional delta, trend direction and help text",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["stat", "kpi", "metric", "number"],
+      "meta": {
+        "name": "Stat",
+        "description": "Displays a key metric with optional delta, trend direction and help text",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "What the metric measures"
+          },
+          {
+            "name": "value",
+            "type": "string | number",
+            "required": true,
+            "description": "The metric value"
+          },
+          {
+            "name": "delta",
+            "type": "string",
+            "required": false,
+            "description": "Change indicator rendered next to the trend arrow"
+          },
+          {
+            "name": "trend",
+            "type": "'up' | 'down' | 'flat'",
+            "required": false,
+            "default": "flat"
+          },
+          {
+            "name": "helpText",
+            "type": "string",
+            "required": false,
+            "description": "Fine print below the value (methodology, time range)"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-text-muted",
+          "--cascade-color-success",
+          "--cascade-color-destructive"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Stat label=\"Components\" value={106} />"
+          },
+          {
+            "title": "With trend",
+            "code": "<Stat label=\"Bundle size\" value=\"12.4 kB\" delta=\"-1.2 kB\" trend=\"up\" />"
+          },
+          {
+            "title": "With help text",
+            "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["stat", "kpi", "metric", "number"]
+      }
+    },
+    {
+      "name": "status",
+      "type": "component",
+      "description": "Colored dot with a label communicating the state of a system or entity",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["status", "indicator", "dot", "badge"],
+      "meta": {
+        "name": "Status",
+        "description": "Colored dot with a label communicating the state of a system or entity",
+        "category": "display",
+        "states": [],
+        "variants": ["success", "warning", "error", "info", "neutral"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "status",
+            "type": "'success' | 'warning' | 'error' | 'info' | 'neutral'",
+            "required": false,
+            "default": "neutral"
+          },
+          {
+            "name": "pulse",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-success",
+          "--cascade-color-warning",
+          "--cascade-color-error",
+          "--cascade-color-info",
+          "--cascade-color-text-muted",
+          "--cascade-color-text",
+          "--cascade-radius-full"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Status>Unknown</Status>"
+          },
+          {
+            "title": "Success",
+            "code": "<Status status=\"success\">Operational</Status>"
+          },
+          {
+            "title": "Pulsing",
+            "code": "<Status status=\"info\" pulse>Deploying</Status>",
+            "description": "The pulse animation respects prefers-reduced-motion"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["status", "indicator", "dot", "badge"]
       }
     },
     {
@@ -4736,6 +5103,54 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["overlay", "hint", "popover"]
+      }
+    },
+    {
+      "name": "visually-hidden",
+      "type": "component",
+      "description": "Hides content visually while keeping it available to screen readers",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+      "meta": {
+        "name": "VisuallyHidden",
+        "description": "Hides content visually while keeping it available to screen readers",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Content announced by assistive technology but not painted"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Icon button label",
+            "code": "<button type=\"button\"><CloseIcon /><VisuallyHidden>Close dialog</VisuallyHidden></button>",
+            "description": "Gives an icon-only control an accessible name"
+          },
+          {
+            "title": "Table context",
+            "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["accessibility", "screen-reader", "sr-only", "hidden"]
       }
     },
     {
