@@ -59,6 +59,9 @@
     --cascade-color-warning-subtle: var(--cascade-orange-50);
     --cascade-color-info: var(--cascade-blue-600);
     --cascade-color-info-subtle: var(--cascade-blue-50);
+    /* Foreground-safe variants: darker for text on light backgrounds (WCAG AA ≥4.5:1) */
+    --cascade-color-success-foreground: oklch(0.45 0.14 145);
+    --cascade-color-warning-foreground: oklch(0.5 0.14 75);
 
     /* ── Radius — one knob; semantic scale derives in tokens ── */
     --cascade-radius-base: 0.375rem; /* 6px */

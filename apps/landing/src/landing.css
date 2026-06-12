@@ -253,7 +253,7 @@ code {
   margin-block-end: var(--cascade-space-3);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text);
 }
 
 .theme-demo-form {
@@ -339,7 +339,7 @@ code {
   font-size: var(--cascade-text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text);
 }
 
 .footer-column-links {
@@ -365,7 +365,7 @@ code {
 
 .footer-note {
   font-size: var(--cascade-text-sm);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text);
 }
 
 /* ── JSON Playground demo ─────────────────────────────── */
@@ -530,7 +530,7 @@ code {
 }
 
 .copy-command code {
-  overflow-x: auto;
+  white-space: nowrap;
 }
 
 /* ── Principles strip ─────────────────────────────────── */
@@ -578,12 +578,12 @@ code {
   font-size: var(--cascade-text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cascade-color-text-subtle);
+  color: var(--cascade-color-text);
 }
 
 .principle-line {
   font-size: var(--cascade-text-sm);
-  color: var(--cascade-color-text-subtle);
+  color: var(--cascade-color-text);
 }
 
 /* ── Stats band ───────────────────────────────────────── */
@@ -817,8 +817,10 @@ code {
   display: flex;
   flex-direction: column;
   gap: var(--cascade-space-3);
-  /* warm accent-subtle gives a noticeable amber tint; works in any page theme */
-  background-color: var(--cascade-color-accent-subtle);
+  /* Opaque warm surface + explicit sRGB text so axe contrast check passes
+     (axe 4.11 misreads oklch → inflated L → false contrast failures). */
+  background-color: #faf6ef;
+  color: #2c1f0f;
   border-color: color-mix(in oklch, var(--cascade-color-accent) 35%, transparent);
 }
 
@@ -832,13 +834,15 @@ code {
 .oncall-sub {
   display: block;
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-subtle);
+  /* Explicit sRGB: axe 4.11 misreads oklch text colors. */
+  color: #6b5542;
 }
 
 .oncall-token {
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-subtle);
+  /* Explicit sRGB: axe 4.11 misreads oklch text colors. */
+  color: #6b5542;
 }
 
 /* ── Flags region ─────────────────────────────────────── */
@@ -1000,8 +1004,10 @@ code {
 .agent-code {
   margin: 0;
   padding: var(--cascade-space-4);
-  background: var(--cascade-color-bg-subtle);
-  border: 1px solid var(--cascade-color-border);
+  /* Dark terminal background so syntax colors pass WCAG AA in every theme. */
+  background: oklch(0.16 0.008 264);
+  color: oklch(0.9 0.005 264);
+  border: 1px solid oklch(0.28 0.01 264);
   border-radius: var(--cascade-radius-md);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
@@ -1069,24 +1075,30 @@ code {
 }
 
 /* ── Syntax highlighting ──────────────────────────────── */
+/* All colors chosen for WCAG AA contrast (≥4.5:1) against the dark terminal bg. */
 .agent-code .hl-key {
-  color: var(--cascade-color-accent);
+  /* blue, ~5.2:1 on oklch(0.16) */
+  color: oklch(0.72 0.17 250);
 }
 
 .agent-code .hl-string {
-  color: var(--cascade-color-success);
+  /* green, ~5.0:1 on oklch(0.16) */
+  color: oklch(0.72 0.15 145);
 }
 
 .agent-code .hl-number {
-  color: oklch(0.6 0.18 40);
+  /* orange, ~4.9:1 on oklch(0.16) */
+  color: oklch(0.72 0.16 55);
 }
 
 .agent-code .hl-keyword {
-  color: var(--cascade-color-info);
+  /* purple/violet, ~4.8:1 on oklch(0.16) */
+  color: oklch(0.72 0.17 310);
 }
 
 .agent-code .hl-comment {
-  color: var(--cascade-color-text-muted);
+  /* muted gray, ~4.6:1 on oklch(0.16) */
+  color: oklch(0.62 0.006 264);
   font-style: italic;
 }
 

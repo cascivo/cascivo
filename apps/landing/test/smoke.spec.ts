@@ -36,7 +36,10 @@ test('re-render counters move when typing', async ({ page }) => {
 
 test('new deploy modal opens and closes', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: 'New deploy' }).click()
+  await page
+    .getByRole('region', { name: 'Deploys' })
+    .getByRole('button', { name: 'New deploy' })
+    .click()
   await expect(page.getByRole('dialog')).toBeVisible()
   await page.getByRole('button', { name: 'Cancel' }).click()
   await expect(page.getByRole('dialog')).toBeHidden()
