@@ -1,7 +1,7 @@
 # cascade — Roadmap v9: Signs of Life
 
 **Last updated:** 2026-06-12
-**Status:** 🟡 Planned
+**Status:** ✅ Done
 **Plan documents:** `docs/superpowers/plans/2026-06-12-v9-master-plan.md` + tranches 1–5
 
 ---
@@ -107,26 +107,26 @@ needs: a **top loading bar** clients can drive (progress + error states).
 
 ## Definition of Done
 
-- [ ] Every Toggle in the console flips on click; "New deploy" opens the modal; deploying
+- [x] Every Toggle in the console flips on click; "New deploy" opens the modal; deploying
       fires the toast; copy buttons flip to "Copied" — verified in a **production build**
       (`vp build` + `vp preview`), not just dev.
-- [ ] SignalsDemo: typing 10 characters in the useState form shows ≥10 commits on the right
+- [x] SignalsDemo: typing 10 characters in the useState form shows ≥10 commits on the right
       badge and ≤1 on the left badge, in the production build.
-- [ ] All five themes render visible Input labels in the hero ThemeDemo; the theme-parity
+- [x] All five themes render visible Input labels in the hero ThemeDemo; the theme-parity
       vitest fails if any theme omits a semantic token the others define.
-- [ ] `AppShell` renders a top loading bar driven by `ShellState`: `startLoading()` shows it
+- [x] `AppShell` renders a top loading bar driven by `ShellState`: `startLoading()` shows it
       at 0, `setLoadingProgress(0.6)` animates to 60%, `finishLoading()` completes and hides
       it, `failLoading('msg')` turns it destructive and shows a dismissible `role="alert"`
       message. All covered by component tests.
-- [ ] Console: SideNav shows six icons (no fallback dots), titlebar menu opens with three
+- [x] Console: SideNav shows six icons (no fallback dots), titlebar menu opens with three
       working items, traffic chart ticks every ~2s when visible, incident dot pulses,
       spacing matches the v5 design language (no `space-3` card gaps).
-- [ ] Agent-render artifact spans the full `.agents-grid` width at desktop.
-- [ ] All three QuickStart steps have working copy buttons; `#24292e` is gone.
-- [ ] Sections fade in on scroll; with `prefers-reduced-motion: reduce` every section is
+- [x] Agent-render artifact spans the full `.agents-grid` width at desktop.
+- [x] All three QuickStart steps have working copy buttons; `#24292e` is gone.
+- [x] Sections fade in on scroll; with `prefers-reduced-motion: reduce` every section is
       fully visible with zero animation (Playwright-verified or manually recorded in T5).
-- [ ] CLAUDE.md documents the `useSignals()` React-app rule; the T5 grep gate passes.
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+- [x] CLAUDE.md documents the `useSignals()` React-app rule; the T5 grep gate passes.
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
 
 ## Deferred (do not re-litigate in v9)
