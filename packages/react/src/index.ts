@@ -54,13 +54,7 @@ export * from '../../components/src/alert-dialog/alert-dialog'
 export * from '../../components/src/sheet/sheet'
 export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/hover-card/hover-card'
-export {
-  ErrorBoundary,
-  SuspenseBoundary,
-  Portal,
-  VisuallyHidden,
-  FocusScope,
-} from '@cascade-ui/core'
+export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascade-ui/core'
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'
@@ -77,3 +71,4 @@ export * from '../../components/src/checkbox-card/checkbox-card'
 export * from '../../components/src/copy-button/copy-button'
 export * from '../../components/src/stat/stat'
 export * from '../../components/src/status/status'
+export * from '../../components/src/visually-hidden/visually-hidden'

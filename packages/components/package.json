@@ -67,7 +67,8 @@
     "./checkbox-card": "./src/checkbox-card/checkbox-card.tsx",
     "./copy-button": "./src/copy-button/copy-button.tsx",
     "./stat": "./src/stat/stat.tsx",
-    "./status": "./src/status/status.tsx"
+    "./status": "./src/status/status.tsx",
+    "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
