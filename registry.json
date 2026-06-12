@@ -331,6 +331,63 @@
       }
     },
     {
+      "name": "blockquote",
+      "type": "component",
+      "description": "Quoted passage with optional attribution footer",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "quote", "blockquote", "citation"],
+      "meta": {
+        "name": "Blockquote",
+        "description": "Quoted passage with optional attribution footer",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "cite",
+            "type": "string",
+            "required": false,
+            "default": "undefined"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-border-strong",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-font-sans",
+          "--cascade-font-medium",
+          "--cascade-leading-relaxed",
+          "--cascade-text-sm",
+          "--cascade-text-base"
+        ],
+        "accessibility": {
+          "role": "blockquote",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Blockquote>Less, but better.</Blockquote>"
+          },
+          {
+            "title": "With attribution",
+            "code": "<Blockquote cite=\"Dieter Rams\">Less, but better.</Blockquote>",
+            "description": "Attribution renders as <footer><cite>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "quote", "blockquote", "citation"]
+      }
+    },
+    {
       "name": "breadcrumb",
       "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
@@ -683,6 +740,66 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["checkbox", "card", "selectable", "form"]
+      }
+    },
+    {
+      "name": "code",
+      "type": "component",
+      "description": "Inline code span for identifiers, commands, and short snippets",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "code", "inline", "mono"],
+      "meta": {
+        "name": "Code",
+        "description": "Inline code span for identifiers, commands, and short snippets",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-mono",
+          "--cascade-color-text",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-indicator",
+          "--cascade-text-xs",
+          "--cascade-text-sm"
+        ],
+        "accessibility": {
+          "role": "code",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Code>npx cascade add button</Code>"
+          },
+          {
+            "title": "In a sentence",
+            "code": "<Text>Run <Code>vp check</Code> before committing.</Text>",
+            "description": "Sits inline with surrounding text"
+          },
+          {
+            "title": "Small",
+            "code": "<Code size=\"sm\">--cascade-color-accent</Code>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "code", "inline", "mono"]
       }
     },
     {
@@ -1907,6 +2024,75 @@
       }
     },
     {
+      "name": "heading",
+      "type": "component",
+      "description": "Section heading with semantic level decoupled from visual size",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "heading", "title"],
+      "meta": {
+        "name": "Heading",
+        "description": "Section heading with semantic level decoupled from visual size",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg", "xl", "2xl"],
+        "props": [
+          {
+            "name": "level",
+            "type": "1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "2"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
+            "required": false,
+            "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-semibold",
+          "--cascade-leading-tight",
+          "--cascade-tracking-tight",
+          "--cascade-color-text",
+          "--cascade-text-base",
+          "--cascade-text-lg",
+          "--cascade-text-xl",
+          "--cascade-text-2xl",
+          "--cascade-text-3xl"
+        ],
+        "accessibility": {
+          "role": "heading",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Heading>Section title</Heading>"
+          },
+          {
+            "title": "Page title",
+            "code": "<Heading level={1}>Page title</Heading>"
+          },
+          {
+            "title": "Decoupled size",
+            "code": "<Heading level={2} size=\"2xl\">Visually large, semantically h2</Heading>",
+            "description": "Keep the document outline correct while controlling the visual scale"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "heading", "title"]
+      }
+    },
+    {
       "name": "hover-card",
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
@@ -2225,6 +2411,71 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["link", "anchor", "navigation"]
+      }
+    },
+    {
+      "name": "list",
+      "type": "component",
+      "description": "Styled unordered or ordered list with ListItem",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "list", "ul", "ol"],
+      "meta": {
+        "name": "List",
+        "description": "Styled unordered or ordered list with ListItem",
+        "category": "display",
+        "states": [],
+        "variants": ["disc", "decimal", "none"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "as",
+            "type": "'ul' | 'ol'",
+            "required": false,
+            "default": "ul"
+          },
+          {
+            "name": "marker",
+            "type": "'disc' | 'decimal' | 'none'",
+            "required": false,
+            "default": "derived from as (ul→disc, ol→decimal)"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-leading-normal",
+          "--cascade-color-text",
+          "--cascade-text-base",
+          "--cascade-space-1",
+          "--cascade-space-6"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Unordered",
+            "code": "<List><ListItem>Tokens</ListItem><ListItem>Themes</ListItem></List>"
+          },
+          {
+            "title": "Ordered",
+            "code": "<List as=\"ol\"><ListItem>Init</ListItem><ListItem>Add</ListItem></List>"
+          },
+          {
+            "title": "Unmarked",
+            "code": "<List marker=\"none\"><ListItem>Clean row</ListItem></List>",
+            "description": "Keeps list semantics without visual markers"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "list", "ul", "ol"]
       }
     },
     {
@@ -3181,6 +3432,63 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["steps", "wizard", "stepper", "progress", "navigation"]
+      }
+    },
+    {
+      "name": "prose",
+      "type": "component",
+      "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "prose", "content", "markdown", "article"],
+      "meta": {
+        "name": "Prose",
+        "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-mono",
+          "--cascade-font-semibold",
+          "--cascade-leading-tight",
+          "--cascade-leading-relaxed",
+          "--cascade-tracking-tight",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-accent",
+          "--cascade-color-accent-hover",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-border-strong",
+          "--cascade-radius-indicator",
+          "--cascade-radius-surface"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Authored content",
+            "code": "<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>"
+          },
+          {
+            "title": "Rendered markdown",
+            "code": "<Prose dangerouslySetInnerHTML={{ __html: html }} />",
+            "description": "The use case: HTML you do not control (CMS, markdown pipelines)"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "prose", "content", "markdown", "article"]
       }
     },
     {
@@ -4701,6 +5009,87 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["form", "tags", "chips", "multi", "input"]
+      }
+    },
+    {
+      "name": "text",
+      "type": "component",
+      "description": "Body text with size, weight, and muted variants",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "text", "paragraph", "body"],
+      "meta": {
+        "name": "Text",
+        "description": "Body text with size, weight, and muted variants",
+        "category": "display",
+        "states": [],
+        "variants": ["normal", "medium", "semibold"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "as",
+            "type": "'p' | 'span' | 'div'",
+            "required": false,
+            "default": "p"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "weight",
+            "type": "'normal' | 'medium' | 'semibold'",
+            "required": false,
+            "default": "normal"
+          },
+          {
+            "name": "muted",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-normal",
+          "--cascade-font-medium",
+          "--cascade-font-semibold",
+          "--cascade-leading-normal",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-text-sm",
+          "--cascade-text-base",
+          "--cascade-text-lg"
+        ],
+        "accessibility": {
+          "role": "paragraph",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Text>Body copy reads at the base size.</Text>"
+          },
+          {
+            "title": "Muted helper",
+            "code": "<Text size=\"sm\" muted>Secondary information</Text>"
+          },
+          {
+            "title": "Inline span",
+            "code": "<Text as=\"span\" weight=\"semibold\">emphasis</Text>",
+            "description": "Use as=\"span\" inside other flow content"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "text", "paragraph", "body"]
       }
     },
     {
