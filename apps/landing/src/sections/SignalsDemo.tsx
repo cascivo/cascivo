@@ -1,6 +1,6 @@
 'use client'
 import { Profiler, useState, type ReactNode } from 'react'
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Button } from '@cascade-ui/components/button'
 import { Card } from '@cascade-ui/components/card'
@@ -27,6 +27,7 @@ function Counter({
 }
 
 function SignalForm() {
+  useSignals()
   const name = useSignal('')
   const email = useSignal('')
   const newsletter = useSignal(false)
@@ -91,6 +92,7 @@ const benchModules = import.meta.glob<{ default: BenchResults }>(
 const bench = Object.values(benchModules)[0]?.default
 
 export function SignalsDemo() {
+  useSignals()
   const signalCommits = useSignal(0)
   const stateCommits = useSignal(0)
 

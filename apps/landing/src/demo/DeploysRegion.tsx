@@ -1,5 +1,5 @@
 'use client'
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Button } from '@cascade-ui/components/button'
 import { DataTable, type Column } from '@cascade-ui/components/data-table'
@@ -56,6 +56,7 @@ const envOptions = [
 ]
 
 function DeploysInner() {
+  useSignals()
   const modalOpen = useSignal(false)
   const { toast } = useToast()
 
