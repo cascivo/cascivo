@@ -21,6 +21,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
 
   const exploreItems = [
     { label: 'AI / MCP', href: '/ai' },
+    { label: 'Benchmarks', href: '/benchmarks' },
     { label: 'Charts', href: '/charts' },
     { label: 'Playground', href: '/playground' },
   ]

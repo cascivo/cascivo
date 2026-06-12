@@ -1,0 +1,83 @@
+name: bench
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * 1' # weekly Monday 04:00 UTC
+
+jobs:
+  deterministic:
+    name: Deterministic gates (conformance, bundle, treeshake, a11y, renders)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter bench-runner exec playwright install chromium --with-deps
+
+      - name: Build
+        run: pnpm build
+
+      - name: Conformance
+        run: pnpm --filter bench-runner bench conformance
+
+      - name: Treeshake gate
+        run: pnpm --filter bench-runner bench treeshake
+
+      - name: Bundle suite
+        run: pnpm --filter bench-runner bench bundle
+
+      - name: a11y gate
+        run: pnpm --filter bench-runner bench a11y --gate
+
+      - name: Render counts
+        run: pnpm --filter bench-runner bench renders
+
+      - name: Check renders determinism + bundle drift vs committed results
+        run: node apps/bench/runner/src/ci-compare.ts
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bench-results-ci
+          path: apps/bench/results/results.json
+
+  timing-informational:
+    name: Timing smoke (informational — hosted-runner noise, never gated)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter bench-runner exec playwright install chromium --with-deps
+
+      - name: Build
+        run: pnpm build
+
+      - name: Runtime timing (informational)
+        run: BENCH_SAMPLES=3 BENCH_WARMUPS=1 pnpm --filter bench-runner bench runtime
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-timings-ci-informational
+          path: apps/bench/results/results.json

@@ -1,0 +1,27 @@
+{
+  "name": "bench-app-cascade",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "check": "tsc --noEmit",
+    "test": "echo 'no unit tests — covered by bench-runner protocol spec'",
+    "build:matrix": "vp build --config vite.matrix.config.ts"
+  },
+  "dependencies": {
+    "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/react": "workspace:*",
+    "@cascade-ui/themes": "workspace:*",
+    "@preact/signals-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

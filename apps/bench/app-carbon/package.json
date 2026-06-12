@@ -1,0 +1,25 @@
+{
+  "name": "bench-app-carbon",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "check": "tsc --noEmit",
+    "test": "echo 'no unit tests — covered by bench-runner protocol spec'",
+    "build:matrix": "vp build --config vite.matrix.config.ts"
+  },
+  "dependencies": {
+    "@carbon/react": "1.109.0",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "sass": "1.100.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "bench-app-shadcn",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "check": "tsc --noEmit",
+    "test": "echo 'no unit tests — covered by bench-runner protocol spec'",
+    "build:matrix": "vp build --config vite.matrix.config.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-checkbox": "1.3.4",
+    "@radix-ui/react-dialog": "1.1.16",
+    "@radix-ui/react-label": "2.1.9",
+    "@radix-ui/react-slot": "1.2.5",
+    "@tanstack/react-table": "8.21.3",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "0.513.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwind-merge": "3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tailwindcss": "4.3.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

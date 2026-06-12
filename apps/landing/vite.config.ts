@@ -6,6 +6,8 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../..')
 
 export default defineConfig({
+  preview: { port: 4180, strictPort: true },
+  server: { port: 4180 },
   resolve: {
     alias: {
       '@cascade-ui/core': resolve(root, 'packages/core/src/index.ts'),

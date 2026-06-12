@@ -9,18 +9,23 @@
     "build": "vp build",
     "preview": "vp preview",
     "check": "tsc --noEmit",
-    "test": "echo 'landing: no tests yet'"
+    "test": "echo 'landing: no unit tests'",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@cascade-ui/charts": "workspace:*",
     "@cascade-ui/components": "workspace:*",
     "@cascade-ui/core": "workspace:*",
     "@cascade-ui/render": "workspace:*",
+    "@cascade-ui/storage": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@cascade-ui/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
   "devDependencies": {
+    "@axe-core/playwright": "catalog:",
+    "@playwright/test": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "typescript": "catalog:",
