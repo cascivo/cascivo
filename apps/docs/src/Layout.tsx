@@ -56,6 +56,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
     { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
     { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },
+    { label: 'Directory', href: '/directory', icon: <Grid size={16} /> },
     { label: 'Layouts', href: '/layouts', icon: <Grid size={16} /> },
     { label: 'Playground', href: '/playground', icon: <Terminal size={16} /> },
   ]

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "name": "registry-starter",
+  "homepage": "https://github.com/your-org/registry-starter",
+  "items": [
+    {
+      "schemaVersion": 2,
+      "name": "callout",
+      "type": "component",
+      "description": "A styled callout box for highlighting important content with info, warning, success, and error variants",
+      "version": "1.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/your-org/registry-starter/main/src/callout/callout.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/your-org/registry-starter/main/src/callout/callout.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["display", "callout", "alert", "feedback"]
+    }
+  ]
+}

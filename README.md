@@ -20,6 +20,14 @@ npx cascade init
 npx cascade add button
 ```
 
+## Ecosystem
+
+The cascade registry model is open. Anyone can publish components and host their own registry.
+
+- **[Registry starter](apps/examples/registry-starter/)** — copy-paste template for publishing a third-party registry
+- **[Contributor guide](docs/CONTRIBUTING-REGISTRY.md)** — full loop: write → build → host → list in the directory
+- **Install from any registry:** `cascade add owner/repo/component-name`
+
 ## Components
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |

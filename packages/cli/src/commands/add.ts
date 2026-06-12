@@ -4,14 +4,12 @@ import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
 import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
-import { fetchJson } from '../utils/http.js'
 import { parseAddress, resolveClosure } from '../utils/resolve.js'
+import { resolveFromDirectory } from '../utils/directory.js'
 import type { RegistryItem } from '@cascade-ui/registry'
 
 /** Dependencies always present in a cascade project — never auto-installed. */
 const ASSUMED_DEPS = new Set(['react', 'react-dom'])
-
-const DIRECTORY_REGISTRY_URL = 'https://cascade-ui.dev/r/registries.json'
 
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url)
@@ -19,18 +17,6 @@ async function fetchText(url: string): Promise<string> {
     throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`)
   }
   return res.text()
-}
-
-async function resolveNamespaceFromDirectory(ns: string): Promise<string | null> {
-  try {
-    const dir = (await fetchJson(DIRECTORY_REGISTRY_URL)) as {
-      registries?: { namespace: string; registryUrl: string }[]
-    }
-    const entry = dir.registries?.find((r) => r.namespace === ns)
-    return entry?.registryUrl ?? null
-  } catch {
-    return null
-  }
 }
 
 function isMultiRegistrySpec(name: string): boolean {
@@ -61,10 +47,7 @@ export async function add(
 
   // Handle multi-registry specs (namespaces, URLs, GitHub)
   if (multiSpecs.length > 0) {
-    const plan = await resolveClosure(multiSpecs, config, process.env, async (ns) => {
-      const url = await resolveNamespaceFromDirectory(ns)
-      return url
-    })
+    const plan = await resolveClosure(multiSpecs, config, process.env, resolveFromDirectory)
 
     if (opts.dryRun) {
       console.log('Dry run — would install:')
