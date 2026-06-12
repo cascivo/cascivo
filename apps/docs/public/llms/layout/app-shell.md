@@ -19,14 +19,14 @@ npx cascade add layout/app-shell
 
 ## Props
 
-| Prop         | Type         | Required | Default | Description                                                                    |
-| ------------ | ------------ | -------- | ------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| `header`     | `ReactNode`  | yes      | —       | Top header slot                                                                |
-| `sideNav`    | `ReactNode`  | no       | —       | Side navigation slot                                                           |
-| `aside`      | `ReactNode`  | no       | —       | Right aside slot                                                               |
-| `children`   | `ReactNode`  | yes      | —       | Main content                                                                   |
-| `persistKey` | `string      | false`   | no      | —                                                                              | localStorage key prefix. Pass false to disable persistence. |
-| `state`      | `ShellState` | no       | —       | External shell state from createShellState(). Created internally when omitted. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `header` | `ReactNode` | yes | — | Top header slot |
+| `sideNav` | `ReactNode` | no | — | Side navigation slot |
+| `aside` | `ReactNode` | no | — | Right aside slot |
+| `children` | `ReactNode` | yes | — | Main content |
+| `persistKey` | `string | false` | no | — | localStorage key prefix. Pass false to disable persistence. |
+| `state` | `ShellState` | no | — | External shell state from createShellState(). Created internally when omitted. |
 
 ## Examples
 
@@ -35,9 +35,7 @@ npx cascade add layout/app-shell
 App shell with collapsible nav
 
 ```tsx
-<AppShell header={<Header />} sideNav={<Nav />}>
-  content
-</AppShell>
+<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>
 ```
 
 ## Design tokens

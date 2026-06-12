@@ -20,12 +20,12 @@ npx cascade add skeleton
 
 ## Props
 
-| Prop      | Type     | Required | Default | Description                                                       |
-| --------- | -------- | -------- | ------- | ----------------------------------------------------------------- | ------ | --- |
-| `variant` | `'text'  | 'circle' | 'rect'` | no                                                                | `text` | —   |
-| `width`   | `string` | no       | —       | CSS length applied as an inline custom property                   |
-| `height`  | `string` | no       | —       | CSS length applied as an inline custom property                   |
-| `lines`   | `number` | no       | `1`     | Number of bars for the text variant; the last bar renders shorter |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'text' | 'circle' | 'rect'` | no | `text` | — |
+| `width` | `string` | no | — | CSS length applied as an inline custom property |
+| `height` | `string` | no | — | CSS length applied as an inline custom property |
+| `lines` | `number` | no | `1` | Number of bars for the text variant; the last bar renders shorter |
 
 ## Examples
 

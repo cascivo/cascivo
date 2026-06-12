@@ -1,0 +1,69 @@
+@layer cascade.component {
+  /* centered: single column, text centered */
+  .hero[data-variant='centered'] .copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--cascade-space-4);
+  }
+
+  /* split: two-column grid */
+  .hero[data-variant='split'] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--cascade-space-10);
+    align-items: center;
+
+    @container (max-inline-size: 48rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hero[data-variant='split'] .copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-4);
+  }
+
+  .eyebrow {
+    font-size: var(--cascade-text-sm);
+    font-family: var(--cascade-font-mono);
+    color: var(--cascade-text-secondary);
+    margin: 0;
+  }
+
+  .title {
+    font-size: var(--cascade-text-4xl);
+    font-weight: var(--cascade-font-bold);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .description {
+    font-size: var(--cascade-text-lg);
+    color: var(--cascade-text-secondary);
+    max-inline-size: 60ch;
+    margin: 0;
+  }
+
+  .hero[data-variant='centered'] .description {
+    margin-inline: auto;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascade-space-3);
+  }
+
+  .hero[data-variant='centered'] .actions {
+    justify-content: center;
+  }
+
+  .media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

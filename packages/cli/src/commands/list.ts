@@ -11,6 +11,7 @@ const TYPE_LABELS: Record<string, string> = {
   component: 'Components',
   layout: 'Layouts',
   block: 'Blocks',
+  section: 'Sections',
 }
 
 /** Render a group of entries as an aligned text table (no section header). */

@@ -14,15 +14,15 @@ npx cascade add chart/bubble-chart
 
 ## Props
 
-| Prop          | Type                                                                 | Required | Default | Description                                                           |
-| ------------- | -------------------------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes      | —       | —                                                                     |
-| `title`       | `string`                                                             | yes      | —       | —                                                                     |
-| `description` | `string`                                                             | no       | —       | —                                                                     |
-| `width`       | `number`                                                             | no       | —       | —                                                                     |
-| `height`      | `number`                                                             | no       | `320`   | —                                                                     |
-| `className`   | `string`                                                             | no       | —       | —                                                                     |
-| `plain`       | `boolean`                                                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `320` | — |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 

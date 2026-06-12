@@ -1,0 +1,15 @@
+@layer cascade.component {
+  .section {
+    padding-block: var(--cascade-space-12);
+    padding-inline: var(--cascade-space-4);
+    container-type: inline-size;
+  }
+
+  .inner {
+    max-inline-size: var(--_max, 72rem);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--_gap, var(--cascade-space-8));
+  }
+}

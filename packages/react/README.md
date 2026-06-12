@@ -121,6 +121,7 @@ pnpm add @cascade-ui/react
 | layout/grid                | layout     | CSS grid layout primitive with responsive column collapsing.                                                                                                          |
 | layout/masonry             | layout     | Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).                                |
 | layout/page-header         | layout     | Page-level header with title, description, breadcrumb, and actions slots.                                                                                             |
+| layout/section             | layout     | Page-section shell with block padding, centered inner width, and stack gap.                                                                                           |
 | layout/settings-layout     | layout     | Two-column settings page layout with a fixed-width menu and fluid content area.                                                                                       |
 | layout/spacer              | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |
 | layout/split-view          | layout     | Resizable two-pane split layout with keyboard and pointer drag support.                                                                                               |
@@ -151,6 +152,8 @@ pnpm add @cascade-ui/react
 | chart/scatter-chart        | chart      | Scatter plot with variable point radius, multi-series, and hover tooltip.                                                                                             |
 | chart/sparkline            | chart      | Compact inline sparkline for embedding trend data in dashboards or KPI cards.                                                                                         |
 | chart/treemap              | chart      | Squarified treemap for visualizing part-to-whole hierarchical data.                                                                                                   |
+| section/cta                | layout     | Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.                            |
+| section/hero               | layout     | Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.                         |
 
 ---
 

@@ -95,6 +95,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [layout/grid](/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing.
 - [layout/masonry](/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).
 - [layout/page-header](/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots.
+- [layout/section](/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap.
 - [layout/settings-layout](/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area.
 - [layout/spacer](/llms/layout/spacer.md) — Fixed-height spacing block using design token steps.
 - [layout/split-view](/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support.
@@ -115,6 +116,8 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
 - [search](/llms/search.md) — Search input with debounced search callback and clear button
+- [section/cta](/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
+- [section/hero](/llms/section/hero.md) — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
 - [segmented-control](/llms/segmented-control.md) — Mutually exclusive toggle group
 - [select](/llms/select.md) — Native select menu styled to match the design system
 - [separator](/llms/separator.md) — Visual or semantic divider between content
