@@ -3,6 +3,11 @@ import { expect, test } from '@playwright/test'
 
 for (const theme of ['light', 'dark'] as const) {
   test(`axe sweep — ${theme}`, async ({ page }) => {
+    // Pre-seed the desired theme in localStorage so the app hydrates into it
+    // immediately, without the signal effect racing against our evaluate().
+    await page.addInitScript((t) => {
+      localStorage.setItem('cascade-landing-theme', JSON.stringify({ v: 1, value: t }))
+    }, theme)
     await page.goto('/')
     await page.evaluate((t) => {
       document.documentElement.dataset.theme = t
@@ -21,25 +26,26 @@ for (const theme of ['light', 'dark'] as const) {
 }
 
 test('axe sweep — modal open', async ({ page }) => {
-  // Remove persisted theme before page load so the app hydrates into light mode.
-  // Previous tests may have written 'dark' to localStorage in the same context.
+  // Pre-seed light theme so the app hydrates into it deterministically.
   await page.addInitScript(() => {
-    localStorage.removeItem('cascade-landing-theme')
+    localStorage.setItem('cascade-landing-theme', JSON.stringify({ v: 1, value: 'light' }))
   })
-  await page.goto('/')
-  await page.evaluate(() => {
-    document.documentElement.dataset.theme = 'light'
-  })
+  await page.goto('/', { waitUntil: 'networkidle' })
   await page
     .getByRole('region', { name: 'Deploys' })
     .getByRole('button', { name: 'New deploy' })
     .click()
+  // Wait for the modal to be fully visible before scanning.
+  await page.locator('[role="dialog"]').waitFor({ state: 'visible' })
   const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
   expect(scan.violations).toEqual([])
 })
 
 for (const theme of ['light', 'dark'] as const) {
   test(`axe sweep — /accessibility — ${theme}`, async ({ page }) => {
+    await page.addInitScript((t) => {
+      localStorage.setItem('cascade-landing-theme', JSON.stringify({ v: 1, value: t }))
+    }, theme)
     await page.goto('/accessibility')
     await page.evaluate((t) => {
       document.documentElement.dataset.theme = t
@@ -53,6 +59,9 @@ for (const theme of ['light', 'dark'] as const) {
 
 for (const theme of ['light', 'dark'] as const) {
   test(`axe sweep — /performance — ${theme}`, async ({ page }) => {
+    await page.addInitScript((t) => {
+      localStorage.setItem('cascade-landing-theme', JSON.stringify({ v: 1, value: t }))
+    }, theme)
     await page.goto('/performance')
     await page.evaluate((t) => {
       document.documentElement.dataset.theme = t
