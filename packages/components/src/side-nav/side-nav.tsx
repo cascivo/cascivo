@@ -5,6 +5,7 @@ import {
   useId,
   type CSSProperties,
   type KeyboardEvent,
+  type MouseEvent,
   type ReactNode,
   type RefObject,
 } from 'react'
@@ -24,6 +25,7 @@ export interface SideNavItem {
   icon?: ReactNode
   active?: boolean
   items?: SideNavSubItem[]
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
 }
 
 export interface SideNavProps {
@@ -271,6 +273,7 @@ export function SideNav({
               aria-label={rail ? item.label : undefined}
               data-state={item.active ? 'active' : undefined}
               className={styles['link']}
+              onClick={item.onClick}
             >
               {item.icon ? (
                 <span className={styles['icon']} aria-hidden="true">

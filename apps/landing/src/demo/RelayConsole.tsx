@@ -1,3 +1,5 @@
+'use client'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import {
   Activity,
   AlertTriangle,
@@ -7,6 +9,8 @@ import {
   Tag,
   Zap,
 } from '@cascade-ui/icons'
+import type { MouseEvent } from 'react'
+import { Card } from '@cascade-ui/components/card'
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
 import { SideNav } from '@cascade-ui/components/side-nav'
 import { ToastProvider, useToast } from '@cascade-ui/components/toast'
@@ -29,11 +33,18 @@ const NAV_ICONS: Record<(typeof NAV)[number], React.ReactNode> = {
   Settings: <Settings />,
 }
 
-const navItems = NAV.map((label, i) => ({
-  label,
-  icon: NAV_ICONS[label as (typeof NAV)[number]],
-  active: i === 0,
-}))
+function SettingsView() {
+  return (
+    <section className="region" aria-label="Settings">
+      <div className="region-head">
+        <h3>Settings</h3>
+      </div>
+      <Card padding="md">
+        <p className="console-microcopy">Settings panel — coming in the next release.</p>
+      </Card>
+    </section>
+  )
+}
 
 function TitlebarMenu() {
   const { toast } = useToast()
@@ -60,6 +71,22 @@ function TitlebarMenu() {
 }
 
 export function RelayConsole() {
+  useSignals()
+  const activeNav = useSignal(0)
+
+  const navItems = NAV.map((label, i) => ({
+    label,
+    icon: NAV_ICONS[label as (typeof NAV)[number]],
+    active: activeNav.value === i,
+    href: '#',
+    onClick: (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      activeNav.value = i
+    },
+  }))
+
+  const activeView = NAV[activeNav.value]
+
   return (
     <ToastProvider>
       <section
@@ -83,13 +110,34 @@ export function RelayConsole() {
           <div className="console-body">
             <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
             <main className="console-main">
-              <KpiRow />
-              <div className="console-grid">
-                <TrafficRegion />
-                <SideRegion />
-                <DeploysRegion />
-                <FlagsRegion />
-              </div>
+              {activeView === 'Overview' && (
+                <>
+                  <KpiRow />
+                  <div className="console-grid">
+                    <TrafficRegion />
+                    <SideRegion />
+                    <DeploysRegion />
+                    <FlagsRegion />
+                  </div>
+                </>
+              )}
+              {activeView === 'Deploys' && <DeploysRegion />}
+              {activeView === 'Incidents' && (
+                <>
+                  <KpiRow />
+                  <div className="console-grid">
+                    <SideRegion />
+                  </div>
+                </>
+              )}
+              {activeView === 'Traffic' && (
+                <>
+                  <KpiRow />
+                  <TrafficRegion />
+                </>
+              )}
+              {activeView === 'Flags' && <FlagsRegion />}
+              {activeView === 'Settings' && <SettingsView />}
             </main>
           </div>
         </div>

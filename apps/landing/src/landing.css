@@ -965,6 +965,44 @@ code {
   background: var(--cascade-color-bg-subtle);
   border: 1px solid var(--cascade-color-border);
   border-radius: var(--cascade-radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── CascadeView layout ───────────────────────────────── */
+.cascade-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-3);
+}
+
+.cascade-region {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascade-space-2);
+}
+
+/* ── Syntax highlighting ──────────────────────────────── */
+.agent-code .hl-key {
+  color: var(--cascade-color-accent);
+}
+
+.agent-code .hl-string {
+  color: var(--cascade-color-success);
+}
+
+.agent-code .hl-number {
+  color: oklch(0.6 0.18 40);
+}
+
+.agent-code .hl-keyword {
+  color: var(--cascade-color-info);
+}
+
+.agent-code .hl-comment {
+  color: var(--cascade-color-text-muted);
+  font-style: italic;
 }
 
 /* ── CTA band ─────────────────────────────────────────── */

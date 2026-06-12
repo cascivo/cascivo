@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Button } from '@cascade-ui/components/button'
 import { Input } from '@cascade-ui/components/input'
 import { Badge } from '@cascade-ui/components/badge'
-import { Card, CardContent } from '@cascade-ui/components/card'
+import { Card } from '@cascade-ui/components/card'
 import { Select } from '@cascade-ui/components/select'
 import { Toggle } from '@cascade-ui/components/toggle'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
@@ -62,11 +62,7 @@ const TILE_GROUPS: TileGroup[] = [
       {
         name: 'Card',
         category: 'display',
-        demo: (
-          <Card padding="sm">
-            <CardContent>Grouped content</CardContent>
-          </Card>
-        ),
+        demo: <Card padding="sm">Grouped content</Card>,
       },
       {
         name: 'Badge',
