@@ -1,0 +1,55 @@
+@layer cascade.component {
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascade-space-2);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-color-text);
+    line-height: var(--cascade-leading-tight);
+
+    &[data-status='success'] .dot {
+      background-color: var(--cascade-color-success);
+    }
+
+    &[data-status='warning'] .dot {
+      background-color: var(--cascade-color-warning);
+    }
+
+    &[data-status='error'] .dot {
+      background-color: var(--cascade-color-error);
+    }
+
+    &[data-status='info'] .dot {
+      background-color: var(--cascade-color-info);
+    }
+
+    &[data-status='neutral'] .dot {
+      background-color: var(--cascade-color-text-muted);
+    }
+  }
+
+  .dot {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--cascade-radius-full);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .status[data-pulse] .dot {
+      animation: cascade-status-pulse 2s var(--cascade-ease-in-out) infinite;
+    }
+  }
+
+  @keyframes cascade-status-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+}
