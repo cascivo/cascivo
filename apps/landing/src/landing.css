@@ -133,25 +133,27 @@ code {
   inline-size: min(100%, 20rem);
 }
 
-::view-transition-old(hero-stage) {
-  animation: hero-out 200ms ease both;
-}
-
-::view-transition-new(hero-stage) {
-  animation: hero-in 250ms ease both;
-}
-
-@keyframes hero-out {
-  to {
-    opacity: 0;
-    translate: 0 -0.5rem;
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(hero-stage) {
+    animation: hero-out 200ms ease both;
   }
-}
 
-@keyframes hero-in {
-  from {
-    opacity: 0;
-    translate: 0 0.5rem;
+  ::view-transition-new(hero-stage) {
+    animation: hero-in 250ms ease both;
+  }
+
+  @keyframes hero-out {
+    to {
+      opacity: 0;
+      translate: 0 -0.5rem;
+    }
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
   }
 }
 
