@@ -6,6 +6,7 @@ import { Principles } from './sections/Principles'
 import { StatsBand } from './sections/StatsBand'
 import { RelayConsole } from './demo/RelayConsole'
 import { SignalsDemo } from './sections/SignalsDemo'
+import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
 import { QuickStart } from './sections/QuickStart'
@@ -25,6 +26,7 @@ function HomePage() {
       <StatsBand />
       <RelayConsole />
       <SignalsDemo />
+      <ProofTeasers />
       <AgentLayer />
       <ThemeDemo />
       <QuickStart />
