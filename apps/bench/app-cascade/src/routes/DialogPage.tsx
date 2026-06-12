@@ -1,7 +1,8 @@
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Button, Input, Modal } from '@cascade-ui/react'
 
 export function DialogPage() {
+  useSignals()
   const open = useSignal(false)
 
   return (
