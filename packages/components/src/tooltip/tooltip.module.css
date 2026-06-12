@@ -25,6 +25,12 @@
       opacity var(--cascade-motion-enter),
       visibility var(--cascade-motion-enter);
 
+    /* Reset default popover styles */
+    &:popover-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
     &[data-state='visible'] {
       opacity: 1;
       visibility: visible;
@@ -55,6 +61,51 @@
       inset-inline-start: calc(100% + var(--cascade-space-2));
       inset-block-start: 50%;
       translate: 0 -50%;
+    }
+  }
+
+  @supports (anchor-name: --a) and (position-anchor: --a) {
+    .tooltip {
+      position: fixed;
+      inset: auto;
+      position-anchor: var(--cascade-tooltip-anchor, attr(data-anchor));
+      margin: var(--cascade-space-2);
+    }
+
+    .tooltip[data-placement='top'] {
+      inset-area: block-start span-inline-start;
+      translate: 0 0;
+    }
+
+    .tooltip[data-placement='bottom'] {
+      inset-area: block-end span-inline-start;
+      translate: 0 0;
+    }
+
+    .tooltip[data-placement='left'] {
+      inset-area: inline-start span-block-start;
+      translate: 0 0;
+    }
+
+    .tooltip[data-placement='right'] {
+      inset-area: inline-end span-block-start;
+      translate: 0 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .tooltip {
+        transition:
+          opacity var(--cascade-motion-enter),
+          visibility var(--cascade-motion-enter),
+          display var(--cascade-motion-enter) allow-discrete,
+          overlay var(--cascade-motion-enter) allow-discrete;
+      }
+
+      @starting-style {
+        .tooltip[data-state='visible'] {
+          opacity: 0;
+        }
+      }
     }
   }
 }

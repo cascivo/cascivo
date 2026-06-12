@@ -10,17 +10,18 @@ if (typeof CSS === 'undefined') {
   CSS.supports = () => false
 }
 
-// jsdom does not implement the Popover API — stub showPopover/hidePopover on HTMLElement
-if (!HTMLElement.prototype.showPopover) {
-  HTMLElement.prototype.showPopover = function () {
-    this.setAttribute('popover-open', '')
-  }
+// jsdom implements the Popover API with a UA stylesheet rule that hides all
+// closed popovers: [popover]:not(:popover-open) { display: none }. This breaks
+// @testing-library role queries. We intercept setAttribute to silently drop
+// the 'popover' attribute so jsdom never applies the hiding rule. Components
+// still call showPopover/hidePopover (no-ops here); data-state drives CSS.
+const _setAttribute = HTMLElement.prototype.setAttribute
+HTMLElement.prototype.setAttribute = function (name: string, value: string) {
+  if (name === 'popover') return
+  _setAttribute.call(this, name, value)
 }
-if (!HTMLElement.prototype.hidePopover) {
-  HTMLElement.prototype.hidePopover = function () {
-    this.removeAttribute('popover-open')
-  }
-}
+HTMLElement.prototype.showPopover = function () {}
+HTMLElement.prototype.hidePopover = function () {}
 
 // @testing-library/react's asyncWrapper drains a microtask queue via
 // setTimeout(..., 0) and then calls jest.advanceTimersByTime(0) to flush it
