@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AppShell } from './app-shell'
@@ -131,5 +131,53 @@ describe('AppShell mobile drawer', () => {
     )
     await userEvent.keyboard('{Escape}')
     expect(state.sideNavOpen.value).toBe(false)
+  })
+})
+
+describe('AppShell loading bar', () => {
+  it('renders no progressbar when loading is idle', () => {
+    const state = createShellState({ persistKey: false })
+    render(
+      <AppShell header={<div>h</div>} state={state}>
+        content
+      </AppShell>,
+    )
+    expect(screen.queryByRole('progressbar')).toBeNull()
+  })
+
+  it('renders the loading bar with progress', () => {
+    const state = createShellState({ persistKey: false })
+    render(
+      <AppShell header={<div>h</div>} state={state}>
+        content
+      </AppShell>,
+    )
+    act(() => {
+      state.startLoading()
+      state.setLoadingProgress(0.6)
+    })
+    const bar = screen.getByRole('progressbar')
+    expect(bar.getAttribute('aria-valuenow')).toBe('60')
+    expect(bar.getAttribute('aria-valuemin')).toBe('0')
+    expect(bar.getAttribute('aria-valuemax')).toBe('100')
+  })
+
+  it('failLoading renders a dismissible alert; dismissing hides bar and alert', async () => {
+    const user = userEvent.setup()
+    const state = createShellState({ persistKey: false })
+    render(
+      <AppShell header={<div>h</div>} state={state}>
+        content
+      </AppShell>,
+    )
+    act(() => {
+      state.startLoading()
+      state.failLoading('Sync failed')
+    })
+    expect(screen.getByRole('alert').textContent).toContain('Sync failed')
+    expect(screen.getByRole('progressbar').getAttribute('data-state')).toBe('error')
+    await user.click(screen.getByRole('button', { name: 'Dismiss error' }))
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.queryByRole('progressbar')).toBeNull()
   })
 })

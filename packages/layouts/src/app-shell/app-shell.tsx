@@ -52,6 +52,41 @@ export function AppShell({
       data-collapsed={shell.sideNavCollapsed.value || undefined}
       data-drawer={shell.sideNavOpen.value ? 'open' : undefined}
     >
+      {shell.loadingProgress.value !== null && (
+        <div
+          className={styles['loading-bar']}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(shell.loadingProgress.value * 100)}
+          data-state={shell.loadingError.value !== null ? 'error' : 'active'}
+        >
+          <div
+            className={styles['loading-bar-fill']}
+            style={{ ['--_progress' as string]: String(shell.loadingProgress.value) }}
+          />
+        </div>
+      )}
+      {shell.loadingError.value !== null && (
+        <div role="alert" className={styles['loading-error']}>
+          <span>{shell.loadingError.value}</span>
+          <button
+            type="button"
+            className={styles['loading-error-dismiss']}
+            aria-label={t(builtin.appShell.dismissError)}
+            onClick={() => shell.clearLoadingError()}
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path
+                d="M3 3l6 6M9 3l-6 6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
       <div className={styles['header']}>{header}</div>
       {sideNav && (
         <div
