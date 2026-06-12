@@ -19,11 +19,6 @@
         display: none;
       }
 
-      & .link,
-      & .groupTrigger {
-        padding-inline: var(--cascade-space-2);
-      }
-
       & .groupIndicator {
         display: none;
       }
@@ -80,7 +75,7 @@
     gap: var(--cascade-space-2);
     inline-size: 100%;
     padding-block: var(--cascade-space-2);
-    padding-inline: var(--cascade-space-3);
+    padding-inline: var(--cascade-space-2);
     font-family: inherit;
     font-size: var(--cascade-text-sm);
     line-height: var(--cascade-leading-tight);
