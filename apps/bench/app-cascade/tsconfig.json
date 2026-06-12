@@ -2,7 +2,15 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@cascade-ui/react": ["../../../packages/react/src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../../../packages/components/src/css-modules.d.ts",
+    "../../../packages/react/src/css-modules.d.ts"
+  ]
 }

@@ -398,7 +398,7 @@ export const InTableCell: Story = {
         </thead>
         <tbody>
           {[
-            { label: 'Revenue', value: '$48.3k', color: undefined },
+            { label: 'Revenue', value: '$48.3k' },
             { label: 'Cost', value: '$22.1k', color: 'var(--cascade-chart-2)' },
           ].map((row, ri) => (
             <tr key={row.label}>
@@ -426,7 +426,7 @@ export const InTableCell: Story = {
                 }}
               >
                 <LineChart
-                  series={[{ ...lineSeries[ri]!, color: row.color }]}
+                  series={[{ ...lineSeries[ri]!, ...(row.color ? { color: row.color } : {}) }]}
                   x={(d) => d.x}
                   y={(d) => d.y}
                   title={`${row.label} trend`}

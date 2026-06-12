@@ -12,11 +12,11 @@ function ms(v: number) {
 
 export function Benchmarks() {
   const { meta, bundle, runtime, renders, lighthouse, a11y } = results as typeof results & {
-    bundle?: typeof results.bundle
-    runtime?: typeof results.runtime
-    renders?: typeof results.renders
-    lighthouse?: typeof results.lighthouse
-    a11y?: typeof results.a11y
+    bundle?: Record<string, unknown>
+    runtime?: Record<string, unknown>
+    renders?: Record<string, unknown>
+    lighthouse?: Record<string, unknown>
+    a11y?: Record<string, unknown>
   }
 
   return (
