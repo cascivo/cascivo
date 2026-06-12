@@ -21,6 +21,7 @@ export default defineConfig({
       '@cascade-ui/i18n': path.resolve(root, 'packages/i18n/src/index.ts'),
       '@cascade-ui/ai': path.resolve(root, 'packages/ai/src/index.ts'),
       '@cascade-ui/render': path.resolve(root, 'packages/render/src/index.ts'),
+      '@cascade-ui/icons': path.resolve(root, 'packages/icons/src/index.tsx'),
     },
   },
   server: {
