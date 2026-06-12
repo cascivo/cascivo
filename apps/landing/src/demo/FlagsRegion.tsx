@@ -13,7 +13,7 @@ export function FlagsRegion() {
       <div className="region-head">
         <h3>Feature flags</h3>
       </div>
-      <Card padding="sm">
+      <Card padding="md">
         {FLAGS.map((flag, i) => (
           <div key={flag.name} className="flag-row">
             <div className="flag-info">

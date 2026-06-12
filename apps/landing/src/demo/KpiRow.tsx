@@ -7,7 +7,7 @@ export function KpiRow() {
   return (
     <div className="kpi-row">
       {KPIS.map((kpi) => (
-        <Card key={kpi.label} padding="sm">
+        <Card key={kpi.label} padding="md">
           <span className="kpi-label">{kpi.label}</span>
           <span className="kpi-value">{kpi.value}</span>
           <span className="kpi-foot">

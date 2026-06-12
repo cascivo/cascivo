@@ -82,7 +82,6 @@ function DeploysInner() {
         columns={columns}
         rows={DEPLOYS}
         getRowId={(row) => row.sha}
-        density="compact"
         defaultSort={{ key: 'at', direction: 'desc' }}
       />
       <Modal

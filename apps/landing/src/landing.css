@@ -605,7 +605,7 @@ code {
 }
 
 .console-main {
-  padding: var(--cascade-space-4);
+  padding: var(--cascade-space-6);
   display: flex;
   flex-direction: column;
   gap: var(--cascade-space-4);
@@ -615,7 +615,7 @@ code {
 .console-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--cascade-space-4);
+  gap: var(--cascade-space-6);
 }
 
 @media (max-width: 56rem) {
@@ -641,7 +641,7 @@ code {
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-4);
 }
 
 @media (max-width: 56rem) {
@@ -682,7 +682,7 @@ code {
 .region {
   display: flex;
   flex-direction: column;
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-4);
 }
 
 .region-head {
