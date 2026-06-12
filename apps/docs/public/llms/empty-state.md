@@ -19,13 +19,13 @@ npx cascade add empty-state
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `icon` | `ReactNode` | no | — | — |
-| `title` | `string` | yes | — | — |
-| `description` | `string` | no | — | — |
-| `action` | `ReactNode` | no | — | — |
-| `size` | `'md' | 'lg'` | no | `md` | — |
+| Prop          | Type        | Required | Default | Description |
+| ------------- | ----------- | -------- | ------- | ----------- | --- |
+| `icon`        | `ReactNode` | no       | —       | —           |
+| `title`       | `string`    | yes      | —       | —           |
+| `description` | `string`    | no       | —       | —           |
+| `action`      | `ReactNode` | no       | —       | —           |
+| `size`        | `'md'       | 'lg'`    | no      | `md`        | —   |
 
 ## Examples
 
@@ -38,7 +38,12 @@ npx cascade add empty-state
 ### With action
 
 ```tsx
-<EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />
+<EmptyState
+  icon="📄"
+  title="No documents yet"
+  description="Create your first document to get started."
+  action={<Button>New document</Button>}
+/>
 ```
 
 ## Design tokens

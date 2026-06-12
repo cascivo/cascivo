@@ -26,22 +26,22 @@ npx cascade add select
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | — |
-| `hint` | `string` | no | — | — |
-| `error` | `string` | no | — | — |
-| `placeholder` | `string` | no | — | — |
-| `options` | `{ value: string; label: string; disabled?: boolean }[]` | yes | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `disabled` | `boolean` | no | `false` | — |
+| Prop          | Type                                                     | Required | Default | Description |
+| ------------- | -------------------------------------------------------- | -------- | ------- | ----------- | ---- | --- |
+| `label`       | `string`                                                 | no       | —       | —           |
+| `hint`        | `string`                                                 | no       | —       | —           |
+| `error`       | `string`                                                 | no       | —       | —           |
+| `placeholder` | `string`                                                 | no       | —       | —           |
+| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | yes      | —       | —           |
+| `size`        | `'sm'                                                    | 'md'     | 'lg'`   | no          | `md` | —   |
+| `disabled`    | `boolean`                                                | no       | `false` | —           |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Select label="Role" options={[{ value: "admin", label: "Admin" }]} />
+<Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
 ```
 
 ### With placeholder

@@ -21,7 +21,9 @@ test('layouts page has copy buttons for all entries (≥ 9)', async ({ page }) =
 
 test('layouts page has npx cascade add hero copy button', async ({ page }) => {
   await page.goto('/layouts')
-  await expect(page.locator('button code').filter({ hasText: 'npx cascade add hero' })).toBeVisible()
+  await expect(
+    page.locator('button code').filter({ hasText: 'npx cascade add hero' }),
+  ).toBeVisible()
 })
 
 test('masonry preview contains child tiles', async ({ page }) => {
@@ -57,10 +59,10 @@ test('charts page plain chart in table cell has no legend', async ({ page }) => 
 
 for (const theme of ['light', 'dark'] as const) {
   test(`layouts page passes axe in ${theme} theme`, async ({ page }) => {
-    await page.addInitScript(
-      ({ key, val }) => localStorage.setItem(key, val),
-      { key: 'cascade-theme', val: JSON.stringify({ v: 1, value: theme }) },
-    )
+    await page.addInitScript(({ key, val }) => localStorage.setItem(key, val), {
+      key: 'cascade-theme',
+      val: JSON.stringify({ v: 1, value: theme }),
+    })
     await page.goto('/layouts')
     await expect(page.getByRole('heading', { name: 'Primitives' })).toBeVisible()
     const results = await new AxeBuilder({ page }).analyze()

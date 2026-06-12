@@ -14,9 +14,9 @@ npx cascade add block/stats-cards
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `stats` | `Stat[]` | no | — | KPI stat data |
+| Prop    | Type     | Required | Default | Description   |
+| ------- | -------- | -------- | ------- | ------------- |
+| `stats` | `Stat[]` | no       | —       | KPI stat data |
 
 ## Examples
 
