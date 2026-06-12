@@ -946,10 +946,14 @@ code {
   font-style: normal;
 }
 
+.agent-render {
+  grid-column: 1 / -1;
+}
+
 .agent-render-panes {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-6);
 }
 
 @media (max-width: 40rem) {
