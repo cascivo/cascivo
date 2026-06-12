@@ -33,10 +33,7 @@ declare module 'virtual:bench' {
       source: 'local' | 'ci'
     }
     bundle?: {
-      apps: Record<
-        LibId,
-        { gzipKb: number; brotliKb: number; rawKb: number; treeshakeKb?: number }
-      >
+      apps: Record<LibId, { gzipKb: number; brotliKb: number; rawKb: number; treeshakeKb?: number }>
       matrix: Record<LibId, Record<string, { gzipKb: number; brotliKb: number; rawKb: number }>>
       treeshake?: Record<string, { gzipKb: number }>
     }
