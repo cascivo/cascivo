@@ -4880,6 +4880,58 @@
       }
     },
     {
+      "name": "layout/auto-grid",
+      "type": "layout",
+      "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "grid", "responsive"],
+      "meta": {
+        "name": "AutoGrid",
+        "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "min",
+            "type": "string",
+            "required": false,
+            "default": "\"16rem\"",
+            "description": "Minimum track width before items wrap to fewer columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "default": "4",
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Auto-filling grid",
+            "code": "<AutoGrid min=\"12rem\" gap={4}><div>Card 1</div><div>Card 2</div><div>Card 3</div></AutoGrid>",
+            "description": "Items fill available space and wrap when narrower than 12rem"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "grid", "responsive"]
+      }
+    },
+    {
       "name": "layout/center",
       "type": "layout",
       "description": "Horizontally centered container with a configurable max-width.",
@@ -5083,6 +5135,58 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["layout", "grid", "columns"]
+      }
+    },
+    {
+      "name": "layout/masonry",
+      "type": "layout",
+      "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["layout", "masonry", "gallery"],
+      "meta": {
+        "name": "Masonry",
+        "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "cols",
+            "type": "number",
+            "required": false,
+            "default": "3",
+            "description": "Number of columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "default": "4",
+            "description": "Spacing token step"
+          }
+        ],
+        "tokens": ["--cascade-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Masonry gallery",
+            "code": "<Masonry cols={3} gap={4}>{items.map(item => <Card key={item.id}>{item.content}</Card>)}</Masonry>",
+            "description": "Variable-height cards laid out in a masonry pattern; falls back to CSS columns"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["layout", "masonry", "gallery"]
       }
     },
     {

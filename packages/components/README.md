@@ -70,10 +70,12 @@
 | tooltip                    | overlay    | Contextual label shown on hover or focus                                                                                                                              |
 | layout/app-shell           | layout     | Full-page application shell with persisted collapsible sidebar.                                                                                                       |
 | layout/auth-layout         | layout     | Centered card layout for authentication pages (login, register, forgot password).                                                                                     |
+| layout/auto-grid           | layout     | Media-query-free responsive grid — columns auto-fill based on available space.                                                                                        |
 | layout/center              | layout     | Horizontally centered container with a configurable max-width.                                                                                                        |
 | layout/columns             | layout     | Equal-width multi-column layout that collapses to single column on narrow viewports.                                                                                  |
 | layout/dashboard-layout    | layout     | Dashboard page layout with stats strip, main content area, and optional aside.                                                                                        |
 | layout/grid                | layout     | CSS grid layout primitive with responsive column collapsing.                                                                                                          |
+| layout/masonry             | layout     | Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).                                |
 | layout/page-header         | layout     | Page-level header with title, description, breadcrumb, and actions slots.                                                                                             |
 | layout/settings-layout     | layout     | Two-column settings page layout with a fixed-width menu and fluid content area.                                                                                       |
 | layout/spacer              | layout     | Fixed-height spacing block using design token steps.                                                                                                                  |

@@ -1,0 +1,7 @@
+@layer cascade.component {
+  .auto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--_min, 16rem), 100%), 1fr));
+    gap: var(--_gap, var(--cascade-space-4));
+  }
+}

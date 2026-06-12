@@ -1,0 +1,41 @@
+@layer cascade.component {
+  /* Fallback: CSS multi-columns. Items flow column-major (top-to-bottom per column). */
+  .masonry {
+    column-count: var(--_cols, 3);
+    column-gap: var(--_gap, var(--cascade-space-4));
+  }
+
+  .masonry > * {
+    break-inside: avoid;
+    margin-block-end: var(--_gap, var(--cascade-space-4));
+  }
+
+  /* Native masonry — grid-template-rows syntax (Firefox / spec baseline). */
+  @supports (grid-template-rows: masonry) {
+    .masonry {
+      display: grid;
+      column-count: initial;
+      grid-template-columns: repeat(var(--_cols, 3), minmax(0, 1fr));
+      grid-template-rows: masonry;
+      gap: var(--_gap, var(--cascade-space-4));
+    }
+
+    .masonry > * {
+      margin-block-end: 0;
+    }
+  }
+
+  /* Native masonry — display syntax (WebKit/Chrome lineage, in-flux spec). */
+  @supports (display: masonry) {
+    .masonry {
+      display: masonry;
+      column-count: initial;
+      masonry-template-tracks: repeat(var(--_cols, 3), minmax(0, 1fr));
+      gap: var(--_gap, var(--cascade-space-4));
+    }
+
+    .masonry > * {
+      margin-block-end: 0;
+    }
+  }
+}
