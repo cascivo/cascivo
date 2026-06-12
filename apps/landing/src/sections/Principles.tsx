@@ -23,7 +23,7 @@ const PRINCIPLES = [
 
 export function Principles() {
   return (
-    <section className="principles" aria-label="Principles">
+    <section className="principles" aria-label="Principles" data-reveal="">
       {PRINCIPLES.map((p) => (
         <a key={p.title} href={p.href} className="principle">
           <span className="principle-title">{p.title}</span>

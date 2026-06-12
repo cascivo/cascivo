@@ -62,7 +62,12 @@ function TitlebarMenu() {
 export function RelayConsole() {
   return (
     <ToastProvider>
-      <section className="console" id="console" aria-label="Live demo — Relay deploy console">
+      <section
+        className="console"
+        id="console"
+        aria-label="Live demo — Relay deploy console"
+        data-reveal=""
+      >
         <p className="console-note">
           The console below is live — 25+ cascade components, real markup. Switch the theme in the
           header; the on-call card stays <code>data-theme=&quot;warm&quot;</code> on purpose.

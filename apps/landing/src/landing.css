@@ -1040,3 +1040,17 @@ code {
     }
   }
 }
+
+/* ── Scroll reveal ───────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+
+  [data-reveal] {
+    transition:
+      opacity var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease),
+      translate var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease);
+  }
+}

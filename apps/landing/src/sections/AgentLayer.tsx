@@ -52,7 +52,7 @@ const RELAY_SLICE_JSON = JSON.stringify(RELAY_SLICE, null, 2)
 
 export function AgentLayer() {
   return (
-    <section className="agents" id="agents">
+    <section className="agents" id="agents" data-reveal="">
       <h2>Your agent already knows cascade</h2>
       <p className="agents-sub">
         Every component ships a machine-readable manifest. The MCP server, the Claude Code skills,

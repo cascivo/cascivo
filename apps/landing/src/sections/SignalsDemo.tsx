@@ -99,7 +99,7 @@ export function SignalsDemo() {
   const renderingData = bench?.renders?.['type-20-chars']
 
   return (
-    <section className="signals" id="signals">
+    <section className="signals" id="signals" data-reveal="">
       <h2>Count the re-renders</h2>
       <p className="signals-sub">
         The same form, twice. Left: cascade signals. Right: the usual useState wiring. Type in both
