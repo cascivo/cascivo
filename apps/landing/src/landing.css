@@ -553,6 +553,16 @@ code {
   color: var(--cascade-color-text-subtle);
 }
 
+/* ── Stats band ───────────────────────────────────────── */
+.stats-band {
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--cascade-space-10) var(--cascade-space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--cascade-space-6);
+}
+
 /* ── Footer mono links ────────────────────────────────── */
 .footer-link-mono {
   font-family: var(--cascade-font-mono);

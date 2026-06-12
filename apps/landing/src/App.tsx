@@ -3,6 +3,7 @@ import { useSignalEffect } from '@cascade-ui/core'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
+import { StatsBand } from './sections/StatsBand'
 import { RelayConsole } from './demo/RelayConsole'
 import { SignalsDemo } from './sections/SignalsDemo'
 import { AgentLayer } from './sections/AgentLayer'
@@ -21,6 +22,7 @@ function HomePage() {
       <Header />
       <Hero />
       <Principles />
+      <StatsBand />
       <RelayConsole />
       <SignalsDemo />
       <AgentLayer />
