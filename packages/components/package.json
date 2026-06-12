@@ -69,7 +69,8 @@
     "./stat": "./src/stat/stat.tsx",
     "./status": "./src/status/status.tsx",
     "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx",
-    "./skip-nav": "./src/skip-nav/skip-nav.tsx"
+    "./skip-nav": "./src/skip-nav/skip-nav.tsx",
+    "./progress-circle": "./src/progress-circle/progress-circle.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
