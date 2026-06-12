@@ -146,6 +146,13 @@ export const builtin = {
   switcher: defineMessages('cascade.switcher', {
     label: 'Switch application',
   }),
+  copyButton: defineMessages('cascade.copyButton', {
+    copy: 'Copy',
+    copied: 'Copied',
+  }),
+  skipNav: defineMessages('cascade.skipNav', {
+    label: 'Skip to content',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -287,4 +294,11 @@ defineCatalog(builtin.headerPanel, 'de', {
 })
 defineCatalog(builtin.switcher, 'de', {
   label: 'Anwendung wechseln',
+})
+defineCatalog(builtin.copyButton, 'de', {
+  copy: 'Kopieren',
+  copied: 'Kopiert',
+})
+defineCatalog(builtin.skipNav, 'de', {
+  label: 'Zum Inhalt springen',
 })
