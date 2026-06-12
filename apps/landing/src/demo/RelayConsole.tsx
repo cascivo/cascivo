@@ -39,7 +39,7 @@ function TitlebarMenu() {
   const { toast } = useToast()
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger aria-label="Console menu">
         <MoreHorizontal />
       </MenuTrigger>
       <MenuItem onSelect={() => toast({ title: 'Status page opened in a new tab' })}>
