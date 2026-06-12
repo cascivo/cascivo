@@ -291,16 +291,6 @@ code {
   font-weight: var(--cascade-font-semibold);
 }
 
-.quickstart-code {
-  margin: 0;
-  padding: var(--cascade-space-4);
-  border-radius: var(--cascade-radius-md);
-  background-color: #24292e;
-  color: #e1e4e8;
-  font-size: var(--cascade-text-sm);
-  overflow-x: auto;
-}
-
 .quickstart-note {
   margin: var(--cascade-space-3) 0 0;
   font-size: var(--cascade-text-sm);
@@ -489,6 +479,12 @@ code {
   background: var(--cascade-color-bg-subtle);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-sm);
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.copy-command code {
+  overflow-x: auto;
 }
 
 /* ── Principles strip ─────────────────────────────────── */
