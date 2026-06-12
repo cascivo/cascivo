@@ -1,11 +1,29 @@
+import { copyFileSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite-plus'
+import { type Plugin, defineConfig } from 'vite-plus'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../..')
 
+const DEEP_LINK_ROUTES = ['accessibility', 'performance']
+
+function deepLinkCopies(): Plugin {
+  return {
+    name: 'cascade:deep-link-copies',
+    apply: 'build',
+    closeBundle() {
+      const dist = resolve(__dirname, 'dist')
+      for (const route of DEEP_LINK_ROUTES) {
+        mkdirSync(resolve(dist, route), { recursive: true })
+        copyFileSync(resolve(dist, 'index.html'), resolve(dist, route, 'index.html'))
+      }
+    },
+  }
+}
+
 export default defineConfig({
+  plugins: [deepLinkCopies()],
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
   resolve: {
