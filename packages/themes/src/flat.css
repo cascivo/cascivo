@@ -55,5 +55,47 @@
     --cascade-color-error: oklch(0.52 0.2 22);
     --cascade-color-warning: oklch(0.6 0.16 75);
     --cascade-color-success: oklch(0.52 0.18 145);
+
+    /* ── Semantic aliases (parity with light/dark/warm) ── */
+    --cascade-color-bg: var(--cascade-color-background);
+    --cascade-color-bg-subtle: var(--cascade-color-surface);
+    --cascade-color-surface-raised: var(--cascade-color-surface);
+    --cascade-color-surface-overlay: var(--cascade-color-background);
+    --cascade-color-border: oklch(0.7 0 0);
+    --cascade-color-border-strong: oklch(0.4 0 0);
+
+    --cascade-color-text: var(--cascade-color-foreground);
+    --cascade-color-text-subtle: var(--cascade-color-foreground-muted);
+    --cascade-color-text-muted: oklch(0.55 0 0);
+    --cascade-color-text-on-accent: oklch(1 0 0);
+    --cascade-color-text-on-destructive: oklch(1 0 0);
+
+    --cascade-color-accent-active: oklch(0.4 0.21 145);
+    --cascade-color-accent-subtle: oklch(0.95 0.04 145);
+    --cascade-color-accent-muted: oklch(0.9 0.07 145);
+
+    --cascade-color-destructive: oklch(0.52 0.2 22);
+    --cascade-color-destructive-hover: oklch(0.46 0.21 22);
+    --cascade-color-destructive-subtle: oklch(0.95 0.04 22);
+
+    --cascade-color-success-subtle: oklch(0.95 0.04 145);
+    --cascade-color-warning-subtle: oklch(0.96 0.04 75);
+    --cascade-color-info: oklch(0.5 0.18 250);
+    --cascade-color-info-subtle: oklch(0.95 0.04 250);
+
+    --cascade-radius-component: 0;
+    --cascade-radius-button: 0;
+    --cascade-radius-input: 0;
+    --cascade-radius-card: 0;
+    --cascade-radius-badge: 0;
+    --cascade-radius-modal: 0;
+
+    --cascade-shadow-overlay: none;
+
+    --cascade-color-focus-ring: oklch(0.5 0.2 145);
+    --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
+
+    --cascade-chart-grid: oklch(0.85 0 0);
+    --cascade-chart-axis: oklch(0.55 0 0);
   }
 }
