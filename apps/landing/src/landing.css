@@ -308,9 +308,8 @@ code {
 
 .footer-inner {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--cascade-space-4);
+  flex-direction: column;
+  gap: var(--cascade-space-6);
   padding-block-start: var(--cascade-space-6);
 }
 
@@ -322,17 +321,51 @@ code {
   color: var(--cascade-color-accent);
 }
 
-.footer-links {
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cascade-space-6);
+}
+
+@media (max-width: 32rem) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-column-title {
+  margin: 0 0 var(--cascade-space-2);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cascade-color-text-muted);
+}
+
+.footer-column-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
-  gap: var(--cascade-space-4);
+  flex-direction: column;
+  gap: var(--cascade-space-2);
   font-size: var(--cascade-text-sm);
+}
+
+.footer-column-links a {
   color: var(--cascade-color-text-subtle);
+  text-decoration: none;
+}
+
+.footer-column-links a:hover,
+.footer-column-links a:focus-visible {
+  color: var(--cascade-color-text);
+  text-decoration: underline;
 }
 
 .footer-note {
-  margin-inline-start: auto;
   font-size: var(--cascade-text-sm);
-  color: var(--cascade-color-text-subtle);
+  color: var(--cascade-color-text-muted);
 }
 
 /* ── JSON Playground demo ─────────────────────────────── */
