@@ -332,7 +332,7 @@ code {
 .footer-note {
   margin-inline-start: auto;
   font-size: var(--cascade-text-sm);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text-subtle);
 }
 
 /* ── JSON Playground demo ─────────────────────────────── */

@@ -48,7 +48,7 @@
 
   .help {
     font-size: var(--cascade-text-xs);
-    color: var(--cascade-color-text-muted);
+    color: var(--cascade-color-text-subtle);
     line-height: var(--cascade-leading-tight);
   }
 }
