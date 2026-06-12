@@ -1,7 +1,7 @@
 'use client'
 import { useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale, bandScale } from '../../engine/scale'
@@ -26,6 +26,8 @@ export interface ComboChartProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the marks — no axes or grid lines. For micro/inline charts. */
+  plain?: boolean
 }
 
 export function ComboChart({
@@ -35,11 +37,15 @@ export function ComboChart({
   description,
   secondAxis = false,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: ComboChartProps) {
   useSignals()
-  const margins = { ...DEFAULT_MARGINS, right: secondAxis ? 60 : DEFAULT_MARGINS.right }
+  const resolvedHeight = height ?? (plain ? 48 : 320)
+  const margins = plain
+    ? PLAIN_MARGINS
+    : { ...DEFAULT_MARGINS, right: secondAxis ? 60 : DEFAULT_MARGINS.right }
 
   const barMax = bars.reduce((m, b) => Math.max(m, b.value), 0) || 1
   const lineMin = line.length > 0 ? Math.min(...line.map((p) => p.y)) : 0
@@ -70,9 +76,10 @@ export function ComboChart({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -104,7 +111,7 @@ export function ComboChart({
 
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
-            <GridLines scale={barYScale} orientation="y" length={inner.width} />
+            {!plain && <GridLines scale={barYScale} orientation="y" length={inner.width} />}
             {bars.map((b) => {
               const bx = xScale.map(b.label) ?? 0
               const by = barYScale.map(b.value)
@@ -131,20 +138,24 @@ export function ComboChart({
                 strokeLinecap="round"
               />
             )}
-            <Axis
-              scale={xScale}
-              orientation="x"
-              length={inner.width}
-              transform={`translate(0,${inner.height})`}
-            />
-            <Axis scale={barYScale} orientation="y" length={inner.height} />
-            {secondAxis && (
-              <Axis
-                scale={lineYScale}
-                orientation="y"
-                length={inner.height}
-                transform={`translate(${inner.width},0)`}
-              />
+            {!plain && (
+              <>
+                <Axis
+                  scale={xScale}
+                  orientation="x"
+                  length={inner.width}
+                  transform={`translate(0,${inner.height})`}
+                />
+                <Axis scale={barYScale} orientation="y" length={inner.height} />
+                {secondAxis && (
+                  <Axis
+                    scale={lineYScale}
+                    orientation="y"
+                    length={inner.height}
+                    transform={`translate(${inner.width},0)`}
+                  />
+                )}
+              </>
             )}
           </g>
         )

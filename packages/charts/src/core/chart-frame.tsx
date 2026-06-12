@@ -13,6 +13,7 @@ export interface ChartFrameProps {
   children: (size: { width: number; height: number }) => ReactNode
   className?: string | undefined
   'data-state'?: string | undefined
+  plain?: boolean | undefined
 }
 
 export function ChartFrame({
@@ -24,6 +25,7 @@ export function ChartFrame({
   children,
   className,
   'data-state': dataState,
+  plain,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -38,6 +40,7 @@ export function ChartFrame({
       ref={ref}
       className={[styles['frame'], className].filter(Boolean).join(' ')}
       {...(dataState !== undefined && { 'data-state': dataState })}
+      {...(plain === true && { 'data-plain': '' })}
     >
       <svg
         role="img"

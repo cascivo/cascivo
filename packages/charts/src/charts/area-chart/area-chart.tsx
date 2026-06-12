@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
@@ -30,6 +30,8 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   yTicks?: number
   legend?: boolean
   className?: string
+  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -43,15 +45,18 @@ export function AreaChart<Datum = { x: number; y: number }>({
   stacked = false,
   curve = 'monotone',
   width: fixedWidth,
-  height = 300,
+  height,
   xTicks = 5,
   yTicks = 5,
-  legend: showLegend = series.length > 1,
+  legend,
   className,
+  plain,
 }: AreaChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 300)
+  const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const allX = (series[0]?.data ?? []).map((d) => x(d))
   const allY = series.flatMap((s) => s.data.map((d) => y(d)))
@@ -96,10 +101,11 @@ export function AreaChart<Datum = { x: number; y: number }>({
         title={title}
         description={description}
         width={fixedWidth}
-        height={height}
+        height={resolvedHeight}
         fallback={fallback}
         className={className}
         data-state={hasData ? undefined : 'empty'}
+        plain={plain}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -116,7 +122,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
           return (
             <g>
               <g transform={`translate(${margins.left},${margins.top})`}>
-                <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
+                {!plain && (
+                  <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
+                )}
                 {series.map((s, si) => {
                   if (hidden.value.has(s.id)) return null
                   const color = s.color ?? COLORS[si % COLORS.length]!
@@ -169,14 +177,18 @@ export function AreaChart<Datum = { x: number; y: number }>({
                     )
                   }
                 })}
-                <Axis
-                  scale={xScale}
-                  orientation="x"
-                  length={innerW}
-                  tickCount={xTicks}
-                  transform={`translate(0,${innerH})`}
-                />
-                <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                {!plain && (
+                  <>
+                    <Axis
+                      scale={xScale}
+                      orientation="x"
+                      length={innerW}
+                      tickCount={xTicks}
+                      transform={`translate(0,${innerH})`}
+                    />
+                    <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                  </>
+                )}
               </g>
             </g>
           )

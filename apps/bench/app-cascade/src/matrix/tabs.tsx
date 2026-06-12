@@ -1,6 +1,13 @@
 import { createRoot } from 'react-dom/client'
 import '@cascade-ui/themes/light'
-import { Tabs } from '@cascade-ui/react'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@cascade-ui/react'
 createRoot(document.getElementById('root')!).render(
-  <Tabs tabs={[{ id: 'a', label: 'A', content: <div>A</div> }]} />,
+  <Tabs defaultValue="a">
+    <TabsList>
+      <TabsTrigger value="a">A</TabsTrigger>
+    </TabsList>
+    <TabsContent value="a">
+      <div>A</div>
+    </TabsContent>
+  </Tabs>,
 )

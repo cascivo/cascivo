@@ -295,6 +295,9 @@ importers:
         specifier: 'catalog:'
         version: 2.12.0(preact-render-to-string@6.7.0(preact@10.29.2))(preact@10.29.2)
     devDependencies:
+      '@axe-core/playwright':
+        specifier: 'catalog:'
+        version: 4.11.3(playwright-core@1.60.0)
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.60.0

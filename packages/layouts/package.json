@@ -7,7 +7,22 @@
   "exports": {
     "./app-shell": "./src/app-shell/app-shell.tsx",
     "./shell-state": "./src/app-shell/shell-state.ts",
-    "./blocks/console-app/console-app": "./src/blocks/console-app/console-app.tsx"
+    "./blocks/console-app/console-app": "./src/blocks/console-app/console-app.tsx",
+    "./grid": "./src/grid/grid.tsx",
+    "./stack": "./src/stack/stack.tsx",
+    "./columns": "./src/columns/columns.tsx",
+    "./center": "./src/center/center.tsx",
+    "./split-view": "./src/split-view/split-view.tsx",
+    "./spacer": "./src/spacer/spacer.tsx",
+    "./auto-grid": "./src/auto-grid/auto-grid.tsx",
+    "./masonry": "./src/masonry/masonry.tsx",
+    "./section": "./src/section/section.tsx",
+    "./sections/hero": "./src/sections/hero/hero.tsx",
+    "./sections/cta": "./src/sections/cta/cta.tsx",
+    "./sections/feature-grid": "./src/sections/feature-grid/feature-grid.tsx",
+    "./sections/media-masonry": "./src/sections/media-masonry/media-masonry.tsx",
+    "./sections/stats-band": "./src/sections/stats-band/stats-band.tsx",
+    "./sections/page-footer": "./src/sections/page-footer/page-footer.tsx"
   },
   "scripts": {
     "build": "echo 'layouts: copy-paste only, no build'",

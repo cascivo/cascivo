@@ -21,7 +21,7 @@ const BASE_URL = (
   process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main'
 ).replace(/\/+$/, '')
 
-type EntryType = 'component' | 'layout' | 'block' | 'chart'
+type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section'
 
 interface SourceRoot {
   dir: string
@@ -42,7 +42,7 @@ const ROOTS: SourceRoot[] = [
     dir: join(REPO_ROOT, 'packages', 'layouts', 'src'),
     type: 'layout',
     prefix: 'layout/',
-    skipDirs: ['blocks'],
+    skipDirs: ['blocks', 'sections'],
   },
   {
     dir: join(REPO_ROOT, 'packages', 'layouts', 'src', 'blocks'),
@@ -53,6 +53,11 @@ const ROOTS: SourceRoot[] = [
     dir: join(REPO_ROOT, 'packages', 'charts', 'src', 'charts'),
     type: 'chart',
     prefix: 'chart/',
+  },
+  {
+    dir: join(REPO_ROOT, 'packages', 'layouts', 'src', 'sections'),
+    type: 'section',
+    prefix: 'section/',
   },
 ]
 

@@ -33,7 +33,7 @@ jobs:
       - name: Run latency benchmarks
         run: pnpm --filter @cascade-ui/docs run test:perf
         env:
-          PERF_SCALE: 1
+          PERF_SCALE: 10
 
       - name: Upload test report on failure
         if: failure()

@@ -1,7 +1,7 @@
 'use client'
 import { useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { linearScale, bandScale } from '../../engine/scale'
 import { boxStats, extent } from '../../engine/stats'
@@ -19,6 +19,8 @@ export interface BoxplotProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the marks — no axes. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -28,11 +30,13 @@ export function Boxplot({
   title,
   description,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: BoxplotProps) {
   useSignals()
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 320)
 
   const stats = series.map((s) => ({ ...s, stats: boxStats(s.values) }))
   const allValues = series.flatMap((s) => s.values)
@@ -71,9 +75,10 @@ export function Boxplot({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -163,13 +168,17 @@ export function Boxplot({
                 </g>
               )
             })}
-            <Axis
-              scale={xScale}
-              orientation="x"
-              length={inner.width}
-              transform={`translate(0,${inner.height})`}
-            />
-            <Axis scale={yScale} orientation="y" length={inner.height} />
+            {!plain && (
+              <>
+                <Axis
+                  scale={xScale}
+                  orientation="x"
+                  length={inner.width}
+                  transform={`translate(0,${inner.height})`}
+                />
+                <Axis scale={yScale} orientation="y" length={inner.height} />
+              </>
+            )}
           </g>
         )
       }}

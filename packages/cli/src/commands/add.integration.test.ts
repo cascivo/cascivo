@@ -3,6 +3,7 @@
  *
  * Both the registry fetch and individual file fetches go through
  * `globalThis.fetch`, which we mock here to avoid any network I/O.
+ * Package installation is also mocked to avoid spawning a real package manager.
  */
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
@@ -11,6 +12,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { add } from './add.js'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
+
+vi.mock('../utils/exec.js', () => ({
+  installPackages: vi.fn().mockReturnValue(true),
+}))
 
 // ---------------------------------------------------------------------------
 // Minimal registry fixture — only the entries we need for these tests

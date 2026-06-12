@@ -32,4 +32,19 @@ describe('BubbleChart', () => {
     render(<BubbleChart series={[]} title="Empty" />)
     expect(screen.getByRole('table')).toBeDefined()
   })
+
+  describe('plain mode', () => {
+    it('renders no Axis or GridLines elements', () => {
+      const { container } = render(<BubbleChart series={series} title="Plain" plain />)
+      expect(container.querySelectorAll('g[aria-hidden="true"]')).toHaveLength(0)
+    })
+
+    it('respects explicit width/height in plain mode', () => {
+      const { container } = render(
+        <BubbleChart series={series} title="Plain" plain width={120} height={32} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
+    })
+  })
 })

@@ -5,8 +5,13 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@cascade-ui/react": ["../react/src/index.ts"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "../components/src/css-modules.d.ts", "../react/src/css-modules.d.ts"],
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
 }

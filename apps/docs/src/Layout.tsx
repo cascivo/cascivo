@@ -23,6 +23,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     { label: 'AI / MCP', href: '/ai' },
     { label: 'Benchmarks', href: '/benchmarks' },
     { label: 'Charts', href: '/charts' },
+    { label: 'Layouts', href: '/layouts' },
     { label: 'Playground', href: '/playground' },
   ]
 

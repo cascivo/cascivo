@@ -14,16 +14,17 @@ npx cascade add chart/radar
 
 ## Props
 
-| Prop          | Type                                                | Required | Default | Description                          |
-| ------------- | --------------------------------------------------- | -------- | ------- | ------------------------------------ |
-| `axes`        | `string[]`                                          | yes      | —       | Axis labels (one per dimension)      |
-| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | One value per axis per series        |
-| `max`         | `number`                                            | no       | —       | Maximum value (defaults to data max) |
-| `title`       | `string`                                            | yes      | —       | —                                    |
-| `description` | `string`                                            | no       | —       | —                                    |
-| `width`       | `number`                                            | no       | —       | —                                    |
-| `height`      | `number`                                            | no       | `320`   | —                                    |
-| `className`   | `string`                                            | no       | —       | —                                    |
+| Prop          | Type                                                | Required | Default | Description                                                           |
+| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
+| `axes`        | `string[]`                                          | yes      | —       | Axis labels (one per dimension)                                       |
+| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | One value per axis per series                                         |
+| `max`         | `number`                                            | no       | —       | Maximum value (defaults to data max)                                  |
+| `title`       | `string`                                            | yes      | —       | —                                                                     |
+| `description` | `string`                                            | no       | —       | —                                                                     |
+| `width`       | `number`                                            | no       | —       | —                                                                     |
+| `height`      | `number`                                            | no       | `320`   | —                                                                     |
+| `className`   | `string`                                            | no       | —       | —                                                                     |
+| `plain`       | `boolean`                                           | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 

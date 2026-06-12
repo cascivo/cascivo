@@ -1,7 +1,7 @@
 # cascade — Roadmap v8: Assembly Included
 
-**Last updated:** 2026-06-11
-**Status:** 📋 Planned
+**Last updated:** 2026-06-12
+**Status:** ✅ Done
 **Plan documents:** `docs/superpowers/plans/2026-06-11-v8-master-plan.md` + tranches 1–6
 
 ---
@@ -95,27 +95,27 @@ every page from scratch. v8 ships **ready-to-use composition, out of the box**:
 
 ## Definition of Done
 
-- [ ] `npx cascade add section/hero` copies `hero.tsx` + `hero.module.css` into a user
+- [x] `npx cascade add section/hero` copies `hero.tsx` + `hero.module.css` into a user
       project; `cascade list` shows all six sections; MCP `list_components` returns them.
-- [ ] `registry.json` has ≥105 entries (97 + 2 primitives + 6 sections); drift gate green.
-- [ ] All six sections contain zero `useState`/`useSignal`/`useMachine`/`useSignalEffect`
+- [x] `registry.json` has ≥105 entries (97 + 2 primitives + 6 sections); drift gate green.
+- [x] All six sections contain zero `useState`/`useSignal`/`useMachine`/`useSignalEffect`
       imports (grep-verified) — static slot components only.
-- [ ] `Masonry` renders native masonry in supporting browsers and the columns fallback
+- [x] `Masonry` renders native masonry in supporting browsers and the columns fallback
       elsewhere; both paths verified (force the fallback by disabling the `@supports`
       blocks); order caveat documented in the manifest description.
-- [ ] Every chrome-bearing chart accepts `plain`; plain renders zero axis/grid-line/legend
+- [x] Every chrome-bearing chart accepts `plain`; plain renders zero axis/grid-line/legend
       DOM nodes (test-asserted per chart) and works at 120×32 inside a DataTable cell —
       demonstrated live on the docs Charts page ("Micro charts" section).
-- [ ] Docs `/layouts` gallery renders live previews of all primitives, sections and blocks
+- [x] Docs `/layouts` gallery renders live previews of all primitives, sections and blocks
       with copy-paste commands; linked from the docs nav; axe zero violations in light AND
       dark.
-- [ ] Sections render correctly under `dir="rtl"` (logical properties only — no
+- [x] Sections render correctly under `dir="rtl"` (logical properties only — no
       `left`/`right` physical properties in new CSS, grep-verified).
-- [ ] Storybook stories exist for both new primitives, all six sections, and a plain-charts
+- [x] Storybook stories exist for both new primitives, all six sections, and a plain-charts
       story.
-- [ ] `@cascade-ui/charts` bundle stays within its 80KB gz budget after the plain-mode
+- [x] `@cascade-ui/charts` bundle stays within its 80KB gz budget after the plain-mode
       changes.
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
 
 ## Deferred (do not re-litigate in v8)

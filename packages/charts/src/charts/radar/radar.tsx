@@ -17,6 +17,8 @@ export interface RadarProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the data polygons — no rings, spokes, or axis labels. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -44,9 +46,11 @@ export function Radar({
   title,
   description,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: RadarProps) {
+  const resolvedHeight = height ?? (plain ? 48 : 320)
   useSignals()
 
   const maxVal = max ?? Math.max(1, ...series.flatMap((s) => s.values))
@@ -81,9 +85,10 @@ export function Radar({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const cx = width / 2
@@ -111,46 +116,49 @@ export function Radar({
         return (
           <>
             {/* Rings */}
-            {ringPolygons.map((pts, i) => (
-              <polygon
-                key={i}
-                points={pts}
-                fill="none"
-                stroke="var(--cascade-border-subtle)"
-                strokeWidth={1}
-              />
-            ))}
-            {/* Spokes */}
-            {spokeEnds.map((pt, i) => (
-              <line
-                key={i}
-                x1={cx}
-                y1={cy}
-                x2={pt.x}
-                y2={pt.y}
-                stroke="var(--cascade-border-subtle)"
-                strokeWidth={1}
-              />
-            ))}
-            {/* Axis labels */}
-            {spokeEnds.map((pt, i) => {
-              const angle = (i / n) * 2 * Math.PI - Math.PI / 2
-              const lx = cx + Math.cos(angle) * (r + 18)
-              const ly = cy + Math.sin(angle) * (r + 18)
-              return (
-                <text
+            {!plain &&
+              ringPolygons.map((pts, i) => (
+                <polygon
                   key={i}
-                  x={lx}
-                  y={ly}
-                  fontSize={11}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fill="var(--cascade-text-secondary)"
-                >
-                  {axes[i]}
-                </text>
-              )
-            })}
+                  points={pts}
+                  fill="none"
+                  stroke="var(--cascade-border-subtle)"
+                  strokeWidth={1}
+                />
+              ))}
+            {/* Spokes */}
+            {!plain &&
+              spokeEnds.map((pt, i) => (
+                <line
+                  key={i}
+                  x1={cx}
+                  y1={cy}
+                  x2={pt.x}
+                  y2={pt.y}
+                  stroke="var(--cascade-border-subtle)"
+                  strokeWidth={1}
+                />
+              ))}
+            {/* Axis labels */}
+            {!plain &&
+              spokeEnds.map((pt, i) => {
+                const angle = (i / n) * 2 * Math.PI - Math.PI / 2
+                const lx = cx + Math.cos(angle) * (r + 18)
+                const ly = cy + Math.sin(angle) * (r + 18)
+                return (
+                  <text
+                    key={i}
+                    x={lx}
+                    y={ly}
+                    fontSize={11}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="var(--cascade-text-secondary)"
+                  >
+                    {axes[i]}
+                  </text>
+                )
+              })}
             {/* Series polygons */}
             {series.map((s, si) => {
               const pts = polarPoints(s.values, maxVal, cx, cy, r)

@@ -348,6 +348,162 @@ export function ChartsPage() {
           <Bullet value={55} target={70} ranges={[30, 60, 100]} label="Satisfaction" />
         </div>
       </section>
+
+      <section class="doc-section">
+        <h2>Micro charts</h2>
+        <p>
+          Every chrome-bearing chart accepts <code>plain</code> — no axes, no grid, no legend.
+          Margins collapse to 2px; default height drops to 48px. Drop them anywhere: table cells,
+          KPI cards, list rows.
+        </p>
+
+        <h3>Inline row of plain charts at 120×32</h3>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                marginBottom: '0.25rem',
+                color: 'var(--cascade-text-secondary)',
+              }}
+            >
+              Revenue
+            </div>
+            <LineChart
+              series={[lineSeries[0]!]}
+              x={(d) => d.x}
+              y={(d) => d.y}
+              title="Revenue micro"
+              plain
+              width={120}
+              height={32}
+            />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                marginBottom: '0.25rem',
+                color: 'var(--cascade-text-secondary)',
+              }}
+            >
+              Visits
+            </div>
+            <AreaChart
+              series={[areaSeries[0]!]}
+              x={(d) => d.x}
+              y={(d) => d.y}
+              title="Visits micro"
+              plain
+              width={120}
+              height={32}
+            />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                marginBottom: '0.25rem',
+                color: 'var(--cascade-text-secondary)',
+              }}
+            >
+              Sales Q1
+            </div>
+            <BarChart
+              series={[barSeries[0]!]}
+              x={(d) => d.x}
+              y={(d) => d.y}
+              title="Sales micro"
+              plain
+              width={120}
+              height={32}
+            />
+          </div>
+        </div>
+
+        <h3 style={{ marginBlockStart: '1.5rem' }}>Plain chart in a table cell</h3>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+          A plain LineChart at 120×32 embedded directly in a data table cell.
+        </p>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ borderCollapse: 'collapse', fontSize: '0.875rem', width: '100%' }}>
+            <thead>
+              <tr>
+                {['Metric', 'Value', 'Trend (12 mo)'].map((h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      textAlign: 'start',
+                      borderBlockEnd: '1px solid var(--cascade-color-border)',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { label: 'Revenue', value: '$48.3k', series: lineSeries[0]! },
+                { label: 'Cost', value: '$22.1k', series: lineSeries[1]! },
+                { label: 'Visits', value: '9,720', series: areaSeries[0]! },
+              ].map((row) => (
+                <tr key={row.label}>
+                  <td
+                    style={{
+                      padding: '0.5rem 1rem',
+                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                    }}
+                  >
+                    {row.label}
+                  </td>
+                  <td
+                    style={{
+                      padding: '0.5rem 1rem',
+                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {row.value}
+                  </td>
+                  <td
+                    style={{
+                      padding: '0.5rem 1rem',
+                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                    }}
+                  >
+                    <LineChart
+                      series={[row.series]}
+                      x={(d) => d.x}
+                      y={(d) => d.y}
+                      title={`${row.label} trend`}
+                      plain
+                      width={120}
+                      height={32}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style={{ marginBlockStart: '1.5rem' }}>Multi-series plain area chart</h3>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+          In plain mode, series are distinguishable by color only — no legend. Suitable for
+          glanceable comparisons, not analytical detail.
+        </p>
+        <AreaChart
+          series={areaSeries}
+          x={(d) => d.x}
+          y={(d) => d.y}
+          title="Visits vs Sign-ups (plain)"
+          plain
+          height={64}
+        />
+      </section>
     </article>
   )
 }

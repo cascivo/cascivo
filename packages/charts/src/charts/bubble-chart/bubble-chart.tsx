@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale, sqrtScale } from '../../engine/scale'
@@ -25,6 +25,8 @@ export interface BubbleChartProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the marks — no axes or grid lines. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -36,12 +38,14 @@ export function BubbleChart({
   title,
   description,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: BubbleChartProps) {
   useSignals()
   const hovered = useSignal<string | null>(null)
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 320)
 
   const allData = series.flatMap((s) => s.data)
   const [xMin, xMax] = allData.length > 0 ? extent(allData.map((d) => d.x)) : [0, 1]
@@ -80,9 +84,10 @@ export function BubbleChart({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -98,7 +103,7 @@ export function BubbleChart({
 
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
-            <GridLines scale={yScale} orientation="y" length={inner.width} />
+            {!plain && <GridLines scale={yScale} orientation="y" length={inner.width} />}
             {series.map((s, si) => {
               const color = COLORS[si % COLORS.length] ?? 'var(--cascade-chart-1)'
               const isHidden = hovered.value !== null && hovered.value !== s.name
@@ -129,13 +134,17 @@ export function BubbleChart({
                 </g>
               )
             })}
-            <Axis
-              scale={xScale}
-              orientation="x"
-              length={inner.width}
-              transform={`translate(0,${inner.height})`}
-            />
-            <Axis scale={yScale} orientation="y" length={inner.height} />
+            {!plain && (
+              <>
+                <Axis
+                  scale={xScale}
+                  orientation="x"
+                  length={inner.width}
+                  transform={`translate(0,${inner.height})`}
+                />
+                <Axis scale={yScale} orientation="y" length={inner.height} />
+              </>
+            )}
           </g>
         )
       }}

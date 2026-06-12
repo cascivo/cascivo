@@ -17,6 +17,8 @@ export interface TreemapProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the colored rects — no text labels. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -26,11 +28,13 @@ export function Treemap({
   title,
   description,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: TreemapProps) {
   useSignals()
   const clipId = useId()
+  const resolvedHeight = height ?? (plain ? 48 : 320)
 
   const fallback = (
     <table>
@@ -57,9 +61,10 @@ export function Treemap({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         if (data.length === 0) return null
@@ -99,7 +104,7 @@ export function Treemap({
                     stroke="var(--cascade-surface-base)"
                     strokeWidth={1}
                   />
-                  {r.w > 30 && r.h > 18 && (
+                  {!plain && r.w > 30 && r.h > 18 && (
                     <text
                       x={r.x + 4}
                       y={r.y + 14}

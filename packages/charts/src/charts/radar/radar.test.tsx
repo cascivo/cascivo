@@ -31,4 +31,23 @@ describe('Radar', () => {
     render(<Radar axes={axes} series={[]} title="Empty" />)
     expect(screen.getByRole('table')).toBeDefined()
   })
+
+  describe('plain mode', () => {
+    it('renders no ring or spoke chrome', () => {
+      const { container } = render(<Radar axes={axes} series={series} title="Plain" plain />)
+      // In plain mode: no text labels for axes, no ring polygons with cascade border color
+      const axisTexts = Array.from(container.querySelectorAll('text')).filter(
+        (t) => t.getAttribute('fill') === 'var(--cascade-text-secondary)',
+      )
+      expect(axisTexts).toHaveLength(0)
+    })
+
+    it('respects explicit width/height in plain mode', () => {
+      const { container } = render(
+        <Radar axes={axes} series={series} title="Plain" plain width={120} height={32} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
+    })
+  })
 })

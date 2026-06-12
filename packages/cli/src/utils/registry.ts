@@ -1,6 +1,6 @@
 export interface RegistryComponent {
   name: string
-  type?: 'component' | 'layout' | 'block' | 'chart'
+  type?: 'component' | 'layout' | 'block' | 'chart' | 'section'
   description: string
   category: string
   version: string

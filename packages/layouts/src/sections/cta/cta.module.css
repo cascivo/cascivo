@@ -1,0 +1,30 @@
+@layer cascade.component {
+  .cta {
+    border-block: 1px solid var(--cascade-color-border);
+    background-color: var(--cascade-surface-subtle);
+  }
+
+  .title {
+    font-size: var(--cascade-text-2xl);
+    font-weight: var(--cascade-font-bold);
+    text-wrap: balance;
+    text-align: center;
+    margin: 0;
+  }
+
+  .description {
+    font-size: var(--cascade-text-base);
+    color: var(--cascade-text-secondary);
+    text-align: center;
+    max-inline-size: 56ch;
+    margin-inline: auto;
+    margin-block: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascade-space-3);
+    justify-content: center;
+  }
+}

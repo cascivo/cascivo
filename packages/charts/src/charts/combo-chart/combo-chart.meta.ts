@@ -31,6 +31,13 @@ export const meta: ComponentMeta = {
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false, default: '320' },
     { name: 'className', type: 'string', required: false },
+    {
+      name: 'plain',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
+    },
   ],
   tokens: ['--cascade-chart-1', '--cascade-chart-2'],
   accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
