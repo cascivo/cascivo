@@ -339,6 +339,15 @@ These rules are non-negotiable. Violating them ships broken code.
 | `useRef` for DOM references                                           | `useContext`                                 |
 | `useMachine` / `createMachine` for genuine internal FSM state         | `useEffect`, `useLayoutEffect`, `useReducer` |
 
+#### React apps must subscribe explicitly
+
+The docs app is Preact (signals are natively reactive there). The React apps —
+`apps/landing`, `apps/examples/*`, `apps/bench/*` — get NO Babel signals transform:
+**any component that reads `signal.value` during render must call `useSignals()`
+(from `@cascade-ui/core`) as its first statement**, or it will never re-render on
+signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals
+that don't open).
+
 `useEffect` is banned in cascade components without exception. Any async DOM side effect (adding event listeners, calling imperative DOM methods like `showModal()`) must use `useSignalEffect` instead.
 
 `useRef` is allowed only for direct DOM element references (`useRef<HTMLElement>(null)`). It is not a state workaround.
