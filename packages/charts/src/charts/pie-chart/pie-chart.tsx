@@ -20,6 +20,8 @@ export interface PieChartProps {
   height?: number
   legend?: boolean
   className?: string
+  /** Render only the marks — no legend. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -30,10 +32,13 @@ export function PieChart({
   description,
   donut = false,
   width: fixedWidth,
-  height = 300,
-  legend: showLegend = true,
+  height,
+  legend,
   className,
+  plain,
 }: PieChartProps) {
+  const resolvedHeight = height ?? (plain ? 48 : 300)
+  const showLegend = plain ? false : (legend ?? true)
   useSignals()
   const hidden = useSignal(new Set<string>())
   const hasData = data.length > 0
@@ -70,10 +75,11 @@ export function PieChart({
         title={title}
         description={description}
         width={fixedWidth}
-        height={height}
+        height={resolvedHeight}
         fallback={fallback}
         className={className}
         data-state={hasData ? undefined : 'empty'}
+        plain={plain}
       >
         {({ width, height: h }) => {
           const cx = width / 2

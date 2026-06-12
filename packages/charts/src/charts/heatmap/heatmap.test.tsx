@@ -27,4 +27,19 @@ describe('Heatmap', () => {
     render(<Heatmap data={[]} title="Empty" />)
     expect(screen.getByRole('table')).toBeDefined()
   })
+
+  describe('plain mode', () => {
+    it('renders no Axis elements', () => {
+      const { container } = render(<Heatmap data={data} title="Plain" plain />)
+      expect(container.querySelectorAll('g[aria-hidden="true"]')).toHaveLength(0)
+    })
+
+    it('respects explicit width/height in plain mode', () => {
+      const { container } = render(
+        <Heatmap data={data} title="Plain" plain width={120} height={32} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
+    })
+  })
 })

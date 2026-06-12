@@ -30,6 +30,24 @@ describe('ChartFrame', () => {
     expect(screen.getByText('Monthly revenue')).toBeInTheDocument()
   })
 
+  it('emits data-plain attribute when plain is true', () => {
+    const { container } = render(
+      <ChartFrame title="T" height={200} plain>
+        {() => null}
+      </ChartFrame>,
+    )
+    expect((container.firstChild as HTMLElement).hasAttribute('data-plain')).toBe(true)
+  })
+
+  it('does not emit data-plain when plain is absent', () => {
+    const { container } = render(
+      <ChartFrame title="T" height={200}>
+        {() => null}
+      </ChartFrame>,
+    )
+    expect((container.firstChild as HTMLElement).hasAttribute('data-plain')).toBe(false)
+  })
+
   it('renders fallback content', () => {
     render(
       <ChartFrame

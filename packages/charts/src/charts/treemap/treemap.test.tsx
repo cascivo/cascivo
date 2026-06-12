@@ -26,4 +26,29 @@ describe('Treemap', () => {
     render(<Treemap data={[]} title="Empty" />)
     expect(screen.getByRole('table')).toBeDefined()
   })
+
+  describe('plain mode', () => {
+    it('renders no text labels', () => {
+      const { container } = render(
+        <Treemap data={data} title="Plain" plain width={400} height={300} />,
+      )
+      expect(container.querySelector('text')).toBeNull()
+    })
+
+    it('still renders colored rects in plain mode', () => {
+      const { container } = render(
+        <Treemap data={data} title="Plain" plain width={400} height={300} />,
+      )
+      const rects = container.querySelectorAll('rect[fill-opacity]')
+      expect(rects.length).toBeGreaterThan(0)
+    })
+
+    it('respects explicit width/height in plain mode', () => {
+      const { container } = render(
+        <Treemap data={data} title="Plain" plain width={120} height={32} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
+    })
+  })
 })

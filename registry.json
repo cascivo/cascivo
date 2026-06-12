@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "generatedAt": "2026-06-11",
+  "generatedAt": "2026-06-12",
   "components": [
     {
       "name": "accordion",
@@ -5924,6 +5924,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6037,6 +6044,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6113,6 +6127,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6188,6 +6209,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6368,6 +6396,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
@@ -6435,6 +6470,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
@@ -6514,6 +6556,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascade-chart-1"],
@@ -6711,6 +6760,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6878,6 +6934,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -6966,6 +7029,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -7065,6 +7135,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -7211,6 +7288,13 @@
             "name": "className",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [

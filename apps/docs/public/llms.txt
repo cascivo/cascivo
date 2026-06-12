@@ -132,4 +132,4 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [toggle](/llms/toggle.md) — On/off switch built as an accessible button
 - [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
 
-_Generated: 2026-06-11 from registry v0.0.0_
+_Generated: 2026-06-12 from registry v0.0.0_

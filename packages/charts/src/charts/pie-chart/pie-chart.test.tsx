@@ -37,4 +37,25 @@ describe('PieChart', () => {
     render(<PieChart data={data} title="Pie" />)
     expect(screen.getAllByText('Alpha').length).toBeGreaterThan(0)
   })
+
+  describe('plain mode', () => {
+    it('renders no legend', () => {
+      const { container } = render(<PieChart data={data} title="Plain" plain />)
+      expect(container.querySelectorAll('button[aria-pressed]')).toHaveLength(0)
+    })
+
+    it('keeps role=img and fallback table in plain mode', () => {
+      const { container } = render(<PieChart data={data} title="Plain" plain />)
+      expect(container.querySelector('svg[role="img"]')).toBeTruthy()
+      expect(container.querySelector('table')).toBeTruthy()
+    })
+
+    it('respects explicit width/height in plain mode', () => {
+      const { container } = render(
+        <PieChart data={data} title="Plain" plain width={120} height={32} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 120 32')
+    })
+  })
 })

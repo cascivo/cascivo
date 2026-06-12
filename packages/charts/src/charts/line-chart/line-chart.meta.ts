@@ -77,6 +77,13 @@ export const meta: ComponentMeta = {
       description: 'Custom tooltip formatter',
     },
     { name: 'className', type: 'string', required: false },
+    {
+      name: 'plain',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
+    },
   ],
   tokens: [
     '--cascade-chart-1',

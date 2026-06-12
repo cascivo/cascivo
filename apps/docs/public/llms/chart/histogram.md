@@ -14,16 +14,17 @@ npx cascade add chart/histogram
 
 ## Props
 
-| Prop          | Type       | Required | Default | Description                                        |
-| ------------- | ---------- | -------- | ------- | -------------------------------------------------- |
-| `data`        | `number[]` | yes      | —       | Array of numeric values to bin                     |
-| `bins`        | `number`   | no       | —       | Explicit bin count (defaults to Freedman–Diaconis) |
-| `title`       | `string`   | yes      | —       | —                                                  |
-| `label`       | `string`   | yes      | —       | X-axis label                                       |
-| `description` | `string`   | no       | —       | —                                                  |
-| `width`       | `number`   | no       | —       | —                                                  |
-| `height`      | `number`   | no       | `300`   | —                                                  |
-| `className`   | `string`   | no       | —       | —                                                  |
+| Prop          | Type       | Required | Default | Description                                                           |
+| ------------- | ---------- | -------- | ------- | --------------------------------------------------------------------- |
+| `data`        | `number[]` | yes      | —       | Array of numeric values to bin                                        |
+| `bins`        | `number`   | no       | —       | Explicit bin count (defaults to Freedman–Diaconis)                    |
+| `title`       | `string`   | yes      | —       | —                                                                     |
+| `label`       | `string`   | yes      | —       | X-axis label                                                          |
+| `description` | `string`   | no       | —       | —                                                                     |
+| `width`       | `number`   | no       | —       | —                                                                     |
+| `height`      | `number`   | no       | `300`   | —                                                                     |
+| `className`   | `string`   | no       | —       | —                                                                     |
+| `plain`       | `boolean`  | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 

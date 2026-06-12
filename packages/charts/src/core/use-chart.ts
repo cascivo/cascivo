@@ -42,3 +42,6 @@ export function useChartSize(
 }
 
 export const DEFAULT_MARGINS = { top: 8, right: 8, bottom: 24, left: 36 } as const
+
+/** Margins for plain (chrome-less) charts — just enough to keep strokes unclipped. */
+export const PLAIN_MARGINS = { top: 2, right: 2, bottom: 2, left: 2 } as const

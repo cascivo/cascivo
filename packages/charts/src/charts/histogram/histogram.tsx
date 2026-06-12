@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale } from '../../engine/scale'
@@ -16,21 +16,25 @@ export interface HistogramProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the marks — no axes or grid lines. For micro/inline charts. */
+  plain?: boolean
 }
 
 export function Histogram({
   data,
   bins,
   title,
-  label,
+  label: _label,
   description,
   width: fixedWidth,
-  height = 300,
+  height,
   className,
+  plain,
 }: HistogramProps) {
   useSignals()
   const tooltip = useSignal<{ x: number; y: number; text: string } | null>(null)
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 300)
 
   const binnedData = binValues(data, bins)
   const maxCount = binnedData.reduce((m, b) => Math.max(m, b.count), 0)
@@ -62,9 +66,10 @@ export function Histogram({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -91,7 +96,7 @@ export function Histogram({
 
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
-            <GridLines scale={yScale} orientation="y" length={inner.width} />
+            {!plain && <GridLines scale={yScale} orientation="y" length={inner.width} />}
             {binnedData.map((b, i) => {
               const rx = xScale.map(b.x0)
               const rw = Math.max(0, xScale.map(b.x1) - rx - 1)
@@ -112,13 +117,17 @@ export function Histogram({
                 />
               )
             })}
-            <Axis
-              scale={xScale}
-              orientation="x"
-              length={inner.width}
-              transform={`translate(0,${inner.height})`}
-            />
-            <Axis scale={yScale} orientation="y" length={inner.height} />
+            {!plain && (
+              <>
+                <Axis
+                  scale={xScale}
+                  orientation="x"
+                  length={inner.width}
+                  transform={`translate(0,${inner.height})`}
+                />
+                <Axis scale={yScale} orientation="y" length={inner.height} />
+              </>
+            )}
             {tooltip.value && (
               <g>
                 <rect

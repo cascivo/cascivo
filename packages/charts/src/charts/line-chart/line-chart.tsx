@@ -2,7 +2,7 @@
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
@@ -34,6 +34,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   tooltip?: boolean
   formatTooltip?: (datum: Datum, series: LineChartSeries<Datum>) => string
   className?: string
+  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -46,19 +48,22 @@ export function LineChart<Datum = { x: number; y: number }>({
   description,
   curve = 'monotone',
   width: fixedWidth,
-  height = 300,
+  height,
   xTicks = 5,
   yTicks = 5,
-  legend: showLegend = series.length > 1,
+  legend,
   formatTooltip,
   className,
+  plain,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
   const crosshairRef = useRef<SVGLineElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
 
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 300)
+  const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const allX = series.flatMap((s) => s.data.map((d) => x(d)))
   const allY = series.flatMap((s) => s.data.map((d) => y(d)))
@@ -96,10 +101,11 @@ export function LineChart<Datum = { x: number; y: number }>({
         title={title}
         description={description}
         width={fixedWidth}
-        height={height}
+        height={resolvedHeight}
         fallback={fallback}
         className={className}
         data-state={hasData ? undefined : 'empty'}
+        plain={plain}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -166,7 +172,9 @@ export function LineChart<Datum = { x: number; y: number }>({
           return (
             <g>
               <g transform={`translate(${margins.left},${margins.top})`}>
-                <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
+                {!plain && (
+                  <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
+                )}
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
                   const points: Point[] = s.data.map((d) => {
@@ -201,14 +209,18 @@ export function LineChart<Datum = { x: number; y: number }>({
                   strokeDasharray="4 2"
                   style={{ opacity: 0, transition: 'opacity 150ms ease', pointerEvents: 'none' }}
                 />
-                <Axis
-                  scale={xScale}
-                  orientation="x"
-                  length={innerW}
-                  tickCount={xTicks}
-                  transform={`translate(0,${innerH})`}
-                />
-                <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                {!plain && (
+                  <>
+                    <Axis
+                      scale={xScale}
+                      orientation="x"
+                      length={innerW}
+                      tickCount={xTicks}
+                      transform={`translate(0,${innerH})`}
+                    />
+                    <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                  </>
+                )}
                 {/* Invisible pointer capture rect */}
                 <rect
                   x={0}

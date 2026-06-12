@@ -19,16 +19,17 @@ npx cascade add chart/pie-chart
 
 ## Props
 
-| Prop          | Type              | Required | Default | Description                      |
-| ------------- | ----------------- | -------- | ------- | -------------------------------- |
-| `data`        | `PieChartDatum[]` | yes      | —       | Array of { label, value } datums |
-| `title`       | `string`          | yes      | —       | —                                |
-| `description` | `string`          | no       | —       | —                                |
-| `donut`       | `boolean`         | no       | —       | Render as donut chart            |
-| `width`       | `number`          | no       | —       | —                                |
-| `height`      | `number`          | no       | `300`   | —                                |
-| `legend`      | `boolean`         | no       | —       | —                                |
-| `className`   | `string`          | no       | —       | —                                |
+| Prop          | Type              | Required | Default | Description                                                           |
+| ------------- | ----------------- | -------- | ------- | --------------------------------------------------------------------- |
+| `data`        | `PieChartDatum[]` | yes      | —       | Array of { label, value } datums                                      |
+| `title`       | `string`          | yes      | —       | —                                                                     |
+| `description` | `string`          | no       | —       | —                                                                     |
+| `donut`       | `boolean`         | no       | —       | Render as donut chart                                                 |
+| `width`       | `number`          | no       | —       | —                                                                     |
+| `height`      | `number`          | no       | `300`   | —                                                                     |
+| `legend`      | `boolean`         | no       | —       | —                                                                     |
+| `className`   | `string`          | no       | —       | —                                                                     |
+| `plain`       | `boolean`         | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 

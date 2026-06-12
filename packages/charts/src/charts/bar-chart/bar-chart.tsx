@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
@@ -29,6 +29,8 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   yTicks?: number
   legend?: boolean
   className?: string
+  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
@@ -42,15 +44,18 @@ export function BarChart<Datum = { x: string; y: number }>({
   orientation = 'vertical',
   mode = 'grouped',
   width: fixedWidth,
-  height = 300,
+  height,
   xTicks = 5,
   yTicks = 5,
-  legend: showLegend = series.length > 1,
+  legend,
   className,
+  plain,
 }: BarChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
-  const margins = DEFAULT_MARGINS
+  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const resolvedHeight = height ?? (plain ? 48 : 300)
+  const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const categories = (series[0]?.data ?? []).map((d) => x(d))
   const allY = series.flatMap((s) => s.data.map((d) => y(d)))
@@ -92,10 +97,11 @@ export function BarChart<Datum = { x: string; y: number }>({
         title={title}
         description={description}
         width={fixedWidth}
-        height={height}
+        height={resolvedHeight}
         fallback={fallback}
         className={className}
         data-state={hasData ? undefined : 'empty'}
+        plain={plain}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -119,9 +125,10 @@ export function BarChart<Datum = { x: string; y: number }>({
           return (
             <g>
               <g transform={`translate(${margins.left},${margins.top})`}>
-                {isVertical ? (
+                {!plain && isVertical && (
                   <GridLines scale={valScale} orientation="y" length={innerW} tickCount={yTicks} />
-                ) : (
+                )}
+                {!plain && !isVertical && (
                   <GridLines scale={valScale} orientation="x" length={innerH} tickCount={xTicks} />
                 )}
                 {visibleSeries.map((s, si) => {
@@ -177,7 +184,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     }
                   })
                 })}
-                {isVertical ? (
+                {!plain && isVertical && (
                   <>
                     <Axis
                       scale={catScale}
@@ -188,7 +195,8 @@ export function BarChart<Datum = { x: string; y: number }>({
                     />
                     <Axis scale={valScale} orientation="y" length={innerH} tickCount={yTicks} />
                   </>
-                ) : (
+                )}
+                {!plain && !isVertical && (
                   <>
                     <Axis
                       scale={valScale}

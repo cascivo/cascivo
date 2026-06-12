@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS } from '../../core/use-chart'
+import { PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { bandScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
@@ -19,6 +19,8 @@ export interface HeatmapProps {
   width?: number
   height?: number
   className?: string
+  /** Render only the marks — no axes. For micro/inline charts. */
+  plain?: boolean
 }
 
 export function Heatmap({
@@ -26,12 +28,14 @@ export function Heatmap({
   title,
   description,
   width: fixedWidth,
-  height = 320,
+  height,
   className,
+  plain,
 }: HeatmapProps) {
   useSignals()
   const tooltip = useSignal<{ x: number; y: number; text: string } | null>(null)
-  const margins = { top: 20, right: 20, bottom: 60, left: 60 }
+  const resolvedHeight = height ?? (plain ? 48 : 320)
+  const margins = plain ? PLAIN_MARGINS : { top: 20, right: 20, bottom: 60, left: 60 }
 
   const xs = [...new Set(data.map((d) => d.x))]
   const ys = [...new Set(data.map((d) => d.y))]
@@ -68,9 +72,10 @@ export function Heatmap({
       title={title}
       description={description}
       width={fixedWidth}
-      height={height}
+      height={resolvedHeight}
       fallback={fallback}
       className={className}
+      plain={plain}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -112,13 +117,17 @@ export function Heatmap({
                 />
               )
             })}
-            <Axis
-              scale={xScale}
-              orientation="x"
-              length={inner.width}
-              transform={`translate(0,${inner.height})`}
-            />
-            <Axis scale={yScale} orientation="y" length={inner.height} />
+            {!plain && (
+              <>
+                <Axis
+                  scale={xScale}
+                  orientation="x"
+                  length={inner.width}
+                  transform={`translate(0,${inner.height})`}
+                />
+                <Axis scale={yScale} orientation="y" length={inner.height} />
+              </>
+            )}
             {tooltip.value && (
               <text
                 x={tooltip.value.x}

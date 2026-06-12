@@ -14,18 +14,19 @@ npx cascade add chart/scatter-chart
 
 ## Props
 
-| Prop          | Type                   | Required                       | Default | Description |
-| ------------- | ---------------------- | ------------------------------ | ------- | ----------- | ------------------------ |
-| `series`      | `ScatterChartSeries[]` | yes                            | —       | —           |
-| `title`       | `string`               | yes                            | —       | —           |
-| `description` | `string`               | no                             | —       | —           |
-| `r`           | `number                | ((d: ScatterDatum) => number)` | no      | `4`         | Point radius or accessor |
-| `width`       | `number`               | no                             | —       | —           |
-| `height`      | `number`               | no                             | `300`   | —           |
-| `xTicks`      | `number`               | no                             | `5`     | —           |
-| `yTicks`      | `number`               | no                             | `5`     | —           |
-| `legend`      | `boolean`              | no                             | —       | —           |
-| `className`   | `string`               | no                             | —       | —           |
+| Prop          | Type                   | Required                       | Default | Description                                                           |
+| ------------- | ---------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | ------------------------ |
+| `series`      | `ScatterChartSeries[]` | yes                            | —       | —                                                                     |
+| `title`       | `string`               | yes                            | —       | —                                                                     |
+| `description` | `string`               | no                             | —       | —                                                                     |
+| `r`           | `number                | ((d: ScatterDatum) => number)` | no      | `4`                                                                   | Point radius or accessor |
+| `width`       | `number`               | no                             | —       | —                                                                     |
+| `height`      | `number`               | no                             | `300`   | —                                                                     |
+| `xTicks`      | `number`               | no                             | `5`     | —                                                                     |
+| `yTicks`      | `number`               | no                             | `5`     | —                                                                     |
+| `legend`      | `boolean`              | no                             | —       | —                                                                     |
+| `className`   | `string`               | no                             | —       | —                                                                     |
+| `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
