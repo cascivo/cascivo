@@ -430,6 +430,9 @@ importers:
       '@cascade-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascade-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@cascade-ui/render':
         specifier: workspace:*
         version: link:../../packages/render
