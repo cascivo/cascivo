@@ -10,6 +10,10 @@ export default defineConfig({
   server: { port: 4180 },
   resolve: {
     alias: {
+      // Profiling build so the SignalsDemo <Profiler> commit counters work in
+      // production bundles (prod react-dom compiles onRender away). Marginally
+      // slower than the prod build — intentional on a page that demos re-renders.
+      'react-dom/client': 'react-dom/profiling',
       '@cascade-ui/core': resolve(root, 'packages/core/src/index.ts'),
       '@cascade-ui/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascade-ui/i18n': resolve(root, 'packages/i18n/src/index.ts'),
