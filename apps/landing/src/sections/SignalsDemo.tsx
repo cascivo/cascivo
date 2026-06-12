@@ -1,6 +1,6 @@
 'use client'
 import { Profiler, useState, type ReactNode } from 'react'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { signal, useSignal, useSignals, type Signal } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Button } from '@cascade-ui/components/button'
 import { Card } from '@cascade-ui/components/card'
@@ -9,6 +9,19 @@ import { Input } from '@cascade-ui/components/input'
 
 /* The useState twin below is the comparison subject — the one sanctioned hook
    exception on this page (v7 master plan, decision 9). */
+
+// Module-level so Profiler onRender writes don't cause SignalsDemo to re-render.
+const signalCommits = signal(0)
+const stateCommits = signal(0)
+
+function CommitBadge({ count }: { count: Signal<number> }) {
+  useSignals()
+  return (
+    <Badge variant="outline">
+      <span className="twin-count">{count.value}</span> commits
+    </Badge>
+  )
+}
 
 function Counter({
   id,
@@ -92,10 +105,6 @@ const benchModules = import.meta.glob<{ default: BenchResults }>(
 const bench = Object.values(benchModules)[0]?.default
 
 export function SignalsDemo() {
-  useSignals()
-  const signalCommits = useSignal(0)
-  const stateCommits = useSignal(0)
-
   const renderingData = bench?.renders?.['type-20-chars']
 
   return (
@@ -110,9 +119,7 @@ export function SignalsDemo() {
         <Card padding="md">
           <header className="twin-head">
             <span>signals</span>
-            <Badge variant="outline">
-              <span className="twin-count">{signalCommits.value}</span> commits
-            </Badge>
+            <CommitBadge count={signalCommits} />
           </header>
           <Counter
             id="signal-form"
@@ -126,9 +133,7 @@ export function SignalsDemo() {
         <Card padding="md">
           <header className="twin-head">
             <span>useState</span>
-            <Badge variant="outline">
-              <span className="twin-count">{stateCommits.value}</span> commits
-            </Badge>
+            <CommitBadge count={stateCommits} />
           </header>
           <Counter
             id="state-form"
