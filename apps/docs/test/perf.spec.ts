@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-// CI baseline budgets (ms). PERF_SCALE loosens them on slower machines (e.g. PERF_SCALE=2 locally).
+// Baseline budgets (ms). CI sets PERF_SCALE=10 for headroom; local default is 1 (tight).
 const scale = Number(process.env.PERF_SCALE ?? 1)
 const BUDGET = {
   initialRender: 3000 * scale,
