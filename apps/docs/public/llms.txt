@@ -117,7 +117,11 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
 - [search](/llms/search.md) — Search input with debounced search callback and clear button
 - [section/cta](/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
+- [section/feature-grid](/llms/section/feature-grid.md) — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
 - [section/hero](/llms/section/hero.md) — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
+- [section/media-masonry](/llms/section/media-masonry.md) — Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.
+- [section/page-footer](/llms/section/page-footer.md) — Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns.
+- [section/stats-band](/llms/section/stats-band.md) — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.
 - [segmented-control](/llms/segmented-control.md) — Mutually exclusive toggle group
 - [select](/llms/select.md) — Native select menu styled to match the design system
 - [separator](/llms/separator.md) — Visual or semantic divider between content

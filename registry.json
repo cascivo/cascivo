@@ -7551,6 +7551,86 @@
       }
     },
     {
+      "name": "section/feature-grid",
+      "type": "section",
+      "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["section", "features", "grid"],
+      "meta": {
+        "name": "FeatureGrid",
+        "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "FeatureItem[]",
+            "required": true,
+            "description": "Array of feature items with title, optional description, icon, and href"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Section heading above the grid"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Subheading below the section title"
+          },
+          {
+            "name": "headingLevel",
+            "type": "1 | 2 | 3",
+            "required": false,
+            "default": "2",
+            "description": "Heading level for the section title (items use headingLevel + 1)"
+          },
+          {
+            "name": "min",
+            "type": "string",
+            "required": false,
+            "default": "\"16rem\"",
+            "description": "Minimum track width forwarded to AutoGrid"
+          }
+        ],
+        "tokens": [
+          "--cascade-text-2xl",
+          "--cascade-text-base",
+          "--cascade-text-sm",
+          "--cascade-font-bold",
+          "--cascade-font-semibold",
+          "--cascade-text-secondary",
+          "--cascade-color-border",
+          "--cascade-surface-subtle",
+          "--cascade-space-*"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Feature grid (text-only)",
+            "code": "<FeatureGrid\n  title=\"Built for production\"\n  description=\"Everything you need to ship a polished product.\"\n  items={[\n    { title: 'Zero config', description: 'Copy a component and it works — no providers, no wrappers.' },\n    { title: 'Token-first', description: 'Every color, size and radius is a CSS custom property you own.' },\n    { title: 'Signal-driven', description: 'Fine-grained reactivity with @preact/signals-react — zero re-renders.' },\n    { title: 'Accessible by default', description: 'WCAG 2.1 AA, keyboard navigable, logical CSS properties for RTL.' },\n  ]}\n/>",
+            "description": "Four-item text-only feature grid with section heading"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["section", "features", "grid"]
+      }
+    },
+    {
       "name": "section/hero",
       "type": "section",
       "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
@@ -7643,6 +7723,214 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["section", "hero", "marketing"]
+      }
+    },
+    {
+      "name": "section/media-masonry",
+      "type": "section",
+      "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["section", "gallery", "masonry"],
+      "meta": {
+        "name": "MediaMasonry",
+        "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Tile elements (images, cards, quotes) — consumer-provided and self-styled"
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Section heading above the gallery"
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Subheading below the section title"
+          },
+          {
+            "name": "headingLevel",
+            "type": "1 | 2 | 3",
+            "required": false,
+            "default": "2",
+            "description": "HTML heading level for the section title"
+          },
+          {
+            "name": "cols",
+            "type": "number",
+            "required": false,
+            "default": "3",
+            "description": "Number of masonry columns"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "default": "4",
+            "description": "Gap between tiles (spacing token step)"
+          }
+        ],
+        "tokens": [
+          "--cascade-text-2xl",
+          "--cascade-text-base",
+          "--cascade-font-bold",
+          "--cascade-text-secondary",
+          "--cascade-space-*"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Media gallery",
+            "code": "<MediaMasonry title=\"Customer stories\" cols={3} gap={4}><img src=\"/photo-1.jpg\" alt=\"Team at desk\" /><img src=\"/photo-2.jpg\" alt=\"Product screenshot\" /><img src=\"/photo-3.jpg\" alt=\"Dashboard view\" /></MediaMasonry>",
+            "description": "Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["section", "gallery", "masonry"]
+      }
+    },
+    {
+      "name": "section/page-footer",
+      "type": "section",
+      "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["section", "footer", "navigation"],
+      "meta": {
+        "name": "PageFooter",
+        "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "groups",
+            "type": "FooterGroup[]",
+            "required": true,
+            "description": "Array of link groups, each with a title and array of {label, href} links"
+          },
+          {
+            "name": "brand",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Brand name or logo shown in the bottom row"
+          },
+          {
+            "name": "meta",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Meta line in the bottom row (license, copyright, etc.)"
+          }
+        ],
+        "tokens": [
+          "--cascade-text-sm",
+          "--cascade-font-mono",
+          "--cascade-font-semibold",
+          "--cascade-text-primary",
+          "--cascade-text-secondary",
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-space-*"
+        ],
+        "accessibility": {
+          "role": "contentinfo",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Site footer",
+            "code": "<PageFooter\n  brand=\"Cascade\"\n  meta=\"MIT licensed. Built with care.\"\n  groups={[\n    { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },\n    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' }, { label: 'Changelog', href: '/changelog' }] },\n    { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },\n  ]}\n/>",
+            "description": "Three-column footer with brand and license meta"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["section", "footer", "navigation"]
+      }
+    },
+    {
+      "name": "section/stats-band",
+      "type": "section",
+      "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+      "tags": ["section", "stats", "kpi", "charts"],
+      "meta": {
+        "name": "StatsBand",
+        "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "stats",
+            "type": "StatItem[]",
+            "required": true,
+            "description": "Array of stat items: label, value, optional delta (e.g. \"+3.2%\"), optional trend numbers for sparkline"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "default": "\"Key metrics\"",
+            "description": "Accessible label for the stats region"
+          }
+        ],
+        "tokens": [
+          "--cascade-text-2xl",
+          "--cascade-text-sm",
+          "--cascade-font-bold",
+          "--cascade-font-mono",
+          "--cascade-text-secondary",
+          "--cascade-color-border",
+          "--cascade-surface-subtle",
+          "--cascade-space-*"
+        ],
+        "accessibility": {
+          "role": "region",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "KPI band with trends",
+            "code": "<StatsBand\n  aria-label=\"Performance metrics\"\n  stats={[\n    { label: 'p99 latency', value: '184 ms', delta: '-12 ms', trend: [210, 205, 198, 192, 184] },\n    { label: 'Error rate', value: '0.12%', delta: '-0.03%', trend: [0.18, 0.16, 0.15, 0.14, 0.12] },\n    { label: 'Uptime', value: '99.98%', trend: [99.95, 99.97, 99.98, 99.99, 99.98] },\n    { label: 'Deploys today', value: '7' },\n  ]}\n/>",
+            "description": "Four KPI cells — three with sparkline trends and signed deltas"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+        "tags": ["section", "stats", "kpi", "charts"]
       }
     }
   ]

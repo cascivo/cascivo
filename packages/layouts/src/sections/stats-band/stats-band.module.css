@@ -1,0 +1,46 @@
+@layer cascade.component {
+  .stats-band {
+    padding-block: var(--cascade-space-8);
+    padding-inline: var(--cascade-space-4);
+    border-block: 1px solid var(--cascade-color-border);
+    background-color: var(--cascade-surface-subtle);
+  }
+
+  .inner {
+    max-inline-size: 90rem;
+    margin-inline: auto;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-1);
+    padding-inline: var(--cascade-space-4);
+    border-inline-start: 1px solid var(--cascade-color-border);
+    min-inline-size: 0;
+  }
+
+  .stat-main {
+    display: flex;
+    align-items: center;
+    gap: var(--cascade-space-3);
+  }
+
+  .value {
+    font-size: var(--cascade-text-2xl);
+    font-weight: var(--cascade-font-bold);
+    font-family: var(--cascade-font-mono);
+    line-height: 1;
+  }
+
+  .delta {
+    font-size: var(--cascade-text-sm);
+    font-family: var(--cascade-font-mono);
+    color: var(--cascade-text-secondary);
+  }
+
+  .label {
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-text-secondary);
+  }
+}

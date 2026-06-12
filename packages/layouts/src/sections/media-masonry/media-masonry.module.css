@@ -1,0 +1,21 @@
+@layer cascade.component {
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-3);
+  }
+
+  .title {
+    font-size: var(--cascade-text-2xl);
+    font-weight: var(--cascade-font-bold);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .description {
+    font-size: var(--cascade-text-base);
+    color: var(--cascade-text-secondary);
+    max-inline-size: 60ch;
+    margin: 0;
+  }
+}

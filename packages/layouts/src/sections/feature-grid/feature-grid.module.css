@@ -1,0 +1,55 @@
+@layer cascade.component {
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-3);
+  }
+
+  .title {
+    font-size: var(--cascade-text-2xl);
+    font-weight: var(--cascade-font-bold);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .description {
+    font-size: var(--cascade-text-base);
+    color: var(--cascade-text-secondary);
+    max-inline-size: 60ch;
+    margin: 0;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascade-space-2);
+    padding-block-start: var(--cascade-space-4);
+    border-block-start: 1px solid var(--cascade-color-border);
+    min-inline-size: 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.item:hover {
+    background-color: var(--cascade-surface-subtle);
+  }
+
+  .icon {
+    display: flex;
+    inline-size: var(--cascade-space-6);
+    block-size: var(--cascade-space-6);
+    color: var(--cascade-color-accent);
+  }
+
+  .item-title {
+    font-size: var(--cascade-text-base);
+    font-weight: var(--cascade-font-semibold);
+    margin: 0;
+  }
+
+  .item-description {
+    font-size: var(--cascade-text-sm);
+    color: var(--cascade-text-secondary);
+    margin: 0;
+  }
+}
