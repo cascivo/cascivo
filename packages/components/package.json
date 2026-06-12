@@ -68,7 +68,8 @@
     "./copy-button": "./src/copy-button/copy-button.tsx",
     "./stat": "./src/stat/stat.tsx",
     "./status": "./src/status/status.tsx",
-    "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx"
+    "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx",
+    "./skip-nav": "./src/skip-nav/skip-nav.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
