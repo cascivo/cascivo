@@ -1,0 +1,36 @@
+@layer cascade.component {
+  .text {
+    margin: 0;
+    font-family: var(--cascade-font-sans);
+    line-height: var(--cascade-leading-normal);
+    color: var(--cascade-color-text);
+
+    &[data-size='sm'] {
+      font-size: var(--cascade-text-sm);
+    }
+
+    &[data-size='md'] {
+      font-size: var(--cascade-text-base);
+    }
+
+    &[data-size='lg'] {
+      font-size: var(--cascade-text-lg);
+    }
+
+    &[data-weight='normal'] {
+      font-weight: var(--cascade-font-normal);
+    }
+
+    &[data-weight='medium'] {
+      font-weight: var(--cascade-font-medium);
+    }
+
+    &[data-weight='semibold'] {
+      font-weight: var(--cascade-font-semibold);
+    }
+
+    &[data-muted] {
+      color: var(--cascade-color-text-subtle);
+    }
+  }
+}

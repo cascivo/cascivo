@@ -137,6 +137,7 @@ export function AgentLayer() {
           <h3>The manifest is the source of truth</h3>
           <pre
             className="agent-code"
+            tabIndex={0}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: highlightTS(manifestExcerpt) }}
           />
@@ -184,6 +185,7 @@ export function AgentLayer() {
           <div className="agent-render-panes">
             <pre
               className="agent-code"
+              tabIndex={0}
               // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{ __html: highlightJSON(RELAY_SLICE_JSON) }}
             />

@@ -30,7 +30,7 @@
 
     &[data-variant='success'] .icon,
     &[data-variant='success'] .title {
-      color: var(--cascade-color-success);
+      color: var(--cascade-color-success-foreground, var(--cascade-color-success));
     }
 
     &[data-variant='warning'] {
@@ -44,7 +44,7 @@
 
     &[data-variant='warning'] .icon,
     &[data-variant='warning'] .title {
-      color: var(--cascade-color-warning);
+      color: var(--cascade-color-warning-foreground, var(--cascade-color-warning));
     }
 
     &[data-variant='destructive'] {

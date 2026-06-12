@@ -1,0 +1,59 @@
+@layer cascade.component {
+  .progressCircle {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+
+    &[data-size='sm'] {
+      inline-size: 1.5rem;
+      block-size: 1.5rem;
+    }
+
+    &[data-size='md'] {
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+    }
+
+    &[data-size='lg'] {
+      inline-size: 3.5rem;
+      block-size: 3.5rem;
+    }
+
+    &[data-size='lg'] .value {
+      font-size: var(--cascade-text-sm);
+    }
+  }
+
+  .svg {
+    inline-size: 100%;
+    block-size: 100%;
+    display: block;
+  }
+
+  .track {
+    stroke: var(--cascade-color-border);
+  }
+
+  .fill {
+    stroke: var(--cascade-color-accent);
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset var(--cascade-duration-300) var(--cascade-ease-out);
+  }
+
+  .value {
+    position: absolute;
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-xs);
+    font-weight: var(--cascade-font-semibold);
+    color: var(--cascade-color-text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fill {
+      transition: none;
+    }
+  }
+}

@@ -7,7 +7,7 @@ export function CopyCommand({ command }: { command: string }) {
   const copied = useSignal(false)
 
   return (
-    <div className="copy-command">
+    <div className="copy-command" tabIndex={0}>
       <code>{command}</code>
       <Button
         size="sm"

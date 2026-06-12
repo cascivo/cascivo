@@ -1,0 +1,24 @@
+@layer cascade.component {
+  .link {
+    position: fixed;
+    inset-block-start: var(--cascade-space-2);
+    inset-inline-start: var(--cascade-space-2);
+    z-index: 100;
+    padding: var(--cascade-space-2) var(--cascade-space-3);
+    background: var(--cascade-color-surface);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-control);
+    color: var(--cascade-color-text);
+    text-decoration: none;
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-sm);
+    /* Visually hidden until focused */
+    clip-path: inset(50%);
+
+    &:focus-visible {
+      clip-path: none;
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+  }
+}

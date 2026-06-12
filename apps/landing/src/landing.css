@@ -253,7 +253,7 @@ code {
   margin-block-end: var(--cascade-space-3);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text);
 }
 
 .theme-demo-form {
@@ -308,9 +308,8 @@ code {
 
 .footer-inner {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--cascade-space-4);
+  flex-direction: column;
+  gap: var(--cascade-space-6);
   padding-block-start: var(--cascade-space-6);
 }
 
@@ -322,17 +321,51 @@ code {
   color: var(--cascade-color-accent);
 }
 
-.footer-links {
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cascade-space-6);
+}
+
+@media (max-width: 32rem) {
+  .footer-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-column-title {
+  margin: 0 0 var(--cascade-space-2);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cascade-color-text);
+}
+
+.footer-column-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
-  gap: var(--cascade-space-4);
+  flex-direction: column;
+  gap: var(--cascade-space-2);
   font-size: var(--cascade-text-sm);
+}
+
+.footer-column-links a {
   color: var(--cascade-color-text-subtle);
+  text-decoration: none;
+}
+
+.footer-column-links a:hover,
+.footer-column-links a:focus-visible {
+  color: var(--cascade-color-text);
+  text-decoration: underline;
 }
 
 .footer-note {
-  margin-inline-start: auto;
   font-size: var(--cascade-text-sm);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text);
 }
 
 /* ── JSON Playground demo ─────────────────────────────── */
@@ -469,6 +502,17 @@ code {
   color: var(--cascade-color-text-subtle);
 }
 
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascade-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-inline-size: 44rem;
+}
+
 /* ── CopyCommand ──────────────────────────────────────── */
 .copy-command {
   display: inline-flex;
@@ -486,7 +530,7 @@ code {
 }
 
 .copy-command code {
-  overflow-x: auto;
+  white-space: nowrap;
 }
 
 /* ── Principles strip ─────────────────────────────────── */
@@ -534,12 +578,57 @@ code {
   font-size: var(--cascade-text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cascade-color-text-subtle);
+  color: var(--cascade-color-text);
 }
 
 .principle-line {
   font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text);
+}
+
+/* ── Stats band ───────────────────────────────────────── */
+.stats-band {
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--cascade-space-10) var(--cascade-space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--cascade-space-6);
+}
+
+/* ── Proof teasers ────────────────────────────────────── */
+.proof-teasers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--cascade-space-5);
+}
+
+.proof-number {
+  margin: 0;
+  font-size: var(--cascade-text-3xl);
+  font-weight: var(--cascade-font-bold);
+  letter-spacing: var(--cascade-tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.proof-number-label {
+  margin: 0 0 var(--cascade-space-4);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
   color: var(--cascade-color-text-subtle);
+}
+
+.proof-line {
+  margin: var(--cascade-space-3) 0 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.proof-link {
+  font-size: var(--cascade-text-sm);
+  font-weight: var(--cascade-font-medium);
+  /* accent-hover (oklch 0.546) passes 4.5:1 on the card bg; accent (0.623) does not */
+  color: var(--cascade-color-accent-hover);
 }
 
 /* ── Footer mono links ────────────────────────────────── */
@@ -729,8 +818,10 @@ code {
   display: flex;
   flex-direction: column;
   gap: var(--cascade-space-3);
-  /* warm accent-subtle gives a noticeable amber tint; works in any page theme */
-  background-color: var(--cascade-color-accent-subtle);
+  /* Opaque warm surface + explicit sRGB text so axe contrast check passes
+     (axe 4.11 misreads oklch → inflated L → false contrast failures). */
+  background-color: #faf6ef;
+  color: #2c1f0f;
   border-color: color-mix(in oklch, var(--cascade-color-accent) 35%, transparent);
 }
 
@@ -744,13 +835,15 @@ code {
 .oncall-sub {
   display: block;
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-subtle);
+  /* Explicit sRGB: axe 4.11 misreads oklch text colors. */
+  color: #6b5542;
 }
 
 .oncall-token {
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-subtle);
+  /* Explicit sRGB: axe 4.11 misreads oklch text colors. */
+  color: #6b5542;
 }
 
 /* ── Flags region ─────────────────────────────────────── */
@@ -912,8 +1005,10 @@ code {
 .agent-code {
   margin: 0;
   padding: var(--cascade-space-4);
-  background: var(--cascade-color-bg-subtle);
-  border: 1px solid var(--cascade-color-border);
+  /* Dark terminal background so syntax colors pass WCAG AA in every theme. */
+  background: oklch(0.16 0.008 264);
+  color: oklch(0.9 0.005 264);
+  border: 1px solid oklch(0.28 0.01 264);
   border-radius: var(--cascade-radius-md);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
@@ -981,24 +1076,30 @@ code {
 }
 
 /* ── Syntax highlighting ──────────────────────────────── */
+/* All colors chosen for WCAG AA contrast (≥4.5:1) against the dark terminal bg. */
 .agent-code .hl-key {
-  color: var(--cascade-color-accent);
+  /* blue, ~5.2:1 on oklch(0.16) */
+  color: oklch(0.72 0.17 250);
 }
 
 .agent-code .hl-string {
-  color: var(--cascade-color-success);
+  /* green, ~5.0:1 on oklch(0.16) */
+  color: oklch(0.72 0.15 145);
 }
 
 .agent-code .hl-number {
-  color: oklch(0.6 0.18 40);
+  /* orange, ~4.9:1 on oklch(0.16) */
+  color: oklch(0.72 0.16 55);
 }
 
 .agent-code .hl-keyword {
-  color: var(--cascade-color-info);
+  /* purple/violet, ~4.8:1 on oklch(0.16) */
+  color: oklch(0.72 0.17 310);
 }
 
 .agent-code .hl-comment {
-  color: var(--cascade-color-text-muted);
+  /* muted gray, ~4.6:1 on oklch(0.16) */
+  color: oklch(0.62 0.006 264);
   font-style: italic;
 }
 
@@ -1090,4 +1191,203 @@ code {
       opacity var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease),
       translate var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease);
   }
+}
+
+/* ── Proof pages (shared hero + a11y sections) ────────── */
+.proof-hero {
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--cascade-space-12) var(--cascade-space-6) var(--cascade-space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-4);
+}
+
+.proof-hero h1 {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: var(--cascade-font-bold);
+  letter-spacing: var(--cascade-tracking-tight);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.proof-hero-accent {
+  color: var(--cascade-color-accent);
+}
+
+.proof-hero-sub {
+  margin: 0;
+  max-width: 44rem;
+  font-size: var(--cascade-text-lg);
+  color: var(--cascade-color-text-subtle);
+}
+
+.proof-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--cascade-space-5);
+  margin-block-start: var(--cascade-space-6);
+  padding: var(--cascade-space-6);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg-subtle);
+}
+
+.a11y-rule-list {
+  margin: var(--cascade-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-1);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-disclosure {
+  margin: var(--cascade-space-4) 0 0;
+  max-width: 44rem;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-matrix-filter {
+  margin-block-end: var(--cascade-space-5);
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.a11y-matrix-filter [role='radio'] {
+  text-transform: capitalize;
+}
+
+.a11y-role {
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-keys {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--cascade-space-1);
+}
+
+.a11y-practices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--cascade-space-5);
+}
+
+.a11y-practice {
+  padding: var(--cascade-space-5);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg);
+}
+
+.a11y-practice h3 {
+  margin: 0 0 var(--cascade-space-2);
+  font-size: var(--cascade-text-base);
+  font-weight: var(--cascade-font-bold);
+}
+
+.a11y-practice p {
+  margin: 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-gate-code {
+  margin: 0;
+  padding: var(--cascade-space-5);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg-subtle);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+/* ── Performance page ─────────────────────────────────── */
+.perf-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--cascade-space-4);
+  inline-size: 100%;
+  max-width: 64rem;
+  margin-block-start: var(--cascade-space-6);
+}
+
+.perf-note,
+.perf-footnote {
+  margin: var(--cascade-space-4) 0 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.perf-table {
+  inline-size: 100%;
+  margin-block-start: var(--cascade-space-8);
+  border-collapse: collapse;
+  font-size: var(--cascade-text-sm);
+}
+
+.perf-table caption {
+  margin-block-end: var(--cascade-space-3);
+  text-align: start;
+  font-weight: var(--cascade-font-bold);
+}
+
+.perf-table th,
+.perf-table td {
+  padding: var(--cascade-space-2) var(--cascade-space-3);
+  border-block-end: 1px solid var(--cascade-color-border);
+  text-align: start;
+}
+
+.perf-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+.perf-iqr {
+  color: var(--cascade-color-text-subtle);
+}
+
+.perf-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--cascade-space-4);
+  margin: var(--cascade-space-6) 0 0;
+  padding: var(--cascade-space-6);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background: var(--cascade-color-bg-subtle);
+}
+
+.perf-meta dt {
+  font-size: var(--cascade-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cascade-color-text-subtle);
+}
+
+.perf-meta dd {
+  margin: var(--cascade-space-1) 0 0;
+  font-size: var(--cascade-text-sm);
+  overflow-wrap: anywhere;
+}
+
+.perf-disclosures {
+  display: grid;
+  gap: var(--cascade-space-2);
+  max-width: 48rem;
+  margin: var(--cascade-space-6) 0 0;
+  padding-inline-start: var(--cascade-space-5);
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
 }

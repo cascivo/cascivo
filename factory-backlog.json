@@ -451,15 +451,6 @@
       "spec": "IconButton — square icon-only button. Props: icon: ReactNode, label: string (aria-label + tooltip text), size?: 'sm'|'md'|'lg', variant?: 'ghost'|'outline'|'filled', disabled?: boolean, onClick?: () => void. Renders button with aria-label=label. No signals needed — purely structural. Sizes use --cascade-control-height-sm/md/lg tokens. No useState/useEffect."
     },
     {
-      "name": "copy-button",
-      "status": "pending",
-      "milestone": null,
-      "priority": 51,
-      "category": "inputs",
-      "attempts": 0,
-      "spec": "CopyButton — copy-to-clipboard with feedback. Props: text: string, size?: 'sm'|'md'|'lg'. Signal: copied=useSignal(false). On click: navigator.clipboard.writeText(text) called in a regular click handler (not useSignalEffect). After copy: set copied=true; useSignalEffect watches copied and schedules reset after 2000ms via setTimeout (returns cleanup). data-state='copied' attribute drives CSS icon swap. i18n: add builtin.copyButton.copy/copied. No useState/useEffect."
-    },
-    {
       "name": "code-snippet",
       "status": "pending",
       "milestone": null,
@@ -476,15 +467,6 @@
       "category": "feedback",
       "attempts": 0,
       "spec": "Notification — inline alert/banner. Props: title: string, description?: string, variant?: 'info'|'success'|'warning'|'error', onDismiss?: () => void, icon?: ReactNode. role='alert' for error/warning, role='status' for info/success. Dismiss button with aria-label from builtin.notification.dismiss. No signals, no useState/useEffect."
-    },
-    {
-      "name": "collapsible",
-      "status": "pending",
-      "milestone": null,
-      "priority": 54,
-      "category": "display",
-      "attempts": 0,
-      "spec": "Collapsible — animated show/hide region. Props: open: boolean, onOpenChange: (v: boolean) => void, children: ReactNode, disabled?: boolean. Signal: isOpen=useSignal(open); sync: isOpen.value=open. Trigger is a slot (children[0] if array). Content area: grid-template-rows 0fr→1fr animation (documented height exception). @starting-style for enter. data-state='open'|'closed'. No useState/useEffect."
     },
     {
       "name": "structured-list",
@@ -505,15 +487,6 @@
       "spec": "Tile — selectable card choice. Props: value: string, selected: boolean, onSelect: (v: string) => void, children: ReactNode, selectable?: 'single'|'multi', disabled?: boolean, icon?: ReactNode. role='radio' for single, role='checkbox' for multi. data-selected drives CSS. Keyboard: Space/Enter toggle. No useState/useEffect."
     },
     {
-      "name": "tree-view",
-      "status": "pending",
-      "milestone": null,
-      "priority": 57,
-      "category": "navigation",
-      "attempts": 0,
-      "spec": "TreeView — hierarchical tree. Props: items: {id: string, label: string, icon?: ReactNode, children?: TreeItem[]}[], onSelect?: (id: string) => void, selected?: string[], expanded?: string[], onExpandedChange?: (ids: string[]) => void. Signal: expandedSet=useSignal(new Set(expanded)). WAI-ARIA tree keyboard pattern (ArrowDown/Up move focus, ArrowRight expands, ArrowLeft collapses/moves to parent). No useState/useEffect."
-    },
-    {
       "name": "scroll-area",
       "status": "pending",
       "milestone": null,
@@ -523,24 +496,6 @@
       "spec": "ScrollArea — styled scrollbars. Props: children: ReactNode, height?: string, width?: string, orientation?: 'vertical'|'horizontal'|'both'. CSS: scrollbar-width: thin + scrollbar-color for modern browsers; ::-webkit-scrollbar for WebKit. Optional scroll shadows: useSignalEffect subscribes to scroll events and sets data-scroll-start/end attributes on the container that CSS reads for shadow gradients. No useState/useEffect."
     },
     {
-      "name": "typography",
-      "status": "pending",
-      "milestone": null,
-      "priority": 59,
-      "category": "display",
-      "attempts": 0,
-      "spec": "Typography — Heading, Text, Prose. Heading: props level: 1|2|3|4|5|6, size?: 'xs'|'sm'|'md'|'lg'|'xl'|'2xl', weight?: 'normal'|'medium'|'semibold'|'bold', children. Renders h{level}. Text: renders p with variant='body'|'caption'|'label'|'code'. Prose: renders div with data-prose that styles descendant HTML (p, ul, ol, code, blockquote) via CSS. Export: { Heading, Text, Prose }. No signals needed. No useState/useEffect."
-    },
-    {
-      "name": "data-list",
-      "status": "pending",
-      "milestone": null,
-      "priority": 60,
-      "category": "display",
-      "attempts": 0,
-      "spec": "DataList — key-value display. Props: items: {label: ReactNode, value: ReactNode, id?: string}[], orientation?: 'horizontal'|'vertical', dividers?: boolean. Renders dl/dt/dd. Horizontal: CSS grid two-column. Vertical: stacked. No signals. No useState/useEffect."
-    },
-    {
       "name": "calendar",
       "status": "pending",
       "milestone": null,
@@ -548,6 +503,78 @@
       "category": "inputs",
       "attempts": 0,
       "spec": "Calendar — standalone month-grid date picker. Props: value?: Date | null, onValueChange: (v: Date) => void, min?: Date, max?: Date. Signals: viewMonth=useSignal(value?.getMonth() ?? new Date().getMonth()), viewYear=useSignal(value?.getFullYear() ?? new Date().getFullYear()). Renders a grid of day buttons. Prev/next month buttons update viewMonth/viewYear. Keyboard: arrow keys move focus day, Enter selects. i18n: add builtin.calendar.prevMonth/nextMonth. No useState/useEffect."
+    },
+    {
+      "name": "tree-view",
+      "category": "navigation",
+      "priority": 62,
+      "spec": "TreeView — hierarchical tree navigation. Props: items TreeItem[] ({id, label, icon?, children?}), selected?: string, onSelect?(id), expanded?: string[] (controlled) / defaultExpanded?, onExpandedChange?. Expansion is genuine internal state (a signal-backed Set) with controlled override; branch expand/collapse animates via the grid-template-rows 0fr/1fr trick with motion tokens. WAI-ARIA tree pattern: role=tree/treeitem/group, aria-expanded, aria-selected, roving tabindex. Keyboard: ArrowUp/Down move focus, ArrowRight expands or enters a branch, ArrowLeft collapses or moves to parent, Home/End jump, Enter selects. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "color-picker",
+      "category": "inputs",
+      "priority": 63,
+      "spec": "ColorPicker — color selection field. Props: value (hex string), onValueChange, presets?: string[] (swatch row), label/hint/error like Input, disabled. Wraps native input[type=color] as the swatch trigger plus a mono text input for manual hex entry validated on blur; preset swatches render as a row of buttons with aria-label set to their hex value, ArrowLeft/Right cycle them. idle/focused/error machine like Input. A11y: swatch button announces the current value; visible strings via builtin catalog (colorPicker namespace, en+de). No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "carousel",
+      "category": "display",
+      "priority": 64,
+      "spec": "Carousel — slide deck. Props: children (slides), index/onIndexChange (controlled) or defaultIndex, loop?, autoplay? (interval ms; pauses on hover/focus and never starts under prefers-reduced-motion), labels?. CSS scroll-snap track — no transform math; prev/next buttons plus dot indicators; the active index is a signal synced from scroll events via useSignalEffect. Keyboard: buttons natively tabbable, ArrowLeft/Right on the dot group. A11y: section with aria-roledescription=carousel, each slide aria-roledescription=slide and aria-label 'n of total'; control strings via builtin catalog (carousel namespace, en+de). No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "timeline",
+      "category": "display",
+      "priority": 65,
+      "spec": "Timeline — ordered event display. Props: items {id, title, description?, time?, icon?, status? 'complete'|'current'|'upcoming'}[], orientation? vertical (default) / horizontal. Renders ol > li with <time> for timestamps; the connector line and markers are CSS pseudo-elements built with logical properties; status drives marker color via data-status and semantic tokens. Pure display — no machine, no signals, no keyboard handling beyond native list semantics. A11y: native ordered-list semantics, aria-current=step on the current item. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "data-list",
+      "category": "display",
+      "priority": 66,
+      "spec": "DataList — key-value pairs. Props: items {id?, label: ReactNode, value: ReactNode}[], orientation? 'horizontal'|'vertical', dividers?, size? sm/md. Renders dl with dt/dd pairs; horizontal mode is a two-column grid (logical properties), vertical stacks label above value; dividers render via border-block-end on each row. Pure display — no machine, no signals. A11y: native dl/dt/dd semantics, no extra role. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "collapsible",
+      "category": "display",
+      "priority": 67,
+      "spec": "Collapsible — single disclosure region. Props: open (controlled) / defaultOpen, onOpenChange, trigger (ReactNode rendered inside the built-in button), disabled, children. Uncontrolled mode runs a genuine open/closed machine driven by the trigger; controlled mode syncs the prop into the signal during render. Content animates via grid-template-rows 0fr→1fr with motion tokens, @starting-style enter, and a prefers-reduced-motion fallback; data-state open/closed drives CSS. A11y: trigger is a button with aria-expanded + aria-controls; keyboard Enter/Space. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "code-block",
+      "category": "display",
+      "priority": 68,
+      "spec": "CodeBlock — multi-line code display with lightweight syntax highlighting. Props: code, language? ('ts'|'tsx'|'js'|'css'|'html'|'json'|'bash'), showLineNumbers?, wrap?, title?, copyable? (composes the existing CopyButton). Own small regex tokenizer (comments, strings, keywords, numbers) — no highlighter dependency; token colors come from semantic tokens so all five themes keep contrast. Pure display beyond the composed CopyButton. A11y: pre/code semantics, region labelled by title, horizontal scroll instead of truncation. Distinct from code-snippet (priority 52), which has no highlighting. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
+    },
+    {
+      "name": "splitter",
+      "category": "layout",
+      "priority": 69,
+      "spec": "Splitter — two resizable panes. Props: children (exactly two panes), orientation? 'horizontal'|'vertical', defaultRatio? (0–1), minRatio?/maxRatio?, onRatioChange?, storageKey? (persists the ratio via @cascade-ui/storage). The ratio is a signal; pointer drag tracking attaches listeners via useSignalEffect. A11y: the divider is role=separator with aria-orientation and aria-valuenow/min/max. Keyboard: ArrowLeft/Right (ArrowUp/Down when vertical) nudge the ratio, Home/End snap to min/max. No useState/useEffect.",
+      "status": "pending",
+      "milestone": null,
+      "attempts": 0
     }
   ]
 }

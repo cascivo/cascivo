@@ -3,6 +3,8 @@ import { useSignals } from '@cascade-ui/core'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
 import { THEMES, setTheme, theme } from '../theme'
 
+const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+
 export function Header() {
   useSignals()
   return (
@@ -11,6 +13,16 @@ export function Header() {
       nav={[
         { label: 'Components', href: '/docs' },
         { label: 'Storybook', href: '/storybook' },
+        {
+          label: 'Accessibility',
+          href: '/accessibility',
+          active: path.startsWith('/accessibility'),
+        },
+        {
+          label: 'Performance',
+          href: '/performance',
+          active: path.startsWith('/performance'),
+        },
         { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
       ]}
       end={

@@ -58,6 +58,8 @@
     --cascade-color-warning-subtle: oklch(0.768 0.145 75 / 0.1);
     --cascade-color-info: var(--cascade-blue-600);
     --cascade-color-info-subtle: var(--cascade-blue-50);
+    --cascade-color-success-foreground: oklch(0.45 0.14 145);
+    --cascade-color-warning-foreground: oklch(0.5 0.14 75);
 
     /* ── Radius — one knob, warmer = rounder (8px) ────── */
     --cascade-radius-base: 0.5rem;

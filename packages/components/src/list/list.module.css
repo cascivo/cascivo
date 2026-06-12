@@ -1,0 +1,27 @@
+@layer cascade.component {
+  .list {
+    margin: 0;
+    padding-inline-start: var(--cascade-space-6);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-base);
+    line-height: var(--cascade-leading-normal);
+    color: var(--cascade-color-text);
+
+    &[data-marker='disc'] {
+      list-style-type: disc;
+    }
+
+    &[data-marker='decimal'] {
+      list-style-type: decimal;
+    }
+
+    &[data-marker='none'] {
+      list-style-type: none;
+      padding-inline-start: 0;
+    }
+  }
+
+  .item {
+    margin-block: var(--cascade-space-1);
+  }
+}

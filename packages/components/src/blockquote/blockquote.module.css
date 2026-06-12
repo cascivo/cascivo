@@ -1,0 +1,26 @@
+@layer cascade.component {
+  .blockquote {
+    margin: 0;
+    border-inline-start: 3px solid var(--cascade-color-border-strong);
+    padding-inline-start: var(--cascade-space-4);
+    font-family: var(--cascade-font-sans);
+    font-size: var(--cascade-text-base);
+    line-height: var(--cascade-leading-relaxed);
+    color: var(--cascade-color-text-subtle);
+  }
+
+  .footer {
+    margin-block-start: var(--cascade-space-2);
+    font-size: var(--cascade-text-sm);
+
+    & cite {
+      font-style: normal;
+      color: var(--cascade-color-text);
+      font-weight: var(--cascade-font-medium);
+
+      &::before {
+        content: '— ';
+      }
+    }
+  }
+}

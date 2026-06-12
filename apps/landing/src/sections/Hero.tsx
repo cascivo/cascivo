@@ -5,6 +5,15 @@ import { CopyCommand } from './CopyCommand'
 
 const componentCount = (registry as { components: unknown[] }).components.length
 
+const CHIPS = [
+  '@layer CSS, no runtime',
+  'Fine-grained signals',
+  'WCAG 2.1 AA',
+  'RTL-ready',
+  'AI-native manifests',
+  'Copy-paste, owned code',
+]
+
 export function Hero() {
   return (
     <section className="hero">
@@ -17,6 +26,15 @@ export function Hero() {
         with a machine-readable manifest behind every component. Copy the code. Own it. Let your
         agent build with it.
       </p>
+      <ul className="hero-chips" aria-label="Capabilities">
+        {CHIPS.map((chip) => (
+          <li key={chip}>
+            <Badge variant="outline" size="sm">
+              {chip}
+            </Badge>
+          </li>
+        ))}
+      </ul>
       <div className="hero-ctas">
         <Button
           onClick={() => {

@@ -46,7 +46,7 @@
 
   .description {
     font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-muted);
+    color: var(--cascade-color-text-subtle);
   }
 
   .search {
@@ -117,7 +117,7 @@
     font-size: var(--cascade-text-xs);
     text-transform: uppercase;
     letter-spacing: var(--cascade-tracking-wide);
-    color: var(--cascade-color-text-muted);
+    color: var(--cascade-color-text-subtle);
     background-color: var(--cascade-color-bg-subtle);
     border-block-end: 1px solid var(--cascade-color-border);
     white-space: nowrap;

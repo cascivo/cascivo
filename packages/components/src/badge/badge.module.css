@@ -35,12 +35,12 @@
 
     &[data-variant='success'] {
       background-color: var(--cascade-color-success-subtle);
-      color: var(--cascade-color-success);
+      color: var(--cascade-color-success-foreground, var(--cascade-color-success));
     }
 
     &[data-variant='warning'] {
       background-color: var(--cascade-color-warning-subtle);
-      color: var(--cascade-color-warning);
+      color: var(--cascade-color-warning-foreground, var(--cascade-color-warning));
     }
 
     &[data-variant='destructive'] {

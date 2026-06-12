@@ -331,6 +331,63 @@
       }
     },
     {
+      "name": "blockquote",
+      "type": "component",
+      "description": "Quoted passage with optional attribution footer",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "quote", "blockquote", "citation"],
+      "meta": {
+        "name": "Blockquote",
+        "description": "Quoted passage with optional attribution footer",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "cite",
+            "type": "string",
+            "required": false,
+            "default": "undefined"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-border-strong",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-font-sans",
+          "--cascade-font-medium",
+          "--cascade-leading-relaxed",
+          "--cascade-text-sm",
+          "--cascade-text-base"
+        ],
+        "accessibility": {
+          "role": "blockquote",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Blockquote>Less, but better.</Blockquote>"
+          },
+          {
+            "title": "With attribution",
+            "code": "<Blockquote cite=\"Dieter Rams\">Less, but better.</Blockquote>",
+            "description": "Attribution renders as <footer><cite>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "quote", "blockquote", "citation"]
+      }
+    },
+    {
       "name": "breadcrumb",
       "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
@@ -686,6 +743,66 @@
       }
     },
     {
+      "name": "code",
+      "type": "component",
+      "description": "Inline code span for identifiers, commands, and short snippets",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "code", "inline", "mono"],
+      "meta": {
+        "name": "Code",
+        "description": "Inline code span for identifiers, commands, and short snippets",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-mono",
+          "--cascade-color-text",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-radius-indicator",
+          "--cascade-text-xs",
+          "--cascade-text-sm"
+        ],
+        "accessibility": {
+          "role": "code",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Code>npx cascade add button</Code>"
+          },
+          {
+            "title": "In a sentence",
+            "code": "<Text>Run <Code>vp check</Code> before committing.</Text>",
+            "description": "Sits inline with surrounding text"
+          },
+          {
+            "title": "Small",
+            "code": "<Code size=\"sm\">--cascade-color-accent</Code>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "code", "inline", "mono"]
+      }
+    },
+    {
       "name": "combobox",
       "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -952,6 +1069,81 @@
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["overlay", "menu", "context", "right-click"]
+      }
+    },
+    {
+      "name": "copy-button",
+      "type": "component",
+      "description": "Icon button that copies a value to the clipboard with copied feedback",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["clipboard", "copy", "button", "snippet"],
+      "meta": {
+        "name": "CopyButton",
+        "description": "Icon button that copies a value to the clipboard with copied feedback",
+        "category": "inputs",
+        "states": ["idle", "copied"],
+        "variants": [],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "The text written to the clipboard on click"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "labels",
+            "type": "{ copy?: string; copied?: string }",
+            "required": false,
+            "description": "Overrides the built-in i18n labels per instance"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-text-subtle",
+          "--cascade-color-text",
+          "--cascade-color-border",
+          "--cascade-color-bg-subtle",
+          "--cascade-color-success",
+          "--cascade-radius-control",
+          "--cascade-focus-ring",
+          "--cascade-control-height-sm",
+          "--cascade-control-height-md"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<CopyButton value=\"npx cascade add button\" />"
+          },
+          {
+            "title": "Small",
+            "code": "<CopyButton value=\"pnpm install\" size=\"sm\" />"
+          },
+          {
+            "title": "Custom labels",
+            "code": "<CopyButton value=\"token\" labels={{ copy: 'Copy token', copied: 'Token copied' }} />",
+            "description": "Override the built-in copy/copied strings per instance"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["clipboard", "copy", "button", "snippet"]
       }
     },
     {
@@ -1832,6 +2024,75 @@
       }
     },
     {
+      "name": "heading",
+      "type": "component",
+      "description": "Section heading with semantic level decoupled from visual size",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "heading", "title"],
+      "meta": {
+        "name": "Heading",
+        "description": "Section heading with semantic level decoupled from visual size",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg", "xl", "2xl"],
+        "props": [
+          {
+            "name": "level",
+            "type": "1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "2"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
+            "required": false,
+            "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-semibold",
+          "--cascade-leading-tight",
+          "--cascade-tracking-tight",
+          "--cascade-color-text",
+          "--cascade-text-base",
+          "--cascade-text-lg",
+          "--cascade-text-xl",
+          "--cascade-text-2xl",
+          "--cascade-text-3xl"
+        ],
+        "accessibility": {
+          "role": "heading",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Heading>Section title</Heading>"
+          },
+          {
+            "title": "Page title",
+            "code": "<Heading level={1}>Page title</Heading>"
+          },
+          {
+            "title": "Decoupled size",
+            "code": "<Heading level={2} size=\"2xl\">Visually large, semantically h2</Heading>",
+            "description": "Keep the document outline correct while controlling the visual scale"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "heading", "title"]
+      }
+    },
+    {
       "name": "hover-card",
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
@@ -2150,6 +2411,71 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["link", "anchor", "navigation"]
+      }
+    },
+    {
+      "name": "list",
+      "type": "component",
+      "description": "Styled unordered or ordered list with ListItem",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "list", "ul", "ol"],
+      "meta": {
+        "name": "List",
+        "description": "Styled unordered or ordered list with ListItem",
+        "category": "display",
+        "states": [],
+        "variants": ["disc", "decimal", "none"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "as",
+            "type": "'ul' | 'ol'",
+            "required": false,
+            "default": "ul"
+          },
+          {
+            "name": "marker",
+            "type": "'disc' | 'decimal' | 'none'",
+            "required": false,
+            "default": "derived from as (ul→disc, ol→decimal)"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-leading-normal",
+          "--cascade-color-text",
+          "--cascade-text-base",
+          "--cascade-space-1",
+          "--cascade-space-6"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Unordered",
+            "code": "<List><ListItem>Tokens</ListItem><ListItem>Themes</ListItem></List>"
+          },
+          {
+            "title": "Ordered",
+            "code": "<List as=\"ol\"><ListItem>Init</ListItem><ListItem>Add</ListItem></List>"
+          },
+          {
+            "title": "Unmarked",
+            "code": "<List marker=\"none\"><ListItem>Clean row</ListItem></List>",
+            "description": "Keeps list semantics without visual markers"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "list", "ul", "ol"]
       }
     },
     {
@@ -2959,6 +3285,82 @@
       }
     },
     {
+      "name": "progress-circle",
+      "type": "component",
+      "description": "Circular determinate progress indicator rendered as an SVG arc",
+      "category": "feedback",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["progress", "loading", "circle", "feedback"],
+      "meta": {
+        "name": "ProgressCircle",
+        "description": "Circular determinate progress indicator rendered as an SVG arc",
+        "category": "feedback",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current value from 0 to max — clamped"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "showValue",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Renders the rounded percentage in the center — pairs best with md and lg"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible name announced by screen readers"
+          }
+        ],
+        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+        "accessibility": {
+          "role": "progressbar",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<ProgressCircle value={40} label=\"Loading\" />"
+          },
+          {
+            "title": "With value",
+            "code": "<ProgressCircle value={72} showValue size=\"lg\" label=\"Upload progress\" />"
+          },
+          {
+            "title": "Custom max",
+            "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["progress", "loading", "circle", "feedback"]
+      }
+    },
+    {
       "name": "progress-indicator",
       "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
@@ -3030,6 +3432,63 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["steps", "wizard", "stepper", "progress", "navigation"]
+      }
+    },
+    {
+      "name": "prose",
+      "type": "component",
+      "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "prose", "content", "markdown", "article"],
+      "meta": {
+        "name": "Prose",
+        "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-mono",
+          "--cascade-font-semibold",
+          "--cascade-leading-tight",
+          "--cascade-leading-relaxed",
+          "--cascade-tracking-tight",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-accent",
+          "--cascade-color-accent-hover",
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-border-strong",
+          "--cascade-radius-indicator",
+          "--cascade-radius-surface"
+        ],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Authored content",
+            "code": "<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>"
+          },
+          {
+            "title": "Rendered markdown",
+            "code": "<Prose dangerouslySetInnerHTML={{ __html: html }} />",
+            "description": "The use case: HTML you do not control (CMS, markdown pipelines)"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "prose", "content", "markdown", "article"]
       }
     },
     {
@@ -3917,6 +4376,74 @@
       }
     },
     {
+      "name": "skip-nav",
+      "type": "component",
+      "description": "Skip link that jumps keyboard users past the navigation to the main content",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+      "meta": {
+        "name": "SkipNav",
+        "description": "Skip link that jumps keyboard users past the navigation to the main content",
+        "category": "navigation",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "targetId",
+            "type": "string",
+            "required": false,
+            "default": "cascade-skip-target",
+            "description": "SkipNavLink: id of the SkipNavTarget to jump to"
+          },
+          {
+            "name": "labels",
+            "type": "{ label?: string }",
+            "required": false,
+            "description": "SkipNavLink: overrides the built-in i18n label per instance"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "cascade-skip-target",
+            "description": "SkipNavTarget: anchor id — must match the link targetId"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-surface",
+          "--cascade-color-border",
+          "--cascade-color-text",
+          "--cascade-radius-control",
+          "--cascade-focus-ring"
+        ],
+        "accessibility": {
+          "role": "link",
+          "wcag": "AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [
+          {
+            "title": "Default pair",
+            "code": "<><SkipNavLink /><nav>…</nav><SkipNavTarget /><main>…</main></>",
+            "description": "SkipNavLink must be the first focusable element on the page"
+          },
+          {
+            "title": "Custom target",
+            "code": "<><SkipNavLink targetId=\"main-content\" /><SkipNavTarget id=\"main-content\" /></>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "tags": ["accessibility", "skip-link", "keyboard", "navigation"]
+      }
+    },
+    {
       "name": "slider",
       "type": "component",
       "description": "Range input for selecting a value within bounds",
@@ -4054,6 +4581,154 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["loading", "progress", "feedback"]
+      }
+    },
+    {
+      "name": "stat",
+      "type": "component",
+      "description": "Displays a key metric with optional delta, trend direction and help text",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["stat", "kpi", "metric", "number"],
+      "meta": {
+        "name": "Stat",
+        "description": "Displays a key metric with optional delta, trend direction and help text",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "What the metric measures"
+          },
+          {
+            "name": "value",
+            "type": "string | number",
+            "required": true,
+            "description": "The metric value"
+          },
+          {
+            "name": "delta",
+            "type": "string",
+            "required": false,
+            "description": "Change indicator rendered next to the trend arrow"
+          },
+          {
+            "name": "trend",
+            "type": "'up' | 'down' | 'flat'",
+            "required": false,
+            "default": "flat"
+          },
+          {
+            "name": "helpText",
+            "type": "string",
+            "required": false,
+            "description": "Fine print below the value (methodology, time range)"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-color-text-muted",
+          "--cascade-color-success",
+          "--cascade-color-destructive"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Stat label=\"Components\" value={106} />"
+          },
+          {
+            "title": "With trend",
+            "code": "<Stat label=\"Bundle size\" value=\"12.4 kB\" delta=\"-1.2 kB\" trend=\"up\" />"
+          },
+          {
+            "title": "With help text",
+            "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["stat", "kpi", "metric", "number"]
+      }
+    },
+    {
+      "name": "status",
+      "type": "component",
+      "description": "Colored dot with a label communicating the state of a system or entity",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["status", "indicator", "dot", "badge"],
+      "meta": {
+        "name": "Status",
+        "description": "Colored dot with a label communicating the state of a system or entity",
+        "category": "display",
+        "states": [],
+        "variants": ["success", "warning", "error", "info", "neutral"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "status",
+            "type": "'success' | 'warning' | 'error' | 'info' | 'neutral'",
+            "required": false,
+            "default": "neutral"
+          },
+          {
+            "name": "pulse",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference"
+          }
+        ],
+        "tokens": [
+          "--cascade-color-success",
+          "--cascade-color-warning",
+          "--cascade-color-error",
+          "--cascade-color-info",
+          "--cascade-color-text-muted",
+          "--cascade-color-text",
+          "--cascade-radius-full"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Status>Unknown</Status>"
+          },
+          {
+            "title": "Success",
+            "code": "<Status status=\"success\">Operational</Status>"
+          },
+          {
+            "title": "Pulsing",
+            "code": "<Status status=\"info\" pulse>Deploying</Status>",
+            "description": "The pulse animation respects prefers-reduced-motion"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["status", "indicator", "dot", "badge"]
       }
     },
     {
@@ -4334,6 +5009,87 @@
         ],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
         "tags": ["form", "tags", "chips", "multi", "input"]
+      }
+    },
+    {
+      "name": "text",
+      "type": "component",
+      "description": "Body text with size, weight, and muted variants",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["typography", "text", "paragraph", "body"],
+      "meta": {
+        "name": "Text",
+        "description": "Body text with size, weight, and muted variants",
+        "category": "display",
+        "states": [],
+        "variants": ["normal", "medium", "semibold"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "as",
+            "type": "'p' | 'span' | 'div'",
+            "required": false,
+            "default": "p"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "weight",
+            "type": "'normal' | 'medium' | 'semibold'",
+            "required": false,
+            "default": "normal"
+          },
+          {
+            "name": "muted",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascade-font-sans",
+          "--cascade-font-normal",
+          "--cascade-font-medium",
+          "--cascade-font-semibold",
+          "--cascade-leading-normal",
+          "--cascade-color-text",
+          "--cascade-color-text-subtle",
+          "--cascade-text-sm",
+          "--cascade-text-base",
+          "--cascade-text-lg"
+        ],
+        "accessibility": {
+          "role": "paragraph",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Default",
+            "code": "<Text>Body copy reads at the base size.</Text>"
+          },
+          {
+            "title": "Muted helper",
+            "code": "<Text size=\"sm\" muted>Secondary information</Text>"
+          },
+          {
+            "title": "Inline span",
+            "code": "<Text as=\"span\" weight=\"semibold\">emphasis</Text>",
+            "description": "Use as=\"span\" inside other flow content"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["typography", "text", "paragraph", "body"]
       }
     },
     {
@@ -4736,6 +5492,54 @@
         ],
         "dependencies": ["@cascade-ui/core"],
         "tags": ["overlay", "hint", "popover"]
+      }
+    },
+    {
+      "name": "visually-hidden",
+      "type": "component",
+      "description": "Hides content visually while keeping it available to screen readers",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
+      ],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+      "meta": {
+        "name": "VisuallyHidden",
+        "description": "Hides content visually while keeping it available to screen readers",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Content announced by assistive technology but not painted"
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "none",
+          "wcag": "AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Icon button label",
+            "code": "<button type=\"button\"><CloseIcon /><VisuallyHidden>Close dialog</VisuallyHidden></button>",
+            "description": "Gives an icon-only control an accessible name"
+          },
+          {
+            "title": "Table context",
+            "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
+          }
+        ],
+        "dependencies": ["@cascade-ui/core"],
+        "tags": ["accessibility", "screen-reader", "sr-only", "hidden"]
       }
     },
     {

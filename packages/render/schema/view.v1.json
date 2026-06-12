@@ -96,6 +96,7 @@
             "Avatar",
             "Badge",
             "BarChart",
+            "Blockquote",
             "Boxplot",
             "Breadcrumb",
             "BubbleChart",
@@ -105,12 +106,14 @@
             "Center",
             "Checkbox",
             "CheckboxCard",
+            "Code",
             "Columns",
             "ComboChart",
             "Combobox",
             "CommandMenu",
             "ConsoleApp",
             "ContextMenu",
+            "CopyButton",
             "Cta",
             "DashboardCharts",
             "DashboardLayout",
@@ -126,6 +129,7 @@
             "Grid",
             "Header",
             "HeaderPanel",
+            "Heading",
             "Heatmap",
             "Hero",
             "Histogram",
@@ -136,6 +140,7 @@
             "Kpi",
             "LineChart",
             "Link",
+            "List",
             "LoginPage",
             "Masonry",
             "MediaMasonry",
@@ -155,7 +160,9 @@
             "PieChart",
             "Popover",
             "ProgressBar",
+            "ProgressCircle",
             "ProgressIndicator",
+            "Prose",
             "Radar",
             "Radio",
             "RadioCard",
@@ -173,25 +180,30 @@
             "SideNav",
             "SidebarApp",
             "Skeleton",
+            "SkipNav",
             "Slider",
             "Spacer",
             "Sparkline",
             "Spinner",
             "SplitView",
             "Stack",
+            "Stat",
             "StatsBand",
             "StatsCards",
+            "Status",
             "Switcher",
             "Tabs",
             "Tag",
             "TagsInput",
+            "Text",
             "Textarea",
             "TimePicker",
             "Toast",
             "Toggle",
             "Tooltip",
             "Treemap",
-            "UsersTablePage"
+            "UsersTablePage",
+            "VisuallyHidden"
           ]
         },
         "props": {
@@ -374,6 +386,28 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Blockquote"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "cite": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Breadcrumb"
               }
             },
@@ -531,6 +565,29 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Code"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Combobox"
               }
             },
@@ -637,6 +694,33 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CopyButton"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  }
+                },
+                "required": ["value"]
               }
             }
           }
@@ -995,6 +1079,29 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Heading"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg", "xl", "2xl"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "HoverCard"
               }
             },
@@ -1129,6 +1236,33 @@
                   },
                   "href": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "List"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "as": {
+                    "type": "string",
+                    "enum": ["ul", "ol"]
+                  },
+                  "marker": {
+                    "type": "string",
+                    "enum": ["disc", "decimal", "none"]
                   }
                 }
               }
@@ -1481,6 +1615,42 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ProgressCircle"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "showValue": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ProgressIndicator"
               }
             },
@@ -1502,6 +1672,24 @@
                   }
                 },
                 "required": ["steps", "currentIndex"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Prose"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
               }
             }
           }
@@ -1894,6 +2082,31 @@
           "if": {
             "properties": {
               "component": {
+                "const": "SkipNav"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Slider"
               }
             },
@@ -1950,6 +2163,69 @@
                   },
                   "label": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Stat"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": ["string", "number"]
+                  },
+                  "delta": {
+                    "type": "string"
+                  },
+                  "trend": {
+                    "type": "string",
+                    "enum": ["up", "down", "flat"]
+                  },
+                  "helpText": {
+                    "type": "string"
+                  }
+                },
+                "required": ["label", "value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Status"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["success", "warning", "error", "info", "neutral"]
+                  },
+                  "pulse": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -2062,6 +2338,40 @@
                   }
                 },
                 "required": ["value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Text"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "as": {
+                    "type": "string",
+                    "enum": ["p", "span", "div"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "weight": {
+                    "type": "string",
+                    "enum": ["normal", "medium", "semibold"]
+                  },
+                  "muted": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
@@ -2256,6 +2566,30 @@
                   }
                 },
                 "required": ["content", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "VisuallyHidden"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["children"]
               }
             }
           }

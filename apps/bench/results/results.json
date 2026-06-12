@@ -1,13 +1,143 @@
 {
   "meta": {
-    "date": "2026-06-11",
-    "cpu": "placeholder — run pnpm bench to populate",
-    "cores": 0,
-    "memGb": 0,
-    "os": "placeholder",
+    "date": "2026-06-12",
+    "cpu": "Intel(R) Core(TM) Ultra 9 185H",
+    "cores": 22,
+    "memGb": 62,
+    "os": "linux 7.0.9-205.fc44.x86_64",
+    "node": "v24.16.0",
     "chrome": "placeholder",
     "cpuThrottle": 4,
-    "lockfileHash": "placeholder",
-    "source": "placeholder"
+    "lockfileHash": "a4919632484d",
+    "source": "local"
+  },
+  "bundle": {
+    "apps": {
+      "cascade": {
+        "jsGzKb": 67.45,
+        "cssGzKb": 1.99,
+        "totalGzKb": 69.43,
+        "jsRawKb": 214.92,
+        "cssRawKb": 9.64
+      },
+      "shadcn": {
+        "jsGzKb": 93.07,
+        "cssGzKb": 3.36,
+        "totalGzKb": 96.43,
+        "jsRawKb": 303.85,
+        "cssRawKb": 13.04
+      },
+      "carbon": {
+        "jsGzKb": 108.72,
+        "cssGzKb": 81.02,
+        "totalGzKb": 189.74,
+        "jsRawKb": 358.57,
+        "cssRawKb": 803.5
+      }
+    },
+    "matrix": {
+      "cascade": {
+        "button": {
+          "totalGzKb": 64.86,
+          "incrementalGzKb": 5
+        },
+        "input": {
+          "totalGzKb": 64.88,
+          "incrementalGzKb": 5.02
+        },
+        "checkbox": {
+          "totalGzKb": 64.73,
+          "incrementalGzKb": 4.87
+        },
+        "select": {
+          "totalGzKb": 65.04,
+          "incrementalGzKb": 5.18
+        },
+        "dialog": {
+          "totalGzKb": 65.12,
+          "incrementalGzKb": 5.26
+        },
+        "table": {
+          "totalGzKb": 68.1,
+          "incrementalGzKb": 8.24
+        },
+        "badge": {
+          "totalGzKb": 64.48,
+          "incrementalGzKb": 4.62
+        },
+        "tabs": {
+          "totalGzKb": 65.16,
+          "incrementalGzKb": 5.3
+        }
+      },
+      "shadcn": {
+        "button": {
+          "totalGzKb": 71.09,
+          "incrementalGzKb": 9.86
+        },
+        "input": {
+          "totalGzKb": 69.93,
+          "incrementalGzKb": 8.7
+        },
+        "checkbox": {
+          "totalGzKb": 74.07,
+          "incrementalGzKb": 12.84
+        },
+        "select": {
+          "totalGzKb": 61.23,
+          "incrementalGzKb": 0
+        },
+        "dialog": {
+          "totalGzKb": 80.99,
+          "incrementalGzKb": 19.76
+        },
+        "table": {
+          "totalGzKb": 82.22,
+          "incrementalGzKb": 20.99
+        },
+        "badge": {
+          "totalGzKb": 69.89,
+          "incrementalGzKb": 8.66
+        },
+        "tabs": {
+          "totalGzKb": 61.25,
+          "incrementalGzKb": 0.02
+        }
+      },
+      "carbon": {
+        "button": {
+          "totalGzKb": 155.62,
+          "incrementalGzKb": 16.73
+        },
+        "input": {
+          "totalGzKb": 159.54,
+          "incrementalGzKb": 20.65
+        },
+        "checkbox": {
+          "totalGzKb": 158.88,
+          "incrementalGzKb": 19.99
+        },
+        "select": {
+          "totalGzKb": 159.47,
+          "incrementalGzKb": 20.58
+        },
+        "dialog": {
+          "totalGzKb": 166.98,
+          "incrementalGzKb": 28.09
+        },
+        "table": {
+          "totalGzKb": 179.66,
+          "incrementalGzKb": 40.77
+        },
+        "badge": {
+          "totalGzKb": 158.33,
+          "incrementalGzKb": 19.44
+        },
+        "tabs": {
+          "totalGzKb": 160.67,
+          "incrementalGzKb": 21.78
+        }
+      }
+    }
   }
 }
