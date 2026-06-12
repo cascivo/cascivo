@@ -913,6 +913,15 @@ importers:
       '@cascade-ui/tokens':
         specifier: workspace:*
         version: link:../tokens
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.1.24(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.100.0))
 
   packages/tokens: {}
 

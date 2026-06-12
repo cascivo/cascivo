@@ -62,6 +62,10 @@
 
     /* ── Radius — one knob; semantic scale derives in tokens ── */
     --cascade-radius-base: 0.375rem; /* 6px */
+    --cascade-radius-control: var(--cascade-radius-base);
+    --cascade-radius-surface: calc(var(--cascade-radius-base) * 1.66);
+    --cascade-radius-indicator: calc(var(--cascade-radius-base) / 2);
+    --cascade-radius-full: 9999px;
     --cascade-radius-component: var(--cascade-radius-base);
     --cascade-radius-button: var(--cascade-radius-base);
     --cascade-radius-input: var(--cascade-radius-base);
@@ -70,11 +74,15 @@
     --cascade-radius-modal: calc(var(--cascade-radius-base) * 2); /* ~12px */
 
     /* ── Shadows ─────────────────────────────────────── */
+    --cascade-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
     --cascade-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
     --cascade-shadow-md: 0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
     --cascade-shadow-overlay: 0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04);
+    --cascade-shadow-lg: var(--cascade-shadow-overlay);
 
     /* ── Focus ring ───────────────────────────────────── */
+    --cascade-ring-width: 2px;
+    --cascade-ring-offset: 0px;
     --cascade-ring-color: color-mix(in oklch, var(--cascade-color-accent) 55%, transparent);
     --cascade-color-focus-ring: var(--cascade-blue-500);
     --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);

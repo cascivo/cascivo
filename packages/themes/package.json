@@ -15,10 +15,13 @@
   },
   "scripts": {
     "build": "echo 'themes: CSS-only, no build'",
-    "test": "echo 'themes: no tests yet'"
+    "test": "vp test"
   },
   "devDependencies": {
-    "@cascade-ui/tokens": "workspace:*"
+    "@cascade-ui/tokens": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "@cascade-ui/tokens": ">=0.0.0"
