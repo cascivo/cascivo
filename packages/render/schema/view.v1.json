@@ -92,6 +92,7 @@
             "AppShell",
             "AreaChart",
             "AuthLayout",
+            "AutoGrid",
             "Avatar",
             "Badge",
             "BarChart",
@@ -110,6 +111,7 @@
             "CommandMenu",
             "ConsoleApp",
             "ContextMenu",
+            "Cta",
             "DashboardCharts",
             "DashboardLayout",
             "DataTable",
@@ -118,12 +120,14 @@
             "Editable",
             "EmptyDashboard",
             "EmptyState",
+            "FeatureGrid",
             "FileUploader",
             "Form",
             "Grid",
             "Header",
             "HeaderPanel",
             "Heatmap",
+            "Hero",
             "Histogram",
             "HoverCard",
             "Input",
@@ -133,6 +137,8 @@
             "LineChart",
             "Link",
             "LoginPage",
+            "Masonry",
+            "MediaMasonry",
             "Menu",
             "Meter",
             "Modal",
@@ -141,6 +147,7 @@
             "NumberInput",
             "OtpInput",
             "OverflowMenu",
+            "PageFooter",
             "PageHeader",
             "PageWithBreadcrumb",
             "Pagination",
@@ -155,6 +162,7 @@
             "RatingGroup",
             "ScatterChart",
             "Search",
+            "Section",
             "SegmentedControl",
             "Select",
             "Separator",
@@ -171,6 +179,7 @@
             "Spinner",
             "SplitView",
             "Stack",
+            "StatsBand",
             "StatsCards",
             "Switcher",
             "Tabs",
@@ -2327,6 +2336,28 @@
           "if": {
             "properties": {
               "component": {
+                "const": "AutoGrid"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Center"
               }
             },
@@ -2424,6 +2455,28 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Masonry"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "cols": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "PageHeader"
               }
             },
@@ -2453,6 +2506,29 @@
                   }
                 },
                 "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Section"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "string",
+                    "enum": ["content", "wide", "full"]
+                  }
+                }
               }
             }
           }
@@ -2801,6 +2877,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -2853,6 +2932,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -2888,6 +2970,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "title"]
@@ -2923,6 +3008,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "title"]
@@ -3005,6 +3093,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["bars", "line", "title"]
@@ -3040,6 +3131,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["data", "title"]
@@ -3081,6 +3175,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["data", "title", "label"]
@@ -3172,6 +3269,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -3259,6 +3359,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["data", "title"]
@@ -3297,6 +3400,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["axes", "series", "title"]
@@ -3341,6 +3447,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["series", "title"]
@@ -3411,9 +3520,205 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Cta"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "actions": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FeatureGrid"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "min": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Hero"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": ["centered", "split"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "eyebrow": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "actions": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "media": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "MediaMasonry"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "cols": {
+                    "type": "number"
+                  }
+                },
+                "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "PageFooter"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "brand": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "meta": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["groups"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "StatsBand"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["stats"]
               }
             }
           }

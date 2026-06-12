@@ -21,6 +21,7 @@ export interface FeatureGridProps extends Omit<HTMLAttributes<HTMLElement>, 'tit
   items: FeatureItem[]
   /** Minimum track width forwarded to AutoGrid. */
   min?: string
+  className?: string | undefined
 }
 
 export function FeatureGrid({

@@ -14,6 +14,7 @@ export interface MediaMasonryProps extends Omit<HTMLAttributes<HTMLElement>, 'ti
   cols?: number
   gap?: SpaceStep
   children: ReactNode
+  className?: string | undefined
 }
 
 export function MediaMasonry({

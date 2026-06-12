@@ -23,8 +23,11 @@ export interface ComponentMeta {
   tags: string[]
 }
 
+export type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section'
+
 export interface RegistryEntry {
   name: string
+  type?: EntryType
   description: string
   category: Category
   version: string

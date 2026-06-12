@@ -12,6 +12,7 @@ export interface CtaProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Buttons/links rendered in a row below the description. */
   actions?: ReactNode
   headingLevel?: HeadingLevel
+  className?: string | undefined
 }
 
 export function Cta({

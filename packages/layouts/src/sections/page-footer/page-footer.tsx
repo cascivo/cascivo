@@ -18,6 +18,7 @@ export interface PageFooterProps extends HTMLAttributes<HTMLElement> {
   groups: FooterGroup[]
   brand?: ReactNode
   meta?: ReactNode
+  className?: string | undefined
 }
 
 export function PageFooter({ groups, brand, meta, className, ...props }: PageFooterProps) {

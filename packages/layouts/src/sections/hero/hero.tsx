@@ -17,6 +17,7 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Right-hand slot in the split variant (image, demo, code). */
   media?: ReactNode
   headingLevel?: HeadingLevel
+  className?: string | undefined
 }
 
 export function Hero({

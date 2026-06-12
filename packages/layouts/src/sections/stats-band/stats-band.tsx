@@ -9,13 +9,14 @@ export interface StatItem {
   label: string
   value: string
   delta?: string
-  trend?: readonly number[]
+  trend?: number[]
 }
 
 export interface StatsBandProps extends HTMLAttributes<HTMLElement> {
   stats: StatItem[]
   /** Accessible label for the stats region when no visible heading is shown. */
   'aria-label'?: string
+  className?: string | undefined
 }
 
 export function StatsBand({ stats, className, ...props }: StatsBandProps) {
