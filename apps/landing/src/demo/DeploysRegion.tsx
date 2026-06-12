@@ -31,7 +31,14 @@ const columns: Column<Deploy>[] = [
     key: 'status',
     header: 'Status',
     sortable: true,
-    render: (row) => <Badge variant={STATUS_VARIANT[row.status]}>{row.status}</Badge>,
+    render: (row) => (
+      <Badge
+        variant={STATUS_VARIANT[row.status]}
+        className={row.status === 'building' ? 'badge-building' : undefined}
+      >
+        {row.status}
+      </Badge>
+    ),
   },
   {
     key: 'duration',

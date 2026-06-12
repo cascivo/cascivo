@@ -992,3 +992,51 @@ code {
   gap: var(--cascade-space-4);
   flex-wrap: wrap;
 }
+
+/* ── Incident pulse dot ───────────────────────────────── */
+.incident-wrap {
+  position: relative;
+}
+
+.incident-dot {
+  position: absolute;
+  inset-block-start: var(--cascade-space-3);
+  inset-inline-end: var(--cascade-space-3);
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: var(--cascade-radius-full);
+  background: var(--cascade-color-warning);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .incident-dot {
+    animation: incident-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes incident-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in oklch, var(--cascade-color-warning) 50%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 6px color-mix(in oklch, var(--cascade-color-warning) 0%, transparent);
+    }
+  }
+}
+
+/* ── Building badge breathe ───────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .badge-building {
+    animation: badge-breathe 2.4s ease-in-out infinite;
+  }
+
+  @keyframes badge-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
