@@ -30,13 +30,22 @@ test('axe sweep — modal open', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('cascade-landing-theme', JSON.stringify({ v: 1, value: 'light' }))
   })
-  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.goto('/')
+  // Reveal all scroll-animated sections before the modal scan: axe walks DOM ancestors
+  // to compute composite opacity, and [data-reveal] sections start at opacity:0.
+  // An opacity-0 ancestor causes axe to compute a false low-contrast color blend.
+  await page.evaluate(() => {
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      ;(el as HTMLElement).style.transition = 'none'
+      el.setAttribute('data-revealed', '')
+    })
+  })
   await page
     .getByRole('region', { name: 'Deploys' })
     .getByRole('button', { name: 'New deploy' })
     .click()
-  // Wait for the modal to be fully visible before scanning.
-  await page.locator('[role="dialog"]').waitFor({ state: 'visible' })
+  // <dialog> has implicit dialog role — getByRole is the right locator, not [role="dialog"]
+  await expect(page.getByRole('dialog')).toBeVisible()
   const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
   expect(scan.violations).toEqual([])
 })

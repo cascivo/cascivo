@@ -615,7 +615,7 @@ code {
   margin: 0 0 var(--cascade-space-4);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-muted);
+  color: var(--cascade-color-text-subtle);
 }
 
 .proof-line {
@@ -627,7 +627,8 @@ code {
 .proof-link {
   font-size: var(--cascade-text-sm);
   font-weight: var(--cascade-font-medium);
-  color: var(--cascade-color-accent);
+  /* accent-hover (oklch 0.546) passes 4.5:1 on the card bg; accent (0.623) does not */
+  color: var(--cascade-color-accent-hover);
 }
 
 /* ── Footer mono links ────────────────────────────────── */
