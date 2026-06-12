@@ -65,7 +65,8 @@
     "./header-panel": "./src/header-panel/header-panel.tsx",
     "./switcher": "./src/switcher/switcher.tsx",
     "./checkbox-card": "./src/checkbox-card/checkbox-card.tsx",
-    "./copy-button": "./src/copy-button/copy-button.tsx"
+    "./copy-button": "./src/copy-button/copy-button.tsx",
+    "./stat": "./src/stat/stat.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
