@@ -1152,3 +1152,25 @@ code {
   font-size: var(--cascade-text-sm);
   color: var(--cascade-color-text-subtle);
 }
+
+.a11y-matrix-filter {
+  margin-block-end: var(--cascade-space-5);
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.a11y-matrix-filter [role='radio'] {
+  text-transform: capitalize;
+}
+
+.a11y-role {
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-keys {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--cascade-space-1);
+}

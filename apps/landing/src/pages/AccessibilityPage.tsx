@@ -3,6 +3,7 @@ import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { AccessibilityHero } from './accessibility/AccessibilityHero'
 import { AxeComparison } from './accessibility/AxeComparison'
+import { A11yMatrix } from './accessibility/A11yMatrix'
 
 export function AccessibilityPage() {
   return (
@@ -13,7 +14,8 @@ export function AccessibilityPage() {
         <main>
           <AccessibilityHero />
           <AxeComparison />
-          {/* Tasks 4–5 will add: <A11yMatrix /> <PracticesGrid /> <CiGate /> <A11yCta /> */}
+          <A11yMatrix />
+          {/* Tasks 5 will add: <PracticesGrid /> <CiGate /> <A11yCta /> */}
         </main>
       </SkipNavTarget>
       <Footer />
