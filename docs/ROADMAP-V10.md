@@ -41,7 +41,7 @@ expose — starting with the components the new pages themselves need.
 ### bulma.io
 
 - Show-don't-tell: interactive demos (grid widget, progressive `is-primary is-large
-  is-loading` modifier demo, dark-mode toggle) do the persuasion. cascade already has this
+is-loading` modifier demo, dark-mode toggle) do the persuasion. cascade already has this
   DNA (Relay console, SignalsDemo, ThemeDemo) — v10 extends it to the proof pages.
 - Hero feature chip list ("CSS Variables, Dark Mode, Flexbox, Modular…") — scannable
   modernity proof in one glance.
@@ -94,14 +94,14 @@ Worth building, in two batches:
 
 ## Workstreams
 
-| #   | Workstream            | Tranche | Summary                                                                                                                                  |
-| --- | --------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| #   | Workstream            | Tranche | Summary                                                                                                                                                          |
+| --- | --------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | A   | Multi-page foundation | T1      | Pathname router + shared page chrome in the landing app; `/accessibility` + `/performance` routes; bench data module; run `pnpm bench` to populate real results. |
-| B   | Components batch A    | T2      | `copy-button`, `stat`, `status`, `visually-hidden`, `skip-nav`, `progress-circle` — manifests, tests, i18n, react exports, registry regen. |
-| C   | Accessibility page    | T3      | Hero claim + topline numbers, comparative axe chart, generated keyboard/ARIA matrix from registry.json, engineering-practices grid, CI-gate section. |
-| D   | Performance page      | T4      | Bundle / latency / re-render / Lighthouse charts from results.json via `@cascade-ui/charts`, per-component cost matrix, methodology + honesty section. |
-| E   | Home page upgrades    | T5      | Hero feature chips, stats band (registry + bench numbers), a11y + performance teaser sections, footer columns.                            |
-| F   | Typography + backlog  | T6      | `heading`, `text`, `code`, `blockquote`, `list`, `prose`; queue 8 components to factory-backlog.json; final quality gates + DoD.          |
+| B   | Components batch A    | T2      | `copy-button`, `stat`, `status`, `visually-hidden`, `skip-nav`, `progress-circle` — manifests, tests, i18n, react exports, registry regen.                       |
+| C   | Accessibility page    | T3      | Hero claim + topline numbers, comparative axe chart, generated keyboard/ARIA matrix from registry.json, engineering-practices grid, CI-gate section.             |
+| D   | Performance page      | T4      | Bundle / latency / re-render / Lighthouse charts from results.json via `@cascade-ui/charts`, per-component cost matrix, methodology + honesty section.           |
+| E   | Home page upgrades    | T5      | Hero feature chips, stats band (registry + bench numbers), a11y + performance teaser sections, footer columns.                                                   |
+| F   | Typography + backlog  | T6      | `heading`, `text`, `code`, `blockquote`, `list`, `prose`; queue 8 components to factory-backlog.json; final quality gates + DoD.                                 |
 
 ## Decisions baked in
 

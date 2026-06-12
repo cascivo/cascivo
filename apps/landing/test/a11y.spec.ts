@@ -33,3 +33,22 @@ for (const theme of ['light', 'dark'] as const) {
     expect(scan.violations).toEqual([])
   })
 }
+
+for (const theme of ['light', 'dark'] as const) {
+  test(`axe sweep — /performance — ${theme}`, async ({ page }) => {
+    await page.goto('/performance')
+    await page.evaluate((t) => {
+      document.documentElement.dataset.theme = t
+      // Reveal all scroll-animated sections and disable transitions so they
+      // are fully visible (opacity:1) when axe scans — not mid-animation.
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        ;(el as HTMLElement).style.transition = 'none'
+        el.setAttribute('data-revealed', '')
+      })
+    }, theme)
+    const scan = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze()
+    expect(scan.violations).toEqual([])
+  })
+}

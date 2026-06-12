@@ -111,6 +111,7 @@
             "CommandMenu",
             "ConsoleApp",
             "ContextMenu",
+            "CopyButton",
             "Cta",
             "DashboardCharts",
             "DashboardLayout",
@@ -155,6 +156,7 @@
             "PieChart",
             "Popover",
             "ProgressBar",
+            "ProgressCircle",
             "ProgressIndicator",
             "Radar",
             "Radio",
@@ -173,14 +175,17 @@
             "SideNav",
             "SidebarApp",
             "Skeleton",
+            "SkipNav",
             "Slider",
             "Spacer",
             "Sparkline",
             "Spinner",
             "SplitView",
             "Stack",
+            "Stat",
             "StatsBand",
             "StatsCards",
+            "Status",
             "Switcher",
             "Tabs",
             "Tag",
@@ -191,7 +196,8 @@
             "Toggle",
             "Tooltip",
             "Treemap",
-            "UsersTablePage"
+            "UsersTablePage",
+            "VisuallyHidden"
           ]
         },
         "props": {
@@ -637,6 +643,33 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CopyButton"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  }
+                },
+                "required": ["value"]
               }
             }
           }
@@ -1481,6 +1514,42 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ProgressCircle"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "showValue": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ProgressIndicator"
               }
             },
@@ -1894,6 +1963,31 @@
           "if": {
             "properties": {
               "component": {
+                "const": "SkipNav"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Slider"
               }
             },
@@ -1950,6 +2044,69 @@
                   },
                   "label": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Stat"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": ["string", "number"]
+                  },
+                  "delta": {
+                    "type": "string"
+                  },
+                  "trend": {
+                    "type": "string",
+                    "enum": ["up", "down", "flat"]
+                  },
+                  "helpText": {
+                    "type": "string"
+                  }
+                },
+                "required": ["label", "value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Status"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["success", "warning", "error", "info", "neutral"]
+                  },
+                  "pulse": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -2256,6 +2413,30 @@
                   }
                 },
                 "required": ["content", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "VisuallyHidden"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
