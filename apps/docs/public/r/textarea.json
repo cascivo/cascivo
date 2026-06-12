@@ -3,7 +3,6 @@
   "name": "textarea",
   "type": "component",
   "description": "Multi-line text input with optional label, hint, and error state",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "text", "multiline"],
+  "category": "inputs",
   "meta": {
     "name": "Textarea",
     "description": "Multi-line text input with optional label, hint, and error state",

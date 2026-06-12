@@ -3,7 +3,6 @@
   "name": "form",
   "type": "component",
   "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "validation", "signals", "input"],
+  "category": "inputs",
   "meta": {
     "name": "Form",
     "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",

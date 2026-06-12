@@ -3,7 +3,6 @@
   "name": "segmented-control",
   "type": "component",
   "description": "Mutually exclusive toggle group",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "toggle", "group", "segmented", "input"],
+  "category": "inputs",
   "meta": {
     "name": "SegmentedControl",
     "description": "Mutually exclusive toggle group",

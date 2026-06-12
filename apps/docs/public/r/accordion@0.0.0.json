@@ -3,7 +3,6 @@
   "name": "accordion",
   "type": "component",
   "description": "Vertically stacked, collapsible content sections",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["navigation", "collapse", "disclosure"],
+  "category": "navigation",
   "meta": {
     "name": "Accordion",
     "description": "Vertically stacked, collapsible content sections",

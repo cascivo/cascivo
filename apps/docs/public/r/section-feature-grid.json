@@ -3,7 +3,6 @@
   "name": "section/feature-grid",
   "type": "section",
   "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["section", "features", "grid"],
+  "category": "layout",
   "meta": {
     "name": "FeatureGrid",
     "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",

@@ -3,7 +3,6 @@
   "name": "layout/masonry",
   "type": "layout",
   "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "masonry", "gallery"],
+  "category": "layout",
   "meta": {
     "name": "Masonry",
     "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",

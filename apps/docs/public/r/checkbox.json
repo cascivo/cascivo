@@ -3,7 +3,6 @@
   "name": "checkbox",
   "type": "component",
   "description": "Binary toggle for forms, with indeterminate support",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "toggle", "boolean"],
+  "category": "inputs",
   "meta": {
     "name": "Checkbox",
     "description": "Binary toggle for forms, with indeterminate support",

@@ -3,7 +3,6 @@
   "name": "layout/app-shell",
   "type": "layout",
   "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
   "tags": ["layout", "shell", "sidebar", "navigation"],
+  "category": "layout",
   "meta": {
     "name": "AppShell",
     "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",

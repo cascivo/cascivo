@@ -3,7 +3,6 @@
   "name": "kbd",
   "type": "component",
   "description": "Displays a keyboard key or shortcut",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["keyboard", "shortcut", "hotkey"],
+  "category": "display",
   "meta": {
     "name": "Kbd",
     "description": "Displays a keyboard key or shortcut",

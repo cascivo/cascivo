@@ -3,7 +3,6 @@
   "name": "toast",
   "type": "component",
   "description": "Transient notification surfaced via the useToast hook",
-  "category": "overlay",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["overlay", "notification", "feedback"],
+  "category": "overlay",
   "meta": {
     "name": "Toast",
     "description": "Transient notification surfaced via the useToast hook",

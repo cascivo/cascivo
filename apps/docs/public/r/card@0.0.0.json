@@ -3,7 +3,6 @@
   "name": "card",
   "type": "component",
   "description": "Container for grouping related content",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["container", "layout", "surface"],
+  "category": "display",
   "meta": {
     "name": "Card",
     "description": "Container for grouping related content",

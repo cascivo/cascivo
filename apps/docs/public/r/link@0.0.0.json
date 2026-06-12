@@ -3,7 +3,6 @@
   "name": "link",
   "type": "component",
   "description": "Styled anchor for navigation, standalone or inline within prose",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["link", "anchor", "navigation"],
+  "category": "navigation",
   "meta": {
     "name": "Link",
     "description": "Styled anchor for navigation, standalone or inline within prose",

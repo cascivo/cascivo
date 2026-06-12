@@ -3,7 +3,6 @@
   "name": "number-input",
   "type": "component",
   "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["form", "number", "input", "spinbutton", "stepper"],
+  "category": "inputs",
   "meta": {
     "name": "NumberInput",
     "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",

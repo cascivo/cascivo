@@ -1,4 +1,4 @@
-import type { LegacyRegistry, RegistryIndex, RegistryItem } from './types.ts'
+import type { RegistryIndex, RegistryItem } from './types.ts'
 
 export interface ValidationResult {
   ok: boolean
@@ -146,18 +146,21 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
   return {
     schemaVersion: 2,
     name: 'cascade',
-    items: (components as Record<string, unknown>[]).map((c) => ({
-      schemaVersion: 2 as const,
-      name: typeof c['name'] === 'string' ? c['name'] : '',
-      type: (c['type'] as RegistryItem['type']) ?? 'component',
-      description: typeof c['description'] === 'string' ? c['description'] : '',
-      category: typeof c['category'] === 'string' ? c['category'] : undefined,
-      version: topVersion,
-      files: Array.isArray(c['files']) ? (c['files'] as string[]).map((url) => ({ url })) : [],
-      install: typeof c['install'] === 'string' ? c['install'] : undefined,
-      dependencies: Array.isArray(c['dependencies']) ? (c['dependencies'] as string[]) : [],
-      tags: Array.isArray(c['tags']) ? (c['tags'] as string[]) : [],
-      meta: c['meta'] as RegistryItem['meta'],
-    })),
+    items: (components as Record<string, unknown>[]).map((c) => {
+      const item: RegistryItem = {
+        schemaVersion: 2,
+        name: typeof c['name'] === 'string' ? c['name'] : '',
+        type: (c['type'] as RegistryItem['type']) ?? 'component',
+        description: typeof c['description'] === 'string' ? c['description'] : '',
+        version: topVersion,
+        files: Array.isArray(c['files']) ? (c['files'] as string[]).map((url) => ({ url })) : [],
+        dependencies: Array.isArray(c['dependencies']) ? (c['dependencies'] as string[]) : [],
+        tags: Array.isArray(c['tags']) ? (c['tags'] as string[]) : [],
+      }
+      if (typeof c['category'] === 'string') item.category = c['category']
+      if (typeof c['install'] === 'string') item.install = c['install']
+      if (c['meta']) item.meta = c['meta'] as RegistryItem['meta']
+      return item
+    }),
   }
 }

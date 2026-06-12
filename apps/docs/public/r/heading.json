@@ -3,7 +3,6 @@
   "name": "heading",
   "type": "component",
   "description": "Section heading with semantic level decoupled from visual size",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["typography", "heading", "title"],
+  "category": "display",
   "meta": {
     "name": "Heading",
     "description": "Section heading with semantic level decoupled from visual size",

@@ -4,6 +4,10 @@ import { pathToFileURL } from 'node:url'
 
 export type ThemeName = 'light' | 'dark' | 'warm'
 
+export type RegistryNamespaceConfig =
+  | string
+  | { url: string; headers?: Record<string, string>; params?: Record<string, string> }
+
 export interface CascadeConfig {
   /** URL of the registry.json index. */
   registry: string
@@ -11,6 +15,10 @@ export interface CascadeConfig {
   outputDir: string
   /** Default theme imported by `cascade init`. */
   theme: ThemeName
+  /** Namespace → registry URL template (with {name} placeholder) or auth config. */
+  registries?: Record<string, RegistryNamespaceConfig>
+  /** Whether to copy test files (*.contract.test.tsx) when adding components. */
+  tests?: boolean
 }
 
 export const DEFAULT_CONFIG: CascadeConfig = {

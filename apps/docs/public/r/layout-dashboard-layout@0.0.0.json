@@ -3,7 +3,6 @@
   "name": "layout/dashboard-layout",
   "type": "layout",
   "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "dashboard", "page"],
+  "category": "layout",
   "meta": {
     "name": "DashboardLayout",
     "description": "Dashboard page layout with stats strip, main content area, and optional aside.",

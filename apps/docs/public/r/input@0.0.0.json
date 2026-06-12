@@ -3,7 +3,6 @@
   "name": "input",
   "type": "component",
   "description": "Text input field with optional label, hint, and error state",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "text", "input"],
+  "category": "inputs",
   "meta": {
     "name": "Input",
     "description": "Text input field with optional label, hint, and error state",

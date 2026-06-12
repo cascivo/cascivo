@@ -3,7 +3,6 @@
   "name": "radio-card",
   "type": "component",
   "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["radio", "card", "selectable", "form"],
+  "category": "inputs",
   "meta": {
     "name": "RadioCard",
     "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",

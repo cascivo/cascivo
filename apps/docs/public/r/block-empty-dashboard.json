@@ -3,7 +3,6 @@
   "name": "block/empty-dashboard",
   "type": "block",
   "description": "Dashboard page showing an empty state with a call-to-action button.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -12,6 +11,7 @@
   ],
   "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
   "tags": ["block", "dashboard", "empty-state", "page"],
+  "category": "display",
   "meta": {
     "name": "EmptyDashboard",
     "description": "Dashboard page showing an empty state with a call-to-action button.",

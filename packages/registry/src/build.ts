@@ -7,11 +7,10 @@ function flatName(name: string): string {
 }
 
 function itemWithoutExamples(item: RegistryItem): RegistryItem {
-  if (!item.meta?.examples?.length) return item
-  return {
-    ...item,
-    meta: { ...item.meta, examples: [] },
-  }
+  if (!item.meta || typeof item.meta !== 'object') return item
+  const meta = item.meta as Record<string, unknown>
+  if (!Array.isArray(meta['examples']) || meta['examples'].length === 0) return item
+  return { ...item, meta: { ...meta, examples: [] } }
 }
 
 export async function buildRegistry(index: RegistryIndex, outDir: string): Promise<void> {

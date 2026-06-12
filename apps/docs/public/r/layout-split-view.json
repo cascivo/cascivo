@@ -3,7 +3,6 @@
   "name": "layout/split-view",
   "type": "layout",
   "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "split", "resizable", "pane"],
+  "category": "layout",
   "meta": {
     "name": "SplitView",
     "description": "Resizable two-pane split layout with keyboard and pointer drag support.",

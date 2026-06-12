@@ -3,7 +3,6 @@
   "name": "layout/spacer",
   "type": "layout",
   "description": "Fixed-height spacing block using design token steps.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "spacer", "spacing"],
+  "category": "layout",
   "meta": {
     "name": "Spacer",
     "description": "Fixed-height spacing block using design token steps.",

@@ -3,7 +3,6 @@
   "name": "command-menu",
   "type": "component",
   "description": "Cmd+K command palette with fuzzy search over grouped commands",
-  "category": "overlay",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+  "category": "overlay",
   "meta": {
     "name": "CommandMenu",
     "description": "Cmd+K command palette with fuzzy search over grouped commands",

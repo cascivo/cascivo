@@ -3,7 +3,6 @@
   "name": "data-table",
   "type": "component",
   "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+  "category": "display",
   "meta": {
     "name": "DataTable",
     "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",

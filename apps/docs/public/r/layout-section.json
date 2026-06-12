@@ -3,7 +3,6 @@
   "name": "layout/section",
   "type": "layout",
   "description": "Page-section shell with block padding, centered inner width, and stack gap.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "section", "page"],
+  "category": "layout",
   "meta": {
     "name": "Section",
     "description": "Page-section shell with block padding, centered inner width, and stack gap.",

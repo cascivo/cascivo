@@ -3,7 +3,6 @@
   "name": "editable",
   "type": "component",
   "description": "Inline click-to-edit text field",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "editable", "inline", "input", "text"],
+  "category": "inputs",
   "meta": {
     "name": "Editable",
     "description": "Inline click-to-edit text field",

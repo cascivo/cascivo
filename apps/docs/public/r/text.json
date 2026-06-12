@@ -3,7 +3,6 @@
   "name": "text",
   "type": "component",
   "description": "Body text with size, weight, and muted variants",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["typography", "text", "paragraph", "body"],
+  "category": "display",
   "meta": {
     "name": "Text",
     "description": "Body text with size, weight, and muted variants",

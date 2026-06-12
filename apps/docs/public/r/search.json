@@ -3,7 +3,6 @@
   "name": "search",
   "type": "component",
   "description": "Search input with debounced search callback and clear button",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["search", "input", "filter", "form"],
+  "category": "inputs",
   "meta": {
     "name": "Search",
     "description": "Search input with debounced search callback and clear button",

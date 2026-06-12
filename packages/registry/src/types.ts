@@ -1,5 +1,3 @@
-import type { ComponentMeta } from '@cascade-ui/core'
-
 export interface RegistryFile {
   url: string
   target?: string
@@ -39,7 +37,7 @@ export interface RegistryItem {
   dependencies: string[]
   registryDependencies?: string[]
   tags: string[]
-  meta?: ComponentMeta
+  meta?: unknown
   advisories?: RegistryAdvisory[]
 }
 
@@ -60,7 +58,7 @@ export interface LegacyRegistryEntry {
   install?: string
   dependencies: string[]
   tags: string[]
-  meta?: ComponentMeta
+  meta?: unknown
 }
 
 export interface LegacyRegistry {

@@ -3,7 +3,6 @@
   "name": "hover-card",
   "type": "component",
   "description": "Hover-triggered popover with configurable open/close delay",
-  "category": "overlay",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["overlay", "hover", "preview", "floating"],
+  "category": "overlay",
   "meta": {
     "name": "HoverCard",
     "description": "Hover-triggered popover with configurable open/close delay",

@@ -3,7 +3,6 @@
   "name": "rating-group",
   "type": "component",
   "description": "Star rating input with accessible radio group pattern",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "rating", "stars", "input", "feedback"],
+  "category": "inputs",
   "meta": {
     "name": "RatingGroup",
     "description": "Star rating input with accessible radio group pattern",

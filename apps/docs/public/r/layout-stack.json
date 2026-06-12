@@ -3,7 +3,6 @@
   "name": "layout/stack",
   "type": "layout",
   "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "flex", "stack", "spacing"],
+  "category": "layout",
   "meta": {
     "name": "Stack",
     "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",

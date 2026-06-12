@@ -3,7 +3,6 @@
   "name": "block/notification-center",
   "type": "block",
   "description": "A list of notification alerts with a mark-all-read action.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -12,6 +11,7 @@
   ],
   "dependencies": ["@cascade-ui/react", "layout/stack"],
   "tags": ["block", "notifications", "alerts"],
+  "category": "display",
   "meta": {
     "name": "NotificationCenter",
     "description": "A list of notification alerts with a mark-all-read action.",

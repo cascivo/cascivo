@@ -858,6 +858,9 @@ importers:
 
   packages/registry:
     devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

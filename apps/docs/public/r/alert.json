@@ -3,7 +3,6 @@
   "name": "alert",
   "type": "component",
   "description": "Highlights a short, important message inline",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["notification", "message", "feedback"],
+  "category": "display",
   "meta": {
     "name": "Alert",
     "description": "Highlights a short, important message inline",

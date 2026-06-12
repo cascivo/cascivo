@@ -3,7 +3,6 @@
   "name": "progress-bar",
   "type": "component",
   "description": "Shows determinate or indeterminate progress of a task",
-  "category": "feedback",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["progress", "loading", "status", "feedback"],
+  "category": "feedback",
   "meta": {
     "name": "ProgressBar",
     "description": "Shows determinate or indeterminate progress of a task",

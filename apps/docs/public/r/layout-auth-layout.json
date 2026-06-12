@@ -3,7 +3,6 @@
   "name": "layout/auth-layout",
   "type": "layout",
   "description": "Centered card layout for authentication pages (login, register, forgot password).",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "auth", "login", "page"],
+  "category": "layout",
   "meta": {
     "name": "AuthLayout",
     "description": "Centered card layout for authentication pages (login, register, forgot password).",

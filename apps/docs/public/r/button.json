@@ -3,7 +3,6 @@
   "name": "button",
   "type": "component",
   "description": "Triggers an action or event",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["action", "form", "interactive"],
+  "category": "inputs",
   "meta": {
     "name": "Button",
     "description": "Triggers an action or event",

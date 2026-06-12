@@ -3,7 +3,6 @@
   "name": "layout/auto-grid",
   "type": "layout",
   "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "grid", "responsive"],
+  "category": "layout",
   "meta": {
     "name": "AutoGrid",
     "description": "Media-query-free responsive grid — columns auto-fill based on available space.",

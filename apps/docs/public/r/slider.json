@@ -3,7 +3,6 @@
   "name": "slider",
   "type": "component",
   "description": "Range input for selecting a value within bounds",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "range", "input"],
+  "category": "inputs",
   "meta": {
     "name": "Slider",
     "description": "Range input for selecting a value within bounds",

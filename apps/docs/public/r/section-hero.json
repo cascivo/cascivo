@@ -3,7 +3,6 @@
   "name": "section/hero",
   "type": "section",
   "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["section", "hero", "marketing"],
+  "category": "layout",
   "meta": {
     "name": "Hero",
     "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",

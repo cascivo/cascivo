@@ -3,7 +3,6 @@
   "name": "checkbox-card",
   "type": "component",
   "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["checkbox", "card", "selectable", "form"],
+  "category": "inputs",
   "meta": {
     "name": "CheckboxCard",
     "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",

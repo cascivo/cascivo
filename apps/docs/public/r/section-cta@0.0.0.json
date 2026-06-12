@@ -3,7 +3,6 @@
   "name": "section/cta",
   "type": "section",
   "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["section", "cta", "marketing"],
+  "category": "layout",
   "meta": {
     "name": "Cta",
     "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",

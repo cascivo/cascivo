@@ -3,7 +3,6 @@
   "name": "layout/settings-layout",
   "type": "layout",
   "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "settings", "page"],
+  "category": "layout",
   "meta": {
     "name": "SettingsLayout",
     "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",

@@ -3,7 +3,6 @@
   "name": "block/stats-cards",
   "type": "block",
   "description": "Grid of KPI stat cards with trend badges.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -12,6 +11,7 @@
   ],
   "dependencies": ["@cascade-ui/react"],
   "tags": ["block", "stats", "kpi", "cards"],
+  "category": "display",
   "meta": {
     "name": "StatsCards",
     "description": "Grid of KPI stat cards with trend badges.",

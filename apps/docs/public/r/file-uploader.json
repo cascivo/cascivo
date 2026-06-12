@@ -3,7 +3,6 @@
   "name": "file-uploader",
   "type": "component",
   "description": "Drag-and-drop file upload zone with file list and status indicators.",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["upload", "file", "drop", "drag", "input", "form"],
+  "category": "inputs",
   "meta": {
     "name": "FileUploader",
     "description": "Drag-and-drop file upload zone with file list and status indicators.",

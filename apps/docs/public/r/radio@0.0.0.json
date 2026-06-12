@@ -3,7 +3,6 @@
   "name": "radio",
   "type": "component",
   "description": "Single choice from a set, grouped with RadioGroup",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "choice", "group"],
+  "category": "inputs",
   "meta": {
     "name": "Radio",
     "description": "Single choice from a set, grouped with RadioGroup",

@@ -3,7 +3,6 @@
   "name": "copy-button",
   "type": "component",
   "description": "Icon button that copies a value to the clipboard with copied feedback",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["clipboard", "copy", "button", "snippet"],
+  "category": "inputs",
   "meta": {
     "name": "CopyButton",
     "description": "Icon button that copies a value to the clipboard with copied feedback",

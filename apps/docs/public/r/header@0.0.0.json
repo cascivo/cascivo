@@ -3,7 +3,6 @@
   "name": "header",
   "type": "component",
   "description": "App top bar with brand, primary navigation links, and an actions slot",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["navigation", "app-shell", "top-bar", "banner"],
+  "category": "navigation",
   "meta": {
     "name": "Header",
     "description": "App top bar with brand, primary navigation links, and an actions slot",

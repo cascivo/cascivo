@@ -3,7 +3,6 @@
   "name": "select",
   "type": "component",
   "description": "Native select menu styled to match the design system",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["form", "dropdown", "menu"],
+  "category": "inputs",
   "meta": {
     "name": "Select",
     "description": "Native select menu styled to match the design system",

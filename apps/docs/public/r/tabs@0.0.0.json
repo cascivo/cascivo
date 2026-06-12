@@ -3,7 +3,6 @@
   "name": "tabs",
   "type": "component",
   "description": "Switch between related panels of content",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["navigation", "tabs", "sections"],
+  "category": "navigation",
   "meta": {
     "name": "Tabs",
     "description": "Switch between related panels of content",

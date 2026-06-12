@@ -3,7 +3,6 @@
   "name": "header-panel",
   "type": "component",
   "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+  "category": "navigation",
   "meta": {
     "name": "HeaderPanel",
     "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",

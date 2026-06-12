@@ -3,7 +3,6 @@
   "name": "breadcrumb",
   "type": "component",
   "description": "Shows the current page location within a navigation hierarchy",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["breadcrumb", "navigation", "hierarchy"],
+  "category": "navigation",
   "meta": {
     "name": "Breadcrumb",
     "description": "Shows the current page location within a navigation hierarchy",

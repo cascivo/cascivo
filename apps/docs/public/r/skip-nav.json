@@ -3,7 +3,6 @@
   "name": "skip-nav",
   "type": "component",
   "description": "Skip link that jumps keyboard users past the navigation to the main content",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+  "category": "navigation",
   "meta": {
     "name": "SkipNav",
     "description": "Skip link that jumps keyboard users past the navigation to the main content",

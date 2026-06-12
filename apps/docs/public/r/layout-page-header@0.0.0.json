@@ -3,7 +3,6 @@
   "name": "layout/page-header",
   "type": "layout",
   "description": "Page-level header with title, description, breadcrumb, and actions slots.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["layout", "header", "page"],
+  "category": "layout",
   "meta": {
     "name": "PageHeader",
     "description": "Page-level header with title, description, breadcrumb, and actions slots.",

@@ -3,7 +3,6 @@
   "name": "block/users-table-page",
   "type": "block",
   "description": "Full users management page with table, search, and invite action.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -12,6 +11,7 @@
   ],
   "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
   "tags": ["block", "users", "table", "page"],
+  "category": "display",
   "meta": {
     "name": "UsersTablePage",
     "description": "Full users management page with table, search, and invite action.",

@@ -3,7 +3,6 @@
   "name": "section/stats-band",
   "type": "section",
   "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
-  "category": "layout",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
   "tags": ["section", "stats", "kpi", "charts"],
+  "category": "layout",
   "meta": {
     "name": "StatsBand",
     "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",

@@ -3,7 +3,6 @@
   "name": "block/dashboard-charts",
   "type": "block",
   "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -12,6 +11,7 @@
   ],
   "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
   "tags": ["block", "dashboard", "charts", "kpi"],
+  "category": "display",
   "meta": {
     "name": "DashboardCharts",
     "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",

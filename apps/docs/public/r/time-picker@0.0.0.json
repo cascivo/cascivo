@@ -3,7 +3,6 @@
   "name": "time-picker",
   "type": "component",
   "description": "Native time input wrapper with label, hint, error, and size variants",
-  "category": "inputs",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["time", "input", "form"],
+  "category": "inputs",
   "meta": {
     "name": "TimePicker",
     "description": "Native time input wrapper with label, hint, error, and size variants",

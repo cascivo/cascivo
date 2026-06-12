@@ -3,7 +3,6 @@
   "name": "block/console-app",
   "type": "block",
   "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -17,6 +16,7 @@
     "layout/page-header"
   ],
   "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+  "category": "display",
   "meta": {
     "name": "ConsoleApp",
     "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",

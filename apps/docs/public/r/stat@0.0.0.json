@@ -3,7 +3,6 @@
   "name": "stat",
   "type": "component",
   "description": "Displays a key metric with optional delta, trend direction and help text",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["stat", "kpi", "metric", "number"],
+  "category": "display",
   "meta": {
     "name": "Stat",
     "description": "Displays a key metric with optional delta, trend direction and help text",

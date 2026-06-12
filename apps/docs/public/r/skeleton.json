@@ -3,7 +3,6 @@
   "name": "skeleton",
   "type": "component",
   "description": "Animated loading placeholder that mirrors the shape of pending content",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["loading", "placeholder", "shimmer"],
+  "category": "display",
   "meta": {
     "name": "Skeleton",
     "description": "Animated loading placeholder that mirrors the shape of pending content",

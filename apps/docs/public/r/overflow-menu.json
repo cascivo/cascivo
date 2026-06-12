@@ -3,7 +3,6 @@
   "name": "overflow-menu",
   "type": "component",
   "description": "Kebab icon button revealing a menu of row-level actions",
-  "category": "overlay",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["overlay", "menu", "actions", "kebab", "table"],
+  "category": "overlay",
   "meta": {
     "name": "OverflowMenu",
     "description": "Kebab icon button revealing a menu of row-level actions",

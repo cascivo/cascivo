@@ -3,7 +3,6 @@
   "name": "prose",
   "type": "component",
   "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["typography", "prose", "content", "markdown", "article"],
+  "category": "display",
   "meta": {
     "name": "Prose",
     "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",

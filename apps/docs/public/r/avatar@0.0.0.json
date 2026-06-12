@@ -3,7 +3,6 @@
   "name": "avatar",
   "type": "component",
   "description": "Displays a user image with initials fallback",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["user", "profile", "image"],
+  "category": "display",
   "meta": {
     "name": "Avatar",
     "description": "Displays a user image with initials fallback",

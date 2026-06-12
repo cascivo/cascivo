@@ -3,7 +3,6 @@
   "name": "tooltip",
   "type": "component",
   "description": "Contextual label shown on hover or focus",
-  "category": "overlay",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["overlay", "hint", "popover"],
+  "category": "overlay",
   "meta": {
     "name": "Tooltip",
     "description": "Contextual label shown on hover or focus",

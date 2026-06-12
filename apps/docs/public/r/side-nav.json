@@ -3,7 +3,6 @@
   "name": "side-nav",
   "type": "component",
   "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
-  "category": "navigation",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
   "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+  "category": "navigation",
   "meta": {
     "name": "SideNav",
     "description": "Collapsible sidebar navigation with optional icons and one level of grouping",

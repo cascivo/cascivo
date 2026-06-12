@@ -7,7 +7,6 @@
       "name": "accordion",
       "type": "component",
       "description": "Vertically stacked, collapsible content sections",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -19,6 +18,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["navigation", "collapse", "disclosure"],
+      "category": "navigation",
       "meta": {
         "name": "Accordion",
         "description": "Vertically stacked, collapsible content sections",
@@ -71,7 +71,6 @@
       "name": "alert",
       "type": "component",
       "description": "Highlights a short, important message inline",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -83,6 +82,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["notification", "message", "feedback"],
+      "category": "display",
       "meta": {
         "name": "Alert",
         "description": "Highlights a short, important message inline",
@@ -147,7 +147,6 @@
       "name": "alert-dialog",
       "type": "component",
       "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -159,6 +158,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "dialog", "confirm", "destructive"],
+      "category": "overlay",
       "meta": {
         "name": "AlertDialog",
         "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
@@ -192,7 +192,6 @@
       "name": "avatar",
       "type": "component",
       "description": "Displays a user image with initials fallback",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -204,6 +203,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["user", "profile", "image"],
+      "category": "display",
       "meta": {
         "name": "Avatar",
         "description": "Displays a user image with initials fallback",
@@ -261,7 +261,6 @@
       "name": "badge",
       "type": "component",
       "description": "Small status label or category indicator",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -273,6 +272,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["label", "status", "tag"],
+      "category": "display",
       "meta": {
         "name": "Badge",
         "description": "Small status label or category indicator",
@@ -316,7 +316,6 @@
       "name": "block/console-app",
       "type": "block",
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -330,6 +329,7 @@
         "layout/page-header"
       ],
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+      "category": "display",
       "meta": {
         "name": "ConsoleApp",
         "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
@@ -368,7 +368,6 @@
       "name": "block/dashboard-charts",
       "type": "block",
       "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -377,6 +376,7 @@
       ],
       "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
       "tags": ["block", "dashboard", "charts", "kpi"],
+      "category": "display",
       "meta": {
         "name": "DashboardCharts",
         "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
@@ -401,7 +401,6 @@
       "name": "block/empty-dashboard",
       "type": "block",
       "description": "Dashboard page showing an empty state with a call-to-action button.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -410,6 +409,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
       "tags": ["block", "dashboard", "empty-state", "page"],
+      "category": "display",
       "meta": {
         "name": "EmptyDashboard",
         "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -441,7 +441,6 @@
       "name": "block/login-page",
       "type": "block",
       "description": "Authentication login page with email and password form.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -450,6 +449,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
       "tags": ["block", "login", "auth", "form", "page"],
+      "category": "display",
       "meta": {
         "name": "LoginPage",
         "description": "Authentication login page with email and password form.",
@@ -481,7 +481,6 @@
       "name": "block/notification-center",
       "type": "block",
       "description": "A list of notification alerts with a mark-all-read action.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -490,6 +489,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/stack"],
       "tags": ["block", "notifications", "alerts"],
+      "category": "display",
       "meta": {
         "name": "NotificationCenter",
         "description": "A list of notification alerts with a mark-all-read action.",
@@ -527,7 +527,6 @@
       "name": "block/page-with-breadcrumb",
       "type": "block",
       "description": "A centered content page with a breadcrumb navigation and page header.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -536,6 +535,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
+      "category": "display",
       "meta": {
         "name": "PageWithBreadcrumb",
         "description": "A centered content page with a breadcrumb navigation and page header.",
@@ -560,7 +560,6 @@
       "name": "block/settings-form-page",
       "type": "block",
       "description": "Settings page with profile form inside a two-column settings layout.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -569,6 +568,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
       "tags": ["block", "settings", "form", "page"],
+      "category": "display",
       "meta": {
         "name": "SettingsFormPage",
         "description": "Settings page with profile form inside a two-column settings layout.",
@@ -600,7 +600,6 @@
       "name": "block/sidebar-app",
       "type": "block",
       "description": "Full app shell with collapsible side navigation and top header.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -609,6 +608,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/app-shell"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
+      "category": "display",
       "meta": {
         "name": "SidebarApp",
         "description": "Full app shell with collapsible side navigation and top header.",
@@ -633,7 +633,6 @@
       "name": "block/stats-cards",
       "type": "block",
       "description": "Grid of KPI stat cards with trend badges.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -642,6 +641,7 @@
       ],
       "dependencies": ["@cascade-ui/react"],
       "tags": ["block", "stats", "kpi", "cards"],
+      "category": "display",
       "meta": {
         "name": "StatsCards",
         "description": "Grid of KPI stat cards with trend badges.",
@@ -673,7 +673,6 @@
       "name": "block/users-table-page",
       "type": "block",
       "description": "Full users management page with table, search, and invite action.",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -682,6 +681,7 @@
       ],
       "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
       "tags": ["block", "users", "table", "page"],
+      "category": "display",
       "meta": {
         "name": "UsersTablePage",
         "description": "Full users management page with table, search, and invite action.",
@@ -719,7 +719,6 @@
       "name": "blockquote",
       "type": "component",
       "description": "Quoted passage with optional attribution footer",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -731,6 +730,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "quote", "blockquote", "citation"],
+      "category": "display",
       "meta": {
         "name": "Blockquote",
         "description": "Quoted passage with optional attribution footer",
@@ -771,7 +771,6 @@
       "name": "breadcrumb",
       "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -783,6 +782,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["breadcrumb", "navigation", "hierarchy"],
+      "category": "navigation",
       "meta": {
         "name": "Breadcrumb",
         "description": "Shows the current page location within a navigation hierarchy",
@@ -836,7 +836,6 @@
       "name": "button",
       "type": "component",
       "description": "Triggers an action or event",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -848,6 +847,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["action", "form", "interactive"],
+      "category": "inputs",
       "meta": {
         "name": "Button",
         "description": "Triggers an action or event",
@@ -910,7 +910,6 @@
       "name": "card",
       "type": "component",
       "description": "Container for grouping related content",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -922,6 +921,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["container", "layout", "surface"],
+      "category": "display",
       "meta": {
         "name": "Card",
         "description": "Container for grouping related content",
@@ -964,12 +964,12 @@
       "name": "chart/area-chart",
       "type": "chart",
       "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "area", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "AreaChart",
         "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
@@ -1084,12 +1084,12 @@
       "name": "chart/bar-chart",
       "type": "chart",
       "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "bar", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "BarChart",
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
@@ -1200,12 +1200,12 @@
       "name": "chart/boxplot",
       "type": "chart",
       "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Boxplot",
         "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
@@ -1279,12 +1279,12 @@
       "name": "chart/bubble-chart",
       "type": "chart",
       "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "BubbleChart",
         "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
@@ -1357,12 +1357,12 @@
       "name": "chart/bullet",
       "type": "chart",
       "description": "Bullet chart with background range bands, measure bar, and target tick.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Bullet",
         "description": "Bullet chart with background range bands, measure bar, and target tick.",
@@ -1445,12 +1445,12 @@
       "name": "chart/combo-chart",
       "type": "chart",
       "description": "Combination bar + line chart on shared or dual y-axes.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "ComboChart",
         "description": "Combination bar + line chart on shared or dual y-axes.",
@@ -1527,12 +1527,12 @@
       "name": "chart/heatmap",
       "type": "chart",
       "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Heatmap",
         "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
@@ -1597,12 +1597,12 @@
       "name": "chart/histogram",
       "type": "chart",
       "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Histogram",
         "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
@@ -1679,12 +1679,12 @@
       "name": "chart/kpi",
       "type": "chart",
       "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Kpi",
         "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
@@ -1750,12 +1750,12 @@
       "name": "chart/line-chart",
       "type": "chart",
       "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "line", "time-series", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "LineChart",
         "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
@@ -1884,12 +1884,12 @@
       "name": "chart/meter",
       "type": "chart",
       "description": "Progress meter in bar or gauge variant with threshold coloring.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Meter",
         "description": "Progress meter in bar or gauge variant with threshold coloring.",
@@ -1960,12 +1960,12 @@
       "name": "chart/pie-chart",
       "type": "chart",
       "description": "Pie or donut chart with hover segments and optional legend.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "pie", "donut", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "PieChart",
         "description": "Pie or donut chart with hover segments and optional legend.",
@@ -2050,12 +2050,12 @@
       "name": "chart/radar",
       "type": "chart",
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Radar",
         "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
@@ -2141,12 +2141,12 @@
       "name": "chart/scatter-chart",
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "scatter", "plot", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "ScatterChart",
         "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -2243,12 +2243,12 @@
       "name": "chart/sparkline",
       "type": "chart",
       "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Sparkline",
         "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
@@ -2310,12 +2310,12 @@
       "name": "chart/treemap",
       "type": "chart",
       "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
-      "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "install": "@cascade-ui/charts",
       "dependencies": ["@cascade-ui/charts"],
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
+      "category": "chart",
+      "install": "@cascade-ui/charts",
       "meta": {
         "name": "Treemap",
         "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
@@ -2388,7 +2388,6 @@
       "name": "checkbox",
       "type": "component",
       "description": "Binary toggle for forms, with indeterminate support",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -2400,6 +2399,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "toggle", "boolean"],
+      "category": "inputs",
       "meta": {
         "name": "Checkbox",
         "description": "Binary toggle for forms, with indeterminate support",
@@ -2459,7 +2459,6 @@
       "name": "checkbox-card",
       "type": "component",
       "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -2471,6 +2470,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["checkbox", "card", "selectable", "form"],
+      "category": "inputs",
       "meta": {
         "name": "CheckboxCard",
         "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
@@ -2532,7 +2532,6 @@
       "name": "code",
       "type": "component",
       "description": "Inline code span for identifiers, commands, and short snippets",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -2544,6 +2543,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "code", "inline", "mono"],
+      "category": "display",
       "meta": {
         "name": "Code",
         "description": "Inline code span for identifiers, commands, and short snippets",
@@ -2583,7 +2583,6 @@
       "name": "combobox",
       "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -2595,6 +2594,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["select", "combobox", "dropdown", "filter", "search"],
+      "category": "inputs",
       "meta": {
         "name": "Combobox",
         "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -2706,7 +2706,6 @@
       "name": "command-menu",
       "type": "component",
       "description": "Cmd+K command palette with fuzzy search over grouped commands",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -2718,6 +2717,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+      "category": "overlay",
       "meta": {
         "name": "CommandMenu",
         "description": "Cmd+K command palette with fuzzy search over grouped commands",
@@ -2813,7 +2813,6 @@
       "name": "context-menu",
       "type": "component",
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -2825,6 +2824,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "menu", "context", "right-click"],
+      "category": "overlay",
       "meta": {
         "name": "ContextMenu",
         "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
@@ -2857,7 +2857,6 @@
       "name": "copy-button",
       "type": "component",
       "description": "Icon button that copies a value to the clipboard with copied feedback",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -2869,6 +2868,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["clipboard", "copy", "button", "snippet"],
+      "category": "inputs",
       "meta": {
         "name": "CopyButton",
         "description": "Icon button that copies a value to the clipboard with copied feedback",
@@ -2923,7 +2923,6 @@
       "name": "data-table",
       "type": "component",
       "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -2935,6 +2934,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+      "category": "display",
       "meta": {
         "name": "DataTable",
         "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
@@ -3094,7 +3094,6 @@
       "name": "date-picker",
       "type": "component",
       "description": "An accessible date-picker with a calendar popover.",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3106,6 +3105,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["date", "calendar", "picker", "input", "form"],
+      "category": "inputs",
       "meta": {
         "name": "DatePicker",
         "description": "An accessible date-picker with a calendar popover.",
@@ -3217,7 +3217,6 @@
       "name": "dropdown",
       "type": "component",
       "description": "Menu of actions revealed from a trigger",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -3229,6 +3228,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "menu", "actions"],
+      "category": "overlay",
       "meta": {
         "name": "Dropdown",
         "description": "Menu of actions revealed from a trigger",
@@ -3291,7 +3291,6 @@
       "name": "editable",
       "type": "component",
       "description": "Inline click-to-edit text field",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3303,6 +3302,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "editable", "inline", "input", "text"],
+      "category": "inputs",
       "meta": {
         "name": "Editable",
         "description": "Inline click-to-edit text field",
@@ -3369,7 +3369,6 @@
       "name": "empty-state",
       "type": "component",
       "description": "Placeholder for views that have no data to display",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -3381,6 +3380,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
+      "category": "display",
       "meta": {
         "name": "EmptyState",
         "description": "Placeholder for views that have no data to display",
@@ -3438,7 +3438,6 @@
       "name": "file-uploader",
       "type": "component",
       "description": "Drag-and-drop file upload zone with file list and status indicators.",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3450,6 +3449,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
+      "category": "inputs",
       "meta": {
         "name": "FileUploader",
         "description": "Drag-and-drop file upload zone with file list and status indicators.",
@@ -3547,7 +3547,6 @@
       "name": "form",
       "type": "component",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3559,6 +3558,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "validation", "signals", "input"],
+      "category": "inputs",
       "meta": {
         "name": "Form",
         "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
@@ -3604,7 +3604,6 @@
       "name": "header",
       "type": "component",
       "description": "App top bar with brand, primary navigation links, and an actions slot",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -3616,6 +3615,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
+      "category": "navigation",
       "meta": {
         "name": "Header",
         "description": "App top bar with brand, primary navigation links, and an actions slot",
@@ -3679,7 +3679,6 @@
       "name": "header-panel",
       "type": "component",
       "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -3691,6 +3690,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+      "category": "navigation",
       "meta": {
         "name": "HeaderPanel",
         "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
@@ -3757,7 +3757,6 @@
       "name": "heading",
       "type": "component",
       "description": "Section heading with semantic level decoupled from visual size",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -3769,6 +3768,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "heading", "title"],
+      "category": "display",
       "meta": {
         "name": "Heading",
         "description": "Section heading with semantic level decoupled from visual size",
@@ -3817,7 +3817,6 @@
       "name": "hover-card",
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -3829,6 +3828,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "hover", "preview", "floating"],
+      "category": "overlay",
       "meta": {
         "name": "HoverCard",
         "description": "Hover-triggered popover with configurable open/close delay",
@@ -3860,7 +3860,6 @@
       "name": "input",
       "type": "component",
       "description": "Text input field with optional label, hint, and error state",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3872,6 +3871,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "text", "input"],
+      "category": "inputs",
       "meta": {
         "name": "Input",
         "description": "Text input field with optional label, hint, and error state",
@@ -3936,7 +3936,6 @@
       "name": "input-group",
       "type": "component",
       "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -3948,6 +3947,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "input", "addon", "group", "layout"],
+      "category": "inputs",
       "meta": {
         "name": "InputGroup",
         "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
@@ -3993,7 +3993,6 @@
       "name": "kbd",
       "type": "component",
       "description": "Displays a keyboard key or shortcut",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -4005,6 +4004,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["keyboard", "shortcut", "hotkey"],
+      "category": "display",
       "meta": {
         "name": "Kbd",
         "description": "Displays a keyboard key or shortcut",
@@ -4042,7 +4042,6 @@
       "name": "layout/app-shell",
       "type": "layout",
       "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4054,6 +4053,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
       "tags": ["layout", "shell", "sidebar", "navigation"],
+      "category": "layout",
       "meta": {
         "name": "AppShell",
         "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
@@ -4128,7 +4128,6 @@
       "name": "layout/auth-layout",
       "type": "layout",
       "description": "Centered card layout for authentication pages (login, register, forgot password).",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4140,6 +4139,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "auth", "login", "page"],
+      "category": "layout",
       "meta": {
         "name": "AuthLayout",
         "description": "Centered card layout for authentication pages (login, register, forgot password).",
@@ -4185,7 +4185,6 @@
       "name": "layout/auto-grid",
       "type": "layout",
       "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4197,6 +4196,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "grid", "responsive"],
+      "category": "layout",
       "meta": {
         "name": "AutoGrid",
         "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
@@ -4236,7 +4236,6 @@
       "name": "layout/center",
       "type": "layout",
       "description": "Horizontally centered container with a configurable max-width.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4248,6 +4247,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "center", "wrapper"],
+      "category": "layout",
       "meta": {
         "name": "Center",
         "description": "Horizontally centered container with a configurable max-width.",
@@ -4279,7 +4279,6 @@
       "name": "layout/columns",
       "type": "layout",
       "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4291,6 +4290,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "grid", "columns"],
+      "category": "layout",
       "meta": {
         "name": "Columns",
         "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
@@ -4328,7 +4328,6 @@
       "name": "layout/dashboard-layout",
       "type": "layout",
       "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4340,6 +4339,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "dashboard", "page"],
+      "category": "layout",
       "meta": {
         "name": "DashboardLayout",
         "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
@@ -4383,7 +4383,6 @@
       "name": "layout/grid",
       "type": "layout",
       "description": "CSS grid layout primitive with responsive column collapsing.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4395,6 +4394,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "grid", "columns"],
+      "category": "layout",
       "meta": {
         "name": "Grid",
         "description": "CSS grid layout primitive with responsive column collapsing.",
@@ -4438,7 +4438,6 @@
       "name": "layout/masonry",
       "type": "layout",
       "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4450,6 +4449,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "masonry", "gallery"],
+      "category": "layout",
       "meta": {
         "name": "Masonry",
         "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
@@ -4489,7 +4489,6 @@
       "name": "layout/page-header",
       "type": "layout",
       "description": "Page-level header with title, description, breadcrumb, and actions slots.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4501,6 +4500,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "header", "page"],
+      "category": "layout",
       "meta": {
         "name": "PageHeader",
         "description": "Page-level header with title, description, breadcrumb, and actions slots.",
@@ -4564,7 +4564,6 @@
       "name": "layout/section",
       "type": "layout",
       "description": "Page-section shell with block padding, centered inner width, and stack gap.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4576,6 +4575,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "section", "page"],
+      "category": "layout",
       "meta": {
         "name": "Section",
         "description": "Page-section shell with block padding, centered inner width, and stack gap.",
@@ -4615,7 +4615,6 @@
       "name": "layout/settings-layout",
       "type": "layout",
       "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4627,6 +4626,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "settings", "page"],
+      "category": "layout",
       "meta": {
         "name": "SettingsLayout",
         "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
@@ -4664,7 +4664,6 @@
       "name": "layout/spacer",
       "type": "layout",
       "description": "Fixed-height spacing block using design token steps.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4676,6 +4675,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "spacer", "spacing"],
+      "category": "layout",
       "meta": {
         "name": "Spacer",
         "description": "Fixed-height spacing block using design token steps.",
@@ -4707,7 +4707,6 @@
       "name": "layout/split-view",
       "type": "layout",
       "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4719,6 +4718,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "split", "resizable", "pane"],
+      "category": "layout",
       "meta": {
         "name": "SplitView",
         "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
@@ -4780,7 +4780,6 @@
       "name": "layout/stack",
       "type": "layout",
       "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -4792,6 +4791,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["layout", "flex", "stack", "spacing"],
+      "category": "layout",
       "meta": {
         "name": "Stack",
         "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
@@ -4847,7 +4847,6 @@
       "name": "link",
       "type": "component",
       "description": "Styled anchor for navigation, standalone or inline within prose",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -4859,6 +4858,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["link", "anchor", "navigation"],
+      "category": "navigation",
       "meta": {
         "name": "Link",
         "description": "Styled anchor for navigation, standalone or inline within prose",
@@ -4913,7 +4913,6 @@
       "name": "list",
       "type": "component",
       "description": "Styled unordered or ordered list with ListItem",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -4925,6 +4924,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "list", "ul", "ol"],
+      "category": "display",
       "meta": {
         "name": "List",
         "description": "Styled unordered or ordered list with ListItem",
@@ -4969,7 +4969,6 @@
       "name": "menu",
       "type": "component",
       "description": "Dropdown menu with keyboard navigation, built on usePopover",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -4981,6 +4980,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "menu", "dropdown", "floating"],
+      "category": "overlay",
       "meta": {
         "name": "Menu",
         "description": "Dropdown menu with keyboard navigation, built on usePopover",
@@ -5013,7 +5013,6 @@
       "name": "modal",
       "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -5025,6 +5024,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "dialog", "popup"],
+      "category": "overlay",
       "meta": {
         "name": "Modal",
         "description": "Accessible dialog overlay using native <dialog> element",
@@ -5083,7 +5083,6 @@
       "name": "multi-select",
       "type": "component",
       "description": "Searchable multi-value select with popover listbox",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -5095,6 +5094,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "select", "multi", "input", "popover"],
+      "category": "inputs",
       "meta": {
         "name": "MultiSelect",
         "description": "Searchable multi-value select with popover listbox",
@@ -5160,7 +5160,6 @@
       "name": "number-input",
       "type": "component",
       "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -5172,6 +5171,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
+      "category": "inputs",
       "meta": {
         "name": "NumberInput",
         "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
@@ -5289,7 +5289,6 @@
       "name": "otp-input",
       "type": "component",
       "description": "Segmented one-time code input",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -5301,6 +5300,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "otp", "code", "input", "verification"],
+      "category": "inputs",
       "meta": {
         "name": "OtpInput",
         "description": "Segmented one-time code input",
@@ -5361,7 +5361,6 @@
       "name": "overflow-menu",
       "type": "component",
       "description": "Kebab icon button revealing a menu of row-level actions",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -5373,6 +5372,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
+      "category": "overlay",
       "meta": {
         "name": "OverflowMenu",
         "description": "Kebab icon button revealing a menu of row-level actions",
@@ -5445,7 +5445,6 @@
       "name": "pagination",
       "type": "component",
       "description": "Controls for navigating paged data sets, with page size selection",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -5457,6 +5456,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["pagination", "navigation", "table", "data", "pages"],
+      "category": "navigation",
       "meta": {
         "name": "Pagination",
         "description": "Controls for navigating paged data sets, with page size selection",
@@ -5540,7 +5540,6 @@
       "name": "password-input",
       "type": "component",
       "description": "Password input with reveal toggle and optional strength meter",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -5552,6 +5551,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "password", "input", "security"],
+      "category": "inputs",
       "meta": {
         "name": "PasswordInput",
         "description": "Password input with reveal toggle and optional strength meter",
@@ -5624,7 +5624,6 @@
       "name": "popover",
       "type": "component",
       "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -5636,6 +5635,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "floating", "anchor", "popover"],
+      "category": "overlay",
       "meta": {
         "name": "Popover",
         "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
@@ -5667,7 +5667,6 @@
       "name": "progress-bar",
       "type": "component",
       "description": "Shows determinate or indeterminate progress of a task",
-      "category": "feedback",
       "version": "0.0.0",
       "files": [
         {
@@ -5679,6 +5678,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["progress", "loading", "status", "feedback"],
+      "category": "feedback",
       "meta": {
         "name": "ProgressBar",
         "description": "Shows determinate or indeterminate progress of a task",
@@ -5749,7 +5749,6 @@
       "name": "progress-circle",
       "type": "component",
       "description": "Circular determinate progress indicator rendered as an SVG arc",
-      "category": "feedback",
       "version": "0.0.0",
       "files": [
         {
@@ -5761,6 +5760,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["progress", "loading", "circle", "feedback"],
+      "category": "feedback",
       "meta": {
         "name": "ProgressCircle",
         "description": "Circular determinate progress indicator rendered as an SVG arc",
@@ -5817,7 +5817,6 @@
       "name": "progress-indicator",
       "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -5829,6 +5828,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
+      "category": "navigation",
       "meta": {
         "name": "ProgressIndicator",
         "description": "Shows progress through the steps of a multi-step flow",
@@ -5887,7 +5887,6 @@
       "name": "prose",
       "type": "component",
       "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -5899,6 +5898,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "prose", "content", "markdown", "article"],
+      "category": "display",
       "meta": {
         "name": "Prose",
         "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
@@ -5939,7 +5939,6 @@
       "name": "radio",
       "type": "component",
       "description": "Single choice from a set, grouped with RadioGroup",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -5951,6 +5950,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "choice", "group"],
+      "category": "inputs",
       "meta": {
         "name": "Radio",
         "description": "Single choice from a set, grouped with RadioGroup",
@@ -6004,7 +6004,6 @@
       "name": "radio-card",
       "type": "component",
       "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -6016,6 +6015,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["radio", "card", "selectable", "form"],
+      "category": "inputs",
       "meta": {
         "name": "RadioCard",
         "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
@@ -6070,7 +6070,6 @@
       "name": "rating-group",
       "type": "component",
       "description": "Star rating input with accessible radio group pattern",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -6082,6 +6081,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "rating", "stars", "input", "feedback"],
+      "category": "inputs",
       "meta": {
         "name": "RatingGroup",
         "description": "Star rating input with accessible radio group pattern",
@@ -6151,7 +6151,6 @@
       "name": "search",
       "type": "component",
       "description": "Search input with debounced search callback and clear button",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -6163,6 +6162,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["search", "input", "filter", "form"],
+      "category": "inputs",
       "meta": {
         "name": "Search",
         "description": "Search input with debounced search callback and clear button",
@@ -6265,7 +6265,6 @@
       "name": "section/cta",
       "type": "section",
       "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6277,6 +6276,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["section", "cta", "marketing"],
+      "category": "layout",
       "meta": {
         "name": "Cta",
         "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
@@ -6335,7 +6335,6 @@
       "name": "section/feature-grid",
       "type": "section",
       "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6347,6 +6346,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["section", "features", "grid"],
+      "category": "layout",
       "meta": {
         "name": "FeatureGrid",
         "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
@@ -6414,7 +6414,6 @@
       "name": "section/hero",
       "type": "section",
       "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6426,6 +6425,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["section", "hero", "marketing"],
+      "category": "layout",
       "meta": {
         "name": "Hero",
         "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
@@ -6503,7 +6503,6 @@
       "name": "section/media-masonry",
       "type": "section",
       "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6515,6 +6514,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["section", "gallery", "masonry"],
+      "category": "layout",
       "meta": {
         "name": "MediaMasonry",
         "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
@@ -6585,7 +6585,6 @@
       "name": "section/page-footer",
       "type": "section",
       "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6597,6 +6596,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["section", "footer", "navigation"],
+      "category": "layout",
       "meta": {
         "name": "PageFooter",
         "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
@@ -6649,7 +6649,6 @@
       "name": "section/stats-band",
       "type": "section",
       "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
-      "category": "layout",
       "version": "0.0.0",
       "files": [
         {
@@ -6661,6 +6660,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
       "tags": ["section", "stats", "kpi", "charts"],
+      "category": "layout",
       "meta": {
         "name": "StatsBand",
         "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
@@ -6708,7 +6708,6 @@
       "name": "segmented-control",
       "type": "component",
       "description": "Mutually exclusive toggle group",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -6720,6 +6719,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "toggle", "group", "segmented", "input"],
+      "category": "inputs",
       "meta": {
         "name": "SegmentedControl",
         "description": "Mutually exclusive toggle group",
@@ -6780,7 +6780,6 @@
       "name": "select",
       "type": "component",
       "description": "Native select menu styled to match the design system",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -6792,6 +6791,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "dropdown", "menu"],
+      "category": "inputs",
       "meta": {
         "name": "Select",
         "description": "Native select menu styled to match the design system",
@@ -6861,7 +6861,6 @@
       "name": "separator",
       "type": "component",
       "description": "Visual or semantic divider between content",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -6873,6 +6872,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["divider", "rule", "layout"],
+      "category": "display",
       "meta": {
         "name": "Separator",
         "description": "Visual or semantic divider between content",
@@ -6911,7 +6911,6 @@
       "name": "sheet",
       "type": "component",
       "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -6923,6 +6922,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "drawer", "panel", "slide"],
+      "category": "overlay",
       "meta": {
         "name": "Sheet",
         "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
@@ -6954,7 +6954,6 @@
       "name": "shell-header",
       "type": "component",
       "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -6966,6 +6965,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+      "category": "navigation",
       "meta": {
         "name": "ShellHeader",
         "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
@@ -7048,7 +7048,6 @@
       "name": "side-nav",
       "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -7060,6 +7059,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+      "category": "navigation",
       "meta": {
         "name": "SideNav",
         "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
@@ -7159,7 +7159,6 @@
       "name": "skeleton",
       "type": "component",
       "description": "Animated loading placeholder that mirrors the shape of pending content",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -7171,6 +7170,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["loading", "placeholder", "shimmer"],
+      "category": "display",
       "meta": {
         "name": "Skeleton",
         "description": "Animated loading placeholder that mirrors the shape of pending content",
@@ -7227,7 +7227,6 @@
       "name": "skip-nav",
       "type": "component",
       "description": "Skip link that jumps keyboard users past the navigation to the main content",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -7239,6 +7238,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+      "category": "navigation",
       "meta": {
         "name": "SkipNav",
         "description": "Skip link that jumps keyboard users past the navigation to the main content",
@@ -7290,7 +7290,6 @@
       "name": "slider",
       "type": "component",
       "description": "Range input for selecting a value within bounds",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -7302,6 +7301,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "range", "input"],
+      "category": "inputs",
       "meta": {
         "name": "Slider",
         "description": "Range input for selecting a value within bounds",
@@ -7372,7 +7372,6 @@
       "name": "spinner",
       "type": "component",
       "description": "Indeterminate loading indicator",
-      "category": "feedback",
       "version": "0.0.0",
       "files": [
         {
@@ -7384,6 +7383,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["loading", "progress", "feedback"],
+      "category": "feedback",
       "meta": {
         "name": "Spinner",
         "description": "Indeterminate loading indicator",
@@ -7422,7 +7422,6 @@
       "name": "stat",
       "type": "component",
       "description": "Displays a key metric with optional delta, trend direction and help text",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -7434,6 +7433,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["stat", "kpi", "metric", "number"],
+      "category": "display",
       "meta": {
         "name": "Stat",
         "description": "Displays a key metric with optional delta, trend direction and help text",
@@ -7495,7 +7495,6 @@
       "name": "status",
       "type": "component",
       "description": "Colored dot with a label communicating the state of a system or entity",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -7507,6 +7506,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["status", "indicator", "dot", "badge"],
+      "category": "display",
       "meta": {
         "name": "Status",
         "description": "Colored dot with a label communicating the state of a system or entity",
@@ -7553,7 +7553,6 @@
       "name": "switcher",
       "type": "component",
       "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -7565,6 +7564,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
+      "category": "navigation",
       "meta": {
         "name": "Switcher",
         "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
@@ -7614,7 +7614,6 @@
       "name": "tabs",
       "type": "component",
       "description": "Switch between related panels of content",
-      "category": "navigation",
       "version": "0.0.0",
       "files": [
         {
@@ -7626,6 +7625,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["navigation", "tabs", "sections"],
+      "category": "navigation",
       "meta": {
         "name": "Tabs",
         "description": "Switch between related panels of content",
@@ -7672,7 +7672,6 @@
       "name": "tag",
       "type": "component",
       "description": "Compact chip for labeling, categorizing, or filtering content",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -7684,6 +7683,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["chip", "label", "filter", "category"],
+      "category": "display",
       "meta": {
         "name": "Tag",
         "description": "Compact chip for labeling, categorizing, or filtering content",
@@ -7746,7 +7746,6 @@
       "name": "tags-input",
       "type": "component",
       "description": "Free-form multi-value chip input",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -7758,6 +7757,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["form", "tags", "chips", "multi", "input"],
+      "category": "inputs",
       "meta": {
         "name": "TagsInput",
         "description": "Free-form multi-value chip input",
@@ -7823,7 +7823,6 @@
       "name": "text",
       "type": "component",
       "description": "Body text with size, weight, and muted variants",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -7835,6 +7834,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["typography", "text", "paragraph", "body"],
+      "category": "display",
       "meta": {
         "name": "Text",
         "description": "Body text with size, weight, and muted variants",
@@ -7895,7 +7895,6 @@
       "name": "textarea",
       "type": "component",
       "description": "Multi-line text input with optional label, hint, and error state",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -7907,6 +7906,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["form", "text", "multiline"],
+      "category": "inputs",
       "meta": {
         "name": "Textarea",
         "description": "Multi-line text input with optional label, hint, and error state",
@@ -7972,7 +7972,6 @@
       "name": "time-picker",
       "type": "component",
       "description": "Native time input wrapper with label, hint, error, and size variants",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -7984,6 +7983,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["time", "input", "form"],
+      "category": "inputs",
       "meta": {
         "name": "TimePicker",
         "description": "Native time input wrapper with label, hint, error, and size variants",
@@ -8082,7 +8082,6 @@
       "name": "toast",
       "type": "component",
       "description": "Transient notification surfaced via the useToast hook",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -8094,6 +8093,7 @@
       ],
       "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
       "tags": ["overlay", "notification", "feedback"],
+      "category": "overlay",
       "meta": {
         "name": "Toast",
         "description": "Transient notification surfaced via the useToast hook",
@@ -8148,7 +8148,6 @@
       "name": "toggle",
       "type": "component",
       "description": "On/off switch built as an accessible button",
-      "category": "inputs",
       "version": "0.0.0",
       "files": [
         {
@@ -8160,6 +8159,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["switch", "form", "boolean"],
+      "category": "inputs",
       "meta": {
         "name": "Toggle",
         "description": "On/off switch built as an accessible button",
@@ -8224,7 +8224,6 @@
       "name": "tooltip",
       "type": "component",
       "description": "Contextual label shown on hover or focus",
-      "category": "overlay",
       "version": "0.0.0",
       "files": [
         {
@@ -8236,6 +8235,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["overlay", "hint", "popover"],
+      "category": "overlay",
       "meta": {
         "name": "Tooltip",
         "description": "Contextual label shown on hover or focus",
@@ -8289,7 +8289,6 @@
       "name": "visually-hidden",
       "type": "component",
       "description": "Hides content visually while keeping it available to screen readers",
-      "category": "display",
       "version": "0.0.0",
       "files": [
         {
@@ -8301,6 +8300,7 @@
       ],
       "dependencies": ["@cascade-ui/core"],
       "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+      "category": "display",
       "meta": {
         "name": "VisuallyHidden",
         "description": "Hides content visually while keeping it available to screen readers",

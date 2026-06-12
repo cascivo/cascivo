@@ -3,7 +3,6 @@
   "name": "blockquote",
   "type": "component",
   "description": "Quoted passage with optional attribution footer",
-  "category": "display",
   "version": "0.0.0",
   "files": [
     {
@@ -15,6 +14,7 @@
   ],
   "dependencies": ["@cascade-ui/core"],
   "tags": ["typography", "quote", "blockquote", "citation"],
+  "category": "display",
   "meta": {
     "name": "Blockquote",
     "description": "Quoted passage with optional attribution footer",
