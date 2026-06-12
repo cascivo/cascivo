@@ -70,7 +70,8 @@
     "./status": "./src/status/status.tsx",
     "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx",
     "./skip-nav": "./src/skip-nav/skip-nav.tsx",
-    "./progress-circle": "./src/progress-circle/progress-circle.tsx"
+    "./progress-circle": "./src/progress-circle/progress-circle.tsx",
+    "./heading": "./src/heading/heading.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
