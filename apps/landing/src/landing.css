@@ -726,26 +726,12 @@ code {
 /* ── On-call card ─────────────────────────────────────── */
 /* Un-layered → wins over @layer cascade.component rules */
 .oncall-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--cascade-space-3);
   /* warm accent-subtle gives a noticeable amber tint; works in any page theme */
   background-color: var(--cascade-color-accent-subtle);
   border-color: color-mix(in oklch, var(--cascade-color-accent) 35%, transparent);
-}
-
-.oncall-label {
-  position: absolute;
-  inset-block-start: var(--cascade-space-2);
-  inset-inline-end: var(--cascade-space-3);
-  font-family: var(--cascade-font-mono);
-  font-size: 10px;
-  line-height: 1.5;
-  color: var(--cascade-color-accent-foreground);
-  background: var(--cascade-color-accent-muted);
-  padding: 1px var(--cascade-space-2);
-  border-radius: var(--cascade-radius-full);
 }
 
 .oncall-row {

@@ -16,9 +16,16 @@ export function SideRegion() {
       </div>
 
       <Card padding="md" data-theme="warm" className="oncall-card">
-        <span className="oncall-label">data-theme=&quot;warm&quot;</span>
         <div className="oncall-row">
-          <Avatar fallback={ONCALL.name} size="sm" />
+          <Avatar
+            fallback={ONCALL.name
+              .split(' ')
+              .map((w) => w[0])
+              .join('')
+              .slice(0, 2)
+              .toUpperCase()}
+            size="sm"
+          />
           <div>
             <strong>{ONCALL.name}</strong>
             <span className="oncall-sub">
