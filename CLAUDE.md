@@ -144,6 +144,30 @@ git diff --exit-code
 
 All five must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
+### Workspace package aliases — keep in sync
+
+Several CI jobs build apps **without** a prior `pnpm build` step (perf, storybook deploy, landing deploy). When those apps import a workspace package whose `package.json` exports point to `./dist/`, Rolldown fails to resolve the import because no dist exists.
+
+**Rule:** Every `@cascade-ui/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`.
+
+The alias maps the package name to its TypeScript source entry so Rolldown can bundle it directly:
+
+```ts
+'@cascade-ui/render': resolve(root, 'packages/render/src/index.ts'),
+'@cascade-ui/icons':  resolve(root, 'packages/icons/src/index.tsx'),
+```
+
+**Checklist when adding a new `@cascade-ui/*` package or changing an existing package's exports:**
+
+1. Check if the package's `package.json` `exports["."].import` points to `./dist/`.
+2. If yes, add a source alias to **all** of the following:
+   - `apps/docs/vite.config.ts`
+   - `apps/landing/vite.config.ts`
+   - `apps/storybook/.storybook/main.ts` (`viteFinal` alias block)
+3. Verify each builds locally: `pnpm exec vp run @cascade-ui/docs#build @cascade-ui/landing#build @cascade-ui/storybook#build`
+
+Packages that export source directly (components, layouts, charts, themes, tokens) do **not** need aliases — Rolldown resolves them via the `exports` map to their `.tsx`/`.css` source files.
+
 ---
 
 ## Part 3 — Cascade Design System: Architecture Reference

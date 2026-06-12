@@ -14,6 +14,7 @@ export default defineConfig({
       '@cascade-ui/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascade-ui/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascade-ui/ai': resolve(root, 'packages/ai/src/index.ts'),
+      '@cascade-ui/render': resolve(root, 'packages/render/src/index.ts'),
     },
   },
 })

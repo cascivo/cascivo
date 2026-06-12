@@ -20,6 +20,7 @@ const config: StorybookConfig = {
         '@cascade-ui/storage': resolve(root, 'packages/storage/src/index.ts'),
         '@cascade-ui/i18n': resolve(root, 'packages/i18n/src/index.ts'),
         '@cascade-ui/ai': resolve(root, 'packages/ai/src/index.ts'),
+        '@cascade-ui/icons': resolve(root, 'packages/icons/src/index.tsx'),
       },
     },
   }),
