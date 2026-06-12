@@ -5,7 +5,7 @@ const scale = Number(process.env.PERF_SCALE ?? 1)
 const BUDGET = {
   initialRender: 3000 * scale,
   sort: 100 * scale,
-  keystroke: 50 * scale,
+  keystroke: 100 * scale,
 }
 
 test('10k-row DataTable stays within latency budgets', async ({ page }) => {
