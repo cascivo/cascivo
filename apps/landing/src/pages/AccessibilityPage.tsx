@@ -2,6 +2,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascade-ui/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { AccessibilityHero } from './accessibility/AccessibilityHero'
+import { AxeComparison } from './accessibility/AxeComparison'
 
 export function AccessibilityPage() {
   return (
@@ -11,7 +12,8 @@ export function AccessibilityPage() {
       <SkipNavTarget>
         <main>
           <AccessibilityHero />
-          {/* Tasks 3–5 will add: <AxeComparison /> <A11yMatrix /> <PracticesGrid /> <CiGate /> <A11yCta /> */}
+          <AxeComparison />
+          {/* Tasks 4–5 will add: <A11yMatrix /> <PracticesGrid /> <CiGate /> <A11yCta /> */}
         </main>
       </SkipNavTarget>
       <Footer />

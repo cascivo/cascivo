@@ -1133,3 +1133,22 @@ code {
   border-radius: var(--cascade-radius-lg);
   background-color: var(--cascade-color-bg-subtle);
 }
+
+.a11y-rule-list {
+  margin: var(--cascade-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-1);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-disclosure {
+  margin: var(--cascade-space-4) 0 0;
+  max-width: 44rem;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
