@@ -82,7 +82,6 @@ test('hero and page-footer previews have no horizontal overflow under RTL', asyn
 
   // Hero entry preview container
   const heroEntry = page.locator('h3 code', { hasText: 'section/hero' }).locator('../../../..')
-  const heroPreview = heroEntry.locator('div').filter({ hasText: '' }).last()
   const heroOverflow = await heroEntry.evaluate((el: HTMLElement) => {
     const preview = el.querySelector('div[style*="overflow"]') as HTMLElement | null
     if (!preview) return false
