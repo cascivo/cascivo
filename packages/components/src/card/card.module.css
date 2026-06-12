@@ -3,6 +3,7 @@
     background-color: var(--cascade-color-surface);
     border-radius: var(--cascade-radius-surface);
     overflow: hidden;
+    padding: var(--_card-p, 0);
 
     &[data-padding='none'] {
       --_card-p: 0;

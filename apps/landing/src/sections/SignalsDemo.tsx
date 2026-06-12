@@ -1,6 +1,6 @@
 'use client'
-import { Profiler, useState, type ReactNode } from 'react'
-import { useSignal } from '@cascade-ui/core'
+import { useRef, useState } from 'react'
+import { signal, useSignals, type Signal } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Button } from '@cascade-ui/components/button'
 import { Card } from '@cascade-ui/components/card'
@@ -10,49 +10,63 @@ import { Input } from '@cascade-ui/components/input'
 /* The useState twin below is the comparison subject — the one sanctioned hook
    exception on this page (v7 master plan, decision 9). */
 
-function Counter({
-  id,
-  children,
-  onCommit,
-}: {
-  id: string
-  children: ReactNode
-  onCommit: () => void
-}) {
+// Module-level — neither form re-renders when these signals update
+const signalFormRenders = signal(0)
+const stateFormRenders = signal(0)
+
+// Module-level field signals — SignalForm itself never reads them
+const sigName = signal('')
+const sigEmail = signal('')
+const sigNewsletter = signal(false)
+
+function RenderBadge({ count }: { count: Signal<number> }) {
+  useSignals()
   return (
-    <Profiler id={id} onRender={onCommit}>
-      {children}
-    </Profiler>
+    <Badge variant="outline">
+      <span className="twin-count">{count.value}</span> renders
+    </Badge>
+  )
+}
+
+// Isolated field components: only the changed field re-renders, not SignalForm
+function SigInput({ sig, label }: { sig: Signal<string>; label: string }) {
+  useSignals()
+  return (
+    <Input
+      label={label}
+      value={sig.value}
+      onChange={(e) => {
+        sig.value = e.currentTarget.value
+      }}
+    />
+  )
+}
+
+function SigCheckbox({ sig, label }: { sig: Signal<boolean>; label: string }) {
+  useSignals()
+  return (
+    <Checkbox
+      label={label}
+      checked={sig.value}
+      onChange={() => {
+        sig.value = !sig.value
+      }}
+    />
   )
 }
 
 function SignalForm() {
-  const name = useSignal('')
-  const email = useSignal('')
-  const newsletter = useSignal(false)
+  // No useSignals() — this component renders once (on mount) and never again
+  const renders = useRef(0)
+  renders.current++
+  queueMicrotask(() => {
+    signalFormRenders.value = renders.current
+  })
   return (
     <form className="twin-form" aria-label="cascade form">
-      <Input
-        label="Name"
-        value={name.value}
-        onChange={(e) => {
-          name.value = e.currentTarget.value
-        }}
-      />
-      <Input
-        label="Email"
-        value={email.value}
-        onChange={(e) => {
-          email.value = e.currentTarget.value
-        }}
-      />
-      <Checkbox
-        label="Subscribe to changelog"
-        checked={newsletter.value}
-        onChange={() => {
-          newsletter.value = !newsletter.value
-        }}
-      />
+      <SigInput sig={sigName} label="Name" />
+      <SigInput sig={sigEmail} label="Email" />
+      <SigCheckbox sig={sigNewsletter} label="Subscribe to changelog" />
       <Button type="button">Save</Button>
     </form>
   )
@@ -65,6 +79,11 @@ function StateForm() {
   const [email, setEmail] = useState('')
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [newsletter, setNewsletter] = useState(false)
+  const renders = useRef(0)
+  renders.current++
+  queueMicrotask(() => {
+    stateFormRenders.value = renders.current
+  })
   return (
     <form className="twin-form" aria-label="useState form">
       <Input label="Name" value={name} onChange={(e) => setName(e.currentTarget.value)} />
@@ -91,57 +110,36 @@ const benchModules = import.meta.glob<{ default: BenchResults }>(
 const bench = Object.values(benchModules)[0]?.default
 
 export function SignalsDemo() {
-  const signalCommits = useSignal(0)
-  const stateCommits = useSignal(0)
-
   const renderingData = bench?.renders?.['type-20-chars']
 
   return (
-    <section className="signals" id="signals">
+    <section className="signals" id="signals" data-reveal="">
       <h2>Count the re-renders</h2>
       <p className="signals-sub">
         The same form, twice. Left: cascade signals. Right: the usual useState wiring. Type in both
-        — the counters are live React Profiler commits, on this page, right now. Open DevTools and
-        count along.
+        — the counters show how many times each <em>form component</em> has re-rendered, on this
+        page, right now.
       </p>
       <div className="signals-grid">
         <Card padding="md">
           <header className="twin-head">
             <span>signals</span>
-            <Badge variant="outline">
-              <span className="twin-count">{signalCommits.value}</span> commits
-            </Badge>
+            <RenderBadge count={signalFormRenders} />
           </header>
-          <Counter
-            id="signal-form"
-            onCommit={() => {
-              signalCommits.value++
-            }}
-          >
-            <SignalForm />
-          </Counter>
+          <SignalForm />
         </Card>
         <Card padding="md">
           <header className="twin-head">
             <span>useState</span>
-            <Badge variant="outline">
-              <span className="twin-count">{stateCommits.value}</span> commits
-            </Badge>
+            <RenderBadge count={stateFormRenders} />
           </header>
-          <Counter
-            id="state-form"
-            onCommit={() => {
-              stateCommits.value++
-            }}
-          >
-            <StateForm />
-          </Counter>
+          <StateForm />
         </Card>
       </div>
       <p className="signals-fineprint">
-        Counters exclude themselves: the badges live outside the profiled trees. Signal writes
-        update the DOM without re-running the form component; useState re-runs it on every
-        keystroke. Same components, same markup — the difference is the state layer.
+        The signals form renders once on mount — field updates are isolated to each individual field
+        component. The useState form re-runs the entire component on every keystroke. Same
+        components, same markup; the difference is the state layer.
       </p>
       {renderingData && (
         <p className="bench-teaser">

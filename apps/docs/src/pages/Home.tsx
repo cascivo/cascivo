@@ -1,6 +1,23 @@
 import { CATEGORY_LABELS, components } from '../data'
 import { buildNav } from '../nav'
 import { CodeBlock } from './components/CodeBlock'
+import { demos } from '../demos'
+
+// Overlay components render portals/fixed elements — skip live preview for them
+const SKIP_PREVIEW: Set<string> = new Set([
+  'alert-dialog',
+  'command-menu',
+  'context-menu',
+  'dropdown',
+  'hover-card',
+  'menu',
+  'modal',
+  'overflow-menu',
+  'popover',
+  'sheet',
+  'toast',
+  'tooltip',
+])
 
 const QUICK_START = `npx cascade init
 npx cascade add button`
@@ -39,7 +56,10 @@ export function Home() {
             <div class="home-grid">
               {group.items.map((item) => (
                 <a class="home-card" href={item.href} key={item.name}>
-                  {item.label}
+                  <div class="home-card-preview">
+                    {!SKIP_PREVIEW.has(item.name) && demos[item.name]?.()}
+                  </div>
+                  <span class="home-card-label">{item.label}</span>
                 </a>
               ))}
             </div>

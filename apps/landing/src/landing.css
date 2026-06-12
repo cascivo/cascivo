@@ -133,25 +133,27 @@ code {
   inline-size: min(100%, 20rem);
 }
 
-::view-transition-old(hero-stage) {
-  animation: hero-out 200ms ease both;
-}
-
-::view-transition-new(hero-stage) {
-  animation: hero-in 250ms ease both;
-}
-
-@keyframes hero-out {
-  to {
-    opacity: 0;
-    translate: 0 -0.5rem;
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(hero-stage) {
+    animation: hero-out 200ms ease both;
   }
-}
 
-@keyframes hero-in {
-  from {
-    opacity: 0;
-    translate: 0 0.5rem;
+  ::view-transition-new(hero-stage) {
+    animation: hero-in 250ms ease both;
+  }
+
+  @keyframes hero-out {
+    to {
+      opacity: 0;
+      translate: 0 -0.5rem;
+    }
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
   }
 }
 
@@ -289,16 +291,6 @@ code {
   color: var(--cascade-color-text-on-accent);
   font-size: var(--cascade-text-sm);
   font-weight: var(--cascade-font-semibold);
-}
-
-.quickstart-code {
-  margin: 0;
-  padding: var(--cascade-space-4);
-  border-radius: var(--cascade-radius-md);
-  background-color: #24292e;
-  color: #e1e4e8;
-  font-size: var(--cascade-text-sm);
-  overflow-x: auto;
 }
 
 .quickstart-note {
@@ -489,6 +481,12 @@ code {
   background: var(--cascade-color-bg-subtle);
   font-family: var(--cascade-font-mono);
   font-size: var(--cascade-text-sm);
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.copy-command code {
+  overflow-x: auto;
 }
 
 /* ── Principles strip ─────────────────────────────────── */
@@ -592,6 +590,12 @@ code {
   color: var(--cascade-color-text-subtle);
 }
 
+.console-titlebar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascade-space-3);
+}
+
 .console-body {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -605,7 +609,7 @@ code {
 }
 
 .console-main {
-  padding: var(--cascade-space-4);
+  padding: var(--cascade-space-6);
   display: flex;
   flex-direction: column;
   gap: var(--cascade-space-4);
@@ -615,7 +619,7 @@ code {
 .console-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--cascade-space-4);
+  gap: var(--cascade-space-6);
 }
 
 @media (max-width: 56rem) {
@@ -641,7 +645,7 @@ code {
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-4);
 }
 
 @media (max-width: 56rem) {
@@ -682,7 +686,7 @@ code {
 .region {
   display: flex;
   flex-direction: column;
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-4);
 }
 
 .region-head {
@@ -720,24 +724,21 @@ code {
 }
 
 /* ── On-call card ─────────────────────────────────────── */
+/* Un-layered → wins over @layer cascade.component rules */
 .oncall-card {
-  position: relative;
-}
-
-.oncall-label {
-  position: absolute;
-  inset-block-start: var(--cascade-space-2);
-  inset-inline-end: var(--cascade-space-3);
-  font-family: var(--cascade-font-mono);
-  font-size: var(--cascade-text-xs);
-  color: var(--cascade-color-text-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-3);
+  /* warm accent-subtle gives a noticeable amber tint; works in any page theme */
+  background-color: var(--cascade-color-accent-subtle);
+  border-color: color-mix(in oklch, var(--cascade-color-accent) 35%, transparent);
 }
 
 .oncall-row {
   display: flex;
   align-items: center;
   gap: var(--cascade-space-3);
-  margin-block-start: var(--cascade-space-4);
+  /* margin removed — card padding + flex gap handles spacing */
 }
 
 .oncall-sub {
@@ -940,10 +941,14 @@ code {
   font-style: normal;
 }
 
+.agent-render {
+  grid-column: 1 / -1;
+}
+
 .agent-render-panes {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--cascade-space-3);
+  gap: var(--cascade-space-6);
 }
 
 @media (max-width: 40rem) {
@@ -957,6 +962,44 @@ code {
   background: var(--cascade-color-bg-subtle);
   border: 1px solid var(--cascade-color-border);
   border-radius: var(--cascade-radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── CascadeView layout ───────────────────────────────── */
+.cascade-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-3);
+}
+
+.cascade-region {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascade-space-2);
+}
+
+/* ── Syntax highlighting ──────────────────────────────── */
+.agent-code .hl-key {
+  color: var(--cascade-color-accent);
+}
+
+.agent-code .hl-string {
+  color: var(--cascade-color-success);
+}
+
+.agent-code .hl-number {
+  color: oklch(0.6 0.18 40);
+}
+
+.agent-code .hl-keyword {
+  color: var(--cascade-color-info);
+}
+
+.agent-code .hl-comment {
+  color: var(--cascade-color-text-muted);
+  font-style: italic;
 }
 
 /* ── CTA band ─────────────────────────────────────────── */
@@ -985,4 +1028,66 @@ code {
   justify-content: center;
   gap: var(--cascade-space-4);
   flex-wrap: wrap;
+}
+
+/* ── Incident pulse dot ───────────────────────────────── */
+.incident-wrap {
+  position: relative;
+}
+
+.incident-dot {
+  position: absolute;
+  inset-block-start: var(--cascade-space-3);
+  inset-inline-end: var(--cascade-space-3);
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: var(--cascade-radius-full);
+  background: var(--cascade-color-warning);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .incident-dot {
+    animation: incident-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes incident-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in oklch, var(--cascade-color-warning) 50%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 6px color-mix(in oklch, var(--cascade-color-warning) 0%, transparent);
+    }
+  }
+}
+
+/* ── Building badge breathe ───────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .badge-building {
+    animation: badge-breathe 2.4s ease-in-out infinite;
+  }
+
+  @keyframes badge-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+/* ── Scroll reveal ───────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+
+  [data-reveal] {
+    transition:
+      opacity var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease),
+      translate var(--cascade-duration-500, 500ms) var(--cascade-ease-out, ease);
+  }
 }

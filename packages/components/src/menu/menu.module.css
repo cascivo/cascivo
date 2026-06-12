@@ -1,6 +1,23 @@
 @layer cascade.component {
   .trigger {
-    /* Inherits from surrounding button context */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cascade-space-1);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascade-radius-control);
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--cascade-color-active-bg);
+    }
+
+    &:focus-visible {
+      outline: var(--cascade-focus-ring);
+      outline-offset: 2px;
+    }
   }
 
   .panel {

@@ -4,6 +4,78 @@ import type { ViewConfig } from '@cascade-ui/render'
 import buttonMetaSource from '../../../../packages/components/src/button/button.meta.ts?raw'
 import { CopyCommand } from './CopyCommand'
 
+function escapeHTML(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+function highlightJSON(code: string): string {
+  const tokenRe = /"(?:[^"\\]|\\.)*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null|./gs
+  let result = ''
+  for (const m of code.matchAll(tokenRe)) {
+    const token = m[0]
+    if (token.startsWith('"')) {
+      const after = code.slice((m.index ?? 0) + token.length).trimStart()
+      const escaped = escapeHTML(token)
+      result += after.startsWith(':')
+        ? `<span class="hl-key">${escaped}</span>`
+        : `<span class="hl-string">${escaped}</span>`
+    } else if (/^-?\d/.test(token)) {
+      result += `<span class="hl-number">${token}</span>`
+    } else if (token === 'true' || token === 'false' || token === 'null') {
+      result += `<span class="hl-keyword">${token}</span>`
+    } else {
+      result += escapeHTML(token)
+    }
+  }
+  return result
+}
+
+const TS_KEYWORDS = new Set([
+  'export',
+  'const',
+  'let',
+  'var',
+  'type',
+  'interface',
+  'function',
+  'import',
+  'from',
+  'as',
+  'default',
+  'return',
+  'true',
+  'false',
+  'null',
+  'undefined',
+  'string',
+  'number',
+  'boolean',
+  'readonly',
+  'object',
+  'any',
+])
+
+function highlightTS(code: string): string {
+  const tokenRe =
+    /\/\/[^\n]*|`[^`]*`|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|-?\d+(?:\.\d+)?|[a-zA-Z_$][a-zA-Z0-9_$]*|./gs
+  let result = ''
+  for (const m of code.matchAll(tokenRe)) {
+    const token = m[0]
+    if (token.startsWith('//')) {
+      result += `<span class="hl-comment">${escapeHTML(token)}</span>`
+    } else if (token[0] === '"' || token[0] === "'" || token[0] === '`') {
+      result += `<span class="hl-string">${escapeHTML(token)}</span>`
+    } else if (/^-?\d/.test(token)) {
+      result += `<span class="hl-number">${token}</span>`
+    } else if (TS_KEYWORDS.has(token)) {
+      result += `<span class="hl-keyword">${token}</span>`
+    } else {
+      result += escapeHTML(token)
+    }
+  }
+  return result
+}
+
 const manifestExcerpt = `${buttonMetaSource.split('\n').slice(0, 14).join('\n')}\n  // …\n}`
 
 const MCP_CLIENTS = [
@@ -52,7 +124,7 @@ const RELAY_SLICE_JSON = JSON.stringify(RELAY_SLICE, null, 2)
 
 export function AgentLayer() {
   return (
-    <section className="agents" id="agents">
+    <section className="agents" id="agents" data-reveal="">
       <h2>Your agent already knows cascade</h2>
       <p className="agents-sub">
         Every component ships a machine-readable manifest. The MCP server, the Claude Code skills,
@@ -63,9 +135,11 @@ export function AgentLayer() {
       <div className="agents-grid">
         <article className="agent-artifact">
           <h3>The manifest is the source of truth</h3>
-          <pre className="agent-code">
-            <code>{manifestExcerpt}</code>
-          </pre>
+          <pre
+            className="agent-code"
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: highlightTS(manifestExcerpt) }}
+          />
           <p className="agent-caption">
             button.meta.ts — real file, imported into this page at build time.
           </p>
@@ -108,9 +182,11 @@ export function AgentLayer() {
         <article className="agent-artifact agent-render">
           <h3>Agents don&apos;t screenshot. They render.</h3>
           <div className="agent-render-panes">
-            <pre className="agent-code">
-              <code>{RELAY_SLICE_JSON}</code>
-            </pre>
+            <pre
+              className="agent-code"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: highlightJSON(RELAY_SLICE_JSON) }}
+            />
             <div className="agent-render-preview">
               <CascadeView config={RELAY_SLICE} onInvalid="render" />
             </div>

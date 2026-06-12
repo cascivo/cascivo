@@ -31,6 +31,9 @@ jobs:
       - name: Animation audit
         run: pnpm run audit:animation
 
+      - name: Signals subscription gate
+        run: pnpm run audit:signals
+
       - name: Build (vp run -r build)
         run: pnpm run build
 

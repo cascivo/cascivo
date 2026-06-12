@@ -1,8 +1,9 @@
 'use client'
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Button } from '@cascade-ui/components/button'
 
 export function CopyCommand({ command }: { command: string }) {
+  useSignals()
   const copied = useSignal(false)
 
   return (

@@ -1,12 +1,12 @@
 'use client'
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Button } from '@cascade-ui/components/button'
 import { DataTable, type Column } from '@cascade-ui/components/data-table'
 import { Modal } from '@cascade-ui/components/modal'
 import { Select } from '@cascade-ui/components/select'
 import { Input } from '@cascade-ui/components/input'
-import { useToast, ToastProvider } from '@cascade-ui/components/toast'
+import { useToast } from '@cascade-ui/components/toast'
 import { DEPLOYS, type Deploy } from './data'
 
 type BadgeVariant = 'success' | 'secondary' | 'destructive' | 'outline'
@@ -31,7 +31,14 @@ const columns: Column<Deploy>[] = [
     key: 'status',
     header: 'Status',
     sortable: true,
-    render: (row) => <Badge variant={STATUS_VARIANT[row.status]}>{row.status}</Badge>,
+    render: (row) => (
+      <Badge
+        variant={STATUS_VARIANT[row.status]}
+        className={row.status === 'building' ? 'badge-building' : undefined}
+      >
+        {row.status}
+      </Badge>
+    ),
   },
   {
     key: 'duration',
@@ -56,6 +63,7 @@ const envOptions = [
 ]
 
 function DeploysInner() {
+  useSignals()
   const modalOpen = useSignal(false)
   const { toast } = useToast()
 
@@ -81,7 +89,6 @@ function DeploysInner() {
         columns={columns}
         rows={DEPLOYS}
         getRowId={(row) => row.sha}
-        density="compact"
         defaultSort={{ key: 'at', direction: 'desc' }}
       />
       <Modal
@@ -126,9 +133,5 @@ function DeploysInner() {
 }
 
 export function DeploysRegion() {
-  return (
-    <ToastProvider>
-      <DeploysInner />
-    </ToastProvider>
-  )
+  return <DeploysInner />
 }

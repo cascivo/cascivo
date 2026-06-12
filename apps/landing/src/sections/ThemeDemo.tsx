@@ -25,7 +25,7 @@ function SignupCard() {
 
 export function ThemeDemo() {
   return (
-    <section className="section">
+    <section className="section" data-reveal="">
       <h2>One form, five personalities</h2>
       <p className="section-sub">
         The exact same markup rendered inside five <code>data-theme</code> containers. Themes

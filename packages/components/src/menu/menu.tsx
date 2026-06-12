@@ -64,9 +64,18 @@ export function Menu({ children }: MenuProps) {
 
 export interface MenuTriggerProps {
   children: ReactNode
+  'aria-label'?: string
 }
 
-function MenuTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; children: ReactNode }) {
+function MenuTriggerInner({
+  ctx,
+  children,
+  'aria-label': ariaLabel,
+}: {
+  ctx: UsePopoverReturn
+  children: ReactNode
+  'aria-label'?: string
+}) {
   useSignals()
   const { triggerRef, toggle, anchorName, isOpen } = ctx
   return (
@@ -75,6 +84,7 @@ function MenuTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; children: 
       type="button"
       aria-haspopup="menu"
       aria-expanded={isOpen.value}
+      aria-label={ariaLabel}
       style={{ anchorName } as React.CSSProperties}
       onClick={toggle}
       className={styles.trigger}
@@ -84,12 +94,16 @@ function MenuTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; children: 
   )
 }
 
-export function MenuTrigger({ children }: MenuTriggerProps) {
+export function MenuTrigger({ children, 'aria-label': ariaLabel }: MenuTriggerProps) {
   return (
     <MenuContext.Consumer>
       {(ctx) => {
         if (!ctx) throw new Error('MenuTrigger must be inside <Menu>')
-        return <MenuTriggerInner ctx={ctx}>{children}</MenuTriggerInner>
+        return (
+          <MenuTriggerInner ctx={ctx} {...(ariaLabel !== undefined && { 'aria-label': ariaLabel })}>
+            {children}
+          </MenuTriggerInner>
+        )
       }}
     </MenuContext.Consumer>
   )

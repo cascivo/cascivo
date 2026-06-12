@@ -1,23 +1,41 @@
+'use client'
+import { signal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import { AreaChart } from '@cascade-ui/charts'
 import { TRAFFIC } from './data'
 
-const trafficSeries = [
-  {
-    id: 'requests',
-    label: 'Requests/hour',
-    data: TRAFFIC.map((y, x) => ({ x, y })),
-  },
-]
+const traffic = signal<number[]>([...TRAFFIC])
+
+function nextPoint(window: number[]): number {
+  const recent = window.slice(-6)
+  const mean = recent.reduce((a, b) => a + b, 0) / recent.length
+  const jitter = (Math.random() - 0.5) * 24
+  return Math.max(60, Math.round(mean + jitter))
+}
 
 export function TrafficRegion() {
+  useSignals()
+
+  useSignalEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const id = setInterval(() => {
+      if (document.hidden) return
+      traffic.value = [...traffic.value.slice(1), nextPoint(traffic.value)]
+    }, 2000)
+    return () => clearInterval(id)
+  })
+
+  const series = [
+    { id: 'requests', label: 'Requests/hour', data: traffic.value.map((y, x) => ({ x, y })) },
+  ]
+
   return (
     <section className="region" aria-label="Traffic">
       <div className="traffic-region-head">
         <h3>Traffic</h3>
-        <span className="traffic-region-sub">requests/hour · last 24h</span>
+        <span className="traffic-region-sub">requests/hour · live</span>
       </div>
       <AreaChart
-        series={trafficSeries}
+        series={series}
         x={(d) => d.x}
         y={(d) => d.y}
         title="Requests per hour over last 24 hours"

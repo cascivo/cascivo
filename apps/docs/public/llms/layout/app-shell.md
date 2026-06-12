@@ -1,6 +1,6 @@
 # AppShell
 
-Full-page application shell with persisted collapsible sidebar.
+Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 
 ## Install
 
@@ -16,6 +16,8 @@ npx cascade add layout/app-shell
 
 - `expanded`
 - `collapsed`
+- `loading`
+- `error`
 
 ## Props
 
@@ -50,6 +52,10 @@ App shell with collapsible nav
 - `--cascade-color-border`
 - `--cascade-color-surface`
 - `--cascade-font-size-xs`
+- `--cascade-color-accent`
+- `--cascade-color-destructive`
+- `--cascade-color-destructive-subtle`
+- `--cascade-focus-ring`
 
 ## Accessibility
 

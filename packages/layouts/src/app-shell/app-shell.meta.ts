@@ -2,9 +2,10 @@ import type { ComponentMeta } from '@cascade-ui/core'
 
 export const meta: ComponentMeta = {
   name: 'AppShell',
-  description: 'Full-page application shell with persisted collapsible sidebar.',
+  description:
+    'Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.',
   category: 'layout',
-  states: ['expanded', 'collapsed'],
+  states: ['expanded', 'collapsed', 'loading', 'error'],
   variants: [],
   sizes: [],
   props: [
@@ -34,6 +35,10 @@ export const meta: ComponentMeta = {
     '--cascade-color-border',
     '--cascade-color-surface',
     '--cascade-font-size-xs',
+    '--cascade-color-accent',
+    '--cascade-color-destructive',
+    '--cascade-color-destructive-subtle',
+    '--cascade-focus-ring',
   ],
   accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
   examples: [

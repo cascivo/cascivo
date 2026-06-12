@@ -1,10 +1,11 @@
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import type React from 'react'
 import { Button, Checkbox, Input } from '@cascade-ui/react'
 
 const OPTIONS = Array.from({ length: 50 }, (_, i) => i)
 
 export function FormPage() {
+  useSignals()
   const query = useSignal('')
   const checked = useSignal<boolean[]>(OPTIONS.map(() => false))
 

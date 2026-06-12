@@ -1,4 +1,5 @@
 import type { ComponentChildren } from 'preact'
+import { useEffect } from 'preact/hooks'
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { useLocation } from 'preact-iso'
 import { AppShell } from '@cascade-ui/layouts/app-shell'
@@ -6,6 +7,17 @@ import { createShellState } from '@cascade-ui/layouts/shell-state'
 import { ShellHeader } from '@cascade-ui/components/shell-header'
 import { SideNav } from '@cascade-ui/components/side-nav'
 import { HeaderPanel } from '@cascade-ui/components/header-panel'
+import {
+  AlertCircle,
+  BarChart,
+  Edit,
+  Eye,
+  Bell,
+  Grid,
+  Menu as MenuIcon,
+  Server,
+  Terminal,
+} from '@cascade-ui/icons'
 import { buildNav } from './nav'
 import { DocsSearch } from './search'
 import { applyTheme, theme, THEMES } from './theme'
@@ -16,20 +28,50 @@ const shell = createShellState({ persistKey: 'cascade.docs.shell' })
 export function Layout({ children }: { children: ComponentChildren }) {
   useSignals()
   const nav = buildNav()
-  const { path } = useLocation()
+  const { path, route } = useLocation()
   const themePanelOpen = useSignal(false)
 
+  useEffect(() => {
+    document.getElementById('cascade-main')?.scrollTo(0, 0)
+  }, [path])
+
+  useEffect(() => {
+    const handle = (e: MouseEvent) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return
+      const anchor = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null
+      if (!anchor) return
+      const href = anchor.getAttribute('href')
+      if (!href || !href.startsWith('/')) return
+      if (typeof document.startViewTransition !== 'function') return
+      e.preventDefault()
+      document.startViewTransition(() => {
+        route(href)
+      })
+    }
+    document.addEventListener('click', handle)
+    return () => document.removeEventListener('click', handle)
+  }, [route])
+
   const exploreItems = [
-    { label: 'AI / MCP', href: '/ai' },
-    { label: 'Benchmarks', href: '/benchmarks' },
-    { label: 'Charts', href: '/charts' },
-    { label: 'Layouts', href: '/layouts' },
-    { label: 'Playground', href: '/playground' },
+    { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
+    { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
+    { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },
+    { label: 'Layouts', href: '/layouts', icon: <Grid size={16} /> },
+    { label: 'Playground', href: '/playground', icon: <Terminal size={16} /> },
   ]
+
+  const CATEGORY_ICONS = {
+    Inputs: <Edit size={16} />,
+    Display: <Eye size={16} />,
+    Overlay: <Bell size={16} />,
+    Navigation: <MenuIcon size={16} />,
+    Feedback: <AlertCircle size={16} />,
+  }
 
   const sideNavItems = [
     {
       label: 'Explore',
+      icon: <Grid size={16} />,
       items: exploreItems.map((item) => ({
         label: item.label,
         href: item.href,
@@ -38,6 +80,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     },
     ...nav.map((group) => ({
       label: group.label,
+      icon: CATEGORY_ICONS[group.label as keyof typeof CATEGORY_ICONS],
       items: group.items.map((item) => ({
         label: item.label,
         href: item.href,

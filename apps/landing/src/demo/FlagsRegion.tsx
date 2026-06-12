@@ -1,10 +1,11 @@
 'use client'
-import { useSignal } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascade-ui/core'
 import { Card } from '@cascade-ui/components/card'
 import { Toggle } from '@cascade-ui/components/toggle'
 import { FLAGS } from './data'
 
 export function FlagsRegion() {
+  useSignals()
   const states = useSignal(FLAGS.map((f) => f.enabled))
 
   return (
@@ -12,7 +13,7 @@ export function FlagsRegion() {
       <div className="region-head">
         <h3>Feature flags</h3>
       </div>
-      <Card padding="sm">
+      <Card padding="md">
         {FLAGS.map((flag, i) => (
           <div key={flag.name} className="flag-row">
             <div className="flag-info">

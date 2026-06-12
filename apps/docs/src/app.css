@@ -257,20 +257,40 @@ a {
 
 .home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--cascade-space-3);
 }
 
 .home-card {
-  padding: var(--cascade-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascade-space-3);
+  padding: var(--cascade-space-3);
   border: 1px solid var(--cascade-color-border);
   border-radius: var(--cascade-radius-md);
   background-color: var(--cascade-color-surface);
-  font-weight: var(--cascade-font-medium);
-  transition: all 150ms ease;
+  transition: border-color 150ms ease;
+  overflow: hidden;
 }
 
 .home-card:hover {
   border-color: var(--cascade-color-accent);
-  color: var(--cascade-color-accent);
+}
+
+.home-card-preview {
+  pointer-events: none;
+  overflow: hidden;
+  block-size: 120px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-block: var(--cascade-space-2);
+}
+
+.home-card-label {
+  font-size: var(--cascade-font-sm);
+  font-weight: var(--cascade-font-medium);
+  color: var(--cascade-color-text-subtle);
+  margin-block-start: auto;
 }

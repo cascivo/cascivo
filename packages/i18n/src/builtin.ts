@@ -82,6 +82,7 @@ export const builtin = {
   appShell: defineMessages('cascade.appShell', {
     collapse: 'Collapse navigation',
     expand: 'Expand navigation',
+    dismissError: 'Dismiss error',
   }),
   charts: defineMessages('cascade.charts', {
     legendToggle: 'Toggle series {name}',
@@ -223,6 +224,7 @@ defineCatalog(builtin.tag, 'de', {
 defineCatalog(builtin.appShell, 'de', {
   collapse: 'Navigation einklappen',
   expand: 'Navigation ausklappen',
+  dismissError: 'Fehler schließen',
 })
 defineCatalog(builtin.charts, 'de', {
   legendToggle: 'Reihe {name} umschalten',

@@ -1,3 +1,4 @@
+import { useSignalEffect } from '@cascade-ui/core'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
@@ -9,8 +10,11 @@ import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
 import { OgCard } from './sections/OgCard'
+import { initReveal } from './reveal'
 
 export function App() {
+  useSignalEffect(() => initReveal())
+
   if (typeof window !== 'undefined' && window.location.pathname === '/og') {
     return <OgCard />
   }

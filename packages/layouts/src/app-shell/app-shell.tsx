@@ -16,6 +16,11 @@ export interface AppShellProps {
   /** External shell state (from createShellState). Created internally when omitted. */
   state?: ShellState
   className?: string | undefined
+  /**
+   * push (default): sidebar takes grid space; content shifts when sidebar expands/collapses.
+   * overlay: sidebar floats over content; content area never shifts.
+   */
+  sideNavMode?: 'push' | 'overlay'
 }
 
 export function AppShell({
@@ -27,6 +32,7 @@ export function AppShell({
   persistKey = 'cascade.appshell',
   state,
   className,
+  sideNavMode = 'push',
 }: AppShellProps) {
   useSignals()
 
@@ -51,7 +57,43 @@ export function AppShell({
       className={cn(styles['shell'], className)}
       data-collapsed={shell.sideNavCollapsed.value || undefined}
       data-drawer={shell.sideNavOpen.value ? 'open' : undefined}
+      data-sidenav-mode={sideNavMode}
     >
+      {shell.loadingProgress.value !== null && (
+        <div
+          className={styles['loading-bar']}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(shell.loadingProgress.value * 100)}
+          data-state={shell.loadingError.value !== null ? 'error' : 'active'}
+        >
+          <div
+            className={styles['loading-bar-fill']}
+            style={{ ['--_progress' as string]: String(shell.loadingProgress.value) }}
+          />
+        </div>
+      )}
+      {shell.loadingError.value !== null && (
+        <div role="alert" className={styles['loading-error']}>
+          <span>{shell.loadingError.value}</span>
+          <button
+            type="button"
+            className={styles['loading-error-dismiss']}
+            aria-label={t(builtin.appShell.dismissError)}
+            onClick={() => shell.clearLoadingError()}
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path
+                d="M3 3l6 6M9 3l-6 6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
       <div className={styles['header']}>{header}</div>
       {sideNav && (
         <div
@@ -59,26 +101,6 @@ export function AppShell({
           data-state={shell.sideNavCollapsed.value ? 'collapsed' : 'expanded'}
         >
           <div className={styles['nav-content']}>{sideNav}</div>
-          <button
-            type="button"
-            className={styles['toggle']}
-            aria-label={
-              shell.sideNavCollapsed.value
-                ? t(builtin.appShell.expand)
-                : t(builtin.appShell.collapse)
-            }
-            onClick={() => shell.toggleSideNav()}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <polyline
-                points="10,4 6,8 10,12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
         </div>
       )}
       {sideNav && (
