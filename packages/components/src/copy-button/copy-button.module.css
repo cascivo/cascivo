@@ -1,0 +1,49 @@
+@layer cascade.component {
+  .copyButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cascade-color-surface);
+    color: var(--cascade-color-text-subtle);
+    border: 1px solid var(--cascade-color-border);
+    border-radius: var(--cascade-radius-control);
+    cursor: pointer;
+    transition:
+      color var(--cascade-duration-150) var(--cascade-ease-out),
+      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+
+    &:hover {
+      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascade-color-text);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascade-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &[data-state='copied'] {
+      color: var(--cascade-color-success);
+    }
+
+    &[data-size='sm'] {
+      inline-size: var(--cascade-control-height-sm);
+      block-size: var(--cascade-control-height-sm);
+    }
+
+    &[data-size='md'] {
+      inline-size: var(--cascade-control-height-md);
+      block-size: var(--cascade-control-height-md);
+    }
+  }
+
+  .icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+}

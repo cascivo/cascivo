@@ -64,7 +64,8 @@
     "./shell-header": "./src/shell-header/shell-header.tsx",
     "./header-panel": "./src/header-panel/header-panel.tsx",
     "./switcher": "./src/switcher/switcher.tsx",
-    "./checkbox-card": "./src/checkbox-card/checkbox-card.tsx"
+    "./checkbox-card": "./src/checkbox-card/checkbox-card.tsx",
+    "./copy-button": "./src/copy-button/copy-button.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",
