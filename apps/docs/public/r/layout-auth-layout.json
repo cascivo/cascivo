@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "name": "layout/auth-layout",
+  "type": "layout",
+  "description": "Centered card layout for authentication pages (login, register, forgot password).",
+  "category": "layout",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "auth", "login", "page"],
+  "meta": {
+    "name": "AuthLayout",
+    "description": "Centered card layout for authentication pages (login, register, forgot password).",
+    "category": "layout",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Auth form content"
+      },
+      {
+        "name": "logo",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Optional logo displayed above the form"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-bg-subtle",
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-lg",
+      "--cascade-space-4",
+      "--cascade-space-6",
+      "--cascade-space-8"
+    ],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Login",
+        "code": "<AuthLayout logo={<img src=\"/logo.svg\" alt=\"Logo\" />}><form>...</form></AuthLayout>",
+        "description": "Centered auth card with logo"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "auth", "login", "page"]
+  }
+}

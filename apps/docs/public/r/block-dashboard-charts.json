@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "name": "block/dashboard-charts",
+  "type": "block",
+  "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+    }
+  ],
+  "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+  "tags": ["block", "dashboard", "charts", "kpi"],
+  "meta": {
+    "name": "DashboardCharts",
+    "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<DashboardCharts />",
+        "description": "Charts dashboard demo"
+      }
+    ],
+    "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+    "tags": ["block", "dashboard", "charts", "kpi"]
+  }
+}

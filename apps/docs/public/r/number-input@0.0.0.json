@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 2,
+  "name": "number-input",
+  "type": "component",
+  "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
+  "category": "inputs",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["form", "number", "input", "spinbutton", "stepper"],
+  "meta": {
+    "name": "NumberInput",
+    "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
+    "category": "inputs",
+    "states": ["idle", "focused", "error"],
+    "variants": [],
+    "sizes": ["sm", "md", "lg"],
+    "props": [
+      {
+        "name": "value",
+        "type": "number | null",
+        "required": false
+      },
+      {
+        "name": "defaultValue",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "onChange",
+        "type": "(value: number | null) => void",
+        "required": false,
+        "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1"
+      },
+      {
+        "name": "precision",
+        "type": "number",
+        "required": false,
+        "description": "Decimal places applied on commit"
+      },
+      {
+        "name": "formatOptions",
+        "type": "Intl.NumberFormatOptions",
+        "required": false,
+        "description": "Display formatting applied on blur; raw editable string while focused"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "size",
+        "type": "'sm' | 'md' | 'lg'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "incrementLabel",
+        "type": "string",
+        "required": false,
+        "default": "Increment"
+      },
+      {
+        "name": "decrementLabel",
+        "type": "string",
+        "required": false,
+        "default": "Decrement"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-color-accent",
+      "--cascade-color-destructive",
+      "--cascade-color-bg-subtle",
+      "--cascade-color-text-subtle",
+      "--cascade-radius-input",
+      "--cascade-focus-ring"
+    ],
+    "accessibility": {
+      "role": "spinbutton",
+      "wcag": "AA",
+      "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Tab"]
+    },
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<NumberInput label=\"Quantity\" defaultValue={1} min={0} max={99} />"
+      },
+      {
+        "title": "Currency",
+        "code": "<NumberInput label=\"Price\" precision={2} formatOptions={{ style: \"currency\", currency: \"USD\" }} />"
+      },
+      {
+        "title": "Stepped",
+        "code": "<NumberInput label=\"Opacity\" min={0} max={1} step={0.1} />"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["form", "number", "input", "spinbutton", "stepper"]
+  }
+}

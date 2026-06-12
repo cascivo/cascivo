@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 2,
+  "name": "stat",
+  "type": "component",
+  "description": "Displays a key metric with optional delta, trend direction and help text",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["stat", "kpi", "metric", "number"],
+  "meta": {
+    "name": "Stat",
+    "description": "Displays a key metric with optional delta, trend direction and help text",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "What the metric measures"
+      },
+      {
+        "name": "value",
+        "type": "string | number",
+        "required": true,
+        "description": "The metric value"
+      },
+      {
+        "name": "delta",
+        "type": "string",
+        "required": false,
+        "description": "Change indicator rendered next to the trend arrow"
+      },
+      {
+        "name": "trend",
+        "type": "'up' | 'down' | 'flat'",
+        "required": false,
+        "default": "flat"
+      },
+      {
+        "name": "helpText",
+        "type": "string",
+        "required": false,
+        "description": "Fine print below the value (methodology, time range)"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-text",
+      "--cascade-color-text-subtle",
+      "--cascade-color-text-muted",
+      "--cascade-color-success",
+      "--cascade-color-destructive"
+    ],
+    "accessibility": {
+      "role": "none",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<Stat label=\"Components\" value={106} />"
+      },
+      {
+        "title": "With trend",
+        "code": "<Stat label=\"Bundle size\" value=\"12.4 kB\" delta=\"-1.2 kB\" trend=\"up\" />"
+      },
+      {
+        "title": "With help text",
+        "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["stat", "kpi", "metric", "number"]
+  }
+}

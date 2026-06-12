@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "name": "spinner",
+  "type": "component",
+  "description": "Indeterminate loading indicator",
+  "category": "feedback",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["loading", "progress", "feedback"],
+  "meta": {
+    "name": "Spinner",
+    "description": "Indeterminate loading indicator",
+    "category": "feedback",
+    "states": [],
+    "variants": [],
+    "sizes": ["sm", "md", "lg"],
+    "props": [
+      {
+        "name": "size",
+        "type": "'sm' | 'md' | 'lg'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "Loading",
+        "description": "Accessible label announced by screen readers"
+      }
+    ],
+    "tokens": ["--cascade-radius-full"],
+    "accessibility": {
+      "role": "status",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<Spinner />"
+      },
+      {
+        "title": "Large",
+        "code": "<Spinner size=\"lg\" />"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["loading", "progress", "feedback"]
+  }
+}

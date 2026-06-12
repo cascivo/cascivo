@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "name": "popover",
+  "type": "component",
+  "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+  "category": "overlay",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["overlay", "floating", "anchor", "popover"],
+  "meta": {
+    "name": "Popover",
+    "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+    "category": "overlay",
+    "states": ["open", "closed"],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-md",
+      "--cascade-shadow-md",
+      "--cascade-motion-enter",
+      "--cascade-motion-exit"
+    ],
+    "accessibility": {
+      "role": "dialog",
+      "wcag": "AA",
+      "keyboard": ["Escape"]
+    },
+    "examples": [],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["overlay", "floating", "anchor", "popover"]
+  }
+}

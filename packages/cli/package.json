@@ -21,6 +21,9 @@
     "test": "vp test",
     "dev": "vp pack --watch"
   },
+  "dependencies": {
+    "@cascade-ui/registry": "workspace:^"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "typescript": "catalog:",

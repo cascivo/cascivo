@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "name": "tag",
+  "type": "component",
+  "description": "Compact chip for labeling, categorizing, or filtering content",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["chip", "label", "filter", "category"],
+  "meta": {
+    "name": "Tag",
+    "description": "Compact chip for labeling, categorizing, or filtering content",
+    "category": "display",
+    "states": [],
+    "variants": ["default", "info", "success", "warning", "error"],
+    "sizes": ["sm", "md"],
+    "props": [
+      {
+        "name": "variant",
+        "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
+        "required": false,
+        "default": "default"
+      },
+      {
+        "name": "size",
+        "type": "'sm' | 'md'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "onDismiss",
+        "type": "() => void",
+        "required": false,
+        "description": "When provided, renders a trailing remove button inside the chip"
+      },
+      {
+        "name": "dismissLabel",
+        "type": "string",
+        "required": false,
+        "default": "Remove"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-bg-subtle",
+      "--cascade-color-text-subtle",
+      "--cascade-color-info",
+      "--cascade-color-info-subtle",
+      "--cascade-color-success",
+      "--cascade-color-success-subtle",
+      "--cascade-color-warning",
+      "--cascade-color-warning-subtle",
+      "--cascade-color-destructive",
+      "--cascade-color-destructive-subtle",
+      "--cascade-radius-badge",
+      "--cascade-focus-ring"
+    ],
+    "accessibility": {
+      "role": "none",
+      "wcag": "AA",
+      "keyboard": ["Enter", "Space"]
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<Tag>Design</Tag>"
+      },
+      {
+        "title": "Success",
+        "code": "<Tag variant=\"success\">Approved</Tag>"
+      },
+      {
+        "title": "Dismissible",
+        "code": "<Tag onDismiss={() => removeFilter()}>Filter: Active</Tag>",
+        "description": "Renders a trailing remove button labeled by dismissLabel"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["chip", "label", "filter", "category"]
+  }
+}

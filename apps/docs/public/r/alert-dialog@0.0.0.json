@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 2,
+  "name": "alert-dialog",
+  "type": "component",
+  "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+  "category": "overlay",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["overlay", "dialog", "confirm", "destructive"],
+  "meta": {
+    "name": "AlertDialog",
+    "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+    "category": "overlay",
+    "states": ["open", "closed"],
+    "variants": ["default", "destructive"],
+    "sizes": [],
+    "props": [],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-lg",
+      "--cascade-shadow-xl",
+      "--cascade-motion-enter",
+      "--cascade-motion-exit",
+      "--cascade-color-accent",
+      "--cascade-color-destructive"
+    ],
+    "accessibility": {
+      "role": "alertdialog",
+      "wcag": "AA",
+      "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
+    },
+    "examples": [],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["overlay", "dialog", "confirm", "destructive"]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cascade-ui.dev/schema/registries.v1.json",
+  "title": "Cascade Registry Directory v1",
+  "description": "Machine-readable directory of community cascade registries",
+  "type": "object",
+  "required": ["schemaVersion", "registries"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "registries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "namespace",
+          "name",
+          "description",
+          "homepage",
+          "registryUrl",
+          "tags",
+          "verified"
+        ],
+        "properties": {
+          "namespace": { "type": "string", "pattern": "^@[a-z][a-z0-9-]*$" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "homepage": { "type": "string", "format": "uri" },
+          "registryUrl": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "verified": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

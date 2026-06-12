@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "name": "input-group",
+  "type": "component",
+  "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+  "category": "inputs",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["form", "input", "addon", "group", "layout"],
+  "meta": {
+    "name": "InputGroup",
+    "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+    "category": "inputs",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "prefix",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "suffix",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true
+      }
+    ],
+    "tokens": [
+      "--cascade-color-bg-subtle",
+      "--cascade-color-border",
+      "--cascade-color-text-subtle",
+      "--cascade-radius-input"
+    ],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "With prefix",
+        "code": "<InputGroup prefix=\"https://\"><Input placeholder=\"example.com\" /></InputGroup>"
+      },
+      {
+        "title": "With leading icon addon",
+        "code": "<InputGroup><InputGroupAddon><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><circle cx=\"6\" cy=\"6\" r=\"4\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\"/><path d=\"M10 10l3 3\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\"/></svg></InputGroupAddon><Input placeholder=\"Search…\" aria-label=\"Search\" /></InputGroup>"
+      },
+      {
+        "title": "With trailing unit addon",
+        "code": "<InputGroup><Input placeholder=\"0.00\" aria-label=\"Weight\" /><InputGroupAddon align=\"inline-end\">kg</InputGroupAddon></InputGroup>"
+      },
+      {
+        "title": "ButtonGroup",
+        "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["form", "input", "addon", "group", "layout"]
+  }
+}

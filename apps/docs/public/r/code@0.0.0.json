@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 2,
+  "name": "code",
+  "type": "component",
+  "description": "Inline code span for identifiers, commands, and short snippets",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["typography", "code", "inline", "mono"],
+  "meta": {
+    "name": "Code",
+    "description": "Inline code span for identifiers, commands, and short snippets",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": ["sm", "md"],
+    "props": [
+      {
+        "name": "size",
+        "type": "'sm' | 'md'",
+        "required": false,
+        "default": "md"
+      }
+    ],
+    "tokens": [
+      "--cascade-font-mono",
+      "--cascade-color-text",
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-indicator",
+      "--cascade-text-xs",
+      "--cascade-text-sm"
+    ],
+    "accessibility": {
+      "role": "code",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<Code>npx cascade add button</Code>"
+      },
+      {
+        "title": "In a sentence",
+        "code": "<Text>Run <Code>vp check</Code> before committing.</Text>",
+        "description": "Sits inline with surrounding text"
+      },
+      {
+        "title": "Small",
+        "code": "<Code size=\"sm\">--cascade-color-accent</Code>"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["typography", "code", "inline", "mono"]
+  }
+}

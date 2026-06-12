@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cascade-ui.dev/schema/registry.v2.json",
+  "title": "Cascade Registry Index v2",
+  "description": "Index file for a cascade component registry",
+  "type": "object",
+  "required": ["schemaVersion", "name", "items"],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 2 },
+    "name": { "type": "string", "minLength": 1 },
+    "homepage": { "type": "string", "format": "uri" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "registry-item.v2.json" }
+    }
+  }
+}

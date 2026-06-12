@@ -70,6 +70,7 @@ export default defineConfig({
       '@cascade-ui/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascade-ui/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascade-ui/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascade-ui/registry': resolve(root, 'packages/registry/src/index.ts'),
     },
   },
 })

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "name": "copy-button",
+  "type": "component",
+  "description": "Icon button that copies a value to the clipboard with copied feedback",
+  "category": "inputs",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["clipboard", "copy", "button", "snippet"],
+  "meta": {
+    "name": "CopyButton",
+    "description": "Icon button that copies a value to the clipboard with copied feedback",
+    "category": "inputs",
+    "states": ["idle", "copied"],
+    "variants": [],
+    "sizes": ["sm", "md"],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The text written to the clipboard on click"
+      },
+      {
+        "name": "size",
+        "type": "'sm' | 'md'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "labels",
+        "type": "{ copy?: string; copied?: string }",
+        "required": false,
+        "description": "Overrides the built-in i18n labels per instance"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-text-subtle",
+      "--cascade-color-text",
+      "--cascade-color-border",
+      "--cascade-color-bg-subtle",
+      "--cascade-color-success",
+      "--cascade-radius-control",
+      "--cascade-focus-ring",
+      "--cascade-control-height-sm",
+      "--cascade-control-height-md"
+    ],
+    "accessibility": {
+      "role": "button",
+      "wcag": "AA",
+      "keyboard": ["Enter", "Space"]
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<CopyButton value=\"npx cascade add button\" />"
+      },
+      {
+        "title": "Small",
+        "code": "<CopyButton value=\"pnpm install\" size=\"sm\" />"
+      },
+      {
+        "title": "Custom labels",
+        "code": "<CopyButton value=\"token\" labels={{ copy: 'Copy token', copied: 'Token copied' }} />",
+        "description": "Override the built-in copy/copied strings per instance"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["clipboard", "copy", "button", "snippet"]
+  }
+}

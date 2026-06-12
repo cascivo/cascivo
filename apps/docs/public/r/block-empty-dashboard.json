@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "name": "block/empty-dashboard",
+  "type": "block",
+  "description": "Dashboard page showing an empty state with a call-to-action button.",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+    }
+  ],
+  "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+  "tags": ["block", "dashboard", "empty-state", "page"],
+  "meta": {
+    "name": "EmptyDashboard",
+    "description": "Dashboard page showing an empty state with a call-to-action button.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "onCreateItem",
+        "type": "() => void",
+        "required": false,
+        "description": "Create item button handler"
+      }
+    ],
+    "tokens": [],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<EmptyDashboard />",
+        "description": "Empty dashboard"
+      }
+    ],
+    "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+    "tags": ["block", "dashboard", "empty-state", "page"]
+  }
+}

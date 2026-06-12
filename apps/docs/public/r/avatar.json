@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "name": "avatar",
+  "type": "component",
+  "description": "Displays a user image with initials fallback",
+  "category": "display",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["user", "profile", "image"],
+  "meta": {
+    "name": "Avatar",
+    "description": "Displays a user image with initials fallback",
+    "category": "display",
+    "states": ["loading", "loaded", "error"],
+    "variants": [],
+    "sizes": ["xs", "sm", "md", "lg", "xl"],
+    "props": [
+      {
+        "name": "src",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "alt",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "fallback",
+        "type": "string",
+        "required": false,
+        "description": "Initials shown when no image is available"
+      },
+      {
+        "name": "size",
+        "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "status",
+        "type": "'online' | 'offline' | 'busy'",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascade-color-accent-subtle",
+      "--cascade-color-success",
+      "--cascade-color-destructive",
+      "--cascade-radius-full"
+    ],
+    "accessibility": {
+      "role": "img",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Image",
+        "code": "<Avatar src=\"/jane.jpg\" alt=\"Jane Doe\" />"
+      },
+      {
+        "title": "Fallback",
+        "code": "<Avatar fallback=\"JD\" alt=\"Jane Doe\" />"
+      },
+      {
+        "title": "With status",
+        "code": "<Avatar fallback=\"JD\" status=\"online\" />"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["user", "profile", "image"]
+  }
+}

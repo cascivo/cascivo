@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "name": "radio-card",
+  "type": "component",
+  "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+  "category": "inputs",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["radio", "card", "selectable", "form"],
+  "meta": {
+    "name": "RadioCard",
+    "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+    "category": "inputs",
+    "states": ["default", "checked", "disabled"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "Radio value"
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Card title"
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Optional description"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": "Disables the card"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-accent",
+      "--cascade-color-border",
+      "--cascade-radius-surface",
+      "--cascade-color-active-bg"
+    ],
+    "accessibility": {
+      "role": "radiogroup",
+      "wcag": "AA",
+      "keyboard": ["ArrowDown", "ArrowUp", "Space"]
+    },
+    "examples": [
+      {
+        "title": "Plan selector",
+        "code": "<RadioCardGroup name=\"plan\" defaultValue=\"pro\" label=\"Plan\">\n  <RadioCard value=\"free\" title=\"Free\" description=\"For hobbyists\" />\n  <RadioCard value=\"pro\" title=\"Pro\" description=\"For professionals\" />\n  <RadioCard value=\"team\" title=\"Team\" description=\"For teams\" />\n</RadioCardGroup>",
+        "description": "Single-select plan picker"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["radio", "card", "selectable", "form"]
+  }
+}

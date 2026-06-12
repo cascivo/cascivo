@@ -5,6 +5,7 @@ import { runDoctor } from './commands/doctor.js'
 import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
 import { list } from './commands/list.js'
+import { registryBuild } from './commands/registry.js'
 import { theme } from './commands/theme.js'
 import { update } from './commands/update.js'
 import { loadConfig } from './utils/config.js'
@@ -25,6 +26,7 @@ Commands:
   theme add <name>         Install a theme (light | dark | warm)
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
+  registry build           Build a static registry from a cascade-registry.json file
 
 Run "cascade <command> --help" for details.`
 
@@ -49,6 +51,14 @@ export async function run(args: string[]): Promise<void> {
       break
     case 'generate':
       await generate(rest, await loadConfig())
+      break
+    case 'registry':
+      if (rest[0] === 'build') {
+        await registryBuild(rest.slice(1))
+      } else {
+        console.error(`Unknown registry subcommand: ${rest[0]}`)
+        process.exitCode = 1
+      }
       break
     case 'doctor': {
       const ci = rest.includes('--ci')

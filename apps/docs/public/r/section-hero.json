@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "name": "section/hero",
+  "type": "section",
+  "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+  "category": "layout",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["section", "hero", "marketing"],
+  "meta": {
+    "name": "Hero",
+    "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+    "category": "layout",
+    "states": [],
+    "variants": ["centered", "split"],
+    "sizes": [],
+    "props": [
+      {
+        "name": "variant",
+        "type": "\"centered\" | \"split\"",
+        "required": false,
+        "default": "\"centered\"",
+        "description": "Layout variant: centered (single column) or split (two columns)"
+      },
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Primary heading content"
+      },
+      {
+        "name": "eyebrow",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Small monospace label above the title"
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Supporting paragraph below the title"
+      },
+      {
+        "name": "actions",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Buttons or links rendered in a row below the description"
+      },
+      {
+        "name": "media",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Right-hand slot in the split variant (image, demo, code block)"
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "1",
+        "description": "HTML heading level for document outline control"
+      }
+    ],
+    "tokens": [
+      "--cascade-text-4xl",
+      "--cascade-text-lg",
+      "--cascade-text-sm",
+      "--cascade-font-mono",
+      "--cascade-font-bold",
+      "--cascade-text-secondary",
+      "--cascade-space-*"
+    ],
+    "accessibility": {
+      "role": "region",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Centered hero",
+        "code": "<Hero eyebrow=\"v8 — Assembly Included\" title=\"Ship the dashboard your ops team deserves\" description=\"Cascade gives you charts, layouts and sections — fully composed, copy-paste ready.\" actions={<><Button>Get started</Button><Button variant=\"ghost\">View docs</Button></>} />",
+        "description": "Single-column hero with eyebrow, headline, description, and CTA buttons"
+      },
+      {
+        "title": "Split hero",
+        "code": "<Hero variant=\"split\" title=\"Signal-driven, CSS-native\" description=\"Fine-grained reactivity with zero re-renders. Beautiful by default.\" actions={<Button>Start building</Button>} media={<img src=\"/preview.png\" alt=\"Dashboard preview\" />} />",
+        "description": "Two-column layout with copy on the left and media on the right"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["section", "hero", "marketing"]
+  }
+}

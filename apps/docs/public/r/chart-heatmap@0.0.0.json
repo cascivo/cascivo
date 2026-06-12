@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/heatmap",
+  "type": "chart",
+  "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+  "category": "chart",
+  "version": "0.0.0",
+  "files": [],
+  "install": "@cascade-ui/charts",
+  "dependencies": ["@cascade-ui/charts"],
+  "tags": ["chart", "heatmap", "matrix", "data-viz"],
+  "meta": {
+    "name": "Heatmap",
+    "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+    "category": "chart",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "data",
+        "type": "{ x: string; y: string; value: number }[]",
+        "required": true,
+        "description": "Array of x/y/value triples"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      }
+    ],
+    "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Basic heatmap",
+        "code": "import { Heatmap } from '@cascade-ui/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+      }
+    ],
+    "dependencies": ["@cascade-ui/charts"],
+    "tags": ["chart", "heatmap", "matrix", "data-viz"]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cascade-ui.dev/schema/registry-item.v2.json",
+  "title": "Cascade Registry Item v2",
+  "description": "A single registry item (component, theme, layout, etc.)",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "name",
+    "type",
+    "description",
+    "version",
+    "files",
+    "dependencies",
+    "tags"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 2 },
+    "name": { "type": "string", "minLength": 1 },
+    "type": {
+      "type": "string",
+      "enum": ["component", "layout", "block", "chart", "section", "theme", "style"]
+    },
+    "description": { "type": "string" },
+    "category": { "type": "string" },
+    "version": { "type": "string", "minLength": 1 },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["version", "note"],
+        "properties": {
+          "version": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "author": { "type": "string" },
+    "license": { "type": "string" },
+    "homepage": { "type": "string", "format": "uri" },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url"],
+        "properties": {
+          "url": { "type": "string" },
+          "target": { "type": "string" }
+        }
+      }
+    },
+    "install": { "type": "string" },
+    "dependencies": { "type": "array", "items": { "type": "string" } },
+    "registryDependencies": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "meta": { "type": "object" },
+    "advisories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "affectedVersions", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "moderate", "high", "critical"] },
+          "affectedVersions": { "type": "string" },
+          "fixedIn": { "type": "string" },
+          "summary": { "type": "string" },
+          "refs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
