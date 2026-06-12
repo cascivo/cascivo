@@ -1174,3 +1174,40 @@ code {
   flex-wrap: wrap;
   gap: var(--cascade-space-1);
 }
+
+.a11y-practices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--cascade-space-5);
+}
+
+.a11y-practice {
+  padding: var(--cascade-space-5);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg);
+}
+
+.a11y-practice h3 {
+  margin: 0 0 var(--cascade-space-2);
+  font-size: var(--cascade-text-base);
+  font-weight: var(--cascade-font-bold);
+}
+
+.a11y-practice p {
+  margin: 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-gate-code {
+  margin: 0;
+  padding: var(--cascade-space-5);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg-subtle);
+  font-family: var(--cascade-font-mono);
+  font-size: var(--cascade-text-xs);
+  line-height: 1.6;
+  overflow-x: auto;
+}
