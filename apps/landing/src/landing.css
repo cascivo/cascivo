@@ -469,6 +469,17 @@ code {
   color: var(--cascade-color-text-subtle);
 }
 
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascade-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-inline-size: 44rem;
+}
+
 /* ── CopyCommand ──────────────────────────────────────── */
 .copy-command {
   display: inline-flex;
