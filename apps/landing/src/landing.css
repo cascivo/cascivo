@@ -592,6 +592,12 @@ code {
   color: var(--cascade-color-text-subtle);
 }
 
+.console-titlebar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascade-space-3);
+}
+
 .console-body {
   display: grid;
   grid-template-columns: auto 1fr;

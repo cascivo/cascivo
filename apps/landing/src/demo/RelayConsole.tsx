@@ -1,5 +1,15 @@
-import { Activity, AlertTriangle, Dashboard, Settings, Tag, Zap } from '@cascade-ui/icons'
+import {
+  Activity,
+  AlertTriangle,
+  Dashboard,
+  MoreHorizontal,
+  Settings,
+  Tag,
+  Zap,
+} from '@cascade-ui/icons'
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
 import { SideNav } from '@cascade-ui/components/side-nav'
+import { ToastProvider, useToast } from '@cascade-ui/components/toast'
 import registry from '../../../../registry.json'
 import { DeploysRegion } from './DeploysRegion'
 import { FlagsRegion } from './FlagsRegion'
@@ -25,35 +35,64 @@ const navItems = NAV.map((label, i) => ({
   active: i === 0,
 }))
 
+function TitlebarMenu() {
+  const { toast } = useToast()
+  return (
+    <Menu>
+      <MenuTrigger>
+        <MoreHorizontal />
+      </MenuTrigger>
+      <MenuItem onSelect={() => toast({ title: 'Status page opened in a new tab' })}>
+        View status page
+      </MenuItem>
+      <MenuItem
+        onSelect={() => {
+          void navigator.clipboard.writeText('https://status.relay.dev/incident/2f9b3aa')
+          toast({ title: 'Incident link copied' })
+        }}
+      >
+        Copy incident link
+      </MenuItem>
+      <MenuSeparator />
+      <MenuItem onSelect={() => toast({ title: 'Signed out (demo)' })}>Sign out</MenuItem>
+    </Menu>
+  )
+}
+
 export function RelayConsole() {
   return (
-    <section className="console" id="console" aria-label="Live demo — Relay deploy console">
-      <p className="console-note">
-        The console below is live — 25+ cascade components, real markup. Switch the theme in the
-        header; the on-call card stays <code>data-theme=&quot;warm&quot;</code> on purpose.
-      </p>
-      <div className="console-frame">
-        <header className="console-titlebar">
-          <span className="console-brand">Relay</span>
-          <span className="console-env">production · eu-central</span>
-        </header>
-        <div className="console-body">
-          <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
-          <main className="console-main">
-            <KpiRow />
-            <div className="console-grid">
-              <TrafficRegion />
-              <SideRegion />
-              <DeploysRegion />
-              <FlagsRegion />
+    <ToastProvider>
+      <section className="console" id="console" aria-label="Live demo — Relay deploy console">
+        <p className="console-note">
+          The console below is live — 25+ cascade components, real markup. Switch the theme in the
+          header; the on-call card stays <code>data-theme=&quot;warm&quot;</code> on purpose.
+        </p>
+        <div className="console-frame">
+          <header className="console-titlebar">
+            <span className="console-brand">Relay</span>
+            <div className="console-titlebar-actions">
+              <span className="console-env">production · eu-central</span>
+              <TitlebarMenu />
             </div>
-          </main>
+          </header>
+          <div className="console-body">
+            <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
+            <main className="console-main">
+              <KpiRow />
+              <div className="console-grid">
+                <TrafficRegion />
+                <SideRegion />
+                <DeploysRegion />
+                <FlagsRegion />
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-      <p className="console-after">
-        Built from <a href="/docs">{componentCount}+ components</a> — this page imports them like
-        any app.
-      </p>
-    </section>
+        <p className="console-after">
+          Built from <a href="/docs">{componentCount}+ components</a> — this page imports them like
+          any app.
+        </p>
+      </section>
+    </ToastProvider>
   )
 }

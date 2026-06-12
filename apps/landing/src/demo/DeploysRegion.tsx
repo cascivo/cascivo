@@ -6,7 +6,7 @@ import { DataTable, type Column } from '@cascade-ui/components/data-table'
 import { Modal } from '@cascade-ui/components/modal'
 import { Select } from '@cascade-ui/components/select'
 import { Input } from '@cascade-ui/components/input'
-import { useToast, ToastProvider } from '@cascade-ui/components/toast'
+import { useToast } from '@cascade-ui/components/toast'
 import { DEPLOYS, type Deploy } from './data'
 
 type BadgeVariant = 'success' | 'secondary' | 'destructive' | 'outline'
@@ -126,9 +126,5 @@ function DeploysInner() {
 }
 
 export function DeploysRegion() {
-  return (
-    <ToastProvider>
-      <DeploysInner />
-    </ToastProvider>
-  )
+  return <DeploysInner />
 }
