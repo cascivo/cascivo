@@ -37,6 +37,7 @@ export interface SideNavProps {
   collapseLabel?: string
   expandLabel?: string
   expandOnHover?: boolean
+  showCollapseToggle?: boolean
   footer?: ReactNode
   className?: string
 }
@@ -152,6 +153,7 @@ export function SideNav({
   collapseLabel,
   expandLabel,
   expandOnHover = false,
+  showCollapseToggle = true,
   footer,
   className,
 }: SideNavProps) {
@@ -304,29 +306,31 @@ export function SideNav({
         })}
       </ul>
       {footer && <div className={styles['footer']}>{footer}</div>}
-      <button
-        type="button"
-        aria-label={rail ? resolvedExpandLabel : resolvedCollapseLabel}
-        className={styles['collapseToggle']}
-        onClick={toggleCollapsed}
-      >
-        <svg
-          viewBox="0 0 16 16"
-          width="14"
-          height="14"
-          aria-hidden="true"
-          className={styles['collapseIcon']}
+      {showCollapseToggle && (
+        <button
+          type="button"
+          aria-label={rail ? resolvedExpandLabel : resolvedCollapseLabel}
+          className={styles['collapseToggle']}
+          onClick={toggleCollapsed}
         >
-          <path
-            d="M10 4l-4 4 4 4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+          <svg
+            viewBox="0 0 16 16"
+            width="14"
+            height="14"
+            aria-hidden="true"
+            className={styles['collapseIcon']}
+          >
+            <path
+              d="M10 4l-4 4 4 4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
     </nav>
   )
 }

@@ -48,9 +48,17 @@ export interface RadioCardProps extends Omit<
   title: ReactNode
   description?: ReactNode
   disabled?: boolean
+  hideIndicator?: boolean
 }
 
-export function RadioCard({ value, title, description, disabled, ...props }: RadioCardProps) {
+export function RadioCard({
+  value,
+  title,
+  description,
+  disabled,
+  hideIndicator,
+  ...props
+}: RadioCardProps) {
   return (
     <Ctx.Consumer>
       {(ctx) => (
@@ -69,7 +77,7 @@ export function RadioCard({ value, title, description, disabled, ...props }: Rad
                 })}
             {...props}
           />
-          <span className={styles['glyph']} aria-hidden="true" />
+          {!hideIndicator && <span className={styles['glyph']} aria-hidden="true" />}
           <span className={styles['body']}>
             <span className={styles['title']}>{title}</span>
             {description && <span className={styles['description']}>{description}</span>}

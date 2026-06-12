@@ -22,6 +22,7 @@ export interface SideNavProps {
   ariaLabel?: string
   collapseLabel?: string
   expandLabel?: string
+  showCollapseToggle?: boolean
   className?: string
 }
 

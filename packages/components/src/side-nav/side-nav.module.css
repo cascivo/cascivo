@@ -13,7 +13,7 @@
     transition: inline-size var(--cascade-motion-emphasis);
 
     &[data-state='collapsed'] {
-      inline-size: var(--cascade-sidenav-rail-inline-size, 3.5rem);
+      inline-size: var(--cascade-sidenav-rail-inline-size, 4rem);
 
       & .label[data-rail-hidden] {
         display: none;
@@ -21,7 +21,6 @@
 
       & .link,
       & .groupTrigger {
-        justify-content: center;
         padding-inline: var(--cascade-space-2);
       }
 

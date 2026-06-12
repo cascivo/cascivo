@@ -28,19 +28,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    transition:
-      opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
-      translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
-  }
-
-  .nav[data-state='collapsed'] .nav-content {
-    opacity: 0;
-    translate: -100% 0;
-  }
-
-  .nav[data-state='expanded'] .nav-content {
-    opacity: 1;
-    translate: 0 0;
   }
 
   .nav-content {
@@ -48,47 +35,6 @@
     min-block-size: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    transition:
-      opacity var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease),
-      translate var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
-  }
-
-  .toggle {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--cascade-space-2);
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    inline-size: 100%;
-    border: none;
-    border-block-start: 1px solid var(--cascade-color-border);
-    background: transparent;
-    color: var(--cascade-color-text-subtle);
-    cursor: pointer;
-    transition:
-      background var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease),
-      color var(--cascade-duration-150, 150ms) var(--cascade-ease-out, ease);
-  }
-
-  .toggle:hover {
-    background: var(--cascade-color-bg-subtle);
-    color: var(--cascade-color-text);
-  }
-
-  .toggle:focus-visible {
-    outline: none;
-    box-shadow: var(--cascade-focus-ring);
-  }
-
-  .toggle svg {
-    flex-shrink: 0;
-    transition: transform var(--cascade-duration-200, 200ms) var(--cascade-ease-out, ease);
-  }
-
-  .shell[data-collapsed] .toggle svg {
-    transform: rotate(180deg);
   }
 
   .main {
@@ -164,6 +110,16 @@
     .nav {
       transition: none;
     }
+  }
+
+  /* Overlay mode: nav floats over content; main always spans the full width */
+  .shell[data-sidenav-mode='overlay'] .main {
+    grid-column: nav-start / main-end;
+  }
+
+  .shell[data-sidenav-mode='overlay'] .nav {
+    z-index: 5;
+    box-shadow: var(--cascade-shadow-md);
   }
 
   .loading-bar {

@@ -38,7 +38,7 @@ describe('AppShell', () => {
     expect(screen.getByText('Nav')).toBeInTheDocument()
   })
 
-  it('toggle button flips nav data-state', () => {
+  it('nav renders with expanded state by default', () => {
     render(
       <AppShell header={<div />} sideNav={<div>Nav</div>} persistKey={false}>
         children
@@ -46,8 +46,6 @@ describe('AppShell', () => {
     )
     const nav = document.querySelector('[data-state]')!
     expect(nav).toHaveAttribute('data-state', 'expanded')
-    fireEvent.click(screen.getByRole('button'))
-    expect(nav).toHaveAttribute('data-state', 'collapsed')
   })
 
   it('renders aside slot', () => {
@@ -104,6 +102,26 @@ describe('AppShell v2', () => {
       </AppShell>,
     )
     expect(screen.getByText('nav')).toBeInTheDocument()
+  })
+})
+
+describe('AppShell sideNavMode', () => {
+  it('defaults to push mode', () => {
+    render(
+      <AppShell header={<div>h</div>} persistKey={false}>
+        content
+      </AppShell>,
+    )
+    expect(document.querySelector('[data-sidenav-mode="push"]')).toBeInTheDocument()
+  })
+
+  it('sets overlay mode via prop', () => {
+    render(
+      <AppShell header={<div>h</div>} sideNavMode="overlay" persistKey={false}>
+        content
+      </AppShell>,
+    )
+    expect(document.querySelector('[data-sidenav-mode="overlay"]')).toBeInTheDocument()
   })
 })
 

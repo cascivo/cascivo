@@ -1,6 +1,8 @@
 import { useSignal, useSignals } from '@cascade-ui/core'
 import { useLocation } from 'preact-iso'
 import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
+import { Button } from '@cascade-ui/components/button'
+import { Kbd } from '@cascade-ui/components/kbd'
 import { buildNav } from './nav'
 
 export function DocsSearch() {
@@ -23,9 +25,15 @@ export function DocsSearch() {
 
   return (
     <>
-      <button type="button" class="search-trigger" onClick={() => (open.value = true)}>
-        Search <kbd>⌘K</kbd>
-      </button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          open.value = true
+        }}
+      >
+        Search <Kbd>⌘K</Kbd>
+      </Button>
       <CommandMenu open={open.value} onOpenChange={(next) => (open.value = next)} groups={groups} />
     </>
   )
