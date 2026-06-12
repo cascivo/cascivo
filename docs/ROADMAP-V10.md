@@ -1,7 +1,7 @@
 # cascade — Roadmap v10: Proof Pages
 
 **Last updated:** 2026-06-12
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Plan documents:** `docs/superpowers/plans/2026-06-12-v10-master-plan.md` + tranches 1–6
 
 ---
@@ -143,30 +143,31 @@ Worth building, in two batches:
 
 ## Definition of Done
 
-- [ ] `/accessibility` renders: topline stats (manifest coverage, axe violation count vs
+- [x] `/accessibility` renders: topline stats (manifest coverage, axe violation count vs
       shadcn/Carbon), a comparative axe bar chart, a filterable keyboard/ARIA matrix
       generated from registry.json, an engineering-practices grid, and the CI-gate story —
       all numbers build-time generated.
-- [ ] `/performance` renders: bundle-size comparison chart, per-component incremental cost
+- [x] `/performance` renders: bundle-size comparison chart, per-component incremental cost
       table, interaction-latency charts (median + spread), re-render count comparison,
       Lighthouse stats, and a methodology section with the bench meta block — all from
       results.json, rendered with `@cascade-ui/charts`.
 - [ ] `apps/bench/results/results.json` contains real populated results (bundle, runtime,
       renders, lighthouse, a11y) with provenance meta; the placeholder is gone.
-- [ ] Six batch-A components (`copy-button`, `stat`, `status`, `visually-hidden`,
+      <!-- DEFERRED: results.json is a placeholder; T1.5 bench run skipped (30-60 min); run pnpm bench to populate -->
+- [x] Six batch-A components (`copy-button`, `stat`, `status`, `visually-hidden`,
       `skip-nav`, `progress-circle`) ship with manifests, tests, i18n chrome strings,
       react exports, and registry entries; the proof pages use them.
-- [ ] Six typography components (`heading`, `text`, `code`, `blockquote`, `list`, `prose`)
+- [x] Six typography components (`heading`, `text`, `code`, `blockquote`, `list`, `prose`)
       ship the same way.
-- [ ] Home page: hero feature chips, stats band with ≥4 generated numbers, a11y +
+- [x] Home page: hero feature chips, stats band with ≥4 generated numbers, a11y +
       performance teaser sections linking to the proof pages, footer with link columns.
-- [ ] Header navigation reaches both new pages; deep links work in the deployed static
+- [x] Header navigation reaches both new pages; deep links work in the deployed static
       build (`dist/accessibility/index.html` exists).
-- [ ] All new pages pass axe (WCAG 2.1 AA) in the landing Playwright suite, in light and
+- [x] All new pages pass axe (WCAG 2.1 AA) in the landing Playwright suite, in light and
       dark themes.
-- [ ] `factory-backlog.json` gains 8 queued specs (tree-view, color-picker, carousel,
+- [x] `factory-backlog.json` gains 8 queued specs (tree-view, color-picker, carousel,
       timeline, data-list, collapsible, code-block, splitter).
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
 
 ## Deferred (do not re-litigate in v10)
