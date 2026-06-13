@@ -33,20 +33,20 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | No | — | — |
-| `defaultValue` | `string` | No | '' | — |
-| `onChange` | `(value: string) => void` | No | — | — |
-| `onSearch` | `(value: string) => void` | No | — | — |
-| `debounceMs` | `number` | No | 300 | — |
-| `placeholder` | `string` | No | Search | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `label` | `string` | No | Search | — |
-| `disabled` | `boolean` | No | false | — |
-| `clearLabel` | `string` | No | Clear search | — |
-| `id` | `string` | No | — | — |
-| `className` | `string` | No | — | — |
+| Name           | Type                      | Required | Default      | Description |
+| -------------- | ------------------------- | -------- | ------------ | ----------- | --- | --- |
+| `value`        | `string`                  | No       | —            | —           |
+| `defaultValue` | `string`                  | No       | ''           | —           |
+| `onChange`     | `(value: string) => void` | No       | —            | —           |
+| `onSearch`     | `(value: string) => void` | No       | —            | —           |
+| `debounceMs`   | `number`                  | No       | 300          | —           |
+| `placeholder`  | `string`                  | No       | Search       | —           |
+| `size`         | `'sm'                     | 'md'     | 'lg'`        | No          | md  | —   |
+| `label`        | `string`                  | No       | Search       | —           |
+| `disabled`     | `boolean`                 | No       | false        | —           |
+| `clearLabel`   | `string`                  | No       | Clear search | —           |
+| `id`           | `string`                  | No       | —            | —           |
+| `className`    | `string`                  | No       | —            | —           |
 
 ## Tokens
 
@@ -82,7 +82,7 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Field and control styling must resolve to the listed --cascade-* tokens |
+| Area              | Level    | Note                                                                         |
+| ----------------- | -------- | ---------------------------------------------------------------------------- |
+| token names       | strict   | Field and control styling must resolve to the listed --cascade-\* tokens     |
 | debounce and copy | flexible | debounceMs and the placeholder/label/clear copy are free to suit the context |

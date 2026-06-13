@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "layout",
-    "settings",
-    "page"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "settings", "page"],
   "category": "layout",
   "meta": {
     "name": "SettingsLayout",
@@ -42,9 +36,7 @@
         "description": "Settings content area"
       }
     ],
-    "tokens": [
-      "--cascade-space-8"
-    ],
+    "tokens": ["--cascade-space-8"],
     "accessibility": {
       "role": "generic",
       "wcag": "AA",
@@ -57,14 +49,8 @@
         "description": "Menu + content layout"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "layout",
-      "settings",
-      "page"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "settings", "page"],
     "intent": {
       "whenToUse": [
         "A two-column settings page with a fixed-width menu and fluid content",

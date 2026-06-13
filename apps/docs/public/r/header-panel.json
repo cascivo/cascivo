@@ -12,27 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "navigation",
-    "panel",
-    "shell",
-    "console",
-    "overlay",
-    "notifications"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
   "category": "navigation",
   "meta": {
     "name": "HeaderPanel",
     "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
     "category": "navigation",
-    "states": [
-      "open",
-      "closed"
-    ],
+    "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -82,10 +69,7 @@
     "accessibility": {
       "role": "region",
       "wcag": "AA",
-      "keyboard": [
-        "Escape",
-        "Tab"
-      ]
+      "keyboard": ["Escape", "Tab"]
     },
     "examples": [
       {
@@ -94,18 +78,8 @@
         "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "navigation",
-      "panel",
-      "shell",
-      "console",
-      "overlay",
-      "notifications"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
     "intent": {
       "whenToUse": [
         "Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)",

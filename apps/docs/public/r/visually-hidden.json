@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "accessibility",
-    "screen-reader",
-    "sr-only",
-    "hidden"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
   "category": "display",
   "meta": {
     "name": "VisuallyHidden",
@@ -54,15 +47,8 @@
         "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "accessibility",
-      "screen-reader",
-      "sr-only",
-      "hidden"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
     "intent": {
       "whenToUse": [
         "Giving an icon-only control an accessible name without showing text",

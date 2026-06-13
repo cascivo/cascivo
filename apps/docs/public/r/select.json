@@ -12,30 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "form",
-    "dropdown",
-    "menu"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["form", "dropdown", "menu"],
   "category": "inputs",
   "meta": {
     "name": "Select",
     "description": "Native select menu styled to match the design system",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "error"
-    ],
+    "states": ["idle", "focused", "error"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "label",
@@ -86,12 +72,7 @@
     "accessibility": {
       "role": "combobox",
       "wcag": "AA",
-      "keyboard": [
-        "Tab",
-        "Space",
-        "ArrowUp",
-        "ArrowDown"
-      ]
+      "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown"]
     },
     "examples": [
       {
@@ -103,14 +84,8 @@
         "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "form",
-      "dropdown",
-      "menu"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["form", "dropdown", "menu"],
     "intent": {
       "whenToUse": [
         "Choosing exactly one value from a known, finite list inside a form",

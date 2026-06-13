@@ -5,15 +5,8 @@
   "description": "Pie or donut chart with hover segments and optional legend.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascade-ui/charts"
-  ],
-  "tags": [
-    "chart",
-    "pie",
-    "donut",
-    "data-viz"
-  ],
+  "dependencies": ["@cascade-ui/charts"],
+  "tags": ["chart", "pie", "donut", "data-viz"],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -21,10 +14,7 @@
     "description": "Pie or donut chart with hover segments and optional legend.",
     "category": "chart",
     "states": [],
-    "variants": [
-      "pie",
-      "donut"
-    ],
+    "variants": ["pie", "donut"],
     "sizes": [],
     "props": [
       {
@@ -99,15 +89,8 @@
         "code": "import { PieChart } from '@cascade-ui/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/charts"
-    ],
-    "tags": [
-      "chart",
-      "pie",
-      "donut",
-      "data-viz"
-    ],
+    "dependencies": ["@cascade-ui/charts"],
+    "tags": ["chart", "pie", "donut", "data-viz"],
     "intent": {
       "whenToUse": [
         "Showing part-of-whole proportions with five or fewer slices",

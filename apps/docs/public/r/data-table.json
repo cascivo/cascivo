@@ -12,35 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "table",
-    "data",
-    "grid",
-    "sort",
-    "filter",
-    "pagination",
-    "selection"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
   "category": "display",
   "meta": {
     "name": "DataTable",
     "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
     "category": "display",
-    "states": [
-      "default",
-      "loading",
-      "empty"
-    ],
+    "states": ["default", "loading", "empty"],
     "variants": [],
-    "sizes": [
-      "compact",
-      "normal",
-      "relaxed"
-    ],
+    "sizes": ["compact", "normal", "relaxed"],
     "props": [
       {
         "name": "columns",
@@ -181,15 +162,7 @@
     "accessibility": {
       "role": "table",
       "wcag": "AA",
-      "keyboard": [
-        "Tab",
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-        "Enter",
-        "Space"
-      ]
+      "keyboard": ["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Space"]
     },
     "examples": [
       {
@@ -201,19 +174,8 @@
         "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "table",
-      "data",
-      "grid",
-      "sort",
-      "filter",
-      "pagination",
-      "selection"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
     "intent": {
       "whenToUse": [
         "Displaying tabular data with columns the user sorts, filters, or pages through",

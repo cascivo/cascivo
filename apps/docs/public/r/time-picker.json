@@ -12,30 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "time",
-    "input",
-    "form"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["time", "input", "form"],
   "category": "inputs",
   "meta": {
     "name": "TimePicker",
     "description": "Native time input wrapper with label, hint, error, and size variants",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "error"
-    ],
+    "states": ["idle", "focused", "error"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -115,9 +101,7 @@
     "accessibility": {
       "role": "textbox",
       "wcag": "AA",
-      "keyboard": [
-        "Tab"
-      ]
+      "keyboard": ["Tab"]
     },
     "examples": [
       {
@@ -125,14 +109,8 @@
         "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "time",
-      "input",
-      "form"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["time", "input", "form"],
     "intent": {
       "whenToUse": [
         "Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time",

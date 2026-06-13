@@ -16,6 +16,9 @@ import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
 import { validateView } from '../../render/src/validate.js'
 import { scaffoldView } from './scaffold-view.js'
+import { loadTokenCatalog } from './tokens.js'
+import { loadContext, loadComponentMarkdown } from './context.js'
+import { selectComponent } from './select.js'
 
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -243,6 +246,94 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return json({ valid: false, errors, config })
       }
       return json({ valid: true, config })
+    },
+  )
+
+  server.registerTool(
+    'get_tokens',
+    {
+      title: 'Get tokens',
+      description:
+        'Get the cascade token catalog (closed set). Agents must select from this catalog rather than hard-coding values.',
+      inputSchema: {
+        group: z
+          .string()
+          .optional()
+          .describe('Filter by token group, e.g. "color", "space", "radius"'),
+        layer: z
+          .enum(['primitive', 'semantic', 'component'])
+          .optional()
+          .describe('Filter by layer'),
+      },
+    },
+    async ({ group, layer }) => {
+      try {
+        const catalog = await loadTokenCatalog(fetchFn)
+        let tokens = catalog.tokens
+        if (group) tokens = tokens.filter((t) => t.group === group)
+        if (layer) tokens = tokens.filter((t) => t.layer === layer)
+        return json({ count: tokens.length, tokens })
+      } catch (e) {
+        return error(`Token catalog unavailable: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    },
+  )
+
+  server.registerTool(
+    'get_context',
+    {
+      title: 'Get context',
+      description:
+        'Get intent, whenToUse/whenNotToUse, and authoring guidance for one component by name.',
+      inputSchema: {
+        name: z.string().describe('Component name, e.g. "Toast"'),
+      },
+    },
+    async ({ name }) => {
+      try {
+        const ctx = await loadContext(fetchFn)
+        const target = name.toLowerCase()
+        const component = ctx.components.find((c) => c.name.toLowerCase() === target)
+        if (!component) {
+          const available = ctx.components.map((c) => c.name).join(', ')
+          return error(`Component "${name}" not found. Available: ${available}`)
+        }
+        const md = await loadComponentMarkdown(component.name, fetchFn)
+        return json({
+          name: component.name,
+          category: component.category,
+          description: component.description,
+          intent: component.intent,
+          contextUrl: component.contextUrl,
+          ...(md ? { markdown: md } : {}),
+        })
+      } catch (e) {
+        return error(`Context bundle unavailable: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    },
+  )
+
+  server.registerTool(
+    'select_component',
+    {
+      title: 'Select component',
+      description:
+        'Heuristic ranking of cascade components by natural language need. Returns top matches with scores and reasons. Note: heuristic ranking, not a model call.',
+      inputSchema: {
+        need: z.string().describe('Natural language description of what the component should do'),
+      },
+    },
+    async ({ need }) => {
+      try {
+        const ctx = await loadContext(fetchFn)
+        const results = selectComponent(need, ctx.components)
+        return json({
+          note: 'Heuristic ranking — not a model call. Verify with get_context before using.',
+          results,
+        })
+      } catch (e) {
+        return error(`Context bundle unavailable: ${e instanceof Error ? e.message : String(e)}`)
+      }
     },
   )
 

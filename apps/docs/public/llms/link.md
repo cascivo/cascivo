@@ -25,12 +25,12 @@ npx cascade add link
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'standalone' | 'inline'` | no | `standalone` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `external` | `boolean` | no | `false` | — |
-| `href` | `string` | no | — | — |
+| Prop       | Type          | Required  | Default | Description  |
+| ---------- | ------------- | --------- | ------- | ------------ | ---- | --- |
+| `variant`  | `'standalone' | 'inline'` | no      | `standalone` | —    |
+| `size`     | `'sm'         | 'md'      | 'lg'`   | no           | `md` | —   |
+| `external` | `boolean`     | no        | `false` | —            |
+| `href`     | `string`      | no        | —       | —            |
 
 ## Examples
 
@@ -45,7 +45,13 @@ npx cascade add link
 Inline links inherit the surrounding font size and stay underlined.
 
 ```tsx
-<p>Read the <Link variant="inline" href="/guide">guide</Link> first.</p>
+<p>
+  Read the{' '}
+  <Link variant="inline" href="/guide">
+    guide
+  </Link>{' '}
+  first.
+</p>
 ```
 
 ### External
@@ -53,7 +59,9 @@ Inline links inherit the surrounding font size and stay underlined.
 Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ```tsx
-<Link external href="https://example.com">Example</Link>
+<Link external href="https://example.com">
+  Example
+</Link>
 ```
 
 ## Design tokens

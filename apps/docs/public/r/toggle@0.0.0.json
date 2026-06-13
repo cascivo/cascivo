@@ -12,28 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "switch",
-    "form",
-    "boolean"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["switch", "form", "boolean"],
   "category": "inputs",
   "meta": {
     "name": "Toggle",
     "description": "On/off switch built as an accessible button",
     "category": "inputs",
-    "states": [
-      "off",
-      "on"
-    ],
+    "states": ["off", "on"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md"
-    ],
+    "sizes": ["sm", "md"],
     "props": [
       {
         "name": "checked",
@@ -79,10 +67,7 @@
     "accessibility": {
       "role": "switch",
       "wcag": "AA",
-      "keyboard": [
-        "Space",
-        "Enter"
-      ]
+      "keyboard": ["Space", "Enter"]
     },
     "examples": [
       {
@@ -94,14 +79,8 @@
         "code": "<Toggle checked={enabled} onChange={setEnabled} label=\"Dark mode\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "switch",
-      "form",
-      "boolean"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["switch", "form", "boolean"],
     "intent": {
       "whenToUse": [
         "Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)",

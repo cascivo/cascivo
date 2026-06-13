@@ -12,32 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "user",
-    "profile",
-    "image"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["user", "profile", "image"],
   "category": "display",
   "meta": {
     "name": "Avatar",
     "description": "Displays a user image with initials fallback",
     "category": "display",
-    "states": [
-      "loading",
-      "loaded",
-      "error"
-    ],
+    "states": ["loading", "loaded", "error"],
     "variants": [],
-    "sizes": [
-      "xs",
-      "sm",
-      "md",
-      "lg",
-      "xl"
-    ],
+    "sizes": ["xs", "sm", "md", "lg", "xl"],
     "props": [
       {
         "name": "src",
@@ -92,14 +76,8 @@
         "code": "<Avatar fallback=\"JD\" status=\"online\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "user",
-      "profile",
-      "image"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["user", "profile", "image"],
     "intent": {
       "whenToUse": [
         "Representing a person or entity with a thumbnail image and initials fallback",

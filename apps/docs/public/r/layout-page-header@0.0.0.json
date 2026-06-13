@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "layout",
-    "header",
-    "page"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "header", "page"],
   "category": "layout",
   "meta": {
     "name": "PageHeader",
@@ -81,14 +75,8 @@
         "description": "Title with description"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "layout",
-      "header",
-      "page"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "header", "page"],
     "intent": {
       "whenToUse": [
         "A page-level header with title, description, breadcrumb, and action slots",

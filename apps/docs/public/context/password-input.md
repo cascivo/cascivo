@@ -32,15 +32,15 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `showStrengthMeter` | `boolean` | No | false | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `labels` | `PasswordInputLabels` | No | — | — |
-| `disabled` | `boolean` | No | false | — |
-| `placeholder` | `string` | No | — | — |
-| `value` | `string` | No | — | — |
-| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | No | — | — |
+| Name                | Type                                               | Required | Default | Description |
+| ------------------- | -------------------------------------------------- | -------- | ------- | ----------- | --- | --- |
+| `showStrengthMeter` | `boolean`                                          | No       | false   | —           |
+| `size`              | `'sm'                                              | 'md'     | 'lg'`   | No          | md  | —   |
+| `labels`            | `PasswordInputLabels`                              | No       | —       | —           |
+| `disabled`          | `boolean`                                          | No       | false   | —           |
+| `placeholder`       | `string`                                           | No       | —       | —           |
+| `value`             | `string`                                           | No       | —       | —           |
+| `onChange`          | `(e: React.ChangeEvent<HTMLInputElement>) => void` | No       | —       | —           |
 
 ## Tokens
 
@@ -69,7 +69,7 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Field, toggle, and strength-meter styling must resolve to the listed --cascade-* tokens |
-| labels | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop |
+| Area        | Level    | Note                                                                                     |
+| ----------- | -------- | ---------------------------------------------------------------------------------------- |
+| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascade-\* tokens |
+| labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                    |

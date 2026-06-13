@@ -33,14 +33,14 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `trigger` | `ReactElement` | Yes | — | — |
-| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | Yes | — | — |
-| `onSelect` | `(value: string) => void` | No | — | — |
-| `placement` | `'bottom-start' | 'bottom-end'` | No | bottom-start | — |
-| `open` | `boolean` | No | — | — |
-| `onOpenChange` | `(open: boolean) => void` | No | — | — |
+| Name           | Type                                                                                            | Required      | Default | Description  |
+| -------------- | ----------------------------------------------------------------------------------------------- | ------------- | ------- | ------------ | --- |
+| `trigger`      | `ReactElement`                                                                                  | Yes           | —       | —            |
+| `items`        | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | Yes           | —       | —            |
+| `onSelect`     | `(value: string) => void`                                                                       | No            | —       | —            |
+| `placement`    | `'bottom-start'                                                                                 | 'bottom-end'` | No      | bottom-start | —   |
+| `open`         | `boolean`                                                                                       | No            | —       | —            |
+| `onOpenChange` | `(open: boolean) => void`                                                                       | No            | —       | —            |
 
 ## Tokens
 
@@ -55,13 +55,17 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 ### Basic
 
 ```jsx
-<Dropdown trigger={<Button>Actions</Button>} items={[{ label: "Edit", value: "edit" }]} onSelect={handle} />
+<Dropdown
+  trigger={<Button>Actions</Button>}
+  items={[{ label: 'Edit', value: 'edit' }]}
+  onSelect={handle}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| trigger element | flexible | Any ReactElement works as the trigger; ref and aria props are merged in |
-| controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state |
-| token names | strict | Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens |
+| Area                       | Level    | Note                                                                               |
+| -------------------------- | -------- | ---------------------------------------------------------------------------------- |
+| trigger element            | flexible | Any ReactElement works as the trigger; ref and aria props are merged in            |
+| controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state                               |
+| token names                | strict   | Menu styling resolves to semantic --cascade-color-\* / --cascade-z-dropdown tokens |

@@ -40,21 +40,21 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `ComboboxOption[]` | Yes | — | — |
-| `value` | `string` | No | — | — |
-| `defaultValue` | `string` | No | — | — |
-| `onChange` | `(value: string | undefined) => void` | No | — | — |
-| `clearable` | `boolean` | No | false | — |
-| `searchable` | `boolean` | No | true | — |
-| `label` | `string` | No | — | — |
-| `hint` | `string` | No | — | — |
-| `error` | `string` | No | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | 'md' | — |
-| `disabled` | `boolean` | No | false | — |
-| `labels` | `ComboboxLabels` | No | — | — |
-| `className` | `string` | No | — | — |
+| Name           | Type               | Required            | Default | Description |
+| -------------- | ------------------ | ------------------- | ------- | ----------- | ---- | --- |
+| `options`      | `ComboboxOption[]` | Yes                 | —       | —           |
+| `value`        | `string`           | No                  | —       | —           |
+| `defaultValue` | `string`           | No                  | —       | —           |
+| `onChange`     | `(value: string    | undefined) => void` | No      | —           | —    |
+| `clearable`    | `boolean`          | No                  | false   | —           |
+| `searchable`   | `boolean`          | No                  | true    | —           |
+| `label`        | `string`           | No                  | —       | —           |
+| `hint`         | `string`           | No                  | —       | —           |
+| `error`        | `string`           | No                  | —       | —           |
+| `size`         | `'sm'              | 'md'                | 'lg'`   | No          | 'md' | —   |
+| `disabled`     | `boolean`          | No                  | false   | —           |
+| `labels`       | `ComboboxLabels`   | No                  | —       | —           |
+| `className`    | `string`           | No                  | —       | —           |
 
 ## Tokens
 
@@ -93,8 +93,8 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| searchable | flexible | Filtering can be toggled off for short lists via searchable={false} |
-| controlled vs uncontrolled | flexible | Supports value + onChange or defaultValue |
-| token names | strict | Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens |
+| Area                       | Level    | Note                                                                                     |
+| -------------------------- | -------- | ---------------------------------------------------------------------------------------- |
+| searchable                 | flexible | Filtering can be toggled off for short lists via searchable={false}                      |
+| controlled vs uncontrolled | flexible | Supports value + onChange or defaultValue                                                |
+| token names                | strict   | Listbox/field styling resolves to semantic --cascade-color-_ / --cascade-radius-_ tokens |

@@ -12,29 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "overlay",
-    "dialog",
-    "confirm",
-    "destructive"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["overlay", "dialog", "confirm", "destructive"],
   "category": "overlay",
   "meta": {
     "name": "AlertDialog",
     "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
     "category": "overlay",
-    "states": [
-      "open",
-      "closed"
-    ],
-    "variants": [
-      "default",
-      "destructive"
-    ],
+    "states": ["open", "closed"],
+    "variants": ["default", "destructive"],
     "sizes": [],
     "props": [],
     "tokens": [
@@ -50,24 +36,11 @@
     "accessibility": {
       "role": "alertdialog",
       "wcag": "AA",
-      "keyboard": [
-        "Tab",
-        "Shift+Tab",
-        "Enter",
-        "Space"
-      ]
+      "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "overlay",
-      "dialog",
-      "confirm",
-      "destructive"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["overlay", "dialog", "confirm", "destructive"],
     "intent": {
       "whenToUse": [
         "Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens",

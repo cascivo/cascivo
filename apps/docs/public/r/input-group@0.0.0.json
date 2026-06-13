@@ -12,16 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "form",
-    "input",
-    "addon",
-    "group",
-    "layout"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["form", "input", "addon", "group", "layout"],
   "category": "inputs",
   "meta": {
     "name": "InputGroup",
@@ -76,16 +68,8 @@
         "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "form",
-      "input",
-      "addon",
-      "group",
-      "layout"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["form", "input", "addon", "group", "layout"],
     "intent": {
       "whenToUse": [
         "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
