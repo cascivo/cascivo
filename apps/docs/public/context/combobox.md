@@ -58,22 +58,22 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-surface-overlay`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-danger`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-radius-sm`
-- `--cascade-shadow-lg`
-- `--cascade-motion-enter`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-danger`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-lg`
+- `--cascivo-motion-enter`
+- `--cascivo-z-dropdown`
 
 ## Examples
 
@@ -97,4 +97,4 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 | -------------------------- | -------- | ---------------------------------------------------------------------------------------- |
 | searchable                 | flexible | Filtering can be toggled off for short lists via searchable={false}                      |
 | controlled vs uncontrolled | flexible | Supports value + onChange or defaultValue                                                |
-| token names                | strict   | Listbox/field styling resolves to semantic --cascade-color-_ / --cascade-radius-_ tokens |
+| token names                | strict   | Listbox/field styling resolves to semantic --cascivo-color-_ / --cascivo-radius-_ tokens |

@@ -46,7 +46,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 - [ ] **Skip to content** — visually-hidden link, visible on focus, `href` defaults to `#cascade-main`; opt out with `skipToContentHref: false`.
 - [ ] **End slot** — `end: ReactNode` for free-form content (user avatar menu, theme switcher).
 - [ ] i18n strings `cascade.shellHeader.*` (en + de); `labels` prop overrides per instance.
-- [ ] Fixed height via `--cascade-shell-header-block-size` (default `3rem`, Carbon's 48px).
+- [ ] Fixed height via `--cascivo-shell-header-block-size` (default `3rem`, Carbon's 48px).
 
 ### Milestone 1.2 — quality bar
 
@@ -62,7 +62,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 
 ### Milestone 2.1 — Rail mode rework (`packages/components/src/side-nav/`, in place, API-additive)
 
-- [ ] **Icons-only rail** — collapsed state renders icon-only items centered in a `--cascade-sidenav-rail-inline-size` (default `3rem`) rail. Labels are removed from the layout (not just visually hidden behind overflow).
+- [ ] **Icons-only rail** — collapsed state renders icon-only items centered in a `--cascivo-sidenav-rail-inline-size` (default `3rem`) rail. Labels are removed from the layout (not just visually hidden behind overflow).
 - [ ] **Icon fallback** — items without an `icon` render the first grapheme of their label in a styled circle so nothing disappears in rail mode.
 - [ ] **Tooltips in rail** — rail items get real tooltips (existing `Tooltip` component), not `title` attributes.
 - [ ] **Group flyouts in rail** — a collapsed group opens its sublinks in an anchored flyout panel (built on `usePopover`, `role="menu"`); Enter/Space/click opens, arrows navigate, Escape closes and restores focus. Today sublinks are unreachable in rail mode — this is the critical fix.
@@ -83,7 +83,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 
 ### Milestone 3.1 — HeaderPanel (`packages/components/src/header-panel/`)
 
-- [ ] Non-modal panel anchored under the header at the inline-end edge: `position: fixed`, `inset-block-start: var(--cascade-shell-header-block-size)`, full remaining height, `--cascade-shell-panel-inline-size` (default `20rem`) wide.
+- [ ] Non-modal panel anchored under the header at the inline-end edge: `position: fixed`, `inset-block-start: var(--cascivo-shell-header-block-size)`, full remaining height, `--cascivo-shell-panel-inline-size` (default `20rem`) wide.
 - [ ] `popover="auto"` → light-dismiss + Escape for free; slide-in via `@starting-style`.
 - [ ] Props: `open`, `onClose`, `label` (aria-label), `children`. Focus moves into the panel on open and returns to the invoker on close.
 - [ ] Pairs with ShellHeader actions: an action with `active: true` shows pressed state while its panel is open.
@@ -108,7 +108,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 - [ ] **`createShellState(options?)`** — exported factory returning a plain signals object `{ sideNavCollapsed, sideNavOpen, asideOpen, toggleSideNav(), toggleAside() }`. No React context. `persistKey` persists `sideNavCollapsed` and `asideOpen` via `persistedSignal` (`<key>.sidenav`, `<key>.aside`).
 - [ ] `toggleSideNav()` resolves breakpoint at call time (`matchMedia('(min-width: 64rem)')`): desktop → toggles `sideNavCollapsed`; mobile → toggles the `sideNavOpen` drawer.
 - [ ] AppShell accepts `state?: ShellState` (creates one internally when omitted — existing zero-config behavior preserved); existing props keep working unchanged.
-- [ ] **Collapsible aside** — `asideOpen` drives the right column (`--cascade-shell-aside-inline-size`, default `18rem`); animated open/close.
+- [ ] **Collapsible aside** — `asideOpen` drives the right column (`--cascivo-shell-aside-inline-size`, default `18rem`); animated open/close.
 - [ ] `main` region gets `id="cascade-main"` + `tabIndex={-1}` — the ShellHeader skip-link target.
 
 ### Milestone 4.2 — Responsive behavior

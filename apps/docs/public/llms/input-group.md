@@ -64,10 +64,10 @@ npx cascade add input-group
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-input`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-input`
 
 ## Accessibility
 

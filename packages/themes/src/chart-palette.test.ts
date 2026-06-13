@@ -119,7 +119,7 @@ const THEMES = [
 const MIN_CONTRAST = 3.0
 
 // Fallback background colors in oklch [L, C, H] for themes whose
-// --cascade-color-background is a var() reference or cannot be parsed inline.
+// --cascivo-color-background is a var() reference or cannot be parsed inline.
 // These are populated from the actual parsed values below; the fallback map
 // is used only when parsing fails.
 const BG_FALLBACK: Record<string, [number, number, number]> = {
@@ -138,14 +138,14 @@ const BG_FALLBACK: Record<string, [number, number, number]> = {
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 /**
- * Extract all --cascade-chart-N token values from a CSS file.
+ * Extract all --cascivo-chart-N token values from a CSS file.
  * Returns a map of index (1-8) → raw CSS value string.
  */
 function parseChartTokens(themeName: string): Map<number, string> {
   const css = readFileSync(join(SRC, `${themeName}.css`), 'utf8')
   const result = new Map<number, string>()
   for (let i = 1; i <= 8; i++) {
-    const re = new RegExp(`--cascade-chart-${i}\\s*:\\s*([^;]+);`)
+    const re = new RegExp(`--cascivo-chart-${i}\\s*:\\s*([^;]+);`)
     const m = css.match(re)
     if (m) result.set(i, m[1]!.trim())
   }
@@ -153,12 +153,12 @@ function parseChartTokens(themeName: string): Map<number, string> {
 }
 
 /**
- * Parse --cascade-color-background from a theme CSS file.
+ * Parse --cascivo-color-background from a theme CSS file.
  * Returns null if the value is a var() reference (cannot resolve statically).
  */
 function parseThemeBackground(themeName: string): string | null {
   const css = readFileSync(join(SRC, `${themeName}.css`), 'utf8')
-  const m = css.match(/--cascade-color-background\s*:\s*([^;]+);/)
+  const m = css.match(/--cascivo-color-background\s*:\s*([^;]+);/)
   if (!m) return null
   const value = m[1]!.trim()
   // If it's a var() reference, we cannot resolve statically
@@ -188,10 +188,10 @@ function themeBackground(themeName: string): RGB {
 describe('chart palette', () => {
   describe('presence — all 10 themes define chart-1 through chart-8', () => {
     for (const theme of THEMES) {
-      it(`${theme}: defines --cascade-chart-1 through --cascade-chart-8`, () => {
+      it(`${theme}: defines --cascivo-chart-1 through --cascivo-chart-8`, () => {
         const tokens = parseChartTokens(theme)
         for (let i = 1; i <= 8; i++) {
-          expect(tokens.has(i), `${theme}: missing --cascade-chart-${i}`).toBe(true)
+          expect(tokens.has(i), `${theme}: missing --cascivo-chart-${i}`).toBe(true)
         }
       })
     }

@@ -45,11 +45,11 @@ npx cascade add modal
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-radius-modal`
-- `--cascade-shadow-xl`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-radius-modal`
+- `--cascivo-shadow-xl`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

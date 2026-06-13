@@ -10,7 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     { name: 'maxWidth', type: 'string', required: false, description: 'CSS max-width value' },
   ],
-  tokens: ['--cascade-space-4'],
+  tokens: ['--cascivo-space-4'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

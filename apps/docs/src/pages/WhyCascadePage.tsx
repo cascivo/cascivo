@@ -2,13 +2,13 @@
 // (The Context Layer). Claims 20–24 cover v14 (Earned Quality). Each claim links its
 // receipt — the artifact that proves it is real and shipped, not just stated.
 
-const muted = { color: 'var(--cascade-color-text-subtle)' }
+const muted = { color: 'var(--cascivo-color-text-subtle)' }
 
 const cardStyle = {
-  border: '1px solid var(--cascade-color-border)',
-  borderRadius: 'var(--cascade-radius-lg)',
-  background: 'var(--cascade-color-surface)',
-  padding: 'var(--cascade-space-5)',
+  border: '1px solid var(--cascivo-color-border)',
+  borderRadius: 'var(--cascivo-radius-lg)',
+  background: 'var(--cascivo-color-surface)',
+  padding: 'var(--cascivo-space-5)',
 }
 
 interface Claim {
@@ -30,7 +30,7 @@ const CLAIMS: Claim[] = [
     number: 15,
     title: 'Closed sets, machine-readable',
     substance:
-      'A generated token catalog publishes every --cascade-* custom property with its layer (primitive / semantic / component), group, and resolved default. An agent selects from this closed set; inventing a literal value is now a detectable error.',
+      'A generated token catalog publishes every --cascivo-* custom property with its layer (primitive / semantic / component), group, and resolved default. An agent selects from this closed set; inventing a literal value is now a detectable error.',
     receipt: { label: 'tokens.catalog.json', href: '/tokens.catalog.json' },
   },
   {
@@ -131,35 +131,35 @@ export function WhyCascadePage() {
       </section>
 
       <section class="doc-section">
-        <div style={{ display: 'grid', gap: 'var(--cascade-space-5)' }}>
+        <div style={{ display: 'grid', gap: 'var(--cascivo-space-5)' }}>
           {CLAIMS.map((claim) => (
             <div key={claim.number} style={cardStyle}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'baseline',
-                  gap: 'var(--cascade-space-3)',
-                  marginBlockEnd: 'var(--cascade-space-3)',
+                  gap: 'var(--cascivo-space-3)',
+                  marginBlockEnd: 'var(--cascivo-space-3)',
                 }}
               >
                 <span
                   style={{
-                    fontSize: 'var(--cascade-text-sm)',
-                    fontWeight: 'var(--cascade-font-medium)',
-                    color: 'var(--cascade-color-text-subtle)',
+                    fontSize: 'var(--cascivo-text-sm)',
+                    fontWeight: 'var(--cascivo-font-medium)',
+                    color: 'var(--cascivo-color-text-subtle)',
                     minWidth: '2.5rem',
                   }}
                 >
                   #{claim.number}
                 </span>
-                <h2 style={{ margin: 0, fontSize: 'var(--cascade-text-lg)' }}>{claim.title}</h2>
+                <h2 style={{ margin: 0, fontSize: 'var(--cascivo-text-lg)' }}>{claim.title}</h2>
               </div>
-              <p style={{ margin: '0 0 var(--cascade-space-3)' }}>{claim.substance}</p>
+              <p style={{ margin: '0 0 var(--cascivo-space-3)' }}>{claim.substance}</p>
               <a
                 href={claim.receipt.href}
                 style={{
-                  fontSize: 'var(--cascade-text-sm)',
-                  color: 'var(--cascade-color-accent)',
+                  fontSize: 'var(--cascivo-text-sm)',
+                  color: 'var(--cascivo-color-accent)',
                 }}
               >
                 Receipt: {claim.receipt.label}

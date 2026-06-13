@@ -39,7 +39,7 @@ const data = Array.from({length:100}, () => Math.random() * 100)
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 

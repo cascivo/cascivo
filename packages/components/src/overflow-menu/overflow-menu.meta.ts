@@ -26,13 +26,13 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-destructive',
-    '--cascade-color-destructive-subtle',
-    '--cascade-radius-button',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-destructive',
+    '--cascivo-color-destructive-subtle',
+    '--cascivo-radius-button',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'menu',
@@ -96,7 +96,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Trigger and item styling must resolve to the listed --cascade-* tokens',
+        note: 'Trigger and item styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'item set and labels',

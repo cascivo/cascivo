@@ -6,10 +6,10 @@ import { findCssLiteralViolations } from './css-literals.js'
 const contract: Contract = buildContract({
   catalog: {
     tokens: [
-      { name: '--cascade-color-accent', resolvedDefault: '#3b82f6' },
-      { name: '--cascade-color-primary', resolvedDefault: '#ff0000' },
-      { name: '--cascade-color-brand', resolvedDefault: '#ff0000' },
-      { name: '--cascade-space-2', resolvedDefault: '8px' },
+      { name: '--cascivo-color-accent', resolvedDefault: '#3b82f6' },
+      { name: '--cascivo-color-primary', resolvedDefault: '#ff0000' },
+      { name: '--cascivo-color-brand', resolvedDefault: '#ff0000' },
+      { name: '--cascivo-space-2', resolvedDefault: '8px' },
     ],
   },
   registry: { components: [] },
@@ -25,7 +25,7 @@ describe('findCssLiteralViolations', () => {
       property: 'color',
       value: '#3b82f6',
       rule: 'hardcoded-value',
-      suggestedToken: '--cascade-color-accent',
+      suggestedToken: '--cascivo-color-accent',
     })
   })
 
@@ -33,7 +33,7 @@ describe('findCssLiteralViolations', () => {
     const out = findCssLiteralViolations('a { color: #ff0000; }', 'a.css', contract)
     expect(out).toHaveLength(1)
     expect(out[0].level).toBe('info')
-    expect(out[0].allMatches).toEqual(['--cascade-color-primary', '--cascade-color-brand'])
+    expect(out[0].allMatches).toEqual(['--cascivo-color-primary', '--cascivo-color-brand'])
     expect(out[0].suggestedToken).toBeUndefined()
   })
 
@@ -42,8 +42,8 @@ describe('findCssLiteralViolations', () => {
     expect(findCssLiteralViolations('a { color: #abcdef; }', 'a.css', contract)).toEqual([])
   })
 
-  it('does not flag var(--cascade-*) values', () => {
-    const css = 'a { color: var(--cascade-color-accent); }'
+  it('does not flag var(--cascivo-*) values', () => {
+    const css = 'a { color: var(--cascivo-color-accent); }'
     expect(findCssLiteralViolations(css, 'a.css', contract)).toEqual([])
   })
 
@@ -57,7 +57,7 @@ describe('findCssLiteralViolations', () => {
     expect(out).toHaveLength(1)
     expect(out[0]).toMatchObject({
       property: 'color',
-      suggestedToken: '--cascade-color-accent',
+      suggestedToken: '--cascivo-color-accent',
       line: 1,
     })
   })

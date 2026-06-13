@@ -2,7 +2,7 @@
  * WCAG 2.5.8 Target Size (Minimum) check.
  *
  * Asserts that:
- *   1. --cascade-control-height-* tokens are ≥24px (at default 16px root font size).
+ *   1. --cascivo-control-height-* tokens are ≥24px (at default 16px root font size).
  *   2. Slider thumb hit area: documents UA hit-area expansion + spacing exception.
  *   3. Checkbox/radio indicator: documents the spacing exception (indicator is 18px;
  *      surrounding form-row spacing satisfies the 24px clear-zone requirement).
@@ -42,30 +42,30 @@ function extractToken(css: string, tokenName: string): string {
 describe('WCAG 2.5.8 Target Size — control height tokens', () => {
   const tokensCss = readFile('packages/tokens/src/index.css')
 
-  it('--cascade-control-height-sm is ≥24px', () => {
-    const value = extractToken(tokensCss, '--cascade-control-height-sm')
+  it('--cascivo-control-height-sm is ≥24px', () => {
+    const value = extractToken(tokensCss, '--cascivo-control-height-sm')
     const px = remToPx(value)
     assert.ok(
       px >= MIN_TARGET_PX,
-      `--cascade-control-height-sm is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
+      `--cascivo-control-height-sm is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
     )
   })
 
-  it('--cascade-control-height-md is ≥24px', () => {
-    const value = extractToken(tokensCss, '--cascade-control-height-md')
+  it('--cascivo-control-height-md is ≥24px', () => {
+    const value = extractToken(tokensCss, '--cascivo-control-height-md')
     const px = remToPx(value)
     assert.ok(
       px >= MIN_TARGET_PX,
-      `--cascade-control-height-md is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
+      `--cascivo-control-height-md is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
     )
   })
 
-  it('--cascade-control-height-lg is ≥24px', () => {
-    const value = extractToken(tokensCss, '--cascade-control-height-lg')
+  it('--cascivo-control-height-lg is ≥24px', () => {
+    const value = extractToken(tokensCss, '--cascivo-control-height-lg')
     const px = remToPx(value)
     assert.ok(
       px >= MIN_TARGET_PX,
-      `--cascade-control-height-lg is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
+      `--cascivo-control-height-lg is ${value} = ${px}px, expected ≥${MIN_TARGET_PX}px`,
     )
   })
 })
@@ -158,7 +158,7 @@ describe('WCAG 2.5.8 Target Size — checkbox and radio indicators', () => {
     // spacing keeps the 24×24px clear zone unobstructed.
     const spacingException =
       `Checkbox indicator is ${px}px (below 24px threshold). ` +
-      `Spacing exception applies: form-group gap (--cascade-space-3 = 12px) and ` +
+      `Spacing exception applies: form-group gap (--cascivo-space-3 = 12px) and ` +
       `label row height together provide a 24px clear zone around the indicator center. ` +
       `See docs/specs/wcag-2.2.md §2.5.8 for full rationale.`
 

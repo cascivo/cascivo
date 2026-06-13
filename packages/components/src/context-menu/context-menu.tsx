@@ -50,8 +50,8 @@ export function ContextMenu({ children }: ContextMenuProps) {
     e.preventDefault()
     const container = containerRef.current
     if (!container) return
-    container.style.setProperty('--cascade-context-x', `${e.clientX}px`)
-    container.style.setProperty('--cascade-context-y', `${e.clientY}px`)
+    container.style.setProperty('--cascivo-context-x', `${e.clientX}px`)
+    container.style.setProperty('--cascivo-context-y', `${e.clientY}px`)
     isOpen.value = true
   }
 

@@ -23,7 +23,7 @@ const BUTTON: RegistryEntry = {
     props: [
       { name: 'variant', type: "'primary' | 'secondary'", required: false, default: 'primary' },
     ],
-    tokens: ['--cascade-color-accent', '--cascade-radius-button'],
+    tokens: ['--cascivo-color-accent', '--cascivo-radius-button'],
     examples: [{ title: 'Primary', code: '<Button>Click me</Button>' }],
     intent: {
       whenToUse: ['Triggering an action the user initiates', 'Submitting a form'],
@@ -40,7 +40,7 @@ const BUTTON: RegistryEntry = {
       ],
       a11yRationale: 'Renders a native <button> so Enter/Space activation comes from the platform',
       flexibility: [
-        { area: 'token names', level: 'strict', note: 'Must resolve to --cascade-button-* tokens' },
+        { area: 'token names', level: 'strict', note: 'Must resolve to --cascivo-button-* tokens' },
         { area: 'label copy', level: 'flexible', note: 'Free, within tone guidance' },
       ],
     },
@@ -57,7 +57,7 @@ const BADGE: RegistryEntry = {
     description: 'Compact status label',
     category: 'display',
     props: [],
-    tokens: ['--cascade-color-accent'],
+    tokens: ['--cascivo-color-accent'],
     examples: [],
     intent: {
       whenToUse: ['Showing a count or status on a container'],
@@ -210,7 +210,7 @@ describe('buildComponentMarkdown', () => {
   it('includes tokens section', () => {
     const md = buildComponentMarkdown(BUTTON)
     assert.ok(md.includes('## Tokens'))
-    assert.ok(md.includes('--cascade-color-accent'))
+    assert.ok(md.includes('--cascivo-color-accent'))
   })
 
   it('includes examples section', () => {

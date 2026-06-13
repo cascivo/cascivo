@@ -39,11 +39,11 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 
 ## Design tokens
 
-- `--cascade-text-2xl`
-- `--cascade-text-base`
-- `--cascade-font-bold`
-- `--cascade-text-secondary`
-- `--cascade-space-*`
+- `--cascivo-text-2xl`
+- `--cascivo-text-base`
+- `--cascivo-font-bold`
+- `--cascivo-text-secondary`
+- `--cascivo-space-*`
 
 ## Accessibility
 

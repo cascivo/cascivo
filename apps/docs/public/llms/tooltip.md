@@ -38,10 +38,10 @@ npx cascade add tooltip
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-sm`
-- `--cascade-z-tooltip`
+- `--cascivo-color-text`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-sm`
+- `--cascivo-z-tooltip`
 
 ## Accessibility
 

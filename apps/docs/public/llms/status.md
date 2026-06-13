@@ -53,13 +53,13 @@ The pulse animation respects prefers-reduced-motion
 
 ## Design tokens
 
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-error`
-- `--cascade-color-info`
-- `--cascade-color-text-muted`
-- `--cascade-color-text`
-- `--cascade-radius-full`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-error`
+- `--cascivo-color-info`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text`
+- `--cascivo-radius-full`
 
 ## Accessibility
 

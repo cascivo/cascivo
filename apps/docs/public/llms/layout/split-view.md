@@ -35,9 +35,9 @@ Two-pane split with draggable divider
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-duration-150`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-duration-150`
 
 ## Accessibility
 

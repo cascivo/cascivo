@@ -20,11 +20,11 @@ export const meta: ComponentMeta = {
     { name: 'ariaLabel', type: 'string', required: false, default: 'Breadcrumb' },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'navigation',
@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Text colors and focus ring must resolve to --cascade-* tokens',
+        note: 'Text colors and focus ring must resolve to --cascivo-* tokens',
       },
     ],
   },

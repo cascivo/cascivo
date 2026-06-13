@@ -18,7 +18,7 @@ export function AutoGrid({ min = '16rem', gap = 4, className, style, ...props }:
       className={cn(styles['auto-grid'], className)}
       style={{
         ['--_min' as string]: min,
-        ['--_gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_gap' as string]: `var(--cascivo-space-${gap})`,
         ...(style as CSSProperties | undefined),
       }}
       {...props}

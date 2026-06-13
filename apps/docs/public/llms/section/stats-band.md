@@ -39,14 +39,14 @@ Four KPI cells — three with sparkline trends and signed deltas
 
 ## Design tokens
 
-- `--cascade-text-2xl`
-- `--cascade-text-sm`
-- `--cascade-font-bold`
-- `--cascade-font-mono`
-- `--cascade-text-secondary`
-- `--cascade-color-border`
-- `--cascade-surface-subtle`
-- `--cascade-space-*`
+- `--cascivo-text-2xl`
+- `--cascivo-text-sm`
+- `--cascivo-font-bold`
+- `--cascivo-font-mono`
+- `--cascivo-text-secondary`
+- `--cascivo-color-border`
+- `--cascivo-surface-subtle`
+- `--cascivo-space-*`
 
 ## Accessibility
 

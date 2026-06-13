@@ -362,7 +362,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 ```css
 /* @cascade-ui/tokens — placeholder until Plan 2 */
 :root {
-  --cascade-version: '0.0.0';
+  --cascivo-version: '0.0.0';
 }
 ```
 

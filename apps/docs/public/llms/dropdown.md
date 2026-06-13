@@ -42,11 +42,11 @@ npx cascade add dropdown
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-md`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-md`
+- `--cascivo-z-dropdown`
 
 ## Accessibility
 

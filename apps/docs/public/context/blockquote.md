@@ -37,14 +37,14 @@ Renders a native <blockquote> with the attribution in <footer><cite>, so the quo
 
 ## Tokens
 
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-font-sans`
-- `--cascade-font-medium`
-- `--cascade-leading-relaxed`
-- `--cascade-text-sm`
-- `--cascade-text-base`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-font-sans`
+- `--cascivo-font-medium`
+- `--cascivo-leading-relaxed`
+- `--cascivo-text-sm`
+- `--cascivo-text-base`
 
 ## Examples
 
@@ -67,4 +67,4 @@ Attribution renders as <footer><cite>
 | Area        | Level    | Note                                                                   |
 | ----------- | -------- | ---------------------------------------------------------------------- |
 | attribution | flexible | cite is optional; omit when the source is given in surrounding context |
-| token names | strict   | Border and text colors must resolve to --cascade-\* tokens             |
+| token names | strict   | Border and text colors must resolve to --cascivo-\* tokens             |

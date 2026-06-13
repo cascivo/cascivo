@@ -22,7 +22,7 @@ export const meta: ComponentMeta = {
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false },
   ],
-  tokens: ['--cascade-chart-1'],
+  tokens: ['--cascivo-chart-1'],
   accessibility: { role: 'meter', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

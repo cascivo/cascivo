@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
       description: 'Stack gap between children (spacing token step)',
     },
   ],
-  tokens: ['--cascade-space-*'],
+  tokens: ['--cascivo-space-*'],
   accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

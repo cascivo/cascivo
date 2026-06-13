@@ -38,14 +38,14 @@ const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 

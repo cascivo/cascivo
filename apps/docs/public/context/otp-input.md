@@ -44,12 +44,12 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -69,5 +69,5 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 | Area            | Level    | Note                                                                          |
 | --------------- | -------- | ----------------------------------------------------------------------------- |
-| token names     | strict   | Slot styling must resolve to the listed --cascade-\* tokens                   |
+| token names     | strict   | Slot styling must resolve to the listed --cascivo-\* tokens                   |
 | length and type | flexible | length and numeric/alphanumeric type are free to match the issued code format |

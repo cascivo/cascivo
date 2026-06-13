@@ -24,10 +24,10 @@ export interface UsePopoverReturn {
 const supportsAnchor =
   typeof CSS !== 'undefined' &&
   typeof CSS.supports === 'function' &&
-  CSS.supports('anchor-name: --cascade-a')
+  CSS.supports('anchor-name: --cascivo-a')
 
 export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
-  const anchorName = useRef(`--cascade-popover-${++anchorCounter}`).current
+  const anchorName = useRef(`--cascivo-popover-${++anchorCounter}`).current
   const triggerRef = useRef<HTMLElement>(null)
   const popoverRef = useRef<HTMLElement>(null)
   const isOpen = useSignal(options.open ?? false)

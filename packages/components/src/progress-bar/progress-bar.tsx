@@ -59,7 +59,7 @@ export function ProgressBar({
           style={
             indeterminate
               ? undefined
-              : ({ '--cascade-progress-value': `${percent}%` } as CSSProperties)
+              : ({ '--cascivo-progress-value': `${percent}%` } as CSSProperties)
           }
         />
       </div>

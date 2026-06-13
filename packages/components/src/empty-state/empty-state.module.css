@@ -4,14 +4,14 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: var(--cascade-space-2);
-    padding: var(--cascade-space-8);
-    font-family: var(--cascade-font-sans);
-    color: var(--cascade-color-text);
+    gap: var(--cascivo-space-2);
+    padding: var(--cascivo-space-8);
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-text);
 
     &[data-size='lg'] {
-      gap: var(--cascade-space-3);
-      padding: var(--cascade-space-12);
+      gap: var(--cascivo-space-3);
+      padding: var(--cascivo-space-12);
     }
   }
 
@@ -22,44 +22,44 @@
     justify-content: center;
     inline-size: 3rem;
     block-size: 3rem;
-    margin-block-end: var(--cascade-space-2);
-    font-size: var(--cascade-text-xl);
+    margin-block-end: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-xl);
     line-height: 1;
-    color: var(--cascade-color-text-muted);
-    background-color: var(--cascade-color-bg-subtle);
-    border-radius: var(--cascade-radius-full);
+    color: var(--cascivo-color-text-muted);
+    background-color: var(--cascivo-color-bg-subtle);
+    border-radius: var(--cascivo-radius-full);
 
     .empty-state[data-size='lg'] & {
       inline-size: 4rem;
       block-size: 4rem;
-      font-size: var(--cascade-text-2xl);
+      font-size: var(--cascivo-text-2xl);
     }
   }
 
   .title {
     margin: 0;
-    font-size: var(--cascade-text-base);
-    font-weight: var(--cascade-font-semibold);
-    line-height: var(--cascade-leading-snug);
+    font-size: var(--cascivo-text-base);
+    font-weight: var(--cascivo-font-semibold);
+    line-height: var(--cascivo-leading-snug);
 
     .empty-state[data-size='lg'] & {
-      font-size: var(--cascade-text-lg);
+      font-size: var(--cascivo-text-lg);
     }
   }
 
   .description {
     margin: 0;
     max-inline-size: 40ch;
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
-    line-height: var(--cascade-leading-normal);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+    line-height: var(--cascivo-leading-normal);
 
     .empty-state[data-size='lg'] & {
-      font-size: var(--cascade-text-base);
+      font-size: var(--cascivo-text-base);
     }
   }
 
   .action {
-    margin-block-start: var(--cascade-space-2);
+    margin-block-start: var(--cascivo-space-2);
   }
 }

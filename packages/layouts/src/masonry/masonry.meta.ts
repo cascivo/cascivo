@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
       description: 'Spacing token step',
     },
   ],
-  tokens: ['--cascade-space-*'],
+  tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

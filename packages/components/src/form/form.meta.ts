@@ -14,7 +14,7 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true },
     { name: 'className', type: 'string', required: false },
   ],
-  tokens: ['--cascade-space-4'],
+  tokens: ['--cascivo-space-4'],
   accessibility: {
     role: 'form',
     wcag: '2.2-AA',

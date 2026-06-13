@@ -176,21 +176,21 @@ Three-level CSS custom property system:
 
 ```css
 /* Level 1 — primitives (defined in @cascade-ui/tokens, never used directly in components) */
---cascade-blue-500: #3b82f6;
---cascade-gray-900: #111827;
+--cascivo-blue-500: #3b82f6;
+--cascivo-gray-900: #111827;
 
 /* Level 2 — semantic (themes override this layer only) */
 [data-theme='light'] {
-  --cascade-color-accent: var(--cascade-blue-500);
-  --cascade-color-surface: #ffffff;
-  --cascade-color-text: var(--cascade-gray-900);
+  --cascivo-color-accent: var(--cascivo-blue-500);
+  --cascivo-color-surface: #ffffff;
+  --cascivo-color-text: var(--cascivo-gray-900);
 }
 
 /* Level 3 — component (users override for brand adaptation) */
 .cascade-button {
-  background: var(--cascade-button-bg, var(--cascade-color-accent));
-  color: var(--cascade-button-text, #ffffff);
-  border-radius: var(--cascade-button-radius, 6px);
+  background: var(--cascivo-button-bg, var(--cascivo-color-accent));
+  color: var(--cascivo-button-text, #ffffff);
+  border-radius: var(--cascivo-button-radius, 6px);
 }
 ```
 

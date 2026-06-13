@@ -1,20 +1,20 @@
 @layer cascade.component {
   .code {
-    font-family: var(--cascade-font-mono);
-    color: var(--cascade-color-text);
-    background-color: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-indicator);
+    font-family: var(--cascivo-font-mono);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-indicator);
     padding-block: 0.0625rem;
-    padding-inline: var(--cascade-space-1);
+    padding-inline: var(--cascivo-space-1);
     white-space: nowrap;
 
     &[data-size='sm'] {
-      font-size: var(--cascade-text-xs);
+      font-size: var(--cascivo-text-xs);
     }
 
     &[data-size='md'] {
-      font-size: var(--cascade-text-sm);
+      font-size: var(--cascivo-text-sm);
     }
   }
 }

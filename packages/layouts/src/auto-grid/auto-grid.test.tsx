@@ -20,7 +20,7 @@ describe('AutoGrid', () => {
   it('sets --_gap CSS var from gap prop', () => {
     const { container } = render(<AutoGrid gap={6} />)
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--_gap')).toBe(
-      'var(--cascade-space-6)',
+      'var(--cascivo-space-6)',
     )
   })
 

@@ -74,13 +74,13 @@
       }
     ],
     "tokens": [
-      "--cascade-shell-header-block-size",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-color-accent",
-      "--cascade-radius-control"
+      "--cascivo-shell-header-block-size",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-radius-control"
     ],
     "accessibility": {
       "role": "banner",
@@ -140,7 +140,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+          "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
         }
       ]
     }

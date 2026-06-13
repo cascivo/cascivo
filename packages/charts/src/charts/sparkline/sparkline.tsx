@@ -19,7 +19,7 @@ export function Sparkline({
   width = 120,
   height = 32,
   label,
-  color = 'var(--cascade-chart-1)',
+  color = 'var(--cascivo-chart-1)',
   endDot = true,
 }: SparklineProps) {
   const pad = 2

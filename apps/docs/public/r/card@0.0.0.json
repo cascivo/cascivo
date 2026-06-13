@@ -37,10 +37,10 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-card",
-      "--cascade-shadow-md"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-card",
+      "--cascivo-shadow-md"
     ],
     "accessibility": {
       "role": "region",
@@ -89,7 +89,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+          "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
         }
       ]
     }

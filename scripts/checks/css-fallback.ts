@@ -9,7 +9,7 @@ export interface FallbackViolation {
   reason: string
 }
 
-// Detect @function calls: value contains --cascade-*(... or a custom @function name pattern
+// Detect @function calls: value contains --cascivo-*(... or a custom @function name pattern
 function isFunctionCall(value: string): boolean {
   return /--[\w-]+\(/.test(value)
 }

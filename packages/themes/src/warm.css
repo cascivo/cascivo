@@ -8,97 +8,97 @@
     color-scheme: light;
 
     /* ── Surface ──────────────────────────────────────── */
-    --cascade-color-background: oklch(0.995 0.006 80);
-    --cascade-color-surface: oklch(0.975 0.01 80);
-    --cascade-color-surface-2: oklch(0.95 0.014 80);
-    --cascade-color-bg: var(--cascade-color-background);
-    --cascade-color-bg-subtle: var(--cascade-color-surface);
-    --cascade-color-surface-raised: var(--cascade-color-surface);
-    --cascade-color-surface-overlay: var(--cascade-color-background);
-    --cascade-color-border: oklch(0.92 0.018 80);
-    --cascade-color-border-strong: oklch(0.86 0.025 75);
-    --cascade-border-subtle: oklch(0.92 0.018 80);
-    --cascade-border-default: oklch(0.86 0.025 75);
-    --cascade-border-strong: oklch(0.72 0.04 70);
+    --cascivo-color-background: oklch(0.995 0.006 80);
+    --cascivo-color-surface: oklch(0.975 0.01 80);
+    --cascivo-color-surface-2: oklch(0.95 0.014 80);
+    --cascivo-color-bg: var(--cascivo-color-background);
+    --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+    --cascivo-color-surface-raised: var(--cascivo-color-surface);
+    --cascivo-color-surface-overlay: var(--cascivo-color-background);
+    --cascivo-color-border: oklch(0.92 0.018 80);
+    --cascivo-color-border-strong: oklch(0.86 0.025 75);
+    --cascivo-border-subtle: oklch(0.92 0.018 80);
+    --cascivo-border-default: oklch(0.86 0.025 75);
+    --cascivo-border-strong: oklch(0.72 0.04 70);
 
     /* ── Text ─────────────────────────────────────────── */
-    --cascade-color-foreground: oklch(0.18 0.015 50);
-    --cascade-color-foreground-muted: oklch(0.52 0.03 60);
-    --cascade-color-text: var(--cascade-color-foreground);
-    --cascade-color-text-subtle: var(--cascade-color-foreground-muted);
-    --cascade-color-text-muted: oklch(0.64 0.025 65);
-    --cascade-color-text-on-accent: oklch(0.18 0.015 50);
-    --cascade-color-text-on-destructive: oklch(1 0 0);
+    --cascivo-color-foreground: oklch(0.18 0.015 50);
+    --cascivo-color-foreground-muted: oklch(0.52 0.03 60);
+    --cascivo-color-text: var(--cascivo-color-foreground);
+    --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
+    --cascivo-color-text-muted: oklch(0.64 0.025 65);
+    --cascivo-color-text-on-accent: oklch(0.18 0.015 50);
+    --cascivo-color-text-on-destructive: oklch(1 0 0);
 
     /* ── Accent ───────────────────────────────────────── */
-    --cascade-color-accent: oklch(0.768 0.145 75);
-    --cascade-color-accent-foreground: oklch(0.18 0.015 50);
-    --cascade-color-accent-hover: oklch(0.7 0.155 70);
-    --cascade-color-accent-active: oklch(0.64 0.155 65);
-    --cascade-color-accent-subtle: oklch(0.768 0.145 75 / 0.1);
-    --cascade-color-accent-muted: oklch(0.768 0.145 75 / 0.2);
+    --cascivo-color-accent: oklch(0.768 0.145 75);
+    --cascivo-color-accent-foreground: oklch(0.18 0.015 50);
+    --cascivo-color-accent-hover: oklch(0.7 0.155 70);
+    --cascivo-color-accent-active: oklch(0.64 0.155 65);
+    --cascivo-color-accent-subtle: oklch(0.768 0.145 75 / 0.1);
+    --cascivo-color-accent-muted: oklch(0.768 0.145 75 / 0.2);
 
     /* ── Primary — warm keeps its warm fill ── */
-    --cascade-color-primary: var(--cascade-color-accent);
-    --cascade-color-primary-fg: var(--cascade-color-accent-foreground);
-    --cascade-color-primary-hover: var(--cascade-color-accent-hover);
-    --cascade-color-primary-active: var(--cascade-color-accent-active);
-    --cascade-color-active-bg: oklch(0.18 0.015 50 / 7%);
+    --cascivo-color-primary: var(--cascivo-color-accent);
+    --cascivo-color-primary-fg: var(--cascivo-color-accent-foreground);
+    --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
+    --cascivo-color-primary-active: var(--cascivo-color-accent-active);
+    --cascivo-color-active-bg: oklch(0.18 0.015 50 / 7%);
 
     /* ── Destructive ──────────────────────────────────── */
-    --cascade-color-destructive: var(--cascade-red-600);
-    --cascade-color-destructive-hover: var(--cascade-red-700);
-    --cascade-color-destructive-subtle: var(--cascade-red-50);
+    --cascivo-color-destructive: var(--cascivo-red-600);
+    --cascivo-color-destructive-hover: var(--cascivo-red-700);
+    --cascivo-color-destructive-subtle: var(--cascivo-red-50);
 
     /* ── Semantic status colors ───────────────────────── */
-    --cascade-color-error: oklch(0.628 0.188 22);
-    --cascade-color-warning: oklch(0.768 0.145 75);
-    --cascade-color-success: oklch(0.648 0.15 145);
-    --cascade-color-success-subtle: var(--cascade-green-50);
-    --cascade-color-warning-subtle: oklch(0.768 0.145 75 / 0.1);
-    --cascade-color-info: var(--cascade-blue-600);
-    --cascade-color-info-subtle: var(--cascade-blue-50);
-    --cascade-color-success-foreground: oklch(0.45 0.14 145);
-    --cascade-color-warning-foreground: oklch(0.5 0.14 75);
+    --cascivo-color-error: oklch(0.628 0.188 22);
+    --cascivo-color-warning: oklch(0.768 0.145 75);
+    --cascivo-color-success: oklch(0.648 0.15 145);
+    --cascivo-color-success-subtle: var(--cascivo-green-50);
+    --cascivo-color-warning-subtle: oklch(0.768 0.145 75 / 0.1);
+    --cascivo-color-info: var(--cascivo-blue-600);
+    --cascivo-color-info-subtle: var(--cascivo-blue-50);
+    --cascivo-color-success-foreground: oklch(0.45 0.14 145);
+    --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
 
     /* ── Radius — one knob, warmer = rounder (8px) ────── */
-    --cascade-radius-base: 0.5rem;
-    --cascade-radius-control: var(--cascade-radius-base);
-    --cascade-radius-surface: calc(var(--cascade-radius-base) * 1.66);
-    --cascade-radius-indicator: calc(var(--cascade-radius-base) / 2);
-    --cascade-radius-full: 9999px;
-    --cascade-radius-component: var(--cascade-radius-base);
-    --cascade-radius-button: var(--cascade-radius-base);
-    --cascade-radius-input: var(--cascade-radius-base);
-    --cascade-radius-card: calc(var(--cascade-radius-base) * 1.66);
-    --cascade-radius-badge: var(--cascade-radius-full);
-    --cascade-radius-modal: calc(var(--cascade-radius-base) * 2);
+    --cascivo-radius-base: 0.5rem;
+    --cascivo-radius-control: var(--cascivo-radius-base);
+    --cascivo-radius-surface: calc(var(--cascivo-radius-base) * 1.66);
+    --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
+    --cascivo-radius-full: 9999px;
+    --cascivo-radius-component: var(--cascivo-radius-base);
+    --cascivo-radius-button: var(--cascivo-radius-base);
+    --cascivo-radius-input: var(--cascivo-radius-base);
+    --cascivo-radius-card: calc(var(--cascivo-radius-base) * 1.66);
+    --cascivo-radius-badge: var(--cascivo-radius-full);
+    --cascivo-radius-modal: calc(var(--cascivo-radius-base) * 2);
 
     /* ── Shadows ─────────────────────────────────────── */
-    --cascade-shadow-xs: 0 1px 2px oklch(0.2 0.04 60 / 0.06);
-    --cascade-shadow-sm: 0 1px 3px oklch(0.2 0.04 60 / 0.12);
-    --cascade-shadow-md: 0 4px 6px oklch(0.2 0.04 60 / 0.1), 0 2px 4px oklch(0.2 0.04 60 / 0.06);
-    --cascade-shadow-overlay:
+    --cascivo-shadow-xs: 0 1px 2px oklch(0.2 0.04 60 / 0.06);
+    --cascivo-shadow-sm: 0 1px 3px oklch(0.2 0.04 60 / 0.12);
+    --cascivo-shadow-md: 0 4px 6px oklch(0.2 0.04 60 / 0.1), 0 2px 4px oklch(0.2 0.04 60 / 0.06);
+    --cascivo-shadow-overlay:
       0 4px 32px oklch(0.2 0.04 60 / 0.18), 0 0 0 1px oklch(0.2 0.04 60 / 0.06);
-    --cascade-shadow-lg: var(--cascade-shadow-overlay);
+    --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
 
     /* ── Focus ring ───────────────────────────────────── */
-    --cascade-ring-width: 2px;
-    --cascade-ring-offset: 0px;
-    --cascade-ring-color: color-mix(in oklch, var(--cascade-color-accent) 55%, transparent);
-    --cascade-color-focus-ring: oklch(0.768 0.145 75);
-    --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
+    --cascivo-ring-width: 2px;
+    --cascivo-ring-offset: 0px;
+    --cascivo-ring-color: color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent);
+    --cascivo-color-focus-ring: oklch(0.768 0.145 75);
+    --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
 
     /* ── Chart overrides ─────────────────────────────── */
-    --cascade-chart-1: oklch(0.62 0.15 65);
-    --cascade-chart-2: oklch(0.6 0.09 235);
-    --cascade-chart-3: oklch(0.6 0.13 135);
-    --cascade-chart-4: oklch(0.6 0.18 55);
-    --cascade-chart-5: oklch(0.5 0.11 270);
-    --cascade-chart-6: oklch(0.6 0.18 30);
-    --cascade-chart-7: oklch(0.62 0.12 345);
-    --cascade-chart-8: oklch(0.5 0.12 200);
-    --cascade-chart-grid: oklch(0.92 0.018 80);
-    --cascade-chart-axis: oklch(0.64 0.025 65);
+    --cascivo-chart-1: oklch(0.62 0.15 65);
+    --cascivo-chart-2: oklch(0.6 0.09 235);
+    --cascivo-chart-3: oklch(0.6 0.13 135);
+    --cascivo-chart-4: oklch(0.6 0.18 55);
+    --cascivo-chart-5: oklch(0.5 0.11 270);
+    --cascivo-chart-6: oklch(0.6 0.18 30);
+    --cascivo-chart-7: oklch(0.62 0.12 345);
+    --cascivo-chart-8: oklch(0.5 0.12 200);
+    --cascivo-chart-grid: oklch(0.92 0.018 80);
+    --cascivo-chart-axis: oklch(0.64 0.025 65);
   }
 }

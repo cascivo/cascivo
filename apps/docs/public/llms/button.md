@@ -62,13 +62,13 @@ npx cascade add button
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-color-text-on-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

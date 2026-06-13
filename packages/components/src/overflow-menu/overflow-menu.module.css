@@ -8,15 +8,15 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    color: var(--cascade-color-text-muted);
+    color: var(--cascivo-color-text-muted);
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
     cursor: pointer;
     transition:
-      background-color var(--cascade-duration-150) var(--cascade-ease-out),
-      color var(--cascade-duration-150) var(--cascade-ease-out),
-      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &[data-size='sm'] {
       inline-size: 2rem;
@@ -29,13 +29,13 @@
     }
 
     &:hover:not(:disabled) {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &:disabled {
@@ -51,11 +51,11 @@
   }
 
   .root [role='menuitem']:has(.destructive-flag) {
-    color: var(--cascade-color-destructive);
+    color: var(--cascivo-color-destructive);
 
     &:hover:not(:disabled),
     &:focus-visible {
-      background-color: var(--cascade-color-destructive-subtle);
+      background-color: var(--cascivo-color-destructive-subtle);
     }
 
     /* Dropdown's icon wrapper sets a muted color; make it follow the item. */

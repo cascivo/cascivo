@@ -18,7 +18,7 @@ with minimal or zero changes (re-verify per tranche). Docs gain one gallery page
 entry.
 
 **Tech stack:** unchanged — React 18+ components, CSS Modules under `@layer cascade.component`
-with `--cascade-*` tokens and private `--_*` knobs, vitest + @testing-library/react, vp (vite+)
+with `--cascivo-*` tokens and private `--_*` knobs, vitest + @testing-library/react, vp (vite+)
 toolchain, Playwright in `apps/docs/test/`.
 
 ---
@@ -55,7 +55,7 @@ copy via props with defaults (see `login-page.tsx`) — content scaffolding, not
 `DEFAULT_MARGINS`), chrome `Axis`/`GridLines`/`Legend`. Cartesian charts (e.g.
 `area-chart.tsx`) hardwire `GridLines` + two `Axis` renders inside the frame and default
 `legend: series.length > 1`, `height: 300`. Already-plain charts: `sparkline` (120×32,
-no frame, no chrome), `meter`, `kpi`. Series colors come from `--cascade-chart-1..8`.
+no frame, no chrome), `meter`, `kpi`. Series colors come from `--cascivo-chart-1..8`.
 
 **Docs app** (`apps/docs`, Preact): nav built in `src/nav.ts` from the five component
 categories (`inputs`/`display`/`overlay`/`navigation`/`feedback`) — `layout/*`, `block/*`
@@ -126,7 +126,7 @@ typed-registry twist. No new distribution machinery needed.
 
 ## Cross-cutting rules (every tranche)
 
-1. **Tokens only.** All new CSS reads `--cascade-*` custom properties; knobs are private
+1. **Tokens only.** All new CSS reads `--cascivo-*` custom properties; knobs are private
    `--_*` properties set from props. No raw colors, no px font sizes, no new fonts.
 2. **Logical properties only.** `inline-size`, `margin-block-end`, `inset-inline-start`, …
    — grep for `left|right|top|bottom` physical properties before each commit (T6 formalizes).
@@ -161,7 +161,7 @@ typed-registry twist. No new distribution machinery needed.
    chrome only — keep interaction layers; if an interaction layer depends on axis ticks,
    note it and disable just that piece with a manifest caveat.
 4. **Stacked/multi-series plain charts lose the legend** — series remain distinguishable by
-   `--cascade-chart-N` colors only. Acceptable: plain charts are glanceable, not analytical.
+   `--cascivo-chart-N` colors only. Acceptable: plain charts are glanceable, not analytical.
    The docs micro-charts section shows a multi-series plain example so the tradeoff is
    visible.
 5. **`height` default change in plain mode**: don't mutate `ChartFrame`'s default; resolve

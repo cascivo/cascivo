@@ -44,14 +44,14 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-warning`
-- `--cascade-color-success`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-warning`
+- `--cascivo-color-success`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -71,5 +71,5 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 
 | Area        | Level    | Note                                                                                     |
 | ----------- | -------- | ---------------------------------------------------------------------------------------- |
-| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascade-\* tokens |
+| token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-\* tokens |
 | labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                    |

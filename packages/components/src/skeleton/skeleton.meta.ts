@@ -30,11 +30,11 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-sm',
-    '--cascade-radius-full',
-    '--cascade-radius-component',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-radius-full',
+    '--cascivo-radius-component',
   ],
   accessibility: { role: 'none', wcag: '2.2-AA', keyboard: [] },
   examples: [
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Background and radius must resolve to --cascade-* tokens',
+        note: 'Background and radius must resolve to --cascivo-* tokens',
       },
     ],
   },

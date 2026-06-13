@@ -24,7 +24,7 @@ _Date: 2026-06-12_
 
 - Positioning: `position: absolute` relative to inline `<span>` root; `data-placement` drives inset + translate CSS
 - JS involvement: **zero** — pure CSS
-- Z-index: `var(--cascade-z-tooltip)`
+- Z-index: `var(--cascivo-z-tooltip)`
 - Dismiss: mouse-leave / blur (signal FSM: `HIDE`)
 - Focus: no trap; implicit blur return
 - Tests: 5 tests (hover show/hide with delay)
@@ -42,7 +42,7 @@ _Date: 2026-06-12_
 
 - Positioning: `position: absolute` relative to inline-flex root; `data-placement` drives inset
 - JS involvement: `pointerdown` listener on document (lines 94–101) for outside-click dismiss; Escape handler (lines 136–139) returning focus to trigger
-- Z-index: `var(--cascade-z-dropdown)`
+- Z-index: `var(--cascivo-z-dropdown)`
 - **Migration**: replace with `popover="auto"` → native light-dismiss + Escape eliminates the JS pointer listener; keep Escape focus-return since popover API doesn't guarantee it; add anchor CSS under `@supports`
 
 ### hover-card
@@ -61,7 +61,7 @@ _Date: 2026-06-12_
 
 ### context-menu
 
-- On `popover="auto"` with JS coordinate injection via CSS custom properties (`--cascade-context-x/y`)
+- On `popover="auto"` with JS coordinate injection via CSS custom properties (`--cascivo-context-x/y`)
 - CSS anchor positioning does not apply (anchoring to a point, not an element)
 - Tests: 3 tests
 - **Migration**: add `@starting-style` transitions; keep JS coordinate approach (correct for point anchoring)
@@ -75,7 +75,7 @@ _Date: 2026-06-12_
 
 ### toast
 
-- `position: fixed` corner; `z-index: var(--cascade-z-toast)`
+- `position: fixed` corner; `z-index: var(--cascivo-z-toast)`
 - `aria-live` + `role` semantics (alert/status)
 - **Evaluation result**: keep `position: fixed` — `popover="manual"` would shift toast to top layer and requires explicit `showPopover/hidePopover` calls already done via signals; however a11y semantics (`aria-live`) must be verified inside top-layer. Decision: **skip toast popover migration** — the existing top-layer workaround is unnecessary given aria-live works in any DOM position; the z-index approach is simpler and proven. Record reason: risk of aria-live announcement order inside popover top layer with screen reader is unknown; complexity is not justified by the benefit.
 

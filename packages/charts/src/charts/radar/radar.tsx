@@ -22,7 +22,7 @@ export interface RadarProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 const RINGS = 4
 
 function polarPoints(
@@ -153,7 +153,7 @@ export function Radar({
                   key={i}
                   points={pts}
                   fill="none"
-                  stroke="var(--cascade-border-subtle)"
+                  stroke="var(--cascivo-border-subtle)"
                   strokeWidth={1}
                 />
               ))}
@@ -166,7 +166,7 @@ export function Radar({
                   y1={cy}
                   x2={pt.x}
                   y2={pt.y}
-                  stroke="var(--cascade-border-subtle)"
+                  stroke="var(--cascivo-border-subtle)"
                   strokeWidth={1}
                 />
               ))}
@@ -184,7 +184,7 @@ export function Radar({
                     fontSize={11}
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    fill="var(--cascade-text-secondary)"
+                    fill="var(--cascivo-text-secondary)"
                   >
                     {axes[i]}
                   </text>
@@ -194,7 +194,7 @@ export function Radar({
             {series.map((s, si) => {
               const pts = polarPoints(s.values, maxVal, cx, cy, r)
               const polygon = pts.map((p) => `${p.x},${p.y}`).join(' ')
-              const color = COLORS[si % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const color = COLORS[si % COLORS.length] ?? 'var(--cascivo-chart-1)'
               return (
                 <polygon
                   key={s.id}

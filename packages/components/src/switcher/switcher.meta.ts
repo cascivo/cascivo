@@ -19,12 +19,12 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-color-border',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-color-border',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'list',
@@ -82,7 +82,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Accent and surface colors must resolve to --cascade-* tokens',
+        note: 'Accent and surface colors must resolve to --cascivo-* tokens',
       },
     ],
   },

@@ -23,7 +23,7 @@ npx cascade add button
 cascade ships the **WHAT** (manifests, tokens, MCP) and the **WHY** (context layer):
 
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle
-- **`tokens.catalog.json`** — closed-set token catalog; every `--cascade-*` property with layer + resolved default
+- **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with layer + resolved default
 - **`cascade audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code
 - **MCP tools**: `list_components`, `get_component`, `get_tokens`, `get_context`, `select_component`, `scaffold_view`
 

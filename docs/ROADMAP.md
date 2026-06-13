@@ -44,7 +44,7 @@ This document is the ground truth for what has been built and what still needs b
 Each component lives at `packages/components/src/<name>/` and consists of four files:
 
 1. `<name>.tsx` — React component with `'use client'`, typed props extending HTML attrs, CSS Modules, `data-variant`/`data-size`/`data-state` attributes for styling hooks
-2. `<name>.module.css` — `@layer cascade.component { }` block, all values via `--cascade-*` tokens, `:has()` and `@container` where appropriate
+2. `<name>.module.css` — `@layer cascade.component { }` block, all values via `--cascivo-*` tokens, `:has()` and `@container` where appropriate
 3. `<name>.meta.ts` — `ComponentMeta` object (import type from `@cascade-ui/core`)
 4. `<name>.test.tsx` — vitest + @testing-library/react, setup via `packages/components/src/setup.ts`
 
@@ -124,7 +124,7 @@ A11y: `aria-live="polite"` for non-critical, `aria-live="assertive"` for destruc
 **Alert** (`packages/components/src/alert/`)  
 Props: `variant?: 'default' | 'info' | 'success' | 'warning' | 'destructive'`, `title?: string`, `icon?: ReactNode`, `dismissible?: boolean`, `onDismiss?: () => void`, `children`.  
 Implementation: no machine needed — pure display. Use `data-variant` attribute on root element. If `dismissible`, show a close button that calls `onDismiss`.  
-CSS: left colored border-inline-start per variant, using semantic `--cascade-color-*` tokens.  
+CSS: left colored border-inline-start per variant, using semantic `--cascivo-color-*` tokens.  
 A11y: `role="alert"` for destructive/warning, `role="status"` for info/success.
 
 **Avatar** (`packages/components/src/avatar/`)  
@@ -136,7 +136,7 @@ A11y: `<img alt="...">` when image loads, `aria-label` with initials when fallba
 **Separator** (`packages/components/src/separator/`)  
 Props: `orientation?: 'horizontal' | 'vertical'`, `decorative?: boolean`.  
 Implementation: `<hr>` for horizontal, `<div role="separator" aria-orientation="vertical">` for vertical. Simplest component in the library.  
-CSS: single line, `--cascade-color-border`, logical properties (`border-block-start` vs `border-inline-start`).
+CSS: single line, `--cascivo-color-border`, logical properties (`border-block-start` vs `border-inline-start`).
 
 #### `navigation` group
 

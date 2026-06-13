@@ -66,11 +66,11 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

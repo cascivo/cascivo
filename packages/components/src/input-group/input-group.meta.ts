@@ -14,10 +14,10 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true },
   ],
   tokens: [
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-input',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-input',
   ],
   accessibility: {
     role: 'generic',
@@ -79,7 +79,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Addon background, border, text, and radius must resolve to the listed --cascade-* tokens',
+        note: 'Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'addon alignment',

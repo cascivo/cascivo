@@ -13,7 +13,7 @@ Two things are now true that the codebase doesn't yet reflect:
 1. **The project has a real name and a real domain.** `cascade-ui` collided with an existing
    library and had no clean domain (see `docs/BRAND.md`). The owner purchased **`cascivo.com`**.
    The repository still ships ~1,305 files mentioning `cascade`, 24 `@cascade-ui/*` packages, a
-   `--cascade-*` CSS token prefix across 113 CSS files, a `cascade` CLI, a registry pinned to
+   `--cascivo-*` CSS token prefix across 113 CSS files, a `cascade` CLI, a registry pinned to
    `raw.githubusercontent.com/urbanisierung/cascade-ui`, and an MCP server pointed at
    `cascade-ui.dev`. The name is decided; the code hasn't caught up. v15 makes the rename total
    and coherent — name, packages, tokens, CLI, registry, domain, and a first-class brand identity
@@ -36,7 +36,7 @@ Two things are now true that the codebase doesn't yet reflect:
 
 | #   | Pain                                     | Today                                                                                                          | Gap v15 closes                                                                                                   |
 | --- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| 1   | Name collides; no owned domain reflected | `@cascade-ui/*`, `--cascade-*`, CLI `cascade`, registry on `urbanisierung/cascade-ui`, MCP on `cascade-ui.dev` | `cascivo.com` purchased but applied nowhere; brand is a placeholder, not an identity                             |
+| 1   | Name collides; no owned domain reflected | `@cascade-ui/*`, `--cascivo-*`, CLI `cascade`, registry on `urbanisierung/cascade-ui`, MCP on `cascade-ui.dev` | `cascivo.com` purchased but applied nowhere; brand is a placeholder, not an identity                             |
 | 2   | No brand identity                        | `docs/BRAND.md` is a domain-search log; no logo, no brand colors, no name derivation recorded                  | No logo, no brand palette, no documented "cascade-ui → cascivo" rationale                                        |
 | 3   | npm/distribution naming undecided        | Packages scoped `@cascade-ui/*`; CLI unscoped `cascade`                                                        | No decision recorded on the post-rename namespace / CLI invocation                                               |
 | 4   | Landing not mobile friendly              | Desktop-first; grids collapse but heavy demos overflow; no <32rem breakpoint; no container queries             | Hero CTAs don't wrap; `RelayConsole`/charts/signals demos built wide; no real-device verification                |
@@ -55,7 +55,7 @@ Two things are now true that the codebase doesn't yet reflect:
 | #   | Workstream            | Tranche | Summary                                                                                                                                      |
 | --- | --------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | A   | Brand identity        | T1      | Rewrite `BRAND.md` (name derivation, logo proposal, brand palette); logo SVG spec; brand color decisions. Docs/assets only — no code rename. |
-| B   | Token rename          | T2      | `--cascade-*` → `--cascivo-*` across tokens, 10 themes, all component CSS, and every consumer; introduce `--cascivo-brand-*` tokens.         |
+| B   | Token rename          | T2      | `--cascivo-*` → `--cascivo-*` across tokens, 10 themes, all component CSS, and every consumer; introduce `--cascivo-brand-*` tokens.         |
 | C   | Package namespace     | T3      | `@cascade-ui/*` → `@cascivo/*`: 24 `package.json`, all imports, tsconfig paths, **vite aliases**, 72 component `meta.dependencies`, exports. |
 | D   | CLI / registry / ext. | T4      | CLI → `@cascivo/cli` (bin `cascivo`); registry raw URLs + `cascivo.com`; MCP server + base URLs; skills `cascivo:*`; external checklist.     |
 | E   | Mobile — landing      | T5      | First-principles, mobile-first rebuild of every landing section + heavy-demo mobile treatments; real-device screenshot audit + verification. |
@@ -72,10 +72,10 @@ Two things are now true that the codebase doesn't yet reflect:
    the waterfall image); add the Romance agentive/adjectival suffix `-ivo` (as in _attivo_,
    _motivo_) — "active, alive, flowing." One coined, pronounceable word (/kas-ˈ(s)ee-vo/) with a
    free `.com`. BRAND.md states this.
-3. **The CSS token prefix is renamed: `--cascade-*` → `--cascivo-*`.** A full rename (113 CSS
+3. **The CSS token prefix is renamed: `--cascivo-*` → `--cascivo-*`.** A full rename (113 CSS
    files + every component + every consumer), accepted as a deliberate breaking change while the
-   project is pre-1.0. No `--cascade-*` aliases are kept (rejected: a half-measure that dilutes the
-   rebrand). A drift/grep gate proves zero `--cascade-` survive.
+   project is pre-1.0. No `--cascivo-*` aliases are kept (rejected: a half-measure that dilutes the
+   rebrand). A drift/grep gate proves zero `--cascivo-` survive.
 4. **npm namespace: scoped `@cascivo/*` only.** All 15 publishable packages become `@cascivo/<name>`
    (`@cascivo/core`, `@cascivo/themes`, …), a 1:1 map of today's `@cascade-ui/*`. Requires the npm
    org `cascivo`. The CLI becomes `@cascivo/cli` with bin name `cascivo` — invoked as
@@ -119,7 +119,7 @@ Two things are now true that the codebase doesn't yet reflect:
 - [ ] `docs/BRAND.md` documents the final name, the `cascade-ui → cascivo` derivation, the logo
       proposal (with an in-repo SVG or precise spec), and the brand color palette with rationale +
       contrast results. A logo asset exists and renders in the landing header/footer.
-- [ ] Zero `--cascade-` token references remain (grep gate); all tokens, themes, and component CSS
+- [ ] Zero `--cascivo-` token references remain (grep gate); all tokens, themes, and component CSS
       use `--cascivo-`; `--cascivo-brand-*` tokens exist; all theme/parity/contrast tests pass.
 - [ ] Zero `@cascade-ui/` references remain in source (grep gate); 24 packages are `@cascivo/*`;
       all imports, tsconfig paths, **all three app vite aliases** (docs/landing/storybook), and 72
@@ -141,7 +141,7 @@ Two things are now true that the codebase doesn't yet reflect:
 
 - **Unscoped `cascivo` npm package / `npx cascivo` shorthand** — `@cascivo/cli` (bin `cascivo`) is
   the v15 invocation; an unscoped redirect package is an optional later courtesy.
-- **`--cascade-*` back-compat aliases** — rejected; the rename is hard. Pre-1.0 breakage accepted.
+- **`--cascivo-*` back-compat aliases** — rejected; the rename is hard. Pre-1.0 breakage accepted.
 - **Renaming the GitHub org** — only the repo is renamed (redirect-safe); the `urbanisierung` org
   stays.
 - **A full marketing site** (blog, changelog microsite) — v15 ships the landing + docs, not a CMS.

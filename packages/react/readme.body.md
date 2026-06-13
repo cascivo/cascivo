@@ -30,7 +30,7 @@ export function App() {
 
 Theming works exactly like the copy-paste flow: import a theme stylesheet and
 scope it with `data-theme="light" | "dark" | "warm"` on any container. Brand
-adaptation happens by overriding `--cascade-*` custom properties — no rebuild
+adaptation happens by overriding `--cascivo-*` custom properties — no rebuild
 needed.
 
 All components are client components (`'use client'` is preserved in the

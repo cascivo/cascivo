@@ -37,7 +37,7 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function LineChart<Datum = { x: number; y: number }>({
   series,

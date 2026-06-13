@@ -70,7 +70,7 @@ Results scored with `cascade audit --ai --json` on the generated output. Lower f
 
 **A findings:**
 
-- `hardcoded-color: background: #ef4444` → suggested: `var(--cascade-color-destructive)` (error)
+- `hardcoded-color: background: #ef4444` → suggested: `var(--cascivo-color-destructive)` (error)
 - `raw-string: "Delete"` and `"Cancel"` should use i18n labels
 
 **B (with context) — likely output:**
@@ -105,8 +105,8 @@ Results scored with `cascade audit --ai --json` on the generated output. Lower f
 
 **A findings:**
 
-- `hardcoded-color: backgroundColor: #0ea5e9` — matches `--cascade-color-accent` in light theme (error, suggestedToken)
-- `hardcoded-color: color: white` — matches `--cascade-color-foreground-inverse` (error)
+- `hardcoded-color: backgroundColor: #0ea5e9` — matches `--cascivo-color-accent` in light theme (error, suggestedToken)
+- `hardcoded-color: color: white` — matches `--cascivo-color-foreground-inverse` (error)
 - `raw-string: "Get Started"` should use i18n labels
 
 **B (with context) — likely output:**

@@ -29,7 +29,7 @@ Do NOT use a hardcoded token list. Read the cascade token documentation at runti
 - Read `packages/tokens/src/index.css` from the local repo, or
 - Fetch `https://cascade-ui.dev/llms.txt` which lists the semantic tokens.
 
-Identify the semantic tokens to override (these are `--cascade-color-*` custom properties at the semantic layer, not primitive tokens).
+Identify the semantic tokens to override (these are `--cascivo-color-*` custom properties at the semantic layer, not primitive tokens).
 
 ### 3. Generate the theme stylesheet
 
@@ -39,11 +39,11 @@ Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 /* Brand theme for cascade */
 @layer cascade.theme {
   [data-theme='<name>'] {
-    --cascade-color-accent: <primary-hex>;
-    --cascade-color-accent-hover: <primary-hex-darker>;
-    --cascade-color-bg: <surface-hex>;
-    --cascade-color-bg-subtle: <surface-hex-lighter>;
-    --cascade-color-text: <text-hex>;
+    --cascivo-color-accent: <primary-hex>;
+    --cascivo-color-accent-hover: <primary-hex-darker>;
+    --cascivo-color-bg: <surface-hex>;
+    --cascivo-color-bg-subtle: <surface-hex-lighter>;
+    --cascivo-color-text: <text-hex>;
     /* ... additional overrides based on brand colors */
   }
 }

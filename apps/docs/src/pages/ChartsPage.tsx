@@ -230,7 +230,7 @@ export function ChartsPage() {
               label="Active users trend"
               width={160}
               height={40}
-              color="var(--cascade-chart-2)"
+              color="var(--cascivo-chart-2)"
             />
           </div>
           <div>
@@ -240,7 +240,7 @@ export function ChartsPage() {
               label="Error rate trend"
               width={160}
               height={40}
-              color="var(--cascade-chart-4)"
+              color="var(--cascivo-chart-4)"
             />
           </div>
         </div>
@@ -423,7 +423,7 @@ export function ChartsPage() {
         <p
           style={{
             fontSize: '0.875rem',
-            color: 'var(--cascade-text-secondary)',
+            color: 'var(--cascivo-text-secondary)',
             marginBlockStart: '0.5rem',
           }}
         >
@@ -446,7 +446,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Revenue
@@ -466,7 +466,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Visits
@@ -486,7 +486,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Sales Q1
@@ -504,7 +504,7 @@ export function ChartsPage() {
         </div>
 
         <h3 style={{ marginBlockStart: '1.5rem' }}>Plain chart in a table cell</h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascivo-text-secondary)' }}>
           A plain LineChart at 120×32 embedded directly in a data table cell.
         </p>
         <div style={{ overflowX: 'auto' }}>
@@ -517,7 +517,7 @@ export function ChartsPage() {
                     style={{
                       padding: '0.5rem 1rem',
                       textAlign: 'start',
-                      borderBlockEnd: '1px solid var(--cascade-color-border)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border)',
                       fontWeight: 500,
                     }}
                   >
@@ -536,7 +536,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                     }}
                   >
                     {row.label}
@@ -544,7 +544,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                       fontVariantNumeric: 'tabular-nums',
                     }}
                   >
@@ -553,7 +553,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                     }}
                   >
                     <LineChart
@@ -573,7 +573,7 @@ export function ChartsPage() {
         </div>
 
         <h3 style={{ marginBlockStart: '1.5rem' }}>Multi-series plain area chart</h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascivo-text-secondary)' }}>
           In plain mode, series are distinguishable by color only — no legend. Suitable for
           glanceable comparisons, not analytical detail.
         </p>
@@ -608,9 +608,9 @@ export function ChartsPage() {
               data-theme={t}
               style={{
                 padding: '1rem',
-                background: 'var(--cascade-color-bg)',
-                borderRadius: 'var(--cascade-radius-md, 0.5rem)',
-                border: '1px solid var(--cascade-color-border)',
+                background: 'var(--cascivo-color-bg)',
+                borderRadius: 'var(--cascivo-radius-md, 0.5rem)',
+                border: '1px solid var(--cascivo-color-border)',
               }}
             >
               <div
@@ -619,7 +619,7 @@ export function ChartsPage() {
                   fontWeight: 600,
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
-                  color: 'var(--cascade-color-text-secondary, var(--cascade-color-text))',
+                  color: 'var(--cascivo-color-text-secondary, var(--cascivo-color-text))',
                   marginBlockEnd: '0.5rem',
                 }}
               >

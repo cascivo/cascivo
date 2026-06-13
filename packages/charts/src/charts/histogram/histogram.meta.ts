@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
   ],
-  tokens: ['--cascade-chart-1'],
+  tokens: ['--cascivo-chart-1'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

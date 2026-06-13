@@ -30,7 +30,7 @@ Adds vertical space between elements
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

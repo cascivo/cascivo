@@ -44,18 +44,18 @@ Sits inline with surrounding text
 ### Small
 
 ```tsx
-<Code size="sm">--cascade-color-accent</Code>
+<Code size="sm">--cascivo-color-accent</Code>
 ```
 
 ## Design tokens
 
-- `--cascade-font-mono`
-- `--cascade-color-text`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-indicator`
-- `--cascade-text-xs`
-- `--cascade-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-color-text`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-indicator`
+- `--cascivo-text-xs`
+- `--cascivo-text-sm`
 
 ## Accessibility
 

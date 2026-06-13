@@ -45,14 +45,14 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-full`
-- `--cascade-motion-enter`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-full`
+- `--cascivo-motion-enter`
 
 ## Examples
 
@@ -79,4 +79,4 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 | Area                         | Level    | Note                                                       |
 | ---------------------------- | -------- | ---------------------------------------------------------- |
 | determinate vs indeterminate | flexible | Presence of value selects the mode                         |
-| token names                  | strict   | Fill and status colors must resolve to --cascade-\* tokens |
+| token names                  | strict   | Fill and status colors must resolve to --cascivo-\* tokens |

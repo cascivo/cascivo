@@ -35,7 +35,7 @@ npx cascade add separator
 
 ## Design tokens
 
-- `--cascade-color-border`
+- `--cascivo-color-border`
 
 ## Accessibility
 

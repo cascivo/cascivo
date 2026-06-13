@@ -27,7 +27,7 @@ export function Section({
       className={cn(styles['section'], className)}
       style={{
         ['--_max' as string]: maxInlineSize,
-        ['--_gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_gap' as string]: `var(--cascivo-space-${gap})`,
         ...(style as CSSProperties | undefined),
       }}
       {...props}

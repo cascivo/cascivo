@@ -17,7 +17,7 @@ users get it with the shell. Theme parity lands in `packages/themes` plus a key-
 test. Everything else is `apps/landing` application code plus one Vite alias.
 
 **Tech stack:** unchanged — React 18+ (landing is real React + `@preact/signals-react`, NOT
-Preact), CSS with `--cascade-*` tokens, vitest + @testing-library/react, vp (vite+)
+Preact), CSS with `--cascivo-*` tokens, vitest + @testing-library/react, vp (vite+)
 toolchain.
 
 ---
@@ -63,20 +63,20 @@ callbacks fire.
 
 `ThemeDemo.tsx:6` cycles `['light', 'dark', 'warm', 'flat', 'minimal']` (the report said
 "flat and modern" — the actual themes are flat and **minimal**). Input labels use
-`color: var(--cascade-color-text)` (`input.module.css:30`). Token counts per theme file:
+`color: var(--cascivo-color-text)` (`input.module.css:30`). Token counts per theme file:
 light 55, dark/warm same family, **flat 31, minimal 31**. Exact missing set in flat
-(via key diff against light): `--cascade-color-text`, `--cascade-color-text-subtle`,
-`--cascade-color-text-muted`, `--cascade-color-text-on-accent`,
-`--cascade-color-text-on-destructive`, `--cascade-color-bg`, `--cascade-color-bg-subtle`,
-`--cascade-color-border`, `--cascade-color-border-strong`, `--cascade-color-destructive`,
-`--cascade-color-destructive-hover`, `--cascade-color-destructive-subtle`,
-`--cascade-color-focus-ring`, `--cascade-focus-ring`, `--cascade-color-info`,
-`--cascade-color-info-subtle`, `--cascade-color-success-subtle`,
-`--cascade-color-warning-subtle`, `--cascade-color-surface-overlay`,
-`--cascade-color-surface-raised`, `--cascade-color-accent-active`,
-`--cascade-color-accent-muted`, `--cascade-color-accent-subtle`, `--cascade-chart-axis`,
-`--cascade-chart-grid`, `--cascade-radius-{badge,button,card,component,input,modal}`,
-`--cascade-shadow-overlay`. (Minimal's diff is the same shape — regenerate it at
+(via key diff against light): `--cascivo-color-text`, `--cascivo-color-text-subtle`,
+`--cascivo-color-text-muted`, `--cascivo-color-text-on-accent`,
+`--cascivo-color-text-on-destructive`, `--cascivo-color-bg`, `--cascivo-color-bg-subtle`,
+`--cascivo-color-border`, `--cascivo-color-border-strong`, `--cascivo-color-destructive`,
+`--cascivo-color-destructive-hover`, `--cascivo-color-destructive-subtle`,
+`--cascivo-color-focus-ring`, `--cascivo-focus-ring`, `--cascivo-color-info`,
+`--cascivo-color-info-subtle`, `--cascivo-color-success-subtle`,
+`--cascivo-color-warning-subtle`, `--cascivo-color-surface-overlay`,
+`--cascivo-color-surface-raised`, `--cascivo-color-accent-active`,
+`--cascivo-color-accent-muted`, `--cascivo-color-accent-subtle`, `--cascivo-chart-axis`,
+`--cascivo-chart-grid`, `--cascivo-radius-{badge,button,card,component,input,modal}`,
+`--cascivo-shadow-overlay`. (Minimal's diff is the same shape — regenerate it at
 implementation time.) An undefined `var()` falls back to the inherited color — labels
 become whatever the parent stage sets, hence "invisible".
 
@@ -97,9 +97,9 @@ don't reuse it for the top bar (different anatomy: 2–3px edge-to-edge strip). 
 Composition (`apps/landing/src/demo/RelayConsole.tsx`): `.console-frame` >
 `.console-titlebar` (two inert spans: brand + env) + `.console-body` (SideNav +
 `.console-main` with `KpiRow` + `.console-grid` of TrafficRegion / SideRegion /
-DeploysRegion / FlagsRegion). Spacing today: `.kpi-row` gap `--cascade-space-3`,
-`.console-grid` gap `--cascade-space-4`, `.region` gap `--cascade-space-3`
-(landing.css:685), KPI + flags cards `padding="sm"` (`--_card-p: var(--cascade-space-4)`,
+DeploysRegion / FlagsRegion). Spacing today: `.kpi-row` gap `--cascivo-space-3`,
+`.console-grid` gap `--cascivo-space-4`, `.region` gap `--cascivo-space-3`
+(landing.css:685), KPI + flags cards `padding="sm"` (`--_card-p: var(--cascivo-space-4)`,
 card.module.css:10–13), deploys table `density="compact"`. SideNav items are built from
 labels only (`RelayConsole.tsx:12`) — `SideNavItem` supports `icon?: ReactNode`
 (side-nav.tsx:21, fallback dot rendered at side-nav.tsx:109 when absent). Charts are static:
@@ -140,7 +140,7 @@ by the missing subscriptions.
 | 1   | Fix subscriptions by adding `useSignals()` as the first statement of every landing component that reads `.value` in render (CopyCommand, SignalsDemo, FlagsRegion, DeploysInner; audit KpiRow)                                                                                                      | Root cause, one line each; matches Header.tsx house pattern              |
 | 2   | Alias `react-dom/client` → `react-dom/profiling` in `apps/landing/vite.config.ts` (build + dev). Fallback if Rolldown/vite+ fights it: explicit render counters inside the form components — never fake numbers                                                                                     | Profiler is honest ("live React Profiler commits" copy stays true)       |
 | 3   | Theme parity: add the missing semantic tokens to `flat.css` + `minimal.css`, values in each theme's character (flat: pure hues, 0 radius everywhere; minimal: warm-tinted neutrals, hairline radii)                                                                                                 | Fixes invisible labels everywhere, not just Input                        |
-| 4   | New `packages/themes` vitest: parse all five theme CSS files, assert identical sets of `--cascade-*` custom-property names                                                                                                                                                                          | Turns parity from convention into contract                               |
+| 4   | New `packages/themes` vitest: parse all five theme CSS files, assert identical sets of `--cascivo-*` custom-property names                                                                                                                                                                          | Turns parity from convention into contract                               |
 | 5   | Loading bar API on `ShellState`: `loadingProgress: Signal<number \| null>` (null hidden, 0–1 determinate), `loadingError: Signal<string \| null>`, methods `startLoading`, `setLoadingProgress` (clamps), `finishLoading` (snaps to 1, hides after 400ms), `failLoading(msg?)`, `clearLoadingError` | Signal-driven like the rest of the shell; client owns the progress value |
 | 6   | Bar renders inside `AppShell` as a 3px strip pinned to the top of the shell grid (above header, `z-index` over it); fill width via `inline-size: calc(var(--_progress) * 100%)` — logical, RTL-correct, no transform                                                                                | "Runs left to right", 2-line CSS, no JS animation                        |
 | 7   | Error surface: `role="alert"` strip below the header with the `failLoading` message + dismiss button; dismiss label from i18n builtin catalog (`builtin.appShell.dismissError` — new key in the appShell namespace)                                                                                 | CLAUDE.md component-chrome i18n rule applies to shell chrome             |
@@ -169,7 +169,7 @@ by the missing subscriptions.
 1. **Verify in production builds.** The two headline bugs only exist in prod
    (`vp build` + `vp preview`) — dev-only verification is how they shipped. Every landing
    tranche's exit criteria include a prod-build check.
-2. **Tokens only.** All new CSS reads `--cascade-*`; knobs are private `--_*` properties.
+2. **Tokens only.** All new CSS reads `--cascivo-*`; knobs are private `--_*` properties.
    The `#24292e` removal is part of this.
 3. **Logical properties only** — the loading bar especially (`inline-size`,
    `inset-inline-start`).
@@ -212,7 +212,7 @@ by the missing subscriptions.
    section documents): T3 must add dep + alias + run the landing build locally before
    commit.
 9. **Theme value choices for flat/minimal**: parity is mechanical but values are design.
-   Flat keeps all radii at 0 (`--cascade-radius-*: 0`), shadows hard or none; minimal keeps
+   Flat keeps all radii at 0 (`--cascivo-radius-*: 0`), shadows hard or none; minimal keeps
    its warm hue (80) in every neutral. Eyeball the ThemeDemo + console in both after.
 10. **Scroll reveal + view transitions**: the hero already uses view transitions on theme
     switch; the reveal observer must not target the hero stage (skip `#hero`) to avoid

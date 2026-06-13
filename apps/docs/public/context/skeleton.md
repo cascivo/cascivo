@@ -42,11 +42,11 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 
 ## Tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-sm`
-- `--cascade-radius-full`
-- `--cascade-radius-component`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-radius-full`
+- `--cascivo-radius-component`
 
 ## Examples
 
@@ -73,4 +73,4 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 | Area                   | Level    | Note                                                           |
 | ---------------------- | -------- | -------------------------------------------------------------- |
 | variant and dimensions | flexible | Shape, width, height, and line count match the pending content |
-| token names            | strict   | Background and radius must resolve to --cascade-\* tokens      |
+| token names            | strict   | Background and radius must resolve to --cascivo-\* tokens      |

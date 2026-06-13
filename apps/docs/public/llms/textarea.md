@@ -45,12 +45,12 @@ npx cascade add textarea
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

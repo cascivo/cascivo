@@ -19,11 +19,11 @@ export const meta: ComponentMeta = {
     { name: 'href', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-hover',
-    '--cascade-color-accent-active',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-hover',
+    '--cascivo-color-accent-active',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'link',
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Accent colors and focus ring must resolve to --cascade-* tokens',
+        note: 'Accent colors and focus ring must resolve to --cascivo-* tokens',
       },
     ],
   },

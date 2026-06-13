@@ -62,15 +62,15 @@ npx cascade add search
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

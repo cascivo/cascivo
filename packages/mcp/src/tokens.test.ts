@@ -6,7 +6,7 @@ const fixtureCatalog: TokenCatalog = {
   count: 4,
   tokens: [
     {
-      name: '--cascade-gray-500',
+      name: '--cascivo-gray-500',
       value: 'oklch(0.554 0.018 264)',
       layer: 'primitive',
       group: 'gray',
@@ -14,7 +14,7 @@ const fixtureCatalog: TokenCatalog = {
       resolvesPerTheme: false,
     },
     {
-      name: '--cascade-blue-500',
+      name: '--cascivo-blue-500',
       value: 'oklch(0.623 0.214 259)',
       layer: 'primitive',
       group: 'blue',
@@ -22,16 +22,16 @@ const fixtureCatalog: TokenCatalog = {
       resolvesPerTheme: false,
     },
     {
-      name: '--cascade-color-accent',
-      value: 'var(--cascade-blue-500)',
+      name: '--cascivo-color-accent',
+      value: 'var(--cascivo-blue-500)',
       layer: 'semantic',
       group: 'color',
       resolvedDefault: null,
       resolvesPerTheme: true,
     },
     {
-      name: '--cascade-button-bg',
-      value: 'var(--cascade-color-accent)',
+      name: '--cascivo-button-bg',
+      value: 'var(--cascivo-color-accent)',
       layer: 'component',
       group: 'button',
       resolvedDefault: null,
@@ -83,7 +83,7 @@ describe('token filtering (via fixture)', () => {
   it('filters by group', () => {
     const grayTokens = fixtureCatalog.tokens.filter((t) => t.group === 'gray')
     expect(grayTokens).toHaveLength(1)
-    expect(grayTokens[0]?.name).toBe('--cascade-gray-500')
+    expect(grayTokens[0]?.name).toBe('--cascivo-gray-500')
   })
 
   it('filters by layer primitive', () => {
@@ -95,12 +95,12 @@ describe('token filtering (via fixture)', () => {
   it('filters by layer semantic', () => {
     const semantic = fixtureCatalog.tokens.filter((t) => t.layer === 'semantic')
     expect(semantic).toHaveLength(1)
-    expect(semantic[0]?.name).toBe('--cascade-color-accent')
+    expect(semantic[0]?.name).toBe('--cascivo-color-accent')
   })
 
   it('filters by layer component', () => {
     const component = fixtureCatalog.tokens.filter((t) => t.layer === 'component')
     expect(component).toHaveLength(1)
-    expect(component[0]?.name).toBe('--cascade-button-bg')
+    expect(component[0]?.name).toBe('--cascivo-button-bg')
   })
 })

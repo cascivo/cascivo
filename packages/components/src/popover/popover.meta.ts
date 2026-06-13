@@ -9,12 +9,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
   ],
   accessibility: {
     role: 'dialog',
@@ -64,7 +64,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Panel styling must resolve to the listed --cascade-* tokens',
+        note: 'Panel styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'content',

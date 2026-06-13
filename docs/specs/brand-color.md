@@ -31,7 +31,7 @@ WCAG AA requires ≥4.5:1 for normal text, ≥3:1 for large text and UI componen
 ## Notes
 
 - **Brand tokens are for apps/logo/OG surfaces only** — never referenced in
-  component CSS. Component tokens are `--cascade-*` (later `--cascivo-*`) and
+  component CSS. Component tokens are `--cascivo-*` (later `--cascivo-*`) and
   are defined in `packages/tokens/`.
 - **White on Accent** fails 3:1. Accent is a teal at L=0.72 — too light for
   white text. Use Ink (`#101c28`) for any text placed on an accent background.

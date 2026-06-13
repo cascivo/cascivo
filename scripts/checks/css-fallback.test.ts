@@ -7,7 +7,7 @@ describe('auditFallbacks', () => {
     const css = `
 .button {
   padding: 0.5rem;
-  padding: --cascade-step(2);
+  padding: --cascivo-step(2);
 }
 `
     const violations = auditFallbacks(css, 'test.css')
@@ -17,7 +17,7 @@ describe('auditFallbacks', () => {
   it('FAIL: bare @function call with no preceding static value — 1 violation', () => {
     const css = `
 .button {
-  padding: --cascade-step(2);
+  padding: --cascivo-step(2);
 }
 `
     const violations = auditFallbacks(css, 'test.css')
@@ -31,9 +31,9 @@ describe('auditFallbacks', () => {
 .button {
   padding-block: 0.5rem;
 }
-@supports (padding-block: --cascade-step(2)) {
+@supports (padding-block: --cascivo-step(2)) {
   .button {
-    padding-block: --cascade-step(2);
+    padding-block: --cascivo-step(2);
   }
 }
 `

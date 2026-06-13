@@ -15,13 +15,13 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-surface',
-    '--cascade-color-text',
-    '--cascade-radius-md',
-    '--cascade-radius-sm',
-    '--cascade-shadow-sm',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-surface',
+    '--cascivo-color-text',
+    '--cascivo-radius-md',
+    '--cascivo-radius-sm',
+    '--cascivo-shadow-sm',
   ],
   accessibility: {
     role: 'group',
@@ -76,7 +76,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Segment styling must resolve to the listed --cascade-* tokens',
+        note: 'Segment styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'option labels',

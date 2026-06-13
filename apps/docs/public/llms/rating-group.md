@@ -52,10 +52,10 @@ npx cascade add rating-group
 
 ## Design tokens
 
-- `--cascade-color-warning`
-- `--cascade-color-border-strong`
-- `--cascade-color-accent`
-- `--cascade-radius-sm`
+- `--cascivo-color-warning`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-radius-sm`
 
 ## Accessibility
 

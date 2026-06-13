@@ -39,7 +39,7 @@ role="separator" when meaningful so screen readers announce the division; settin
 
 ## Tokens
 
-- `--cascade-color-border`
+- `--cascivo-color-border`
 
 ## Examples
 
@@ -60,4 +60,4 @@ role="separator" when meaningful so screen readers announce the division; settin
 | Area        | Level    | Note                                                             |
 | ----------- | -------- | ---------------------------------------------------------------- |
 | decorative  | flexible | Mark decorative when the break carries no meaning beyond visuals |
-| token names | strict   | Color must resolve to --cascade-color-border                     |
+| token names | strict   | Color must resolve to --cascivo-color-border                     |

@@ -16,7 +16,7 @@ export function Columns({ count = 2, gap = 4, className, style, ...props }: Colu
       className={cn(styles['columns'], className)}
       style={{
         ['--_cols' as string]: String(count),
-        ['--_gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_gap' as string]: `var(--cascivo-space-${gap})`,
         ...style,
       }}
       {...props}

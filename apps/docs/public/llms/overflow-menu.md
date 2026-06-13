@@ -56,13 +56,13 @@ npx cascade add overflow-menu
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-destructive`
-- `--cascade-color-destructive-subtle`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

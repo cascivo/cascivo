@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
       description: 'Show dot at last data point',
     },
   ],
-  tokens: ['--cascade-chart-1'],
+  tokens: ['--cascivo-chart-1'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

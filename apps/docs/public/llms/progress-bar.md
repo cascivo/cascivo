@@ -61,14 +61,14 @@ npx cascade add progress-bar
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-full`
-- `--cascade-motion-enter`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-full`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 

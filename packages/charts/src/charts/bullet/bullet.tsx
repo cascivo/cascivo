@@ -17,9 +17,9 @@ export interface BulletProps {
 }
 
 const RANGE_COLORS = [
-  'var(--cascade-color-neutral-200)',
-  'var(--cascade-color-neutral-300)',
-  'var(--cascade-color-neutral-400)',
+  'var(--cascivo-color-neutral-200)',
+  'var(--cascivo-color-neutral-300)',
+  'var(--cascivo-color-neutral-400)',
 ]
 
 export function Bullet({
@@ -83,7 +83,7 @@ export function Bullet({
                   y={0}
                   width={Math.max(0, bandW)}
                   height={height}
-                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascade-color-neutral-200)'}
+                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascivo-color-neutral-200)'}
                 />
               )
             })}
@@ -93,7 +93,7 @@ export function Bullet({
               y={barY}
               width={Math.max(0, scale.map(value) - scale.map(min))}
               height={barH}
-              fill="var(--cascade-chart-1)"
+              fill="var(--cascivo-chart-1)"
               aria-label={`Value: ${value}`}
             />
             {/* Target tick */}
@@ -102,7 +102,7 @@ export function Bullet({
               y1={targetY}
               x2={scale.map(target)}
               y2={targetY + targetH}
-              stroke="var(--cascade-text-primary)"
+              stroke="var(--cascivo-text-primary)"
               strokeWidth={2.5}
               aria-label={`Target: ${target}`}
             />

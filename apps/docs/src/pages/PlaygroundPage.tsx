@@ -60,23 +60,23 @@ export function PlaygroundPage() {
         flexDirection: 'column',
         flex: 1,
         minBlockSize: 0,
-        marginBlockStart: 'calc(-1 * var(--cascade-space-6))',
-        marginInline: 'calc(-1 * var(--cascade-space-6))',
+        marginBlockStart: 'calc(-1 * var(--cascivo-space-6))',
+        marginInline: 'calc(-1 * var(--cascivo-space-6))',
       }}
     >
       {/* Pane header */}
       <div
         style={{
-          padding: 'var(--cascade-space-4) var(--cascade-space-6)',
-          borderBottom: '1px solid var(--cascade-color-border)',
-          background: 'var(--cascade-color-surface)',
+          padding: 'var(--cascivo-space-4) var(--cascivo-space-6)',
+          borderBottom: '1px solid var(--cascivo-color-border)',
+          background: 'var(--cascivo-color-surface)',
           flexShrink: 0,
         }}
       >
         <h1
           style={{
-            fontSize: 'var(--cascade-text-xl)',
-            fontWeight: 'var(--cascade-font-semibold)',
+            fontSize: 'var(--cascivo-text-xl)',
+            fontWeight: 'var(--cascivo-font-semibold)',
             margin: 0,
           }}
         >
@@ -84,9 +84,9 @@ export function PlaygroundPage() {
         </h1>
         <p
           style={{
-            fontSize: 'var(--cascade-text-sm)',
-            color: 'var(--cascade-color-text-subtle)',
-            margin: 'var(--cascade-space-1) 0 0',
+            fontSize: 'var(--cascivo-text-sm)',
+            color: 'var(--cascivo-color-text-subtle)',
+            margin: 'var(--cascivo-space-1) 0 0',
           }}
         >
           Describe a UI in JSON — CascadeView renders it live using cascade components.
@@ -101,17 +101,17 @@ export function PlaygroundPage() {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            borderRight: '1px solid var(--cascade-color-border)',
+            borderRight: '1px solid var(--cascivo-color-border)',
           }}
         >
           <div
             style={{
-              padding: 'var(--cascade-space-1) var(--cascade-space-3)',
-              fontSize: 'var(--cascade-text-xs)',
+              padding: 'var(--cascivo-space-1) var(--cascivo-space-3)',
+              fontSize: 'var(--cascivo-text-xs)',
               fontWeight: 600,
-              color: 'var(--cascade-color-text-subtle)',
-              background: 'var(--cascade-color-bg-subtle)',
-              borderBottom: '1px solid var(--cascade-color-border)',
+              color: 'var(--cascivo-color-text-subtle)',
+              background: 'var(--cascivo-color-bg-subtle)',
+              borderBottom: '1px solid var(--cascivo-color-border)',
               letterSpacing: '0.05em',
               flexShrink: 0,
             }}
@@ -124,26 +124,26 @@ export function PlaygroundPage() {
             spellcheck={false}
             style={{
               flex: 1,
-              padding: 'var(--cascade-space-4)',
+              padding: 'var(--cascivo-space-4)',
               fontFamily: 'monospace',
-              fontSize: 'var(--cascade-text-xs)',
+              fontSize: 'var(--cascivo-text-xs)',
               border: 'none',
               outline: 'none',
               resize: 'none',
-              background: 'var(--cascade-color-background)',
-              color: 'var(--cascade-color-text)',
+              background: 'var(--cascivo-color-background)',
+              color: 'var(--cascivo-color-text)',
             }}
           />
           {parseErrorSignal.value && (
             <div
               style={{
-                padding: 'var(--cascade-space-2) var(--cascade-space-3)',
+                padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
                 background:
-                  'color-mix(in oklch, var(--cascade-color-destructive) 10%, transparent)',
+                  'color-mix(in oklch, var(--cascivo-color-destructive) 10%, transparent)',
                 borderTop:
-                  '1px solid color-mix(in oklch, var(--cascade-color-destructive) 30%, transparent)',
-                fontSize: 'var(--cascade-text-xs)',
-                color: 'var(--cascade-color-destructive)',
+                  '1px solid color-mix(in oklch, var(--cascivo-color-destructive) 30%, transparent)',
+                fontSize: 'var(--cascivo-text-xs)',
+                color: 'var(--cascivo-color-destructive)',
                 flexShrink: 0,
               }}
             >
@@ -156,19 +156,19 @@ export function PlaygroundPage() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div
             style={{
-              padding: 'var(--cascade-space-1) var(--cascade-space-3)',
-              fontSize: 'var(--cascade-text-xs)',
+              padding: 'var(--cascivo-space-1) var(--cascivo-space-3)',
+              fontSize: 'var(--cascivo-text-xs)',
               fontWeight: 600,
-              color: 'var(--cascade-color-text-subtle)',
-              background: 'var(--cascade-color-bg-subtle)',
-              borderBottom: '1px solid var(--cascade-color-border)',
+              color: 'var(--cascivo-color-text-subtle)',
+              background: 'var(--cascivo-color-bg-subtle)',
+              borderBottom: '1px solid var(--cascivo-color-border)',
               letterSpacing: '0.05em',
               flexShrink: 0,
             }}
           >
             PREVIEW
           </div>
-          <div style={{ flex: 1, padding: 'var(--cascade-space-6)', overflowY: 'auto' }}>
+          <div style={{ flex: 1, padding: 'var(--cascivo-space-6)', overflowY: 'auto' }}>
             {configSignal.value && <CascadeView config={configSignal.value} onInvalid="render" />}
           </div>
         </div>

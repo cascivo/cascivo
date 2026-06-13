@@ -54,14 +54,14 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -87,6 +87,6 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 | Area                  | Level    | Note                                                                           |
 | --------------------- | -------- | ------------------------------------------------------------------------------ |
-| token names           | strict   | Visual props must resolve to the listed --cascade-\* semantic tokens           |
+| token names           | strict   | Visual props must resolve to the listed --cascivo-\* semantic tokens           |
 | formatting and bounds | flexible | min, max, step, precision, and formatOptions are free to suit the value domain |
 | stepper labels        | flexible | incrementLabel/decrementLabel override the i18n defaults                       |

@@ -44,14 +44,14 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Examples
 

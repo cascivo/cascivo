@@ -35,7 +35,7 @@ export const Article: Story = {
         <tbody>
           <tr>
             <td>Semantic</td>
-            <td>--cascade-color-accent</td>
+            <td>--cascivo-color-accent</td>
           </tr>
         </tbody>
       </table>

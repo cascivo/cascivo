@@ -65,13 +65,13 @@ Two-column layout with copy on the left and media on the right
 
 ## Design tokens
 
-- `--cascade-text-4xl`
-- `--cascade-text-lg`
-- `--cascade-text-sm`
-- `--cascade-font-mono`
-- `--cascade-font-bold`
-- `--cascade-text-secondary`
-- `--cascade-space-*`
+- `--cascivo-text-4xl`
+- `--cascivo-text-lg`
+- `--cascivo-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-font-bold`
+- `--cascivo-text-secondary`
+- `--cascivo-space-*`
 
 ## Accessibility
 

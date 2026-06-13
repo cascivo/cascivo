@@ -22,7 +22,7 @@ bundle-light view of the bench data to all pages.
 
 **Tech stack:** unchanged — React 18+ landing (real React + `@preact/signals-react`, NOT
 Preact — `useSignals()` rule applies), `@cascade-ui/charts` for all charts (already a
-landing dependency; source-exported, no Vite alias needed), CSS with `--cascade-*` tokens,
+landing dependency; source-exported, no Vite alias needed), CSS with `--cascivo-*` tokens,
 vitest + @testing-library/react, vp (vite+) toolchain.
 
 ---
@@ -205,7 +205,7 @@ llms:generate` → `pnpm exec vp check --fix` → `git diff --exit-code`.
 9. **`SkipNavLink` must be the first focusable element** — on the a11y page it renders
    before `Header`. Its "visually hidden until focused" CSS is the component's whole
    point; test focus-reveal with `:focus-visible` styles and a keyboard-only assertion.
-10. **Stat trend colors** must come from semantic tokens (`--cascade-color-success` /
+10. **Stat trend colors** must come from semantic tokens (`--cascivo-color-success` /
     `-destructive`) and pass contrast in all five themes — the theme-parity vitest
     guarantees token presence, not contrast; eyeball warm/flat/minimal.
 11. **Heading level vs size decoupling**: default size must derive from level when `size`

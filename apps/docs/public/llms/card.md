@@ -40,10 +40,10 @@ npx cascade add card
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-card`
-- `--cascade-shadow-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-card`
+- `--cascivo-shadow-md`
 
 ## Accessibility
 

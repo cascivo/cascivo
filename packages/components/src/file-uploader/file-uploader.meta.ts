@@ -46,11 +46,11 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the upload zone' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-color-success',
-    '--cascade-color-danger',
-    '--cascade-color-danger-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-color-success',
+    '--cascivo-color-danger',
+    '--cascivo-color-danger-subtle',
   ],
   accessibility: {
     role: 'button',
@@ -121,7 +121,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Status colors must resolve to --cascade-color-accent/success/danger tokens',
+        note: 'Status colors must resolve to --cascivo-color-accent/success/danger tokens',
       },
       {
         area: 'label and hint copy',

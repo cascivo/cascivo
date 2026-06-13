@@ -2,12 +2,12 @@
   .dialog {
     padding: 0;
     border: none;
-    border-radius: var(--cascade-radius-overlay);
+    border-radius: var(--cascivo-radius-overlay);
     background: transparent;
     margin-block-start: 15vh;
     margin-inline: auto;
-    inline-size: min(40rem, calc(100vw - var(--cascade-space-8)));
-    max-block-size: calc(85vh - var(--cascade-space-16));
+    inline-size: min(40rem, calc(100vw - var(--cascivo-space-8)));
+    max-block-size: calc(85vh - var(--cascivo-space-16));
     overflow: visible;
 
     /* Exit animation: transitioning `display`/`overlay` with allow-discrete
@@ -15,19 +15,19 @@
     opacity: 0;
     scale: 0.96;
     transition:
-      opacity var(--cascade-motion-exit),
-      scale var(--cascade-motion-exit),
-      display var(--cascade-duration-150) allow-discrete,
-      overlay var(--cascade-duration-150) allow-discrete;
+      opacity var(--cascivo-motion-exit),
+      scale var(--cascivo-motion-exit),
+      display var(--cascivo-duration-150) allow-discrete,
+      overlay var(--cascivo-duration-150) allow-discrete;
 
     &[open] {
       opacity: 1;
       scale: 1;
       transition:
-        opacity var(--cascade-motion-enter),
-        scale var(--cascade-motion-enter),
-        display var(--cascade-duration-200) allow-discrete,
-        overlay var(--cascade-duration-200) allow-discrete;
+        opacity var(--cascivo-motion-enter),
+        scale var(--cascivo-motion-enter),
+        display var(--cascivo-duration-200) allow-discrete,
+        overlay var(--cascivo-duration-200) allow-discrete;
 
       @starting-style {
         opacity: 0;
@@ -41,17 +41,17 @@
       backdrop-filter: blur(2px);
       opacity: 0;
       transition:
-        opacity var(--cascade-motion-exit),
-        display var(--cascade-duration-150) allow-discrete,
-        overlay var(--cascade-duration-150) allow-discrete;
+        opacity var(--cascivo-motion-exit),
+        display var(--cascivo-duration-150) allow-discrete,
+        overlay var(--cascivo-duration-150) allow-discrete;
     }
 
     &[open]::backdrop {
       opacity: 1;
       transition:
-        opacity var(--cascade-motion-enter),
-        display var(--cascade-duration-200) allow-discrete,
-        overlay var(--cascade-duration-200) allow-discrete;
+        opacity var(--cascivo-motion-enter),
+        display var(--cascivo-duration-200) allow-discrete,
+        overlay var(--cascivo-duration-200) allow-discrete;
 
       @starting-style {
         opacity: 0;
@@ -62,24 +62,24 @@
   .panel {
     display: flex;
     flex-direction: column;
-    background-color: var(--cascade-color-surface-overlay);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-overlay);
+    background-color: var(--cascivo-color-surface-overlay);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-overlay);
     overflow: hidden;
   }
 
   .search {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-3);
-    padding-inline: var(--cascade-space-4);
-    border-block-end: 1px solid var(--cascade-color-border);
+    gap: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-4);
+    border-block-end: 1px solid var(--cascivo-color-border);
   }
 
   .searchIcon {
     flex-shrink: 0;
-    color: var(--cascade-color-text-muted);
+    color: var(--cascivo-color-text-muted);
   }
 
   .input {
@@ -88,53 +88,53 @@
     padding: 0;
     border: none;
     background: transparent;
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-base);
-    color: var(--cascade-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-base);
+    color: var(--cascivo-color-text);
 
     &:focus {
       outline: none;
     }
 
     &::placeholder {
-      color: var(--cascade-color-text-muted);
+      color: var(--cascivo-color-text-muted);
     }
   }
 
   .list {
     overflow-y: auto;
     max-block-size: 20rem;
-    padding: var(--cascade-space-2);
+    padding: var(--cascivo-space-2);
   }
 
   .group + .group {
-    margin-block-start: var(--cascade-space-2);
+    margin-block-start: var(--cascivo-space-2);
   }
 
   .heading {
-    padding-inline: var(--cascade-space-2);
-    padding-block: var(--cascade-space-1);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-xs);
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text-subtle);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text-subtle);
   }
 
   .option {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-3);
-    padding-inline: var(--cascade-space-2);
-    padding-block: var(--cascade-space-2);
-    border-radius: var(--cascade-radius-item);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
+    gap: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-2);
+    border-radius: var(--cascivo-radius-item);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
     cursor: pointer;
     user-select: none;
 
     &[data-state='active'] {
-      background-color: var(--cascade-color-bg-subtle);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &[data-disabled] {
@@ -147,7 +147,7 @@
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
-    color: var(--cascade-color-text-muted);
+    color: var(--cascivo-color-text-muted);
   }
 
   .label {
@@ -159,32 +159,32 @@
 
   .shortcut {
     display: inline-flex;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
     margin-inline-start: auto;
   }
 
   .empty {
-    padding-block: var(--cascade-space-8);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-muted);
+    padding-block: var(--cascivo-space-8);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-muted);
     text-align: center;
   }
 
   .footer {
     display: flex;
-    gap: var(--cascade-space-4);
-    padding-inline: var(--cascade-space-4);
-    padding-block: var(--cascade-space-2);
-    border-block-start: 1px solid var(--cascade-color-border);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-xs);
-    color: var(--cascade-color-text-subtle);
+    gap: var(--cascivo-space-4);
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-2);
+    border-block-start: 1px solid var(--cascivo-color-border);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
   }
 
   .hint {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
   }
 }

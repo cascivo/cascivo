@@ -6,37 +6,37 @@
     justify-content: center;
     flex-shrink: 0;
     overflow: visible;
-    border-radius: var(--cascade-radius-full);
-    background-color: var(--cascade-color-accent-subtle);
-    color: var(--cascade-color-text);
-    font-family: var(--cascade-font-sans);
-    font-weight: var(--cascade-font-medium);
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-accent-subtle);
+    color: var(--cascivo-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-weight: var(--cascivo-font-medium);
     user-select: none;
 
     &[data-size='xs'] {
       inline-size: 1.5rem;
       block-size: 1.5rem;
-      font-size: var(--cascade-text-xs);
+      font-size: var(--cascivo-text-xs);
     }
     &[data-size='sm'] {
       inline-size: 2rem;
       block-size: 2rem;
-      font-size: var(--cascade-text-xs);
+      font-size: var(--cascivo-text-xs);
     }
     &[data-size='md'] {
       inline-size: 2.5rem;
       block-size: 2.5rem;
-      font-size: var(--cascade-text-sm);
+      font-size: var(--cascivo-text-sm);
     }
     &[data-size='lg'] {
       inline-size: 3rem;
       block-size: 3rem;
-      font-size: var(--cascade-text-base);
+      font-size: var(--cascivo-text-base);
     }
     &[data-size='xl'] {
       inline-size: 4rem;
       block-size: 4rem;
-      font-size: var(--cascade-text-lg);
+      font-size: var(--cascivo-text-lg);
     }
   }
 
@@ -60,17 +60,17 @@
     block-size: 28%;
     min-inline-size: 0.5rem;
     min-block-size: 0.5rem;
-    border-radius: var(--cascade-radius-full);
-    border: 2px solid var(--cascade-color-surface);
+    border-radius: var(--cascivo-radius-full);
+    border: 2px solid var(--cascivo-color-surface);
 
     .avatar[data-status='online'] & {
-      background-color: var(--cascade-color-success);
+      background-color: var(--cascivo-color-success);
     }
     .avatar[data-status='offline'] & {
-      background-color: var(--cascade-color-text-muted);
+      background-color: var(--cascivo-color-text-muted);
     }
     .avatar[data-status='busy'] & {
-      background-color: var(--cascade-color-destructive);
+      background-color: var(--cascivo-color-destructive);
     }
   }
 }

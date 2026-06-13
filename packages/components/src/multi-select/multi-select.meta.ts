@@ -16,14 +16,14 @@ export const meta: ComponentMeta = {
     { name: 'labels', type: 'MultiSelectLabels', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-radius-input',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-focus-ring',
-    '--cascade-motion-enter',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-radius-input',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-focus-ring',
+    '--cascivo-motion-enter',
   ],
   accessibility: {
     role: 'listbox',
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens',
+        note: 'Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'labels',

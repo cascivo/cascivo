@@ -13,7 +13,7 @@
 
 **Goal:** Execute `docs/ROADMAP-V15.md` — (1) give the project a coherent brand: the name
 **cascivo**, a documented derivation, a logo, and a brand color system; (2) rename every
-brand-bearing surface from `cascade-ui`/`@cascade-ui`/`--cascade-`/`cascade`(CLI)/`cascade-ui.dev`
+brand-bearing surface from `cascade-ui`/`@cascade-ui`/`--cascivo-`/`cascade`(CLI)/`cascade-ui.dev`
 to `cascivo`/`@cascivo`/`--cascivo-`/`cascivo`(bin)/`cascivo.com`; (3) rebuild the landing page and
 docs mobile-first to a world-class, real-device-verified responsive bar.
 
@@ -38,7 +38,7 @@ Playwright (mobile screenshot verification).
   `ai, charts, cli, components, core, i18n, icons, layouts, mcp, react, registry, render, storage,
 themes, tokens` (15 dirs; `components`/`registry` are not published). Root is
   `@cascade-ui/monorepo`.
-- **`--cascade-*` token prefix:** 113 CSS files use it. Base tokens in `packages/tokens/src/index.css`;
+- **`--cascivo-*` token prefix:** 113 CSS files use it. Base tokens in `packages/tokens/src/index.css`;
   semantic overrides in `packages/themes/src/*.css` (10 themes: `light, dark, warm, brutalist,
 corporate, flat, midnight, minimal, pastel, terminal`); component tokens throughout
   `packages/components/src/**/*.module.css`.
@@ -90,7 +90,7 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 | #   | Decision                                                                                                                                                                                                                                               | Rationale                                                                    |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | 1   | Name is **cascivo**; rename is total across packages, tokens, CLI, registry, MCP, domain, copy. Derivation recorded in `BRAND.md`: drop `-ui`, keep `casc-` root, add Romance `-ivo` ("active/flowing"); `/kas-ˈsee-vo/`; `.com` owned                 | Decided + domain owned (`docs/BRAND.md`); no half-rename                     |
-| 2   | CSS prefix `--cascade-*` → `--cascivo-*` everywhere (113 files), no aliases; a grep gate asserts zero `--cascade-` remain                                                                                                                              | Full rebrand, pre-1.0 breakage accepted (user decision)                      |
+| 2   | CSS prefix `--cascivo-*` → `--cascivo-*` everywhere (113 files), no aliases; a grep gate asserts zero `--cascivo-` remain                                                                                                                              | Full rebrand, pre-1.0 breakage accepted (user decision)                      |
 | 3   | npm namespace **scoped `@cascivo/*` only** (15 packages, 1:1 from `@cascade-ui/*`); root `@cascivo/monorepo`; requires npm org `cascivo`                                                                                                               | User decision; scales to 15 packages, matches current structure              |
 | 4   | CLI package `@cascivo/cli`, **bin `cascivo`**, invoked `npx @cascivo/cli init`; unscoped `cascivo` shorthand deferred                                                                                                                                  | Scoped-only decision; bin name independent of package name                   |
 | 5   | `data-theme` attribute unchanged                                                                                                                                                                                                                       | Generic, not brand; renaming breaks every consumer's theme switch            |
@@ -103,14 +103,14 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 | 12  | No new runtime packages; brand tokens in tokens/themes, logo asset in apps, mobile work in `apps/landing`+`apps/docs` CSS/signals + shared `@cascivo/layouts` breakpoints                                                                              | Scope control; matches existing architecture                                 |
 | 13  | External steps (npm org, `cascivo.com` DNS/hosting, GH repo rename `cascade-ui`→`cascivo`) are an out-of-code checklist; code is parameterized (`REGISTRY_BASE_URL`, MCP base URLs) so it works on flip; GH rename is redirect-safe                    | Code can't create an npm org / DNS; keep them separable and reversible       |
 | 14  | Receipts: a brand page (logo, palette, name story) + a mobile showcase; "Why cascivo" claims 25–27 each link a receipt; README/llms.txt/OG/meta carry the new name                                                                                     | Receipts-not-adjectives bar (v11–v14)                                        |
-| 15  | Deferred: unscoped `cascivo` npx shorthand, `--cascade-*` aliases, org rename, marketing CMS, animated logo, native targets, per-component mobile redesign                                                                                             | Scope control                                                                |
+| 15  | Deferred: unscoped `cascivo` npx shorthand, `--cascivo-*` aliases, org rename, marketing CMS, animated logo, native targets, per-component mobile redesign                                                                                             | Scope control                                                                |
 
 ## Tranche map
 
 | Tranche | File                          | Contents                                                                                                                           | Risk                                                                     |
 | ------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | T1      | `2026-06-13-v15-tranche-1.md` | Rewrite `BRAND.md` (name derivation, logo proposal, brand palette w/ contrast); logo SVG; brand color spec. Docs/assets only       | Low (no code rename; design judgement)                                   |
-| T2      | `2026-06-13-v15-tranche-2.md` | `--cascade-*` → `--cascivo-*` across tokens + 10 themes + all component/app CSS + consumers; add `--cascivo-brand-*`; grep gate    | Medium (113 files; must catch JS string refs to var names too)           |
+| T2      | `2026-06-13-v15-tranche-2.md` | `--cascivo-*` → `--cascivo-*` across tokens + 10 themes + all component/app CSS + consumers; add `--cascivo-brand-*`; grep gate    | Medium (113 files; must catch JS string refs to var names too)           |
 | T3      | `2026-06-13-v15-tranche-3.md` | `@cascade-ui/*` → `@cascivo/*`: 24 package.json, imports, tsconfig paths, 3 vite alias blocks, 72 meta.dependencies, exports, root | High (largest mechanical change; vite-alias rule; build must stay green) |
 | T4      | `2026-06-13-v15-tranche-4.md` | CLI → `@cascivo/cli` (bin `cascivo`); registry URLs + `REGISTRY_BASE_URL`; MCP name + base URLs; skills `cascivo:*`; regen + drift | Medium (registry regen + drift gate; parameterize external URLs)         |
 | T5      | `2026-06-13-v15-tranche-5.md` | Landing mobile-first rebuild: audit screenshots, fluid type, off-canvas nav, every section, heavy-demo treatments; verify          | High (the priority surface; heavy demos; visual quality bar)             |
@@ -125,7 +125,7 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
    is a checklist step; a survivor blocks the tranche.
 2. **The build must stay green at every layer.** T2/T3/T4 each end with the full CLAUDE.md gate.
    Never rename a layer and leave the repo red for the next tranche.
-3. **Watch the non-obvious references.** Token names appear in JS strings (e.g. `var(--cascade-x)`
+3. **Watch the non-obvious references.** Token names appear in JS strings (e.g. `var(--cascivo-x)`
    built in TS, chart `colorAt` accessors, `getComputedStyle` lookups), test fixtures, snapshot
    files, and generated artifacts — not only in `.css`. Grep all extensions, not just `.css`.
 4. **Generated artifacts stay generated.** `registry.json`, any context/token JSON, and docs
@@ -143,7 +143,7 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 ## Edge cases / risks registry
 
 1. **Token refs hide in JS/strings (T2):** a chart or component may build a var name dynamically
-   (`var(--cascade-chart-${i})`) or read it via `getComputedStyle`. A `.css`-only find-replace
+   (`var(--cascivo-chart-${i})`) or read it via `getComputedStyle`. A `.css`-only find-replace
    misses these. Grep every extension for `cascade-` and `--cascade`; fix string-built names too.
 2. **Brand tokens vs neutral themes (T1/T2):** `--cascivo-brand-*` must not leak into the component
    themes' semantic layer (which stays neutral). Keep brand tokens in a separate block, consumed

@@ -35,7 +35,7 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

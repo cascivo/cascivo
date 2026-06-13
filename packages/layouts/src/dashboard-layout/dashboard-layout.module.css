@@ -2,20 +2,20 @@
   .layout {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-6);
+    gap: var(--cascivo-space-6);
     container-type: inline-size;
   }
 
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: var(--cascade-space-4);
+    gap: var(--cascivo-space-4);
   }
 
   .body {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 20rem;
-    gap: var(--cascade-space-6);
+    gap: var(--cascivo-space-6);
     align-items: start;
 
     @container (max-width: 56rem) {

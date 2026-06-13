@@ -9,30 +9,30 @@ cascade uses a three-level token system for color. AI agents and component autho
 
 ## Token levels
 
-- **Primitive** (`--cascade-blue-500`, `--cascade-gray-200`): raw color values. Never reference directly in components.
-- **Semantic** (`--cascade-color-accent`, `--cascade-color-border`, `--cascade-color-destructive`): role-based. Use in components.
-- **Component** (`--cascade-radius-button`): component-specific overrides.
+- **Primitive** (`--cascivo-blue-500`, `--cascivo-gray-200`): raw color values. Never reference directly in components.
+- **Semantic** (`--cascivo-color-accent`, `--cascivo-color-border`, `--cascivo-color-destructive`): role-based. Use in components.
+- **Component** (`--cascivo-radius-button`): component-specific overrides.
 
 ## Semantic roles
 
 | Token                              | Purpose                                       |
 | ---------------------------------- | --------------------------------------------- |
-| `--cascade-color-accent`           | Interactive elements, links, focus indicators |
-| `--cascade-color-foreground`       | Primary text                                  |
-| `--cascade-color-foreground-muted` | Secondary/muted text                          |
-| `--cascade-color-background`       | Page background                               |
-| `--cascade-color-surface`          | Card/panel surfaces                           |
-| `--cascade-color-border`           | Borders and dividers                          |
-| `--cascade-color-destructive`      | Error states, destructive actions             |
-| `--cascade-color-success`          | Success states                                |
-| `--cascade-color-warning`          | Warning states                                |
-| `--cascade-color-error`            | Error states                                  |
+| `--cascivo-color-accent`           | Interactive elements, links, focus indicators |
+| `--cascivo-color-foreground`       | Primary text                                  |
+| `--cascivo-color-foreground-muted` | Secondary/muted text                          |
+| `--cascivo-color-background`       | Page background                               |
+| `--cascivo-color-surface`          | Card/panel surfaces                           |
+| `--cascivo-color-border`           | Borders and dividers                          |
+| `--cascivo-color-destructive`      | Error states, destructive actions             |
+| `--cascivo-color-success`          | Success states                                |
+| `--cascivo-color-warning`          | Warning states                                |
+| `--cascivo-color-error`            | Error states                                  |
 
 ## Rules
 
 **Strict:** Never hard-code color values in component CSS. Always use semantic tokens. This is enforced by `cascade audit --ai`.
 
-**Strict:** Use the semantic layer (`--cascade-color-*`) not the primitive layer (`--cascade-blue-*`) in components.
+**Strict:** Use the semantic layer (`--cascivo-color-*`) not the primitive layer (`--cascivo-blue-*`) in components.
 
 **Flexible:** Which semantic token to use for a given purpose — choose the role that fits the meaning.
 

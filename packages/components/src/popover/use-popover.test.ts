@@ -30,7 +30,7 @@ describe('usePopover', () => {
 
   it('supportsAnchor fallback path exists (CSS.supports check)', () => {
     // In jsdom, CSS.supports returns false for anchor-name, exercising the fallback path
-    const supported = typeof CSS !== 'undefined' && CSS.supports('anchor-name: --cascade-a')
+    const supported = typeof CSS !== 'undefined' && CSS.supports('anchor-name: --cascivo-a')
     // The hook should work regardless of whether anchor positioning is supported
     const { result } = renderHook(() => usePopover())
     expect(result.current.isOpen.value).toBe(false)

@@ -39,11 +39,11 @@ Structural 1px `border-inline-start` (KEEP): number-input stepper divider, heade
 sheet edge.
 
 **Radius tokens** (`packages/tokens/src/index.css:124-137`): primitives none/sm 4px/md 6px/
-lg 8px/xl 12px/2xl 16px/full + semantic `--cascade-radius-base: 0.375rem`,
+lg 8px/xl 12px/2xl 16px/full + semantic `--cascivo-radius-base: 0.375rem`,
 `control = base`, `surface = base*2`, `indicator = base/2`. Theme overrides: light base
 **0.625rem (10px)**, card `*1.6` (16px) — the "too round" culprit. Dark base 10px but
 button/input forced to 4px. Warm base 8px, card 12px. Flat all 0. Minimal base 12px, surface 20px.
-Component CSS over-uses primitives directly: 34× `--cascade-radius-sm`, 16× `radius-md` —
+Component CSS over-uses primitives directly: 34× `--cascivo-radius-sm`, 16× `radius-md` —
 bypassing the semantic layer, so theme radius knobs don't fully work today.
 
 **Shadows** (`packages/tokens/src/index.css:139-144`): xs→xl five-step. Used broadly.
@@ -115,13 +115,13 @@ defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
 
 | #   | Decision                                                                                                                                                                                                                                     | Rationale                                                                                              |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| 1   | Radius one-knob: semantic tokens derive from `--cascade-radius-base` via multipliers; component CSS migrates off primitive radius tokens onto semantic ones                                                                                  | Makes the theme radius knob actually work (34 hard-wired `radius-sm` uses today); matches shadcn/Radix |
-| 2   | Light/dark `--cascade-radius-base: 0.375rem` (6px controls), card ≈ 10px, modal 12px. Warm stays rounder (base 8px). Flat 0, Minimal unchanged                                                                                               | The "too rounded" fix with theme character preserved                                                   |
-| 3   | New `--cascade-color-primary` / `--cascade-color-primary-fg` semantic pair; Button primary + primary-actions consume it. Light: near-black; dark: near-white; warm: warm accent. `--cascade-color-accent` keeps focus/links/active-tint/info | Monochrome-primary modern look without breaking accent-dependent components                            |
+| 1   | Radius one-knob: semantic tokens derive from `--cascivo-radius-base` via multipliers; component CSS migrates off primitive radius tokens onto semantic ones                                                                                  | Makes the theme radius knob actually work (34 hard-wired `radius-sm` uses today); matches shadcn/Radix |
+| 2   | Light/dark `--cascivo-radius-base: 0.375rem` (6px controls), card ≈ 10px, modal 12px. Warm stays rounder (base 8px). Flat 0, Minimal unchanged                                                                                               | The "too rounded" fix with theme character preserved                                                   |
+| 3   | New `--cascivo-color-primary` / `--cascivo-color-primary-fg` semantic pair; Button primary + primary-actions consume it. Light: near-black; dark: near-white; warm: warm accent. `--cascivo-color-accent` keeps focus/links/active-tint/info | Monochrome-primary modern look without breaking accent-dependent components                            |
 | 4   | Dark theme borders → alpha hairlines (`oklch(1 0 0 / 10%)`, strong 16%)                                                                                                                                                                      | shadcn/Linear dark-mode signature                                                                      |
-| 5   | Shadow rationing: surfaces ≤ xs; new `--cascade-shadow-overlay` (one soft large shadow) for all floating layers; elevated card keeps a restrained md                                                                                         | "lowest elevation that reads as elevated" (Geist)                                                      |
-| 6   | Focus ring: `0 0 0 3px color-mix(in oklch, var(--cascade-color-accent) 55%, transparent)` + border-color recolor on the control                                                                                                              | Soft halo, passes 3:1 unlike shadcn's 50%                                                              |
-| 7   | Active states: nav/list = bg-tint + font-medium (token `--cascade-color-active-bg`); horizontal header nav = 2px **bottom** underline; alerts/toasts = full hairline + colored icon/title + 6% tinted bg                                     | Per-context pattern palette, no bars                                                                   |
+| 5   | Shadow rationing: surfaces ≤ xs; new `--cascivo-shadow-overlay` (one soft large shadow) for all floating layers; elevated card keeps a restrained md                                                                                         | "lowest elevation that reads as elevated" (Geist)                                                      |
+| 6   | Focus ring: `0 0 0 3px color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)` + border-color recolor on the control                                                                                                              | Soft halo, passes 3:1 unlike shadcn's 50%                                                              |
+| 7   | Active states: nav/list = bg-tint + font-medium (token `--cascivo-color-active-bg`); horizontal header nav = 2px **bottom** underline; alerts/toasts = full hairline + colored icon/title + 6% tinted bg                                     | Per-context pattern palette, no bars                                                                   |
 | 8   | Input adornments via composition: new `InputGroupAddon` (`align`) child of existing `InputGroup`; boxed `prefix`/`suffix` props stay for back-compat                                                                                         | shadcn-familiar; zero breaking change                                                                  |
 | 9   | Selectable cards = new components `RadioCardGroup`/`RadioCard`/`CheckboxCard` (not a Card prop): hidden native inputs, visible glyph, group manages name/value                                                                               | Form semantics + a11y come free; Card stays presentational                                             |
 | 10  | Storybook theming replaced wholesale by addon-themes with `parentSelector: 'html'`; custom side-by-side toolbar item dropped (deferred)                                                                                                      | Fixes top-layer popovers; standard tooling                                                             |
@@ -163,7 +163,7 @@ defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
 
 ## Edge cases / risks registry
 
-1. **Radius migration breaks pill shapes**: `--cascade-radius-full` usages (14×) are
+1. **Radius migration breaks pill shapes**: `--cascivo-radius-full` usages (14×) are
    intentional pills (Badge, Avatar, Toggle thumb) — do NOT migrate those to semantic tokens.
 2. **Dark alpha borders on top of images/charts** may look weaker — check chart frames in dark
    theme during T6 review.
@@ -184,7 +184,7 @@ defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
 9. **Visual spec selector**: `test/visual.spec.ts` screenshots `.preview` — the docs Layout
    rewrite must keep a `.preview` element on component pages or update the spec in the same
    commit.
-10. **Storybook `parentSelector: 'html'`**: needs `body { background: var(--cascade-color-bg) }`
+10. **Storybook `parentSelector: 'html'`**: needs `body { background: var(--cascivo-color-bg) }`
     via `.storybook/preview-head.html` (or a global style import) or dark themes show a white
     canvas.
 11. **`@storybook/addon-themes` version** must match SB 10.4.2 — install via

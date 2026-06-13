@@ -41,8 +41,8 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
 
 ## Accessibility
 

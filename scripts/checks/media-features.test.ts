@@ -45,7 +45,7 @@ function hasPrefersContrastBlock(css: string): boolean {
 
 // ── Reduced-motion ────────────────────────────────────────────────────────────
 // Components with hardcoded literal durations must have a per-component guard.
-// Components that use only --cascade-duration-* tokens are covered globally.
+// Components that use only --cascivo-duration-* tokens are covered globally.
 // Spinner deliberately uses a literal and has its own guard (animation slowed, not stopped).
 
 const REDUCED_MOTION_EXCEPTION = new Set(['spinner'])

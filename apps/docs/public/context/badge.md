@@ -39,11 +39,11 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-badge`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-badge`
 
 ## Examples
 
@@ -70,4 +70,4 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 | Area        | Level    | Note                                                                           |
 | ----------- | -------- | ------------------------------------------------------------------------------ |
 | variant     | flexible | Choose the variant that matches the semantic meaning                           |
-| token names | strict   | Colors and radius must resolve to --cascade-\* tokens (--cascade-radius-badge) |
+| token names | strict   | Colors and radius must resolve to --cascivo-\* tokens (--cascivo-radius-badge) |

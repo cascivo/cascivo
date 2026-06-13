@@ -35,7 +35,7 @@ Three equal columns
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

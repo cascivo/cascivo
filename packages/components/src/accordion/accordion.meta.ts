@@ -14,11 +14,11 @@ export const meta: ComponentMeta = {
     { name: 'onValueChange', type: '(value: string | string[]) => void', required: false },
   ],
   tokens: [
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-text',
-    '--cascade-radius-md',
-    '--cascade-focus-ring',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text',
+    '--cascivo-radius-md',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'button',
@@ -71,7 +71,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Borders, surfaces, and radii must resolve to --cascade-* semantic tokens',
+        note: 'Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens',
       },
     ],
   },

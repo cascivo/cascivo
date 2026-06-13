@@ -8,104 +8,104 @@
     color-scheme: light;
 
     /* ── Surface ──────────────────────────────────────── */
-    --cascade-color-background: oklch(1 0 0);
-    --cascade-color-surface: oklch(0.97 0 0);
-    --cascade-color-surface-2: oklch(0.94 0 0);
+    --cascivo-color-background: oklch(1 0 0);
+    --cascivo-color-surface: oklch(0.97 0 0);
+    --cascivo-color-surface-2: oklch(0.94 0 0);
 
     /* ── Foreground ───────────────────────────────────── */
-    --cascade-color-foreground: oklch(0.1 0 0);
-    --cascade-color-foreground-muted: oklch(0.4 0 0);
+    --cascivo-color-foreground: oklch(0.1 0 0);
+    --cascivo-color-foreground-muted: oklch(0.4 0 0);
 
     /* ── Accent — vivid green ────────────────────────── */
-    --cascade-color-accent: oklch(0.5 0.2 145);
-    --cascade-color-accent-foreground: oklch(1 0 0);
-    --cascade-color-accent-hover: oklch(0.45 0.21 145);
+    --cascivo-color-accent: oklch(0.5 0.2 145);
+    --cascivo-color-accent-foreground: oklch(1 0 0);
+    --cascivo-color-accent-hover: oklch(0.45 0.21 145);
 
     /* ── Primary — accent-mapped ─────────────────────── */
-    --cascade-color-primary: var(--cascade-color-accent);
-    --cascade-color-primary-fg: var(--cascade-color-accent-foreground);
-    --cascade-color-primary-hover: var(--cascade-color-accent-hover);
-    --cascade-color-primary-active: oklch(0.4 0.21 145);
-    --cascade-color-active-bg: oklch(0.1 0 0 / 8%);
+    --cascivo-color-primary: var(--cascivo-color-accent);
+    --cascivo-color-primary-fg: var(--cascivo-color-accent-foreground);
+    --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
+    --cascivo-color-primary-active: oklch(0.4 0.21 145);
+    --cascivo-color-active-bg: oklch(0.1 0 0 / 8%);
 
     /* ── Borders — high contrast ─────────────────────── */
-    --cascade-border-subtle: oklch(0.7 0 0);
-    --cascade-border-default: oklch(0.4 0 0);
-    --cascade-border-strong: oklch(0.1 0 0);
+    --cascivo-border-subtle: oklch(0.7 0 0);
+    --cascivo-border-default: oklch(0.4 0 0);
+    --cascivo-border-strong: oklch(0.1 0 0);
 
     /* ── Radius — zero ───────────────────────────────── */
-    --cascade-radius-base: 0;
-    --cascade-radius-control: 0;
-    --cascade-radius-surface: 0;
-    --cascade-radius-indicator: 0;
-    --cascade-radius-full: 0;
+    --cascivo-radius-base: 0;
+    --cascivo-radius-control: 0;
+    --cascivo-radius-surface: 0;
+    --cascivo-radius-indicator: 0;
+    --cascivo-radius-full: 0;
 
     /* ── Shadows — none ──────────────────────────────── */
-    --cascade-shadow-xs: none;
-    --cascade-shadow-sm: none;
-    --cascade-shadow-md: none;
-    --cascade-shadow-lg: none;
+    --cascivo-shadow-xs: none;
+    --cascivo-shadow-sm: none;
+    --cascivo-shadow-md: none;
+    --cascivo-shadow-lg: none;
 
     /* ── Focus ring ───────────────────────────────────── */
-    --cascade-ring-width: 2px;
-    --cascade-ring-offset: 0px;
-    --cascade-ring-color: oklch(0.5 0.2 145);
+    --cascivo-ring-width: 2px;
+    --cascivo-ring-offset: 0px;
+    --cascivo-ring-color: oklch(0.5 0.2 145);
 
     /* ── Status colors ───────────────────────────────── */
-    --cascade-color-error: oklch(0.52 0.2 22);
-    --cascade-color-warning: oklch(0.6 0.16 75);
-    --cascade-color-success: oklch(0.52 0.18 145);
+    --cascivo-color-error: oklch(0.52 0.2 22);
+    --cascivo-color-warning: oklch(0.6 0.16 75);
+    --cascivo-color-success: oklch(0.52 0.18 145);
 
     /* ── Semantic aliases (parity with light/dark/warm) ── */
-    --cascade-color-bg: var(--cascade-color-background);
-    --cascade-color-bg-subtle: var(--cascade-color-surface);
-    --cascade-color-surface-raised: var(--cascade-color-surface);
-    --cascade-color-surface-overlay: var(--cascade-color-background);
-    --cascade-color-border: oklch(0.7 0 0);
-    --cascade-color-border-strong: oklch(0.4 0 0);
+    --cascivo-color-bg: var(--cascivo-color-background);
+    --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+    --cascivo-color-surface-raised: var(--cascivo-color-surface);
+    --cascivo-color-surface-overlay: var(--cascivo-color-background);
+    --cascivo-color-border: oklch(0.7 0 0);
+    --cascivo-color-border-strong: oklch(0.4 0 0);
 
-    --cascade-color-text: var(--cascade-color-foreground);
-    --cascade-color-text-subtle: var(--cascade-color-foreground-muted);
-    --cascade-color-text-muted: oklch(0.55 0 0);
-    --cascade-color-text-on-accent: oklch(1 0 0);
-    --cascade-color-text-on-destructive: oklch(1 0 0);
+    --cascivo-color-text: var(--cascivo-color-foreground);
+    --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
+    --cascivo-color-text-muted: oklch(0.55 0 0);
+    --cascivo-color-text-on-accent: oklch(1 0 0);
+    --cascivo-color-text-on-destructive: oklch(1 0 0);
 
-    --cascade-color-accent-active: oklch(0.4 0.21 145);
-    --cascade-color-accent-subtle: oklch(0.95 0.04 145);
-    --cascade-color-accent-muted: oklch(0.9 0.07 145);
+    --cascivo-color-accent-active: oklch(0.4 0.21 145);
+    --cascivo-color-accent-subtle: oklch(0.95 0.04 145);
+    --cascivo-color-accent-muted: oklch(0.9 0.07 145);
 
-    --cascade-color-destructive: oklch(0.52 0.2 22);
-    --cascade-color-destructive-hover: oklch(0.46 0.21 22);
-    --cascade-color-destructive-subtle: oklch(0.95 0.04 22);
+    --cascivo-color-destructive: oklch(0.52 0.2 22);
+    --cascivo-color-destructive-hover: oklch(0.46 0.21 22);
+    --cascivo-color-destructive-subtle: oklch(0.95 0.04 22);
 
-    --cascade-color-success-subtle: oklch(0.95 0.04 145);
-    --cascade-color-warning-subtle: oklch(0.96 0.04 75);
-    --cascade-color-info: oklch(0.5 0.18 250);
-    --cascade-color-info-subtle: oklch(0.95 0.04 250);
-    --cascade-color-success-foreground: oklch(0.52 0.18 145);
-    --cascade-color-warning-foreground: oklch(0.5 0.14 75);
+    --cascivo-color-success-subtle: oklch(0.95 0.04 145);
+    --cascivo-color-warning-subtle: oklch(0.96 0.04 75);
+    --cascivo-color-info: oklch(0.5 0.18 250);
+    --cascivo-color-info-subtle: oklch(0.95 0.04 250);
+    --cascivo-color-success-foreground: oklch(0.52 0.18 145);
+    --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
 
-    --cascade-radius-component: 0;
-    --cascade-radius-button: 0;
-    --cascade-radius-input: 0;
-    --cascade-radius-card: 0;
-    --cascade-radius-badge: 0;
-    --cascade-radius-modal: 0;
+    --cascivo-radius-component: 0;
+    --cascivo-radius-button: 0;
+    --cascivo-radius-input: 0;
+    --cascivo-radius-card: 0;
+    --cascivo-radius-badge: 0;
+    --cascivo-radius-modal: 0;
 
-    --cascade-shadow-overlay: none;
+    --cascivo-shadow-overlay: none;
 
-    --cascade-color-focus-ring: oklch(0.5 0.2 145);
-    --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
+    --cascivo-color-focus-ring: oklch(0.5 0.2 145);
+    --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
 
-    --cascade-chart-1: oklch(0.62 0.13 70);
-    --cascade-chart-2: oklch(0.62 0.11 240);
-    --cascade-chart-3: oklch(0.6 0.13 135);
-    --cascade-chart-4: oklch(0.6 0.18 55);
-    --cascade-chart-5: oklch(0.5 0.13 270);
-    --cascade-chart-6: oklch(0.58 0.16 30);
-    --cascade-chart-7: oklch(0.62 0.12 350);
-    --cascade-chart-8: oklch(0.5 0.12 200);
-    --cascade-chart-grid: oklch(0.85 0 0);
-    --cascade-chart-axis: oklch(0.55 0 0);
+    --cascivo-chart-1: oklch(0.62 0.13 70);
+    --cascivo-chart-2: oklch(0.62 0.11 240);
+    --cascivo-chart-3: oklch(0.6 0.13 135);
+    --cascivo-chart-4: oklch(0.6 0.18 55);
+    --cascivo-chart-5: oklch(0.5 0.13 270);
+    --cascivo-chart-6: oklch(0.58 0.16 30);
+    --cascivo-chart-7: oklch(0.62 0.12 350);
+    --cascivo-chart-8: oklch(0.5 0.12 200);
+    --cascivo-chart-grid: oklch(0.85 0 0);
+    --cascivo-chart-axis: oklch(0.55 0 0);
   }
 }

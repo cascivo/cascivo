@@ -28,16 +28,16 @@ shadows, invisible → heavy borders). The five new themes are chosen to fill th
 Every theme overrides the semantic layer. The available levers:
 
 - **Color**: surfaces, text, accent/primary, status colors, chart ramp.
-- **Radius**: one knob — `--cascade-radius-base` — the semantic scale derives from it.
-- **Shadows**: `--cascade-shadow-{xs,sm,md,overlay,lg}` — including non-standard
+- **Radius**: one knob — `--cascivo-radius-base` — the semantic scale derives from it.
+- **Shadows**: `--cascivo-shadow-{xs,sm,md,overlay,lg}` — including non-standard
   forms like hard offset shadows (`Npx Npx 0 color`).
-- **Borders**: `--cascade-border-{subtle,default,strong}` width is fixed in
+- **Borders**: `--cascivo-border-{subtle,default,strong}` width is fixed in
   components, but color/weight perception is driven by these tokens.
-- **Focus ring**: `--cascade-ring-{width,offset,color}` — thickness, offset, glow.
+- **Focus ring**: `--cascivo-ring-{width,offset,color}` — thickness, offset, glow.
 - **Color scheme**: `color-scheme: light | dark`.
 
 > **Constraint — token parity.** `parity.test.ts` requires every theme to define
-> the _exact same set_ of `--cascade-*` keys. New themes must mirror the full token
+> the _exact same set_ of `--cascivo-*` keys. New themes must mirror the full token
 > list of an existing theme (use `light.css` as the canonical template).
 
 ## Proposed five new themes
@@ -68,10 +68,10 @@ Deep indigo-black surfaces, vibrant violet accent, soft colored glow. The
 - Background `oklch(0.16 0.02 280)`, surface `oklch(0.2 0.025 280)`, raised `oklch(0.24 0.028 280)`
 - Text `oklch(0.96 0.01 280)`, muted `oklch(0.68 0.02 285)`
 - Accent `oklch(0.62 0.22 290)` (violet), hover darker, foreground white
-- `--cascade-radius-base: 0.625rem` (10px)
+- `--cascivo-radius-base: 0.625rem` (10px)
 - Shadows: violet-tinted soft glow, e.g. overlay `0 8px 40px oklch(0.5 0.2 290 / 0.25)`
 - Borders: subtle luminous `oklch(1 0 0 / 0.08–0.16)`
-- Focus ring: wider violet halo (`--cascade-ring-width: 3px`)
+- Focus ring: wider violet halo (`--cascivo-ring-width: 3px`)
 
 ### 2. `pastel` — playful light
 
@@ -82,7 +82,7 @@ shadows. Friendly/consumer personality.
 - Background `oklch(0.99 0.01 330)` (barely-pink white), surface soft tints
 - Text `oklch(0.32 0.03 320)` (soft charcoal, **not** pure black — keeps the gentle feel)
 - Accent `oklch(0.72 0.13 350)` (pink), secondary/info `oklch(0.78 0.1 165)` (mint)
-- `--cascade-radius-base: 1rem` (16px); badges + small controls read as pills
+- `--cascivo-radius-base: 1rem` (16px); badges + small controls read as pills
 - Shadows: diffuse, low-opacity, slightly colored
 - Borders: very light `oklch(0.93 0.02 330)`
 - Focus ring: thick soft ring with offset (`width: 3px`, `offset: 2px`)
@@ -99,13 +99,13 @@ the chunky offset shadow that makes elements pop off the page.
 - Background `oklch(0.97 0.02 95)` (cream), surface pure white
 - Text pure black `oklch(0.1 0 0)`
 - Accent acid yellow `oklch(0.88 0.19 105)` with **black** text-on-accent
-- `--cascade-radius-base: 0` everywhere
-- Borders: `--cascade-border-strong: oklch(0.1 0 0)` (black), weighted up
-- Shadows: hard offset — `--cascade-shadow-sm: 2px 2px 0 oklch(0.1 0 0)`,
+- `--cascivo-radius-base: 0` everywhere
+- Borders: `--cascivo-border-strong: oklch(0.1 0 0)` (black), weighted up
+- Shadows: hard offset — `--cascivo-shadow-sm: 2px 2px 0 oklch(0.1 0 0)`,
   `md: 4px 4px 0 …`, overlay `6px 6px 0 …`. No blur.
 - Focus ring: solid black, 3px, with offset
 - **Font note**: brutalism often pairs with a mono/grotesk face. Font is currently
-  a primitive token (`--cascade-font-sans` in `tokens/index.css`, not themed). See
+  a primitive token (`--cascivo-font-sans` in `tokens/index.css`, not themed). See
   "Open questions" — theming fonts requires adding the key to _all_ themes for parity.
 
 ### 4. `corporate` — enterprise / data-dense
@@ -117,12 +117,12 @@ tight hairline borders, minimal shadows. Built for dashboards and data apps.
 - Background `oklch(0.99 0.003 250)` (cool white), surface `oklch(0.97 0.004 250)`
 - Text `oklch(0.2 0.01 250)`, muted cool gray
 - Accent `oklch(0.5 0.16 255)` (corporate blue), monochrome-leaning primary
-- `--cascade-radius-base: 0.125rem` (2px)
+- `--cascivo-radius-base: 0.125rem` (2px)
 - Shadows: tight and minimal (`md: 0 1px 4px oklch(0 0 0 / 0.08)`)
 - Borders: crisp cool hairlines `oklch(0.9 0.005 250)`
 - Focus ring: 2px solid blue, **no offset** (Carbon-style inset focus)
 - **Density note**: enterprise UIs are denser. Control heights are primitive
-  tokens (`--cascade-control-height-*`), not currently themed — true density would
+  tokens (`--cascivo-control-height-*`), not currently themed — true density would
   need the same parity treatment as fonts (see "Open questions").
 
 ### 5. `terminal` — developer / CLI
@@ -134,7 +134,7 @@ A second dark theme that's unmistakably different from `midnight` and `dark`.
 - Background `oklch(0.17 0.01 150)` (green-tinted near-black), surface `oklch(0.21 0.012 150)`
 - Text phosphor `oklch(0.9 0.06 150)`, muted dimmer green
 - Accent bright phosphor `oklch(0.82 0.2 145)`, text-on-accent near-black
-- `--cascade-radius-base: 0`
+- `--cascivo-radius-base: 0`
 - Borders: hairline green `oklch(0.4 0.08 150)`
 - Shadows: none on surfaces; green glow on overlays (`0 0 0 1px oklch(0.82 0.2 145 / 0.3)`)
 - Focus ring: green glow, 2px
@@ -181,13 +181,13 @@ checks pass.
 ## Open questions / decisions needed before implementing
 
 1. **Font theming.** `brutalist` and `terminal` want non-default (mono/grotesk)
-   fonts, but `--cascade-font-sans`/`-mono` live in `tokens/index.css :root`, not
+   fonts, but `--cascivo-font-sans`/`-mono` live in `tokens/index.css :root`, not
    in themes. Options: (a) keep fonts global, skip per-theme fonts; (b) add font
    tokens to _all 10_ themes to satisfy parity. Recommendation: **(a) for now** —
    convey personality through radius/shadow/border/color; revisit fonts as a
    separate "themeable typography" change.
 2. **Density theming.** Same situation for `corporate`'s tighter density
-   (`--cascade-control-height-*` are primitives). Recommendation: defer; ship
+   (`--cascivo-control-height-*` are primitives). Recommendation: defer; ship
    `corporate` at default density first.
 3. **Two more dark themes** (`midnight`, `terminal`) brings the split to 7 light /
    3 dark. Acceptable, but if a more even split is wanted, one light proposal could

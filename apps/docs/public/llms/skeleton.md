@@ -49,11 +49,11 @@ npx cascade add skeleton
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-sm`
-- `--cascade-radius-full`
-- `--cascade-radius-component`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-radius-full`
+- `--cascivo-radius-component`
 
 ## Accessibility
 

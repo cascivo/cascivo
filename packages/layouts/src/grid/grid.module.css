@@ -2,7 +2,7 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(var(--_grid-cols, 12), minmax(0, 1fr));
-    gap: var(--_grid-gap, var(--cascade-space-4));
+    gap: var(--_grid-gap, var(--cascivo-space-4));
     container-type: inline-size;
 
     @container (max-width: 40rem) {

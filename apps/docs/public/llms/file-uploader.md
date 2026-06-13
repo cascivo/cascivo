@@ -65,11 +65,11 @@ Shows file list
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-danger`
-- `--cascade-color-danger-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-danger`
+- `--cascivo-color-danger-subtle`
 
 ## Accessibility
 

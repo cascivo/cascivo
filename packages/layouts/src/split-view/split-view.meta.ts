@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
     { name: 'max', type: 'number', required: false, description: 'Maximum ratio for start pane' },
     { name: 'aria-label', type: 'string', required: false, description: 'Label for the separator' },
   ],
-  tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-duration-150'],
+  tokens: ['--cascivo-color-border', '--cascivo-color-accent', '--cascivo-duration-150'],
   accessibility: {
     role: 'separator',
     wcag: '2.1-AA',

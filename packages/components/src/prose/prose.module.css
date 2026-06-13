@@ -1,16 +1,16 @@
 @layer cascade.component {
   .prose {
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-base);
-    line-height: var(--cascade-leading-relaxed);
-    color: var(--cascade-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-base);
+    line-height: var(--cascivo-leading-relaxed);
+    color: var(--cascivo-color-text);
 
     & > * {
       margin-block: 0;
     }
 
     & > * + * {
-      margin-block-start: var(--cascade-space-4);
+      margin-block-start: var(--cascivo-space-4);
     }
 
     & h1,
@@ -19,46 +19,46 @@
     & h4,
     & h5,
     & h6 {
-      font-weight: var(--cascade-font-semibold);
-      line-height: var(--cascade-leading-tight);
-      color: var(--cascade-color-text);
+      font-weight: var(--cascivo-font-semibold);
+      line-height: var(--cascivo-leading-tight);
+      color: var(--cascivo-color-text);
       text-wrap: balance;
     }
 
     & h1 {
-      font-size: var(--cascade-text-3xl);
-      letter-spacing: var(--cascade-tracking-tight);
+      font-size: var(--cascivo-text-3xl);
+      letter-spacing: var(--cascivo-tracking-tight);
     }
 
     & h2 {
-      font-size: var(--cascade-text-2xl);
-      letter-spacing: var(--cascade-tracking-tight);
+      font-size: var(--cascivo-text-2xl);
+      letter-spacing: var(--cascivo-tracking-tight);
     }
 
     & h3 {
-      font-size: var(--cascade-text-xl);
+      font-size: var(--cascivo-text-xl);
     }
 
     & h4 {
-      font-size: var(--cascade-text-lg);
+      font-size: var(--cascivo-text-lg);
     }
 
     & h5,
     & h6 {
-      font-size: var(--cascade-text-base);
+      font-size: var(--cascivo-text-base);
     }
 
     & > * + h2 {
-      margin-block-start: var(--cascade-space-8);
+      margin-block-start: var(--cascivo-space-8);
     }
 
     & > * + h3 {
-      margin-block-start: var(--cascade-space-6);
+      margin-block-start: var(--cascivo-space-6);
     }
 
     & ul,
     & ol {
-      padding-inline-start: var(--cascade-space-6);
+      padding-inline-start: var(--cascivo-space-6);
     }
 
     & ul {
@@ -70,67 +70,67 @@
     }
 
     & li {
-      margin-block: var(--cascade-space-1);
+      margin-block: var(--cascivo-space-1);
     }
 
     & li > ul,
     & li > ol {
-      margin-block-start: var(--cascade-space-1);
+      margin-block-start: var(--cascivo-space-1);
     }
 
     & code {
-      font-family: var(--cascade-font-mono);
+      font-family: var(--cascivo-font-mono);
       font-size: 0.875em;
-      background-color: var(--cascade-color-surface);
-      border: 1px solid var(--cascade-color-border);
-      border-radius: var(--cascade-radius-indicator);
+      background-color: var(--cascivo-color-surface);
+      border: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-indicator);
       padding-block: 0.0625rem;
-      padding-inline: var(--cascade-space-1);
+      padding-inline: var(--cascivo-space-1);
     }
 
     & blockquote {
-      border-inline-start: 3px solid var(--cascade-color-border-strong);
-      padding-inline-start: var(--cascade-space-4);
-      color: var(--cascade-color-text-subtle);
+      border-inline-start: 3px solid var(--cascivo-color-border-strong);
+      padding-inline-start: var(--cascivo-space-4);
+      color: var(--cascivo-color-text-subtle);
     }
 
     & a {
-      color: var(--cascade-color-accent);
+      color: var(--cascivo-color-accent);
       text-decoration: underline;
       text-underline-offset: 0.15em;
 
       &:hover {
-        color: var(--cascade-color-accent-hover);
+        color: var(--cascivo-color-accent-hover);
       }
     }
 
     & table {
       inline-size: 100%;
       border-collapse: collapse;
-      font-size: var(--cascade-text-sm);
+      font-size: var(--cascivo-text-sm);
     }
 
     & th,
     & td {
-      border-block-end: 1px solid var(--cascade-color-border);
-      padding-block: var(--cascade-space-2);
-      padding-inline: var(--cascade-space-3);
+      border-block-end: 1px solid var(--cascivo-color-border);
+      padding-block: var(--cascivo-space-2);
+      padding-inline: var(--cascivo-space-3);
       text-align: start;
     }
 
     & th {
-      font-weight: var(--cascade-font-semibold);
+      font-weight: var(--cascivo-font-semibold);
     }
 
     & img {
       max-inline-size: 100%;
       block-size: auto;
-      border-radius: var(--cascade-radius-surface);
+      border-radius: var(--cascivo-radius-surface);
     }
 
     & hr {
       border: none;
-      border-block-start: 1px solid var(--cascade-color-border);
+      border-block-start: 1px solid var(--cascivo-color-border);
     }
   }
 }

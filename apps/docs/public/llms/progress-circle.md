@@ -50,9 +50,9 @@ npx cascade add progress-circle
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
 
 ## Accessibility
 

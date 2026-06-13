@@ -35,7 +35,7 @@ Items fill available space and wrap when narrower than 12rem
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

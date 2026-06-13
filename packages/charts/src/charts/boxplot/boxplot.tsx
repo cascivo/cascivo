@@ -24,7 +24,7 @@ export interface BoxplotProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function Boxplot({
   series,
@@ -139,7 +139,7 @@ export function Boxplot({
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
             {stats.map((s, idx) => {
-              const color = COLORS[idx % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const color = COLORS[idx % COLORS.length] ?? 'var(--cascivo-chart-1)'
               const cx = (xScale.map(s.id) ?? 0) + xScale.bandwidth / 2
               const boxW = xScale.bandwidth * 0.6
               const boxX = cx - boxW / 2

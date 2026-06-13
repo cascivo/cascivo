@@ -127,8 +127,8 @@ export function ChartFrame({
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
-                    border: '2px solid var(--cascade-focus-ring, var(--cascade-color-accent))',
-                    background: 'var(--cascade-color-background, white)',
+                    border: '2px solid var(--cascivo-focus-ring, var(--cascivo-color-accent))',
+                    background: 'var(--cascivo-color-background, white)',
                     pointerEvents: 'none',
                     zIndex: 10,
                   }}

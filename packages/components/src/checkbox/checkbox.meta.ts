@@ -15,12 +15,12 @@ export const meta: ComponentMeta = {
     { name: 'onChange', type: 'React.ChangeEventHandler<HTMLInputElement>', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'checkbox',
@@ -86,7 +86,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens',
+        note: 'Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens',
       },
     ],
   },

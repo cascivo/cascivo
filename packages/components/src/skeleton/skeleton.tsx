@@ -20,8 +20,8 @@ export function Skeleton({
   ...props
 }: SkeletonProps) {
   const sizeVars = {
-    ...(width !== undefined && { '--cascade-skeleton-width': width }),
-    ...(height !== undefined && { '--cascade-skeleton-height': height }),
+    ...(width !== undefined && { '--cascivo-skeleton-width': width }),
+    ...(height !== undefined && { '--cascivo-skeleton-height': height }),
   } as CSSProperties
 
   return (

@@ -21,7 +21,7 @@ const registry: Registry = {
         variants: ['primary', 'secondary'],
         sizes: ['sm', 'md', 'lg'],
         props: [{ name: 'variant', type: 'string', required: false }],
-        tokens: ['--cascade-color-accent'],
+        tokens: ['--cascivo-color-accent'],
         accessibility: { role: 'button', wcag: 'AA', keyboard: ['Enter', 'Space'] },
         examples: [{ title: 'Primary', code: '<Button>Click</Button>' }],
         dependencies: ['@cascade-ui/core'],

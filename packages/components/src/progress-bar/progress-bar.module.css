@@ -2,57 +2,57 @@
   .progress {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-1);
-    font-family: var(--cascade-font-sans);
+    gap: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
 
     &[data-status='success'] {
       .fill {
-        background-color: var(--cascade-color-success);
+        background-color: var(--cascivo-color-success);
       }
 
       .glyph {
-        color: var(--cascade-color-success);
+        color: var(--cascivo-color-success);
       }
     }
 
     &[data-status='error'] {
       .fill {
-        background-color: var(--cascade-color-destructive);
+        background-color: var(--cascivo-color-destructive);
       }
 
       .glyph {
-        color: var(--cascade-color-destructive);
+        color: var(--cascivo-color-destructive);
       }
     }
 
     &[data-size='sm'] .track {
-      block-size: var(--cascade-space-1);
+      block-size: var(--cascivo-space-1);
     }
 
     &[data-size='md'] .track {
-      block-size: var(--cascade-space-2);
+      block-size: var(--cascivo-space-2);
     }
 
     &[data-state='indeterminate'] .fill {
       inline-size: 40%;
       transition: none;
       /* Continuous sweep — literal duration; reduced motion slows it below. */
-      animation: cascade-progress-sweep 1.4s var(--cascade-ease-in-out) infinite;
+      animation: cascade-progress-sweep 1.4s var(--cascivo-ease-in-out) infinite;
     }
   }
 
   .label {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-1);
-    font-size: var(--cascade-text-sm);
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text);
-    line-height: var(--cascade-leading-tight);
+    gap: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
+    line-height: var(--cascivo-leading-tight);
   }
 
   .glyph {
-    font-size: var(--cascade-text-xs);
+    font-size: var(--cascivo-text-xs);
     line-height: 1;
   }
 
@@ -60,24 +60,24 @@
     position: relative;
     overflow: hidden;
     inline-size: 100%;
-    background-color: var(--cascade-color-border);
-    border-radius: var(--cascade-radius-full);
+    background-color: var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-full);
   }
 
   .fill {
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
-    inline-size: var(--cascade-progress-value, 0%);
-    background-color: var(--cascade-color-accent);
-    border-radius: var(--cascade-radius-full);
-    transition: inline-size var(--cascade-motion-enter);
+    inline-size: var(--cascivo-progress-value, 0%);
+    background-color: var(--cascivo-color-accent);
+    border-radius: var(--cascivo-radius-full);
+    transition: inline-size var(--cascivo-motion-enter);
   }
 
   .helper {
-    font-size: var(--cascade-text-xs);
-    color: var(--cascade-color-text-subtle);
-    line-height: var(--cascade-leading-tight);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
+    line-height: var(--cascivo-leading-tight);
   }
 
   @keyframes cascade-progress-sweep {

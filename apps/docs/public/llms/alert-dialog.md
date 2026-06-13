@@ -28,14 +28,14 @@ _No props._
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 

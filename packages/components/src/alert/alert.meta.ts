@@ -21,12 +21,12 @@ export const meta: ComponentMeta = {
     { name: 'action', type: '{ label: string; onClick: () => void }', required: false },
   ],
   tokens: [
-    '--cascade-color-info',
-    '--cascade-color-success',
-    '--cascade-color-warning',
-    '--cascade-color-destructive',
-    '--cascade-color-border',
-    '--cascade-radius-md',
+    '--cascivo-color-info',
+    '--cascivo-color-success',
+    '--cascivo-color-warning',
+    '--cascivo-color-destructive',
+    '--cascivo-color-border',
+    '--cascivo-radius-md',
   ],
   accessibility: {
     role: 'alert',
@@ -92,7 +92,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Severity colors must resolve to --cascade-color-info/success/warning/destructive',
+        note: 'Severity colors must resolve to --cascivo-color-info/success/warning/destructive',
       },
     ],
   },

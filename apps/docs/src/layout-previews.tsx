@@ -13,14 +13,14 @@ const tile = (label: string, h = '4rem') => (
   <div
     style={{
       blockSize: h,
-      background: 'var(--cascade-surface-subtle)',
-      border: '1px solid var(--cascade-color-border)',
-      borderRadius: 'var(--cascade-radius-md)',
+      background: 'var(--cascivo-surface-subtle)',
+      border: '1px solid var(--cascivo-color-border)',
+      borderRadius: 'var(--cascivo-radius-md)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       fontSize: '0.75rem',
-      color: 'var(--cascade-text-secondary)',
+      color: 'var(--cascivo-text-secondary)',
     }}
   >
     {label}
@@ -30,8 +30,8 @@ const tile = (label: string, h = '4rem') => (
 const frame = (children: ComponentChildren) => (
   <div
     style={{
-      border: '1px solid var(--cascade-color-border)',
-      borderRadius: 'var(--cascade-radius-md)',
+      border: '1px solid var(--cascivo-color-border)',
+      borderRadius: 'var(--cascivo-radius-md)',
       overflow: 'hidden',
       containerType: 'inline-size',
     }}
@@ -73,10 +73,10 @@ export const layoutPreviews: Record<string, () => JSX.Element> = {
             <button
               style={{
                 padding: '0.5rem 1rem',
-                background: 'var(--cascade-color-accent)',
+                background: 'var(--cascivo-color-accent)',
                 color: 'white',
                 border: 'none',
-                borderRadius: 'var(--cascade-radius-sm)',
+                borderRadius: 'var(--cascivo-radius-sm)',
                 cursor: 'pointer',
               }}
             >
@@ -86,8 +86,8 @@ export const layoutPreviews: Record<string, () => JSX.Element> = {
               style={{
                 padding: '0.5rem 1rem',
                 background: 'transparent',
-                border: '1px solid var(--cascade-color-border)',
-                borderRadius: 'var(--cascade-radius-sm)',
+                border: '1px solid var(--cascivo-color-border)',
+                borderRadius: 'var(--cascivo-radius-sm)',
                 cursor: 'pointer',
               }}
             >
@@ -108,10 +108,10 @@ export const layoutPreviews: Record<string, () => JSX.Element> = {
           <button
             style={{
               padding: '0.5rem 1rem',
-              background: 'var(--cascade-color-accent)',
+              background: 'var(--cascivo-color-accent)',
               color: 'white',
               border: 'none',
-              borderRadius: 'var(--cascade-radius-sm)',
+              borderRadius: 'var(--cascivo-radius-sm)',
               cursor: 'pointer',
             }}
           >

@@ -129,8 +129,8 @@ export function Heatmap({
                   y={ry}
                   width={xScale.bandwidth}
                   height={yScale.bandwidth}
-                  fill={`color-mix(in oklab, var(--cascade-chart-1) ${pct}%, var(--cascade-color-neutral-100))`}
-                  stroke="var(--cascade-surface-base)"
+                  fill={`color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-color-neutral-100))`}
+                  stroke="var(--cascivo-surface-base)"
                   strokeWidth={1}
                   aria-label={`${d.x}, ${d.y}: ${d.value}`}
                 />

@@ -45,10 +45,10 @@ Each star is a <button role="radio"> inside a role="radiogroup" with aria-checke
 
 ## Tokens
 
-- `--cascade-color-warning`
-- `--cascade-color-border-strong`
-- `--cascade-color-accent`
-- `--cascade-radius-sm`
+- `--cascivo-color-warning`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-radius-sm`
 
 ## Examples
 
@@ -68,5 +68,5 @@ Each star is a <button role="radio"> inside a role="radiogroup" with aria-checke
 
 | Area             | Level    | Note                                                                      |
 | ---------------- | -------- | ------------------------------------------------------------------------- |
-| token names      | strict   | Star styling must resolve to the listed --cascade-\* tokens               |
+| token names      | strict   | Star styling must resolve to the listed --cascivo-\* tokens               |
 | scale and labels | flexible | max sets the scale and labels.rating customizes the per-star announcement |

@@ -49,9 +49,9 @@ Multi-select feature toggles
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
 
 ## Accessibility
 

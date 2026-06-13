@@ -45,12 +45,12 @@ toast({ title: 'Saved', variant: 'success' })
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-md`
-- `--cascade-z-toast`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-md`
+- `--cascivo-z-toast`
 
 ## Accessibility
 

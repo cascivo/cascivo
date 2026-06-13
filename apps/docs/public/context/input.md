@@ -46,12 +46,12 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -71,6 +71,6 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 
 | Area                      | Level    | Note                                                                                                        |
 | ------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- | --- | -------------------- |
-| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-\* tokens |
+| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-\* tokens |
 | label / hint / error copy | flexible | Free, within content tone guidance                                                                          |
 | size                      | flexible | sm                                                                                                          | md  | lg, defaulting to md |

@@ -40,13 +40,13 @@
   .addon {
     display: inline-flex;
     align-items: center;
-    padding-inline: var(--cascade-space-3);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
-    background-color: var(--cascade-color-bg-subtle);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-field);
+    padding-inline: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+    background-color: var(--cascivo-color-bg-subtle);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -55,17 +55,17 @@
   .input-group:has(.inline-addon) {
     display: flex;
     align-items: center;
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-field, var(--cascade-radius-control));
-    background: var(--cascade-color-bg);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field, var(--cascivo-radius-control));
+    background: var(--cascivo-color-bg);
     transition:
       border-color 120ms ease,
       box-shadow 120ms ease;
   }
 
   .input-group:has(.inline-addon):focus-within {
-    border-color: var(--cascade-color-accent);
-    box-shadow: var(--cascade-focus-ring);
+    border-color: var(--cascivo-color-accent);
+    box-shadow: var(--cascivo-focus-ring);
   }
 
   /* strip the inner input chrome — the group owns it now */
@@ -79,18 +79,18 @@
   .inline-addon {
     display: inline-flex;
     align-items: center;
-    color: var(--cascade-color-text-subtle);
+    color: var(--cascivo-color-text-subtle);
     pointer-events: none;
   }
 
   .inline-addon[data-align='inline-start'] {
     order: -1;
-    padding-inline-start: var(--cascade-space-3);
+    padding-inline-start: var(--cascivo-space-3);
   }
 
   .inline-addon[data-align='inline-end'] {
     order: 1;
-    padding-inline-end: var(--cascade-space-3);
+    padding-inline-end: var(--cascivo-space-3);
   }
 
   .inline-addon svg {

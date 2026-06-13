@@ -14,12 +14,12 @@ export const meta: ComponentMeta = {
     { name: 'name', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-full',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'radio',
@@ -77,7 +77,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Control and label styling must resolve to the listed --cascade-* tokens',
+        note: 'Control and label styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'option labels and orientation',

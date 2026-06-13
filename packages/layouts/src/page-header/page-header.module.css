@@ -2,39 +2,39 @@
   .header {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
   }
 
   .breadcrumb {
-    color: var(--cascade-color-text-muted);
+    color: var(--cascivo-color-text-muted);
   }
 
   .row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--cascade-space-4);
+    gap: var(--cascivo-space-4);
     flex-wrap: wrap;
   }
 
   .title {
     margin: 0;
-    font-size: var(--cascade-font-size-2xl, 1.5rem);
-    font-weight: var(--cascade-font-weight-bold, 700);
-    color: var(--cascade-color-text);
+    font-size: var(--cascivo-font-size-2xl, 1.5rem);
+    font-weight: var(--cascivo-font-weight-bold, 700);
+    color: var(--cascivo-color-text);
     line-height: 1.2;
   }
 
   .actions {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
     flex-shrink: 0;
   }
 
   .description {
     margin: 0;
-    color: var(--cascade-color-text-muted);
-    font-size: var(--cascade-font-size-sm);
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-font-size-sm);
   }
 }

@@ -55,11 +55,11 @@ The drop zone is a real <button> so it is keyboard-operable (Enter/Space open th
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-danger`
-- `--cascade-color-danger-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-danger`
+- `--cascivo-color-danger-subtle`
 
 ## Examples
 
@@ -91,6 +91,6 @@ Shows file list
 
 | Area                         | Level    | Note                                                                       |
 | ---------------------------- | -------- | -------------------------------------------------------------------------- |
-| token names                  | strict   | Status colors must resolve to --cascade-color-accent/success/danger tokens |
+| token names                  | strict   | Status colors must resolve to --cascivo-color-accent/success/danger tokens |
 | label and hint copy          | flexible | Overridable via label/hint props or the labels object                      |
 | accept / maxSize constraints | flexible | Configure freely; rejected files surface through onRejected                |

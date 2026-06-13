@@ -20,10 +20,10 @@ export const meta: ComponentMeta = {
     { name: 'status', type: "'online' | 'offline' | 'busy'", required: false },
   ],
   tokens: [
-    '--cascade-color-accent-subtle',
-    '--cascade-color-success',
-    '--cascade-color-destructive',
-    '--cascade-radius-full',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-color-success',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-full',
   ],
   accessibility: {
     role: 'img',
@@ -72,7 +72,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Fallback and status colors must resolve to --cascade-* semantic tokens',
+        note: 'Fallback and status colors must resolve to --cascivo-* semantic tokens',
       },
     ],
   },

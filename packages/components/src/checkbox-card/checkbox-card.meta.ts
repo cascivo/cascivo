@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
     },
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the card' },
   ],
-  tokens: ['--cascade-color-accent', '--cascade-color-border', '--cascade-radius-surface'],
+  tokens: ['--cascivo-color-accent', '--cascivo-color-border', '--cascivo-radius-surface'],
   accessibility: {
     role: 'checkbox',
     wcag: '2.2-AA',
@@ -97,7 +97,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface',
+        note: 'Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface',
       },
     ],
   },

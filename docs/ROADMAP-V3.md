@@ -87,7 +87,7 @@ Everything inherits the v2 cross-cutting rules: signals not hooks, CSS-only moti
 
 - [ ] **IconButton** — square icon-only button, mandatory `label` (becomes tooltip + aria-label); sizes aligned with Button.
 - [ ] **CopyButton** — copy-to-clipboard with success feedback animation (CSS-only check-swap).
-- [ ] **CodeSnippet** — inline / single-line / multi-line code display with CopyButton built in; `--cascade-font-mono` token added if missing.
+- [ ] **CodeSnippet** — inline / single-line / multi-line code display with CopyButton built in; `--cascivo-font-mono` token added if missing.
 - [ ] **Notification** — inline/banner notification with actions and dismiss; richer than Alert (Alert stays for static callouts; Notification is the actionable one).
 - [ ] **Collapsible** — minimal animated show/hide region (Disclosure); Accordion refactors to compose it internally if free.
 - [ ] **Calendar** — standalone month-grid (extracted from date-picker's internals); range + multiple-month support; date-picker consumes it.
@@ -140,10 +140,10 @@ The user-requested set. These are first-party, signal-driven, and exist in neith
 ### Milestone 4.1 — Token foundation refresh
 
 - [ ] **oklch primitives**: regenerate the gray + color ramps in `packages/tokens` as oklch (perceptually uniform; enables `oklch(from …)` relative-color hover/active derivation later). Keep hex fallbacks only if the browser matrix demands (it doesn't — last-2 already supports oklch).
-- [ ] **Semantic radius split**: `--cascade-radius-control` (buttons/inputs), `--cascade-radius-surface` (cards/modals), `--cascade-radius-indicator` (badges/tags) — derived from one `--cascade-radius-base` per theme (shadcn's `calc()` derivation pattern). Components migrate from raw `--cascade-radius-md` to semantic radius tokens.
-- [ ] **Focus ring tokens**: `--cascade-ring-color` / `--cascade-ring-width` / `--cascade-ring-offset`; components standardize on one `:focus-visible` recipe (soft 3px @ 50% opacity default, per modern convention) instead of per-component outlines.
+- [ ] **Semantic radius split**: `--cascivo-radius-control` (buttons/inputs), `--cascivo-radius-surface` (cards/modals), `--cascivo-radius-indicator` (badges/tags) — derived from one `--cascivo-radius-base` per theme (shadcn's `calc()` derivation pattern). Components migrate from raw `--cascivo-radius-md` to semantic radius tokens.
+- [ ] **Focus ring tokens**: `--cascivo-ring-color` / `--cascivo-ring-width` / `--cascivo-ring-offset`; components standardize on one `:focus-visible` recipe (soft 3px @ 50% opacity default, per modern convention) instead of per-component outlines.
 - [ ] **Shadow restraint**: re-cut the shadow scale — `xs` (0 1px 2px / 5%) default for controls/cards, `md+` reserved for floating surfaces. Audit components using `lg/xl` gratuitously.
-- [ ] **Density tokens**: `--cascade-control-height-{sm,md,lg}` + spacing so themes can shift density (minimal theme needs this).
+- [ ] **Density tokens**: `--cascivo-control-height-{sm,md,lg}` + spacing so themes can shift density (minimal theme needs this).
 - [ ] Contrast-check script (`scripts/quality/contrast-check.ts`) runs over every theme in CI — extend to the new tokens.
 
 ### Milestone 4.2 — Restyle light / dark / warm

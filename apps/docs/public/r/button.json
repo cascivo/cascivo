@@ -54,13 +54,13 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-accent-hover",
-      "--cascade-color-accent-active",
-      "--cascade-color-text-on-accent",
-      "--cascade-color-destructive",
-      "--cascade-radius-button",
-      "--cascade-focus-ring"
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-hover",
+      "--cascivo-color-accent-active",
+      "--cascivo-color-text-on-accent",
+      "--cascivo-color-destructive",
+      "--cascivo-radius-button",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "button",
@@ -123,7 +123,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+          "note": "Visual props must resolve to --cascivo-button-* / semantic tokens"
         },
         {
           "area": "label copy",

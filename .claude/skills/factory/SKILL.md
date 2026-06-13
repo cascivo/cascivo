@@ -53,11 +53,11 @@ Create four files at `packages/components/src/<name>/`:
 1. `<name>.tsx` — `'use client'`, typed props extending the right HTML attrs,
    `cn(styles[...], className)`, `data-variant`/`data-size`/`data-state` hooks.
 2. `<name>.module.css` — `@layer cascade.component { }`, every value via
-   `--cascade-*` tokens, logical properties, `:has()`/`@container` where useful.
+   `--cascivo-*` tokens, logical properties, `:has()`/`@container` where useful.
    **Motion is mandatory for open/close/enter/exit components**: CSS-only via
    `@starting-style` (+ `transition-behavior: allow-discrete` for top-layer or
    display-toggling elements), using the semantic motion tokens
-   (`--cascade-motion-enter/exit/emphasis`), animating only compositor-safe
+   (`--cascivo-motion-enter/exit/emphasis`), animating only compositor-safe
    properties (`opacity`, `transform`/`translate`/`scale`). Never animate from
    JS. Reduced motion is handled globally by the tokens layer — do not add
    per-component `prefers-reduced-motion` rules unless opting _out_ (continuous
@@ -80,7 +80,7 @@ Create four files at `packages/components/src/<name>/`:
      related: [],
      a11yRationale: 'TODO: explain why the a11y decisions (role, keyboard, aria) are what they are',
      flexibility: [
-       { area: 'token names', level: 'strict', note: 'Visual props must resolve to --cascade-* tokens' },
+       { area: 'token names', level: 'strict', note: 'Visual props must resolve to --cascivo-* tokens' },
      ],
    },
    ```

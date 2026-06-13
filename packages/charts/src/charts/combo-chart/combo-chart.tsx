@@ -179,7 +179,7 @@ export function ComboChart({
                   y={by}
                   width={xScale.bandwidth}
                   height={Math.max(0, inner.height - by)}
-                  fill="var(--cascade-chart-1)"
+                  fill="var(--cascivo-chart-1)"
                   opacity={0.75}
                   aria-label={`${b.label}: ${b.value}`}
                 />
@@ -189,7 +189,7 @@ export function ComboChart({
               <path
                 d={pathD}
                 fill="none"
-                stroke="var(--cascade-chart-2)"
+                stroke="var(--cascivo-chart-2)"
                 strokeWidth={2.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"

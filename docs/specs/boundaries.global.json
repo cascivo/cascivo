@@ -2,7 +2,7 @@
   "strict": [
     {
       "area": "token names",
-      "note": "Visual props must resolve to --cascade-* tokens; never hard-code color, spacing, or size values"
+      "note": "Visual props must resolve to --cascivo-* tokens; never hard-code color, spacing, or size values"
     },
     {
       "area": "a11y roles and keyboard",
@@ -18,13 +18,13 @@
     },
     {
       "area": "CSS custom properties",
-      "note": "All visual values via --cascade-* tokens; no Tailwind, no inline styles, no CSS-in-JS"
+      "note": "All visual values via --cascivo-* tokens; no Tailwind, no inline styles, no CSS-in-JS"
     }
   ],
   "flexible": [
     {
       "area": "spacing step",
-      "note": "Choose any step on the --cascade-space-* scale to fit the layout; no single correct answer"
+      "note": "Choose any step on the --cascivo-space-* scale to fit the layout; no single correct answer"
     },
     {
       "area": "label copy",

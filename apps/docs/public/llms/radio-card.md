@@ -43,10 +43,10 @@ Single-select plan picker
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
-- `--cascade-color-active-bg`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
+- `--cascivo-color-active-bg`
 
 ## Accessibility
 

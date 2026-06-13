@@ -25,11 +25,11 @@ export const meta: ComponentMeta = {
     { name: 'onOpenChange', type: '(open: boolean) => void', required: false },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-md',
-    '--cascade-z-dropdown',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-md',
+    '--cascivo-z-dropdown',
   ],
   accessibility: {
     role: 'menu',
@@ -96,7 +96,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens',
+        note: 'Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens',
       },
     ],
   },

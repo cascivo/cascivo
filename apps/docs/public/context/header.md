@@ -42,14 +42,14 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 ## Tokens
 
-- `--cascade-header-bg`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-bg-subtle`
-- `--cascade-focus-ring`
-- `--cascade-z-raised`
+- `--cascivo-header-bg`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-focus-ring`
+- `--cascivo-z-raised`
 
 ## Examples
 
@@ -76,4 +76,4 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 | Area              | Level    | Note                                                             |
 | ----------------- | -------- | ---------------------------------------------------------------- |
 | links and actions | flexible | Brand, links, and actions slots are optional and composable      |
-| token names       | strict   | Surface, border, and z-index must resolve to --cascade-\* tokens |
+| token names       | strict   | Surface, border, and z-index must resolve to --cascivo-\* tokens |

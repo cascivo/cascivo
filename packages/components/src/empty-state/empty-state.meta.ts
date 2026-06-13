@@ -15,11 +15,11 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-full',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-full',
   ],
   accessibility: {
     role: 'none',
@@ -82,7 +82,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Text and background colors must resolve to --cascade-* tokens',
+        note: 'Text and background colors must resolve to --cascivo-* tokens',
       },
     ],
   },

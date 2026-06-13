@@ -45,14 +45,14 @@ npx cascade add multi-select
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-focus-ring`
-- `--cascade-motion-enter`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-focus-ring`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 

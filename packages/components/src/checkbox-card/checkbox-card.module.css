@@ -1,12 +1,12 @@
 @layer cascade.component {
   .card {
     display: flex;
-    gap: var(--cascade-space-3);
+    gap: var(--cascivo-space-3);
     align-items: flex-start;
-    padding: var(--cascade-space-4);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-surface);
-    background: var(--cascade-color-bg);
+    padding: var(--cascivo-space-4);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+    background: var(--cascivo-color-bg);
     cursor: pointer;
     transition:
       border-color 120ms ease,
@@ -14,16 +14,16 @@
   }
 
   .card:hover:not([data-disabled]) {
-    border-color: var(--cascade-color-border-strong);
+    border-color: var(--cascivo-color-border-strong);
   }
 
   .card:has(input:checked) {
-    border-color: var(--cascade-color-accent);
-    background: color-mix(in oklch, var(--cascade-color-accent) 4%, var(--cascade-color-bg));
+    border-color: var(--cascivo-color-accent);
+    background: color-mix(in oklch, var(--cascivo-color-accent) 4%, var(--cascivo-color-bg));
   }
 
   .card:has(input:focus-visible) {
-    box-shadow: var(--cascade-focus-ring);
+    box-shadow: var(--cascivo-focus-ring);
   }
 
   .card[data-disabled] {
@@ -47,16 +47,16 @@
     margin-block-start: 2px;
     display: grid;
     place-items: center;
-    border: 1px solid var(--cascade-color-border-strong);
-    border-radius: var(--cascade-radius-indicator);
+    border: 1px solid var(--cascivo-color-border-strong);
+    border-radius: var(--cascivo-radius-indicator);
     color: transparent;
     transition: all 120ms ease;
   }
 
   .card:has(input:checked) .glyph {
-    border-color: var(--cascade-color-accent);
-    background: var(--cascade-color-accent);
-    color: var(--cascade-color-accent-foreground, oklch(1 0 0));
+    border-color: var(--cascivo-color-accent);
+    background: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-foreground, oklch(1 0 0));
   }
 
   .check {
@@ -67,17 +67,17 @@
   .body {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
   }
 
   .title {
-    font-size: var(--cascade-text-sm);
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
   }
 
   .description {
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
   }
 }

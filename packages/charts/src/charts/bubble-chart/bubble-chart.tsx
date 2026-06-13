@@ -31,7 +31,7 @@ export interface BubbleChartProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 const MIN_R = 3
 const MAX_R = 24
 
@@ -145,7 +145,7 @@ export function BubbleChart({
           <g transform={`translate(${margins.left},${margins.top})`}>
             {!plain && <GridLines scale={yScale} orientation="y" length={inner.width} />}
             {series.map((s, si) => {
-              const color = COLORS[si % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const color = COLORS[si % COLORS.length] ?? 'var(--cascivo-chart-1)'
               const isHidden = hovered.value !== null && hovered.value !== s.name
               return (
                 <g

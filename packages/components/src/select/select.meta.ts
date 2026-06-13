@@ -21,12 +21,12 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-text-muted',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-text-muted',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     // native <select> — keyboard behavior is browser-provided, not cascade-wired
@@ -89,7 +89,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual props must resolve to --cascade-color-* / radius / focus-ring tokens',
+        note: 'Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens',
       },
       {
         area: 'option labels',

@@ -103,15 +103,15 @@ function DeploysInner() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 'var(--cascade-space-4)',
-            padding: 'var(--cascade-space-4)',
+            gap: 'var(--cascivo-space-4)',
+            padding: 'var(--cascivo-space-4)',
           }}
         >
           <Select label="Service" options={serviceOptions} defaultValue="gateway" />
           <Select label="Environment" options={envOptions} defaultValue="production" />
           <Input label="Git ref" placeholder="main" />
           <div
-            style={{ display: 'flex', gap: 'var(--cascade-space-3)', justifyContent: 'flex-end' }}
+            style={{ display: 'flex', gap: 'var(--cascivo-space-3)', justifyContent: 'flex-end' }}
           >
             <Button
               variant="secondary"

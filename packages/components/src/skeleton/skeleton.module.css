@@ -3,28 +3,28 @@
     &[data-variant='text'] {
       display: flex;
       flex-direction: column;
-      gap: var(--cascade-space-2);
-      inline-size: var(--cascade-skeleton-width, 100%);
+      gap: var(--cascivo-space-2);
+      inline-size: var(--cascivo-skeleton-width, 100%);
     }
 
     &[data-variant='circle'] {
-      inline-size: var(--cascade-skeleton-width, var(--cascade-space-10));
-      block-size: var(--cascade-skeleton-height, var(--cascade-space-10));
-      border-radius: var(--cascade-radius-full);
+      inline-size: var(--cascivo-skeleton-width, var(--cascivo-space-10));
+      block-size: var(--cascivo-skeleton-height, var(--cascivo-space-10));
+      border-radius: var(--cascivo-radius-full);
     }
 
     &[data-variant='rect'] {
-      inline-size: var(--cascade-skeleton-width, 100%);
-      block-size: var(--cascade-skeleton-height, var(--cascade-space-24));
-      border-radius: var(--cascade-radius-surface);
+      inline-size: var(--cascivo-skeleton-width, 100%);
+      block-size: var(--cascivo-skeleton-height, var(--cascivo-space-24));
+      border-radius: var(--cascivo-radius-surface);
     }
   }
 
   .line {
     display: block;
     inline-size: 100%;
-    block-size: var(--cascade-skeleton-height, 1em);
-    border-radius: var(--cascade-radius-indicator);
+    block-size: var(--cascivo-skeleton-height, 1em);
+    border-radius: var(--cascivo-radius-indicator);
 
     /* Multi-line paragraphs end on a shorter bar */
     &:last-child:not(:first-child) {
@@ -37,12 +37,12 @@
   .skeleton[data-variant='circle'],
   .skeleton[data-variant='rect'],
   .line {
-    background-color: var(--cascade-color-border);
+    background-color: var(--cascivo-color-border);
     background-image: linear-gradient(
       90deg,
-      var(--cascade-color-border) 25%,
-      var(--cascade-color-bg-subtle) 50%,
-      var(--cascade-color-border) 75%
+      var(--cascivo-color-border) 25%,
+      var(--cascivo-color-bg-subtle) 50%,
+      var(--cascivo-color-border) 75%
     );
     background-size: 200% 100%;
     animation: cascade-shimmer 1.5s linear infinite;

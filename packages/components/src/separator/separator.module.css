@@ -2,7 +2,7 @@
   .separator {
     margin: 0;
     border: none;
-    background-color: var(--cascade-color-border);
+    background-color: var(--cascivo-color-border);
     flex-shrink: 0;
 
     &[data-orientation='horizontal'] {

@@ -1,28 +1,28 @@
 @layer cascade.component {
   .link {
-    color: var(--cascade-link-color, var(--cascade-color-accent));
+    color: var(--cascivo-link-color, var(--cascivo-color-accent));
     cursor: pointer;
-    border-radius: var(--cascade-radius-item);
+    border-radius: var(--cascivo-radius-item);
     text-underline-offset: 0.2em;
-    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+    transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-accent-hover);
+      color: var(--cascivo-color-accent-hover);
     }
 
     &:active {
-      color: var(--cascade-color-accent-active);
+      color: var(--cascivo-color-accent-active);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     /* Standalone: own typography, underline on hover only */
     &[data-variant='standalone'] {
-      font-family: var(--cascade-font-sans);
-      font-weight: var(--cascade-font-medium);
+      font-family: var(--cascivo-font-sans);
+      font-weight: var(--cascivo-font-medium);
       text-decoration: none;
 
       &:hover {
@@ -30,15 +30,15 @@
       }
 
       &[data-size='sm'] {
-        font-size: var(--cascade-text-sm);
+        font-size: var(--cascivo-text-sm);
       }
 
       &[data-size='md'] {
-        font-size: var(--cascade-text-base);
+        font-size: var(--cascivo-text-base);
       }
 
       &[data-size='lg'] {
-        font-size: var(--cascade-text-lg);
+        font-size: var(--cascivo-text-lg);
       }
     }
 
@@ -52,7 +52,7 @@
     &[data-external]::after {
       content: '\2197' / '';
       font-size: 0.8em;
-      margin-inline-start: var(--cascade-space-1);
+      margin-inline-start: var(--cascivo-space-1);
     }
   }
 }

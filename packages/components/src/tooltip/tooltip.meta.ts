@@ -25,10 +25,10 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-sm',
-    '--cascade-z-tooltip',
+    '--cascivo-color-text',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-sm',
+    '--cascivo-z-tooltip',
   ],
   accessibility: {
     role: 'tooltip',

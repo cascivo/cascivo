@@ -45,14 +45,14 @@ npx cascade add editable
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

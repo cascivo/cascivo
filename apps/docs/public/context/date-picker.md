@@ -50,11 +50,11 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the ca
 
 ## Tokens
 
-- `--cascade-date-picker-bg`
-- `--cascade-date-picker-border`
-- `--cascade-date-picker-radius`
-- `--cascade-date-picker-day-selected-bg`
-- `--cascade-date-picker-day-today-color`
+- `--cascivo-date-picker-bg`
+- `--cascivo-date-picker-border`
+- `--cascivo-date-picker-radius`
+- `--cascivo-date-picker-day-selected-bg`
+- `--cascivo-date-picker-day-today-color`
 
 ## Examples
 
@@ -88,4 +88,4 @@ Date range constraint
 | ----------------- | -------- | ------------------------------------------------------------------------------------ |
 | value format      | strict   | All date props are ISO YYYY-MM-DD strings                                            |
 | locale formatting | flexible | Display, weekday labels, and week start derive from the current i18n locale via Intl |
-| token names       | strict   | Styling resolves to --cascade-date-picker-\* component tokens                        |
+| token names       | strict   | Styling resolves to --cascivo-date-picker-\* component tokens                        |

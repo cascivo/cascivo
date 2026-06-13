@@ -48,7 +48,7 @@ Row layout
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

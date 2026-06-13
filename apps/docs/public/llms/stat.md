@@ -44,11 +44,11 @@ npx cascade add stat
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 

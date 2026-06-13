@@ -1,28 +1,28 @@
 @layer cascade.component {
   .wrapper {
     display: inline-flex;
-    gap: var(--cascade-space-1);
-    padding: var(--cascade-space-1);
-    background-color: var(--cascade-color-bg-subtle);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-control);
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-1);
+    background-color: var(--cascivo-color-bg-subtle);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
 
     &[data-size='sm'] {
       --_seg-h: 1.75rem;
-      --_seg-font: var(--cascade-text-xs);
-      --_seg-px: var(--cascade-space-2);
+      --_seg-font: var(--cascivo-text-xs);
+      --_seg-px: var(--cascivo-space-2);
     }
 
     &[data-size='md'] {
       --_seg-h: 2.25rem;
-      --_seg-font: var(--cascade-text-sm);
-      --_seg-px: var(--cascade-space-3);
+      --_seg-font: var(--cascivo-text-sm);
+      --_seg-px: var(--cascivo-space-3);
     }
 
     &[data-size='lg'] {
       --_seg-h: 2.75rem;
-      --_seg-font: var(--cascade-text-base);
-      --_seg-px: var(--cascade-space-4);
+      --_seg-font: var(--cascivo-text-base);
+      --_seg-px: var(--cascivo-space-4);
     }
 
     &[data-disabled] {
@@ -32,34 +32,34 @@
 
   .segment {
     height: var(--_seg-h, 2.25rem);
-    padding-inline: var(--_seg-px, var(--cascade-space-3));
-    font-family: var(--cascade-font-sans);
-    font-size: var(--_seg-font, var(--cascade-text-sm));
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text-subtle);
+    padding-inline: var(--_seg-px, var(--cascivo-space-3));
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--_seg-font, var(--cascivo-text-sm));
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text-subtle);
     background: none;
     border: none;
-    border-radius: var(--cascade-radius-item);
+    border-radius: var(--cascivo-radius-item);
     cursor: pointer;
     transition:
-      background-color var(--cascade-duration-150) var(--cascade-ease-out),
-      color var(--cascade-duration-150) var(--cascade-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      color var(--cascivo-duration-150) var(--cascivo-ease-out);
     white-space: nowrap;
 
     &:hover:not(:disabled):not([data-selected]) {
-      color: var(--cascade-color-text);
-      background-color: rgb(from var(--cascade-color-text) r g b / 0.05);
+      color: var(--cascivo-color-text);
+      background-color: rgb(from var(--cascivo-color-text) r g b / 0.05);
     }
 
     &:focus-visible {
-      outline: 2px solid var(--cascade-color-accent);
+      outline: 2px solid var(--cascivo-color-accent);
       outline-offset: 1px;
     }
 
     &[data-selected] {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-surface);
-      box-shadow: var(--cascade-shadow-sm);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-surface);
+      box-shadow: var(--cascivo-shadow-sm);
     }
 
     &:disabled {

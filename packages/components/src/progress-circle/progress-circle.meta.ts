@@ -30,7 +30,7 @@ export const meta: ComponentMeta = {
       description: 'Accessible name announced by screen readers',
     },
   ],
-  tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-color-text'],
+  tokens: ['--cascivo-color-border', '--cascivo-color-accent', '--cascivo-color-text'],
   accessibility: {
     role: 'progressbar',
     wcag: '2.2-AA',
@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Arc and track colors must resolve to --cascade-* tokens',
+        note: 'Arc and track colors must resolve to --cascivo-* tokens',
       },
     ],
   },

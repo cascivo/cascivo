@@ -10,7 +10,7 @@ export default meta
 type Story = StoryObj<typeof Code>
 
 export const Default: Story = {}
-export const Small: Story = { args: { size: 'sm', children: '--cascade-color-accent' } }
+export const Small: Story = { args: { size: 'sm', children: '--cascivo-color-accent' } }
 
 export const InProse: Story = {
   render: () => (

@@ -128,7 +128,7 @@ export function Histogram({
                   y={ry}
                   width={rw}
                   height={Math.max(0, rh)}
-                  fill="var(--cascade-chart-1)"
+                  fill="var(--cascivo-chart-1)"
                   opacity={0.85}
                   aria-label={`${b.x0.toFixed(1)}–${b.x1.toFixed(1)}: ${b.count}`}
                 />

@@ -32,21 +32,21 @@ Adds no roles of its own — it styles descendant native elements, so the docume
 
 ## Tokens
 
-- `--cascade-font-sans`
-- `--cascade-font-mono`
-- `--cascade-font-semibold`
-- `--cascade-leading-tight`
-- `--cascade-leading-relaxed`
-- `--cascade-tracking-tight`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-radius-indicator`
-- `--cascade-radius-surface`
+- `--cascivo-font-sans`
+- `--cascivo-font-mono`
+- `--cascivo-font-semibold`
+- `--cascivo-leading-tight`
+- `--cascivo-leading-relaxed`
+- `--cascivo-tracking-tight`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-radius-indicator`
+- `--cascivo-radius-surface`
 
 ## Examples
 
@@ -74,4 +74,4 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 | Area        | Level    | Note                                                               |
 | ----------- | -------- | ------------------------------------------------------------------ |
 | source HTML | flexible | Accepts authored children or rendered markup                       |
-| token names | strict   | All typography and surface styling resolves to --cascade-\* tokens |
+| token names | strict   | All typography and surface styling resolves to --cascivo-\* tokens |

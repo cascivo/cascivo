@@ -16,11 +16,11 @@
  */
 
 @layer cascade.functions {
-  @function --cascade-step(--n <number>, --base: 0.25rem) {
+  @function --cascivo-step(--n <number>, --base: 0.25rem) {
     result: calc(var(--base) * var(--n));
   }
 
-  @function --cascade-scale(--n <number>, --ratio: 1.25, --base: 1rem) {
+  @function --cascivo-scale(--n <number>, --ratio: 1.25, --base: 1rem) {
     result: calc(var(--base) * var(--ratio) * var(--n));
   }
 }

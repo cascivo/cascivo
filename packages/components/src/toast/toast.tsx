@@ -19,7 +19,7 @@ interface ToastRecord extends ToastOptions {
 
 const MAX_VISIBLE = 3
 const DEFAULT_DURATION = 5000
-// must outlast --cascade-motion-exit (150ms)
+// must outlast --cascivo-motion-exit (150ms)
 const EXIT_DURATION = 160
 
 // App-global queue: toasts are not tied to a single render tree, so a module

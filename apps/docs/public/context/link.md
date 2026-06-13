@@ -41,11 +41,11 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -84,4 +84,4 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 | Area        | Level    | Note                                                             |
 | ----------- | -------- | ---------------------------------------------------------------- |
 | variant     | flexible | standalone vs inline depending on whether the link sits in prose |
-| token names | strict   | Accent colors and focus ring must resolve to --cascade-\* tokens |
+| token names | strict   | Accent colors and focus ring must resolve to --cascivo-\* tokens |

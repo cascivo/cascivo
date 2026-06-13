@@ -16,7 +16,7 @@ export function Grid({ cols = 12, gap = 4, className, style, children, ...props 
       className={cn(styles['grid'], className)}
       style={{
         ['--_grid-cols' as string]: String(cols),
-        ['--_grid-gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_grid-gap' as string]: `var(--cascivo-space-${gap})`,
         ...style,
       }}
       {...props}

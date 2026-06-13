@@ -31,13 +31,13 @@
       }
     ],
     "tokens": [
-      "--cascade-font-mono",
-      "--cascade-color-text",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-indicator",
-      "--cascade-text-xs",
-      "--cascade-text-sm"
+      "--cascivo-font-mono",
+      "--cascivo-color-text",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-indicator",
+      "--cascivo-text-xs",
+      "--cascivo-text-sm"
     ],
     "accessibility": {
       "role": "code",
@@ -56,7 +56,7 @@
       },
       {
         "title": "Small",
-        "code": "<Code size=\"sm\">--cascade-color-accent</Code>"
+        "code": "<Code size=\"sm\">--cascivo-color-accent</Code>"
       }
     ],
     "dependencies": ["@cascade-ui/core"],
@@ -99,7 +99,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Font and surface must resolve to --cascade-font-mono and --cascade-* tokens"
+          "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
         }
       ]
     }

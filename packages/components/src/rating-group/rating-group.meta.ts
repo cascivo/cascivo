@@ -17,10 +17,10 @@ export const meta: ComponentMeta = {
     { name: 'labels', type: 'RatingGroupLabels', required: false },
   ],
   tokens: [
-    '--cascade-color-warning',
-    '--cascade-color-border-strong',
-    '--cascade-color-accent',
-    '--cascade-radius-sm',
+    '--cascivo-color-warning',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-accent',
+    '--cascivo-radius-sm',
   ],
   accessibility: {
     role: 'radiogroup',
@@ -68,7 +68,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Star styling must resolve to the listed --cascade-* tokens',
+        note: 'Star styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'scale and labels',

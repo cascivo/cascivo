@@ -60,7 +60,7 @@
         "description": "Label for the separator"
       }
     ],
-    "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+    "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-duration-150"],
     "accessibility": {
       "role": "separator",
       "wcag": "2.1-AA",

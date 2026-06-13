@@ -44,12 +44,12 @@ npx cascade add checkbox
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

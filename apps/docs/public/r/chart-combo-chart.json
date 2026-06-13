@@ -75,7 +75,7 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
-    "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
+    "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
     "accessibility": {
       "role": "img",
       "wcag": "2.1-AA",

@@ -49,11 +49,11 @@ npx cascade add toggle
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

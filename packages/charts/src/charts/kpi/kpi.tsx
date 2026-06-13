@@ -28,31 +28,31 @@ export function Kpi({ value, label, delta, deltaLabel, icon, sparkline, classNam
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 'var(--cascade-space-2)',
-        padding: 'var(--cascade-space-4)',
-        borderRadius: 'var(--cascade-radius-surface)',
-        border: '1px solid var(--cascade-color-border)',
-        background: 'var(--cascade-color-surface)',
+        gap: 'var(--cascivo-space-2)',
+        padding: 'var(--cascivo-space-4)',
+        borderRadius: 'var(--cascivo-radius-surface)',
+        border: '1px solid var(--cascivo-color-border)',
+        background: 'var(--cascivo-color-surface)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span
           style={{
-            fontSize: 'var(--cascade-text-sm)',
-            color: 'var(--cascade-color-foreground-muted)',
+            fontSize: 'var(--cascivo-text-sm)',
+            color: 'var(--cascivo-color-foreground-muted)',
           }}
         >
           {label}
         </span>
         {icon && <span aria-hidden="true">{icon}</span>}
       </div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--cascade-space-2)' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--cascivo-space-2)' }}>
         <span
           style={{
-            fontSize: 'var(--cascade-text-2xl)',
+            fontSize: 'var(--cascivo-text-2xl)',
             fontWeight: 700,
             lineHeight: 1,
-            color: 'var(--cascade-color-foreground)',
+            color: 'var(--cascivo-color-foreground)',
           }}
         >
           {typeof value === 'number' ? value.toLocaleString() : value}
@@ -60,13 +60,13 @@ export function Kpi({ value, label, delta, deltaLabel, icon, sparkline, classNam
         {delta != null && (
           <span
             style={{
-              fontSize: 'var(--cascade-text-sm)',
+              fontSize: 'var(--cascivo-text-sm)',
               fontWeight: 500,
               color: deltaPositive
-                ? 'var(--cascade-color-success)'
+                ? 'var(--cascivo-color-success)'
                 : deltaNegative
-                  ? 'var(--cascade-color-destructive)'
-                  : 'var(--cascade-color-foreground-muted)',
+                  ? 'var(--cascivo-color-destructive)'
+                  : 'var(--cascivo-color-foreground-muted)',
             }}
             aria-label={`Trend: ${formatDelta(delta)}${deltaLabel ? ` ${deltaLabel}` : ''}`}
           >

@@ -41,7 +41,7 @@ npx cascade add spinner
 
 ## Design tokens
 
-- `--cascade-radius-full`
+- `--cascivo-radius-full`
 
 ## Accessibility
 

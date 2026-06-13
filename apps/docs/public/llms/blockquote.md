@@ -36,14 +36,14 @@ Attribution renders as <footer><cite>
 
 ## Design tokens
 
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-font-sans`
-- `--cascade-font-medium`
-- `--cascade-leading-relaxed`
-- `--cascade-text-sm`
-- `--cascade-text-base`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-font-sans`
+- `--cascivo-font-medium`
+- `--cascivo-leading-relaxed`
+- `--cascivo-text-sm`
+- `--cascivo-text-base`
 
 ## Accessibility
 

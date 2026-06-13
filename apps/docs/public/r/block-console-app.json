@@ -26,14 +26,14 @@
     "sizes": [],
     "props": [],
     "tokens": [
-      "--cascade-shell-header-block-size",
-      "--cascade-shell-panel-inline-size",
-      "--cascade-shell-aside-inline-size",
-      "--cascade-color-border",
-      "--cascade-color-surface",
-      "--cascade-color-scrim",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit"
+      "--cascivo-shell-header-block-size",
+      "--cascivo-shell-panel-inline-size",
+      "--cascivo-shell-aside-inline-size",
+      "--cascivo-color-border",
+      "--cascivo-color-surface",
+      "--cascivo-color-scrim",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit"
     ],
     "accessibility": {
       "role": "generic",

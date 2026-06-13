@@ -254,11 +254,11 @@ pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism
 Three-level CSS custom property system:
 
 ```
-Primitive tokens:  --cascade-color-blue-500: #3b82f6
+Primitive tokens:  --cascivo-color-blue-500: #3b82f6
         ↓ (theme maps primitive → semantic)
-Semantic tokens:   --cascade-color-accent: var(--cascade-color-blue-500)
+Semantic tokens:   --cascivo-color-accent: var(--cascivo-color-blue-500)
         ↓ (component maps semantic → usage)
-Component tokens:  --cascade-button-bg: var(--cascade-color-accent)
+Component tokens:  --cascivo-button-bg: var(--cascivo-color-accent)
 ```
 
 Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.
@@ -401,7 +401,7 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 ```css
 .component {
   padding-block: 0.5rem; /* static fallback — all browsers */
-  padding-block: --cascade-step(2); /* progressive — Chrome 133+ */
+  padding-block: --cascivo-step(2); /* progressive — Chrome 133+ */
 }
 ```
 

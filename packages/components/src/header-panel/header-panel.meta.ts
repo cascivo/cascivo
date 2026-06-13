@@ -27,12 +27,12 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-shell-header-block-size',
-    '--cascade-shell-panel-inline-size',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
+    '--cascivo-shell-header-block-size',
+    '--cascivo-shell-panel-inline-size',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
   ],
   accessibility: {
     role: 'region',
@@ -90,7 +90,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, shadow, and sizing must resolve to --cascade-* shell tokens',
+        note: 'Surface, shadow, and sizing must resolve to --cascivo-* shell tokens',
       },
     ],
   },

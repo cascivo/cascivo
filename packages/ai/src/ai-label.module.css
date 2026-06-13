@@ -2,24 +2,24 @@
   .root {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-1);
-    padding: var(--cascade-space-1) var(--cascade-space-2);
-    border-radius: var(--cascade-radius-indicator);
-    font-size: var(--cascade-font-size-xs);
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-1) var(--cascivo-space-2);
+    border-radius: var(--cascivo-radius-indicator);
+    font-size: var(--cascivo-font-size-xs);
     font-weight: 500;
     line-height: 1;
   }
   .root[data-variant='generating'] {
-    background: var(--cascade-color-surface-2);
-    color: var(--cascade-color-foreground-muted);
+    background: var(--cascivo-color-surface-2);
+    color: var(--cascivo-color-foreground-muted);
     animation: cascade-ai-pulse 1.5s ease-in-out infinite;
   }
   .root[data-variant='done'] {
-    background: var(--cascade-color-success, oklch(0.648 0.15 145));
+    background: var(--cascivo-color-success, oklch(0.648 0.15 145));
     color: oklch(1 0 0);
   }
   .root[data-variant='error'] {
-    background: var(--cascade-color-error, oklch(0.628 0.188 22));
+    background: var(--cascivo-color-error, oklch(0.628 0.188 22));
     color: oklch(1 0 0);
   }
 }

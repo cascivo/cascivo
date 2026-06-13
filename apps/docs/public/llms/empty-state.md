@@ -48,11 +48,11 @@ npx cascade add empty-state
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-full`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-full`
 
 ## Accessibility
 

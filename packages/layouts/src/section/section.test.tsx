@@ -35,7 +35,7 @@ describe('Section', () => {
   it('sets --_gap from gap prop', () => {
     const { container } = render(<Section gap={6} />)
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--_gap')).toBe(
-      'var(--cascade-space-6)',
+      'var(--cascivo-space-6)',
     )
   })
 

@@ -55,11 +55,11 @@ npx cascade add badge
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-badge`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-badge`
 
 ## Accessibility
 

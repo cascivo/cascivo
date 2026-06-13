@@ -34,7 +34,7 @@ Centered 72rem content column with 2rem block padding
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

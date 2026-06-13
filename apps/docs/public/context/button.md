@@ -42,13 +42,13 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-color-text-on-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -74,5 +74,5 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 | Area        | Level    | Note                                                               |
 | ----------- | -------- | ------------------------------------------------------------------ |
-| token names | strict   | Visual props must resolve to --cascade-button-\* / semantic tokens |
+| token names | strict   | Visual props must resolve to --cascivo-button-\* / semantic tokens |
 | label copy  | flexible | Free, within tone guidance                                         |

@@ -58,10 +58,10 @@ npx cascade add avatar
 
 ## Design tokens
 
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-radius-full`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-full`
 
 ## Accessibility
 

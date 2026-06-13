@@ -1,7 +1,7 @@
 @layer cascade.component {
   .stack {
     display: flex;
-    gap: var(--_stack-gap, var(--cascade-space-4));
+    gap: var(--_stack-gap, var(--cascivo-space-4));
 
     &[data-direction='vertical'] {
       flex-direction: column;

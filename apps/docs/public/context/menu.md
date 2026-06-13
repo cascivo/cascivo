@@ -35,18 +35,18 @@ The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="m
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
-- `--cascade-color-bg-subtle`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
+- `--cascivo-color-bg-subtle`
 
 ## Boundaries
 
 | Area         | Level    | Note                                                                                       |
 | ------------ | -------- | ------------------------------------------------------------------------------------------ |
-| token names  | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascade-\* tokens |
+| token names  | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-\* tokens |
 | item content | flexible | MenuItem accepts arbitrary children; onSelect defines the action                           |
 | composition  | flexible | MenuItem and MenuSeparator can be mixed freely under the trigger                           |

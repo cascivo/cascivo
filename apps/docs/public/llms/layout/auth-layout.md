@@ -33,13 +33,13 @@ Centered auth card with logo
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-space-4`
-- `--cascade-space-6`
-- `--cascade-space-8`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-space-4`
+- `--cascivo-space-6`
+- `--cascivo-space-8`
 
 ## Accessibility
 

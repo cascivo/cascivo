@@ -24,21 +24,21 @@ function CopyButton({ text }: { text: string }) {
     <button
       onClick={copy}
       style={{
-        fontFamily: 'var(--cascade-font-mono)',
+        fontFamily: 'var(--cascivo-font-mono)',
         fontSize: '0.75rem',
         padding: '0.25rem 0.5rem',
-        background: 'var(--cascade-surface-subtle)',
-        border: '1px solid var(--cascade-color-border)',
-        borderRadius: 'var(--cascade-radius-sm)',
+        background: 'var(--cascivo-surface-subtle)',
+        border: '1px solid var(--cascivo-color-border)',
+        borderRadius: 'var(--cascivo-radius-sm)',
         cursor: 'pointer',
-        color: 'var(--cascade-text-primary)',
+        color: 'var(--cascivo-text-primary)',
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.25rem',
       }}
     >
       <code>{text}</code>
-      <span style={{ color: 'var(--cascade-text-secondary)' }}>{copied ? '✓' : '⎘'}</span>
+      <span style={{ color: 'var(--cascivo-text-secondary)' }}>{copied ? '✓' : '⎘'}</span>
     </button>
   )
 }
@@ -76,7 +76,7 @@ export function LayoutsPage() {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 'var(--cascade-space-8)',
+                gap: 'var(--cascivo-space-8)',
               }}
             >
               {groupEntries.map((entry) => {
@@ -90,16 +90,16 @@ export function LayoutsPage() {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: 'var(--cascade-space-3)',
-                      paddingBlockStart: 'var(--cascade-space-4)',
-                      borderBlockStart: '1px solid var(--cascade-color-border)',
+                      gap: 'var(--cascivo-space-3)',
+                      paddingBlockStart: 'var(--cascivo-space-4)',
+                      borderBlockStart: '1px solid var(--cascivo-color-border)',
                     }}
                   >
                     <div
                       style={{
                         display: 'flex',
                         alignItems: 'baseline',
-                        gap: 'var(--cascade-space-4)',
+                        gap: 'var(--cascivo-space-4)',
                         flexWrap: 'wrap',
                       }}
                     >
@@ -112,7 +112,7 @@ export function LayoutsPage() {
                       style={{
                         margin: 0,
                         fontSize: '0.875rem',
-                        color: 'var(--cascade-text-secondary)',
+                        color: 'var(--cascivo-text-secondary)',
                       }}
                     >
                       {entry.description}
@@ -122,7 +122,7 @@ export function LayoutsPage() {
                         style={{
                           margin: 0,
                           fontSize: '0.75rem',
-                          color: 'var(--cascade-text-secondary)',
+                          color: 'var(--cascivo-text-secondary)',
                           fontStyle: 'italic',
                         }}
                       >
@@ -132,8 +132,8 @@ export function LayoutsPage() {
                     {Preview ? (
                       <div
                         style={{
-                          border: '1px solid var(--cascade-color-border)',
-                          borderRadius: 'var(--cascade-radius-md)',
+                          border: '1px solid var(--cascivo-color-border)',
+                          borderRadius: 'var(--cascivo-radius-md)',
                           overflow: 'hidden',
                           containerType: 'inline-size',
                         }}
@@ -143,12 +143,12 @@ export function LayoutsPage() {
                     ) : (
                       <div
                         style={{
-                          padding: 'var(--cascade-space-4)',
-                          background: 'var(--cascade-surface-subtle)',
-                          border: '1px solid var(--cascade-color-border)',
-                          borderRadius: 'var(--cascade-radius-md)',
+                          padding: 'var(--cascivo-space-4)',
+                          background: 'var(--cascivo-surface-subtle)',
+                          border: '1px solid var(--cascivo-color-border)',
+                          borderRadius: 'var(--cascivo-radius-md)',
                           fontSize: '0.75rem',
-                          color: 'var(--cascade-text-secondary)',
+                          color: 'var(--cascivo-text-secondary)',
                         }}
                       >
                         Preview pending

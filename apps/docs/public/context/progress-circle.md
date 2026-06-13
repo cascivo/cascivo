@@ -44,9 +44,9 @@ role="progressbar" with value/max conveys completion to assistive tech; the labe
 
 ## Tokens
 
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
 
 ## Examples
 
@@ -73,4 +73,4 @@ role="progressbar" with value/max conveys completion to assistive tech; the labe
 | Area               | Level    | Note                                                     |
 | ------------------ | -------- | -------------------------------------------------------- |
 | size and showValue | flexible | showValue pairs best with md/lg sizes                    |
-| token names        | strict   | Arc and track colors must resolve to --cascade-\* tokens |
+| token names        | strict   | Arc and track colors must resolve to --cascivo-\* tokens |

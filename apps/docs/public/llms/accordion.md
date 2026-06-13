@@ -41,11 +41,11 @@ npx cascade add accordion
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text`
-- `--cascade-radius-md`
-- `--cascade-focus-ring`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text`
+- `--cascivo-radius-md`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

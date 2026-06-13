@@ -16,11 +16,11 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-surface',
-    '--cascade-radius-full',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-surface',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'switch',
@@ -74,7 +74,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens',
+        note: 'Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens',
       },
       {
         area: 'label copy',

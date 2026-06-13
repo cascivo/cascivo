@@ -42,12 +42,12 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Design tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-shell-panel-inline-size`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-shell-panel-inline-size`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 

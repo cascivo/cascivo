@@ -24,13 +24,13 @@
     "sizes": [],
     "props": [],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-md",
-      "--cascade-shadow-md",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit",
-      "--cascade-color-bg-subtle"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-md",
+      "--cascivo-shadow-md",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit",
+      "--cascivo-color-bg-subtle"
     ],
     "accessibility": {
       "role": "menu",
@@ -78,7 +78,7 @@
         {
           "area": "anchor position",
           "level": "strict",
-          "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+          "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
         }
       ]
     }

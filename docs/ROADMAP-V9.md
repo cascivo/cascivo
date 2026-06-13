@@ -34,11 +34,11 @@ needs: a **top loading bar** clients can drive (progress + error states).
    `onRender` away. The landing build needs the profiling bundle
    (`react-dom/profiling`) aliased in, or the demo needs explicit instrumentation.
 3. **Theme token parity is broken.** `light/dark/warm` define 55 semantic tokens;
-   `flat`/`minimal` define 31. The missing 24 include the whole `--cascade-color-text*`
+   `flat`/`minimal` define 31. The missing 24 include the whole `--cascivo-color-text*`
    family — which is why Input labels vanish in the "One form, five personalities" demo for
    flat and minimal. Nothing guards against this class of bug today.
 4. **The ops console is squashed and static.** Cards sit at `padding="sm"` with
-   `--cascade-space-3` gaps; the deploys table is `density="compact"`; the SideNav renders
+   `--cascivo-space-3` gaps; the deploys table is `density="compact"`; the SideNav renders
    fallback dots because no icons are passed (the component supports them); the titlebar is
    two inert spans; every chart datum is a constant.
 5. **Layout and polish gaps.** The "Agents don't screenshot. They render." artifact is

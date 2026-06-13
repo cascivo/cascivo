@@ -17,11 +17,11 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-success',
-    '--cascade-color-warning',
-    '--cascade-color-destructive',
-    '--cascade-radius-badge',
+    '--cascivo-color-accent',
+    '--cascivo-color-success',
+    '--cascivo-color-warning',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-badge',
   ],
   accessibility: { role: 'status', wcag: '2.2-AA', keyboard: [], forcedColors: true },
   examples: [
@@ -70,7 +70,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)',
+        note: 'Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)',
       },
     ],
   },

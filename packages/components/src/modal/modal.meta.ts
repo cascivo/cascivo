@@ -15,11 +15,11 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-border',
-    '--cascade-radius-modal',
-    '--cascade-shadow-xl',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-border',
+    '--cascivo-radius-modal',
+    '--cascivo-shadow-xl',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'dialog',
@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens',
+        note: 'Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'size',

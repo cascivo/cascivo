@@ -41,10 +41,10 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 
 ## Tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-input`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-input`
 
 ## Examples
 
@@ -92,6 +92,6 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 
 | Area            | Level    | Note                                                                                      |
 | --------------- | -------- | ----------------------------------------------------------------------------------------- |
-| token names     | strict   | Addon background, border, text, and radius must resolve to the listed --cascade-\* tokens |
+| token names     | strict   | Addon background, border, text, and radius must resolve to the listed --cascivo-\* tokens |
 | addon alignment | flexible | InputGroupAddon align is inline-start (leading) or inline-end (trailing)                  |
 | addon content   | flexible | prefix/suffix and addon children accept arbitrary ReactNode                               |

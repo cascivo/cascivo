@@ -1,7 +1,7 @@
 const PRACTICES = [
   {
     title: 'Focus, visible',
-    line: 'Every interactive component styles :focus-visible through the --cascade-focus-ring token. Keyboard users always see where they are.',
+    line: 'Every interactive component styles :focus-visible through the --cascivo-focus-ring token. Keyboard users always see where they are.',
   },
   {
     title: 'Reduced motion',

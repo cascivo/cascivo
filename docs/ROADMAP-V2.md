@@ -63,7 +63,7 @@ Carbon's "compose a DataTable from 12 subcomponents" approach is explicitly reje
 2. Every new component goes through the dark factory backlog → PR → review pipeline.
 3. Every new package/feature updates: `registry.json` (if registry content), MCP tools, docs app, storybook stories, and its README — **in the same PR** (enforced by the drift gate, Phase 6).
 4. Components that render text (Pagination, DataTable empty states, FileUploader, DatePicker…) take their strings from `@cascade-ui/i18n` once it exists — never hardcoded English.
-5. **Motion is CSS-only and mandatory.** Every component with an enter/exit or open/close (Modal, Toast, Dropdown, Tooltip, Accordion, SideNav, CommandMenu…) ships its animation in its `.module.css` via `@starting-style` + `transition-behavior: allow-discrete`, using only `--cascade-duration-*` / `--cascade-ease-*` tokens, animating only compositor-friendly properties (`opacity`, `transform`/`translate`/`scale`). No JS animation, no animation library, no `requestAnimationFrame`. All motion collapses under `prefers-reduced-motion: reduce`.
+5. **Motion is CSS-only and mandatory.** Every component with an enter/exit or open/close (Modal, Toast, Dropdown, Tooltip, Accordion, SideNav, CommandMenu…) ships its animation in its `.module.css` via `@starting-style` + `transition-behavior: allow-discrete`, using only `--cascivo-duration-*` / `--cascivo-ease-*` tokens, animating only compositor-friendly properties (`opacity`, `transform`/`translate`/`scale`). No JS animation, no animation library, no `requestAnimationFrame`. All motion collapses under `prefers-reduced-motion: reduce`.
 6. **Performance budgets are part of the spec.** Interactions must not trigger React re-renders (signals patch the DOM); large collections render via CSS containment before any JS windowing is considered. Budgets are enforced by CI gates (Milestone 6.5), not by code review vigilance.
 
 ---
@@ -75,9 +75,9 @@ Carbon's "compose a DataTable from 12 subcomponents" approach is explicitly reje
 
 ### Milestone 1.0 — Motion system & v1 retrofit
 
-State of play: duration (`--cascade-duration-75..300`) and easing (`--cascade-ease-in/out/in-out`) tokens exist, but only Dropdown and Tooltip use `@starting-style`; Modal and Toast barely animate; only Spinner handles `prefers-reduced-motion`. Fix this before the component count triples.
+State of play: duration (`--cascivo-duration-75..300`) and easing (`--cascivo-ease-in/out/in-out`) tokens exist, but only Dropdown and Tooltip use `@starting-style`; Modal and Toast barely animate; only Spinner handles `prefers-reduced-motion`. Fix this before the component count triples.
 
-- [ ] **Semantic motion tokens** in `@cascade-ui/tokens`: `--cascade-motion-enter` / `--cascade-motion-exit` / `--cascade-motion-emphasis` (duration+easing pairs composed from the existing primitives), so components reference intent, not raw values — themes can later tune motion character the same way they tune color.
+- [ ] **Semantic motion tokens** in `@cascade-ui/tokens`: `--cascivo-motion-enter` / `--cascivo-motion-exit` / `--cascivo-motion-emphasis` (duration+easing pairs composed from the existing primitives), so components reference intent, not raw values — themes can later tune motion character the same way they tune color.
 - [ ] **Retrofit Modal**: `@starting-style` + `transition-behavior: allow-discrete` on `<dialog>` (scale/fade enter, fade exit) and `::backdrop` fade — the native-dialog showcase animation.
 - [ ] **Retrofit Toast**: slide-in/slide-out via `@starting-style`; the existing `dismissing` machine state only toggles a `data-state`, CSS does the rest.
 - [ ] **Audit Dropdown, Tooltip, Accordion, Tabs**: consistent durations/easings from semantic tokens; Accordion's `grid-template-rows` animation verified.
@@ -194,7 +194,7 @@ No rendering yet — pure, heavily-tested math and infrastructure:
 - [ ] **Scales**: linear, log, time, band/ordinal — domain/range mapping, nice-ticks algorithms (Wilkinson/extended for linear, calendar-aware for time). Property-based tests (fast-check as devDep) for tick correctness.
 - [ ] **Shape generators**: line/area path builders (with monotone + linear curve interpolation), arc generator (pie/donut), stacking layout.
 - [ ] **Signal-driven chart core**: data, dimensions, and hover state are signals; SVG attributes patch without React re-render. `ResizeObserver`-driven responsive sizing.
-- [ ] **Shared chrome**: Axis, Grid lines, Legend (interactive: click to toggle series), Tooltip (shared crosshair), color ramps from theme tokens (`--cascade-chart-1..n` semantic tokens added to all three themes).
+- [ ] **Shared chrome**: Axis, Grid lines, Legend (interactive: click to toggle series), Tooltip (shared crosshair), color ramps from theme tokens (`--cascivo-chart-1..n` semantic tokens added to all three themes).
 - [ ] **A11y foundation**: every chart renders an off-screen data table fallback, `role="img"` + generated description, keyboard point navigation. Locale-aware tick/tooltip formatting via `@cascade-ui/i18n`.
 
 ### Milestone 4.2 — Chart wave 1 (the 80% set)

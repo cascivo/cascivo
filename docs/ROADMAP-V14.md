@@ -14,8 +14,8 @@ each promise against what the code actually does and closing the gap. Three conc
 findings, all real in the repo today, drive it:
 
 1. **Charts don't actually match the themes.** The eight series colors
-   (`--cascade-chart-1` … `--cascade-chart-8`) are defined once, tuned for the light theme,
-   and **reused unchanged across all ten themes** — only `--cascade-chart-grid`/`-axis`
+   (`--cascivo-chart-1` … `--cascivo-chart-8`) are defined once, tuned for the light theme,
+   and **reused unchanged across all ten themes** — only `--cascivo-chart-grid`/`-axis`
    adapt. On dark, brutalist, terminal, and pastel themes the palette clashes; it has never
    been verified for color-vision-deficiency (CVD) safety or contrast. And **14 of 17 chart
    types have no tooltip at all** — the three that do (line, heatmap, histogram) are ad-hoc,
@@ -68,7 +68,7 @@ findings, all real in the repo today, drive it:
 
 | #   | Workstream          | Tranche | Summary                                                                                                                                            |
 | --- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Chart color system  | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascade-chart-*` overrides for all 10 themes, contrast + CVD verification test.              |
+| A   | Chart color system  | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascivo-chart-*` overrides for all 10 themes, contrast + CVD verification test.              |
 | B   | Chart tooltips      | T2      | Shared accessible chart-tooltip primitive (hover + keyboard), rollout to all 17 chart types, replace the ad-hoc line/heatmap/histogram tooltips.   |
 | C   | Performance honesty | T3      | Investigate + fix the bench (verify gzip, diagnose `tabs=0`, fix baseline runtime preload), multi-lens cost table, annotated zeros, page copy.     |
 | D   | WCAG 2.2 + APG      | T4      | Extend `AccessibilityMeta`; upgrade components to WCAG 2.2 AA; per-component APG pattern conformance; forced-colors/contrast/reduced-motion audit. |
@@ -83,7 +83,7 @@ findings, all real in the repo today, drive it:
    cascade already has exactly eight slots — they map one-to-one. Color never carries meaning
    alone (the redundant-encoding rule is documented).
 2. **Palettes are per-theme overrides, not one palette.** Each of the ten themes overrides
-   `--cascade-chart-1..8` in its own CSS, tuned for that theme's background and mood, every
+   `--cascivo-chart-1..8` in its own CSS, tuned for that theme's background and mood, every
    set independently CVD-checked and contrast-verified against its theme surface. A test
    enforces presence + contrast for all ten.
 3. **One tooltip primitive, accessible by construction.** A single chart-tooltip lives in
@@ -128,7 +128,7 @@ findings, all real in the repo today, drive it:
 
 ## Definition of Done
 
-- [x] All ten themes override `--cascade-chart-1..8` with a theme-tuned, CVD-safe,
+- [x] All ten themes override `--cascivo-chart-1..8` with a theme-tuned, CVD-safe,
       contrast-verified palette; a test fails if any theme is missing a chart color or any
       series color falls below the contrast threshold against that theme's chart surface; the
       base palette's research lineage is documented.

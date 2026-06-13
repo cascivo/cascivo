@@ -2,56 +2,56 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    font-family: var(--cascade-font-sans);
-    font-weight: var(--cascade-font-medium);
-    border-radius: var(--cascade-radius-badge);
+    font-family: var(--cascivo-font-sans);
+    font-weight: var(--cascivo-font-medium);
+    border-radius: var(--cascivo-radius-badge);
     border: 1px solid transparent;
     white-space: nowrap;
 
     &[data-size='sm'] {
-      padding-inline: var(--cascade-space-2);
-      padding-block: var(--cascade-space-1);
-      font-size: var(--cascade-text-xs);
+      padding-inline: var(--cascivo-space-2);
+      padding-block: var(--cascivo-space-1);
+      font-size: var(--cascivo-text-xs);
       line-height: 1;
     }
 
     &[data-size='md'] {
-      padding-inline: var(--cascade-space-3);
-      padding-block: var(--cascade-space-1);
-      font-size: var(--cascade-text-xs);
-      line-height: var(--cascade-leading-normal);
+      padding-inline: var(--cascivo-space-3);
+      padding-block: var(--cascivo-space-1);
+      font-size: var(--cascivo-text-xs);
+      line-height: var(--cascivo-leading-normal);
     }
 
     &[data-variant='default'] {
-      background-color: var(--cascade-color-accent);
-      color: var(--cascade-color-text-on-accent);
+      background-color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-text-on-accent);
     }
 
     &[data-variant='secondary'] {
-      background-color: var(--cascade-color-bg-subtle);
-      color: var(--cascade-color-text-subtle);
-      border-color: var(--cascade-color-border);
+      background-color: var(--cascivo-color-bg-subtle);
+      color: var(--cascivo-color-text-subtle);
+      border-color: var(--cascivo-color-border);
     }
 
     &[data-variant='success'] {
-      background-color: var(--cascade-color-success-subtle);
-      color: var(--cascade-color-success-foreground, var(--cascade-color-success));
+      background-color: var(--cascivo-color-success-subtle);
+      color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
     }
 
     &[data-variant='warning'] {
-      background-color: var(--cascade-color-warning-subtle);
-      color: var(--cascade-color-warning-foreground, var(--cascade-color-warning));
+      background-color: var(--cascivo-color-warning-subtle);
+      color: var(--cascivo-color-warning-foreground, var(--cascivo-color-warning));
     }
 
     &[data-variant='destructive'] {
-      background-color: var(--cascade-color-destructive-subtle);
-      color: var(--cascade-color-destructive);
+      background-color: var(--cascivo-color-destructive-subtle);
+      color: var(--cascivo-color-destructive);
     }
 
     &[data-variant='outline'] {
       background-color: transparent;
-      color: var(--cascade-color-text);
-      border-color: var(--cascade-color-border-strong);
+      color: var(--cascivo-color-text);
+      border-color: var(--cascivo-color-border-strong);
     }
   }
 }

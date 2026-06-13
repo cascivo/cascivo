@@ -91,7 +91,7 @@ export function ConsoleApp() {
       }
       aside={
         <div
-          style={{ padding: '1rem', borderInlineStart: '1px solid var(--cascade-color-border)' }}
+          style={{ padding: '1rem', borderInlineStart: '1px solid var(--cascivo-color-border)' }}
         >
           <h2 style={{ fontSize: '0.875rem', fontWeight: 600, marginBlockEnd: '0.75rem' }}>
             Resource details
@@ -104,13 +104,13 @@ export function ConsoleApp() {
               fontSize: '0.875rem',
             }}
           >
-            <dt style={{ color: 'var(--cascade-color-text-subtle)' }}>Status</dt>
+            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Status</dt>
             <dd>Running</dd>
-            <dt style={{ color: 'var(--cascade-color-text-subtle)' }}>Region</dt>
+            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Region</dt>
             <dd>us-east-1</dd>
-            <dt style={{ color: 'var(--cascade-color-text-subtle)' }}>CPU</dt>
+            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>CPU</dt>
             <dd>4 vCPU</dd>
-            <dt style={{ color: 'var(--cascade-color-text-subtle)' }}>Memory</dt>
+            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Memory</dt>
             <dd>16 GB</dd>
           </dl>
         </div>
@@ -127,7 +127,7 @@ export function ConsoleApp() {
           <li
             style={{
               padding: '0.75rem 1rem',
-              borderBlockEnd: '1px solid var(--cascade-color-border)',
+              borderBlockEnd: '1px solid var(--cascivo-color-border)',
             }}
           >
             Instance i-001 started
@@ -135,7 +135,7 @@ export function ConsoleApp() {
           <li
             style={{
               padding: '0.75rem 1rem',
-              borderBlockEnd: '1px solid var(--cascade-color-border)',
+              borderBlockEnd: '1px solid var(--cascivo-color-border)',
             }}
           >
             Backup completed
@@ -170,7 +170,7 @@ export function ConsoleApp() {
                   style={{
                     textAlign: 'start',
                     padding: '0.5rem',
-                    borderBlockEnd: '1px solid var(--cascade-color-border)',
+                    borderBlockEnd: '1px solid var(--cascivo-color-border)',
                     fontSize: '0.875rem',
                   }}
                 >
@@ -221,7 +221,7 @@ export function ConsoleApp() {
                       key={cell}
                       style={{
                         padding: '0.5rem',
-                        borderBlockEnd: '1px solid var(--cascade-color-border)',
+                        borderBlockEnd: '1px solid var(--cascivo-color-border)',
                         fontSize: '0.875rem',
                       }}
                     >

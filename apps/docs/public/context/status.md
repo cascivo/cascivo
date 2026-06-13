@@ -40,13 +40,13 @@ Meaning is carried by the text label, never by the dot color alone; the pulse an
 
 ## Tokens
 
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-error`
-- `--cascade-color-info`
-- `--cascade-color-text-muted`
-- `--cascade-color-text`
-- `--cascade-radius-full`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-error`
+- `--cascivo-color-info`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text`
+- `--cascivo-radius-full`
 
 ## Examples
 
@@ -77,4 +77,4 @@ The pulse animation respects prefers-reduced-motion
 | Area        | Level    | Note                                                                    |
 | ----------- | -------- | ----------------------------------------------------------------------- |
 | pulse       | flexible | Enable pulse only for actively-changing states                          |
-| token names | strict   | State colors must resolve to --cascade-color-success/warning/error/info |
+| token names | strict   | State colors must resolve to --cascivo-color-success/warning/error/info |

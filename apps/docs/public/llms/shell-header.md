@@ -48,13 +48,13 @@ Brand with prefix, dropdown nav, global icon action
 
 ## Design tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-radius-control`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-radius-control`
 
 ## Accessibility
 

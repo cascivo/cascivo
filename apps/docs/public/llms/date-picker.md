@@ -70,11 +70,11 @@ Date range constraint
 
 ## Design tokens
 
-- `--cascade-date-picker-bg`
-- `--cascade-date-picker-border`
-- `--cascade-date-picker-radius`
-- `--cascade-date-picker-day-selected-bg`
-- `--cascade-date-picker-day-today-color`
+- `--cascivo-date-picker-bg`
+- `--cascivo-date-picker-border`
+- `--cascivo-date-picker-radius`
+- `--cascivo-date-picker-day-selected-bg`
+- `--cascivo-date-picker-day-today-color`
 
 ## Accessibility
 

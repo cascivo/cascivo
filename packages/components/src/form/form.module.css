@@ -2,6 +2,6 @@
   .form {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-4);
+    gap: var(--cascivo-space-4);
   }
 }

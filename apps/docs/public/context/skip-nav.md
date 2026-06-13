@@ -40,11 +40,11 @@ Renders an anchor that is visually hidden until focused, then becomes visible so
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-radius-control`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-radius-control`
+- `--cascivo-focus-ring`
 
 ## Examples
 

@@ -44,14 +44,14 @@ The preview renders as a real <button> so it is keyboard-focusable and announces
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -71,6 +71,6 @@ The preview renders as a real <button> so it is keyboard-focusable and announces
 
 | Area                    | Level    | Note                                                                                     |
 | ----------------------- | -------- | ---------------------------------------------------------------------------------------- |
-| token names             | strict   | Visual styling must resolve to the listed --cascade-\* surface/border/accent/text tokens |
+| token names             | strict   | Visual styling must resolve to the listed --cascivo-\* surface/border/accent/text tokens |
 | placeholder copy        | flexible | Free, within tone guidance                                                               |
 | submit-on-blur behavior | flexible | submitOnBlur toggles whether blurring confirms or cancels the edit                       |

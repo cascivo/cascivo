@@ -54,7 +54,7 @@ function Demo() {
 
 ## Design tokens
 
-- `--cascade-space-4`
+- `--cascivo-space-4`
 
 ## Accessibility
 

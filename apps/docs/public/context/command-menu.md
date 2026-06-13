@@ -55,17 +55,17 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 
 ## Tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-modal`
-- `--cascade-radius-sm`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-modal`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Examples
 
@@ -93,4 +93,4 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 | ----------- | -------- | --------------------------------------------------------------------------------------- |
 | hotkey      | flexible | Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering      |
 | async items | flexible | onQueryChange + loading allow fetching items per keystroke                              |
-| token names | strict   | Palette styling resolves to semantic --cascade-color-\* / --cascade-radius-modal tokens |
+| token names | strict   | Palette styling resolves to semantic --cascivo-color-\* / --cascivo-radius-modal tokens |

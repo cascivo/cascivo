@@ -20,7 +20,7 @@ describe('Columns', () => {
   it('sets gap CSS var', () => {
     const { container } = render(<Columns gap={6} />)
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--_gap')).toBe(
-      'var(--cascade-space-6)',
+      'var(--cascivo-space-6)',
     )
   })
 

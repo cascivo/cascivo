@@ -17,7 +17,7 @@ export function Masonry({ cols = 3, gap = 4, className, style, ...props }: Mason
       className={cn(styles['masonry'], className)}
       style={{
         ['--_cols' as string]: String(cols),
-        ['--_gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_gap' as string]: `var(--cascivo-space-${gap})`,
         ...(style as CSSProperties | undefined),
       }}
       {...props}

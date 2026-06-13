@@ -53,12 +53,12 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-accent",
-      "--cascade-color-bg-subtle",
-      "--cascade-radius-input",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-radius-input",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "group",
@@ -112,7 +112,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Slot styling must resolve to the listed --cascade-* tokens"
+          "note": "Slot styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "length and type",

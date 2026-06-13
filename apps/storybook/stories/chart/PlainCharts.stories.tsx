@@ -58,7 +58,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
         style={{
           width: '8rem',
           fontSize: '0.75rem',
-          color: 'var(--cascade-text-secondary)',
+          color: 'var(--cascivo-text-secondary)',
           flexShrink: 0,
         }}
       >
@@ -74,7 +74,7 @@ function ColLabel({ children }: { children: string }) {
     <div
       style={{
         fontSize: '0.6875rem',
-        color: 'var(--cascade-text-secondary)',
+        color: 'var(--cascivo-text-secondary)',
         marginBlockEnd: '0.25rem',
       }}
     >
@@ -93,7 +93,7 @@ function PlainSheetInner() {
             width: 280,
             textAlign: 'center',
             fontSize: '0.75rem',
-            color: 'var(--cascade-text-secondary)',
+            color: 'var(--cascivo-text-secondary)',
           }}
         >
           Full chrome
@@ -103,7 +103,7 @@ function PlainSheetInner() {
             width: 120,
             textAlign: 'center',
             fontSize: '0.75rem',
-            color: 'var(--cascade-text-secondary)',
+            color: 'var(--cascivo-text-secondary)',
           }}
         >
           plain (120×32)
@@ -387,7 +387,7 @@ export const InTableCell: Story = {
                 style={{
                   padding: '0.5rem 1rem',
                   textAlign: 'start',
-                  borderBlockEnd: '1px solid var(--cascade-color-border)',
+                  borderBlockEnd: '1px solid var(--cascivo-color-border)',
                   fontWeight: 500,
                 }}
               >
@@ -399,13 +399,13 @@ export const InTableCell: Story = {
         <tbody>
           {[
             { label: 'Revenue', value: '$48.3k' },
-            { label: 'Cost', value: '$22.1k', color: 'var(--cascade-chart-2)' },
+            { label: 'Cost', value: '$22.1k', color: 'var(--cascivo-chart-2)' },
           ].map((row, ri) => (
             <tr key={row.label}>
               <td
                 style={{
                   padding: '0.5rem 1rem',
-                  borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                  borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                 }}
               >
                 {row.label}
@@ -413,7 +413,7 @@ export const InTableCell: Story = {
               <td
                 style={{
                   padding: '0.5rem 1rem',
-                  borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                  borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                   fontVariantNumeric: 'tabular-nums',
                 }}
               >
@@ -422,7 +422,7 @@ export const InTableCell: Story = {
               <td
                 style={{
                   padding: '0.5rem 1rem',
-                  borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                  borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                 }}
               >
                 <LineChart

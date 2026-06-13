@@ -50,11 +50,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-border",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-text",
-          "--cascade-radius-md",
-          "--cascade-focus-ring"
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-radius-md",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "button",
@@ -101,7 +101,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Borders, surfaces, and radii must resolve to --cascade-* semantic tokens"
+              "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
             }
           ]
         }
@@ -166,12 +166,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-info",
-          "--cascade-color-success",
-          "--cascade-color-warning",
-          "--cascade-color-destructive",
-          "--cascade-color-border",
-          "--cascade-radius-md"
+          "--cascivo-color-info",
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-destructive",
+          "--cascivo-color-border",
+          "--cascivo-radius-md"
         ],
         "accessibility": {
           "role": "alert",
@@ -226,7 +226,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Severity colors must resolve to --cascade-color-info/success/warning/destructive"
+              "note": "Severity colors must resolve to --cascivo-color-info/success/warning/destructive"
             }
           ]
         }
@@ -258,14 +258,14 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-lg",
-          "--cascade-shadow-xl",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit",
-          "--cascade-color-accent",
-          "--cascade-color-destructive"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-lg",
+          "--cascivo-shadow-xl",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive"
         ],
         "accessibility": {
           "role": "alertdialog",
@@ -331,7 +331,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive"
+              "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
             }
           ]
         }
@@ -391,10 +391,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent-subtle",
-          "--cascade-color-success",
-          "--cascade-color-destructive",
-          "--cascade-radius-full"
+          "--cascivo-color-accent-subtle",
+          "--cascivo-color-success",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-full"
         ],
         "accessibility": {
           "role": "img",
@@ -438,7 +438,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Fallback and status colors must resolve to --cascade-* semantic tokens"
+              "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
             }
           ]
         }
@@ -483,11 +483,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-success",
-          "--cascade-color-warning",
-          "--cascade-color-destructive",
-          "--cascade-radius-badge"
+          "--cascivo-color-accent",
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-badge"
         ],
         "accessibility": {
           "role": "status",
@@ -536,7 +536,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)"
+              "note": "Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)"
             }
           ]
         }
@@ -570,14 +570,14 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-shell-header-block-size",
-          "--cascade-shell-panel-inline-size",
-          "--cascade-shell-aside-inline-size",
-          "--cascade-color-border",
-          "--cascade-color-surface",
-          "--cascade-color-scrim",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit"
+          "--cascivo-shell-header-block-size",
+          "--cascivo-shell-panel-inline-size",
+          "--cascivo-shell-aside-inline-size",
+          "--cascivo-color-border",
+          "--cascivo-color-surface",
+          "--cascivo-color-scrim",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
         ],
         "accessibility": {
           "role": "generic",
@@ -1198,14 +1198,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-border-strong",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-font-sans",
-          "--cascade-font-medium",
-          "--cascade-leading-relaxed",
-          "--cascade-text-sm",
-          "--cascade-text-base"
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-font-sans",
+          "--cascivo-font-medium",
+          "--cascivo-leading-relaxed",
+          "--cascivo-text-sm",
+          "--cascivo-text-base"
         ],
         "accessibility": {
           "role": "blockquote",
@@ -1252,7 +1252,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Border and text colors must resolve to --cascade-* tokens"
+              "note": "Border and text colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -1307,11 +1307,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-text-subtle",
-          "--cascade-radius-sm",
-          "--cascade-focus-ring"
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-sm",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "navigation",
@@ -1359,7 +1359,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Text colors and focus ring must resolve to --cascade-* tokens"
+              "note": "Text colors and focus ring must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -1421,13 +1421,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-accent-hover",
-          "--cascade-color-accent-active",
-          "--cascade-color-text-on-accent",
-          "--cascade-color-destructive",
-          "--cascade-radius-button",
-          "--cascade-focus-ring"
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-hover",
+          "--cascivo-color-accent-active",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-button",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "button",
@@ -1477,7 +1477,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+              "note": "Visual props must resolve to --cascivo-button-* / semantic tokens"
             },
             {
               "area": "label copy",
@@ -1527,10 +1527,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-card",
-          "--cascade-shadow-md"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-card",
+          "--cascivo-shadow-md"
         ],
         "accessibility": {
           "role": "region",
@@ -1574,7 +1574,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+              "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -1687,14 +1687,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -1833,14 +1833,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -1937,14 +1937,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -2046,14 +2046,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -2163,10 +2163,10 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-color-neutral-200",
-          "--cascade-color-neutral-300",
-          "--cascade-color-neutral-400"
+          "--cascivo-chart-1",
+          "--cascivo-color-neutral-200",
+          "--cascivo-color-neutral-300",
+          "--cascivo-color-neutral-400"
         ],
         "accessibility": {
           "role": "img",
@@ -2280,7 +2280,7 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
+        "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -2380,7 +2380,7 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
+        "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -2482,7 +2482,7 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": ["--cascivo-chart-1"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -2578,7 +2578,7 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": ["--cascivo-chart-1"],
         "accessibility": {
           "role": "figure",
           "wcag": "2.1-AA",
@@ -2729,14 +2729,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -2843,7 +2843,7 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": ["--cascivo-chart-1"],
         "accessibility": {
           "role": "meter",
           "wcag": "2.1-AA",
@@ -2950,14 +2950,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -3066,14 +3066,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -3194,14 +3194,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -3299,7 +3299,7 @@
             "description": "Show dot at last data point"
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": ["--cascivo-chart-1"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -3394,14 +3394,14 @@
           }
         ],
         "tokens": [
-          "--cascade-chart-1",
-          "--cascade-chart-2",
-          "--cascade-chart-3",
-          "--cascade-chart-4",
-          "--cascade-chart-5",
-          "--cascade-chart-6",
-          "--cascade-chart-7",
-          "--cascade-chart-8"
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
         ],
         "accessibility": {
           "role": "img",
@@ -3492,12 +3492,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-accent",
-          "--cascade-color-border-strong",
-          "--cascade-color-text-on-accent",
-          "--cascade-radius-sm",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-radius-sm",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "checkbox",
@@ -3559,7 +3559,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens"
+              "note": "Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens"
             }
           ]
         }
@@ -3627,7 +3627,7 @@
             "description": "Disables the card"
           }
         ],
-        "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
+        "tokens": ["--cascivo-color-accent", "--cascivo-color-border", "--cascivo-radius-surface"],
         "accessibility": {
           "role": "checkbox",
           "wcag": "2.2-AA",
@@ -3682,7 +3682,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+              "note": "Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface"
             }
           ]
         }
@@ -3721,13 +3721,13 @@
           }
         ],
         "tokens": [
-          "--cascade-font-mono",
-          "--cascade-color-text",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-indicator",
-          "--cascade-text-xs",
-          "--cascade-text-sm"
+          "--cascivo-font-mono",
+          "--cascivo-color-text",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-indicator",
+          "--cascivo-text-xs",
+          "--cascivo-text-sm"
         ],
         "accessibility": {
           "role": "code",
@@ -3775,7 +3775,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Font and surface must resolve to --cascade-font-mono and --cascade-* tokens"
+              "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
             }
           ]
         }
@@ -3877,22 +3877,22 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-surface-overlay",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-text-subtle",
-          "--cascade-color-accent",
-          "--cascade-color-danger",
-          "--cascade-radius-input",
-          "--cascade-radius-md",
-          "--cascade-radius-sm",
-          "--cascade-shadow-lg",
-          "--cascade-motion-enter",
-          "--cascade-z-dropdown"
+          "--cascivo-color-surface",
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-danger",
+          "--cascivo-radius-input",
+          "--cascivo-radius-md",
+          "--cascivo-radius-sm",
+          "--cascivo-shadow-lg",
+          "--cascivo-motion-enter",
+          "--cascivo-z-dropdown"
         ],
         "accessibility": {
           "role": "combobox",
@@ -3955,7 +3955,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+              "note": "Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens"
             }
           ]
         }
@@ -4046,17 +4046,17 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface-overlay",
-          "--cascade-color-border",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-text-subtle",
-          "--cascade-radius-modal",
-          "--cascade-radius-sm",
-          "--cascade-shadow-xl",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit"
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-modal",
+          "--cascivo-radius-sm",
+          "--cascivo-shadow-xl",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
         ],
         "accessibility": {
           "role": "combobox",
@@ -4123,7 +4123,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens"
+              "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
             }
           ]
         }
@@ -4155,13 +4155,13 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-md",
-          "--cascade-shadow-md",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit",
-          "--cascade-color-bg-subtle"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-md",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-color-bg-subtle"
         ],
         "accessibility": {
           "role": "menu",
@@ -4209,7 +4209,7 @@
             {
               "area": "anchor position",
               "level": "strict",
-              "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+              "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
             }
           ]
         }
@@ -4260,16 +4260,16 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-text-subtle",
-          "--cascade-color-text",
-          "--cascade-color-border",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-success",
-          "--cascade-radius-control",
-          "--cascade-focus-ring",
-          "--cascade-control-height-sm",
-          "--cascade-control-height-md"
+          "--cascivo-color-surface",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-success",
+          "--cascivo-radius-control",
+          "--cascivo-focus-ring",
+          "--cascivo-control-height-sm",
+          "--cascivo-control-height-md"
         ],
         "accessibility": {
           "role": "button",
@@ -4321,7 +4321,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success"
+              "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
             }
           ]
         }
@@ -4465,28 +4465,28 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-accent",
-          "--cascade-font-sans",
-          "--cascade-text-sm",
-          "--cascade-text-xs",
-          "--cascade-font-semibold",
-          "--cascade-font-medium",
-          "--cascade-radius-lg",
-          "--cascade-radius-sm",
-          "--cascade-space-2",
-          "--cascade-space-3",
-          "--cascade-space-4",
-          "--cascade-data-table-max-height",
-          "--cascade-duration-150",
-          "--cascade-duration-500",
-          "--cascade-ease-out",
-          "--cascade-ease-in-out"
+          "--cascivo-color-surface",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-accent",
+          "--cascivo-font-sans",
+          "--cascivo-text-sm",
+          "--cascivo-text-xs",
+          "--cascivo-font-semibold",
+          "--cascivo-font-medium",
+          "--cascivo-radius-lg",
+          "--cascivo-radius-sm",
+          "--cascivo-space-2",
+          "--cascivo-space-3",
+          "--cascivo-space-4",
+          "--cascivo-data-table-max-height",
+          "--cascivo-duration-150",
+          "--cascivo-duration-500",
+          "--cascivo-ease-out",
+          "--cascivo-ease-in-out"
         ],
         "accessibility": {
           "role": "table",
@@ -4535,7 +4535,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "All surfaces, borders, and spacing must resolve to --cascade-* tokens"
+              "note": "All surfaces, borders, and spacing must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -4640,11 +4640,11 @@
           }
         ],
         "tokens": [
-          "--cascade-date-picker-bg",
-          "--cascade-date-picker-border",
-          "--cascade-date-picker-radius",
-          "--cascade-date-picker-day-selected-bg",
-          "--cascade-date-picker-day-today-color"
+          "--cascivo-date-picker-bg",
+          "--cascivo-date-picker-border",
+          "--cascivo-date-picker-radius",
+          "--cascivo-date-picker-day-selected-bg",
+          "--cascivo-date-picker-day-today-color"
         ],
         "accessibility": {
           "role": "combobox",
@@ -4710,7 +4710,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Styling resolves to --cascade-date-picker-* component tokens"
+              "note": "Styling resolves to --cascivo-date-picker-* component tokens"
             }
           ]
         }
@@ -4774,11 +4774,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface-overlay",
-          "--cascade-color-border",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-md",
-          "--cascade-z-dropdown"
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-md",
+          "--cascivo-z-dropdown"
         ],
         "accessibility": {
           "role": "menu",
@@ -4839,7 +4839,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens"
+              "note": "Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens"
             }
           ]
         }
@@ -4904,14 +4904,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-sm",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-sm",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "button",
@@ -4955,7 +4955,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+              "note": "Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens"
             },
             {
               "area": "placeholder copy",
@@ -5024,11 +5024,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-text-muted",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-full"
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-full"
         ],
         "accessibility": {
           "role": "none",
@@ -5081,7 +5081,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Text and background colors must resolve to --cascade-* tokens"
+              "note": "Text and background colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -5180,11 +5180,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-accent-subtle",
-          "--cascade-color-success",
-          "--cascade-color-danger",
-          "--cascade-color-danger-subtle"
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-subtle",
+          "--cascivo-color-success",
+          "--cascivo-color-danger",
+          "--cascivo-color-danger-subtle"
         ],
         "accessibility": {
           "role": "button",
@@ -5237,7 +5237,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Status colors must resolve to --cascade-color-accent/success/danger tokens"
+              "note": "Status colors must resolve to --cascivo-color-accent/success/danger tokens"
             },
             {
               "area": "label and hint copy",
@@ -5299,7 +5299,7 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-space-4"],
+        "tokens": ["--cascivo-space-4"],
         "accessibility": {
           "role": "form",
           "wcag": "2.2-AA",
@@ -5414,14 +5414,14 @@
           }
         ],
         "tokens": [
-          "--cascade-header-bg",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-bg-subtle",
-          "--cascade-focus-ring",
-          "--cascade-z-raised"
+          "--cascivo-header-bg",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-focus-ring",
+          "--cascivo-z-raised"
         ],
         "accessibility": {
           "role": "banner",
@@ -5465,7 +5465,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, and z-index must resolve to --cascade-* tokens"
+              "note": "Surface, border, and z-index must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -5532,12 +5532,12 @@
           }
         ],
         "tokens": [
-          "--cascade-shell-header-block-size",
-          "--cascade-shell-panel-inline-size",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-shadow-md",
-          "--cascade-motion-enter"
+          "--cascivo-shell-header-block-size",
+          "--cascivo-shell-panel-inline-size",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter"
         ],
         "accessibility": {
           "role": "region",
@@ -5586,7 +5586,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+              "note": "Surface, shadow, and sizing must resolve to --cascivo-* shell tokens"
             }
           ]
         }
@@ -5631,16 +5631,16 @@
           }
         ],
         "tokens": [
-          "--cascade-font-sans",
-          "--cascade-font-semibold",
-          "--cascade-leading-tight",
-          "--cascade-tracking-tight",
-          "--cascade-color-text",
-          "--cascade-text-base",
-          "--cascade-text-lg",
-          "--cascade-text-xl",
-          "--cascade-text-2xl",
-          "--cascade-text-3xl"
+          "--cascivo-font-sans",
+          "--cascivo-font-semibold",
+          "--cascivo-leading-tight",
+          "--cascivo-tracking-tight",
+          "--cascivo-color-text",
+          "--cascivo-text-base",
+          "--cascivo-text-lg",
+          "--cascivo-text-xl",
+          "--cascivo-text-2xl",
+          "--cascivo-text-3xl"
         ],
         "accessibility": {
           "role": "heading",
@@ -5724,12 +5724,12 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-md",
-          "--cascade-shadow-md",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-md",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
         ],
         "accessibility": {
           "role": "complementary",
@@ -5774,7 +5774,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+              "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "open/close delay",
@@ -5849,12 +5849,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "textbox",
@@ -5910,7 +5910,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-* tokens"
+              "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "label / hint / error copy",
@@ -5968,10 +5968,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-bg-subtle",
-          "--cascade-color-border",
-          "--cascade-color-text-subtle",
-          "--cascade-radius-input"
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-input"
         ],
         "accessibility": {
           "role": "generic",
@@ -6015,7 +6015,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Addon background, border, text, and radius must resolve to the listed --cascade-* tokens"
+              "note": "Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "addon alignment",
@@ -6064,11 +6064,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text-subtle",
-          "--cascade-color-surface-raised",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-radius-sm"
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-surface-raised",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-radius-sm"
         ],
         "accessibility": {
           "role": "kbd",
@@ -6111,7 +6111,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface and border must resolve to --cascade-* tokens"
+              "note": "Surface and border must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -6180,18 +6180,18 @@
           }
         ],
         "tokens": [
-          "--cascade-space-3",
-          "--cascade-space-4",
-          "--cascade-space-6",
-          "--cascade-duration-200",
-          "--cascade-ease-out",
-          "--cascade-color-border",
-          "--cascade-color-surface",
-          "--cascade-font-size-xs",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-color-destructive-subtle",
-          "--cascade-focus-ring"
+          "--cascivo-space-3",
+          "--cascivo-space-4",
+          "--cascivo-space-6",
+          "--cascivo-duration-200",
+          "--cascivo-ease-out",
+          "--cascivo-color-border",
+          "--cascivo-color-surface",
+          "--cascivo-font-size-xs",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-destructive-subtle",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "generic",
@@ -6267,13 +6267,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-bg-subtle",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-lg",
-          "--cascade-space-4",
-          "--cascade-space-6",
-          "--cascade-space-8"
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-lg",
+          "--cascivo-space-4",
+          "--cascivo-space-6",
+          "--cascivo-space-8"
         ],
         "accessibility": {
           "role": "generic",
@@ -6350,7 +6350,7 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6413,7 +6413,7 @@
             "description": "CSS max-width value"
           }
         ],
-        "tokens": ["--cascade-space-4"],
+        "tokens": ["--cascivo-space-4"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6487,7 +6487,7 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6567,7 +6567,7 @@
             "description": "Optional aside panel (20rem)"
           }
         ],
-        "tokens": ["--cascade-space-4", "--cascade-space-6"],
+        "tokens": ["--cascivo-space-4", "--cascivo-space-6"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6647,7 +6647,7 @@
             "description": "GridItem: column span count"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6723,7 +6723,7 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -6816,13 +6816,13 @@
           }
         ],
         "tokens": [
-          "--cascade-space-2",
-          "--cascade-space-4",
-          "--cascade-font-size-2xl",
-          "--cascade-font-weight-bold",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-font-size-sm"
+          "--cascivo-space-2",
+          "--cascivo-space-4",
+          "--cascivo-font-size-2xl",
+          "--cascivo-font-weight-bold",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-font-size-sm"
         ],
         "accessibility": {
           "role": "banner",
@@ -6899,7 +6899,7 @@
             "description": "Stack gap between children (spacing token step)"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "region",
           "wcag": "2.1-AA",
@@ -6973,7 +6973,7 @@
             "description": "Settings content area"
           }
         ],
-        "tokens": ["--cascade-space-8"],
+        "tokens": ["--cascivo-space-8"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -7041,7 +7041,7 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "none",
           "wcag": "2.1-AA",
@@ -7134,7 +7134,7 @@
             "description": "Label for the separator"
           }
         ],
-        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+        "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-duration-150"],
         "accessibility": {
           "role": "separator",
           "wcag": "2.1-AA",
@@ -7221,7 +7221,7 @@
             "description": "Allow wrapping"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": ["--cascivo-space-*"],
         "accessibility": {
           "role": "generic",
           "wcag": "2.1-AA",
@@ -7307,11 +7307,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-accent-hover",
-          "--cascade-color-accent-active",
-          "--cascade-radius-sm",
-          "--cascade-focus-ring"
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-hover",
+          "--cascivo-color-accent-active",
+          "--cascivo-radius-sm",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "link",
@@ -7359,7 +7359,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Accent colors and focus ring must resolve to --cascade-* tokens"
+              "note": "Accent colors and focus ring must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -7404,12 +7404,12 @@
           }
         ],
         "tokens": [
-          "--cascade-font-sans",
-          "--cascade-leading-normal",
-          "--cascade-color-text",
-          "--cascade-text-base",
-          "--cascade-space-1",
-          "--cascade-space-6"
+          "--cascivo-font-sans",
+          "--cascivo-leading-normal",
+          "--cascivo-color-text",
+          "--cascivo-text-base",
+          "--cascivo-space-1",
+          "--cascivo-space-6"
         ],
         "accessibility": {
           "role": "list",
@@ -7453,7 +7453,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Spacing and text color must resolve to --cascade-* tokens"
+              "note": "Spacing and text color must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -7485,13 +7485,13 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-md",
-          "--cascade-shadow-md",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit",
-          "--cascade-color-bg-subtle"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-md",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-color-bg-subtle"
         ],
         "accessibility": {
           "role": "menu",
@@ -7541,7 +7541,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+              "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "item content",
@@ -7611,11 +7611,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface-overlay",
-          "--cascade-color-border",
-          "--cascade-radius-modal",
-          "--cascade-shadow-xl",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-border",
+          "--cascivo-radius-modal",
+          "--cascivo-shadow-xl",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "dialog",
@@ -7672,7 +7672,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens"
+              "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "size",
@@ -7746,14 +7746,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-radius-input",
-          "--cascade-radius-md",
-          "--cascade-shadow-md",
-          "--cascade-focus-ring",
-          "--cascade-motion-enter"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-radius-input",
+          "--cascivo-radius-md",
+          "--cascivo-shadow-md",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter"
         ],
         "accessibility": {
           "role": "listbox",
@@ -7807,7 +7807,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens"
+              "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "labels",
@@ -7933,14 +7933,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-text-subtle",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "spinbutton",
@@ -7985,7 +7985,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+              "note": "Visual props must resolve to the listed --cascivo-* semantic tokens"
             },
             {
               "area": "formatting and bounds",
@@ -8056,12 +8056,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "group",
@@ -8106,7 +8106,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Slot styling must resolve to the listed --cascade-* tokens"
+              "note": "Slot styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "length and type",
@@ -8183,13 +8183,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-destructive",
-          "--cascade-color-destructive-subtle",
-          "--cascade-radius-button",
-          "--cascade-focus-ring"
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-destructive",
+          "--cascivo-color-destructive-subtle",
+          "--cascivo-radius-button",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "menu",
@@ -8242,7 +8242,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Trigger and item styling must resolve to the listed --cascade-* tokens"
+              "note": "Trigger and item styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "item set and labels",
@@ -8326,17 +8326,17 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-accent",
-          "--cascade-color-accent-subtle",
-          "--cascade-radius-input",
-          "--cascade-radius-button",
-          "--cascade-focus-ring"
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-subtle",
+          "--cascivo-radius-input",
+          "--cascivo-radius-button",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "navigation",
@@ -8385,7 +8385,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surfaces, borders, and accent must resolve to --cascade-* tokens"
+              "note": "Surfaces, borders, and accent must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -8456,14 +8456,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-color-warning",
-          "--cascade-color-success",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-warning",
+          "--cascivo-color-success",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "textbox",
@@ -8510,7 +8510,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascade-* tokens"
+              "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "labels",
@@ -8547,12 +8547,12 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-md",
-          "--cascade-shadow-md",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-md",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
         ],
         "accessibility": {
           "role": "dialog",
@@ -8601,7 +8601,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Panel styling must resolve to the listed --cascade-* tokens"
+              "note": "Panel styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "content",
@@ -8675,14 +8675,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-success",
-          "--cascade-color-destructive",
-          "--cascade-color-border",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-radius-full",
-          "--cascade-motion-enter"
+          "--cascivo-color-accent",
+          "--cascivo-color-success",
+          "--cascivo-color-destructive",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-full",
+          "--cascivo-motion-enter"
         ],
         "accessibility": {
           "role": "progressbar",
@@ -8732,7 +8732,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Fill and status colors must resolve to --cascade-* tokens"
+              "note": "Fill and status colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -8795,7 +8795,7 @@
             "description": "Accessible name announced by screen readers"
           }
         ],
-        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+        "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-color-text"],
         "accessibility": {
           "role": "progressbar",
           "wcag": "2.2-AA",
@@ -8844,7 +8844,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Arc and track colors must resolve to --cascade-* tokens"
+              "note": "Arc and track colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -8900,15 +8900,15 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-accent-subtle",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-text-subtle",
-          "--cascade-color-text-on-accent",
-          "--cascade-color-border",
-          "--cascade-color-surface",
-          "--cascade-radius-full"
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-color-border",
+          "--cascivo-color-surface",
+          "--cascivo-radius-full"
         ],
         "accessibility": {
           "role": "list",
@@ -8956,7 +8956,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Step and connector colors must resolve to --cascade-* tokens"
+              "note": "Step and connector colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -8988,21 +8988,21 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-font-sans",
-          "--cascade-font-mono",
-          "--cascade-font-semibold",
-          "--cascade-leading-tight",
-          "--cascade-leading-relaxed",
-          "--cascade-tracking-tight",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-accent",
-          "--cascade-color-accent-hover",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-radius-indicator",
-          "--cascade-radius-surface"
+          "--cascivo-font-sans",
+          "--cascivo-font-mono",
+          "--cascivo-font-semibold",
+          "--cascivo-leading-tight",
+          "--cascivo-leading-relaxed",
+          "--cascivo-tracking-tight",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-hover",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-radius-indicator",
+          "--cascivo-radius-surface"
         ],
         "accessibility": {
           "role": "generic",
@@ -9050,7 +9050,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "All typography and surface styling resolves to --cascade-* tokens"
+              "note": "All typography and surface styling resolves to --cascivo-* tokens"
             }
           ]
         }
@@ -9104,12 +9104,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-accent",
-          "--cascade-color-border-strong",
-          "--cascade-color-text-on-accent",
-          "--cascade-radius-full",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "radio",
@@ -9161,7 +9161,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+              "note": "Control and label styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "option labels and orientation",
@@ -9223,10 +9223,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-border",
-          "--cascade-radius-surface",
-          "--cascade-color-active-bg"
+          "--cascivo-color-accent",
+          "--cascivo-color-border",
+          "--cascivo-radius-surface",
+          "--cascivo-color-active-bg"
         ],
         "accessibility": {
           "role": "radiogroup",
@@ -9275,7 +9275,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Card and indicator styling must resolve to the listed --cascade-* tokens"
+              "note": "Card and indicator styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "title and description",
@@ -9352,10 +9352,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-warning",
-          "--cascade-color-border-strong",
-          "--cascade-color-accent",
-          "--cascade-radius-sm"
+          "--cascivo-color-warning",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-radius-sm"
         ],
         "accessibility": {
           "role": "radiogroup",
@@ -9399,7 +9399,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Star styling must resolve to the listed --cascade-* tokens"
+              "note": "Star styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "scale and labels",
@@ -9504,15 +9504,15 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-color-accent",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "searchbox",
@@ -9560,7 +9560,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Field and control styling must resolve to the listed --cascade-* tokens"
+              "note": "Field and control styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "debounce and copy",
@@ -9623,13 +9623,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-border",
-          "--cascade-surface-subtle",
-          "--cascade-text-2xl",
-          "--cascade-text-base",
-          "--cascade-font-bold",
-          "--cascade-text-secondary",
-          "--cascade-space-*"
+          "--cascivo-color-border",
+          "--cascivo-surface-subtle",
+          "--cascivo-text-2xl",
+          "--cascivo-text-base",
+          "--cascivo-font-bold",
+          "--cascivo-text-secondary",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "region",
@@ -9725,15 +9725,15 @@
           }
         ],
         "tokens": [
-          "--cascade-text-2xl",
-          "--cascade-text-base",
-          "--cascade-text-sm",
-          "--cascade-font-bold",
-          "--cascade-font-semibold",
-          "--cascade-text-secondary",
-          "--cascade-color-border",
-          "--cascade-surface-subtle",
-          "--cascade-space-*"
+          "--cascivo-text-2xl",
+          "--cascivo-text-base",
+          "--cascivo-text-sm",
+          "--cascivo-font-bold",
+          "--cascivo-font-semibold",
+          "--cascivo-text-secondary",
+          "--cascivo-color-border",
+          "--cascivo-surface-subtle",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "region",
@@ -9841,13 +9841,13 @@
           }
         ],
         "tokens": [
-          "--cascade-text-4xl",
-          "--cascade-text-lg",
-          "--cascade-text-sm",
-          "--cascade-font-mono",
-          "--cascade-font-bold",
-          "--cascade-text-secondary",
-          "--cascade-space-*"
+          "--cascivo-text-4xl",
+          "--cascivo-text-lg",
+          "--cascivo-text-sm",
+          "--cascivo-font-mono",
+          "--cascivo-font-bold",
+          "--cascivo-text-secondary",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "region",
@@ -9950,11 +9950,11 @@
           }
         ],
         "tokens": [
-          "--cascade-text-2xl",
-          "--cascade-text-base",
-          "--cascade-font-bold",
-          "--cascade-text-secondary",
-          "--cascade-space-*"
+          "--cascivo-text-2xl",
+          "--cascivo-text-base",
+          "--cascivo-font-bold",
+          "--cascivo-text-secondary",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "region",
@@ -10031,14 +10031,14 @@
           }
         ],
         "tokens": [
-          "--cascade-text-sm",
-          "--cascade-font-mono",
-          "--cascade-font-semibold",
-          "--cascade-text-primary",
-          "--cascade-text-secondary",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-space-*"
+          "--cascivo-text-sm",
+          "--cascivo-font-mono",
+          "--cascivo-font-semibold",
+          "--cascivo-text-primary",
+          "--cascivo-text-secondary",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "contentinfo",
@@ -10110,14 +10110,14 @@
           }
         ],
         "tokens": [
-          "--cascade-text-2xl",
-          "--cascade-text-sm",
-          "--cascade-font-bold",
-          "--cascade-font-mono",
-          "--cascade-text-secondary",
-          "--cascade-color-border",
-          "--cascade-surface-subtle",
-          "--cascade-space-*"
+          "--cascivo-text-2xl",
+          "--cascivo-text-sm",
+          "--cascivo-font-bold",
+          "--cascivo-font-mono",
+          "--cascivo-text-secondary",
+          "--cascivo-color-border",
+          "--cascivo-surface-subtle",
+          "--cascivo-space-*"
         ],
         "accessibility": {
           "role": "region",
@@ -10208,13 +10208,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-bg-subtle",
-          "--cascade-color-border",
-          "--cascade-color-surface",
-          "--cascade-color-text",
-          "--cascade-radius-md",
-          "--cascade-radius-sm",
-          "--cascade-shadow-sm"
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-color-surface",
+          "--cascivo-color-text",
+          "--cascivo-radius-md",
+          "--cascivo-radius-sm",
+          "--cascivo-shadow-sm"
         ],
         "accessibility": {
           "role": "group",
@@ -10263,7 +10263,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Segment styling must resolve to the listed --cascade-* tokens"
+              "note": "Segment styling must resolve to the listed --cascivo-* tokens"
             },
             {
               "area": "option labels",
@@ -10338,12 +10338,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-text-muted",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "listbox",
@@ -10395,7 +10395,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Visual props must resolve to --cascade-color-* / radius / focus-ring tokens"
+              "note": "Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens"
             },
             {
               "area": "option labels",
@@ -10445,7 +10445,7 @@
             "description": "When true, the separator is purely visual and hidden from assistive tech"
           }
         ],
-        "tokens": ["--cascade-color-border"],
+        "tokens": ["--cascivo-color-border"],
         "accessibility": {
           "role": "separator",
           "wcag": "2.2-AA",
@@ -10488,7 +10488,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Color must resolve to --cascade-color-border"
+              "note": "Color must resolve to --cascivo-color-border"
             }
           ]
         }
@@ -10520,12 +10520,12 @@
         "sizes": [],
         "props": [],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-radius-lg",
-          "--cascade-shadow-xl",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-lg",
+          "--cascivo-shadow-xl",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
         ],
         "accessibility": {
           "role": "dialog",
@@ -10656,13 +10656,13 @@
           }
         ],
         "tokens": [
-          "--cascade-shell-header-block-size",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-accent",
-          "--cascade-radius-control"
+          "--cascivo-shell-header-block-size",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-radius-control"
         ],
         "accessibility": {
           "role": "banner",
@@ -10716,7 +10716,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+              "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
             }
           ]
         }
@@ -10808,20 +10808,20 @@
           }
         ],
         "tokens": [
-          "--cascade-sidenav-inline-size",
-          "--cascade-sidenav-rail-inline-size",
-          "--cascade-sidenav-bg",
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-accent",
-          "--cascade-color-accent-subtle",
-          "--cascade-focus-ring",
-          "--cascade-motion-enter",
-          "--cascade-motion-exit",
-          "--cascade-motion-emphasis"
+          "--cascivo-sidenav-inline-size",
+          "--cascivo-sidenav-rail-inline-size",
+          "--cascivo-sidenav-bg",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-subtle",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-motion-emphasis"
         ],
         "accessibility": {
           "role": "navigation",
@@ -10865,7 +10865,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+              "note": "Sizing, surfaces, and motion must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -10923,11 +10923,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-border",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-sm",
-          "--cascade-radius-full",
-          "--cascade-radius-component"
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-sm",
+          "--cascivo-radius-full",
+          "--cascivo-radius-component"
         ],
         "accessibility": {
           "role": "none",
@@ -10976,7 +10976,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Background and radius must resolve to --cascade-* tokens"
+              "note": "Background and radius must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -11029,11 +11029,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-text",
-          "--cascade-radius-control",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-radius-control",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "link",
@@ -11153,11 +11153,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-border-strong",
-          "--cascade-color-surface",
-          "--cascade-radius-full",
-          "--cascade-focus-ring"
+          "--cascivo-color-accent",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-surface",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "slider",
@@ -11203,7 +11203,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+              "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
             },
             {
               "area": "min/max/step",
@@ -11253,7 +11253,7 @@
             "description": "Accessible label announced by screen readers"
           }
         ],
-        "tokens": ["--cascade-radius-full"],
+        "tokens": ["--cascivo-radius-full"],
         "accessibility": {
           "role": "status",
           "wcag": "2.2-AA",
@@ -11302,7 +11302,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Radius must resolve to --cascade-radius-full"
+              "note": "Radius must resolve to --cascivo-radius-full"
             }
           ]
         }
@@ -11365,11 +11365,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-text-muted",
-          "--cascade-color-success",
-          "--cascade-color-destructive"
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-success",
+          "--cascivo-color-destructive"
         ],
         "accessibility": {
           "role": "none",
@@ -11417,7 +11417,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Trend colors must resolve to --cascade-color-success/destructive"
+              "note": "Trend colors must resolve to --cascivo-color-success/destructive"
             }
           ]
         }
@@ -11463,13 +11463,13 @@
           }
         ],
         "tokens": [
-          "--cascade-color-success",
-          "--cascade-color-warning",
-          "--cascade-color-error",
-          "--cascade-color-info",
-          "--cascade-color-text-muted",
-          "--cascade-color-text",
-          "--cascade-radius-full"
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-error",
+          "--cascivo-color-info",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text",
+          "--cascivo-radius-full"
         ],
         "accessibility": {
           "role": "none",
@@ -11522,7 +11522,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "State colors must resolve to --cascade-color-success/warning/error/info"
+              "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
             }
           ]
         }
@@ -11572,12 +11572,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-accent",
-          "--cascade-color-accent-subtle",
-          "--cascade-color-border",
-          "--cascade-focus-ring"
+          "--cascivo-color-text",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-subtle",
+          "--cascivo-color-border",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "list",
@@ -11621,7 +11621,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Accent and surface colors must resolve to --cascade-* tokens"
+              "note": "Accent and surface colors must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -11669,11 +11669,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-color-border",
-          "--cascade-focus-ring"
+          "--cascivo-color-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-border",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "tablist",
@@ -11725,7 +11725,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Accent, borders, and focus ring must resolve to --cascade-* tokens"
+              "note": "Accent, borders, and focus ring must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -11782,18 +11782,18 @@
           }
         ],
         "tokens": [
-          "--cascade-color-bg-subtle",
-          "--cascade-color-text-subtle",
-          "--cascade-color-info",
-          "--cascade-color-info-subtle",
-          "--cascade-color-success",
-          "--cascade-color-success-subtle",
-          "--cascade-color-warning",
-          "--cascade-color-warning-subtle",
-          "--cascade-color-destructive",
-          "--cascade-color-destructive-subtle",
-          "--cascade-radius-badge",
-          "--cascade-focus-ring"
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-info",
+          "--cascivo-color-info-subtle",
+          "--cascivo-color-success",
+          "--cascivo-color-success-subtle",
+          "--cascivo-color-warning",
+          "--cascivo-color-warning-subtle",
+          "--cascivo-color-destructive",
+          "--cascivo-color-destructive-subtle",
+          "--cascivo-radius-badge",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "none",
@@ -11846,7 +11846,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Variant colors must resolve to --cascade-color-*-subtle tokens"
+              "note": "Variant colors must resolve to --cascivo-color-*-subtle tokens"
             }
           ]
         }
@@ -11910,14 +11910,14 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-color-bg-subtle",
-          "--cascade-radius-input",
-          "--cascade-radius-full",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-input",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "textbox",
@@ -12027,16 +12027,16 @@
           }
         ],
         "tokens": [
-          "--cascade-font-sans",
-          "--cascade-font-normal",
-          "--cascade-font-medium",
-          "--cascade-font-semibold",
-          "--cascade-leading-normal",
-          "--cascade-color-text",
-          "--cascade-color-text-subtle",
-          "--cascade-text-sm",
-          "--cascade-text-base",
-          "--cascade-text-lg"
+          "--cascivo-font-sans",
+          "--cascivo-font-normal",
+          "--cascivo-font-medium",
+          "--cascivo-font-semibold",
+          "--cascivo-leading-normal",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-text-sm",
+          "--cascivo-text-base",
+          "--cascivo-text-lg"
         ],
         "accessibility": {
           "role": "paragraph",
@@ -12084,7 +12084,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Font, leading, and color must resolve to --cascade-* tokens"
+              "note": "Font, leading, and color must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -12150,12 +12150,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-border",
-          "--cascade-color-accent",
-          "--cascade-color-destructive",
-          "--cascade-radius-input",
-          "--cascade-focus-ring"
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-input",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "textbox",
@@ -12205,7 +12205,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens"
+              "note": "Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens"
             },
             {
               "area": "resize and rows",
@@ -12305,16 +12305,16 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface",
-          "--cascade-color-bg-subtle",
-          "--cascade-color-border",
-          "--cascade-color-border-strong",
-          "--cascade-color-text",
-          "--cascade-color-text-muted",
-          "--cascade-color-accent",
-          "--cascade-color-danger",
-          "--cascade-radius-input",
-          "--cascade-radius-md"
+          "--cascivo-color-surface",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-accent",
+          "--cascivo-color-danger",
+          "--cascivo-radius-input",
+          "--cascivo-radius-md"
         ],
         "accessibility": {
           "role": "textbox",
@@ -12418,12 +12418,12 @@
           }
         ],
         "tokens": [
-          "--cascade-color-surface-overlay",
-          "--cascade-color-success",
-          "--cascade-color-warning",
-          "--cascade-color-destructive",
-          "--cascade-radius-md",
-          "--cascade-z-toast"
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-destructive",
+          "--cascivo-radius-md",
+          "--cascivo-z-toast"
         ],
         "accessibility": {
           "role": "status",
@@ -12544,11 +12544,11 @@
           }
         ],
         "tokens": [
-          "--cascade-color-accent",
-          "--cascade-color-border-strong",
-          "--cascade-color-surface",
-          "--cascade-radius-full",
-          "--cascade-focus-ring"
+          "--cascivo-color-accent",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-surface",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
         ],
         "accessibility": {
           "role": "switch",
@@ -12595,7 +12595,7 @@
             {
               "area": "token names",
               "level": "strict",
-              "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+              "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
             },
             {
               "area": "label copy",
@@ -12656,10 +12656,10 @@
           }
         ],
         "tokens": [
-          "--cascade-color-text",
-          "--cascade-color-text-on-accent",
-          "--cascade-radius-sm",
-          "--cascade-z-tooltip"
+          "--cascivo-color-text",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-radius-sm",
+          "--cascivo-z-tooltip"
         ],
         "accessibility": {
           "role": "tooltip",

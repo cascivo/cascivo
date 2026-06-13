@@ -41,11 +41,11 @@ Wrapped in <nav> with an aria-label and the current page marked aria-current="pa
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -78,4 +78,4 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 | Area        | Level    | Note                                                           |
 | ----------- | -------- | -------------------------------------------------------------- |
 | maxVisible  | flexible | Collapse long trails to fit available width                    |
-| token names | strict   | Text colors and focus ring must resolve to --cascade-\* tokens |
+| token names | strict   | Text colors and focus ring must resolve to --cascivo-\* tokens |

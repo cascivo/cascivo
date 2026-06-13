@@ -42,11 +42,11 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
 
 ## Examples
 
@@ -73,4 +73,4 @@ Presentational by role; the label-value pairing is real text so the metric and i
 | Area            | Level    | Note                                                             |
 | --------------- | -------- | ---------------------------------------------------------------- |
 | delta and trend | flexible | Optional — include only when change is meaningful                |
-| token names     | strict   | Trend colors must resolve to --cascade-color-success/destructive |
+| token names     | strict   | Trend colors must resolve to --cascivo-color-success/destructive |

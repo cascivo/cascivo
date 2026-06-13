@@ -40,14 +40,14 @@ export const meta: ComponentMeta = {
     { name: 'decrementLabel', type: 'string', required: false, default: 'Decrement' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-destructive',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-destructive',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'spinbutton',
@@ -100,7 +100,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual props must resolve to the listed --cascade-* semantic tokens',
+        note: 'Visual props must resolve to the listed --cascivo-* semantic tokens',
       },
       {
         area: 'formatting and bounds',

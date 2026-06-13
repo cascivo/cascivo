@@ -9,11 +9,11 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md'],
   props: [{ name: 'size', type: "'sm' | 'md'", required: false, default: 'md' }],
   tokens: [
-    '--cascade-color-text-subtle',
-    '--cascade-color-surface-raised',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-radius-sm',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-surface-raised',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-radius-sm',
   ],
   accessibility: {
     role: 'kbd',
@@ -65,7 +65,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface and border must resolve to --cascade-* tokens',
+        note: 'Surface and border must resolve to --cascivo-* tokens',
       },
     ],
   },

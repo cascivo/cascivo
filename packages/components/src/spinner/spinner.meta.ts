@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
       description: 'Accessible label announced by screen readers',
     },
   ],
-  tokens: ['--cascade-radius-full'],
+  tokens: ['--cascivo-radius-full'],
   accessibility: {
     role: 'status',
     wcag: '2.2-AA',
@@ -70,7 +70,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Radius must resolve to --cascade-radius-full',
+        note: 'Radius must resolve to --cascivo-radius-full',
       },
     ],
   },

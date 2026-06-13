@@ -50,11 +50,11 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-text-2xl',
-    '--cascade-text-base',
-    '--cascade-font-bold',
-    '--cascade-text-secondary',
-    '--cascade-space-*',
+    '--cascivo-text-2xl',
+    '--cascivo-text-base',
+    '--cascivo-font-bold',
+    '--cascivo-text-secondary',
+    '--cascivo-space-*',
   ],
   accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [

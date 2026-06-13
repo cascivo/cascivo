@@ -40,11 +40,11 @@ npx cascade add tabs
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-border`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-border`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

@@ -25,11 +25,11 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-text-muted',
-    '--cascade-color-success',
-    '--cascade-color-destructive',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-success',
+    '--cascivo-color-destructive',
   ],
   accessibility: {
     role: 'none',
@@ -88,7 +88,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Trend colors must resolve to --cascade-color-success/destructive',
+        note: 'Trend colors must resolve to --cascivo-color-success/destructive',
       },
     ],
   },

@@ -21,9 +21,9 @@ All three sizes are defined as semantic tokens in `packages/tokens/src/index.css
 
 | Token                         | Rem value | px at 16px root | Status |
 | ----------------------------- | --------- | --------------- | ------ |
-| `--cascade-control-height-sm` | 1.75rem   | 28px            | PASS   |
-| `--cascade-control-height-md` | 2.25rem   | 36px            | PASS   |
-| `--cascade-control-height-lg` | 2.75rem   | 44px            | PASS   |
+| `--cascivo-control-height-sm` | 1.75rem   | 28px            | PASS   |
+| `--cascivo-control-height-md` | 2.25rem   | 36px            | PASS   |
+| `--cascivo-control-height-lg` | 2.75rem   | 44px            | PASS   |
 
 Button heights (button.module.css `data-size` attributes): sm = 2rem (32px), md = 2.5rem
 (40px), lg = 3rem (48px). All exceed 24px.
@@ -41,7 +41,7 @@ replaced by a styled `.control` element of 1.125rem × 1.125rem (18×18px). This
 the 24px threshold.
 
 **Exception applied: Spacing.** The `.wrapper` for both checkbox and radio is an
-`inline-flex` row with a label. When rendered in a form group (`gap: var(--cascade-space-3)
+`inline-flex` row with a label. When rendered in a form group (`gap: var(--cascivo-space-3)
 = 12px` between items, plus the label text extending the row height to at least 1rem line
 height), the 24px clear zone around the center of the 18px indicator is satisfied by the
 surrounding spacing in normal usage.
@@ -82,13 +82,13 @@ Cascade defines a layered z-index system in `packages/tokens/src/index.css`:
 
 | Token                  | Value |
 | ---------------------- | ----- |
-| `--cascade-z-base`     | 0     |
-| `--cascade-z-raised`   | 10    |
-| `--cascade-z-dropdown` | 100   |
-| `--cascade-z-overlay`  | 200   |
-| `--cascade-z-modal`    | 300   |
-| `--cascade-z-toast`    | 400   |
-| `--cascade-z-tooltip`  | 500   |
+| `--cascivo-z-base`     | 0     |
+| `--cascivo-z-raised`   | 10    |
+| `--cascivo-z-dropdown` | 100   |
+| `--cascivo-z-overlay`  | 200   |
+| `--cascivo-z-modal`    | 300   |
+| `--cascivo-z-toast`    | 400   |
+| `--cascivo-z-tooltip`  | 500   |
 
 Higher layers always overlay lower ones. Focus moves with the overlay: when a dropdown or
 modal opens, focus moves inside that overlay, so the focused element is never behind the
@@ -96,7 +96,7 @@ author-created content that has higher z-index.
 
 ### Sticky shell header
 
-`--cascade-shell-header-block-size: 3rem` (48px). Body content that scrolls behind a sticky
+`--cascivo-shell-header-block-size: 3rem` (48px). Body content that scrolls behind a sticky
 header could be partially or fully obscured when focused.
 
 **Approach:** Components that may receive focus in scrollable body regions should carry
@@ -106,7 +106,7 @@ documents this constraint; page authors must apply:
 
 ```css
 :focus {
-  scroll-margin-block-start: var(--cascade-shell-header-block-size, 3rem);
+  scroll-margin-block-start: var(--cascivo-shell-header-block-size, 3rem);
 }
 ```
 
@@ -117,7 +117,7 @@ the sticky header.
 
 ### Dropdowns and popovers
 
-When a dropdown or popover is open it overlays other content (`--cascade-z-dropdown: 100`).
+When a dropdown or popover is open it overlays other content (`--cascivo-z-dropdown: 100`).
 The interactive trigger (button) is behind the overlay, but focus has moved inside the
 overlay — the focused element (a menu item) is on top, not hidden. Not a 2.4.11 issue.
 
@@ -158,7 +158,7 @@ drag-to-reorder, and kanban boards are out of scope for v1.
 
 Automated check: `scripts/checks/target-size.test.ts`
 
-- Asserts `--cascade-control-height-*` tokens convert to ≥24px.
+- Asserts `--cascivo-control-height-*` tokens convert to ≥24px.
 - Asserts slider thumb dimensions and documents the UA hit-area + spacing exception.
 - Asserts checkbox/radio indicator size and records the spacing exception.
 

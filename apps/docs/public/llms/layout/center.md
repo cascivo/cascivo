@@ -32,7 +32,7 @@ Centered container with custom max-width
 
 ## Design tokens
 
-- `--cascade-space-4`
+- `--cascivo-space-4`
 
 ## Accessibility
 

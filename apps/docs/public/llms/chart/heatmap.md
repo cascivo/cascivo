@@ -40,8 +40,8 @@ const data = [
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-color-neutral-100`
+- `--cascivo-chart-1`
+- `--cascivo-color-neutral-100`
 
 ## Accessibility
 

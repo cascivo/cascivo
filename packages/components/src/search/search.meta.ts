@@ -22,15 +22,15 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-color-accent',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-accent',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'searchbox',
@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Field and control styling must resolve to the listed --cascade-* tokens',
+        note: 'Field and control styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'debounce and copy',

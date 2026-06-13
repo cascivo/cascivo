@@ -23,12 +23,12 @@ _No props._
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Accessibility
 

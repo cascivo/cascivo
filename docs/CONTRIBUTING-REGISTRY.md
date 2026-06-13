@@ -83,11 +83,11 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
 /* src/callout/callout.css */
 @layer components {
   .callout {
-    --callout-color: var(--cascade-color-info, #0ea5e9);
+    --callout-color: var(--cascivo-color-info, #0ea5e9);
     border-inline-start: 4px solid var(--callout-color);
     background-color: color-mix(in srgb, var(--callout-color) 10%, transparent);
-    border-radius: 0 var(--cascade-radius-md, 6px) var(--cascade-radius-md, 6px) 0;
-    padding: var(--cascade-space-3, 0.75rem) var(--cascade-space-4, 1rem);
+    border-radius: 0 var(--cascivo-radius-md, 6px) var(--cascivo-radius-md, 6px) 0;
+    padding: var(--cascivo-space-3, 0.75rem) var(--cascivo-space-4, 1rem);
   }
 }
 ```

@@ -61,14 +61,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-success",
-      "--cascade-color-destructive",
-      "--cascade-color-border",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-radius-full",
-      "--cascade-motion-enter"
+      "--cascivo-color-accent",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-radius-full",
+      "--cascivo-motion-enter"
     ],
     "accessibility": {
       "role": "progressbar",
@@ -131,7 +131,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Fill and status colors must resolve to --cascade-* tokens"
+          "note": "Fill and status colors must resolve to --cascivo-* tokens"
         }
       ]
     }

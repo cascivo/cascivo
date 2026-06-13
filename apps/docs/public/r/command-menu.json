@@ -83,17 +83,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface-overlay",
-      "--cascade-color-border",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-text",
-      "--cascade-color-text-muted",
-      "--cascade-color-text-subtle",
-      "--cascade-radius-modal",
-      "--cascade-radius-sm",
-      "--cascade-shadow-xl",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit"
+      "--cascivo-color-surface-overlay",
+      "--cascivo-color-border",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-text-subtle",
+      "--cascivo-radius-modal",
+      "--cascivo-radius-sm",
+      "--cascivo-shadow-xl",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit"
     ],
     "accessibility": {
       "role": "combobox",
@@ -165,7 +165,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens"
+          "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
         }
       ]
     }

@@ -32,8 +32,8 @@ Stats + main layout
 
 ## Design tokens
 
-- `--cascade-space-4`
-- `--cascade-space-6`
+- `--cascivo-space-4`
+- `--cascivo-space-6`
 
 ## Accessibility
 

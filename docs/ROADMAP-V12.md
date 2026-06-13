@@ -82,7 +82,7 @@ summary, refs }]`. `cascade audit` resolves the lockfile against the registries 
    infrastructure.
 5. **The customization contract is CI-enforced, repo-wide.** A vitest parses every
    component CSS file: zero `!important`; every _visual_ declaration (color, background,
-   border, shadow, radius, spacing, font) resolves to `var(--cascade-*)` or a private
+   border, shadow, radius, spacing, font) resolves to `var(--cascivo-*)` or a private
    `--_*` knob — structural properties (display, position, grid tracks) are allowlisted.
    Failures name file:line. This turns pain #2 from a promise into a gate.
 6. **Theming docs are generated from manifests.** Each component's docs page gains a

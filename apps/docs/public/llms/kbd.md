@@ -49,11 +49,11 @@ Compose multiple keys to show a shortcut
 
 ## Design tokens
 
-- `--cascade-color-text-subtle`
-- `--cascade-color-surface-raised`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-radius-sm`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-surface-raised`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-radius-sm`
 
 ## Accessibility
 

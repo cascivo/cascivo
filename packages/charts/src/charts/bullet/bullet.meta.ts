@@ -29,10 +29,10 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-color-neutral-200',
-    '--cascade-color-neutral-300',
-    '--cascade-color-neutral-400',
+    '--cascivo-chart-1',
+    '--cascivo-color-neutral-200',
+    '--cascivo-color-neutral-300',
+    '--cascivo-color-neutral-400',
   ],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [

@@ -53,16 +53,16 @@ Keep the document outline correct while controlling the visual scale
 
 ## Design tokens
 
-- `--cascade-font-sans`
-- `--cascade-font-semibold`
-- `--cascade-leading-tight`
-- `--cascade-tracking-tight`
-- `--cascade-color-text`
-- `--cascade-text-base`
-- `--cascade-text-lg`
-- `--cascade-text-xl`
-- `--cascade-text-2xl`
-- `--cascade-text-3xl`
+- `--cascivo-font-sans`
+- `--cascivo-font-semibold`
+- `--cascivo-leading-tight`
+- `--cascivo-tracking-tight`
+- `--cascivo-color-text`
+- `--cascivo-text-base`
+- `--cascivo-text-lg`
+- `--cascivo-text-xl`
+- `--cascivo-text-2xl`
+- `--cascivo-text-3xl`
 
 ## Accessibility
 

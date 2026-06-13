@@ -15,7 +15,7 @@
     position: static;
     width: auto;
     height: auto;
-    padding: var(--cascade-space-2) var(--cascade-space-3);
+    padding: var(--cascivo-space-2) var(--cascivo-space-3);
     margin: 0;
     overflow: visible;
     clip: auto;

@@ -39,7 +39,7 @@ export function Legend({ series, hidden }: LegendProps) {
           >
             <span
               className={styles['swatch']}
-              style={{ background: s.color || `var(--cascade-chart-${i + 1})` }}
+              style={{ background: s.color || `var(--cascivo-chart-${i + 1})` }}
               aria-hidden="true"
             />
             {s.label}

@@ -39,12 +39,12 @@ npx cascade add radio
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

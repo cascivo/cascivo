@@ -13,8 +13,8 @@ export const Default: Story = {
       <div
         style={{
           padding: '2rem',
-          border: '2px dashed var(--cascade-color-border)',
-          borderRadius: 'var(--cascade-radius-md)',
+          border: '2px dashed var(--cascivo-color-border)',
+          borderRadius: 'var(--cascivo-radius-md)',
           userSelect: 'none',
           textAlign: 'center',
         }}
@@ -33,7 +33,7 @@ export const Default: Story = {
 export const Accessibility: Story = {
   render: () => (
     <ContextMenu>
-      <div style={{ padding: '2rem', border: '2px dashed var(--cascade-color-border)' }}>
+      <div style={{ padding: '2rem', border: '2px dashed var(--cascivo-color-border)' }}>
         Right-click for menu
       </div>
       <ContextMenuItem onSelect={() => {}}>Action</ContextMenuItem>

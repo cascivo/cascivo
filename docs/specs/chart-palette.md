@@ -2,7 +2,7 @@
 
 ## Lineage
 
-The `--cascade-chart-1..8` tokens are grounded in the **Okabe-Ito 8-color palette**, the de-facto standard for scientific figures requiring color vision deficiency (CVD) safety.
+The `--cascivo-chart-1..8` tokens are grounded in the **Okabe-Ito 8-color palette**, the de-facto standard for scientific figures requiring color vision deficiency (CVD) safety.
 
 The palette was designed to be distinguishable under all three common forms of color blindness:
 
@@ -24,18 +24,18 @@ Okabe-Ito is the most rigorously validated choice and maps cleanly onto our 8-sl
 
 ---
 
-## Mapping: Okabe-Ito → `--cascade-chart-1..8`
+## Mapping: Okabe-Ito → `--cascivo-chart-1..8`
 
 | Token               | Hue name       | sRGB hex                           | oklch value            |
 | ------------------- | -------------- | ---------------------------------- | ---------------------- |
-| `--cascade-chart-1` | orange         | `#E69F00`                          | `oklch(0.74 0.13 70)`  |
-| `--cascade-chart-2` | sky blue       | `#56B4E9`                          | `oklch(0.74 0.11 240)` |
-| `--cascade-chart-3` | bluish green   | `#009E73`                          | `oklch(0.66 0.13 165)` |
-| `--cascade-chart-4` | yellow         | `#F0E442`                          | `oklch(0.93 0.16 100)` |
-| `--cascade-chart-5` | blue           | `#0072B2`                          | `oklch(0.50 0.13 250)` |
-| `--cascade-chart-6` | vermillion     | `#D55E00`                          | `oklch(0.60 0.16 40)`  |
-| `--cascade-chart-7` | reddish purple | `#CC79A7`                          | `oklch(0.66 0.12 350)` |
-| `--cascade-chart-8` | neutral grey   | _(black in print, grey on screen)_ | `oklch(0.55 0.02 280)` |
+| `--cascivo-chart-1` | orange         | `#E69F00`                          | `oklch(0.74 0.13 70)`  |
+| `--cascivo-chart-2` | sky blue       | `#56B4E9`                          | `oklch(0.74 0.11 240)` |
+| `--cascivo-chart-3` | bluish green   | `#009E73`                          | `oklch(0.66 0.13 165)` |
+| `--cascivo-chart-4` | yellow         | `#F0E442`                          | `oklch(0.93 0.16 100)` |
+| `--cascivo-chart-5` | blue           | `#0072B2`                          | `oklch(0.50 0.13 250)` |
+| `--cascivo-chart-6` | vermillion     | `#D55E00`                          | `oklch(0.60 0.16 40)`  |
+| `--cascivo-chart-7` | reddish purple | `#CC79A7`                          | `oklch(0.66 0.12 350)` |
+| `--cascivo-chart-8` | neutral grey   | _(black in print, grey on screen)_ | `oklch(0.55 0.02 280)` |
 
 chart-8 is a screen adaptation: the original Okabe-Ito black (`#000000`) is too harsh for most UI backgrounds and renders identically to text. Lightened to `oklch(0.55 …)` it remains neutral and legible while fitting on coloured surfaces.
 
@@ -45,10 +45,10 @@ chart-8 is a screen adaptation: the original Okabe-Ito black (`#000000`) is too 
 
 When rendering 4 or fewer data series, use the **high-pairwise-contrast subset** for maximum CVD robustness:
 
-1. `--cascade-chart-1` (orange)
-2. `--cascade-chart-2` (sky blue)
-3. `--cascade-chart-5` (blue)
-4. `--cascade-chart-6` (vermillion)
+1. `--cascivo-chart-1` (orange)
+2. `--cascivo-chart-2` (sky blue)
+3. `--cascivo-chart-5` (blue)
+4. `--cascivo-chart-6` (vermillion)
 
 This subset maximises lightness and hue contrast simultaneously, making pairs distinguishable even under severe protanopia or deuteranopia.
 
@@ -69,7 +69,7 @@ This ensures the chart is fully readable without functional color vision.
 
 ## Per-Theme Tuning
 
-The base palette (`--cascade-chart-1..8` in `@cascade-ui/tokens`) is used unmodified for:
+The base palette (`--cascivo-chart-1..8` in `@cascade-ui/tokens`) is used unmodified for:
 
 - `light` (default)
 - `corporate`

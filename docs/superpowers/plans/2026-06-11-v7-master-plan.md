@@ -128,7 +128,7 @@ That's the cascade twist that makes this a concept, not a clone.
 
 ## Cross-cutting rules (every tranche)
 
-1. **Tokens only.** No raw colors/sizes in landing.css — `--cascade-*` custom properties
+1. **Tokens only.** No raw colors/sizes in landing.css — `--cascivo-*` custom properties
    exclusively. No new fonts. v5 design language (6px controls, hairlines, quiet shadows)
    binds every new section.
 2. **Dogfood or justify.** UI on the page is `@cascade-ui/react`/`charts`/`render` components;

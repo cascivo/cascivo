@@ -1,7 +1,7 @@
 @layer cascade.component {
   .wrapper {
     display: inline-flex;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
     align-items: center;
 
     &[data-size='sm'] {
@@ -24,10 +24,10 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--cascade-color-border-strong);
+    color: var(--cascivo-color-border-strong);
     transition:
-      color var(--cascade-duration-100) var(--cascade-ease-out),
-      transform var(--cascade-duration-100) var(--cascade-ease-out);
+      color var(--cascivo-duration-100) var(--cascivo-ease-out),
+      transform var(--cascivo-duration-100) var(--cascivo-ease-out);
 
     /* Star shape via clip-path or mask */
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E");
@@ -36,27 +36,27 @@
     mask-repeat: no-repeat;
     -webkit-mask-size: contain;
     mask-size: contain;
-    background-color: var(--cascade-color-border-strong);
+    background-color: var(--cascivo-color-border-strong);
 
     /* Hover: all stars up to and including hovered star fill via CSS sibling trick */
     /* When hovered, fill via :hover and subsequent ~.star:hover */
     .wrapper:not(:has(:disabled)):not(:has([tabindex='-1'])):hover &[data-filled] {
-      background-color: var(--cascade-color-warning);
+      background-color: var(--cascivo-color-warning);
     }
 
     &[data-filled] {
-      background-color: var(--cascade-color-warning);
+      background-color: var(--cascivo-color-warning);
     }
 
     /* Unfill stars after the hovered one via sibling reset */
     .wrapper:not(:has(:disabled)):hover &:hover ~ & {
-      background-color: var(--cascade-color-border-strong);
+      background-color: var(--cascivo-color-border-strong);
     }
 
     &:focus-visible {
-      outline: 2px solid var(--cascade-color-accent);
+      outline: 2px solid var(--cascivo-color-accent);
       outline-offset: 2px;
-      border-radius: var(--cascade-radius-control);
+      border-radius: var(--cascivo-radius-control);
     }
 
     &:disabled {

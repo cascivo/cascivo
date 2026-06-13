@@ -33,12 +33,12 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Boundaries
 

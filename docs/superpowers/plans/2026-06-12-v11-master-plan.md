@@ -20,7 +20,7 @@ conformance, agent-guide pages), `packages/components` (overlay migration, data-
 virtualization, form adapter), `packages/tokens` (DTCG export), `factory-backlog.json`
 (gap component specs).
 
-**Tech stack:** unchanged — React 18+, modern CSS with `--cascade-*` tokens, Preact signals,
+**Tech stack:** unchanged — React 18+, modern CSS with `--cascivo-*` tokens, Preact signals,
 vitest + @testing-library/react, vp (vite+) toolchain. New CLI-only dep allowed for
 three-way merge (e.g. `diff3`-style algorithm) — CLI is not a runtime package.
 

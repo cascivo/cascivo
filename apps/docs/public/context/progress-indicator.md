@@ -41,15 +41,15 @@ role="list" structures the steps in order; the current step is conveyed as text/
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-on-accent`
-- `--cascade-color-border`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
 
 ## Examples
 
@@ -77,4 +77,4 @@ role="list" structures the steps in order; the current step is conveyed as text/
 | Area        | Level    | Note                                                          |
 | ----------- | -------- | ------------------------------------------------------------- |
 | orientation | flexible | horizontal or vertical to fit the layout                      |
-| token names | strict   | Step and connector colors must resolve to --cascade-\* tokens |
+| token names | strict   | Step and connector colors must resolve to --cascivo-\* tokens |

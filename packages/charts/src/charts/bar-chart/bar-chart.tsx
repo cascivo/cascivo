@@ -35,7 +35,7 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function BarChart<Datum = { x: string; y: number }>({
   series,

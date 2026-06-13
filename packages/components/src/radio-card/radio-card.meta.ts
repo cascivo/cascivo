@@ -20,10 +20,10 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the card' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-border',
-    '--cascade-radius-surface',
-    '--cascade-color-active-bg',
+    '--cascivo-color-accent',
+    '--cascivo-color-border',
+    '--cascivo-radius-surface',
+    '--cascivo-color-active-bg',
   ],
   accessibility: {
     role: 'radiogroup',
@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Card and indicator styling must resolve to the listed --cascade-* tokens',
+        note: 'Card and indicator styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'title and description',

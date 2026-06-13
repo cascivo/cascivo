@@ -3,17 +3,17 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    inline-size: var(--cascade-sidenav-inline-size, 16rem);
+    inline-size: var(--cascivo-sidenav-inline-size, 16rem);
     min-block-size: 100%;
-    padding: var(--cascade-space-2);
-    font-family: var(--cascade-font-sans);
-    background-color: var(--cascade-sidenav-bg, var(--cascade-color-surface));
-    border-inline-end: 1px solid var(--cascade-color-border);
+    padding: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    background-color: var(--cascivo-sidenav-bg, var(--cascivo-color-surface));
+    border-inline-end: 1px solid var(--cascivo-color-border);
     overflow: hidden;
-    transition: inline-size var(--cascade-motion-emphasis);
+    transition: inline-size var(--cascivo-motion-emphasis);
 
     &[data-state='collapsed'] {
-      inline-size: var(--cascade-sidenav-rail-inline-size, 4rem);
+      inline-size: var(--cascivo-sidenav-rail-inline-size, 4rem);
 
       & .label[data-rail-hidden] {
         display: none;
@@ -29,11 +29,11 @@
 
       &:hover,
       &:focus-within {
-        inline-size: var(--cascade-sidenav-inline-size, 16rem);
+        inline-size: var(--cascivo-sidenav-inline-size, 16rem);
         position: absolute;
         inset-block: 0;
         z-index: 10;
-        box-shadow: var(--cascade-shadow-md);
+        box-shadow: var(--cascivo-shadow-md);
 
         & .label[data-rail-hidden] {
           display: initial;
@@ -42,7 +42,7 @@
         & .link,
         & .groupTrigger {
           justify-content: flex-start;
-          padding-inline: var(--cascade-space-3);
+          padding-inline: var(--cascivo-space-3);
         }
 
         & .groupIndicator {
@@ -60,10 +60,10 @@
   .sublistInner {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
     margin: 0;
     padding: 0;
-    padding-inline: var(--cascade-space-2);
+    padding-inline: var(--cascivo-space-2);
     list-style: none;
   }
 
@@ -72,40 +72,40 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
     inline-size: 100%;
-    padding-block: var(--cascade-space-2);
-    padding-inline: var(--cascade-space-2);
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-2);
     font-family: inherit;
-    font-size: var(--cascade-text-sm);
-    line-height: var(--cascade-leading-tight);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-tight);
     text-align: start;
     text-decoration: none;
     white-space: nowrap;
-    color: var(--cascade-color-text-subtle);
+    color: var(--cascivo-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-item);
+    border-radius: var(--cascivo-radius-item);
     cursor: pointer;
     transition:
-      color var(--cascade-duration-150) var(--cascade-ease-out),
-      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
   }
 
   .link[data-state='active'] {
-    color: var(--cascade-color-text);
-    font-weight: var(--cascade-font-medium);
-    background-color: var(--cascade-color-active-bg);
+    color: var(--cascivo-color-text);
+    font-weight: var(--cascivo-font-medium);
+    background-color: var(--cascivo-color-active-bg);
   }
 
   .icon {
@@ -113,8 +113,8 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    inline-size: var(--cascade-space-4);
-    block-size: var(--cascade-space-4);
+    inline-size: var(--cascivo-space-4);
+    block-size: var(--cascivo-space-4);
   }
 
   .fallbackIcon {
@@ -125,10 +125,10 @@
     inline-size: 1.25rem;
     block-size: 1.25rem;
     border-radius: 50%;
-    background: var(--cascade-color-bg-subtle);
+    background: var(--cascivo-color-bg-subtle);
     font-size: 0.6875rem;
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
   }
 
   .label {
@@ -139,7 +139,7 @@
   .groupIndicator {
     flex-shrink: 0;
     margin-inline-start: auto;
-    transition: rotate var(--cascade-motion-emphasis);
+    transition: rotate var(--cascivo-motion-emphasis);
 
     .groupTrigger[data-state='open'] & {
       rotate: 180deg;
@@ -151,15 +151,15 @@
     grid-template-rows: 0fr;
     visibility: hidden;
     transition:
-      grid-template-rows var(--cascade-motion-exit),
-      visibility var(--cascade-motion-exit);
+      grid-template-rows var(--cascivo-motion-exit),
+      visibility var(--cascivo-motion-exit);
 
     &[data-state='open'] {
       grid-template-rows: 1fr;
       visibility: visible;
       transition:
-        grid-template-rows var(--cascade-motion-enter),
-        visibility var(--cascade-motion-enter);
+        grid-template-rows var(--cascivo-motion-enter),
+        visibility var(--cascivo-motion-enter);
     }
   }
 
@@ -170,14 +170,14 @@
 
   .sublink {
     padding-inline-start: calc(
-      var(--cascade-space-3) + var(--cascade-space-4) + var(--cascade-space-2)
+      var(--cascivo-space-3) + var(--cascivo-space-4) + var(--cascivo-space-2)
     );
   }
 
   .footer {
-    padding-block: var(--cascade-space-2);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
+    padding-block: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
   }
 
   .collapseToggle {
@@ -185,29 +185,29 @@
     align-items: center;
     justify-content: center;
     margin-block-start: auto;
-    padding-block: var(--cascade-space-2);
-    color: var(--cascade-color-text-subtle);
+    padding-block: var(--cascivo-space-2);
+    color: var(--cascivo-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
     cursor: pointer;
     transition:
-      color var(--cascade-duration-150) var(--cascade-ease-out),
-      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
   }
 
   .collapseIcon {
-    transition: rotate var(--cascade-motion-emphasis);
+    transition: rotate var(--cascivo-motion-emphasis);
 
     .sideNav[data-state='collapsed'] & {
       rotate: 180deg;
@@ -221,11 +221,11 @@
     inset-inline-start: anchor(end);
     margin: 0;
     min-inline-size: 11rem;
-    padding: var(--cascade-space-1);
-    background: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-md);
+    padding: var(--cascivo-space-1);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-md);
 
     &:popover-open {
       display: flex;
@@ -241,24 +241,24 @@
     }
 
     transition:
-      opacity var(--cascade-duration-150) var(--cascade-ease-out),
-      translate var(--cascade-duration-150) var(--cascade-ease-out),
-      display var(--cascade-duration-150) var(--cascade-ease-out) allow-discrete,
-      overlay var(--cascade-duration-150) var(--cascade-ease-out) allow-discrete;
+      opacity var(--cascivo-duration-150) var(--cascivo-ease-out),
+      translate var(--cascivo-duration-150) var(--cascivo-ease-out),
+      display var(--cascivo-duration-150) var(--cascivo-ease-out) allow-discrete,
+      overlay var(--cascivo-duration-150) var(--cascivo-ease-out) allow-discrete;
   }
 
   .railFlyoutCaption {
-    padding-block: var(--cascade-space-1);
-    padding-inline: var(--cascade-space-3);
-    font-size: var(--cascade-text-xs);
-    font-weight: var(--cascade-font-semibold);
-    color: var(--cascade-color-text-subtle);
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text-subtle);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .flyoutItem {
-    padding-inline-start: var(--cascade-space-3);
+    padding-inline-start: var(--cascivo-space-3);
     border-inline-start: none;
   }
 }

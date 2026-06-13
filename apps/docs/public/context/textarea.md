@@ -44,12 +44,12 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -69,5 +69,5 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 | Area            | Level    | Note                                                                             |
 | --------------- | -------- | -------------------------------------------------------------------------------- |
-| token names     | strict   | Border/focus/error colors must resolve to --cascade-color-\* / focus-ring tokens |
+| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
 | resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |

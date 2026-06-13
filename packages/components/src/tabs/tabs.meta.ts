@@ -13,11 +13,11 @@ export const meta: ComponentMeta = {
     { name: 'onValueChange', type: '(value: string) => void', required: false },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-border',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-border',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'tablist',
@@ -75,7 +75,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Accent, borders, and focus ring must resolve to --cascade-* tokens',
+        note: 'Accent, borders, and focus ring must resolve to --cascivo-* tokens',
       },
     ],
   },

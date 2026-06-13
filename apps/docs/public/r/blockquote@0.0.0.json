@@ -31,14 +31,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-border-strong",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-font-sans",
-      "--cascade-font-medium",
-      "--cascade-leading-relaxed",
-      "--cascade-text-sm",
-      "--cascade-text-base"
+      "--cascivo-color-border-strong",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-font-sans",
+      "--cascivo-font-medium",
+      "--cascivo-leading-relaxed",
+      "--cascivo-text-sm",
+      "--cascivo-text-base"
     ],
     "accessibility": {
       "role": "blockquote",
@@ -95,7 +95,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Border and text colors must resolve to --cascade-* tokens"
+          "note": "Border and text colors must resolve to --cascivo-* tokens"
         }
       ]
     }

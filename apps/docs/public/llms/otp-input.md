@@ -45,12 +45,12 @@ npx cascade add otp-input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

@@ -60,22 +60,22 @@ npx cascade add combobox
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-surface-overlay`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-danger`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-radius-sm`
-- `--cascade-shadow-lg`
-- `--cascade-motion-enter`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-danger`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-lg`
+- `--cascivo-motion-enter`
+- `--cascivo-z-dropdown`
 
 ## Accessibility
 

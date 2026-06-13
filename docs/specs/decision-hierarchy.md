@@ -8,7 +8,7 @@ title: Decision Hierarchy
 When guidance conflicts, resolve it in this order:
 
 1. **Accessibility (WCAG 2.1 AA)** — non-negotiable. A visually pleasing solution that fails accessibility is wrong.
-2. **Token contract** — visual values must resolve to `--cascade-*` tokens. No hard-coding.
+2. **Token contract** — visual values must resolve to `--cascivo-*` tokens. No hard-coding.
 3. **Semantic correctness** — use the right element (`<button>` for actions, `<a>` for navigation).
 4. **Component intent** — use components for their designed purpose (Toast for transient, Alert for persistent).
 5. **Brand/visual preference** — choose spacing steps, sizing, and layout that serve the use case.

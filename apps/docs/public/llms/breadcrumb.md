@@ -49,11 +49,11 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

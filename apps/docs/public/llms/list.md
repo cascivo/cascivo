@@ -57,12 +57,12 @@ Keeps list semantics without visual markers
 
 ## Design tokens
 
-- `--cascade-font-sans`
-- `--cascade-leading-normal`
-- `--cascade-color-text`
-- `--cascade-text-base`
-- `--cascade-space-1`
-- `--cascade-space-6`
+- `--cascivo-font-sans`
+- `--cascivo-leading-normal`
+- `--cascivo-color-text`
+- `--cascivo-text-base`
+- `--cascivo-space-1`
+- `--cascivo-space-6`
 
 ## Accessibility
 

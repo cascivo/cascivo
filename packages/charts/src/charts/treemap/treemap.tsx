@@ -22,7 +22,7 @@ export interface TreemapProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function Treemap({
   data,
@@ -118,7 +118,7 @@ export function Treemap({
               ))}
             </defs>
             {rects.map((r, i) => {
-              const color = COLORS[i % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const color = COLORS[i % COLORS.length] ?? 'var(--cascivo-chart-1)'
               const label = labelMap.get(r.id) ?? r.id
               return (
                 <g key={r.id} aria-label={`${label}: ${data.find((d) => d.id === r.id)?.value}`}>
@@ -129,7 +129,7 @@ export function Treemap({
                     height={Math.max(0, r.h - 1)}
                     fill={color}
                     fillOpacity={0.8}
-                    stroke="var(--cascade-surface-base)"
+                    stroke="var(--cascivo-surface-base)"
                     strokeWidth={1}
                   />
                   {!plain && r.w > 30 && r.h > 18 && (

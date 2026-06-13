@@ -35,7 +35,7 @@ npx cascade add layout/grid
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 

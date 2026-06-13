@@ -42,7 +42,7 @@ describe('Radar', () => {
       const { container } = render(<Radar axes={axes} series={series} title="Plain" plain />)
       // In plain mode: no text labels for axes, no ring polygons with cascade border color
       const axisTexts = Array.from(container.querySelectorAll('text')).filter(
-        (t) => t.getAttribute('fill') === 'var(--cascade-text-secondary)',
+        (t) => t.getAttribute('fill') === 'var(--cascivo-text-secondary)',
       )
       expect(axisTexts).toHaveLength(0)
     })

@@ -46,11 +46,11 @@ SkipNavLink must be the first focusable element on the page
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-radius-control`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-radius-control`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 

@@ -5,9 +5,9 @@ import { fixCssLiterals } from './audit.js'
 const contract = buildContract({
   catalog: {
     tokens: [
-      { name: '--cascade-color-accent', resolvedDefault: '#3b82f6' },
-      { name: '--cascade-color-primary', resolvedDefault: '#ff0000' },
-      { name: '--cascade-color-brand', resolvedDefault: '#ff0000' },
+      { name: '--cascivo-color-accent', resolvedDefault: '#3b82f6' },
+      { name: '--cascivo-color-primary', resolvedDefault: '#ff0000' },
+      { name: '--cascivo-color-brand', resolvedDefault: '#ff0000' },
     ],
   },
   registry: { components: [] },
@@ -17,7 +17,7 @@ const contract = buildContract({
 describe('fixCssLiterals', () => {
   it('rewrites a single-match hex literal to a token and reports the count', () => {
     const out = fixCssLiterals('a { color: #3b82f6; }', 'a.css', contract)
-    expect(out.source).toBe('a { color: var(--cascade-color-accent); }')
+    expect(out.source).toBe('a { color: var(--cascivo-color-accent); }')
     expect(out.fixed).toBe(1)
   })
 
@@ -30,7 +30,7 @@ describe('fixCssLiterals', () => {
   it('does not rewrite non-hex literals (oklch left for manual review)', () => {
     const c = buildContract({
       catalog: {
-        tokens: [{ name: '--cascade-gray-700', resolvedDefault: 'oklch(0.373 0.015 264)' }],
+        tokens: [{ name: '--cascivo-gray-700', resolvedDefault: 'oklch(0.373 0.015 264)' }],
       },
       registry: { components: [] },
       context: { components: [] },
@@ -40,7 +40,7 @@ describe('fixCssLiterals', () => {
   })
 
   it('leaves source untouched when there is nothing to fix', () => {
-    const out = fixCssLiterals('a { color: var(--cascade-color-accent); }', 'a.css', contract)
+    const out = fixCssLiterals('a { color: var(--cascivo-color-accent); }', 'a.css', contract)
     expect(out.fixed).toBe(0)
   })
 })

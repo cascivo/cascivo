@@ -59,12 +59,12 @@ npx cascade add alert
 
 ## Design tokens
 
-- `--cascade-color-info`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-radius-md`
+- `--cascivo-color-info`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
 
 ## Accessibility
 

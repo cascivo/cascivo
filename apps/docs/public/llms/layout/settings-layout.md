@@ -33,7 +33,7 @@ Menu + content layout
 
 ## Design tokens
 
-- `--cascade-space-8`
+- `--cascivo-space-8`
 
 ## Accessibility
 

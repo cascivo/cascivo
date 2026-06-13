@@ -6,24 +6,24 @@
 
   .tooltip {
     position: absolute;
-    z-index: var(--cascade-z-tooltip);
+    z-index: var(--cascivo-z-tooltip);
     inline-size: max-content;
     max-inline-size: 16rem;
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-1);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-xs);
-    line-height: var(--cascade-leading-snug);
-    color: var(--cascade-color-text-on-accent);
-    background-color: var(--cascade-color-text);
-    border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-md);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-text-on-accent);
+    background-color: var(--cascivo-color-text);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-md);
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
     transition:
-      opacity var(--cascade-motion-enter),
-      visibility var(--cascade-motion-enter);
+      opacity var(--cascivo-motion-enter),
+      visibility var(--cascivo-motion-enter);
 
     /* Reset default popover styles */
     &:popover-open {
@@ -43,22 +43,22 @@
     }
 
     &[data-placement='top'] {
-      inset-block-end: calc(100% + var(--cascade-space-2));
+      inset-block-end: calc(100% + var(--cascivo-space-2));
       inset-inline-start: 50%;
       translate: -50% 0;
     }
     &[data-placement='bottom'] {
-      inset-block-start: calc(100% + var(--cascade-space-2));
+      inset-block-start: calc(100% + var(--cascivo-space-2));
       inset-inline-start: 50%;
       translate: -50% 0;
     }
     &[data-placement='left'] {
-      inset-inline-end: calc(100% + var(--cascade-space-2));
+      inset-inline-end: calc(100% + var(--cascivo-space-2));
       inset-block-start: 50%;
       translate: 0 -50%;
     }
     &[data-placement='right'] {
-      inset-inline-start: calc(100% + var(--cascade-space-2));
+      inset-inline-start: calc(100% + var(--cascivo-space-2));
       inset-block-start: 50%;
       translate: 0 -50%;
     }
@@ -68,8 +68,8 @@
     .tooltip {
       position: fixed;
       inset: auto;
-      position-anchor: var(--cascade-tooltip-anchor, attr(data-anchor));
-      margin: var(--cascade-space-2);
+      position-anchor: var(--cascivo-tooltip-anchor, attr(data-anchor));
+      margin: var(--cascivo-space-2);
     }
 
     .tooltip[data-placement='top'] {
@@ -95,10 +95,10 @@
     @media (prefers-reduced-motion: no-preference) {
       .tooltip {
         transition:
-          opacity var(--cascade-motion-enter),
-          visibility var(--cascade-motion-enter),
-          display var(--cascade-motion-enter) allow-discrete,
-          overlay var(--cascade-motion-enter) allow-discrete;
+          opacity var(--cascivo-motion-enter),
+          visibility var(--cascivo-motion-enter),
+          display var(--cascivo-motion-enter) allow-discrete,
+          overlay var(--cascivo-motion-enter) allow-discrete;
       }
 
       @starting-style {

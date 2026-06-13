@@ -14,7 +14,7 @@ export function Spacer({ size = 4, className, style, ...props }: SpacerProps) {
     <div
       role="none"
       className={cn(styles['spacer'], className)}
-      style={{ ['--_spacer-size' as string]: `var(--cascade-space-${size})`, ...style }}
+      style={{ ['--_spacer-size' as string]: `var(--cascivo-space-${size})`, ...style }}
       {...props}
     />
   )

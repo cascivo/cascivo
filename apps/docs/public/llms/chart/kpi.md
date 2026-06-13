@@ -35,7 +35,7 @@ import { Kpi } from '@cascade-ui/charts'
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 

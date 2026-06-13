@@ -61,8 +61,8 @@ Create the files at the user's chosen location (e.g. `src/components/<name>/`).
 **`<name>.module.css`**
 
 - `@layer cascade.component { … }` wrapping all rules
-- All values from CSS custom properties: `--cascade-<component>-<property>`
-- Default values reference semantic tokens: `var(--cascade-color-accent)`
+- All values from CSS custom properties: `--cascivo-<component>-<property>`
+- Default values reference semantic tokens: `var(--cascivo-color-accent)`
 - Hover/focus/active/disabled via CSS pseudo-classes only — no JS tracking
 - RTL via logical properties: `margin-inline-start`, `padding-block`, etc.
 - Motion: `@media (prefers-reduced-motion: reduce)` wrapping all transitions

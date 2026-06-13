@@ -25,7 +25,7 @@ export interface PieChartProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function PieChart({
   data,
@@ -139,7 +139,7 @@ export function PieChart({
                     key={d.id}
                     d={path}
                     fill={color}
-                    stroke="var(--cascade-color-surface)"
+                    stroke="var(--cascivo-color-surface)"
                     strokeWidth={1}
                     data-series={d.id}
                   />

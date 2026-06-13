@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
     },
     { name: 'span', type: 'number', required: false, description: 'GridItem: column span count' },
   ],
-  tokens: ['--cascade-space-*'],
+  tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

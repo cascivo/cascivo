@@ -27,7 +27,7 @@ describe('ProgressBar', () => {
     const { container } = render(<ProgressBar value={30} />)
     const fill = container.querySelector('[role="progressbar"] > div')
     expect(fill).toBeInstanceOf(HTMLElement)
-    expect((fill as HTMLElement).style.getPropertyValue('--cascade-progress-value')).toBe('30%')
+    expect((fill as HTMLElement).style.getPropertyValue('--cascivo-progress-value')).toBe('30%')
   })
 
   it('is indeterminate when value is omitted', () => {
