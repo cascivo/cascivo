@@ -32,6 +32,11 @@ describe('Boxplot', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<Boxplot series={series} title="Boxplot" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no Axis elements', () => {
       const { container } = render(<Boxplot series={series} title="Plain" plain />)

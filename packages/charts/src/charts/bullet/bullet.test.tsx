@@ -21,4 +21,9 @@ describe('Bullet', () => {
     )
     expect(container.querySelector('.my-bullet')).toBeDefined()
   })
+
+  it('renders aria-live region for tooltip', () => {
+    render(<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
 })

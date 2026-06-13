@@ -32,6 +32,11 @@ describe('Radar', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<Radar axes={axes} series={series} title="Radar" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no ring or spoke chrome', () => {
       const { container } = render(<Radar axes={axes} series={series} title="Plain" plain />)

@@ -27,6 +27,11 @@ describe('Treemap', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<Treemap data={data} title="Treemap" width={400} height={300} />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no text labels', () => {
       const { container } = render(

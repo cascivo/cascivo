@@ -20,6 +20,18 @@ describe('Histogram', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<Histogram data={[1, 2, 3, 4, 5]} title="Hist" label="X" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('has no ad-hoc SVG text tooltip element in plain mode', () => {
+    const { container } = render(<Histogram data={[1, 2, 3, 4, 5]} title="Hist" label="X" plain />)
+    // Old implementation rendered a tooltip <text> element; plain mode has no axes so no text at all
+    const textEls = container.querySelectorAll('text')
+    expect(textEls.length).toBe(0)
+  })
+
   it('respects explicit bin count', () => {
     const { container } = render(
       <Histogram data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} title="Binned" label="X" bins={5} />,

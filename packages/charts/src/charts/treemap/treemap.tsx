@@ -3,6 +3,7 @@ import { useId } from 'react'
 import { useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { squarify } from '../../engine/treemap'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface TreemapDatum {
   id: string
@@ -56,6 +57,32 @@ export function Treemap({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (data.length === 0) return undefined
+    const rects = squarify(
+      data.map((d) => ({ id: d.id, value: d.value })),
+      w,
+      h,
+    )
+    const points: ChartPoint[] = rects.map((r) => {
+      const datum = data.find((d) => d.id === r.id)
+      return {
+        id: r.id,
+        cx: r.x + r.w / 2,
+        cy: r.y + r.h / 2,
+        label: datum?.label ?? r.id,
+        value: datum?.value ?? 0,
+      }
+    })
+    return { points }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -65,6 +92,7 @@ export function Treemap({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={data.length > 0 ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         if (data.length === 0) return null

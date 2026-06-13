@@ -1,11 +1,12 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale } from '../../engine/scale'
 import { binValues } from '../../engine/stats'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface HistogramProps {
   data: number[]
@@ -32,7 +33,6 @@ export function Histogram({
   plain,
 }: HistogramProps) {
   useSignals()
-  const tooltip = useSignal<{ x: number; y: number; text: string } | null>(null)
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
 
@@ -61,6 +61,35 @@ export function Histogram({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (binnedData.length === 0) return undefined
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+    const xMin = binnedData[0]?.x0 ?? 0
+    const xMax = binnedData[binnedData.length - 1]?.x1 ?? 1
+    const xScale = linearScale([xMin, xMax], [0, innerW])
+    const yScale = linearScale([0, maxCount || 1], [innerH, 0])
+
+    const points: ChartPoint[] = binnedData.map((b, i) => {
+      const rx = xScale.map(b.x0)
+      const rw = Math.max(0, xScale.map(b.x1) - rx - 1)
+      return {
+        id: `bin-${i}`,
+        cx: margins.left + rx + rw / 2,
+        cy: margins.top + yScale.map(b.count),
+        label: `${b.x0.toFixed(2)}–${b.x1.toFixed(2)}`,
+        value: b.count,
+      }
+    })
+    return { points }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -70,6 +99,7 @@ export function Histogram({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={binnedData.length > 0 ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -82,17 +112,6 @@ export function Histogram({
         const xMax = binnedData[binnedData.length - 1]?.x1 ?? 1
         const xScale = linearScale([xMin, xMax], [0, inner.width])
         const yScale = linearScale([0, maxCount || 1], [inner.height, 0])
-
-        const handleEnter = (b: (typeof binnedData)[0], bx: number, by: number) => {
-          tooltip.value = {
-            x: bx,
-            y: by,
-            text: `${b.x0.toFixed(2)}–${b.x1.toFixed(2)}: ${b.count}`,
-          }
-        }
-        const handleLeave = () => {
-          tooltip.value = null
-        }
 
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
@@ -111,8 +130,6 @@ export function Histogram({
                   height={Math.max(0, rh)}
                   fill="var(--cascade-chart-1)"
                   opacity={0.85}
-                  onMouseEnter={() => handleEnter(b, rx + rw / 2, ry)}
-                  onMouseLeave={handleLeave}
                   aria-label={`${b.x0.toFixed(1)}–${b.x1.toFixed(1)}: ${b.count}`}
                 />
               )
@@ -127,26 +144,6 @@ export function Histogram({
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>
-            )}
-            {tooltip.value && (
-              <g>
-                <rect
-                  x={tooltip.value.x - 4}
-                  y={tooltip.value.y - 26}
-                  width={tooltip.value.text.length * 7 + 8}
-                  height={20}
-                  fill="var(--cascade-surface-overlay)"
-                  rx={3}
-                />
-                <text
-                  x={tooltip.value.x}
-                  y={tooltip.value.y - 12}
-                  fontSize={12}
-                  fill="var(--cascade-text-primary)"
-                >
-                  {tooltip.value.text}
-                </text>
-              </g>
             )}
           </g>
         )

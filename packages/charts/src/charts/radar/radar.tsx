@@ -1,6 +1,7 @@
 'use client'
 import { useSignals } from '@cascade-ui/core'
 import { ChartFrame } from '../../core/chart-frame'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface RadarSeries {
   id: string
@@ -80,6 +81,35 @@ export function Radar({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (series.length === 0 || n === 0) return undefined
+    const cx = w / 2
+    const cy = h / 2
+    const r = Math.min(cx, cy) * 0.72
+
+    const points: ChartPoint[] = series.flatMap((s) =>
+      s.values.map((v, i) => {
+        const angle = (i / n) * 2 * Math.PI - Math.PI / 2
+        const radius = (v / maxVal) * r
+        return {
+          id: `${s.id}-${i}`,
+          cx: cx + Math.cos(angle) * radius,
+          cy: cy + Math.sin(angle) * radius,
+          label: axes[i] ?? String(i),
+          value: v,
+          seriesId: s.id,
+        }
+      }),
+    )
+    return { points }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -89,6 +119,7 @@ export function Radar({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={series.length > 0 ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const cx = width / 2

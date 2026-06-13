@@ -1,4 +1,5 @@
 'use client'
+// Tooltip: KPI displays a single aggregate value — no data-point traversal.
 import type { ReactNode } from 'react'
 import { Sparkline } from '../sparkline/sparkline'
 
