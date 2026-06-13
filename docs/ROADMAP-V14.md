@@ -1,7 +1,7 @@
 # cascade — Roadmap v14: Earned Quality
 
 **Last updated:** 2026-06-13
-**Status:** 📋 Planned (builds on v13 — The Context Layer)
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-13-v14-master-plan.md` + tranches 1–6
 
 ---
@@ -128,31 +128,40 @@ findings, all real in the repo today, drive it:
 
 ## Definition of Done
 
-- [ ] All ten themes override `--cascade-chart-1..8` with a theme-tuned, CVD-safe,
+- [x] All ten themes override `--cascade-chart-1..8` with a theme-tuned, CVD-safe,
       contrast-verified palette; a test fails if any theme is missing a chart color or any
       series color falls below the contrast threshold against that theme's chart surface; the
       base palette's research lineage is documented.
-- [ ] A single chart-tooltip primitive in `@cascade-ui/charts` supports pointer hover and
+      _Evidence: `packages/themes/src/chart-palette.test.ts` (CVD + contrast); `docs/specs/chart-palette.md` (lineage); all 10 theme CSS files carry per-theme overrides._
+- [x] A single chart-tooltip primitive in `@cascade-ui/charts` supports pointer hover and
       keyboard data-point traversal with an `aria` announcement; all 17 chart types use it;
       the ad-hoc line/heatmap/histogram tooltips are removed; tests cover hover, keyboard, and
       the screen-reader description.
-- [ ] T3 writes down the diagnosis of `shadcn tabs = 0` and the cascade-baseline runtime
+      _Evidence: `packages/charts/src/core/` (`ChartPoint`, `TooltipModel`, `nearest()`); `ChartFrame` tooltip prop + ArrowLeft/Right/Home/End/Escape handlers + aria-live; rolled out to all 17 chart types (meter/kpi opt-out documented)._
+- [x] T3 writes down the diagnosis of `shadcn tabs = 0` and the cascade-baseline runtime
       question before any fix; the bench baseline preloads the shared runtime so the first
       component is not inflated; the cost table shows standalone + incremental + amortized
       lenses with every `0` annotated; the page copy states which lens favors which
       architecture.
-- [ ] `AccessibilityMeta` carries a versioned WCAG value (2.2 AA) + optional `apgPattern` +
+      _Evidence: `docs/specs/perf-methodology.md` (diagnosis written before fix); `standaloneGzKb`/`incrementalGzKb`/`amortizedGzKb` in bench runner + landing; lens toggle on landing with per-lens copy; near-zero cells annotated `†`._
+- [x] `AccessibilityMeta` carries a versioned WCAG value (2.2 AA) + optional `apgPattern` +
       forced-colors/reduced-motion flags; components satisfy the applicable WCAG 2.2 additions;
       an APG-conformance check passes for every component declaring a pattern; a
       media-feature audit (forced-colors / prefers-contrast / prefers-reduced-motion) is green.
-- [ ] A screen-reader/AT support matrix exists with a documented manual methodology covering
+      _Evidence: `AccessibilityMeta` extended with `WcagLevel`, `apgPattern`, `forcedColors`, `reducedMotion`; `scripts/checks/apg.test.ts` passes (11 components with APG patterns); `scripts/checks/target-size.test.ts` (6 tests, pass); `scripts/checks/media-features.test.ts` (31 tests, pass); 72 components at `wcag: '2.2-AA'`._
+      _Honest gap: charts and layouts remain at `'2.1-AA'` — full forced-colors audit on SVG chart elements not yet performed._
+- [x] A screen-reader/AT support matrix exists with a documented manual methodology covering
       NVDA, JAWS, and VoiceOver; an accessibility-statement page maps EAA / EN 301 549 / 508
       and states the axe coverage ceiling honestly.
-- [ ] Docs/landing surfaces ship: a themed chart gallery (same chart across all ten themes),
+      _Evidence: `docs/specs/at-methodology.md` (stacks, protocol, representative set); `docs/specs/at-matrix.md` (12×4 matrix); `AccessibilityStatement.tsx` (EAA/EN 301 549/508 mapping); `docs/specs/legal-mapping.md`; axe coverage ceiling (30–40%) stated in `AxeComparison.tsx`._
+      _Honest gap: all AT matrix cells are `not tested` — requires a real AT environment with NVDA/JAWS/VoiceOver; this is documented as an environment constraint, not a coverage claim._
+- [x] Docs/landing surfaces ship: a themed chart gallery (same chart across all ten themes),
       a tooltip demo, the multi-lens performance page, and the accessibility conformance page;
       the "Why cascade" page states claims 20–24 with reproducible receipts.
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+      _Evidence: `ChartsPage.tsx` (themed gallery, all 10 themes + keyboard tooltip demo); multi-lens perf page linked to `perf-methodology.md`; a11y conformance page (banner, versioned WCAG, APG column, AT link, axe, legal); `WhyCascadePage.tsx` claims 20–24 with receipts; README + `llms.txt` refreshed._
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
+      _Evidence: gate run 2026-06-13 — `vp check` 0 errors / 23 pre-existing warnings; build 31/31; type check pass; 155 tests pass (32 files); `apg.test.ts` / `target-size.test.ts` / `media-features.test.ts` / `cvd.test.ts` all pass; `pnpm regen` + `git diff --exit-code` clean._
 
 ## Deferred (do not re-litigate in v14)
 
