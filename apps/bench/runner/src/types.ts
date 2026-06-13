@@ -1,5 +1,26 @@
 import type { LibId } from './apps.ts'
 
+export type MatrixCell = {
+  /** Total gzip size of an isolated build containing just this component and all its deps. */
+  totalGzKb: number
+  /** Marginal cost over the runtime-preloaded baseline: totalGzKb − baselineGzKb. */
+  incrementalGzKb: number
+  /**
+   * Standalone cost — identical to totalGzKb. Alias kept for clarity: this is the
+   * component + ALL its transitive deps, with no baseline subtraction.
+   */
+  standaloneGzKb: number
+  /**
+   * Amortized cost per component for this library.
+   * Formula: sum(incrementalGzKb for all components) / numberOfComponents
+   * Answers: "if you use all N components, what is the average marginal cost each?"
+   * Computed after all components are measured and the same value is stored on every cell.
+   */
+  amortizedGzKb: number
+  /** Present when incrementalGzKb is near-zero to explain why. */
+  note?: string
+}
+
 export type ScenarioId =
   | 'create-1k'
   | 'create-10k'
@@ -37,7 +58,7 @@ export type Results = {
       LibId,
       { jsGzKb: number; cssGzKb: number; totalGzKb: number; jsRawKb: number; cssRawKb: number }
     >
-    matrix: Record<LibId, Record<string, { totalGzKb: number; incrementalGzKb: number }>>
+    matrix: Record<LibId, Record<string, MatrixCell>>
     treeshake?: { bareImportGzBytes: number; buttonOnlyGzKb: number; fullGzKb: number }
   }
   runtime?: Record<

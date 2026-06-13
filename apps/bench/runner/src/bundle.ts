@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import { spawnSync } from 'node:child_process'
 import type { BenchApp, LibId } from './apps.ts'
+import type { MatrixCell } from './types.ts'
 import { buildApp } from './server.ts'
 
 const kb = (bytes: number) => Math.round((bytes / 1024) * 100) / 100
@@ -58,7 +59,7 @@ export const MATRIX_COMPONENTS = [
 export function measureApps(repoRoot: string, apps: BenchApp[]) {
   const result = {
     apps: {} as Record<LibId, DistMeasure>,
-    matrix: {} as Record<LibId, Record<string, { totalGzKb: number; incrementalGzKb: number }>>,
+    matrix: {} as Record<LibId, Record<string, MatrixCell>>,
   }
   for (const app of apps) {
     buildApp(app)
@@ -75,12 +76,43 @@ export function measureApps(repoRoot: string, apps: BenchApp[]) {
     }
 
     const baseline = buildMatrix('baseline')
-    result.matrix[app.id] = {}
+
+    // First pass: collect raw totals per component.
+    const rawTotals: Record<string, number> = {}
     for (const comp of MATRIX_COMPONENTS) {
-      const total = buildMatrix(comp)
+      rawTotals[comp] = buildMatrix(comp)
+    }
+
+    // Compute amortized cost: sum(all incrementals) / N.
+    // Answers "if you use all N components, what is the average marginal cost each?"
+    const incrementals = MATRIX_COMPONENTS.map(
+      (comp) => Math.round((rawTotals[comp]! - baseline) * 100) / 100,
+    )
+    const sumIncremental = incrementals.reduce((acc, v) => acc + v, 0)
+    const amortizedGzKb = Math.round((sumIncremental / MATRIX_COMPONENTS.length) * 100) / 100
+
+    result.matrix[app.id] = {}
+    for (let i = 0; i < MATRIX_COMPONENTS.length; i++) {
+      const comp = MATRIX_COMPONENTS[i]!
+      const total = rawTotals[comp]!
+      const standaloneGzKb = total // standalone IS the isolated build total
+      const incrementalGzKb = incrementals[i]!
+
+      let note: string | undefined
+      if (Math.abs(incrementalGzKb) < 0.05) {
+        if (standaloneGzKb > 0) {
+          note = `Standalone cost is ${standaloneGzKb} KB but marginal over runtime-preloaded baseline is ~0`
+        } else {
+          note = 'Shared runtime already in baseline; marginal cost is ~0'
+        }
+      }
+
       result.matrix[app.id][comp] = {
         totalGzKb: total,
-        incrementalGzKb: Math.round((total - baseline) * 100) / 100,
+        incrementalGzKb,
+        standaloneGzKb,
+        amortizedGzKb,
+        ...(note !== undefined ? { note } : {}),
       }
     }
   }

@@ -28,6 +28,36 @@ This is meant to answer: "how many bytes does importing this one component add t
 otherwise empty app?" The correctness of the number depends entirely on the baseline being
 a realistic zero-cost anchor for each library.
 
+**Standalone cost:**
+
+```
+standaloneGzKb = totalGzKb_component
+```
+
+An alias for `totalGzKb`. Represents the full isolated build of that component and all its
+transitive deps (including the runtime). No baseline subtraction. Useful to show the
+first-use cost when no other components from the library are already loaded.
+
+**Amortized cost formula (T3-T3+):**
+
+```
+amortizedGzKb = round(sum(incrementalGzKb for all N components) / N * 100) / 100
+```
+
+Computed after all components are measured for a given library. The same value is stored
+on every cell for that library. Answers: "if you use all N components from this library,
+what is the average marginal cost per component?" This normalises out first-component
+runtime overhead and gives a fair cross-library comparison for multi-component apps.
+
+**Near-zero note:**
+
+When `|incrementalGzKb| < 0.05`, a `note` field is added to the cell explaining why the
+cost is effectively zero. Two variants:
+
+- `standaloneGzKb > 0`: the component has real standalone weight but the baseline already
+  covers that shared runtime, so the marginal cost is ~0.
+- `standaloneGzKb === 0`: no weight at all — the entry may be a stub or dead import.
+
 ## Finding 1: shadcn tabs = 0 — stub entry
 
 **File:** `apps/bench/app-shadcn/src/matrix/tabs.tsx`
@@ -94,11 +124,11 @@ dependencies in the baseline.
 
 ## Per-lib baseline composition (current state — before fix)
 
-| Library | What baseline imports | What is missing |
-|---------|----------------------|-----------------|
-| cascade | `@cascade-ui/themes/light` (CSS only) | `@cascade-ui/core`, `@cascade-ui/i18n` |
-| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`) | nothing (correct) |
-| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`) | nothing (correct) |
+| Library | What baseline imports                                   | What is missing                        |
+| ------- | ------------------------------------------------------- | -------------------------------------- |
+| cascade | `@cascade-ui/themes/light` (CSS only)                   | `@cascade-ui/core`, `@cascade-ui/i18n` |
+| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)   | nothing (correct)                      |
+| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`) | nothing (correct)                      |
 
 ## Planned fix (T3-T2)
 
@@ -121,8 +151,10 @@ T3-T2 will correct both defects:
 
 ## Per-lib baseline composition (after fix)
 
-| Library | Baseline imports |
-|---------|-----------------|
-| cascade | `@cascade-ui/themes/light` + `@cascade-ui/core` + `@cascade-ui/i18n` |
-| shadcn  | `index.css` (Tailwind v4) + `@radix-ui/react-slot` (shared dep present in all shadcn components) |
-| carbon  | `index.scss` (full Carbon styles via `@use '@carbon/react'`) |
+| Library | Baseline imports                                                                                            | Notes                                                                                     |
+| ------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| cascade | `@cascade-ui/themes/light` + `useSignals` from `@cascade-ui/core` + `currentLocale` from `@cascade-ui/i18n` | Named imports force the runtime into the baseline bundle without tree-shaking them away   |
+| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)                                                       | Unchanged — already correct; `@radix-ui/react-slot` is pulled in by individual components |
+| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`)                                                     | Unchanged — already correct                                                               |
+
+The shadcn tabs matrix entry now imports from a real shadcn-style `Tabs` component backed by `@radix-ui/react-tabs` (added as an explicit dep in `apps/bench/app-shadcn/package.json`). The vendored component lives at `apps/bench/app-shadcn/src/components/ui/tabs.tsx`.
