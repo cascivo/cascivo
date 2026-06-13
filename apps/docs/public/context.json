@@ -67,6 +67,11 @@
       "path": "/docs/specs/legal-mapping.md"
     },
     {
+      "id": "mobile-audit-landing",
+      "title": "mobile-audit-landing",
+      "path": "/docs/specs/mobile-audit-landing.md"
+    },
+    {
       "id": "perf-methodology",
       "title": "perf-methodology",
       "path": "/docs/specs/perf-methodology.md"
