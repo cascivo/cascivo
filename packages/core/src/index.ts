@@ -18,6 +18,7 @@ export type {
   ComponentMeta,
   PropMeta,
   AccessibilityMeta,
+  WcagLevel,
   ExampleMeta,
   ComponentIntent,
   IntentAntiPattern,

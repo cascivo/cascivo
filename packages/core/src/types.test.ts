@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import type { ComponentMeta, ComponentIntent } from './index.ts'
+import { describe, it, expect, expectTypeOf } from 'vitest'
+import type { ComponentMeta, ComponentIntent, AccessibilityMeta, WcagLevel } from './index.ts'
 
 describe('ComponentMeta types', () => {
   it('round-trips a ComponentMeta with intent through JSON', () => {
@@ -67,5 +67,40 @@ describe('ComponentMeta types', () => {
     }
 
     expect(meta.intent).toBeUndefined()
+  })
+})
+
+describe('AccessibilityMeta type', () => {
+  it('accepts versioned WCAG levels', () => {
+    const meta: AccessibilityMeta = {
+      role: 'button',
+      wcag: '2.2-AA',
+      keyboard: ['Enter', 'Space'],
+    }
+    expectTypeOf(meta.wcag).toEqualTypeOf<WcagLevel>()
+  })
+
+  it('accepts legacy WCAG levels for migration', () => {
+    const meta: AccessibilityMeta = {
+      role: 'button',
+      wcag: 'AA',
+      keyboard: [],
+    }
+    expectTypeOf(meta.wcag).toEqualTypeOf<WcagLevel>()
+  })
+
+  it('accepts optional apgPattern and media-feature flags', () => {
+    const meta: AccessibilityMeta = {
+      role: 'tablist',
+      wcag: '2.2-AA',
+      keyboard: ['ArrowLeft', 'ArrowRight'],
+      apgPattern: 'tabs',
+      forcedColors: true,
+      reducedMotion: false,
+    }
+    expectTypeOf(meta.apgPattern).toEqualTypeOf<string | undefined>()
+    expect(meta.apgPattern).toBe('tabs')
+    expect(meta.forcedColors).toBe(true)
+    expect(meta.reducedMotion).toBe(false)
   })
 })

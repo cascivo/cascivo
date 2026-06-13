@@ -20,10 +20,33 @@ export interface PropMeta {
   description?: string
 }
 
+/**
+ * WCAG conformance level with explicit version.
+ * 'AA' / 'AAA' are deprecated aliases for '2.1-AA' / '2.1-AAA' — migrate to versioned form.
+ */
+export type WcagLevel = '2.1-AA' | '2.2-AA' | '2.2-AAA' | 'AA' | 'AAA'
+
 export interface AccessibilityMeta {
   role: string
-  wcag: 'AA' | 'AAA'
+  /** WCAG conformance level. Use versioned form: '2.1-AA' | '2.2-AA'. */
+  wcag: WcagLevel
   keyboard: string[]
+  /**
+   * ARIA Authoring Practices Guide pattern this component conforms to.
+   * E.g. 'tabs', 'dialog-modal', 'combobox', 'accordion', 'slider'.
+   * Omit for components that don't map to an APG pattern (charts, composites).
+   */
+  apgPattern?: string
+  /**
+   * True if the component explicitly handles forced-colors (Windows High Contrast)
+   * via @media (forced-colors: active) CSS rules.
+   */
+  forcedColors?: boolean
+  /**
+   * True if the component explicitly respects prefers-reduced-motion.
+   * Omit/false for components with no animation.
+   */
+  reducedMotion?: boolean
 }
 
 export interface ExampleMeta {
