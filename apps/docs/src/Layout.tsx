@@ -54,6 +54,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
 
   const exploreItems = [
     { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
+    { label: 'Context Explorer', href: '/context', icon: <Eye size={16} /> },
     { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
     { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },
     { label: 'Directory', href: '/directory', icon: <Grid size={16} /> },
