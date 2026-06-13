@@ -1149,6 +1149,8 @@ kbd {
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-3);
+  /* Prevent grid item from expanding beyond its column due to pre/code content */
+  min-inline-size: 0;
 }
 
 .agent-artifact h3 {
@@ -1843,6 +1845,11 @@ kbd {
 
   /* ShellHeader desktop nav — hidden on mobile; off-canvas drawer serves it */
   [role='banner'] nav {
+    display: none;
+  }
+
+  /* Theme dots require >232px; hide on mobile to prevent header overflow */
+  .header-themes {
     display: none;
   }
 }
