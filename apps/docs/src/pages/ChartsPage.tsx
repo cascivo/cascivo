@@ -15,6 +15,45 @@ import { Treemap } from '@cascade-ui/charts'
 import { Radar } from '@cascade-ui/charts'
 import { Bullet } from '@cascade-ui/charts'
 
+// Palette gallery — all 10 themes, 8-series BarChart (one slot per Okabe-Ito color)
+const PALETTE_THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+] as const
+
+const PALETTE_DEMO_DATA = [
+  { label: 'Q1', s1: 40, s2: 28, s3: 35, s4: 22, s5: 31, s6: 18, s7: 25, s8: 15 },
+  { label: 'Q2', s1: 55, s2: 38, s3: 42, s4: 30, s5: 44, s6: 25, s7: 33, s8: 20 },
+  { label: 'Q3', s1: 48, s2: 32, s3: 38, s4: 26, s5: 37, s6: 21, s7: 28, s8: 17 },
+] as const
+
+type PaletteRow = (typeof PALETTE_DEMO_DATA)[number]
+
+const PALETTE_SERIES: Array<{ id: string; label: string; key: keyof Omit<PaletteRow, 'label'> }> = [
+  { id: 'c1', label: 'Series 1', key: 's1' },
+  { id: 'c2', label: 'Series 2', key: 's2' },
+  { id: 'c3', label: 'Series 3', key: 's3' },
+  { id: 'c4', label: 'Series 4', key: 's4' },
+  { id: 'c5', label: 'Series 5', key: 's5' },
+  { id: 'c6', label: 'Series 6', key: 's6' },
+  { id: 'c7', label: 'Series 7', key: 's7' },
+  { id: 'c8', label: 'Series 8', key: 's8' },
+]
+
+const paletteSeries = PALETTE_SERIES.map(({ id, label, key }) => ({
+  id,
+  label,
+  data: PALETTE_DEMO_DATA.map((row) => ({ x: row.label, y: row[key] })),
+}))
+
 // Deterministic demo data — no Math.random, index-based
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -347,6 +386,49 @@ export function ChartsPage() {
           <Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
           <Bullet value={55} target={70} ranges={[30, 60, 100]} label="Satisfaction" />
         </div>
+      </section>
+
+      <section class="doc-section">
+        <h2>Keyboard Tooltip Demo</h2>
+        <p>
+          Tab to focus the chart, use Arrow keys to traverse data points, Escape to clear.
+          Announcement plays in the aria-live region (read by screen readers).
+        </p>
+        <p>Tab into the chart, then use ← → arrow keys to navigate. Press Escape to dismiss.</p>
+        <BarChart
+          series={[
+            {
+              id: 'alpha',
+              label: 'Alpha',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 400 + i * 120 })),
+            },
+            {
+              id: 'beta',
+              label: 'Beta',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 300 + i * 80 })),
+            },
+            {
+              id: 'gamma',
+              label: 'Gamma',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 200 + i * 60 })),
+            },
+          ]}
+          x={(d) => d.x}
+          y={(d) => d.y}
+          title="Keyboard tooltip demo — Alpha, Beta, Gamma series"
+          description="Use Tab to focus, arrow keys to navigate data points, and Escape to dismiss the tooltip."
+          height={280}
+          tooltip
+        />
+        <p
+          style={{
+            fontSize: '0.875rem',
+            color: 'var(--cascade-text-secondary)',
+            marginBlockStart: '0.5rem',
+          }}
+        >
+          Screen readers will announce each data point as you navigate (e.g., "Jan · 400 — Alpha").
+        </p>
       </section>
 
       <section class="doc-section">
