@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@cascade-ui/core": "workspace:*",
+    "@cascade-ui/i18n": "workspace:*",
     "@cascade-ui/react": "workspace:*",
     "@cascade-ui/themes": "workspace:*",
     "@preact/signals-react": "catalog:",

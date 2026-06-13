@@ -42,6 +42,11 @@
       "path": "/docs/specs/decision-hierarchy.md"
     },
     {
+      "id": "perf-methodology",
+      "title": "perf-methodology",
+      "path": "/docs/specs/perf-methodology.md"
+    },
+    {
       "id": "spec-spacing",
       "title": "Spacing",
       "path": "/docs/specs/spacing.md"

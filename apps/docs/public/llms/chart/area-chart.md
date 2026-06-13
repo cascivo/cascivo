@@ -28,6 +28,7 @@ npx cascade add chart/area-chart
 | `xTicks`      | `number`                   | no          | `5`     | —                                                                     |
 | `yTicks`      | `number`                   | no          | `5`     | —                                                                     |
 | `legend`      | `boolean`                  | no          | —       | —                                                                     |
+| `tooltip`     | `boolean`                  | no          | —       | Enable hover/keyboard tooltip                                         |
 | `className`   | `string`                   | no          | —       | —                                                                     |
 | `plain`       | `boolean`                  | no          | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -57,6 +58,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 
 - **WCAG level:** AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 

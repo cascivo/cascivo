@@ -58,6 +58,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
 
 - **WCAG level:** AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 

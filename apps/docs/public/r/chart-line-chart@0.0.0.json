@@ -125,7 +125,12 @@
     "accessibility": {
       "role": "img",
       "wcag": "AA",
-      "keyboard": []
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate points)",
+        "Home/End (first/last point)",
+        "Escape (clear focus)"
+      ]
     },
     "examples": [
       {

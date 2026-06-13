@@ -25,6 +25,7 @@ npx cascade add chart/scatter-chart
 | `xTicks`      | `number`               | no                             | `5`     | —                                                                     |
 | `yTicks`      | `number`               | no                             | `5`     | —                                                                     |
 | `legend`      | `boolean`              | no                             | —       | —                                                                     |
+| `tooltip`     | `boolean`              | no                             | —       | Enable hover/keyboard tooltip                                         |
 | `className`   | `string`               | no                             | —       | —                                                                     |
 | `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -54,6 +55,7 @@ const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 
 - **WCAG level:** AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 

@@ -23,6 +23,7 @@ npx cascade add chart/combo-chart
 | `secondAxis`  | `boolean`                            | no       | —       | Render line on a secondary right y-axis                               |
 | `width`       | `number`                             | no       | —       | —                                                                     |
 | `height`      | `number`                             | no       | `320`   | —                                                                     |
+| `tooltip`     | `boolean`                            | no       | —       | Enable hover/keyboard tooltip                                         |
 | `className`   | `string`                             | no       | —       | —                                                                     |
 | `plain`       | `boolean`                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -47,6 +48,7 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 
 - **WCAG level:** AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 
