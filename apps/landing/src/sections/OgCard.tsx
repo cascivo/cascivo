@@ -20,7 +20,7 @@ export function OgCard() {
         padding: 'var(--cascivo-space-16)',
       }}
     >
-      <Badge variant="outline">{componentCount}+ components · 5 themes · MIT</Badge>
+      <Badge variant="outline">{componentCount}+ components · 10 themes · MIT</Badge>
       <h1
         style={{
           fontFamily: 'var(--cascivo-font-sans)',

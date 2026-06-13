@@ -158,7 +158,7 @@ function themeForIndex(i: number): Theme {
 export function ComponentGrid() {
   return (
     <section className="section">
-      <h2>{componentCount}+ components, blocks and charts. Five themes.</h2>
+      <h2>{componentCount}+ components, blocks and charts. Ten themes.</h2>
       <p className="section-sub">
         A curated selection — the full set lives in the <a href="/docs">docs</a>.
       </p>

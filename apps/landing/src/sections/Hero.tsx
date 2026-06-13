@@ -8,7 +8,8 @@ const componentCount = (registry as { components: unknown[] }).components.length
 const CHIPS = [
   '@layer CSS, no runtime',
   'Fine-grained signals',
-  'WCAG 2.1 AA',
+  'WCAG 2.2 AA',
+  'RSC-compatible',
   'RTL-ready',
   'AI-native manifests',
   'Copy-paste, owned code',
@@ -17,7 +18,7 @@ const CHIPS = [
 export function Hero() {
   return (
     <section className="hero">
-      <Badge variant="outline">{componentCount}+ components · 5 themes · MIT</Badge>
+      <Badge variant="outline">{componentCount}+ components · 10 themes · MIT</Badge>
       <h1 className="hero-title">
         Native to the web. <span className="hero-title-accent">Fluent in agent.</span>
       </h1>
@@ -52,7 +53,7 @@ export function Hero() {
           GitHub
         </Button>
       </div>
-      <CopyCommand command="npx cascivo add button" />
+      <CopyCommand command="npx @cascivo/cli add button" />
     </section>
   )
 }

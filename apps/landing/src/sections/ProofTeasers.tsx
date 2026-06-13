@@ -36,7 +36,7 @@ export function ProofTeasers() {
             </CardHeader>
             <CardContent>
               <p className="proof-number">{axe.cascade.violations}</p>
-              <p className="proof-number-label">axe violations · WCAG 2.1 AA · four app states</p>
+              <p className="proof-number-label">axe violations · WCAG 2.2 AA · four app states</p>
               <p className="proof-line">
                 Same scan, same rules: shadcn {axe.shadcn.violations} · Carbon{' '}
                 {axe.carbon.violations}. Plus a keyboard and ARIA matrix generated from every

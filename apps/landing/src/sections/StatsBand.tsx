@@ -29,7 +29,7 @@ const STATS: StatItem[] = [
         {
           label: 'axe violations',
           value: cascadeAxe.violations,
-          helpText: 'WCAG 2.1 AA scan across four app states. CI fails on any.',
+          helpText: 'WCAG 2.2 AA scan across four app states. CI fails on any.',
         },
       ]
     : []),

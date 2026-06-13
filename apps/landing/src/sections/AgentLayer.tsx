@@ -175,7 +175,7 @@ export function AgentLayer() {
           </blockquote>
           <p className="agent-caption">
             The agent resolves components via MCP, copies owned code via the CLI, and validates
-            against the manifest — the same flow as <code>npx cascivo add</code>.
+            against the manifest — the same flow as <code>npx @cascivo/cli add</code>.
           </p>
         </article>
 

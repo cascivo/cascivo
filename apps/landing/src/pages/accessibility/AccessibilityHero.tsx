@@ -19,7 +19,7 @@ export function AccessibilityHero() {
             <Stat
               label="cascivo — axe violations"
               value={AXE.cascade.violations}
-              helpText="WCAG 2.1 AA · four app states"
+              helpText="WCAG 2.2 AA · four app states"
             />
             <Stat
               label="shadcn/ui — axe violations"
@@ -40,7 +40,7 @@ export function AccessibilityHero() {
         />
         <Stat
           label="conformance target"
-          value="WCAG 2.1 AA"
+          value="WCAG 2.2 AA"
           helpText="CI fails on a single axe violation"
         />
       </div>

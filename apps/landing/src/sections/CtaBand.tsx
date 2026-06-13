@@ -14,7 +14,7 @@ export function CtaBand() {
         >
           Start building
         </Button>
-        <CopyCommand command="npx cascivo init" />
+        <CopyCommand command="npx @cascivo/cli init" />
       </div>
     </section>
   )

@@ -14,8 +14,8 @@ const FEATURES = [
     body: 'Components are copy-pasted into your project via the CLI. You own every line you ship.',
   },
   {
-    title: 'Five themes',
-    body: 'Light, dark, warm, flat, and minimal out of the box — scoped to any container with a data-theme attribute.',
+    title: 'Ten themes',
+    body: 'Light, dark, warm, brutalist, corporate, flat, midnight, minimal, pastel, and terminal — scoped to any container with a data-theme attribute.',
   },
   {
     title: 'AI-first',

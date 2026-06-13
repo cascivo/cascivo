@@ -18,7 +18,7 @@ export function AxeComparison() {
       <h2>Same app, same axe run, three libraries</h2>
       <p className="section-sub">
         The bench suite builds one identical app three times — with cascivo, shadcn/ui, and Carbon —
-        and runs @axe-core/playwright with WCAG 2.1 AA tags over four app states: empty table,
+        and runs @axe-core/playwright with WCAG 2.2 AA tags over four app states: empty table,
         populated table, form, and open dialog. Violations are summed across states.
       </p>
       <BarChart
@@ -27,7 +27,7 @@ export function AxeComparison() {
         y={(d) => d.y}
         orientation="horizontal"
         height={200}
-        title="Axe violations — WCAG 2.1 AA, four app states"
+        title="Axe violations — WCAG 2.2 AA, four app states"
         description="Total axe violations per library across the bench suite's four-state matrix. Zero is the gate."
       />
       <ul className="a11y-rule-list">
