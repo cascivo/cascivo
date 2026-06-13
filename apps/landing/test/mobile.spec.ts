@@ -15,6 +15,24 @@ for (const width of WIDTHS) {
   })
 }
 
+for (const width of WIDTHS) {
+  test(`charts section: no overflow at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 812 })
+    await page.goto('/')
+
+    const charts = page.locator('#charts')
+    await charts.scrollIntoViewIfNeeded()
+
+    const overflow = await page.evaluate(() => {
+      const el = document.querySelector('#charts')
+      if (!el) return false
+      return el.scrollWidth > window.innerWidth
+    })
+
+    expect(overflow).toBe(false)
+  })
+}
+
 test('mobile nav: opens and closes via hamburger', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 })
   await page.goto('/')

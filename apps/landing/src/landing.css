@@ -274,6 +274,71 @@ code {
   gap: var(--cascivo-space-4);
 }
 
+/* ── Chart Showcase ───────────────────────────────────── */
+.chart-showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-5);
+  margin-block-end: var(--cascivo-space-6);
+}
+
+@media (min-width: 48rem) {
+  .chart-showcase-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.chart-card {
+  padding: var(--cascivo-space-5);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-surface, var(--cascivo-color-bg));
+  overflow: hidden;
+}
+
+.chart-card h3 {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-semibold);
+  font-family: var(--cascivo-font-mono);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.chart-showcase-cvd {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.chart-showcase-keys {
+  margin: 0 0 var(--cascivo-space-4);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.8em;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-sm);
+  background-color: var(--cascivo-color-bg-subtle);
+  color: var(--cascivo-color-text);
+  line-height: 1.4;
+}
+
+.chart-showcase-cta {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-hover);
+}
+
+.chart-showcase-cta a {
+  color: inherit;
+}
+
 /* ── Quick start ──────────────────────────────────────── */
 .quickstart {
   display: grid;

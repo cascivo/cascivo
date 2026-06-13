@@ -9,6 +9,7 @@ import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
+import { ChartShowcase } from './sections/ChartShowcase'
 import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
@@ -29,6 +30,7 @@ function HomePage() {
       <ProofTeasers />
       <AgentLayer />
       <ThemeDemo />
+      <ChartShowcase />
       <QuickStart />
       <CtaBand />
       <Footer />
