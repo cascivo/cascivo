@@ -12,13 +12,13 @@ AT testing in this environment is **manual only**. Results cannot be captured he
 
 ## 2. Test Stacks
 
-| Stack | Screen reader | Browser | Platform | Role |
-|---|---|---|---|---|
-| NVDA + Firefox | NVDA 2024.x | Firefox | Windows | Primary |
-| NVDA + Chrome | NVDA 2024.x | Chrome | Windows | Secondary |
-| JAWS + Chrome | JAWS 2024 | Chrome | Windows | Secondary |
-| VoiceOver + Safari | VoiceOver | Safari | macOS | Primary |
-| VoiceOver + iOS | VoiceOver | Safari | iOS 17 | Stretch |
+| Stack              | Screen reader | Browser | Platform | Role      |
+| ------------------ | ------------- | ------- | -------- | --------- |
+| NVDA + Firefox     | NVDA 2024.x   | Firefox | Windows  | Primary   |
+| NVDA + Chrome      | NVDA 2024.x   | Chrome  | Windows  | Secondary |
+| JAWS + Chrome      | JAWS 2024     | Chrome  | Windows  | Secondary |
+| VoiceOver + Safari | VoiceOver     | Safari  | macOS    | Primary   |
+| VoiceOver + iOS    | VoiceOver     | Safari  | iOS 17   | Stretch   |
 
 **Primary** stacks must be run before a component is considered AT-reviewed. **Secondary** stacks are run where capacity allows. **Stretch** stacks are aspirational for the current cycle.
 
@@ -92,20 +92,20 @@ The table below lists the components selected for AT review. Selection criteria:
 - All overlay / live-region components regardless of pattern (highest interaction risk)
 - Components with custom keyboard handling not covered by APG patterns
 
-| APG Pattern | Component | Risk | Rationale |
-|---|---|---|---|
-| button | Button | High | Most common interactive element; baseline for all patterns |
-| checkbox | Checkbox | High | Tristate potential; state announcement critical |
-| radio | Radio | High | Arrow-key group navigation; `role="radiogroup"` required |
-| switch | Toggle | Medium | `role="switch"` vs `role="checkbox"` AT variance |
-| slider | Slider | Medium | Custom arrow-key handling; value announcement |
-| tabs | Tabs | High | Arrow-key navigation; selected state; panel association |
-| accordion | Accordion | Medium | Expanded/collapsed state; `aria-controls` association |
-| dialog-modal | Modal | High | Focus trap; `aria-modal`; return-focus on close |
-| menu | Dropdown | High | `role="menu"` + `role="menuitem"`; arrow nav; Escape |
-| tooltip | Tooltip | High | `role="tooltip"`; `aria-describedby`; hover + focus trigger |
-| — | Toast | High | Live region (`role="status"` or `aria-live`); no focus required |
-| — | Chart (BarChart) | Medium | Custom keyboard; `role="img"` or table fallback; description |
+| APG Pattern  | Component        | Risk   | Rationale                                                       |
+| ------------ | ---------------- | ------ | --------------------------------------------------------------- |
+| button       | Button           | High   | Most common interactive element; baseline for all patterns      |
+| checkbox     | Checkbox         | High   | Tristate potential; state announcement critical                 |
+| radio        | Radio            | High   | Arrow-key group navigation; `role="radiogroup"` required        |
+| switch       | Toggle           | Medium | `role="switch"` vs `role="checkbox"` AT variance                |
+| slider       | Slider           | Medium | Custom arrow-key handling; value announcement                   |
+| tabs         | Tabs             | High   | Arrow-key navigation; selected state; panel association         |
+| accordion    | Accordion        | Medium | Expanded/collapsed state; `aria-controls` association           |
+| dialog-modal | Modal            | High   | Focus trap; `aria-modal`; return-focus on close                 |
+| menu         | Dropdown         | High   | `role="menu"` + `role="menuitem"`; arrow nav; Escape            |
+| tooltip      | Tooltip          | High   | `role="tooltip"`; `aria-describedby`; hover + focus trigger     |
+| —            | Toast            | High   | Live region (`role="status"` or `aria-live`); no focus required |
+| —            | Chart (BarChart) | Medium | Custom keyboard; `role="img"` or table fallback; description    |
 
 ### Components excluded from the representative set
 

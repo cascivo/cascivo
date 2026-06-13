@@ -8,42 +8,42 @@ This matrix records assistive-technology (AT) test results for the representativ
 
 ## Result Key
 
-| Symbol | Meaning |
-|---|---|
-| ✅ pass | Role, name, state announced correctly; all APG keys work as expected |
-| ⚠️ partial | Most criteria pass; one quirk noted (e.g. double-announcement) |
-| ❌ fail | One or more required announcement or key missing |
-| — not tested | Stack unavailable in test environment |
+| Symbol       | Meaning                                                              |
+| ------------ | -------------------------------------------------------------------- |
+| ✅ pass      | Role, name, state announced correctly; all APG keys work as expected |
+| ⚠️ partial   | Most criteria pass; one quirk noted (e.g. double-announcement)       |
+| ❌ fail      | One or more required announcement or key missing                     |
+| — not tested | Stack unavailable in test environment                                |
 
 ---
 
 ## Test Stacks
 
-| Column | Screen Reader | Browser | Platform |
-|---|---|---|---|
-| NVDA+Firefox | NVDA 2024.x | Firefox | Windows |
-| NVDA+Chrome | NVDA 2024.x | Chrome | Windows |
-| JAWS+Chrome | JAWS 2024 | Chrome | Windows |
-| VoiceOver+Safari | VoiceOver | Safari | macOS |
+| Column           | Screen Reader | Browser | Platform |
+| ---------------- | ------------- | ------- | -------- |
+| NVDA+Firefox     | NVDA 2024.x   | Firefox | Windows  |
+| NVDA+Chrome      | NVDA 2024.x   | Chrome  | Windows  |
+| JAWS+Chrome      | JAWS 2024     | Chrome  | Windows  |
+| VoiceOver+Safari | VoiceOver     | Safari  | macOS    |
 
 ---
 
 ## Results
 
-| Component | NVDA+Firefox | NVDA+Chrome | JAWS+Chrome | VoiceOver+Safari |
-|---|---|---|---|---|
-| Button | — not tested | — not tested | — not tested | — not tested |
-| Checkbox | — not tested | — not tested | — not tested | — not tested |
-| Radio | — not tested | — not tested | — not tested | — not tested |
-| Toggle (switch) | — not tested | — not tested | — not tested | — not tested |
-| Slider | — not tested | — not tested | — not tested | — not tested |
-| Tabs | — not tested | — not tested | — not tested | — not tested |
-| Accordion | — not tested | — not tested | — not tested | — not tested |
-| Modal | — not tested | — not tested | — not tested | — not tested |
-| Dropdown | — not tested | — not tested | — not tested | — not tested |
-| Tooltip | — not tested | — not tested | — not tested | — not tested |
-| Toast | — not tested | — not tested | — not tested | — not tested |
-| BarChart | — not tested | — not tested | — not tested | — not tested |
+| Component       | NVDA+Firefox | NVDA+Chrome  | JAWS+Chrome  | VoiceOver+Safari |
+| --------------- | ------------ | ------------ | ------------ | ---------------- |
+| Button          | — not tested | — not tested | — not tested | — not tested     |
+| Checkbox        | — not tested | — not tested | — not tested | — not tested     |
+| Radio           | — not tested | — not tested | — not tested | — not tested     |
+| Toggle (switch) | — not tested | — not tested | — not tested | — not tested     |
+| Slider          | — not tested | — not tested | — not tested | — not tested     |
+| Tabs            | — not tested | — not tested | — not tested | — not tested     |
+| Accordion       | — not tested | — not tested | — not tested | — not tested     |
+| Modal           | — not tested | — not tested | — not tested | — not tested     |
+| Dropdown        | — not tested | — not tested | — not tested | — not tested     |
+| Tooltip         | — not tested | — not tested | — not tested | — not tested     |
+| Toast           | — not tested | — not tested | — not tested | — not tested     |
+| BarChart        | — not tested | — not tested | — not tested | — not tested     |
 
 ---
 

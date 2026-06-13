@@ -1318,6 +1318,87 @@ code {
   overflow-x: auto;
 }
 
+/* ── Accessibility statement ──────────────────────────── */
+.a11y-stmt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--cascade-space-5);
+  margin-block-start: var(--cascade-space-6);
+}
+
+.a11y-stmt-card {
+  padding: var(--cascade-space-5);
+  border: 1px solid var(--cascade-color-border);
+  border-radius: var(--cascade-radius-lg);
+  background-color: var(--cascade-color-bg);
+}
+
+.a11y-stmt-card h3 {
+  margin: 0 0 var(--cascade-space-2);
+  font-size: var(--cascade-text-base);
+  font-weight: var(--cascade-font-bold);
+}
+
+.a11y-stmt-stat {
+  margin: 0 0 var(--cascade-space-2);
+  font-size: var(--cascade-text-2xl);
+  font-weight: var(--cascade-font-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--cascade-color-accent);
+}
+
+.a11y-stmt-desc {
+  margin: 0;
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-stmt-sub-heading {
+  margin: var(--cascade-space-8) 0 var(--cascade-space-3);
+  font-size: var(--cascade-text-lg);
+  font-weight: var(--cascade-font-bold);
+}
+
+.a11y-stmt-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--cascade-text-sm);
+  margin-block-start: var(--cascade-space-4);
+}
+
+.a11y-stmt-table caption {
+  margin-block-end: var(--cascade-space-3);
+  text-align: start;
+  font-weight: var(--cascade-font-bold);
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
+.a11y-stmt-table th,
+.a11y-stmt-table td {
+  padding: var(--cascade-space-2) var(--cascade-space-3);
+  border-block-end: 1px solid var(--cascade-color-border);
+  text-align: start;
+}
+
+.a11y-stmt-table th {
+  font-weight: var(--cascade-font-bold);
+}
+
+.a11y-stmt-table th:not(:first-child),
+.a11y-stmt-table td:not(:first-child) {
+  text-align: center;
+}
+
+.a11y-stmt-limits {
+  margin: var(--cascade-space-3) 0 0;
+  padding-inline-start: var(--cascade-space-5);
+  display: grid;
+  gap: var(--cascade-space-2);
+  font-size: var(--cascade-text-sm);
+  color: var(--cascade-color-text-subtle);
+}
+
 /* ── Performance page ─────────────────────────────────── */
 .perf-stats {
   display: grid;
