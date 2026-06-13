@@ -68,4 +68,33 @@ describe('ChartFrame', () => {
     )
     expect(screen.getByText('Data')).toBeInTheDocument()
   })
+
+  it('does not render aria-live region without tooltip prop', () => {
+    render(
+      <ChartFrame title="T" height={200}>
+        {() => null}
+      </ChartFrame>,
+    )
+    expect(document.querySelector('[aria-live="polite"]')).toBeNull()
+  })
+
+  it('renders aria-live region when tooltip prop is provided', () => {
+    render(
+      <ChartFrame title="T" height={200} tooltip={{ points: [] }}>
+        {() => null}
+      </ChartFrame>,
+    )
+    expect(document.querySelector('[aria-live="polite"]')).toBeInTheDocument()
+  })
+
+  it('renders focusable layer with role="application" when tooltip prop is provided', () => {
+    render(
+      <ChartFrame title="T" height={200} tooltip={{ points: [] }}>
+        {() => null}
+      </ChartFrame>,
+    )
+    const layer = screen.getByRole('application')
+    expect(layer).toBeInTheDocument()
+    expect(layer).toHaveAttribute('tabindex', '0')
+  })
 })
