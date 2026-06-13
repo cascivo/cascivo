@@ -37,6 +37,8 @@
     &[data-size='md'] {
       height: 2.5rem;
       padding-inline: var(--cascade-space-4);
+      padding-block: 0.5rem; /* static fallback — non-supporting browsers */
+      padding-block: --cascade-step(2); /* progressive enhancement — Chrome 133+ */
       font-size: var(--cascade-text-sm);
     }
 
