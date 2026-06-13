@@ -44,6 +44,25 @@ export function AxeComparison() {
         parity gate, not a contest. All dependency versions are pinned per bench app — full
         conditions in the methodology linked below.
       </p>
+      <div className="a11y-ceiling">
+        <p>
+          <strong>Automated coverage ceiling:</strong> axe-core detects approximately 30–40% of WCAG
+          issues by design — the tool&apos;s own documentation notes this. A{' '}
+          <code>0 violations</code> result is necessary but not sufficient. Cascade complements
+          automated testing with:
+        </p>
+        <ul>
+          <li>APG pattern conformance checks (keyboard + role enforcement, runs in CI)</li>
+          <li>
+            A <code>prefers-reduced-motion</code> / <code>forced-colors</code> /{' '}
+            <code>prefers-contrast</code> media-feature audit (runs in CI)
+          </li>
+          <li>
+            An AT support matrix covering representative components (manual, see{' '}
+            <code>docs/specs/at-matrix.md</code>)
+          </li>
+        </ul>
+      </div>
     </section>
   )
 }
