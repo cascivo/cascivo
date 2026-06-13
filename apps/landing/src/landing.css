@@ -1057,13 +1057,19 @@ kbd {
 
 .agents-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--cascivo-space-6);
 }
 
-@media (max-width: 56rem) {
+@media (min-width: 40rem) {
   .agents-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .agents-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1092,6 +1098,10 @@ kbd {
   overflow-x: auto;
   white-space: pre;
   line-height: 1.6;
+}
+
+.agent-code.code-bad {
+  border-inline-start: 3px solid var(--cascivo-color-warning);
 }
 
 .agent-caption {
