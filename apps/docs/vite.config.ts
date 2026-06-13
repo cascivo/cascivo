@@ -16,15 +16,15 @@ export default defineConfig({
       'react-dom': preactCompat,
       // Point workspace packages directly to source so Rolldown doesn't need
       // pre-built dist files (avoids CI resolution failures).
-      '@cascade-ui/core': path.resolve(root, 'packages/core/src/index.ts'),
-      '@cascade-ui/storage': path.resolve(root, 'packages/storage/src/index.ts'),
-      '@cascade-ui/i18n': path.resolve(root, 'packages/i18n/src/index.ts'),
-      '@cascade-ui/ai': path.resolve(root, 'packages/ai/src/index.ts'),
-      '@cascade-ui/render': path.resolve(root, 'packages/render/src/index.ts'),
-      '@cascade-ui/icons': path.resolve(root, 'packages/icons/src/index.tsx'),
-      '@cascade-ui/registry': path.resolve(root, 'packages/registry/src/index.ts'),
+      '@cascivo/core': path.resolve(root, 'packages/core/src/index.ts'),
+      '@cascivo/storage': path.resolve(root, 'packages/storage/src/index.ts'),
+      '@cascivo/i18n': path.resolve(root, 'packages/i18n/src/index.ts'),
+      '@cascivo/ai': path.resolve(root, 'packages/ai/src/index.ts'),
+      '@cascivo/render': path.resolve(root, 'packages/render/src/index.ts'),
+      '@cascivo/icons': path.resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/registry': path.resolve(root, 'packages/registry/src/index.ts'),
       // Browser-safe audit-ai analyzers (no Node deps) — used by the Context Explorer.
-      '@cascade-ui/cli/audit-ai': path.resolve(root, 'packages/cli/src/audit-ai/index.ts'),
+      '@cascivo/cli/audit-ai': path.resolve(root, 'packages/cli/src/audit-ai/index.ts'),
     },
   },
   server: {
