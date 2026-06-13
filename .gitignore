@@ -26,3 +26,4 @@ playwright-report/
 
 # Brainstorm sessions (already ignored, confirm it's here)
 .superpowers/
+cascade.lock
