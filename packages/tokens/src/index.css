@@ -191,14 +191,14 @@
     --cascade-motion-emphasis: var(--cascade-duration-300) var(--cascade-ease-in-out);
 
     /* ── Chart Categorical Color Ramp ───────────────── */
-    --cascade-chart-1: oklch(0.65 0.2 250);
-    --cascade-chart-2: oklch(0.7 0.16 145);
-    --cascade-chart-3: oklch(0.72 0.15 22);
-    --cascade-chart-4: oklch(0.768 0.145 75);
-    --cascade-chart-5: oklch(0.65 0.19 300);
-    --cascade-chart-6: oklch(0.7 0.16 190);
-    --cascade-chart-7: oklch(0.65 0.2 330);
-    --cascade-chart-8: oklch(0.65 0.16 60);
+    --cascade-chart-1: oklch(0.74 0.13 70); /* Okabe-Ito orange #E69F00 */
+    --cascade-chart-2: oklch(0.74 0.11 240); /* Okabe-Ito sky blue #56B4E9 */
+    --cascade-chart-3: oklch(0.66 0.13 165); /* Okabe-Ito bluish green #009E73 */
+    --cascade-chart-4: oklch(0.93 0.16 100); /* Okabe-Ito yellow #F0E442 */
+    --cascade-chart-5: oklch(0.5 0.13 250); /* Okabe-Ito blue #0072B2 */
+    --cascade-chart-6: oklch(0.6 0.16 40); /* Okabe-Ito vermillion #D55E00 */
+    --cascade-chart-7: oklch(0.66 0.12 350); /* Okabe-Ito reddish purple #CC79A7 */
+    --cascade-chart-8: oklch(0.55 0.02 280); /* neutral grey (screen adaptation) */
     --cascade-chart-grid: var(--cascade-gray-200);
     --cascade-chart-axis: var(--cascade-gray-400);
 
