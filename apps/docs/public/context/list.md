@@ -1,0 +1,84 @@
+# List
+
+**Category:** display  
+**Description:** Styled unordered or ordered list with ListItem
+
+## When to use
+
+- Presenting a set of related items as a bulleted or numbered list
+- Conveying sequence with an ordered list (as="ol")
+- Keeping list semantics while hiding visual markers (marker="none")
+
+## When NOT to use
+
+- Tabular data with multiple columns — use DataTable
+- Interactive navigation items — use SideNav or a menu
+
+## Anti-patterns
+
+### Real list markup lets screen readers announce item count and position
+
+**Bad:** `A stack of <Text> rows used as a visual list`  
+**Good:** `<List><ListItem>…</ListItem></List>`  
+**Why:** Real list markup lets screen readers announce item count and position
+
+## Related components
+
+- **Text** (contains): ListItem content is typically body Text
+
+## Accessibility rationale
+
+Renders native <ul>/<ol> with <li> children so assistive tech announces the list and its length; marker="none" hides bullets visually without removing list semantics
+
+## Props
+
+| Name     | Type    | Required  | Default | Description |
+| -------- | ------- | --------- | ------- | ----------- | ------------------------------------- | --- |
+| `as`     | `'ul'   | 'ol'`     | No      | ul          | —                                     |
+| `marker` | `'disc' | 'decimal' | 'none'` | No          | derived from as (ul→disc, ol→decimal) | —   |
+
+## Tokens
+
+- `--cascade-font-sans`
+- `--cascade-leading-normal`
+- `--cascade-color-text`
+- `--cascade-text-base`
+- `--cascade-space-1`
+- `--cascade-space-6`
+
+## Examples
+
+### Unordered
+
+```jsx
+<List>
+  <ListItem>Tokens</ListItem>
+  <ListItem>Themes</ListItem>
+</List>
+```
+
+### Ordered
+
+```jsx
+<List as="ol">
+  <ListItem>Init</ListItem>
+  <ListItem>Add</ListItem>
+</List>
+```
+
+### Unmarked
+
+Keeps list semantics without visual markers
+
+```jsx
+<List marker="none">
+  <ListItem>Clean row</ListItem>
+</List>
+```
+
+## Boundaries
+
+| Area        | Level    | Note                                                       |
+| ----------- | -------- | ---------------------------------------------------------- |
+| marker      | flexible | disc/decimal/none chosen to match content and visual needs |
+| token names | strict   | Spacing and text color must resolve to --cascade-\* tokens |

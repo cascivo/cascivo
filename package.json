@@ -19,6 +19,7 @@
     "registry:generate": "node scripts/registry/generate.ts",
     "readme:generate": "node scripts/readme/generate.ts",
     "catalog:generate": "node scripts/catalog/generate.ts",
+    "context:generate": "node scripts/context/generate.ts",
     "schema:generate": "node scripts/schema/generate.ts",
     "dev:docs": "vp run @cascade-ui/docs#dev",
     "dev:landing": "vp run @cascade-ui/landing#dev",
