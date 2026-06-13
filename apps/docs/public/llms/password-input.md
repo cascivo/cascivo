@@ -5,7 +5,7 @@ Password input with reveal toggle and optional strength meter
 ## Install
 
 ```bash
-npx cascade add password-input
+npx cascivo add password-input
 ```
 
 ## Category
@@ -51,25 +51,25 @@ npx cascade add password-input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-warning`
-- `--cascade-color-success`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-warning`
+- `--cascivo-color-success`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `textbox`
 - **Keyboard:** Tab, Shift+Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

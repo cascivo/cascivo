@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Spacer',
@@ -15,8 +15,8 @@ export const meta: ComponentMeta = {
       description: 'Spacing token step',
     },
   ],
-  tokens: ['--cascade-space-*'],
-  accessibility: { role: 'none', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-*'],
+  accessibility: { role: 'none', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Spacer',
@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
       description: 'Adds vertical space between elements',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'spacer', 'spacing'],
   intent: {
     whenToUse: [

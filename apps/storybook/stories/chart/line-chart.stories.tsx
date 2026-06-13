@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { LineChart } from '@cascade-ui/charts'
+import { LineChart } from '@cascivo/charts'
 
 // Month-start dates for 2024
 const MONTH_DATES = Array.from({ length: 12 }, (_, i) => new Date(2024, i, 1))

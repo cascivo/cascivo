@@ -5,7 +5,7 @@ Squarified treemap for visualizing part-to-whole hierarchical data.
 ## Install
 
 ```bash
-npx cascade add chart/treemap
+npx cascivo add chart/treemap
 ```
 
 ## Category
@@ -29,7 +29,7 @@ npx cascade add chart/treemap
 ### Basic treemap
 
 ```tsx
-import { Treemap } from '@cascade-ui/charts'
+import { Treemap } from '@cascivo/charts'
 
 const data = [
   {id:'a',label:'Alpha',value:40},
@@ -42,23 +42,23 @@ const data = [
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Accordion',
@@ -14,16 +14,19 @@ export const meta: ComponentMeta = {
     { name: 'onValueChange', type: '(value: string | string[]) => void', required: false },
   ],
   tokens: [
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-text',
-    '--cascade-radius-md',
-    '--cascade-focus-ring',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text',
+    '--cascivo-radius-md',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
+    apgPattern: 'accordion',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -31,7 +34,7 @@ export const meta: ComponentMeta = {
       code: '<Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['navigation', 'collapse', 'disclosure'],
   intent: {
     whenToUse: [
@@ -68,7 +71,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Borders, surfaces, and radii must resolve to --cascade-* semantic tokens',
+        note: 'Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens',
       },
     ],
   },

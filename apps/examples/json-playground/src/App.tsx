@@ -1,13 +1,13 @@
 'use client'
-import { signal, useSignals } from '@cascade-ui/core'
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { signal, useSignals } from '@cascivo/core'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 import React, { useRef } from 'react'
 import { exampleConfigJson } from './example-config'
 
-import '@cascade-ui/themes/light'
-import '@cascade-ui/themes/dark'
-import '@cascade-ui/themes/warm'
+import '@cascivo/themes/light'
+import '@cascivo/themes/dark'
+import '@cascivo/themes/warm'
 
 const configSignal = signal<ViewConfig | null>(null)
 const parseErrorSignal = signal<string | null>(null)
@@ -45,9 +45,9 @@ function App() {
         display: 'flex',
         flexDirection: 'column',
         height: '100dvh',
-        background: 'var(--cascade-color-background)',
-        color: 'var(--cascade-color-text)',
-        fontFamily: 'var(--cascade-font-sans)',
+        background: 'var(--cascivo-color-background)',
+        color: 'var(--cascivo-color-text)',
+        fontFamily: 'var(--cascivo-font-sans)',
       }}
     >
       {/* Toolbar */}
@@ -55,20 +55,20 @@ function App() {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 'var(--cascade-space-2)',
-          padding: `var(--cascade-space-2) var(--cascade-space-4)`,
-          borderBottom: '1px solid var(--cascade-color-border)',
-          background: 'var(--cascade-color-surface)',
+          gap: 'var(--cascivo-space-2)',
+          padding: `var(--cascivo-space-2) var(--cascivo-space-4)`,
+          borderBottom: '1px solid var(--cascivo-color-border)',
+          background: 'var(--cascivo-color-surface)',
           flexShrink: 0,
         }}
       >
-        <strong style={{ flex: 1, fontSize: 'var(--cascade-text-sm)' }}>
-          cascade JSON Playground
+        <strong style={{ flex: 1, fontSize: 'var(--cascivo-text-sm)' }}>
+          cascivo JSON Playground
         </strong>
         <span
           style={{
-            fontSize: 'var(--cascade-text-xs)',
-            color: 'var(--cascade-color-text-subtle)',
+            fontSize: 'var(--cascivo-text-xs)',
+            color: 'var(--cascivo-color-text-subtle)',
           }}
         >
           Theme:
@@ -79,13 +79,13 @@ function App() {
             type="button"
             onClick={() => setTheme(t)}
             style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
-              borderRadius: 'var(--cascade-radius-control)',
-              border: '1px solid var(--cascade-color-border)',
-              background: 'var(--cascade-color-surface)',
-              color: 'var(--cascade-color-text)',
+              padding: `var(--cascivo-space-1) var(--cascivo-space-3)`,
+              borderRadius: 'var(--cascivo-radius-control)',
+              border: '1px solid var(--cascivo-color-border)',
+              background: 'var(--cascivo-color-surface)',
+              color: 'var(--cascivo-color-text)',
               cursor: 'pointer',
-              fontSize: 'var(--cascade-text-xs)',
+              fontSize: 'var(--cascivo-text-xs)',
             }}
           >
             {t}
@@ -101,17 +101,17 @@ function App() {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            borderRight: '1px solid var(--cascade-color-border)',
+            borderRight: '1px solid var(--cascivo-color-border)',
           }}
         >
           <div
             style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
-              fontSize: 'var(--cascade-text-xs)',
+              padding: `var(--cascivo-space-1) var(--cascivo-space-3)`,
+              fontSize: 'var(--cascivo-text-xs)',
               fontWeight: 600,
-              color: 'var(--cascade-color-text-subtle)',
-              background: 'var(--cascade-color-bg-subtle)',
-              borderBottom: '1px solid var(--cascade-color-border)',
+              color: 'var(--cascivo-color-text-subtle)',
+              background: 'var(--cascivo-color-bg-subtle)',
+              borderBottom: '1px solid var(--cascivo-color-border)',
               letterSpacing: '0.05em',
               flexShrink: 0,
             }}
@@ -124,26 +124,26 @@ function App() {
             spellCheck={false}
             style={{
               flex: 1,
-              padding: 'var(--cascade-space-4)',
+              padding: 'var(--cascivo-space-4)',
               fontFamily: 'monospace',
-              fontSize: 'var(--cascade-text-xs)',
+              fontSize: 'var(--cascivo-text-xs)',
               border: 'none',
               outline: 'none',
               resize: 'none',
-              background: 'var(--cascade-color-background)',
-              color: 'var(--cascade-color-text)',
+              background: 'var(--cascivo-color-background)',
+              color: 'var(--cascivo-color-text)',
             }}
           />
           {parseErrorSignal.value && (
             <div
               style={{
-                padding: `var(--cascade-space-2) var(--cascade-space-3)`,
+                padding: `var(--cascivo-space-2) var(--cascivo-space-3)`,
                 background:
-                  'color-mix(in oklch, var(--cascade-color-destructive) 10%, transparent)',
+                  'color-mix(in oklch, var(--cascivo-color-destructive) 10%, transparent)',
                 borderTop:
-                  '1px solid color-mix(in oklch, var(--cascade-color-destructive) 30%, transparent)',
-                fontSize: 'var(--cascade-text-xs)',
-                color: 'var(--cascade-color-destructive)',
+                  '1px solid color-mix(in oklch, var(--cascivo-color-destructive) 30%, transparent)',
+                fontSize: 'var(--cascivo-text-xs)',
+                color: 'var(--cascivo-color-destructive)',
                 flexShrink: 0,
               }}
             >
@@ -156,19 +156,19 @@ function App() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <div
             style={{
-              padding: `var(--cascade-space-1) var(--cascade-space-3)`,
-              fontSize: 'var(--cascade-text-xs)',
+              padding: `var(--cascivo-space-1) var(--cascivo-space-3)`,
+              fontSize: 'var(--cascivo-text-xs)',
               fontWeight: 600,
-              color: 'var(--cascade-color-text-subtle)',
-              background: 'var(--cascade-color-bg-subtle)',
-              borderBottom: '1px solid var(--cascade-color-border)',
+              color: 'var(--cascivo-color-text-subtle)',
+              background: 'var(--cascivo-color-bg-subtle)',
+              borderBottom: '1px solid var(--cascivo-color-border)',
               letterSpacing: '0.05em',
               flexShrink: 0,
             }}
           >
             PREVIEW
           </div>
-          <div style={{ flex: 1, padding: 'var(--cascade-space-6)', overflowY: 'auto' }}>
+          <div style={{ flex: 1, padding: 'var(--cascivo-space-6)', overflowY: 'auto' }}>
             {configSignal.value && <CascadeView config={configSignal.value} onInvalid="render" />}
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Section',
@@ -23,8 +23,8 @@ export const meta: ComponentMeta = {
       description: 'Stack gap between children (spacing token step)',
     },
   ],
-  tokens: ['--cascade-space-*'],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-*'],
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Content section',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
       description: 'Centered 72rem content column with 2rem block padding',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'section', 'page'],
   intent: {
     whenToUse: [

@@ -32,17 +32,17 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
-- `--cascade-color-bg-subtle`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
+- `--cascivo-color-bg-subtle`
 
 ## Boundaries
 
 | Area            | Level    | Note                                                                                           |
 | --------------- | -------- | ---------------------------------------------------------------------------------------------- |
 | menu contents   | flexible | Accepts arbitrary ContextMenuItem children after the trigger child                             |
-| anchor position | strict   | Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click |
+| anchor position | strict   | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |

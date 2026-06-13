@@ -1,5 +1,5 @@
 'use client'
-import { Badge, Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/react'
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@cascivo/react'
 
 interface Stat {
   label: string

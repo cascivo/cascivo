@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/react"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "stats", "kpi", "cards"],
   "category": "display",
   "meta": {
@@ -30,7 +30,7 @@
     "tokens": [],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -40,7 +40,7 @@
         "description": "Demo KPI stats"
       }
     ],
-    "dependencies": ["@cascade-ui/react"],
+    "dependencies": ["@cascivo/react"],
     "tags": ["block", "stats", "kpi", "cards"],
     "intent": {
       "whenToUse": [

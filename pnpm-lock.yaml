@@ -142,13 +142,16 @@ importers:
 
   apps/bench/app-cascade:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/react':
+      '@cascivo/i18n':
+        specifier: workspace:*
+        version: link:../../../packages/i18n
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../../../packages/react
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
       '@preact/signals-react':
@@ -188,6 +191,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: 1.2.5
         version: 1.2.5(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-tabs':
+        specifier: 1.1.14
+        version: 1.1.14(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@tanstack/react-table':
         specifier: 8.21.3
         version: 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -261,34 +267,34 @@ importers:
 
   apps/docs:
     dependencies:
-      '@cascade-ui/ai':
+      '@cascivo/ai':
         specifier: workspace:*
         version: link:../../packages/ai
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/layouts':
+      '@cascivo/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:^
         version: link:../../packages/storage
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       preact:
@@ -319,22 +325,22 @@ importers:
 
   apps/examples/json-playground:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../../../packages/i18n
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../../../packages/react
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../../packages/render
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       react:
@@ -359,13 +365,13 @@ importers:
 
   apps/examples/react-next:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       next:
@@ -393,13 +399,13 @@ importers:
 
   apps/examples/react-vite:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       react:
@@ -424,34 +430,34 @@ importers:
 
   apps/examples/registry-starter:
     devDependencies:
-      cascade:
+      '@cascivo/cli':
         specifier: workspace:^
         version: link:../../../packages/cli
 
   apps/landing:
     dependencies:
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:*
         version: link:../../packages/storage
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -482,25 +488,25 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@cascade-ui/ai':
+      '@cascivo/ai':
         specifier: workspace:^
         version: link:../../packages/ai
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/layouts':
+      '@cascivo/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
     devDependencies:
@@ -537,13 +543,13 @@ importers:
 
   packages/ai:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:^
         version: link:../tokens
       '@preact/signals-react':
@@ -574,10 +580,10 @@ importers:
 
   packages/charts:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
@@ -590,6 +596,9 @@ importers:
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@testing-library/user-event':
+        specifier: 'catalog:'
+        version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -617,7 +626,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@cascade-ui/registry':
+      '@cascivo/registry':
         specifier: workspace:^
         version: link:../registry
     devDependencies:
@@ -633,10 +642,10 @@ importers:
 
   packages/components:
     devDependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
       '@testing-library/jest-dom':
@@ -711,7 +720,7 @@ importers:
 
   packages/i18n:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
@@ -757,22 +766,22 @@ importers:
 
   packages/layouts:
     devDependencies:
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../charts
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../icons
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../react
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:*
         version: link:../storage
       '@testing-library/jest-dom':
@@ -827,17 +836,17 @@ importers:
 
   packages/react:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
         specifier: '>=2.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../components
       '@testing-library/jest-dom':
@@ -885,13 +894,13 @@ importers:
 
   packages/render:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:^
         version: link:../react
       '@preact/signals-react':
@@ -925,7 +934,7 @@ importers:
 
   packages/storage:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
@@ -944,7 +953,7 @@ importers:
 
   packages/themes:
     devDependencies:
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../tokens
       '@types/node':
@@ -2566,6 +2575,19 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-collection@1.1.9':
+    resolution: {integrity: sha512-zuSVi7ziP7uQRqc+yGxsKJfNkdyHv3ZKDaHe0gzg4dRgws96TPKWIiz84tVHP4GEcEl8bC0mdt17NkcxaJHmaQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-compose-refs@1.1.3':
     resolution: {integrity: sha512-rYOP8OMnuuPMQF1uhPVlGNcCDlkokKqGFE3JcxFViIkAXP7EvFWUliJAstrapypaBLJNHbZL6jGhbVDGTwmVhA==}
     peerDependencies:
@@ -2595,6 +2617,15 @@ packages:
       '@types/react':
         optional: true
       '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-direction@1.1.2':
+    resolution: {integrity: sha512-C3vFhbyi4SW3PmbAi6Awpu4OzJtd0MxGurvSsYtr7p7nM8RNB3VAF3CUmnp2j50knpkrRcB7+ycVXzgLgF6yNA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
         optional: true
 
   '@radix-ui/react-dismissable-layer@1.1.12':
@@ -2693,6 +2724,19 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-roving-focus@1.1.12':
+    resolution: {integrity: sha512-FvgPt1bRmg8Xt2QpF7NUZW3dE0ZQHGm41dAdgT2J2GJPoIXz+9Em3NobAxf4fupcxhgHu03E5CRiU2MWvObXyg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-slot@1.2.5':
     resolution: {integrity: sha512-rCMO3QsIVKv5JTY5CVbo2MvO77SpEqqYc8AvRE7OWqRDOIqAKjsp+DrmnY9uc8NPdxB5E2z47HTYGeE2+NTptg==}
     peerDependencies:
@@ -2700,6 +2744,19 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
+        optional: true
+
+  '@radix-ui/react-tabs@1.1.14':
+    resolution: {integrity: sha512-D5jwp9JNuwDeCw3CYD2Fz+sSHo0droQjC8u75dJHe4aWr5q6yBiXZU+hurXnKudRgEpUkD5TsI6bjHPo5ThUxA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
         optional: true
 
   '@radix-ui/react-use-callback-ref@1.1.2':
@@ -7422,6 +7479,18 @@ snapshots:
       '@types/react': 19.2.17
       '@types/react-dom': 19.2.3(@types/react@19.2.17)
 
+  '@radix-ui/react-collection@1.1.9(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.3(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-context': 1.1.4(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-primitive': 2.1.5(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-slot': 1.2.5(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+    optionalDependencies:
+      '@types/react': 19.2.17
+      '@types/react-dom': 19.2.3(@types/react@19.2.17)
+
   '@radix-ui/react-compose-refs@1.1.3(@types/react@19.2.17)(react@19.2.7)':
     dependencies:
       react: 19.2.7
@@ -7455,6 +7524,12 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
       '@types/react-dom': 19.2.3(@types/react@19.2.17)
+
+  '@radix-ui/react-direction@1.1.2(@types/react@19.2.17)(react@19.2.7)':
+    dependencies:
+      react: 19.2.7
+    optionalDependencies:
+      '@types/react': 19.2.17
 
   '@radix-ui/react-dismissable-layer@1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
@@ -7530,12 +7605,45 @@ snapshots:
       '@types/react': 19.2.17
       '@types/react-dom': 19.2.3(@types/react@19.2.17)
 
+  '@radix-ui/react-roving-focus@1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.4
+      '@radix-ui/react-collection': 1.1.9(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-compose-refs': 1.1.3(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-context': 1.1.4(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-direction': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-id': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-primitive': 2.1.5(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-use-callback-ref': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-use-controllable-state': 1.2.3(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+    optionalDependencies:
+      '@types/react': 19.2.17
+      '@types/react-dom': 19.2.3(@types/react@19.2.17)
+
   '@radix-ui/react-slot@1.2.5(@types/react@19.2.17)(react@19.2.7)':
     dependencies:
       '@radix-ui/react-compose-refs': 1.1.3(@types/react@19.2.17)(react@19.2.7)
       react: 19.2.7
     optionalDependencies:
       '@types/react': 19.2.17
+
+  '@radix-ui/react-tabs@1.1.14(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.4
+      '@radix-ui/react-context': 1.1.4(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-direction': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-id': 1.1.2(@types/react@19.2.17)(react@19.2.7)
+      '@radix-ui/react-presence': 1.1.6(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-primitive': 2.1.5(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-roving-focus': 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@radix-ui/react-use-controllable-state': 1.2.3(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+    optionalDependencies:
+      '@types/react': 19.2.17
+      '@types/react-dom': 19.2.3(@types/react@19.2.17)
 
   '@radix-ui/react-use-callback-ref@1.1.2(@types/react@19.2.17)(react@19.2.7)':
     dependencies:

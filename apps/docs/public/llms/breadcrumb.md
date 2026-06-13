@@ -5,7 +5,7 @@ Shows the current page location within a navigation hierarchy
 ## Install
 
 ```bash
-npx cascade add breadcrumb
+npx cascivo add breadcrumb
 ```
 
 ## Category
@@ -49,22 +49,22 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

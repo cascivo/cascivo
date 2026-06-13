@@ -5,7 +5,7 @@ Page hero section — centered or split layout with eyebrow, title, description,
 ## Install
 
 ```bash
-npx cascade add section/hero
+npx cascivo add section/hero
 ```
 
 ## Category
@@ -65,22 +65,22 @@ Two-column layout with copy on the left and media on the right
 
 ## Design tokens
 
-- `--cascade-text-4xl`
-- `--cascade-text-lg`
-- `--cascade-text-sm`
-- `--cascade-font-mono`
-- `--cascade-font-bold`
-- `--cascade-text-secondary`
-- `--cascade-space-*`
+- `--cascivo-text-4xl`
+- `--cascivo-text-lg`
+- `--cascivo-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-font-bold`
+- `--cascivo-text-secondary`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `region`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

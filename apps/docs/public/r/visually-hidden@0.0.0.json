@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/visually-hidden/visually-hidden.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/visually-hidden/visually-hidden.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
   "category": "display",
   "meta": {
@@ -33,7 +33,7 @@
     "tokens": [],
     "accessibility": {
       "role": "none",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -47,7 +47,7 @@
         "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
     "intent": {
       "whenToUse": [

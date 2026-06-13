@@ -46,7 +46,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
   const fetchFn = options.fetchFn
 
   const server = new McpServer({
-    name: '@cascade-ui/mcp',
+    name: '@cascivo/mcp',
     version: options.version ?? '0.0.0',
   })
 
@@ -163,8 +163,8 @@ export function createServer(options: ServerOptions = {}): McpServer {
       },
     },
     ({ name, outputDir }) => {
-      const env = outputDir ? { ...process.env, CASCADE_OUTPUT_DIR: outputDir } : process.env
-      const result = spawnSync('npx', ['-y', 'cascade', 'add', name], { encoding: 'utf8', env })
+      const env = outputDir ? { ...process.env, CASCIVO_OUTPUT_DIR: outputDir } : process.env
+      const result = spawnSync('npx', ['-y', 'cascivo', 'add', name], { encoding: 'utf8', env })
       if (result.status !== 0) {
         return error(result.stderr || result.error?.message || `Failed to add "${name}".`)
       }

@@ -63,7 +63,7 @@ export function Axis({
         y1={0}
         x2={isX ? length : 0}
         y2={isX ? 0 : length}
-        stroke="var(--cascade-chart-axis)"
+        stroke="var(--cascivo-chart-axis)"
         strokeWidth={1}
       />
       {ticks.map(({ position, label }, i) => (
@@ -73,14 +73,14 @@ export function Axis({
             y1={0}
             x2={isX ? 0 : -4}
             y2={isX ? 4 : 0}
-            stroke="var(--cascade-chart-axis)"
+            stroke="var(--cascivo-chart-axis)"
             strokeWidth={1}
           />
           <text
             x={isX ? 0 : -8}
             y={isX ? 16 : 4}
             textAnchor={isX ? 'middle' : 'end'}
-            fill="var(--cascade-chart-axis)"
+            fill="var(--cascivo-chart-axis)"
             fontSize={11}
           >
             {label}

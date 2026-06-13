@@ -1,8 +1,8 @@
 {
-  "name": "@cascade-ui/json-playground",
+  "name": "@cascivo/json-playground",
   "version": "0.0.0",
   "private": true,
-  "description": "Live JSON → UI renderer playground using @cascade-ui/render",
+  "description": "Live JSON → UI renderer playground using @cascivo/render",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -10,12 +10,12 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/i18n": "workspace:*",
-    "@cascade-ui/react": "workspace:*",
-    "@cascade-ui/render": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/render": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

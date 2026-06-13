@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Boxplot } from '@cascade-ui/charts'
+import { Boxplot } from '@cascivo/charts'
 
 const series = [
   { id: 'control', label: 'Control', values: [12, 18, 22, 25, 27, 30, 32, 35, 38, 45] },

@@ -5,7 +5,7 @@ Text input field with optional label, hint, and error state
 ## Install
 
 ```bash
-npx cascade add input
+npx cascivo add input
 ```
 
 ## Category
@@ -51,22 +51,22 @@ npx cascade add input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `textbox`
 - **Keyboard:** Tab, Shift+Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

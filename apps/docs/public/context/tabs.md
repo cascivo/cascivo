@@ -41,11 +41,11 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-border`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-border`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -65,4 +65,4 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 | Area                       | Level    | Note                                                                |
 | -------------------------- | -------- | ------------------------------------------------------------------- |
 | controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs                |
-| token names                | strict   | Accent, borders, and focus ring must resolve to --cascade-\* tokens |
+| token names                | strict   | Accent, borders, and focus ring must resolve to --cascivo-\* tokens |

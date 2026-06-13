@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Radar',
@@ -41,27 +41,27 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-chart-2',
-    '--cascade-chart-3',
-    '--cascade-chart-4',
-    '--cascade-chart-5',
-    '--cascade-chart-6',
-    '--cascade-chart-7',
-    '--cascade-chart-8',
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic radar chart',
-      code: `import { Radar } from '@cascade-ui/charts'
+      code: `import { Radar } from '@cascivo/charts'
 
 const axes = ['Speed','Power','Range','Efficiency','Cost']
 const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 <Radar axes={axes} series={series} title="Model comparison" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'radar', 'spider', 'polar', 'data-viz'],
   intent: {
     whenToUse: [

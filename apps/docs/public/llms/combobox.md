@@ -5,7 +5,7 @@ Filterable single-select with an animated custom listbox, built on the dropdown 
 ## Install
 
 ```bash
-npx cascade add combobox
+npx cascivo add combobox
 ```
 
 ## Category
@@ -60,33 +60,33 @@ npx cascade add combobox
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-surface-overlay`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-danger`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-radius-sm`
-- `--cascade-shadow-lg`
-- `--cascade-motion-enter`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-danger`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-lg`
+- `--cascivo-motion-enter`
+- `--cascivo-z-dropdown`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
 - **Keyboard:** ArrowDown, ArrowUp, Enter, Escape, Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

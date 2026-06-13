@@ -72,7 +72,7 @@ describe('loadContext', () => {
   it('throws when context is unreachable (404)', async () => {
     await expect(
       (async () => {
-        const res = await makeFailFetch(404)('https://cascade-ui.dev/context.json')
+        const res = await makeFailFetch(404)('https://cascivo.com/context.json')
         if (!res.ok) throw new Error(`Failed to fetch context bundle: ${res.status}`)
       })(),
     ).rejects.toThrow('Failed to fetch context bundle: 404')
@@ -89,7 +89,7 @@ describe('loadComponentMarkdown', () => {
   it('returns null when fetch returns 404', async () => {
     // Override the fetch to simulate a miss (only triggered when local file doesn't exist)
     // We test the null-on-failure contract via a direct response check
-    const res = await makeFailFetch(404)('https://cascade-ui.dev/context/nonexistent-component.md')
+    const res = await makeFailFetch(404)('https://cascivo.com/context/nonexistent-component.md')
     expect(res.ok).toBe(false)
     // The function returns null for non-ok responses
     expect(null).toBeNull()

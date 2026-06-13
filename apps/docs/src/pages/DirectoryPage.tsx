@@ -1,6 +1,6 @@
-import { signal, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { Badge } from '@cascade-ui/components/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { signal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { Badge } from '@cascivo/components/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@cascivo/components/card'
 
 interface RegistryEntry {
   namespace: string
@@ -57,21 +57,21 @@ export function DirectoryPage() {
         <div class="doc-eyebrow">Registry</div>
         <h1>Directory</h1>
         <p class="doc-lede">
-          Third-party and first-party component registries compatible with the cascade CLI. Install
-          components from any registry with <code>npx cascade add @ns/&lt;component&gt;</code>.
+          Third-party and first-party component registries compatible with the cascivo CLI. Install
+          components from any registry with <code>npx cascivo add @ns/&lt;component&gt;</code>.
         </p>
       </header>
 
       <section class="doc-section">
-        <div style={{ marginBlockEnd: 'var(--cascade-space-5)' }}>
+        <div style={{ marginBlockEnd: 'var(--cascivo-space-5)' }}>
           <label
             htmlFor="dir-search"
             style={{
               display: 'block',
-              fontSize: 'var(--cascade-text-sm)',
-              fontWeight: 'var(--cascade-font-medium)',
-              color: 'var(--cascade-color-text-subtle)',
-              marginBlockEnd: 'var(--cascade-space-2)',
+              fontSize: 'var(--cascivo-text-sm)',
+              fontWeight: 'var(--cascivo-font-medium)',
+              color: 'var(--cascivo-color-text-subtle)',
+              marginBlockEnd: 'var(--cascivo-space-2)',
             }}
           >
             Filter registries
@@ -87,26 +87,26 @@ export function DirectoryPage() {
             style={{
               width: '100%',
               maxWidth: '28rem',
-              padding: 'var(--cascade-space-2) var(--cascade-space-3)',
-              border: '1px solid var(--cascade-color-border)',
-              borderRadius: 'var(--cascade-radius-md)',
-              background: 'var(--cascade-color-surface)',
-              color: 'var(--cascade-color-text)',
-              fontSize: 'var(--cascade-text-sm)',
+              padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
+              border: '1px solid var(--cascivo-color-border)',
+              borderRadius: 'var(--cascivo-radius-md)',
+              background: 'var(--cascivo-color-surface)',
+              color: 'var(--cascivo-color-text)',
+              fontSize: 'var(--cascivo-text-sm)',
             }}
           />
         </div>
 
         {loading.value && (
-          <p style={{ color: 'var(--cascade-color-text-subtle)' }}>Loading registries…</p>
+          <p style={{ color: 'var(--cascivo-color-text-subtle)' }}>Loading registries…</p>
         )}
 
         {error.value && (
-          <p style={{ color: 'var(--cascade-color-destructive)' }}>Error: {error.value}</p>
+          <p style={{ color: 'var(--cascivo-color-destructive)' }}>Error: {error.value}</p>
         )}
 
         {!loading.value && !error.value && filtered.length === 0 && (
-          <p style={{ color: 'var(--cascade-color-text-subtle)' }}>
+          <p style={{ color: 'var(--cascivo-color-text-subtle)' }}>
             No registries match your filter.
           </p>
         )}
@@ -115,7 +115,7 @@ export function DirectoryPage() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr))',
-            gap: 'var(--cascade-space-4)',
+            gap: 'var(--cascivo-space-4)',
           }}
         >
           {filtered.map((reg) => (
@@ -128,13 +128,13 @@ export function DirectoryPage() {
 }
 
 function RegistryCard({ entry }: { entry: RegistryEntry }) {
-  const snippet = `npx cascade add ${entry.namespace}/<component>`
+  const snippet = `npx cascivo add ${entry.namespace}/<component>`
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--cascade-space-2)' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--cascivo-space-2)' }}>
             {entry.name}
             {entry.verified && (
               <Badge variant="success" size="sm">
@@ -145,8 +145,8 @@ function RegistryCard({ entry }: { entry: RegistryEntry }) {
         </CardTitle>
         <p
           style={{
-            fontSize: 'var(--cascade-text-xs)',
-            color: 'var(--cascade-color-text-subtle)',
+            fontSize: 'var(--cascivo-text-xs)',
+            color: 'var(--cascivo-color-text-subtle)',
             margin: 0,
           }}
         >
@@ -157,9 +157,9 @@ function RegistryCard({ entry }: { entry: RegistryEntry }) {
       <CardContent>
         <p
           style={{
-            fontSize: 'var(--cascade-text-sm)',
-            color: 'var(--cascade-color-text)',
-            marginBlockEnd: 'var(--cascade-space-3)',
+            fontSize: 'var(--cascivo-text-sm)',
+            color: 'var(--cascivo-color-text)',
+            marginBlockEnd: 'var(--cascivo-space-3)',
           }}
         >
           {entry.description}
@@ -170,8 +170,8 @@ function RegistryCard({ entry }: { entry: RegistryEntry }) {
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 'var(--cascade-space-1)',
-              marginBlockEnd: 'var(--cascade-space-3)',
+              gap: 'var(--cascivo-space-1)',
+              marginBlockEnd: 'var(--cascivo-space-3)',
             }}
           >
             {(entry.tags ?? []).map((tag) => (
@@ -191,9 +191,9 @@ function RegistryCard({ entry }: { entry: RegistryEntry }) {
             rel="noopener noreferrer"
             style={{
               display: 'inline-block',
-              marginBlockStart: 'var(--cascade-space-3)',
-              fontSize: 'var(--cascade-text-sm)',
-              color: 'var(--cascade-color-accent)',
+              marginBlockStart: 'var(--cascivo-space-3)',
+              fontSize: 'var(--cascivo-text-sm)',
+              color: 'var(--cascivo-color-accent)',
             }}
           >
             Visit homepage →
@@ -221,18 +221,18 @@ function CopySnippet({ snippet }: { snippet: string }) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 'var(--cascade-space-2)',
-        background: 'var(--cascade-color-surface-raised)',
-        border: '1px solid var(--cascade-color-border)',
-        borderRadius: 'var(--cascade-radius-md)',
-        padding: 'var(--cascade-space-2) var(--cascade-space-3)',
+        gap: 'var(--cascivo-space-2)',
+        background: 'var(--cascivo-color-surface-raised)',
+        border: '1px solid var(--cascivo-color-border)',
+        borderRadius: 'var(--cascivo-radius-md)',
+        padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
       }}
     >
       <code
         style={{
           flex: 1,
-          fontSize: 'var(--cascade-text-xs)',
-          color: 'var(--cascade-color-text)',
+          fontSize: 'var(--cascivo-text-xs)',
+          color: 'var(--cascivo-color-text)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
@@ -245,12 +245,12 @@ function CopySnippet({ snippet }: { snippet: string }) {
         onClick={handleCopy}
         style={{
           flexShrink: 0,
-          padding: 'var(--cascade-space-1) var(--cascade-space-2)',
-          fontSize: 'var(--cascade-text-xs)',
-          border: '1px solid var(--cascade-color-border)',
-          borderRadius: 'var(--cascade-radius-sm)',
-          background: 'var(--cascade-color-surface)',
-          color: 'var(--cascade-color-text-subtle)',
+          padding: 'var(--cascivo-space-1) var(--cascivo-space-2)',
+          fontSize: 'var(--cascivo-text-xs)',
+          border: '1px solid var(--cascivo-color-border)',
+          borderRadius: 'var(--cascivo-radius-sm)',
+          background: 'var(--cascivo-color-surface)',
+          color: 'var(--cascivo-color-text-subtle)',
           cursor: 'pointer',
         }}
       >

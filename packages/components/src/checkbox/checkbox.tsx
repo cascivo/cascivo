@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect } from '@cascade-ui/core'
+import { cn, useSignal, useSignalEffect } from '@cascivo/core'
 import { useRef, type InputHTMLAttributes } from 'react'
 import styles from './checkbox.module.css'
 

@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dropdown/dropdown.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "menu", "actions"],
   "category": "overlay",
   "meta": {
@@ -56,16 +56,19 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface-overlay",
-      "--cascade-color-border",
-      "--cascade-color-bg-subtle",
-      "--cascade-radius-md",
-      "--cascade-z-dropdown"
+      "--cascivo-color-surface-overlay",
+      "--cascivo-color-border",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-radius-md",
+      "--cascivo-z-dropdown"
     ],
     "accessibility": {
       "role": "menu",
-      "wcag": "AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+      "wcag": "2.2-AA",
+      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
+      "apgPattern": "menu",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -73,7 +76,7 @@
         "code": "<Dropdown trigger={<Button>Actions</Button>} items={[{ label: \"Edit\", value: \"edit\" }]} onSelect={handle} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "menu", "actions"],
     "intent": {
       "whenToUse": [
@@ -123,7 +126,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens"
+          "note": "Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens"
         }
       ]
     }

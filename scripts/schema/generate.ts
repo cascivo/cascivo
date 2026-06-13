@@ -13,7 +13,7 @@ const REPO_ROOT = join(HERE, '..', '..')
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 const SCHEMA_OUT = join(REPO_ROOT, 'packages', 'render', 'schema', 'view.v1.json')
 const SCHEMA_ID =
-  'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/render/schema/view.v1.json'
+  'https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json'
 
 interface PropMeta {
   name: string
@@ -125,7 +125,7 @@ const schema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: SCHEMA_ID,
   title: 'CascadeView v1 Config',
-  description: 'JSON-configured UI layout for @cascade-ui/render <CascadeView />',
+  description: 'JSON-configured UI layout for @cascivo/render <CascadeView />',
   type: 'object',
   properties: {
     $schema: { type: 'string' },

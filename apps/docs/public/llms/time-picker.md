@@ -5,7 +5,7 @@ Native time input wrapper with label, hint, error, and size variants
 ## Install
 
 ```bash
-npx cascade add time-picker
+npx cascivo add time-picker
 ```
 
 ## Category
@@ -51,26 +51,26 @@ npx cascade add time-picker
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-accent`
-- `--cascade-color-danger`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-accent`
+- `--cascivo-color-danger`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `textbox`
 - **Keyboard:** Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

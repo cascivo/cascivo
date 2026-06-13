@@ -1,7 +1,7 @@
 import type { CascadeConfig } from '../utils/config.js'
 import { fetchRegistry } from '../utils/registry.js'
 import { fetchJson } from '../utils/http.js'
-import type { RegistryItem } from '@cascade-ui/registry'
+import type { RegistryItem } from '@cascivo/registry'
 
 interface SearchResult {
   name: string

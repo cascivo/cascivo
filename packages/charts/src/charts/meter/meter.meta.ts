@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Meter',
@@ -22,17 +22,17 @@ export const meta: ComponentMeta = {
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false },
   ],
-  tokens: ['--cascade-chart-1'],
-  accessibility: { role: 'meter', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-chart-1'],
+  accessibility: { role: 'meter', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic meter',
-      code: `import { Meter } from '@cascade-ui/charts'
+      code: `import { Meter } from '@cascivo/charts'
 
 <Meter value={72} label="CPU usage" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'meter', 'gauge', 'progress', 'data-viz'],
   intent: {
     whenToUse: [

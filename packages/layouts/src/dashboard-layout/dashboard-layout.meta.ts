@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'DashboardLayout',
@@ -22,8 +22,8 @@ export const meta: ComponentMeta = {
       description: 'Optional aside panel (20rem)',
     },
   ],
-  tokens: ['--cascade-space-4', '--cascade-space-6'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-4', '--cascivo-space-6'],
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'With stats',
@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
       description: 'Stats + main layout',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'dashboard', 'page'],
   intent: {
     whenToUse: [

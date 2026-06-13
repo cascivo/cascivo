@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Select } from '@cascade-ui/components/select'
+import { Select } from '@cascivo/components/select'
 
 const options = [
   { value: 'admin', label: 'Admin' },

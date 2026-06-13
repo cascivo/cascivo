@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/stack/stack.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/stack/stack.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "flex", "stack", "spacing"],
   "category": "layout",
   "meta": {
@@ -54,10 +54,10 @@
         "description": "Allow wrapping"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -72,7 +72,7 @@
         "description": "Row layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "flex", "stack", "spacing"],
     "intent": {
       "whenToUse": [

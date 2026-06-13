@@ -21,10 +21,10 @@ function isPassthrough(prop: string): boolean {
   return false
 }
 
-/** Names imported from @cascade-ui/react in this source. */
+/** Names imported from @cascivo/react in this source. */
 export function importedCascadeComponents(source: string): Set<string> {
   const names = new Set<string>()
-  const importRe = /import\s*\{([^}]*)\}\s*from\s*['"]@cascade-ui\/react['"]/g
+  const importRe = /import\s*\{([^}]*)\}\s*from\s*['"]@cascivo\/react['"]/g
   for (const m of source.matchAll(importRe)) {
     const group = m[1]
     if (group === undefined) continue

@@ -1,9 +1,9 @@
 @layer cascade.component {
   .stats-band {
-    padding-block: var(--cascade-space-8);
-    padding-inline: var(--cascade-space-4);
-    border-block: 1px solid var(--cascade-color-border);
-    background-color: var(--cascade-surface-subtle);
+    padding-block: var(--cascivo-space-8);
+    padding-inline: var(--cascivo-space-4);
+    border-block: 1px solid var(--cascivo-color-border);
+    background-color: var(--cascivo-surface-subtle);
   }
 
   .inner {
@@ -14,33 +14,33 @@
   .stat {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-1);
-    padding-inline: var(--cascade-space-4);
-    border-inline-start: 1px solid var(--cascade-color-border);
+    gap: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-4);
+    border-inline-start: 1px solid var(--cascivo-color-border);
     min-inline-size: 0;
   }
 
   .stat-main {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-3);
+    gap: var(--cascivo-space-3);
   }
 
   .value {
-    font-size: var(--cascade-text-2xl);
-    font-weight: var(--cascade-font-bold);
-    font-family: var(--cascade-font-mono);
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    font-family: var(--cascivo-font-mono);
     line-height: 1;
   }
 
   .delta {
-    font-size: var(--cascade-text-sm);
-    font-family: var(--cascade-font-mono);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-sm);
+    font-family: var(--cascivo-font-mono);
+    color: var(--cascivo-text-secondary);
   }
 
   .label {
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-text-secondary);
   }
 }

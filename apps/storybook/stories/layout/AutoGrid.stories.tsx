@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AutoGrid } from '@cascade-ui/layouts/auto-grid'
+import { AutoGrid } from '@cascivo/layouts/auto-grid'
 
 const meta: Meta<typeof AutoGrid> = {
   title: 'Layout/AutoGrid',
@@ -13,9 +13,9 @@ const tile = (label: string) => (
   <div
     style={{
       height: '4rem',
-      background: 'var(--cascade-surface-subtle)',
-      border: '1px solid var(--cascade-color-border)',
-      borderRadius: 'var(--cascade-radius-md)',
+      background: 'var(--cascivo-surface-subtle)',
+      border: '1px solid var(--cascivo-color-border)',
+      borderRadius: 'var(--cascivo-radius-md)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

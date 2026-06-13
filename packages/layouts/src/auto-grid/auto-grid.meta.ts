@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AutoGrid',
@@ -23,8 +23,8 @@ export const meta: ComponentMeta = {
       description: 'Spacing token step',
     },
   ],
-  tokens: ['--cascade-space-*'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-*'],
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Auto-filling grid',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
       description: 'Items fill available space and wrap when narrower than 12rem',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'grid', 'responsive'],
   intent: {
     whenToUse: [

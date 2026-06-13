@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ProgressIndicator } from '@cascade-ui/components/progress-indicator'
+import { ProgressIndicator } from '@cascivo/components/progress-indicator'
 
 const steps = [
   { label: 'Cart', description: 'Review your items' },

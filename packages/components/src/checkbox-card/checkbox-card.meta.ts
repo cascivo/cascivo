@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'CheckboxCard',
@@ -31,10 +31,10 @@ export const meta: ComponentMeta = {
     },
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the card' },
   ],
-  tokens: ['--cascade-color-accent', '--cascade-color-border', '--cascade-radius-surface'],
+  tokens: ['--cascivo-color-accent', '--cascivo-color-border', '--cascivo-radius-surface'],
   accessibility: {
     role: 'checkbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space'],
   },
   examples: [
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Multi-select feature toggles',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['checkbox', 'card', 'selectable', 'form'],
   intent: {
     whenToUse: [
@@ -97,7 +97,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface',
+        note: 'Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface',
       },
     ],
   },

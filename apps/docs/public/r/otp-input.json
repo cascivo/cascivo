@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/otp-input/otp-input.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/otp-input/otp-input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "otp", "code", "input", "verification"],
   "category": "inputs",
   "meta": {
@@ -53,16 +53,16 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-accent",
-      "--cascade-color-bg-subtle",
-      "--cascade-radius-input",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-radius-input",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "group",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
     },
     "examples": [
@@ -75,7 +75,7 @@
         "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["form", "otp", "code", "input", "verification"],
     "intent": {
       "whenToUse": [
@@ -112,7 +112,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Slot styling must resolve to the listed --cascade-* tokens"
+          "note": "Slot styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "length and type",

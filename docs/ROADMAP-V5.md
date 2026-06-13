@@ -51,10 +51,10 @@ What makes the current design read as "standard / AI generated":
 ## Decisions baked in
 
 1. **Radius is a one-knob system** (shadcn/Radix model): semantic radius tokens derive from
-   `--cascade-radius-base` with multipliers; themes only retune the base. Light/dark base drops
+   `--cascivo-radius-base` with multipliers; themes only retune the base. Light/dark base drops
    10px → 6px. Warm stays the deliberately-rounder theme. Flat stays 0. Minimal stays soft.
-2. **`--cascade-color-primary` is a new semantic token** (button fills, primary actions):
-   near-black in light, near-white in dark, warm-accent in warm. `--cascade-color-accent` keeps
+2. **`--cascivo-color-primary` is a new semantic token** (button fills, primary actions):
+   near-black in light, near-white in dark, warm-accent in warm. `--cascivo-color-accent` keeps
    focus rings, links, info, and active-state tinting. No component re-API — Button's CSS remaps.
 3. **No left borders for state.** `border-inline-start` may only be structural (dividers).
 4. **Top-layer theming**: theme `data-theme` must live on `<html>` everywhere (docs already does

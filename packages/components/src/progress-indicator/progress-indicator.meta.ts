@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressIndicator',
@@ -24,19 +24,19 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-text-subtle',
-    '--cascade-color-text-on-accent',
-    '--cascade-color-border',
-    '--cascade-color-surface',
-    '--cascade-radius-full',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-color-border',
+    '--cascivo-color-surface',
+    '--cascivo-radius-full',
   ],
   accessibility: {
     role: 'list',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
       code: "<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />",
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['steps', 'wizard', 'stepper', 'progress', 'navigation'],
   intent: {
     whenToUse: [
@@ -90,7 +90,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Step and connector colors must resolve to --cascade-* tokens',
+        note: 'Step and connector colors must resolve to --cascivo-* tokens',
       },
     ],
   },

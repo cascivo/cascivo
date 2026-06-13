@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressCircle',
@@ -30,10 +30,10 @@ export const meta: ComponentMeta = {
       description: 'Accessible name announced by screen readers',
     },
   ],
-  tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-color-text'],
+  tokens: ['--cascivo-color-border', '--cascivo-color-accent', '--cascivo-color-text'],
   accessibility: {
     role: 'progressbar',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Custom max', code: '<ProgressCircle value={3} max={8} label="Steps completed" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['progress', 'loading', 'circle', 'feedback'],
   intent: {
     whenToUse: [
@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Arc and track colors must resolve to --cascade-* tokens',
+        note: 'Arc and track colors must resolve to --cascivo-* tokens',
       },
     ],
   },

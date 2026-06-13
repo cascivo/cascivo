@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './spacer.module.css'
 
@@ -14,7 +14,7 @@ export function Spacer({ size = 4, className, style, ...props }: SpacerProps) {
     <div
       role="none"
       className={cn(styles['spacer'], className)}
-      style={{ ['--_spacer-size' as string]: `var(--cascade-space-${size})`, ...style }}
+      style={{ ['--_spacer-size' as string]: `var(--cascivo-space-${size})`, ...style }}
       {...props}
     />
   )

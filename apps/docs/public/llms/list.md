@@ -5,7 +5,7 @@ Styled unordered or ordered list with ListItem
 ## Install
 
 ```bash
-npx cascade add list
+npx cascivo add list
 ```
 
 ## Category
@@ -57,21 +57,21 @@ Keeps list semantics without visual markers
 
 ## Design tokens
 
-- `--cascade-font-sans`
-- `--cascade-leading-normal`
-- `--cascade-color-text`
-- `--cascade-text-base`
-- `--cascade-space-1`
-- `--cascade-space-6`
+- `--cascivo-font-sans`
+- `--cascivo-leading-normal`
+- `--cascivo-color-text`
+- `--cascivo-text-base`
+- `--cascivo-space-1`
+- `--cascivo-space-6`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

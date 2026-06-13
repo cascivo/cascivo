@@ -25,7 +25,7 @@ describe('Stack', () => {
   it('sets gap CSS variable', () => {
     const { container } = render(<Stack gap={6} />)
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--_stack-gap')).toBe(
-      'var(--cascade-space-6)',
+      'var(--cascivo-space-6)',
     )
   })
 

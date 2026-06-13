@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './stack.module.css'
 
@@ -29,7 +29,7 @@ export function Stack({
       data-direction={direction}
       data-wrap={wrap ? '' : undefined}
       style={{
-        ['--_stack-gap' as string]: `var(--cascade-space-${gap})`,
+        ['--_stack-gap' as string]: `var(--cascivo-space-${gap})`,
         ...(align
           ? { alignItems: align === 'start' || align === 'end' ? `flex-${align}` : align }
           : {}),

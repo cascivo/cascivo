@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/spacer/spacer.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "spacer", "spacing"],
   "category": "layout",
   "meta": {
@@ -30,10 +30,10 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "none",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -43,7 +43,7 @@
         "description": "Adds vertical space between elements"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "spacer", "spacing"],
     "intent": {
       "whenToUse": [

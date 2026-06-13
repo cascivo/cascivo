@@ -5,7 +5,7 @@ App/product switcher list — lives inside HeaderPanel, renders links with activ
 ## Install
 
 ```bash
-npx cascade add switcher
+npx cascivo add switcher
 ```
 
 ## Category
@@ -43,23 +43,23 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-border`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-border`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 - **Keyboard:** Tab, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

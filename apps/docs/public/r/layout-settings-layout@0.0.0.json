@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/settings-layout/settings-layout.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "settings", "page"],
   "category": "layout",
   "meta": {
@@ -36,10 +36,10 @@
         "description": "Settings content area"
       }
     ],
-    "tokens": ["--cascade-space-8"],
+    "tokens": ["--cascivo-space-8"],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -49,7 +49,7 @@
         "description": "Menu + content layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "settings", "page"],
     "intent": {
       "whenToUse": [

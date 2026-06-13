@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/section/section.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/section/section.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "section", "page"],
   "category": "layout",
   "meta": {
@@ -38,10 +38,10 @@
         "description": "Stack gap between children (spacing token step)"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "region",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -51,7 +51,7 @@
         "description": "Centered 72rem content column with 2rem block padding"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "section", "page"],
     "intent": {
       "whenToUse": [

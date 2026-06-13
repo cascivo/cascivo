@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+  "dependencies": ["@cascivo/core", "@cascivo/charts"],
   "tags": ["section", "stats", "kpi", "charts"],
   "category": "layout",
   "meta": {
@@ -38,18 +38,18 @@
       }
     ],
     "tokens": [
-      "--cascade-text-2xl",
-      "--cascade-text-sm",
-      "--cascade-font-bold",
-      "--cascade-font-mono",
-      "--cascade-text-secondary",
-      "--cascade-color-border",
-      "--cascade-surface-subtle",
-      "--cascade-space-*"
+      "--cascivo-text-2xl",
+      "--cascivo-text-sm",
+      "--cascivo-font-bold",
+      "--cascivo-font-mono",
+      "--cascivo-text-secondary",
+      "--cascivo-color-border",
+      "--cascivo-surface-subtle",
+      "--cascivo-space-*"
     ],
     "accessibility": {
       "role": "region",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -59,7 +59,7 @@
         "description": "Four KPI cells — three with sparkline trends and signed deltas"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+    "dependencies": ["@cascivo/core", "@cascivo/charts"],
     "tags": ["section", "stats", "kpi", "charts"],
     "intent": {
       "whenToUse": [

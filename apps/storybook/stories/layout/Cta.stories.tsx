@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Cta } from '@cascade-ui/layouts/sections/cta'
+import { Cta } from '@cascivo/layouts/sections/cta'
 
 const meta: Meta<typeof Cta> = {
   title: 'Sections/Cta',
@@ -14,10 +14,10 @@ const actions = (
     <button
       style={{
         padding: '0.5rem 1rem',
-        background: 'var(--cascade-color-accent)',
+        background: 'var(--cascivo-color-accent)',
         color: 'white',
         border: 'none',
-        borderRadius: 'var(--cascade-radius-sm)',
+        borderRadius: 'var(--cascivo-radius-sm)',
         cursor: 'pointer',
       }}
     >
@@ -27,8 +27,8 @@ const actions = (
       style={{
         padding: '0.5rem 1rem',
         background: 'transparent',
-        border: '1px solid var(--cascade-color-border)',
-        borderRadius: 'var(--cascade-radius-sm)',
+        border: '1px solid var(--cascivo-color-border)',
+        borderRadius: 'var(--cascivo-radius-sm)',
         cursor: 'pointer',
       }}
     >

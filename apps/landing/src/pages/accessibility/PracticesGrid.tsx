@@ -1,7 +1,7 @@
 const PRACTICES = [
   {
     title: 'Focus, visible',
-    line: 'Every interactive component styles :focus-visible through the --cascade-focus-ring token. Keyboard users always see where they are.',
+    line: 'Every interactive component styles :focus-visible through the --cascivo-focus-ring token. Keyboard users always see where they are.',
   },
   {
     title: 'Reduced motion',
@@ -13,7 +13,7 @@ const PRACTICES = [
   },
   {
     title: 'Translated chrome',
-    line: 'Screen-reader labels and component chrome strings resolve from the @cascade-ui/i18n builtin catalog — overridable per instance, never hardcoded English.',
+    line: 'Screen-reader labels and component chrome strings resolve from the @cascivo/i18n builtin catalog — overridable per instance, never hardcoded English.',
   },
   {
     title: 'Theme parity, tested',

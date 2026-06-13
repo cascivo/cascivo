@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ScatterChart } from '@cascade-ui/charts'
+import { ScatterChart } from '@cascivo/charts'
 
 const series = [
   {

@@ -39,10 +39,10 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-card`
-- `--cascade-shadow-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-card`
+- `--cascivo-shadow-md`
 
 ## Examples
 
@@ -62,4 +62,4 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 | Area                | Level    | Note                                                                    |
 | ------------------- | -------- | ----------------------------------------------------------------------- |
 | variant and padding | flexible | Choose elevation and density to fit the surrounding layout              |
-| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascade-\* tokens |
+| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascivo-\* tokens |

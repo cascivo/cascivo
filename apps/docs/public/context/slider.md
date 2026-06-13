@@ -45,11 +45,11 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -69,5 +69,5 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 | Area         | Level    | Note                                                                                   |
 | ------------ | -------- | -------------------------------------------------------------------------------------- |
-| token names  | strict   | Track and thumb colors must resolve to --cascade-color-\* / radius / focus-ring tokens |
+| token names  | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
 | min/max/step | flexible | Consumer-defined bounds and increment                                                  |

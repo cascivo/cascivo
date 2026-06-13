@@ -2,43 +2,43 @@
   .status {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-2);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
-    line-height: var(--cascade-leading-tight);
+    gap: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    line-height: var(--cascivo-leading-tight);
 
     &[data-status='success'] .dot {
-      background-color: var(--cascade-color-success);
+      background-color: var(--cascivo-color-success);
     }
 
     &[data-status='warning'] .dot {
-      background-color: var(--cascade-color-warning);
+      background-color: var(--cascivo-color-warning);
     }
 
     &[data-status='error'] .dot {
-      background-color: var(--cascade-color-error);
+      background-color: var(--cascivo-color-error);
     }
 
     &[data-status='info'] .dot {
-      background-color: var(--cascade-color-info);
+      background-color: var(--cascivo-color-info);
     }
 
     &[data-status='neutral'] .dot {
-      background-color: var(--cascade-color-text-muted);
+      background-color: var(--cascivo-color-text-muted);
     }
   }
 
   .dot {
     inline-size: 0.5rem;
     block-size: 0.5rem;
-    border-radius: var(--cascade-radius-full);
+    border-radius: var(--cascivo-radius-full);
     flex-shrink: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .status[data-pulse] .dot {
-      animation: cascade-status-pulse 2s var(--cascade-ease-in-out) infinite;
+      animation: cascade-status-pulse 2s var(--cascivo-ease-in-out) infinite;
     }
   }
 

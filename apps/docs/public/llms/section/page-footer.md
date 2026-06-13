@@ -5,7 +5,7 @@ Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a 
 ## Install
 
 ```bash
-npx cascade add section/page-footer
+npx cascivo add section/page-footer
 ```
 
 ## Category
@@ -43,7 +43,7 @@ Three-column footer with brand and license meta
       title: 'Developers',
       links: [
         { label: 'Docs', href: '/docs' },
-        { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
+        { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
         { label: 'Changelog', href: '/changelog' },
       ],
     },
@@ -60,23 +60,23 @@ Three-column footer with brand and license meta
 
 ## Design tokens
 
-- `--cascade-text-sm`
-- `--cascade-font-mono`
-- `--cascade-font-semibold`
-- `--cascade-text-primary`
-- `--cascade-text-secondary`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-space-*`
+- `--cascivo-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-font-semibold`
+- `--cascivo-text-primary`
+- `--cascivo-text-secondary`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `contentinfo`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

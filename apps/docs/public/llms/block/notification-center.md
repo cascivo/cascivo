@@ -5,7 +5,7 @@ A list of notification alerts with a mark-all-read action.
 ## Install
 
 ```bash
-npx cascade add block/notification-center
+npx cascivo add block/notification-center
 ```
 
 ## Category
@@ -31,12 +31,12 @@ Notification center
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/stack`
 
 ## Tags

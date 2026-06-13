@@ -83,7 +83,7 @@ The current landing is _correct_ but not _felt_:
    model). GitHub link carries the social weight.
 8. **Anti-slop constraints are hard rules**: no gradients, no glassmorphism, no emoji bullets,
    no icon-grid features, system font stack stays (zero webfonts — the performance _is_ the
-   brand), mono accents via `--cascade-font-mono` for eyebrows/labels/numbers.
+   brand), mono accents via `--cascivo-font-mono` for eyebrows/labels/numbers.
 9. **The page is the benchmark.** Landing keeps dogfooding cascade exclusively; served CSS
    shows `@layer`/`:has()`/`@container` to anyone who opens DevTools; motion is CSS-only and
    honors `prefers-reduced-motion`.

@@ -5,7 +5,7 @@ Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notif
 ## Install
 
 ```bash
-npx cascade add block/console-app
+npx cascivo add block/console-app
 ```
 
 ## Category
@@ -28,25 +28,25 @@ Full console shell demo
 
 ## Design tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-shell-panel-inline-size`
-- `--cascade-shell-aside-inline-size`
-- `--cascade-color-border`
-- `--cascade-color-surface`
-- `--cascade-color-scrim`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-shell-panel-inline-size`
+- `--cascivo-shell-aside-inline-size`
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-color-scrim`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 - **Keyboard:** Escape, Tab
 
 ## Dependencies
 
-- `@cascade-ui/react`
-- `@cascade-ui/icons`
+- `@cascivo/react`
+- `@cascivo/icons`
 - `layout/app-shell`
 - `layout/page-header`
 

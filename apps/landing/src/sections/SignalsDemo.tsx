@@ -1,11 +1,11 @@
 'use client'
 import { useRef, useState } from 'react'
-import { signal, useSignals, type Signal } from '@cascade-ui/core'
-import { Badge } from '@cascade-ui/components/badge'
-import { Button } from '@cascade-ui/components/button'
-import { Card } from '@cascade-ui/components/card'
-import { Checkbox } from '@cascade-ui/components/checkbox'
-import { Input } from '@cascade-ui/components/input'
+import { signal, useSignals, type Signal } from '@cascivo/core'
+import { Badge } from '@cascivo/components/badge'
+import { Button } from '@cascivo/components/button'
+import { Card } from '@cascivo/components/card'
+import { Checkbox } from '@cascivo/components/checkbox'
+import { Input } from '@cascivo/components/input'
 
 /* The useState twin below is the comparison subject — the one sanctioned hook
    exception on this page (v7 master plan, decision 9). */
@@ -63,7 +63,7 @@ function SignalForm() {
     signalFormRenders.value = renders.current
   })
   return (
-    <form className="twin-form" aria-label="cascade form">
+    <form className="twin-form" aria-label="cascivo form">
       <SigInput sig={sigName} label="Name" />
       <SigInput sig={sigEmail} label="Email" />
       <SigCheckbox sig={sigNewsletter} label="Subscribe to changelog" />
@@ -116,7 +116,7 @@ export function SignalsDemo() {
     <section className="signals" id="signals" data-reveal="">
       <h2>Count the re-renders</h2>
       <p className="signals-sub">
-        The same form, twice. Left: cascade signals. Right: the usual useState wiring. Type in both
+        The same form, twice. Left: cascivo signals. Right: the usual useState wiring. Type in both
         — the counters show how many times each <em>form component</em> has re-rendered, on this
         page, right now.
       </p>
@@ -143,7 +143,7 @@ export function SignalsDemo() {
       </p>
       {renderingData && (
         <p className="bench-teaser">
-          Measured: typing 20 characters — cascade {renderingData['cascade'] ?? '?'} root commits,{' '}
+          Measured: typing 20 characters — cascivo {renderingData['cascivo'] ?? '?'} root commits,{' '}
           shadcn {renderingData['shadcn'] ?? '?'}, carbon {renderingData['carbon'] ?? '?'} ·{' '}
           {bench?.meta.date} <a href="/docs/benchmarks">Full benchmarks →</a>
         </p>

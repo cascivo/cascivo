@@ -42,10 +42,10 @@ role="img" with alt names the person; on image error it falls back to initials s
 
 ## Tokens
 
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-radius-full`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-full`
 
 ## Examples
 
@@ -72,4 +72,4 @@ role="img" with alt names the person; on image error it falls back to initials s
 | Area        | Level    | Note                                                                    |
 | ----------- | -------- | ----------------------------------------------------------------------- |
 | size        | flexible | Pick the size that fits the surrounding density                         |
-| token names | strict   | Fallback and status colors must resolve to --cascade-\* semantic tokens |
+| token names | strict   | Fallback and status colors must resolve to --cascivo-\* semantic tokens |

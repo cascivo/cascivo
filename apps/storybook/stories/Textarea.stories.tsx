@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Textarea } from '@cascade-ui/components/textarea'
+import { Textarea } from '@cascivo/components/textarea'
 
 const meta: Meta<typeof Textarea> = {
   title: 'Inputs/Textarea',

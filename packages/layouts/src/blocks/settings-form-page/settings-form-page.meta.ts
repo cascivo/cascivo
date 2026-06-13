@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SettingsFormPage',
@@ -16,9 +16,9 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<SettingsFormPage />', description: 'Settings form page' }],
-  dependencies: ['@cascade-ui/react', 'layout/settings-layout'],
+  dependencies: ['@cascivo/react', 'layout/settings-layout'],
   tags: ['block', 'settings', 'form', 'page'],
   intent: {
     whenToUse: [

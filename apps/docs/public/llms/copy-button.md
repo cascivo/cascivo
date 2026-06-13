@@ -5,7 +5,7 @@ Icon button that copies a value to the clipboard with copied feedback
 ## Install
 
 ```bash
-npx cascade add copy-button
+npx cascivo add copy-button
 ```
 
 ## Category
@@ -35,7 +35,7 @@ npx cascade add copy-button
 ### Default
 
 ```tsx
-<CopyButton value="npx cascade add button" />
+<CopyButton value="npx cascivo add button" />
 ```
 
 ### Small
@@ -54,27 +54,27 @@ Override the built-in copy/copied strings per instance
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-success`
-- `--cascade-radius-control`
-- `--cascade-focus-ring`
-- `--cascade-control-height-sm`
-- `--cascade-control-height-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-success`
+- `--cascivo-radius-control`
+- `--cascivo-focus-ring`
+- `--cascivo-control-height-sm`
+- `--cascivo-control-height-md`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

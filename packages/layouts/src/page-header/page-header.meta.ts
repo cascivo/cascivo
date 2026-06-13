@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PageHeader',
@@ -15,15 +15,15 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false, description: 'Additional CSS class' },
   ],
   tokens: [
-    '--cascade-space-2',
-    '--cascade-space-4',
-    '--cascade-font-size-2xl',
-    '--cascade-font-weight-bold',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-font-size-sm',
+    '--cascivo-space-2',
+    '--cascivo-space-4',
+    '--cascivo-font-size-2xl',
+    '--cascivo-font-weight-bold',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-font-size-sm',
   ],
-  accessibility: { role: 'banner', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'banner', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',
@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
       description: 'Title with description',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'header', 'page'],
   intent: {
     whenToUse: [

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
-import { BarChart } from '@cascade-ui/charts'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
-import { Stat } from '@cascade-ui/components/stat'
+import { useSignal, useSignals } from '@cascivo/core'
+import { BarChart } from '@cascivo/charts'
+import { DataTable, type Column } from '@cascivo/components/data-table'
+import { Stat } from '@cascivo/components/stat'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import {
@@ -17,7 +18,9 @@ import {
   latencySpotlightSeries,
   LIB_LABELS,
   LIBS,
+  MATRIX_COMPONENTS,
   matrixRows,
+  type Lens,
   type MatrixRow,
   rendersSeries,
   SCENARIO_LABELS,
@@ -110,7 +113,7 @@ function BundleSection() {
       />
       {treeshake && (
         <p className="perf-note">
-          Tree-shaking check: a bare <code>{`import {} from '@cascade-ui/react'`}</code> adds{' '}
+          Tree-shaking check: a bare <code>{`import {} from '@cascivo/react'`}</code> adds{' '}
           {fmtInt(treeshake.bareImportGzBytes)} bytes gzip. A Button-only build is{' '}
           {fmtKb(treeshake.buttonOnlyGzKb)} vs {fmtKb(treeshake.fullGzKb)} for the full library.
         </p>
@@ -119,35 +122,104 @@ function BundleSection() {
   )
 }
 
-const MATRIX_COLUMNS: Column<MatrixRow>[] = [
-  { key: 'component', header: 'Component' },
-  ...LIBS.map(
-    (lib): Column<MatrixRow> => ({
-      key: lib,
-      header: LIB_LABELS[lib],
-      align: 'end',
-      render: (row) => (row[lib] !== undefined ? fmtKb(row[lib] ?? 0) : '—'),
-    }),
-  ),
-]
+const LENS_LABELS: Record<Lens, string> = {
+  incremental: 'Incremental',
+  standalone: 'Standalone',
+  amortized: 'Amortized',
+}
 
 function MatrixSection() {
+  useSignals()
+  const lens = useSignal<Lens>('incremental')
   const rows = matrixRows()
   if (!rows) return null
+
+  const activeLens = lens.value
+
+  // Collect all notes across all libs for footnote display
+  const noteSet = new Set<string>()
+  for (const row of rows) {
+    for (const lib of LIBS) {
+      const note = row.notes[lib]
+      if (note) noteSet.add(note)
+    }
+  }
+  const notes = [...noteSet]
+
+  const columns: Column<MatrixRow>[] = [
+    { key: 'component', header: 'Component' },
+    ...LIBS.map(
+      (lib): Column<MatrixRow> => ({
+        key: `${lib}_${activeLens}` as keyof MatrixRow,
+        header: LIB_LABELS[lib],
+        align: 'end' as const,
+        render: (row) => {
+          const val = row[`${lib}_${activeLens}` as keyof MatrixRow] as number | undefined
+          const note = row.notes[lib]
+          if (val === undefined) return '—'
+          return (
+            <span>
+              {fmtKb(val)}
+              {note && <sup title={note}>†</sup>}
+            </span>
+          )
+        },
+      }),
+    ),
+  ]
+
   return (
     <section className="section" data-reveal="">
-      <h2>What one component costs</h2>
+      <h2>What does one component cost?</h2>
       <p className="section-sub">
-        Incremental cost = a build importing only that component, minus the baseline build. The
-        marginal price of each import, isolated.
+        There is more than one honest answer. Choose the lens that fits your situation:
+      </p>
+      <div className="perf-lens-toggle" role="group" aria-label="Cost lens">
+        {(['incremental', 'standalone', 'amortized'] as const).map((l) => (
+          <button
+            key={l}
+            onClick={() => {
+              lens.value = l
+            }}
+            aria-pressed={activeLens === l}
+            className={activeLens === l ? 'active' : undefined}
+          >
+            {LENS_LABELS[l]}
+          </button>
+        ))}
+      </div>
+      <p className="perf-lens-desc">
+        {activeLens === 'incremental' && (
+          <>
+            <strong>Incremental</strong> — the marginal cost of adding this component to an app that
+            already loads the shared runtime. Favors shared-runtime libraries (shadcn/ui, Carbon):
+            their dependencies are already paid; cascade&apos;s CSS is new per component.
+          </>
+        )}
+        {activeLens === 'standalone' && (
+          <>
+            <strong>Standalone</strong> — the full cost of a build that imports only this component
+            and nothing else. Worst case for everyone; useful for comparing absolute minimums.
+            Favors libraries with smaller runtimes.
+          </>
+        )}
+        {activeLens === 'amortized' && (
+          <>
+            <strong>Amortized</strong> — the shared runtime spread across all{' '}
+            {MATRIX_COMPONENTS.length} measured components. Favors libraries with per-component CSS
+            (cascade): one runtime, many cheap components. The more components you use, the lower
+            the amortized cost per component.
+          </>
+        )}
       </p>
       <DataTable
-        columns={MATRIX_COLUMNS}
+        columns={columns}
         rows={rows}
         getRowId={(row) => row.component}
-        title="Per-component incremental cost (KB, min+gzip)"
-        description="KB of gzipped JS+CSS added to the baseline build by importing a single component, per library."
+        title={`Per-component ${LENS_LABELS[activeLens].toLowerCase()} cost (KB, min+gzip)`}
+        description={`KB of gzipped JS+CSS per component — ${activeLens} lens.`}
       />
+      {notes.length > 0 && <p className="perf-footnote">† {notes.join(' ')}</p>}
     </section>
   )
 }
@@ -345,11 +417,15 @@ function MethodologySection() {
       </ul>
       <p className="perf-note">
         Full methodology:{' '}
-        <a href="https://github.com/urbanisierung/cascade-ui/blob/main/apps/bench/METHODOLOGY.md">
+        <a href="https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md">
           METHODOLOGY.md
         </a>{' '}
+        · per-component matrix detail:{' '}
+        <a href="https://github.com/urbanisierung/cascivo/blob/main/docs/specs/perf-methodology.md">
+          docs/specs/perf-methodology.md
+        </a>{' '}
         · bench source:{' '}
-        <a href="https://github.com/urbanisierung/cascade-ui/tree/main/apps/bench">apps/bench</a> ·
+        <a href="https://github.com/urbanisierung/cascivo/tree/main/apps/bench">apps/bench</a> ·
         reproduce with <code>pnpm bench</code>.
       </p>
     </section>

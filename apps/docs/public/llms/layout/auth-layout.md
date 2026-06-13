@@ -5,7 +5,7 @@ Centered card layout for authentication pages (login, register, forgot password)
 ## Install
 
 ```bash
-npx cascade add layout/auth-layout
+npx cascivo add layout/auth-layout
 ```
 
 ## Category
@@ -33,22 +33,22 @@ Centered auth card with logo
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-space-4`
-- `--cascade-space-6`
-- `--cascade-space-8`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-space-4`
+- `--cascivo-space-6`
+- `--cascivo-space-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

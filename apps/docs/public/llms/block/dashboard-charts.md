@@ -5,7 +5,7 @@ Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
 ## Install
 
 ```bash
-npx cascade add block/dashboard-charts
+npx cascivo add block/dashboard-charts
 ```
 
 ## Category
@@ -28,13 +28,13 @@ Charts dashboard demo
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
-- `@cascade-ui/react`
+- `@cascivo/charts`
+- `@cascivo/react`
 
 ## Tags
 

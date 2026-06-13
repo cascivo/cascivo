@@ -1,7 +1,7 @@
 /**
  * Token catalog generator.
  *
- * Reads the token sources, parses all --cascade-* custom properties, and
+ * Reads the token sources, parses all --cascivo-* custom properties, and
  * writes apps/docs/public/tokens.catalog.json.
  *
  * Run with: `pnpm catalog:generate`

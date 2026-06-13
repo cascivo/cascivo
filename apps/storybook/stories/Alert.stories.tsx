@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Alert } from '@cascade-ui/components/alert'
+import { Alert } from '@cascivo/components/alert'
 
 const meta: Meta<typeof Alert> = {
   title: 'Display/Alert',

@@ -1,5 +1,5 @@
 .hero {
   color: oklch(0.373 0.015 264); /* should be a cascade token */
-  background: oklch(0.623 0.214 250); /* should be --cascade-color-accent */
+  background: oklch(0.623 0.214 250); /* should be --cascivo-color-accent */
   padding: 16px;
 }

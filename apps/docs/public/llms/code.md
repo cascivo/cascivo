@@ -5,7 +5,7 @@ Inline code span for identifiers, commands, and short snippets
 ## Install
 
 ```bash
-npx cascade add code
+npx cascivo add code
 ```
 
 ## Category
@@ -28,7 +28,7 @@ npx cascade add code
 ### Default
 
 ```tsx
-<Code>npx cascade add button</Code>
+<Code>npx cascivo add button</Code>
 ```
 
 ### In a sentence
@@ -44,27 +44,27 @@ Sits inline with surrounding text
 ### Small
 
 ```tsx
-<Code size="sm">--cascade-color-accent</Code>
+<Code size="sm">--cascivo-color-accent</Code>
 ```
 
 ## Design tokens
 
-- `--cascade-font-mono`
-- `--cascade-color-text`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-indicator`
-- `--cascade-text-xs`
-- `--cascade-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-color-text`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-indicator`
+- `--cascivo-text-xs`
+- `--cascivo-text-sm`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `code`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

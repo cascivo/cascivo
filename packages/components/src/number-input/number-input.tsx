@@ -1,6 +1,6 @@
 'use client'
-import { cn, createMachine, useMachine, useSignal, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, createMachine, useMachine, useSignal, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { InputHTMLAttributes, KeyboardEvent } from 'react'
 import styles from './number-input.module.css'
 

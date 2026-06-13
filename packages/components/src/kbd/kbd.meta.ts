@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Kbd',
@@ -9,15 +9,15 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md'],
   props: [{ name: 'size', type: "'sm' | 'md'", required: false, default: 'md' }],
   tokens: [
-    '--cascade-color-text-subtle',
-    '--cascade-color-surface-raised',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-radius-sm',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-surface-raised',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-radius-sm',
   ],
   accessibility: {
     role: 'kbd',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -29,7 +29,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Small', code: '<Kbd size="sm">Esc</Kbd>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['keyboard', 'shortcut', 'hotkey'],
   intent: {
     whenToUse: [
@@ -65,7 +65,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface and border must resolve to --cascade-* tokens',
+        note: 'Surface and border must resolve to --cascivo-* tokens',
       },
     ],
   },

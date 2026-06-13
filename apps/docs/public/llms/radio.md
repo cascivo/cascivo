@@ -5,7 +5,7 @@ Single choice from a set, grouped with RadioGroup
 ## Install
 
 ```bash
-npx cascade add radio
+npx cascivo add radio
 ```
 
 ## Category
@@ -39,22 +39,22 @@ npx cascade add radio
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radio`
-- **Keyboard:** ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+- **Keyboard:** ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Blockquote',
@@ -16,18 +16,18 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-border-strong',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-font-sans',
-    '--cascade-font-medium',
-    '--cascade-leading-relaxed',
-    '--cascade-text-sm',
-    '--cascade-text-base',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-font-sans',
+    '--cascivo-font-medium',
+    '--cascivo-leading-relaxed',
+    '--cascivo-text-sm',
+    '--cascivo-text-base',
   ],
   accessibility: {
     role: 'blockquote',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -38,7 +38,7 @@ export const meta: ComponentMeta = {
       description: 'Attribution renders as <footer><cite>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'quote', 'blockquote', 'citation'],
   intent: {
     whenToUse: [
@@ -78,7 +78,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Border and text colors must resolve to --cascade-* tokens',
+        note: 'Border and text colors must resolve to --cascivo-* tokens',
       },
     ],
   },

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { MultiSelect } from '@cascade-ui/components/multi-select'
+import { MultiSelect } from '@cascivo/components/multi-select'
 
 const options = [
   { label: 'React', value: 'react' },

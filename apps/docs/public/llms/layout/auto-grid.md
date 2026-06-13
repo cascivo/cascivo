@@ -5,7 +5,7 @@ Media-query-free responsive grid — columns auto-fill based on available space.
 ## Install
 
 ```bash
-npx cascade add layout/auto-grid
+npx cascivo add layout/auto-grid
 ```
 
 ## Category
@@ -35,16 +35,16 @@ Items fill available space and wrap when narrower than 12rem
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

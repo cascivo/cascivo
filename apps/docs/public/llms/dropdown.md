@@ -5,7 +5,7 @@ Menu of actions revealed from a trigger
 ## Install
 
 ```bash
-npx cascade add dropdown
+npx cascivo add dropdown
 ```
 
 ## Category
@@ -42,21 +42,21 @@ npx cascade add dropdown
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-md`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-md`
+- `--cascivo-z-dropdown`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
 - **Keyboard:** ArrowDown, ArrowUp, Home, End, Enter, Space, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

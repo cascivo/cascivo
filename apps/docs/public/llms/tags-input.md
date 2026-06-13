@@ -5,7 +5,7 @@ Free-form multi-value chip input
 ## Install
 
 ```bash
-npx cascade add tags-input
+npx cascivo add tags-input
 ```
 
 ## Category
@@ -39,25 +39,25 @@ npx cascade add tags-input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `textbox`
 - **Keyboard:** Enter, ,, Backspace
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

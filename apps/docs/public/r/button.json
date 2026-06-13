@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button/button.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button/button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["action", "form", "interactive"],
   "category": "inputs",
   "meta": {
@@ -54,18 +54,21 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-accent-hover",
-      "--cascade-color-accent-active",
-      "--cascade-color-text-on-accent",
-      "--cascade-color-destructive",
-      "--cascade-radius-button",
-      "--cascade-focus-ring"
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-hover",
+      "--cascivo-color-accent-active",
+      "--cascivo-color-text-on-accent",
+      "--cascivo-color-destructive",
+      "--cascivo-radius-button",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
-      "keyboard": ["Enter", "Space"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Enter", "Space"],
+      "apgPattern": "button",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -81,7 +84,7 @@
         "code": "<Button variant=\"destructive\">Delete</Button>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["action", "form", "interactive"],
     "intent": {
       "whenToUse": [
@@ -120,7 +123,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+          "note": "Visual props must resolve to --cascivo-button-* / semantic tokens"
         },
         {
           "area": "label copy",

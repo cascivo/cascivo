@@ -5,7 +5,7 @@ Horizontally centered container with a configurable max-width.
 ## Install
 
 ```bash
-npx cascade add layout/center
+npx cascivo add layout/center
 ```
 
 ## Category
@@ -32,16 +32,16 @@ Centered container with custom max-width
 
 ## Design tokens
 
-- `--cascade-space-4`
+- `--cascivo-space-4`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

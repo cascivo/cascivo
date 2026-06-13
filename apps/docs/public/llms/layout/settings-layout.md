@@ -5,7 +5,7 @@ Two-column settings page layout with a fixed-width menu and fluid content area.
 ## Install
 
 ```bash
-npx cascade add layout/settings-layout
+npx cascivo add layout/settings-layout
 ```
 
 ## Category
@@ -33,16 +33,16 @@ Menu + content layout
 
 ## Design tokens
 
-- `--cascade-space-8`
+- `--cascivo-space-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

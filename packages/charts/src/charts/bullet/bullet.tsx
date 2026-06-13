@@ -1,6 +1,8 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
+import { ChartFrame } from '../../core/chart-frame'
 import { linearScale } from '../../engine/scale'
+import type { TooltipModel } from '../../core/data-point'
 
 export interface BulletProps {
   value: number
@@ -15,9 +17,9 @@ export interface BulletProps {
 }
 
 const RANGE_COLORS = [
-  'var(--cascade-color-neutral-200)',
-  'var(--cascade-color-neutral-300)',
-  'var(--cascade-color-neutral-400)',
+  'var(--cascivo-color-neutral-200)',
+  'var(--cascivo-color-neutral-300)',
+  'var(--cascivo-color-neutral-400)',
 ]
 
 export function Bullet({
@@ -43,48 +45,70 @@ export function Bullet({
   const targetH = height * 0.7
   const targetY = (height - targetH) / 2
 
+  const buildTooltip = (): TooltipModel => ({
+    points: [
+      {
+        id: 'measure',
+        cx: scale.map(value),
+        cy: height / 2,
+        label,
+        value,
+      },
+    ],
+  })
+
   return (
     <figure
       className={className}
       aria-label={`${label}: value ${value}, target ${target}`}
       style={{ margin: 0 }}
     >
-      <svg width={width} height={height} role="img" aria-label={`${label} bullet chart`}>
-        {/* Range bands */}
-        {sortedRanges.map((r, i) => {
-          const prev = i === 0 ? min : (sortedRanges[i - 1] ?? min)
-          const bandW = scale.map(r) - scale.map(prev)
-          return (
+      <ChartFrame
+        title={`${label} bullet chart`}
+        width={width}
+        height={height}
+        plain
+        tooltip={buildTooltip()}
+      >
+        {() => (
+          <>
+            {/* Range bands */}
+            {sortedRanges.map((r, i) => {
+              const prev = i === 0 ? min : (sortedRanges[i - 1] ?? min)
+              const bandW = scale.map(r) - scale.map(prev)
+              return (
+                <rect
+                  key={i}
+                  x={scale.map(prev)}
+                  y={0}
+                  width={Math.max(0, bandW)}
+                  height={height}
+                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascivo-color-neutral-200)'}
+                />
+              )
+            })}
+            {/* Measure bar */}
             <rect
-              key={i}
-              x={scale.map(prev)}
-              y={0}
-              width={Math.max(0, bandW)}
-              height={height}
-              fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascade-color-neutral-200)'}
+              x={scale.map(min)}
+              y={barY}
+              width={Math.max(0, scale.map(value) - scale.map(min))}
+              height={barH}
+              fill="var(--cascivo-chart-1)"
+              aria-label={`Value: ${value}`}
             />
-          )
-        })}
-        {/* Measure bar */}
-        <rect
-          x={scale.map(min)}
-          y={barY}
-          width={Math.max(0, scale.map(value) - scale.map(min))}
-          height={barH}
-          fill="var(--cascade-chart-1)"
-          aria-label={`Value: ${value}`}
-        />
-        {/* Target tick */}
-        <line
-          x1={scale.map(target)}
-          y1={targetY}
-          x2={scale.map(target)}
-          y2={targetY + targetH}
-          stroke="var(--cascade-text-primary)"
-          strokeWidth={2.5}
-          aria-label={`Target: ${target}`}
-        />
-      </svg>
+            {/* Target tick */}
+            <line
+              x1={scale.map(target)}
+              y1={targetY}
+              x2={scale.map(target)}
+              y2={targetY + targetH}
+              stroke="var(--cascivo-text-primary)"
+              strokeWidth={2.5}
+              aria-label={`Target: ${target}`}
+            />
+          </>
+        )}
+      </ChartFrame>
       <figcaption style={{ fontSize: 12 }}>{label}</figcaption>
     </figure>
   )

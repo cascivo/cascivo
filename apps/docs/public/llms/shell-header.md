@@ -5,7 +5,7 @@ Console application header: brand with prefix, dropdown nav menus, global icon a
 ## Install
 
 ```bash
-npx cascade add shell-header
+npx cascivo add shell-header
 ```
 
 ## Category
@@ -37,7 +37,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```tsx
 <ShellHeader
-  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}
+  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },
@@ -48,24 +48,24 @@ Brand with prefix, dropdown nav, global icon action
 
 ## Design tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-radius-control`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-radius-control`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `banner`
 - **Keyboard:** Tab, Enter, Space, ArrowDown, ArrowUp, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

@@ -44,11 +44,11 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 
 ## Tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-md`
-- `--cascade-z-dropdown`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-md`
+- `--cascivo-z-dropdown`
 
 ## Examples
 
@@ -68,4 +68,4 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 | -------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | trigger element            | flexible | Any ReactElement works as the trigger; ref and aria props are merged in            |
 | controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state                               |
-| token names                | strict   | Menu styling resolves to semantic --cascade-color-\* / --cascade-z-dropdown tokens |
+| token names                | strict   | Menu styling resolves to semantic --cascivo-color-\* / --cascivo-z-dropdown tokens |

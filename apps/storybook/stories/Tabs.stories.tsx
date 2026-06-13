@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
 
 const meta: Meta<typeof Tabs> = {
   title: 'Navigation/Tabs',

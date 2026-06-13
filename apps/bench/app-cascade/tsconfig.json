@@ -5,7 +5,7 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "paths": {
-      "@cascade-ui/react": ["../../../packages/react/src/index.ts"]
+      "@cascivo/react": ["../../../packages/react/src/index.ts"]
     }
   },
   "include": [

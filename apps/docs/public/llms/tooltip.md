@@ -5,7 +5,7 @@ Contextual label shown on hover or focus
 ## Install
 
 ```bash
-npx cascade add tooltip
+npx cascivo add tooltip
 ```
 
 ## Category
@@ -38,20 +38,20 @@ npx cascade add tooltip
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-sm`
-- `--cascade-z-tooltip`
+- `--cascivo-color-text`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-sm`
+- `--cascivo-z-tooltip`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `tooltip`
 - **Keyboard:** Tab, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

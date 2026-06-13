@@ -5,7 +5,7 @@ Circular determinate progress indicator rendered as an SVG arc
 ## Install
 
 ```bash
-npx cascade add progress-circle
+npx cascivo add progress-circle
 ```
 
 ## Category
@@ -50,18 +50,18 @@ npx cascade add progress-circle
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

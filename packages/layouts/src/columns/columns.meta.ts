@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Columns',
@@ -17,8 +17,8 @@ export const meta: ComponentMeta = {
       description: 'Spacing token step',
     },
   ],
-  tokens: ['--cascade-space-*'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-*'],
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Three columns',
@@ -26,7 +26,7 @@ export const meta: ComponentMeta = {
       description: 'Three equal columns',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'grid', 'columns'],
   intent: {
     whenToUse: [

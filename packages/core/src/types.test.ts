@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import type { ComponentMeta, ComponentIntent } from './index.ts'
+import { describe, it, expect, expectTypeOf } from 'vitest'
+import type { ComponentMeta, ComponentIntent, AccessibilityMeta, WcagLevel } from './index.ts'
 
 describe('ComponentMeta types', () => {
   it('round-trips a ComponentMeta with intent through JSON', () => {
@@ -34,10 +34,10 @@ describe('ComponentMeta types', () => {
       variants: ['primary', 'secondary', 'ghost'],
       sizes: ['sm', 'md', 'lg'],
       props: [{ name: 'disabled', type: 'boolean', required: false, default: 'false' }],
-      tokens: ['--cascade-button-bg'],
+      tokens: ['--cascivo-button-bg'],
       accessibility: { role: 'button', wcag: 'AA', keyboard: ['Enter', 'Space'] },
       examples: [{ title: 'Primary', code: '<Button>Click</Button>' }],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: ['action', 'cta'],
       intent,
     }
@@ -59,13 +59,48 @@ describe('ComponentMeta types', () => {
       variants: ['default', 'success', 'warning', 'error'],
       sizes: ['sm', 'md'],
       props: [],
-      tokens: ['--cascade-badge-bg'],
+      tokens: ['--cascivo-badge-bg'],
       accessibility: { role: 'status', wcag: 'AA', keyboard: [] },
       examples: [{ title: 'Default', code: '<Badge>New</Badge>' }],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: ['label'],
     }
 
     expect(meta.intent).toBeUndefined()
+  })
+})
+
+describe('AccessibilityMeta type', () => {
+  it('accepts versioned WCAG levels', () => {
+    const meta: AccessibilityMeta = {
+      role: 'button',
+      wcag: '2.2-AA',
+      keyboard: ['Enter', 'Space'],
+    }
+    expectTypeOf(meta.wcag).toEqualTypeOf<WcagLevel>()
+  })
+
+  it('accepts legacy WCAG levels for migration', () => {
+    const meta: AccessibilityMeta = {
+      role: 'button',
+      wcag: 'AA',
+      keyboard: [],
+    }
+    expectTypeOf(meta.wcag).toEqualTypeOf<WcagLevel>()
+  })
+
+  it('accepts optional apgPattern and media-feature flags', () => {
+    const meta: AccessibilityMeta = {
+      role: 'tablist',
+      wcag: '2.2-AA',
+      keyboard: ['ArrowLeft', 'ArrowRight'],
+      apgPattern: 'tabs',
+      forcedColors: true,
+      reducedMotion: false,
+    }
+    expectTypeOf(meta.apgPattern).toEqualTypeOf<string | undefined>()
+    expect(meta.apgPattern).toBe('tabs')
+    expect(meta.forcedColors).toBe(true)
+    expect(meta.reducedMotion).toBe(false)
   })
 })

@@ -82,7 +82,7 @@ summary, refs }]`. `cascade audit` resolves the lockfile against the registries 
    infrastructure.
 5. **The customization contract is CI-enforced, repo-wide.** A vitest parses every
    component CSS file: zero `!important`; every _visual_ declaration (color, background,
-   border, shadow, radius, spacing, font) resolves to `var(--cascade-*)` or a private
+   border, shadow, radius, spacing, font) resolves to `var(--cascivo-*)` or a private
    `--_*` knob — structural properties (display, position, grid tracks) are allowlisted.
    Failures name file:line. This turns pain #2 from a promise into a gate.
 6. **Theming docs are generated from manifests.** Each component's docs page gains a
@@ -98,7 +98,7 @@ summary, refs }]`. `cascade audit` resolves the lockfile against the registries 
    presets **only if** the v9 theme-parity test stays green and visual diffs are
    reviewed — otherwise axes remain studio-output-only this version.
 9. **Size budgets bind the prebuilt distribution.** Per-component byte budgets on
-   `@cascade-ui/react` build output (the copy-paste path has no bundle by construction —
+   `@cascivo/react` build output (the copy-paste path has no bundle by construction —
    say so on the receipts page). Budget breach fails CI; the size table publishes to docs.
 10. **RSC discipline is audited, not assumed.** Classify every component:
     server-renderable (no directive) vs. client (`"use client"` present and justified by
@@ -114,7 +114,7 @@ summary, refs }]`. `cascade audit` resolves the lockfile against the registries 
     assertions live in the components package as integration tests (and double as
     documentation examples).
 13. **No new packages, no paid tier.** Everything lands in existing packages + docs;
-    `@cascade-ui/registry` (v11) absorbs the advisory/drift types.
+    `@cascivo/registry` (v11) absorbs the advisory/drift types.
 
 ## Definition of Done
 
@@ -137,7 +137,7 @@ summary, refs }]`. `cascade audit` resolves the lockfile against the registries 
       three formats; a shared URL reproduces the exact theme; two default-axis-preset
       combinations produce visibly distinct apps (screenshot pair recorded in the PR).
 - [ ] CI fails when a component exceeds its size budget (proven on a fixture breach); the
-      published size page lists every `@cascade-ui/react` component with measured bytes;
+      published size page lists every `@cascivo/react` component with measured bytes;
       the copy-paste-has-no-bundle note is explicit.
 - [ ] RSC matrix: server-safe components render inside a real Server Component in
       `react-next` without hydration warnings; the classification test fails if a

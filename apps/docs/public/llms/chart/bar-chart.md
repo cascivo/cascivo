@@ -5,7 +5,7 @@ Bar chart with vertical/horizontal orientation, grouped or stacked modes, and mu
 ## Install
 
 ```bash
-npx cascade add chart/bar-chart
+npx cascivo add chart/bar-chart
 ```
 
 ## Category
@@ -41,7 +41,7 @@ npx cascade add chart/bar-chart
 ### Basic bar chart
 
 ```tsx
-import { BarChart } from '@cascade-ui/charts'
+import { BarChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />
@@ -49,23 +49,23 @@ const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

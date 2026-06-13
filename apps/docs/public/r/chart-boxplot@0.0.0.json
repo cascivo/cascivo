@@ -5,10 +5,10 @@
   "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Boxplot",
     "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
@@ -58,27 +58,27 @@
       }
     ],
     "tokens": [
-      "--cascade-chart-1",
-      "--cascade-chart-2",
-      "--cascade-chart-3",
-      "--cascade-chart-4",
-      "--cascade-chart-5",
-      "--cascade-chart-6",
-      "--cascade-chart-7",
-      "--cascade-chart-8"
+      "--cascivo-chart-1",
+      "--cascivo-chart-2",
+      "--cascivo-chart-3",
+      "--cascivo-chart-4",
+      "--cascivo-chart-5",
+      "--cascivo-chart-6",
+      "--cascivo-chart-7",
+      "--cascivo-chart-8"
     ],
     "accessibility": {
       "role": "img",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
       {
         "title": "Basic boxplot",
-        "code": "import { Boxplot } from '@cascade-ui/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
+        "code": "import { Boxplot } from '@cascivo/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
     "intent": {
       "whenToUse": [

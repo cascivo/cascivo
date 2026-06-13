@@ -5,7 +5,7 @@ Range input for selecting a value within bounds
 ## Install
 
 ```bash
-npx cascade add slider
+npx cascivo add slider
 ```
 
 ## Category
@@ -40,21 +40,21 @@ npx cascade add slider
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `slider`
 - **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

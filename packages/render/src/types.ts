@@ -2,7 +2,7 @@
 export type DataRef = `$data.${string}`
 /** A reference into the host-provided actions: "$actions.openUser" */
 export type ActionRef = `$actions.${string}`
-/** A translatable string reference resolved via @cascade-ui/i18n translateKey. */
+/** A translatable string reference resolved via @cascivo/i18n translateKey. */
 export interface TranslationRef {
   $t: string
   params?: Record<string, string | number>

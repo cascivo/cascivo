@@ -5,7 +5,7 @@ Two-dimensional heatmap with band scales and color-mix cell interpolation.
 ## Install
 
 ```bash
-npx cascade add chart/heatmap
+npx cascivo add chart/heatmap
 ```
 
 ## Category
@@ -29,7 +29,7 @@ npx cascade add chart/heatmap
 ### Basic heatmap
 
 ```tsx
-import { Heatmap } from '@cascade-ui/charts'
+import { Heatmap } from '@cascivo/charts'
 
 const data = [
   {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},
@@ -40,17 +40,17 @@ const data = [
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-color-neutral-100`
+- `--cascivo-chart-1`
+- `--cascivo-color-neutral-100`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

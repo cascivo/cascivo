@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Editable } from '@cascade-ui/components/editable'
+import { Editable } from '@cascivo/components/editable'
 
 const meta: Meta<typeof Editable> = {
   title: 'Inputs/Editable',

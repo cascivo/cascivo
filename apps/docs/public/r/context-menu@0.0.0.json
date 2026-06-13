@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/context-menu/context-menu.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "menu", "context", "right-click"],
   "category": "overlay",
   "meta": {
@@ -24,21 +24,21 @@
     "sizes": [],
     "props": [],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-md",
-      "--cascade-shadow-md",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit",
-      "--cascade-color-bg-subtle"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-md",
+      "--cascivo-shadow-md",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit",
+      "--cascivo-color-bg-subtle"
     ],
     "accessibility": {
       "role": "menu",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "menu", "context", "right-click"],
     "intent": {
       "whenToUse": [
@@ -78,7 +78,7 @@
         {
           "area": "anchor position",
           "level": "strict",
-          "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+          "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
         }
       ]
     }

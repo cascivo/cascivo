@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'FeatureGrid',
@@ -43,17 +43,17 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-text-2xl',
-    '--cascade-text-base',
-    '--cascade-text-sm',
-    '--cascade-font-bold',
-    '--cascade-font-semibold',
-    '--cascade-text-secondary',
-    '--cascade-color-border',
-    '--cascade-surface-subtle',
-    '--cascade-space-*',
+    '--cascivo-text-2xl',
+    '--cascivo-text-base',
+    '--cascivo-text-sm',
+    '--cascivo-font-bold',
+    '--cascivo-font-semibold',
+    '--cascivo-text-secondary',
+    '--cascivo-color-border',
+    '--cascivo-surface-subtle',
+    '--cascivo-space-*',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Feature grid (text-only)',
@@ -70,7 +70,7 @@ export const meta: ComponentMeta = {
       description: 'Four-item text-only feature grid with section heading',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'features', 'grid'],
   intent: {
     whenToUse: [

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'OtpInput',
@@ -15,23 +15,23 @@ export const meta: ComponentMeta = {
     { name: 'type', type: "'numeric' | 'alphanumeric'", required: false, default: 'numeric' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'group',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'Backspace'],
   },
   examples: [
     { title: 'Basic', code: '<OtpInput value="" onValueChange={() => {}} />' },
     { title: '4-digit', code: '<OtpInput length={4} value="" onValueChange={() => {}} />' },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['form', 'otp', 'code', 'input', 'verification'],
   intent: {
     whenToUse: [
@@ -69,7 +69,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Slot styling must resolve to the listed --cascade-* tokens',
+        note: 'Slot styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'length and type',

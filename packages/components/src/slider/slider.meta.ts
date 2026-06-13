@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Slider',
@@ -17,22 +17,24 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-surface',
-    '--cascade-radius-full',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-surface',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'slider',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'],
+    apgPattern: 'slider',
+    forcedColors: true,
   },
   examples: [
     { title: 'Basic', code: '<Slider label="Volume" defaultValue={50} />' },
     { title: 'Stepped', code: '<Slider label="Rating" min={0} max={5} step={1} />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'range', 'input'],
   intent: {
     whenToUse: [
@@ -69,7 +71,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens',
+        note: 'Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens',
       },
       { area: 'min/max/step', level: 'flexible', note: 'Consumer-defined bounds and increment' },
     ],

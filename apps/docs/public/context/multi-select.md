@@ -46,14 +46,14 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-focus-ring`
-- `--cascade-motion-enter`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-focus-ring`
+- `--cascivo-motion-enter`
 
 ## Examples
 
@@ -74,6 +74,6 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 
 | Area        | Level    | Note                                                                                                           |
 | ----------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-\* tokens |
+| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-\* tokens |
 | labels      | flexible | placeholder, selected(count), search, and noResults are overridable                                            |
 | options     | flexible | Caller supplies the option list and may mark individual options disabled                                       |

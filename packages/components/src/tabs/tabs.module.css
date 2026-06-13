@@ -2,27 +2,27 @@
   .tabs {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-4);
+    gap: var(--cascivo-space-4);
   }
 
   .list {
     display: flex;
-    gap: var(--cascade-space-1);
-    border-block-end: 1px solid var(--cascade-color-border);
+    gap: var(--cascivo-space-1);
+    border-block-end: 1px solid var(--cascivo-color-border);
   }
 
   .trigger {
     position: relative;
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text-subtle);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text-subtle);
     background: transparent;
     border: none;
     cursor: pointer;
-    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+    transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &::after {
       content: '';
@@ -30,19 +30,19 @@
       inset-inline: 0;
       inset-block-end: -1px;
       block-size: 2px;
-      background-color: var(--cascade-color-accent);
+      background-color: var(--cascivo-color-accent);
       scale: 0 1;
-      transition: scale var(--cascade-duration-150) var(--cascade-ease-out);
+      transition: scale var(--cascivo-duration-150) var(--cascivo-ease-out);
     }
 
     &:hover:not(:disabled) {
-      color: var(--cascade-color-text);
+      color: var(--cascivo-color-text);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
-      border-radius: var(--cascade-radius-control);
+      box-shadow: var(--cascivo-focus-ring);
+      border-radius: var(--cascivo-radius-control);
     }
 
     &:disabled {
@@ -51,7 +51,7 @@
     }
 
     &[data-state='active'] {
-      color: var(--cascade-color-text);
+      color: var(--cascivo-color-text);
 
       &::after {
         scale: 1 1;
@@ -60,13 +60,28 @@
   }
 
   .content {
-    font-family: var(--cascade-font-sans);
-    color: var(--cascade-color-text);
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-text);
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
-      border-radius: var(--cascade-radius-control);
+      box-shadow: var(--cascivo-focus-ring);
+      border-radius: var(--cascivo-radius-control);
     }
+  }
+}
+
+@media (forced-colors: active) {
+  .list {
+    border-block-end: 1px solid ButtonText;
+  }
+
+  .trigger[data-state='active'] {
+    border-block-end: 2px solid Highlight;
+  }
+
+  .trigger:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

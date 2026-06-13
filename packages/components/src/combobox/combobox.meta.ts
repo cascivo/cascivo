@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Combobox',
@@ -24,26 +24,26 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-surface-overlay',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-text-subtle',
-    '--cascade-color-accent',
-    '--cascade-color-danger',
-    '--cascade-radius-input',
-    '--cascade-radius-md',
-    '--cascade-radius-sm',
-    '--cascade-shadow-lg',
-    '--cascade-motion-enter',
-    '--cascade-z-dropdown',
+    '--cascivo-color-surface',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-danger',
+    '--cascivo-radius-input',
+    '--cascivo-radius-md',
+    '--cascivo-radius-sm',
+    '--cascivo-shadow-lg',
+    '--cascivo-motion-enter',
+    '--cascivo-z-dropdown',
   ],
   accessibility: {
     role: 'combobox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Escape', 'Tab'],
   },
   examples: [
@@ -60,7 +60,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['select', 'combobox', 'dropdown', 'filter', 'search'],
   intent: {
     whenToUse: [
@@ -116,7 +116,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens',
+        note: 'Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens',
       },
     ],
   },

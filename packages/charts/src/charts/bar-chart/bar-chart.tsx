@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
@@ -7,6 +7,7 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface BarChartSeries<Datum> {
   id: string
@@ -28,12 +29,13 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   xTicks?: number
   yTicks?: number
   legend?: boolean
+  tooltip?: boolean
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function BarChart<Datum = { x: string; y: number }>({
   series,
@@ -48,6 +50,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   xTicks = 5,
   yTicks = 5,
   legend,
+  tooltip,
   className,
   plain,
 }: BarChartProps<Datum>) {
@@ -91,6 +94,62 @@ export function BarChart<Datum = { x: string; y: number }>({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (!tooltip || !hasData) return undefined
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+    const isVertical = orientation === 'vertical'
+    const catScale = bandScale(categories, isVertical ? [0, innerW] : [0, innerH], 0.2)
+    const valScale = linearScale([yMin, yMax], isVertical ? [innerH, 0] : [0, innerW])
+    const visibleSeries = series.filter((s) => !hidden.value.has(s.id))
+
+    let stackedOffsets: [number, number][][] = []
+    if (mode === 'stacked') {
+      const values = series.map((s) => s.data.map((d) => y(d)))
+      stackedOffsets = stackSeries(values)
+    }
+
+    const points: ChartPoint[] = visibleSeries.flatMap((s) => {
+      const seriesIdx = series.indexOf(s)
+      const subBandW =
+        mode === 'grouped' ? catScale.bandwidth / visibleSeries.length : catScale.bandwidth
+      return s.data.map((d, di) => {
+        const catPos = catScale.map(x(d)) ?? 0
+        let val: number
+        let baseVal: number
+        if (mode === 'stacked' && stackedOffsets[seriesIdx]) {
+          const offset = stackedOffsets[seriesIdx]![di]!
+          val = offset[1]
+          baseVal = offset[0]
+        } else {
+          val = y(d)
+          baseVal = yMin
+        }
+        const siInVisible = visibleSeries.indexOf(s)
+        const barStart = catPos + (mode === 'grouped' ? siInVisible * subBandW : 0)
+        const barCenter = barStart + subBandW / 2
+        const valStart = Math.min(valScale.map(val), valScale.map(baseVal))
+        const valEnd = Math.max(valScale.map(val), valScale.map(baseVal))
+        const valMid = (valStart + valEnd) / 2
+        return {
+          id: `${s.id}-${di}`,
+          cx: margins.left + (isVertical ? barCenter : valMid),
+          cy: margins.top + (isVertical ? valMid : barCenter),
+          label: x(d),
+          value: y(d),
+          seriesId: s.id,
+        }
+      })
+    })
+    return { points }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <ChartFrame
@@ -102,6 +161,7 @@ export function BarChart<Datum = { x: string; y: number }>({
         className={className}
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
+        tooltip={tooltip && hasData ? buildTooltip : undefined}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

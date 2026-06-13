@@ -1,4 +1,4 @@
-// Type shims for cascade components — avoids cross-package TSC boundary issues.
+// Type shims for cascivo components — avoids cross-package TSC boundary issues.
 // Vite resolves the actual source at build time via the package exports map.
 
 declare module '*.module.css' {
@@ -6,7 +6,7 @@ declare module '*.module.css' {
   export default classes
 }
 
-declare module '@cascade-ui/components/button' {
+declare module '@cascivo/components/button' {
   import type { ComponentChildren } from 'preact'
   export interface ButtonProps {
     variant?: 'primary' | 'secondary' | 'ghost' | 'destructive'
@@ -21,7 +21,7 @@ declare module '@cascade-ui/components/button' {
   export function Button(props: ButtonProps): JSX.Element
 }
 
-declare module '@cascade-ui/components/input' {
+declare module '@cascivo/components/input' {
   export interface InputProps {
     label?: string
     hint?: string
@@ -41,7 +41,7 @@ declare module '@cascade-ui/components/input' {
   export function Input(props: InputProps): JSX.Element
 }
 
-declare module '@cascade-ui/components/card' {
+declare module '@cascivo/components/card' {
   import type { ComponentChildren } from 'preact'
   export interface CardProps {
     variant?: 'default' | 'outlined' | 'elevated'
@@ -77,7 +77,7 @@ declare module '@cascade-ui/components/card' {
   export function CardFooter(props: CardFooterProps): JSX.Element
 }
 
-declare module '@cascade-ui/components/badge' {
+declare module '@cascivo/components/badge' {
   import type { ComponentChildren } from 'preact'
   export interface BadgeProps {
     variant?: 'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'
@@ -89,7 +89,7 @@ declare module '@cascade-ui/components/badge' {
   export function Badge(props: BadgeProps): JSX.Element
 }
 
-declare module '@cascade-ui/components/modal' {
+declare module '@cascivo/components/modal' {
   import type { ComponentChildren } from 'preact'
   export interface ModalProps {
     open?: boolean

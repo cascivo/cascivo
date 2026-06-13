@@ -5,7 +5,7 @@ Scatter plot with variable point radius, multi-series, and hover tooltip.
 ## Install
 
 ```bash
-npx cascade add chart/scatter-chart
+npx cascivo add chart/scatter-chart
 ```
 
 ## Category
@@ -25,6 +25,7 @@ npx cascade add chart/scatter-chart
 | `xTicks`      | `number`               | no                             | `5`     | —                                                                     |
 | `yTicks`      | `number`               | no                             | `5`     | —                                                                     |
 | `legend`      | `boolean`              | no                             | —       | —                                                                     |
+| `tooltip`     | `boolean`              | no                             | —       | Enable hover/keyboard tooltip                                         |
 | `className`   | `string`               | no                             | —       | —                                                                     |
 | `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -33,7 +34,7 @@ npx cascade add chart/scatter-chart
 ### Basic scatter chart
 
 ```tsx
-import { ScatterChart } from '@cascade-ui/charts'
+import { ScatterChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 <ScatterChart series={series} title="Scatter" />
@@ -41,23 +42,24 @@ const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

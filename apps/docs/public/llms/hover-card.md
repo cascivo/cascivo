@@ -5,7 +5,7 @@ Hover-triggered popover with configurable open/close delay
 ## Install
 
 ```bash
-npx cascade add hover-card
+npx cascivo add hover-card
 ```
 
 ## Category
@@ -23,22 +23,22 @@ _No props._
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `complementary`
 - **Keyboard:** Tab, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

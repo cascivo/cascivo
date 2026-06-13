@@ -6,7 +6,7 @@ import {
   useSignal,
   useSignalEffect,
   useSignals,
-} from '@cascade-ui/core'
+} from '@cascivo/core'
 import {
   cloneElement,
   useRef,

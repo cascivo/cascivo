@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CheckboxCard } from '@cascade-ui/components/checkbox-card'
+import { CheckboxCard } from '@cascivo/components/checkbox-card'
 
 const meta: Meta<typeof CheckboxCard> = {
   title: 'Inputs/CheckboxCard',

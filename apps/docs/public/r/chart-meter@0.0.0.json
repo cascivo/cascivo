@@ -5,10 +5,10 @@
   "description": "Progress meter in bar or gauge variant with threshold coloring.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Meter",
     "description": "Progress meter in bar or gauge variant with threshold coloring.",
@@ -63,19 +63,19 @@
         "required": false
       }
     ],
-    "tokens": ["--cascade-chart-1"],
+    "tokens": ["--cascivo-chart-1"],
     "accessibility": {
       "role": "meter",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
       {
         "title": "Basic meter",
-        "code": "import { Meter } from '@cascade-ui/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
+        "code": "import { Meter } from '@cascivo/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
     "intent": {
       "whenToUse": [

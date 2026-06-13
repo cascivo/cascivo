@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/shell-header/shell-header.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
   "category": "navigation",
   "meta": {
@@ -74,27 +74,27 @@
       }
     ],
     "tokens": [
-      "--cascade-shell-header-block-size",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-color-accent",
-      "--cascade-radius-control"
+      "--cascivo-shell-header-block-size",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-radius-control"
     ],
     "accessibility": {
       "role": "banner",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
     },
     "examples": [
       {
         "title": "Console header",
-        "code": "<ShellHeader\n  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+        "code": "<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
         "description": "Brand with prefix, dropdown nav, global icon action"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
     "intent": {
       "whenToUse": [
@@ -140,7 +140,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+          "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
         }
       ]
     }

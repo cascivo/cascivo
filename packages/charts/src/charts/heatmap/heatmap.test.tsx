@@ -28,6 +28,18 @@ describe('Heatmap', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<Heatmap data={data} title="Heatmap" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('has no ad-hoc tooltip signal text element in plain mode', () => {
+    const { container } = render(<Heatmap data={data} title="Heatmap" plain />)
+    // Old implementation rendered a tooltip <text> element; plain mode has no axes so no text at all
+    const textEls = container.querySelectorAll('text')
+    expect(textEls.length).toBe(0)
+  })
+
   describe('plain mode', () => {
     it('renders no Axis elements', () => {
       const { container } = render(<Heatmap data={data} title="Plain" plain />)

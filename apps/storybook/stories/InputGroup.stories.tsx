@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { InputGroup, ButtonGroup, InputGroupAddon } from '@cascade-ui/components/input-group'
-import { Input } from '@cascade-ui/components/input'
-import { Button } from '@cascade-ui/components/button'
+import { InputGroup, ButtonGroup, InputGroupAddon } from '@cascivo/components/input-group'
+import { Input } from '@cascivo/components/input'
+import { Button } from '@cascivo/components/button'
 
 const meta: Meta<typeof InputGroup> = {
   title: 'Inputs/InputGroup',

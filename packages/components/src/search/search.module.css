@@ -7,20 +7,20 @@
 
     &[data-size='sm'] {
       --_search-height: 2rem;
-      --_search-font: var(--cascade-text-sm);
-      --_search-px: var(--cascade-space-3);
+      --_search-font: var(--cascivo-text-sm);
+      --_search-px: var(--cascivo-space-3);
     }
 
     &[data-size='md'] {
       --_search-height: 2.5rem;
-      --_search-font: var(--cascade-text-sm);
-      --_search-px: var(--cascade-space-4);
+      --_search-font: var(--cascivo-text-sm);
+      --_search-px: var(--cascivo-space-4);
     }
 
     &[data-size='lg'] {
       --_search-height: 3rem;
-      --_search-font: var(--cascade-text-base);
-      --_search-px: var(--cascade-space-4);
+      --_search-font: var(--cascivo-text-base);
+      --_search-px: var(--cascivo-space-4);
     }
   }
 
@@ -40,10 +40,10 @@
 
   .icon {
     position: absolute;
-    inset-inline-start: var(--_search-px, var(--cascade-space-4));
+    inset-inline-start: var(--_search-px, var(--cascivo-space-4));
     display: inline-flex;
     align-items: center;
-    color: var(--cascade-color-text-muted);
+    color: var(--cascivo-color-text-muted);
     pointer-events: none;
   }
 
@@ -51,18 +51,18 @@
     inline-size: 100%;
     block-size: var(--_search-height, 2.5rem);
     padding-inline-start: calc(
-      var(--_search-px, var(--cascade-space-4)) + 1rem + var(--cascade-space-2)
+      var(--_search-px, var(--cascivo-space-4)) + 1rem + var(--cascivo-space-2)
     );
-    padding-inline-end: calc(var(--_search-px, var(--cascade-space-4)) + 1.5rem);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--_search-font, var(--cascade-text-sm));
-    color: var(--cascade-color-text);
-    background-color: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-field);
+    padding-inline-end: calc(var(--_search-px, var(--cascivo-space-4)) + 1.5rem);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--_search-font, var(--cascivo-text-sm));
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
     transition:
-      border-color var(--cascade-duration-150) var(--cascade-ease-out),
-      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
     outline: none;
 
     /* Suppress the native WebKit search affordances; we render our own. */
@@ -74,53 +74,53 @@
     }
 
     &::placeholder {
-      color: var(--cascade-color-text-muted);
+      color: var(--cascivo-color-text-muted);
     }
 
     &:hover:not(:disabled):not(:focus) {
-      border-color: var(--cascade-color-border-strong);
+      border-color: var(--cascivo-color-border-strong);
     }
 
     &:focus {
-      border-color: var(--cascade-color-accent);
-      box-shadow: var(--cascade-focus-ring);
+      border-color: var(--cascivo-color-accent);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      background-color: var(--cascade-color-bg-subtle);
+      background-color: var(--cascivo-color-bg-subtle);
     }
   }
 
   .clear {
     position: absolute;
-    inset-inline-end: var(--cascade-space-2);
+    inset-inline-end: var(--cascivo-space-2);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     inline-size: 1.5rem;
     block-size: 1.5rem;
     padding: 0;
-    font-size: var(--cascade-text-sm);
-    line-height: var(--cascade-leading-none);
-    color: var(--cascade-color-text-muted);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-none);
+    color: var(--cascivo-color-text-muted);
     background-color: transparent;
     border: none;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
     cursor: pointer;
     transition:
-      background-color var(--cascade-duration-150) var(--cascade-ease-out),
-      color var(--cascade-duration-150) var(--cascade-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover:not(:disabled) {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &:disabled {

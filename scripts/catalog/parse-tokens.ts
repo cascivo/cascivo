@@ -1,7 +1,7 @@
 /**
  * Token catalog parser.
  *
- * Extracts all `--cascade-*` CSS custom properties from the token sources,
+ * Extracts all `--cascivo-*` CSS custom properties from the token sources,
  * classifies each by layer (primitive | semantic | component), resolves
  * var() chains using the combined light-theme resolution map, and returns
  * a flat array of TokenEntry records.
@@ -57,7 +57,7 @@ const PRIMITIVE_SCALE_GROUPS = new Set([
 ])
 
 // Named size suffixes that count as primitive scale steps.
-// Does NOT include "base" (that's a semantic knob, e.g. --cascade-radius-base).
+// Does NOT include "base" (that's a semantic knob, e.g. --cascivo-radius-base).
 const NAMED_SIZES = new Set(['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full', 'none'])
 
 // Component-specific word segments that classify a token as component-layer.
@@ -75,37 +75,37 @@ const COMPONENT_SEGMENTS = new Set([
 ])
 
 /**
- * Extract all `--cascade-*: <value>;` declarations from a CSS string.
+ * Extract all `--cascivo-*: <value>;` declarations from a CSS string.
  * Returns a Map of property name → raw value (trimmed, without trailing ;).
  * Handles multi-line values (e.g. font stacks, color-mix).
  */
 function extractDeclarations(css: string): Map<string, string> {
   const result = new Map<string, string>()
-  // Match --cascade-<name>: followed by any value up to the next ; or end of block.
+  // Match --cascivo-<name>: followed by any value up to the next ; or end of block.
   // We use a single-pass regex that captures multi-line values.
-  const re = /(--cascade-[\w-]+)\s*:\s*((?:[^;{}]|\n)*?);/g
+  const re = /(--cascivo-[\w-]+)\s*:\s*((?:[^;{}]|\n)*?);/g
   let m: RegExpExecArray | null
   while ((m = re.exec(css)) !== null) {
     const name = m[1]!.trim()
     const value = m[2]!.trim().replace(/\s+/g, ' ')
-    if (name.startsWith('--cascade-')) {
+    if (name.startsWith('--cascivo-')) {
       result.set(name, value)
     }
   }
   return result
 }
 
-/** Extract the group: segment between `--cascade-` and the first subsequent `-`. */
+/** Extract the group: segment between `--cascivo-` and the first subsequent `-`. */
 function extractGroup(name: string): string {
-  // name is like --cascade-gray-500 or --cascade-color-accent
-  const body = name.slice('--cascade-'.length) // "gray-500"
+  // name is like --cascivo-gray-500 or --cascivo-color-accent
+  const body = name.slice('--cascivo-'.length) // "gray-500"
   const dash = body.indexOf('-')
   return dash === -1 ? body : body.slice(0, dash)
 }
 
 /** Classify a token name into its layer. */
 function classifyLayer(name: string): 'primitive' | 'semantic' | 'component' {
-  const body = name.slice('--cascade-'.length) // e.g. "gray-500", "color-accent", "ring-width"
+  const body = name.slice('--cascivo-'.length) // e.g. "gray-500", "color-accent", "ring-width"
   const segments = body.split('-')
 
   // Component check: any segment matches a component identifier.
@@ -121,9 +121,9 @@ function classifyLayer(name: string): 'primitive' | 'semantic' | 'component' {
     if (/^\d+$/.test(last)) return 'primitive'
     // Named size suffix
     if (NAMED_SIZES.has(last)) return 'primitive'
-    // Font-stack tokens: --cascade-font-sans, --cascade-font-mono
+    // Font-stack tokens: --cascivo-font-sans, --cascivo-font-mono
     if (group === 'font' && (last === 'sans' || last === 'mono')) return 'primitive'
-    // Single-segment ease tokens: --cascade-ease-in, --cascade-ease-out, --cascade-ease-in-out
+    // Single-segment ease tokens: --cascivo-ease-in, --cascivo-ease-out, --cascivo-ease-in-out
     if (group === 'ease') return 'primitive'
   }
 
@@ -146,7 +146,7 @@ function resolveValue(
   if (rawValue.startsWith('calc(')) return { resolved: rawValue, usedTheme: false }
 
   // Simple var() reference (no fallback, no nested vars at top level).
-  const simpleVar = /^var\((--cascade-[\w-]+)\)$/.exec(rawValue)
+  const simpleVar = /^var\((--cascivo-[\w-]+)\)$/.exec(rawValue)
   if (simpleVar) {
     const ref = simpleVar[1]!
     const refValue = combinedMap.get(ref)

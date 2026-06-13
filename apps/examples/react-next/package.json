@@ -1,8 +1,8 @@
 {
-  "name": "@cascade-ui/example-react-next",
+  "name": "@cascivo/example-react-next",
   "version": "0.0.0",
   "private": true,
-  "description": "Next.js App Router example using cascade",
+  "description": "Next.js App Router example using cascivo",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -10,9 +10,9 @@
     "test": "echo 'next example: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

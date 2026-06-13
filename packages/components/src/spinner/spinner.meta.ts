@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Spinner',
@@ -17,17 +17,18 @@ export const meta: ComponentMeta = {
       description: 'Accessible label announced by screen readers',
     },
   ],
-  tokens: ['--cascade-radius-full'],
+  tokens: ['--cascivo-radius-full'],
   accessibility: {
     role: 'status',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
+    reducedMotion: false,
   },
   examples: [
     { title: 'Default', code: '<Spinner />' },
     { title: 'Large', code: '<Spinner size="lg" />' },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['loading', 'progress', 'feedback'],
   intent: {
     whenToUse: [
@@ -69,7 +70,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Radius must resolve to --cascade-radius-full',
+        note: 'Radius must resolve to --cascivo-radius-full',
       },
     ],
   },

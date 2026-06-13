@@ -35,7 +35,7 @@ Every v2 workstream serves that sentence: more components (parity), instant layo
 - [ ] `registry.json` file URLs point at `urbanisierung/native-ui`; the repo is `urbanisierung/cascade-ui`. Fix `REGISTRY_BASE_URL` default in `scripts/registry/generate.ts` and regenerate.
 - [ ] Land `kbd` (status: review) and clear the v1 backlog.
 - [ ] `skills/` is empty except README — the four planned skills (`cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend`) are implemented as part of Phase 6.
-- [ ] Add `packages/react` to CLAUDE.md monorepo structure docs (it exists but is undocumented). Every new component must also be exported from `@cascade-ui/react`.
+- [ ] Add `packages/react` to CLAUDE.md monorepo structure docs (it exists but is undocumented). Every new component must also be exported from `@cascivo/react`.
 
 ---
 
@@ -45,10 +45,10 @@ Every v2 workstream serves that sentence: more components (parity), instant layo
 
 | Package            | npm name                            | Distribution       | Purpose                                                                          |
 | ------------------ | ----------------------------------- | ------------------ | -------------------------------------------------------------------------------- |
-| `packages/i18n`    | `@cascade-ui/i18n`                  | npm                | Signal-driven locale store, typed message catalogs, `Intl`-based formatting      |
-| `packages/storage` | `@cascade-ui/storage`               | npm                | Persisted signals over localStorage/IndexedDB, SSR-safe                          |
-| `packages/charts`  | `@cascade-ui/charts`                | npm                | Chart components, built from scratch (scales/axes/shapes included)               |
-| `packages/render`  | `@cascade-ui/render`                | npm                | Runtime JSON → UI renderer                                                       |
+| `packages/i18n`    | `@cascivo/i18n`                     | npm                | Signal-driven locale store, typed message catalogs, `Intl`-based formatting      |
+| `packages/storage` | `@cascivo/storage`                  | npm                | Persisted signals over localStorage/IndexedDB, SSR-safe                          |
+| `packages/charts`  | `@cascivo/charts`                   | npm                | Chart components, built from scratch (scales/axes/shapes included)               |
+| `packages/render`  | `@cascivo/render`                   | npm                | Runtime JSON → UI renderer                                                       |
 | `packages/layouts` | registry source (like `components`) | copy-paste via CLI | App shells and page layouts — owned code, because layouts get customized heavily |
 
 Charts, i18n, storage, and render are **published packages**, not copy-paste: they have real internal complexity, need bugfix delivery via semver, and users don't customize their internals. Components and layouts stay copy-paste (owned code).
@@ -62,8 +62,8 @@ Carbon's "compose a DataTable from 12 subcomponents" approach is explicitly reje
 1. All v1 component authoring rules hold (signals not hooks, CSS-first states, manifests, tests).
 2. Every new component goes through the dark factory backlog → PR → review pipeline.
 3. Every new package/feature updates: `registry.json` (if registry content), MCP tools, docs app, storybook stories, and its README — **in the same PR** (enforced by the drift gate, Phase 6).
-4. Components that render text (Pagination, DataTable empty states, FileUploader, DatePicker…) take their strings from `@cascade-ui/i18n` once it exists — never hardcoded English.
-5. **Motion is CSS-only and mandatory.** Every component with an enter/exit or open/close (Modal, Toast, Dropdown, Tooltip, Accordion, SideNav, CommandMenu…) ships its animation in its `.module.css` via `@starting-style` + `transition-behavior: allow-discrete`, using only `--cascade-duration-*` / `--cascade-ease-*` tokens, animating only compositor-friendly properties (`opacity`, `transform`/`translate`/`scale`). No JS animation, no animation library, no `requestAnimationFrame`. All motion collapses under `prefers-reduced-motion: reduce`.
+4. Components that render text (Pagination, DataTable empty states, FileUploader, DatePicker…) take their strings from `@cascivo/i18n` once it exists — never hardcoded English.
+5. **Motion is CSS-only and mandatory.** Every component with an enter/exit or open/close (Modal, Toast, Dropdown, Tooltip, Accordion, SideNav, CommandMenu…) ships its animation in its `.module.css` via `@starting-style` + `transition-behavior: allow-discrete`, using only `--cascivo-duration-*` / `--cascivo-ease-*` tokens, animating only compositor-friendly properties (`opacity`, `transform`/`translate`/`scale`). No JS animation, no animation library, no `requestAnimationFrame`. All motion collapses under `prefers-reduced-motion: reduce`.
 6. **Performance budgets are part of the spec.** Interactions must not trigger React re-renders (signals patch the DOM); large collections render via CSS containment before any JS windowing is considered. Budgets are enforced by CI gates (Milestone 6.5), not by code review vigilance.
 
 ---
@@ -75,9 +75,9 @@ Carbon's "compose a DataTable from 12 subcomponents" approach is explicitly reje
 
 ### Milestone 1.0 — Motion system & v1 retrofit
 
-State of play: duration (`--cascade-duration-75..300`) and easing (`--cascade-ease-in/out/in-out`) tokens exist, but only Dropdown and Tooltip use `@starting-style`; Modal and Toast barely animate; only Spinner handles `prefers-reduced-motion`. Fix this before the component count triples.
+State of play: duration (`--cascivo-duration-75..300`) and easing (`--cascivo-ease-in/out/in-out`) tokens exist, but only Dropdown and Tooltip use `@starting-style`; Modal and Toast barely animate; only Spinner handles `prefers-reduced-motion`. Fix this before the component count triples.
 
-- [ ] **Semantic motion tokens** in `@cascade-ui/tokens`: `--cascade-motion-enter` / `--cascade-motion-exit` / `--cascade-motion-emphasis` (duration+easing pairs composed from the existing primitives), so components reference intent, not raw values — themes can later tune motion character the same way they tune color.
+- [ ] **Semantic motion tokens** in `@cascivo/tokens`: `--cascivo-motion-enter` / `--cascivo-motion-exit` / `--cascivo-motion-emphasis` (duration+easing pairs composed from the existing primitives), so components reference intent, not raw values — themes can later tune motion character the same way they tune color.
 - [ ] **Retrofit Modal**: `@starting-style` + `transition-behavior: allow-discrete` on `<dialog>` (scale/fade enter, fade exit) and `::backdrop` fade — the native-dialog showcase animation.
 - [ ] **Retrofit Toast**: slide-in/slide-out via `@starting-style`; the existing `dismissing` machine state only toggles a `data-state`, CSS does the rest.
 - [ ] **Audit Dropdown, Tooltip, Accordion, Tabs**: consistent durations/easings from semantic tokens; Accordion's `grid-template-rows` animation verified.
@@ -139,7 +139,7 @@ The single most important v2 component; it sets the DX standard.
 
 ### Milestone 2.2 — App shells
 
-- [ ] **AppShell** — header + sidenav + content + optional right rail; collapsible, responsive, persists sidebar state via `@cascade-ui/storage` once available.
+- [ ] **AppShell** — header + sidenav + content + optional right rail; collapsible, responsive, persists sidebar state via `@cascivo/storage` once available.
 - [ ] **DashboardLayout** — AppShell + widget grid area with named slots (`stats`, `main`, `aside`).
 - [ ] **SettingsLayout** — side menu + content panel pattern.
 - [ ] **AuthLayout** — centered card layout for login/signup.
@@ -157,7 +157,7 @@ The single most important v2 component; it sets the DX standard.
 
 These two ship early because later phases consume them (DatePicker strings, theme persistence, chart locale formatting, JSON renderer i18n refs).
 
-### Milestone 3.1 — `@cascade-ui/i18n`
+### Milestone 3.1 — `@cascivo/i18n`
 
 Scope decision: **typed catalogs + native `Intl`** — no ICU parser, no extraction CLI, no competing with i18next.
 
@@ -170,7 +170,7 @@ Scope decision: **typed catalogs + native `Intl`** — no ICU parser, no extract
 - [ ] SSR-safe (no window access at module scope), RSC-compatible (`"use client"` boundary documented).
 - [ ] Retrofit task: sweep all existing components for hardcoded strings → move to the built-in catalog.
 
-### Milestone 3.2 — `@cascade-ui/storage`
+### Milestone 3.2 — `@cascivo/storage`
 
 - [ ] **Persisted signals**: `const theme = persistedSignal('cascade.theme', 'light')` — a normal signal, hydrated from storage, written through on change. localStorage driver default.
 - [ ] **IndexedDB driver** for structured/large data: same API, async hydration with a `ready` signal; small typed wrapper over `indexedDB` (no `idb` dependency — keep it from scratch like charts).
@@ -194,8 +194,8 @@ No rendering yet — pure, heavily-tested math and infrastructure:
 - [ ] **Scales**: linear, log, time, band/ordinal — domain/range mapping, nice-ticks algorithms (Wilkinson/extended for linear, calendar-aware for time). Property-based tests (fast-check as devDep) for tick correctness.
 - [ ] **Shape generators**: line/area path builders (with monotone + linear curve interpolation), arc generator (pie/donut), stacking layout.
 - [ ] **Signal-driven chart core**: data, dimensions, and hover state are signals; SVG attributes patch without React re-render. `ResizeObserver`-driven responsive sizing.
-- [ ] **Shared chrome**: Axis, Grid lines, Legend (interactive: click to toggle series), Tooltip (shared crosshair), color ramps from theme tokens (`--cascade-chart-1..n` semantic tokens added to all three themes).
-- [ ] **A11y foundation**: every chart renders an off-screen data table fallback, `role="img"` + generated description, keyboard point navigation. Locale-aware tick/tooltip formatting via `@cascade-ui/i18n`.
+- [ ] **Shared chrome**: Axis, Grid lines, Legend (interactive: click to toggle series), Tooltip (shared crosshair), color ramps from theme tokens (`--cascivo-chart-1..n` semantic tokens added to all three themes).
+- [ ] **A11y foundation**: every chart renders an off-screen data table fallback, `role="img"` + generated description, keyboard point navigation. Locale-aware tick/tooltip formatting via `@cascivo/i18n`.
 
 ### Milestone 4.2 — Chart wave 1 (the 80% set)
 
@@ -216,7 +216,7 @@ No rendering yet — pure, heavily-tested math and infrastructure:
 
 **Goal:** a JSON document in, a working view (or app) out. Primary customers: AI agents and rapid prototyping. Strategy: **runtime renderer first, codegen second**, sharing one schema.
 
-### Milestone 5.1 — The schema (`@cascade-ui/render`)
+### Milestone 5.1 — The schema (`@cascivo/render`)
 
 - [ ] Versioned view schema (TypeScript types + generated JSON Schema artifact published with the package so any tool/LLM can validate):
 
@@ -240,12 +240,12 @@ No rendering yet — pure, heavily-tested math and infrastructure:
 
 - [ ] Component allowlist generated **from `registry.json`** — the schema's `component` enum and per-component prop validation derive from manifests automatically. No hand-maintained mapping.
 - [ ] Data binding (`$data.*`) and action references (`$actions.*`) resolve against a host-provided context object — JSON stays serializable, logic stays in code.
-- [ ] i18n refs in config: `{ "$t": "users.title" }` resolves through `@cascade-ui/i18n`.
+- [ ] i18n refs in config: `{ "$t": "users.title" }` resolves through `@cascivo/i18n`.
 - [ ] Strict validation with actionable errors ("`DataTable.pagination.pageSize` must be a number, got string at view.regions.main[0]").
 
 ### Milestone 5.2 — Runtime renderer
 
-- [ ] `<CascadeView config={json} data={...} actions={...} />` — renders the tree using the prebuilt `@cascade-ui/react` components.
+- [ ] `<CascadeView config={json} data={...} actions={...} />` — renders the tree using the prebuilt `@cascivo/react` components.
 - [ ] Config is a signal: patching JSON updates the view in place (live-preview loop for AI/prototyping).
 - [ ] MCP tools: `validate_view(config)` and `scaffold_view(description) → config` (replaces/upgrades the v1 `scaffold_page` JSX-string tool).
 - [ ] Demo app: `apps/examples/json-playground` — textarea on the left, live view on the right.
@@ -253,7 +253,7 @@ No rendering yet — pure, heavily-tested math and infrastructure:
 ### Milestone 5.3 — Codegen (`cascade generate`)
 
 - [ ] `npx cascade generate view.json --out src/pages/users.tsx` — emits clean, idiomatic TSX (the same code a human following the docs would write), using copy-paste components, formatted with the project formatter.
-- [ ] Generated code has zero dependency on `@cascade-ui/render` — the graduation path from prototype to owned code.
+- [ ] Generated code has zero dependency on `@cascivo/render` — the graduation path from prototype to owned code.
 - [ ] Round-trip test in CI: render(config) and render(generated TSX) produce equivalent DOM.
 
 **Exit criteria:** an agent with only the MCP server can produce a validated JSON config and the user sees a live dashboard without writing a line of TSX.
@@ -333,7 +333,7 @@ Phase 6.3 skills / 6.4 update story ──→ after Phase 2 (need layouts/blocks
 ## Open Questions (decide before the relevant phase starts)
 
 1. **Charts engine purity** — fully from scratch is decided; if tick/curve edge cases burn more than ~2 self-heal cycles per chart in the factory, revisit vendoring (not depending on) specific d3 algorithms with attribution.
-2. **Layouts distribution** — proposed copy-paste; confirm vs. publishing `@cascade-ui/layouts` to npm. (Copy-paste recommended: layouts are the most-customized code in any app.)
+2. **Layouts distribution** — proposed copy-paste; confirm vs. publishing `@cascivo/layouts` to npm. (Copy-paste recommended: layouts are the most-customized code in any app.)
 3. **JSON schema hosting** — `cascade-ui.dev/schemas/...` implies a domain + static hosting; needed before Milestone 5.1 publishes `$schema` URLs.
 4. **First-party locales** — `en` + `de` proposed for built-in component strings; which others before v2.0?
 5. **Live docs editor** — from-scratch vs. embed; defer to Milestone 6.2 implementation spike.

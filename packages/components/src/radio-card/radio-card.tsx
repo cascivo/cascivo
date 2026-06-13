@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import { createContext, type InputHTMLAttributes, type ReactNode } from 'react'
 import styles from './radio-card.module.css'
 

@@ -2,7 +2,7 @@ import type { RegistryNamespaceConfig } from './config.js'
 import { fetchJson } from './http.js'
 import type { FetchFn } from './http.js'
 
-export const DIRECTORY_URL = 'https://cascade-ui.dev/r/registries.json'
+export const DIRECTORY_URL = 'https://cascivo.com/r/registries.json'
 
 interface DirectoryEntry {
   namespace: string
@@ -32,7 +32,7 @@ export async function resolveFromDirectory(
     return entry.registryUrl
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
-    console.warn(`Could not reach cascade-ui.dev directory: ${msg}`)
+    console.warn(`Could not reach cascivo.com directory: ${msg}`)
     return null
   }
 }

@@ -44,10 +44,10 @@ The floating element uses role="tooltip" and is linked to the trigger via aria-d
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-sm`
-- `--cascade-z-tooltip`
+- `--cascivo-color-text`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-sm`
+- `--cascivo-z-tooltip`
 
 ## Examples
 

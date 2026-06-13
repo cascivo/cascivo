@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SkipNav',
@@ -30,15 +30,15 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-text',
-    '--cascade-radius-control',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-radius-control',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'link',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter'],
   },
   examples: [
@@ -52,7 +52,7 @@ export const meta: ComponentMeta = {
       code: '<><SkipNavLink targetId="main-content" /><SkipNavTarget id="main-content" /></>',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['accessibility', 'skip-link', 'keyboard', 'navigation'],
   intent: {
     whenToUse: [

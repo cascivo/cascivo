@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, useSignals, cn } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals, cn } from '@cascivo/core'
 import { useRef } from 'react'
 import type { HTMLAttributes } from 'react'
 import styles from './editable.module.css'

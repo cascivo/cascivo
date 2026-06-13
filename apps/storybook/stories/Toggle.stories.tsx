@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Toggle } from '@cascade-ui/components/toggle'
+import { Toggle } from '@cascivo/components/toggle'
 
 const meta: Meta<typeof Toggle> = {
   title: 'Inputs/Toggle',

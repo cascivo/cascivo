@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Button',
@@ -20,25 +20,28 @@ export const meta: ComponentMeta = {
     { name: 'onClick', type: 'React.MouseEventHandler<HTMLButtonElement>', required: false },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-hover',
-    '--cascade-color-accent-active',
-    '--cascade-color-text-on-accent',
-    '--cascade-color-destructive',
-    '--cascade-radius-button',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-hover',
+    '--cascivo-color-accent-active',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-button',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
+    apgPattern: 'button',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'Primary', code: '<Button>Click me</Button>' },
     { title: 'Loading', code: '<Button loading>Saving…</Button>' },
     { title: 'Destructive', code: '<Button variant="destructive">Delete</Button>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['action', 'form', 'interactive'],
   intent: {
     whenToUse: [
@@ -74,7 +77,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual props must resolve to --cascade-button-* / semantic tokens',
+        note: 'Visual props must resolve to --cascivo-button-* / semantic tokens',
       },
       { area: 'label copy', level: 'flexible', note: 'Free, within tone guidance' },
     ],

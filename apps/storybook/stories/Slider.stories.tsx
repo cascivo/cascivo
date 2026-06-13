@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Slider } from '@cascade-ui/components/slider'
+import { Slider } from '@cascivo/components/slider'
 
 const meta: Meta<typeof Slider> = {
   title: 'Inputs/Slider',

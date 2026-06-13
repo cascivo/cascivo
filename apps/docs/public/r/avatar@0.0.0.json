@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar/avatar.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar/avatar.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["user", "profile", "image"],
   "category": "display",
   "meta": {
@@ -52,14 +52,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent-subtle",
-      "--cascade-color-success",
-      "--cascade-color-destructive",
-      "--cascade-radius-full"
+      "--cascivo-color-accent-subtle",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive",
+      "--cascivo-radius-full"
     ],
     "accessibility": {
       "role": "img",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -76,7 +76,7 @@
         "code": "<Avatar fallback=\"JD\" status=\"online\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["user", "profile", "image"],
     "intent": {
       "whenToUse": [
@@ -112,7 +112,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Fallback and status colors must resolve to --cascade-* semantic tokens"
+          "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
         }
       ]
     }

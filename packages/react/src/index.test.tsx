@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Badge, Button, Kbd, Spinner } from './index'
 
-describe('@cascade-ui/react', () => {
+describe('@cascivo/react', () => {
   it('renders Button from the bundled entry', () => {
     render(<Button>Click me</Button>)
     expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument()

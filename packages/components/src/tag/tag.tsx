@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes } from 'react'
 import styles from './tag.module.css'
 

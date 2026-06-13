@@ -1,4 +1,5 @@
 'use client'
+// Tooltip: meter displays a single value, not a discrete datum set — no data-point traversal.
 import { arcPath } from '../../engine/shape'
 
 export interface MeterThresholds {
@@ -18,11 +19,11 @@ export interface MeterProps {
 }
 
 function fillColor(value: number, min: number, max: number, thresholds?: MeterThresholds): string {
-  if (!thresholds) return 'var(--cascade-chart-1)'
+  if (!thresholds) return 'var(--cascivo-chart-1)'
   const { warning, critical } = thresholds
-  if (critical != null && value >= critical) return 'var(--cascade-color-destructive)'
-  if (warning != null && value >= warning) return 'var(--cascade-color-warning)'
-  return 'var(--cascade-color-success)'
+  if (critical != null && value >= critical) return 'var(--cascivo-color-destructive)'
+  if (warning != null && value >= warning) return 'var(--cascivo-color-warning)'
+  return 'var(--cascivo-color-success)'
 }
 
 export function Meter({
@@ -62,14 +63,14 @@ export function Meter({
         aria-valuemax={max}
       >
         <svg width={svgW} height={svgH} aria-hidden="true">
-          <path d={totalPath} fill="var(--cascade-color-border)" />
+          <path d={totalPath} fill="var(--cascivo-color-border)" />
           {fillPath && <path d={fillPath} fill={color} />}
         </svg>
         <div
           style={{
             textAlign: 'center',
-            fontSize: 'var(--cascade-text-sm)',
-            color: 'var(--cascade-color-foreground-muted)',
+            fontSize: 'var(--cascivo-text-sm)',
+            color: 'var(--cascivo-color-foreground-muted)',
           }}
         >
           {label}: {value}
@@ -98,7 +99,7 @@ export function Meter({
           width={barW}
           height={barH}
           rx={barH / 2}
-          fill="var(--cascade-color-border)"
+          fill="var(--cascivo-color-border)"
         />
         <rect
           x={0}
@@ -117,9 +118,9 @@ export function Meter({
       </svg>
       <div
         style={{
-          marginTop: 'var(--cascade-space-1)',
-          fontSize: 'var(--cascade-text-xs)',
-          color: 'var(--cascade-color-foreground-muted)',
+          marginTop: 'var(--cascivo-space-1)',
+          fontSize: 'var(--cascivo-text-xs)',
+          color: 'var(--cascivo-color-foreground-muted)',
         }}
       >
         {label}

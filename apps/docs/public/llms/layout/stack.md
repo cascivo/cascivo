@@ -5,7 +5,7 @@ Flex layout primitive for vertical or horizontal stacking with gap control.
 ## Install
 
 ```bash
-npx cascade add layout/stack
+npx cascivo add layout/stack
 ```
 
 ## Category
@@ -48,16 +48,16 @@ Row layout
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

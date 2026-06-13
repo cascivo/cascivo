@@ -1,10 +1,10 @@
 /**
- * @deprecated OverflowMenu is deprecated. Use Menu from @cascade-ui/components/menu instead.
+ * @deprecated OverflowMenu is deprecated. Use Menu from @cascivo/components/menu instead.
  * OverflowMenu is kept for registry compatibility and will be removed in v4.
  */
 'use client'
-import { cn, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { ReactNode } from 'react'
 import { Dropdown, type DropdownItem } from '../dropdown/dropdown'
 import styles from './overflow-menu.module.css'

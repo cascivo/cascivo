@@ -1,5 +1,5 @@
-import { signal } from '@cascade-ui/core'
-import type { ReadonlySignal } from '@cascade-ui/core'
+import { signal } from '@cascivo/core'
+import type { ReadonlySignal } from '@cascivo/core'
 
 // Module-global active locale: t() and the formatters resolve against this,
 // so components need no provider — zero-config means default locale ('en').

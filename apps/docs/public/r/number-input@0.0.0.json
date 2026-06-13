@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/number-input/number-input.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/number-input/number-input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "number", "input", "spinbutton", "stepper"],
   "category": "inputs",
   "meta": {
@@ -108,18 +108,18 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-accent",
-      "--cascade-color-destructive",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-text-subtle",
-      "--cascade-radius-input",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-destructive",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-text-subtle",
+      "--cascivo-radius-input",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "spinbutton",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Tab"]
     },
     "examples": [
@@ -136,7 +136,7 @@
         "code": "<NumberInput label=\"Opacity\" min={0} max={1} step={0.1} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["form", "number", "input", "spinbutton", "stepper"],
     "intent": {
       "whenToUse": [
@@ -173,7 +173,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+          "note": "Visual props must resolve to the listed --cascivo-* semantic tokens"
         },
         {
           "area": "formatting and bounds",

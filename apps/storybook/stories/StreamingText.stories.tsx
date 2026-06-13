@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { StreamingText } from '@cascade-ui/ai'
+import { StreamingText } from '@cascivo/ai'
 
 const meta: Meta<typeof StreamingText> = {
   title: 'Display/StreamingText',

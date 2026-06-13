@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'EmptyState',
@@ -15,15 +15,15 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-full',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-full',
   ],
   accessibility: {
     role: 'none',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
       code: '<EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['empty', 'placeholder', 'zero-state', 'no-data'],
   intent: {
     whenToUse: [
@@ -82,7 +82,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Text and background colors must resolve to --cascade-* tokens',
+        note: 'Text and background colors must resolve to --cascivo-* tokens',
       },
     ],
   },

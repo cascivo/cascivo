@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@cascade-ui/react'
+import { Button, Tooltip } from '@cascivo/react'
 
 export function Hero() {
   return (

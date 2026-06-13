@@ -1,5 +1,5 @@
 'use client'
-import { Badge, Button, type Column, DataTable } from '@cascade-ui/react'
+import { Badge, Button, type Column, DataTable } from '@cascivo/react'
 import { PageHeader } from '../../page-header/page-header'
 import { Stack } from '../../stack/stack'
 

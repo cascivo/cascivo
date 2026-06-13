@@ -1,13 +1,13 @@
 ---
-name: cascade:extend
-description: Scaffold a new component in a user project following cascade authoring rules — signals not hooks, tokens-only CSS, FSM only when justified.
+name: cascivo:extend
+description: Scaffold a new component in a user project following cascivo authoring rules — signals not hooks, tokens-only CSS, FSM only when justified.
 ---
 
-# cascade:extend
+# cascivo:extend
 
 ## When to use
 
-The user wants to create a new component that follows cascade's authoring conventions (signals, CSS tokens, a11y) but doesn't exist in the registry — e.g. a custom `FileUpload`, `ColorPicker`, or `RatingStars`.
+The user wants to create a new component that follows cascivo's authoring conventions (signals, CSS tokens, a11y) but doesn't exist in the registry — e.g. a custom `FileUpload`, `ColorPicker`, or `RatingStars`.
 
 ## Procedure
 
@@ -15,7 +15,7 @@ The user wants to create a new component that follows cascade's authoring conven
 
 Before writing any code, read the authoring rules at runtime:
 
-- Fetch `https://cascade-ui.dev/llms.txt` (or local `apps/docs/public/llms.txt`) and locate the "Component authoring rules" section.
+- Fetch `https://cascivo.com/llms.txt` (or local `apps/docs/public/llms.txt`) and locate the "Component authoring rules" section.
 
 Internalise and strictly follow those rules throughout this skill. Never use `useState`, `useEffect`, `useContext`, `useLayoutEffect`, or `useReducer`.
 
@@ -50,7 +50,7 @@ Create the files at the user's chosen location (e.g. `src/components/<name>/`).
 **`<name>.tsx`**
 
 - `'use client'` at the top (RSC compatibility)
-- Import `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core` — not React hooks
+- Import `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core` — not React hooks
 - Use `useRef<HTMLElement>(null)` only for DOM element references
 - Use `useMachine` only if the component itself drives transitions (user interaction inside the component causes state changes — not external props)
 - Sync controlled props into signals during render: `signal.value = prop`
@@ -61,8 +61,8 @@ Create the files at the user's chosen location (e.g. `src/components/<name>/`).
 **`<name>.module.css`**
 
 - `@layer cascade.component { … }` wrapping all rules
-- All values from CSS custom properties: `--cascade-<component>-<property>`
-- Default values reference semantic tokens: `var(--cascade-color-accent)`
+- All values from CSS custom properties: `--cascivo-<component>-<property>`
+- Default values reference semantic tokens: `var(--cascivo-color-accent)`
 - Hover/focus/active/disabled via CSS pseudo-classes only — no JS tracking
 - RTL via logical properties: `margin-inline-start`, `padding-block`, etc.
 - Motion: `@media (prefers-reduced-motion: reduce)` wrapping all transitions

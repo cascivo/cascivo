@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Editable',
@@ -16,18 +16,18 @@ export const meta: ComponentMeta = {
     { name: 'onCancel', type: '() => void', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Escape'],
   },
   examples: [
@@ -37,7 +37,7 @@ export const meta: ComponentMeta = {
       code: '<Editable value="" onValueChange={() => {}} placeholder="Enter text" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'editable', 'inline', 'input', 'text'],
   intent: {
     whenToUse: [
@@ -74,7 +74,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens',
+        note: 'Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens',
       },
       {
         area: 'placeholder copy',

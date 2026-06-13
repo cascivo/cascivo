@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Textarea',
@@ -21,23 +21,25 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-destructive',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'textbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Shift+Tab'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'With label', code: '<Textarea label="Message" placeholder="Type here…" />' },
     { title: 'With error', code: '<Textarea label="Bio" error="Bio is required" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'text', 'multiline'],
   intent: {
     whenToUse: [
@@ -74,7 +76,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens',
+        note: 'Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens',
       },
       {
         area: 'resize and rows',

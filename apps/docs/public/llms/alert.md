@@ -5,7 +5,7 @@ Highlights a short, important message inline
 ## Install
 
 ```bash
-npx cascade add alert
+npx cascivo add alert
 ```
 
 ## Category
@@ -59,22 +59,22 @@ npx cascade add alert
 
 ## Design tokens
 
-- `--cascade-color-info`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-radius-md`
+- `--cascivo-color-info`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `alert`
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

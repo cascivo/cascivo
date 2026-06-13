@@ -45,11 +45,11 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-radius-modal`
-- `--cascade-shadow-xl`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-radius-modal`
+- `--cascivo-shadow-xl`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -65,6 +65,6 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 | Area                       | Level    | Note                                                                                                   |
 | -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ | --- | -------------------- |
-| token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-\* tokens |
+| token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-\* tokens |
 | size                       | flexible | sm                                                                                                     | md  | lg, defaulting to md |
 | title / description / body | flexible | All optional; body accepts arbitrary children                                                          |

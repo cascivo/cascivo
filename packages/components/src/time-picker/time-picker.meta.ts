@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'TimePicker',
@@ -22,20 +22,20 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-accent',
-    '--cascade-color-danger',
-    '--cascade-radius-input',
-    '--cascade-radius-md',
+    '--cascivo-color-surface',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-accent',
+    '--cascivo-color-danger',
+    '--cascivo-radius-input',
+    '--cascivo-radius-md',
   ],
   accessibility: {
     role: 'textbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab'],
   },
   examples: [
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       code: `<TimePicker label="Meeting time" onChange={(v) => console.log(v)} />`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['time', 'input', 'form'],
   intent: {
     whenToUse: [

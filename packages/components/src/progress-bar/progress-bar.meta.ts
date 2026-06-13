@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressBar',
@@ -32,16 +32,16 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-success',
-    '--cascade-color-destructive',
-    '--cascade-color-border',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-full',
-    '--cascade-motion-enter',
+    '--cascivo-color-accent',
+    '--cascivo-color-success',
+    '--cascivo-color-destructive',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-full',
+    '--cascivo-motion-enter',
   ],
-  accessibility: { role: 'progressbar', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'progressbar', wcag: '2.2-AA', keyboard: [] },
   examples: [
     { title: 'Determinate', code: '<ProgressBar value={60} label="Uploading" />' },
     { title: 'Indeterminate', code: '<ProgressBar label="Processing" />' },
@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
       code: '<ProgressBar value={100} status="success" label="Upload complete" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['progress', 'loading', 'status', 'feedback'],
   intent: {
     whenToUse: [
@@ -93,7 +93,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Fill and status colors must resolve to --cascade-* tokens',
+        note: 'Fill and status colors must resolve to --cascivo-* tokens',
       },
     ],
   },

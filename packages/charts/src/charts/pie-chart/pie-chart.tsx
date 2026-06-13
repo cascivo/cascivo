@@ -1,8 +1,9 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { Legend } from '../../chrome/legend'
 import { arcPath } from '../../engine/shape'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface PieChartDatum {
   id: string
@@ -24,7 +25,7 @@ export interface PieChartProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function PieChart({
   data,
@@ -42,6 +43,38 @@ export function PieChart({
   useSignals()
   const hidden = useSignal(new Set<string>())
   const hasData = data.length > 0
+
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (!hasData) return undefined
+    const chartCx = w / 2
+    const chartCy = h / 2
+    const outerR = Math.min(chartCx, chartCy) - 8
+    const visible = data.filter((d) => !hidden.value.has(d.id))
+    const total = visible.reduce((s, d) => s + d.value, 0)
+    let startAngle = 0
+    const points: ChartPoint[] = visible.map((d, i) => {
+      const slice = total > 0 ? (d.value / total) * 2 * Math.PI : 0
+      const endAngle = startAngle + slice
+      const midAngle = (startAngle + endAngle) / 2
+      startAngle = endAngle
+      // arcPath uses sin for x, -cos for y (0 = top, clockwise)
+      return {
+        id: d.id,
+        cx: chartCx + Math.sin(midAngle) * outerR * 0.65,
+        cy: chartCy - Math.cos(midAngle) * outerR * 0.65,
+        label: d.label,
+        value: d.value,
+        seriesId: String(i),
+      }
+    })
+    return { points }
+  }
 
   const fallback = (
     <table>
@@ -80,6 +113,7 @@ export function PieChart({
         className={className}
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
+        tooltip={hasData ? buildTooltip : undefined}
       >
         {({ width, height: h }) => {
           const cx = width / 2
@@ -105,7 +139,7 @@ export function PieChart({
                     key={d.id}
                     d={path}
                     fill={color}
-                    stroke="var(--cascade-color-surface)"
+                    stroke="var(--cascivo-color-surface)"
                     strokeWidth={1}
                     data-series={d.id}
                   />

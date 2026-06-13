@@ -75,6 +75,21 @@ describe('LineChart', () => {
     expect(buttons).toHaveLength(0)
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<LineChart series={series} x={x} y={y} title="Test Chart" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('does not render aria-live region when tooltip is false', () => {
+    render(<LineChart series={series} x={x} y={y} title="Test Chart" tooltip={false} />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeNull()
+  })
+
+  it('renders focusable layer when tooltip is enabled', () => {
+    render(<LineChart series={series} x={x} y={y} title="Test Chart" tooltip />)
+    expect(screen.getByRole('application')).toBeTruthy()
+  })
+
   it('renders a large series without crashing', () => {
     const bigData = Array.from({ length: 5000 }, (_, i) => ({ x: i, y: Math.sin(i / 100) * 100 }))
     const bigSeries = [{ id: 'big', label: 'Big', data: bigData }]

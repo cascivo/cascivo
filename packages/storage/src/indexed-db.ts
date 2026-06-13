@@ -1,7 +1,7 @@
 import { memoryDriver, type StorageDriver } from './drivers'
 
 /** Minimal key-value driver over indexedDB — async hydration, no `idb` dependency. */
-export function indexedDBDriver(dbName = 'cascade', storeName = 'kv'): StorageDriver {
+export function indexedDBDriver(dbName = 'cascivo', storeName = 'kv'): StorageDriver {
   if (typeof indexedDB === 'undefined') return memoryDriver()
 
   let dbPromise: Promise<IDBDatabase> | undefined

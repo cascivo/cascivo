@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ScatterChart',
@@ -23,6 +23,12 @@ export const meta: ComponentMeta = {
     { name: 'xTicks', type: 'number', required: false, default: '5' },
     { name: 'yTicks', type: 'number', required: false, default: '5' },
     { name: 'legend', type: 'boolean', required: false },
+    {
+      name: 'tooltip',
+      type: 'boolean',
+      required: false,
+      description: 'Enable hover/keyboard tooltip',
+    },
     { name: 'className', type: 'string', required: false },
     {
       name: 'plain',
@@ -33,26 +39,35 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-chart-2',
-    '--cascade-chart-3',
-    '--cascade-chart-4',
-    '--cascade-chart-5',
-    '--cascade-chart-6',
-    '--cascade-chart-7',
-    '--cascade-chart-8',
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate points)',
+      'Home/End (first/last point)',
+      'Escape (clear focus)',
+    ],
+  },
   examples: [
     {
       title: 'Basic scatter chart',
-      code: `import { ScatterChart } from '@cascade-ui/charts'
+      code: `import { ScatterChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 <ScatterChart series={series} title="Scatter" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'scatter', 'plot', 'data-viz'],
   intent: {
     whenToUse: [

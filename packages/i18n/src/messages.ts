@@ -1,4 +1,4 @@
-import { signal } from '@cascade-ui/core'
+import { signal } from '@cascivo/core'
 import { currentLocale } from './locale'
 import type { Message, MessageValue, PluralForms, TArgs } from './types'
 

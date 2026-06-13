@@ -42,12 +42,12 @@ Toasts render into a labelled region; non-critical ones use role="status" with a
 
 ## Tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-md`
-- `--cascade-z-toast`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-md`
+- `--cascivo-z-toast`
 
 ## Examples
 

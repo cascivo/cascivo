@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/badge/badge.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/badge/badge.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["label", "status", "tag"],
   "category": "display",
   "meta": {
@@ -37,16 +37,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-success",
-      "--cascade-color-warning",
-      "--cascade-color-destructive",
-      "--cascade-radius-badge"
+      "--cascivo-color-accent",
+      "--cascivo-color-success",
+      "--cascivo-color-warning",
+      "--cascivo-color-destructive",
+      "--cascivo-radius-badge"
     ],
     "accessibility": {
       "role": "status",
-      "wcag": "AA",
-      "keyboard": []
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "forcedColors": true
     },
     "examples": [
       {
@@ -62,7 +63,7 @@
         "code": "<Badge variant=\"destructive\">Deprecated</Badge>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["label", "status", "tag"],
     "intent": {
       "whenToUse": [
@@ -102,7 +103,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)"
+          "note": "Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)"
         }
       ]
     }

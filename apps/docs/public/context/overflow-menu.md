@@ -46,13 +46,13 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-destructive`
-- `--cascade-color-destructive-subtle`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -78,5 +78,5 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 | Area                | Level    | Note                                                                    |
 | ------------------- | -------- | ----------------------------------------------------------------------- |
-| token names         | strict   | Trigger and item styling must resolve to the listed --cascade-\* tokens |
+| token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-\* tokens |
 | item set and labels | flexible | items, ariaLabel, and placement are free to suit the context            |

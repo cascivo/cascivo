@@ -5,7 +5,7 @@ Full users management page with table, search, and invite action.
 ## Install
 
 ```bash
-npx cascade add block/users-table-page
+npx cascivo add block/users-table-page
 ```
 
 ## Category
@@ -31,12 +31,12 @@ Demo users table
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/page-header`
 - `layout/stack`
 

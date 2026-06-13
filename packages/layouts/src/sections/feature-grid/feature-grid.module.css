@@ -2,19 +2,19 @@
   .header {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-3);
+    gap: var(--cascivo-space-3);
   }
 
   .title {
-    font-size: var(--cascade-text-2xl);
-    font-weight: var(--cascade-font-bold);
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
     text-wrap: balance;
     margin: 0;
   }
 
   .description {
-    font-size: var(--cascade-text-base);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-base);
+    color: var(--cascivo-text-secondary);
     max-inline-size: 60ch;
     margin: 0;
   }
@@ -22,34 +22,34 @@
   .item {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-2);
-    padding-block-start: var(--cascade-space-4);
-    border-block-start: 1px solid var(--cascade-color-border);
+    gap: var(--cascivo-space-2);
+    padding-block-start: var(--cascivo-space-4);
+    border-block-start: 1px solid var(--cascivo-color-border);
     min-inline-size: 0;
     text-decoration: none;
     color: inherit;
   }
 
   a.item:hover {
-    background-color: var(--cascade-surface-subtle);
+    background-color: var(--cascivo-surface-subtle);
   }
 
   .icon {
     display: flex;
-    inline-size: var(--cascade-space-6);
-    block-size: var(--cascade-space-6);
-    color: var(--cascade-color-accent);
+    inline-size: var(--cascivo-space-6);
+    block-size: var(--cascivo-space-6);
+    color: var(--cascivo-color-accent);
   }
 
   .item-title {
-    font-size: var(--cascade-text-base);
-    font-weight: var(--cascade-font-semibold);
+    font-size: var(--cascivo-text-base);
+    font-weight: var(--cascivo-font-semibold);
     margin: 0;
   }
 
   .item-description {
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-text-secondary);
     margin: 0;
   }
 }

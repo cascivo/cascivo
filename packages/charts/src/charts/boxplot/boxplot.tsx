@@ -1,10 +1,11 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { linearScale, bandScale } from '../../engine/scale'
 import { boxStats, extent } from '../../engine/stats'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface BoxplotSeries {
   id: string
@@ -23,7 +24,7 @@ export interface BoxplotProps {
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function Boxplot({
   series,
@@ -70,6 +71,45 @@ export function Boxplot({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (stats.length === 0) return undefined
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+    if (innerW <= 0) return undefined
+    const xScale = bandScale(
+      stats.map((s) => s.id),
+      [0, innerW],
+      0.3,
+    )
+    const yPad = (globalMax - globalMin) * 0.05 || 1
+    const yScale = linearScale([globalMin - yPad, globalMax + yPad], [innerH, 0])
+
+    const points: ChartPoint[] = stats.map((s) => {
+      const cx = (xScale.map(s.id) ?? 0) + xScale.bandwidth / 2
+      return {
+        id: s.id,
+        cx: margins.left + cx,
+        cy: margins.top + yScale.map(s.stats.median),
+        label: s.label,
+        value: s.stats.median,
+      }
+    })
+    return {
+      points,
+      format: (p) => {
+        const s = stats.find((st) => st.id === p.id)
+        if (!s) return `${p.label}: ${p.value}`
+        return `${s.label}: min ${s.stats.min.toFixed(2)} / Q1 ${s.stats.q1.toFixed(2)} / med ${s.stats.median.toFixed(2)} / Q3 ${s.stats.q3.toFixed(2)} / max ${s.stats.max.toFixed(2)}`
+      },
+    }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -79,6 +119,7 @@ export function Boxplot({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={stats.length > 0 ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -98,7 +139,7 @@ export function Boxplot({
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
             {stats.map((s, idx) => {
-              const color = COLORS[idx % COLORS.length] ?? 'var(--cascade-chart-1)'
+              const color = COLORS[idx % COLORS.length] ?? 'var(--cascivo-chart-1)'
               const cx = (xScale.map(s.id) ?? 0) + xScale.bandwidth / 2
               const boxW = xScale.bandwidth * 0.6
               const boxX = cx - boxW / 2

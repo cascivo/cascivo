@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, type ReactNode, type MouseEvent as ReactMouseEvent } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './context-menu.module.css'
 
 export interface ContextMenuProps {
@@ -50,8 +50,8 @@ export function ContextMenu({ children }: ContextMenuProps) {
     e.preventDefault()
     const container = containerRef.current
     if (!container) return
-    container.style.setProperty('--cascade-context-x', `${e.clientX}px`)
-    container.style.setProperty('--cascade-context-y', `${e.clientY}px`)
+    container.style.setProperty('--cascivo-context-x', `${e.clientX}px`)
+    container.style.setProperty('--cascivo-context-y', `${e.clientY}px`)
     isOpen.value = true
   }
 

@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { useSignalEffect } from '@cascade-ui/core'
+import { useSignalEffect } from '@cascivo/core'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
@@ -9,6 +9,8 @@ import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
+import { ChartShowcase } from './sections/ChartShowcase'
+import { Ecosystem } from './sections/Ecosystem'
 import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
@@ -29,6 +31,8 @@ function HomePage() {
       <ProofTeasers />
       <AgentLayer />
       <ThemeDemo />
+      <ChartShowcase />
+      <Ecosystem />
       <QuickStart />
       <CtaBand />
       <Footer />
@@ -40,14 +44,14 @@ type Route = { Page: ComponentType; title: string }
 
 const HOME: Route = {
   Page: HomePage,
-  title: 'cascade — the CSS-native, signal-driven, AI-first React design system',
+  title: 'cascivo — the CSS-native, signal-driven, AI-first React design system',
 }
 
 const ROUTES: Record<string, Route> = {
   '/': HOME,
-  '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascade' },
-  '/performance': { Page: PerformancePage, title: 'Performance — cascade' },
-  '/og': { Page: OgCard, title: 'cascade' },
+  '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascivo' },
+  '/performance': { Page: PerformancePage, title: 'Performance — cascivo' },
+  '/og': { Page: OgCard, title: 'cascivo' },
 }
 
 export function App() {

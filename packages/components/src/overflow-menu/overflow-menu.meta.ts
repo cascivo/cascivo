@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'OverflowMenu',
@@ -26,17 +26,17 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-destructive',
-    '--cascade-color-destructive-subtle',
-    '--cascade-radius-button',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-destructive',
+    '--cascivo-color-destructive-subtle',
+    '--cascivo-radius-button',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'menu',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
   },
   examples: [
@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
       code: '<OverflowMenu size="sm" placement="bottom-start" items={items} />',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'menu', 'actions', 'kebab', 'table'],
   intent: {
     whenToUse: [
@@ -96,7 +96,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Trigger and item styling must resolve to the listed --cascade-* tokens',
+        note: 'Trigger and item styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'item set and labels',

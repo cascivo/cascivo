@@ -1,6 +1,6 @@
 'use client'
-import { batch, cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { batch, cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { Kbd } from '../kbd/kbd'
 import { Spinner } from '../spinner/spinner'

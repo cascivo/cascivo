@@ -39,12 +39,12 @@ Renders native <ul>/<ol> with <li> children so assistive tech announces the list
 
 ## Tokens
 
-- `--cascade-font-sans`
-- `--cascade-leading-normal`
-- `--cascade-color-text`
-- `--cascade-text-base`
-- `--cascade-space-1`
-- `--cascade-space-6`
+- `--cascivo-font-sans`
+- `--cascivo-leading-normal`
+- `--cascivo-color-text`
+- `--cascivo-text-base`
+- `--cascivo-space-1`
+- `--cascivo-space-6`
 
 ## Examples
 
@@ -81,4 +81,4 @@ Keeps list semantics without visual markers
 | Area        | Level    | Note                                                       |
 | ----------- | -------- | ---------------------------------------------------------- |
 | marker      | flexible | disc/decimal/none chosen to match content and visual needs |
-| token names | strict   | Spacing and text color must resolve to --cascade-\* tokens |
+| token names | strict   | Spacing and text color must resolve to --cascivo-\* tokens |

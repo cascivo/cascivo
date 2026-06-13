@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { PageFooter } from '@cascade-ui/layouts/sections/page-footer'
+import { PageFooter } from '@cascivo/layouts/sections/page-footer'
 
 const meta: Meta<typeof PageFooter> = {
   title: 'Sections/PageFooter',
@@ -22,7 +22,7 @@ const groups = [
     title: 'Developers',
     links: [
       { label: 'Docs', href: '/docs' },
-      { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
+      { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
       { label: 'Changelog', href: '/changelog' },
     ],
   },

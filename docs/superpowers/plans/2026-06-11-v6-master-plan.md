@@ -32,15 +32,15 @@ tests. Competitor stacks: Tailwind v4 + shadcn components + Radix + TanStack Tab
   (`/perf/data-table`, `apps/docs/src/pages/PerfDataTable.tsx`): initial <3000ms, sort <100ms,
   keystroke <50ms, scaled by `PERF_SCALE`. Runs in `.github/workflows/perf.yml` (PR-triggered on
   components/core/docs paths, ubuntu-latest, Node 22, `PERF_SCALE: 1`).
-- `scripts/quality/bundle-check.ts`: enforces gzip budgets — `@cascade-ui/react` 50KB,
-  `@cascade-ui/charts` 80KB. Wired as `audit:bundle` in root package.json, runs in CI `verify`.
+- `scripts/quality/bundle-check.ts`: enforces gzip budgets — `@cascivo/react` 50KB,
+  `@cascivo/charts` 80KB. Wired as `audit:bundle` in root package.json, runs in CI `verify`.
 - Playwright config pattern: `apps/docs/playwright.config.ts` — port 4173 via `vp preview`,
   animations disabled, 900×700.
 
-**Measured sizes (local build, gzip):** `@cascade-ui/core` 1.67KB (4.8KB raw, zero runtime deps,
-peers `react`/`react-dom`/`@preact/signals-react`). `@cascade-ui/react` 32.89KB JS
+**Measured sizes (local build, gzip):** `@cascivo/core` 1.67KB (4.8KB raw, zero runtime deps,
+peers `react`/`react-dom`/`@preact/signals-react`). `@cascivo/react` 32.89KB JS
 (135.2KB raw, single flat `index.js`) + 134.7KB raw `cascade.css`; runtime deps
-`@cascade-ui/core` + `@cascade-ui/i18n`. **No `sideEffects` field in any package.json** —
+`@cascivo/core` + `@cascivo/i18n`. **No `sideEffects` field in any package.json** —
 treeshaking of the flat dist is unverified and likely broken (top-level i18n catalogs/signals).
 
 **DataTable** (`packages/components/src/data-table/data-table.tsx`, 513 lines): no
@@ -127,7 +127,7 @@ Frame: zero-violations parity gate for cascade; competitor numbers as context on
 | 5   | Timing = CDP trace parse (first matching `EventDispatch` → last `Paint`/`Commit` end), 4× `Emulation.setCPUThrottlingRate`, 5 warmups for warm ops, 12 samples, median + p25/p75, Mann-Whitney U vs cascade; p ≥ 0.05 ⇒ tie                               | js-framework-benchmark standard; ties reported honestly                                         |
 | 6   | Re-render counts = `<Profiler onRender>` root-commit counters (`window.__commits`) read per scenario **against dev builds**, disclosed; timings always against production builds                                                                          | Profiler is a prod no-op; counts are deterministic so dev mode doesn't taint them               |
 | 7   | Bundle = build each app with its own Vite prod config, gzip level 6 over dist `.js`/`.css` separately + combined; per-component incremental matrix = 8 single-component entries + empty baseline per app, incremental = entry − baseline                  | min+gzip convention; CSS reported separately because "CSS-native" invites the hidden-CSS attack |
-| 8   | Fix `@cascade-ui/react` + `core` `sideEffects` (`["**/*.css"]` / `false`) and add `scripts/quality/treeshake-check.ts` gate (bare import <1KB gz; `import { Button }` < 40% of full bundle, threshold tuned to measured)                                  | A benchmark suite that exposes our own broken treeshaking is worse than no suite                |
+| 8   | Fix `@cascivo/react` + `core` `sideEffects` (`["**/*.css"]` / `false`) and add `scripts/quality/treeshake-check.ts` gate (bare import <1KB gz; `import { Button }` < 40% of full bundle, threshold tuned to measured)                                     | A benchmark suite that exposes our own broken treeshaking is worse than no suite                |
 | 9   | Lighthouse via `@lhci/cli` `collect --numberOfRuns=5`, median run per app on `/table`; report FCP/LCP/TBT/transferred bytes; TBT labeled "lab INP proxy"; no INP claims                                                                                   | LHCI default median aggregation; lab-INP claims are the canonical callout                       |
 | 10  | a11y via `@axe-core/playwright` sweep over all 3 routes × 3 apps; **gate**: cascade 0 violations (CI-enforced); competitor counts reported as parity context with detection-ceiling disclaimer                                                            | Decision 6 in roadmap — never a scoreboard vs Carbon                                            |
 | 11  | One results artifact: `apps/bench/results/results.json` (schema in `runner/src/types.ts`) with `meta` block (cpu/cores/mem/os/chrome/node/lockfileHash/throttle/date). Generated reports: root `BENCHMARKS.md`, docs page, landing link                   | Single source of truth; metadata makes runs auditable                                           |
@@ -198,7 +198,7 @@ data-table.tsx`) and set page size = row count (or the documented "no pagination
 --fix` — fine (owned code). If oxlint rules fire on vendored patterns, add file-scoped
    disables, never repo-wide rule changes.
 9. **Lint baseline is 10 warnings** (pre-existing). Do not add an 11th — new code lints clean.
-10. **`@cascade-ui/react` may not treeshake** (flat 135KB ESM + top-level i18n side effects).
+10. **`@cascivo/react` may not treeshake** (flat 135KB ESM + top-level i18n side effects).
     T3 measures first. If `import { Button }` ≈ full bundle, the fallback is shipping
     `preserveModules: true` in `packages/react/vite.config.ts` rollupOptions — a real build
     change with its own verification (exports map intact, docs/storybook/examples still build).

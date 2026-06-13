@@ -96,7 +96,7 @@ function componentMarkdown(entry: RegistryEntry): string {
   lines.push('## Install')
   lines.push('')
   lines.push('```bash')
-  lines.push(`npx cascade add ${entry.name}`)
+  lines.push(`npx cascivo add ${entry.name}`)
   lines.push('```')
   lines.push('')
 
@@ -184,7 +184,7 @@ function componentMarkdown(entry: RegistryEntry): string {
 }
 
 function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
-  const BASE_URL = 'https://cascade-ui.dev'
+  const BASE_URL = 'https://cascivo.com'
   const lines: string[] = []
 
   lines.push('# cascade — The CSS-native, signal-driven, AI-first React design system')
@@ -198,7 +198,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push(`- Registry JSON: ${BASE_URL}/registry.json`)
   lines.push(`- View schema: ${BASE_URL}/view.v1.json`)
-  lines.push(`- MCP server: npx @cascade-ui/mcp`)
+  lines.push(`- MCP server: npx @cascivo/mcp`)
   lines.push(`- llms.txt: ${BASE_URL}/llms.txt`)
   lines.push('')
   lines.push('## MCP tools')
@@ -232,11 +232,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `get_context` — full context for one component (intent + boundaries + tokens)')
   lines.push('- `select_component` — deterministic ranking of components by need description')
   lines.push('')
-  lines.push('## Component authoring rules (for cascade:extend)')
+  lines.push('## Component authoring rules (for cascivo:extend)')
   lines.push('')
-  lines.push(
-    '- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`',
-  )
+  lines.push('- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`')
   lines.push('- No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`')
   lines.push('- DOM side effects via `useSignalEffect`, not `useEffect`')
   lines.push('- `useRef` only for DOM element references')
@@ -245,7 +243,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `data-state` attributes only for states CSS cannot express (e.g. loading, error)')
   lines.push('- FSM (`useMachine`) only when the component itself drives transitions')
   lines.push('- CSS logical properties throughout (RTL-safe): `margin-inline-start`, etc.')
-  lines.push('- User-visible strings via `@cascade-ui/i18n` — no hardcoded English fallbacks')
+  lines.push('- User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks')
   lines.push('- WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested')
   lines.push('')
   lines.push('## Component index')

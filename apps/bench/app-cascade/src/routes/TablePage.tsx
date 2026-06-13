@@ -1,5 +1,5 @@
-import { useSignal } from '@cascade-ui/core'
-import { Badge, Button, DataTable } from '@cascade-ui/react'
+import { useSignal } from '@cascivo/core'
+import { Badge, Button, DataTable } from '@cascivo/react'
 import { buildRows, updateEveryTenth, type Row } from '../data'
 
 export function TablePage() {

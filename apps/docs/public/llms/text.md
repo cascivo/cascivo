@@ -5,7 +5,7 @@ Body text with size, weight, and muted variants
 ## Install
 
 ```bash
-npx cascade add text
+npx cascivo add text
 ```
 
 ## Category
@@ -61,25 +61,25 @@ Use as="span" inside other flow content
 
 ## Design tokens
 
-- `--cascade-font-sans`
-- `--cascade-font-normal`
-- `--cascade-font-medium`
-- `--cascade-font-semibold`
-- `--cascade-leading-normal`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-text-sm`
-- `--cascade-text-base`
-- `--cascade-text-lg`
+- `--cascivo-font-sans`
+- `--cascivo-font-normal`
+- `--cascivo-font-medium`
+- `--cascivo-font-semibold`
+- `--cascivo-leading-normal`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-text-sm`
+- `--cascivo-text-base`
+- `--cascivo-text-lg`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `paragraph`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -29,7 +29,7 @@ export function GridLines({
             y1={isX ? 0 : pos}
             x2={isX ? pos : length}
             y2={isX ? length : pos}
-            stroke="var(--cascade-chart-grid)"
+            stroke="var(--cascivo-chart-grid)"
             strokeWidth={1}
             strokeDasharray="2 4"
           />

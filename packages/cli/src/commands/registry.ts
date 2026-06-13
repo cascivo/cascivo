@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { resolve, dirname } from 'node:path'
-import { buildRegistry, validateIndex, parseLegacyRegistry } from '@cascade-ui/registry'
+import { buildRegistry, validateIndex, parseLegacyRegistry } from '@cascivo/registry'
 
 export async function registryBuild(args: string[]): Promise<void> {
   let inFile = 'cascade-registry.json'

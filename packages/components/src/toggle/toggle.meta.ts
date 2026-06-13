@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Toggle',
@@ -16,16 +16,19 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-surface',
-    '--cascade-radius-full',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-surface',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'switch',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space', 'Enter'],
+    apgPattern: 'switch',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'Uncontrolled', code: '<Toggle label="Notifications" defaultChecked />' },
@@ -34,7 +37,7 @@ export const meta: ComponentMeta = {
       code: '<Toggle checked={enabled} onChange={setEnabled} label="Dark mode" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['switch', 'form', 'boolean'],
   intent: {
     whenToUse: [
@@ -71,7 +74,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens',
+        note: 'Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens',
       },
       {
         area: 'label copy',

@@ -5,7 +5,7 @@ Kebab icon button revealing a menu of row-level actions
 ## Install
 
 ```bash
-npx cascade add overflow-menu
+npx cascivo add overflow-menu
 ```
 
 ## Category
@@ -56,24 +56,24 @@ npx cascade add overflow-menu
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-destructive`
-- `--cascade-color-destructive-subtle`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
 - **Keyboard:** ArrowDown, ArrowUp, Home, End, Enter, Space, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

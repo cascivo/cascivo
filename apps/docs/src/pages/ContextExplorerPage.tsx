@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import {
   buildContract,
   findCssLiteralViolations,
@@ -7,7 +7,7 @@ import {
   type Contract,
   type LiteralFinding,
   type PropFinding,
-} from '@cascade-ui/cli/audit-ai'
+} from '@cascivo/cli/audit-ai'
 
 // ---------------------------------------------------------------------------
 // Artifact shapes (subset of the generated JSON we render).
@@ -96,31 +96,31 @@ interface RegistryV2 {
 // Shared cell styles (kept inline to match the docs' token-driven convention).
 // ---------------------------------------------------------------------------
 
-const muted = { color: 'var(--cascade-color-text-subtle)' }
-const sectionGap = { marginBlockEnd: 'var(--cascade-space-8)' }
+const muted = { color: 'var(--cascivo-color-text-subtle)' }
+const sectionGap = { marginBlockEnd: 'var(--cascivo-space-8)' }
 
 const labelStyle = {
   display: 'block',
-  fontSize: 'var(--cascade-text-sm)',
-  fontWeight: 'var(--cascade-font-medium)',
-  color: 'var(--cascade-color-text-subtle)',
-  marginBlockEnd: 'var(--cascade-space-2)',
+  fontSize: 'var(--cascivo-text-sm)',
+  fontWeight: 'var(--cascivo-font-medium)',
+  color: 'var(--cascivo-color-text-subtle)',
+  marginBlockEnd: 'var(--cascivo-space-2)',
 }
 
 const controlStyle = {
-  padding: 'var(--cascade-space-2) var(--cascade-space-3)',
-  border: '1px solid var(--cascade-color-border)',
-  borderRadius: 'var(--cascade-radius-md)',
-  background: 'var(--cascade-color-surface)',
-  color: 'var(--cascade-color-text)',
-  fontSize: 'var(--cascade-text-sm)',
+  padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
+  border: '1px solid var(--cascivo-color-border)',
+  borderRadius: 'var(--cascivo-radius-md)',
+  background: 'var(--cascivo-color-surface)',
+  color: 'var(--cascivo-color-text)',
+  fontSize: 'var(--cascivo-text-sm)',
 }
 
 const cardStyle = {
-  border: '1px solid var(--cascade-color-border)',
-  borderRadius: 'var(--cascade-radius-lg)',
-  background: 'var(--cascade-color-surface)',
-  padding: 'var(--cascade-space-4)',
+  border: '1px solid var(--cascivo-color-border)',
+  borderRadius: 'var(--cascivo-radius-lg)',
+  background: 'var(--cascivo-color-surface)',
+  padding: 'var(--cascivo-space-4)',
 }
 
 const DIRTY_SNIPPET = `/* CSS: hardcoded values */
@@ -130,7 +130,7 @@ const DIRTY_SNIPPET = `/* CSS: hardcoded values */
 }
 
 /* TSX: unknown prop */
-import { Button } from '@cascade-ui/react'
+import { Button } from '@cascivo/react'
 export function Hero() {
   return <Button frobnicate variant="primary">Save</Button>
 }`
@@ -255,7 +255,7 @@ export function ContextExplorerPage() {
   if (error.value) {
     return (
       <article class="doc-page">
-        <p style={{ color: 'var(--cascade-color-destructive)' }}>Error: {error.value}</p>
+        <p style={{ color: 'var(--cascivo-color-destructive)' }}>Error: {error.value}</p>
       </article>
     )
   }
@@ -283,7 +283,7 @@ export function ContextExplorerPage() {
         <div class="doc-eyebrow">For AI agents</div>
         <h1>Context Explorer</h1>
         <p class="doc-lede">
-          Browse the machine-readable context cascade ships to agents — component intent, design
+          Browse the machine-readable context cascivo ships to agents — component intent, design
           boundaries, specs, and the full token catalog — then run the same audit checkers the CLI
           uses, live in your browser.
         </p>
@@ -292,7 +292,7 @@ export function ContextExplorerPage() {
       {/* ---------------- Intent browser ---------------- */}
       <section class="doc-section" style={sectionGap}>
         <h2>Intent browser</h2>
-        <div style={{ marginBlockEnd: 'var(--cascade-space-4)' }}>
+        <div style={{ marginBlockEnd: 'var(--cascivo-space-4)' }}>
           <label htmlFor="ctx-component" style={labelStyle}>
             Component
           </label>
@@ -313,7 +313,7 @@ export function ContextExplorerPage() {
         </div>
 
         {current && (
-          <div style={{ display: 'grid', gap: 'var(--cascade-space-4)' }}>
+          <div style={{ display: 'grid', gap: 'var(--cascivo-space-4)' }}>
             <p style={muted}>{current.description}</p>
 
             {intent?.whenToUse?.length ? (
@@ -327,21 +327,21 @@ export function ContextExplorerPage() {
             {intent?.antiPatterns?.length ? (
               <div>
                 <h3>Anti-patterns</h3>
-                <div style={{ display: 'grid', gap: 'var(--cascade-space-3)' }}>
+                <div style={{ display: 'grid', gap: 'var(--cascivo-space-3)' }}>
                   {intent.antiPatterns.map((ap, i) => (
                     <div key={i} style={cardStyle}>
-                      <p style={{ margin: 0, color: 'var(--cascade-color-destructive)' }}>
+                      <p style={{ margin: 0, color: 'var(--cascivo-color-destructive)' }}>
                         <strong>Bad:</strong> <code>{ap.bad}</code>
                       </p>
                       <p
                         style={{
-                          margin: 'var(--cascade-space-2) 0 0',
-                          color: 'var(--cascade-color-success)',
+                          margin: 'var(--cascivo-space-2) 0 0',
+                          color: 'var(--cascivo-color-success)',
                         }}
                       >
                         <strong>Good:</strong> <code>{ap.good}</code>
                       </p>
-                      <p style={{ margin: 'var(--cascade-space-2) 0 0', ...muted }}>{ap.why}</p>
+                      <p style={{ margin: 'var(--cascivo-space-2) 0 0', ...muted }}>{ap.why}</p>
                     </div>
                   ))}
                 </div>
@@ -364,7 +364,7 @@ export function ContextExplorerPage() {
                             background: 'none',
                             border: 'none',
                             padding: 0,
-                            color: 'var(--cascade-color-accent)',
+                            color: 'var(--cascivo-color-accent)',
                             cursor: 'pointer',
                             font: 'inherit',
                           }}
@@ -395,7 +395,7 @@ export function ContextExplorerPage() {
                 <h3>Content tone</h3>
                 {intent.content.tone && <p style={{ margin: 0 }}>{intent.content.tone}</p>}
                 {intent.content.notes && (
-                  <p style={{ margin: 'var(--cascade-space-2) 0 0', ...muted }}>
+                  <p style={{ margin: 'var(--cascivo-space-2) 0 0', ...muted }}>
                     {intent.content.notes}
                   </p>
                 )}
@@ -412,23 +412,23 @@ export function ContextExplorerPage() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(18rem, 1fr))',
-            gap: 'var(--cascade-space-4)',
+            gap: 'var(--cascivo-space-4)',
           }}
         >
           <BoundaryColumn
             title="Global — strict"
-            tone="var(--cascade-color-destructive)"
+            tone="var(--cascivo-color-destructive)"
             entries={boundaries.value?.global.strict ?? []}
           />
           <BoundaryColumn
             title="Global — flexible"
-            tone="var(--cascade-color-success)"
+            tone="var(--cascivo-color-success)"
             entries={boundaries.value?.global.flexible ?? []}
           />
         </div>
 
         {current && boundaries.value?.perComponent[current.name]?.length ? (
-          <div style={{ marginBlockStart: 'var(--cascade-space-5)' }}>
+          <div style={{ marginBlockStart: 'var(--cascivo-space-5)' }}>
             <h3>{current.name} — flexibility</h3>
             <ul>
               {boundaries.value.perComponent[current.name]?.map((f, i) => (
@@ -438,8 +438,8 @@ export function ContextExplorerPage() {
                     style={{
                       color:
                         f.level === 'strict'
-                          ? 'var(--cascade-color-destructive)'
-                          : 'var(--cascade-color-success)',
+                          ? 'var(--cascivo-color-destructive)'
+                          : 'var(--cascivo-color-success)',
                     }}
                   >
                     [{f.level}]
@@ -460,7 +460,7 @@ export function ContextExplorerPage() {
             <li key={s.id}>
               <strong>{s.title}</strong> <span style={muted}>({s.id})</span>
               {s.summary && (
-                <div style={{ ...muted, fontSize: 'var(--cascade-text-sm)' }}>{s.summary}</div>
+                <div style={{ ...muted, fontSize: 'var(--cascivo-text-sm)' }}>{s.summary}</div>
               )}
             </li>
           ))}
@@ -473,8 +473,8 @@ export function ContextExplorerPage() {
         <div
           style={{
             display: 'flex',
-            gap: 'var(--cascade-space-4)',
-            marginBlockEnd: 'var(--cascade-space-4)',
+            gap: 'var(--cascivo-space-4)',
+            marginBlockEnd: 'var(--cascivo-space-4)',
             flexWrap: 'wrap',
           }}
         >
@@ -518,7 +518,7 @@ export function ContextExplorerPage() {
           </div>
         </div>
 
-        <p style={{ ...muted, fontSize: 'var(--cascade-text-sm)' }}>
+        <p style={{ ...muted, fontSize: 'var(--cascivo-text-sm)' }}>
           {filteredTokens.length} of {tokens.length} tokens
         </p>
 
@@ -527,14 +527,14 @@ export function ContextExplorerPage() {
             style={{
               width: '100%',
               borderCollapse: 'collapse',
-              fontSize: 'var(--cascade-text-sm)',
+              fontSize: 'var(--cascivo-text-sm)',
             }}
           >
             <thead>
               <tr
                 style={{
                   textAlign: 'left',
-                  borderBlockEnd: '1px solid var(--cascade-color-border)',
+                  borderBlockEnd: '1px solid var(--cascivo-color-border)',
                 }}
               >
                 <Th>Name</Th>
@@ -547,7 +547,7 @@ export function ContextExplorerPage() {
               {filteredTokens.map((t) => (
                 <tr
                   key={t.name}
-                  style={{ borderBlockEnd: '1px solid var(--cascade-color-border-subtle)' }}
+                  style={{ borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)' }}
                 >
                   <Td>
                     <code>{t.name}</code>
@@ -566,7 +566,7 @@ export function ContextExplorerPage() {
 
       {/* ---------------- Bundle size note ---------------- */}
       <section class="doc-section" style={sectionGap}>
-        <p style={{ ...muted, fontSize: 'var(--cascade-text-sm)' }}>
+        <p style={{ ...muted, fontSize: 'var(--cascivo-text-sm)' }}>
           Context bundle size: ~{sizes.value?.context ?? '?'}KB (context.json) +{' '}
           {sizes.value?.catalog ?? '?'}KB (tokens.catalog.json) — fetched on demand, not bundled.
         </p>
@@ -593,30 +593,30 @@ export function ContextExplorerPage() {
           style={{
             ...controlStyle,
             width: '100%',
-            fontFamily: 'var(--cascade-font-mono, monospace)',
-            fontSize: 'var(--cascade-text-sm)',
+            fontFamily: 'var(--cascivo-font-mono, monospace)',
+            fontSize: 'var(--cascivo-text-sm)',
             resize: 'vertical',
           }}
         />
 
-        <div style={{ marginBlockStart: 'var(--cascade-space-4)' }}>
+        <div style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
           <h3>Findings ({cssFindings.value.length + propFindings.value.length})</h3>
           {cssFindings.value.length + propFindings.value.length === 0 ? (
-            <p style={{ color: 'var(--cascade-color-success)' }}>No violations found.</p>
+            <p style={{ color: 'var(--cascivo-color-success)' }}>No violations found.</p>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table
                 style={{
                   width: '100%',
                   borderCollapse: 'collapse',
-                  fontSize: 'var(--cascade-text-sm)',
+                  fontSize: 'var(--cascivo-text-sm)',
                 }}
               >
                 <thead>
                   <tr
                     style={{
                       textAlign: 'left',
-                      borderBlockEnd: '1px solid var(--cascade-color-border)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border)',
                     }}
                   >
                     <Th>File:line</Th>
@@ -658,12 +658,12 @@ export function ContextExplorerPage() {
           )}
         </div>
 
-        <div style={{ marginBlockStart: 'var(--cascade-space-4)' }}>
+        <div style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
           <label
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 'var(--cascade-space-2)',
+              gap: 'var(--cascivo-space-2)',
               cursor: 'pointer',
             }}
           >
@@ -681,9 +681,9 @@ export function ContextExplorerPage() {
             <pre
               style={{
                 ...cardStyle,
-                marginBlockStart: 'var(--cascade-space-3)',
+                marginBlockStart: 'var(--cascivo-space-3)',
                 overflowX: 'auto',
-                fontSize: 'var(--cascade-text-sm)',
+                fontSize: 'var(--cascivo-text-sm)',
                 whiteSpace: 'pre-wrap',
               }}
             >
@@ -747,14 +747,14 @@ function BoundaryColumn({
 
 function Th({ children }: { children: ComponentChildren }) {
   return (
-    <th style={{ padding: 'var(--cascade-space-2)', fontWeight: 'var(--cascade-font-medium)' }}>
+    <th style={{ padding: 'var(--cascivo-space-2)', fontWeight: 'var(--cascivo-font-medium)' }}>
       {children}
     </th>
   )
 }
 
 function Td({ children }: { children: ComponentChildren }) {
-  return <td style={{ padding: 'var(--cascade-space-2)', verticalAlign: 'top' }}>{children}</td>
+  return <td style={{ padding: 'var(--cascivo-space-2)', verticalAlign: 'top' }}>{children}</td>
 }
 
 function FindingRow({
@@ -771,7 +771,7 @@ function FindingRow({
   detail: string
 }) {
   return (
-    <tr style={{ borderBlockEnd: '1px solid var(--cascade-color-border-subtle)' }}>
+    <tr style={{ borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)' }}>
       <Td>
         <code>
           {file}:{line}
@@ -782,8 +782,8 @@ function FindingRow({
           style={{
             color:
               level === 'error'
-                ? 'var(--cascade-color-destructive)'
-                : 'var(--cascade-color-text-subtle)',
+                ? 'var(--cascivo-color-destructive)'
+                : 'var(--cascivo-color-text-subtle)',
           }}
         >
           {level}

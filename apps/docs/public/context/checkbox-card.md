@@ -49,9 +49,9 @@ Backed by a native <input type="checkbox"> inside a <label>, so the entire card 
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
 
 ## Examples
 
@@ -76,4 +76,4 @@ Multi-select feature toggles
 | Area                       | Level    | Note                                                                                                |
 | -------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
 | controlled vs uncontrolled | flexible | Supports both checked + onCheckedChange and defaultChecked                                          |
-| token names                | strict   | Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface |
+| token names                | strict   | Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface |

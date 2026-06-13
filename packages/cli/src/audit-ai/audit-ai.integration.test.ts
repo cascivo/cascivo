@@ -15,8 +15,8 @@ const FIXTURES = join(HERE, '__fixtures__')
  * Minimal contract that covers the values and components used in the fixtures.
  *
  * Dirty fixtures use:
- *   - oklch(0.373 0.015 264) → --cascade-gray-700
- *   - oklch(0.623 0.214 250) → --cascade-color-accent
+ *   - oklch(0.373 0.015 264) → --cascivo-gray-700
+ *   - oklch(0.623 0.214 250) → --cascivo-color-accent
  *   - <Button frobnicate>           → unknown prop
  *   - <Tooltip> (no required prop)  → no required-prop finding (Tooltip has none)
  *
@@ -26,9 +26,9 @@ const FIXTURES = join(HERE, '__fixtures__')
 const contract = buildContract({
   catalog: {
     tokens: [
-      { name: '--cascade-gray-700', resolvedDefault: 'oklch(0.373 0.015 264)' },
-      { name: '--cascade-color-accent', resolvedDefault: 'oklch(0.623 0.214 250)' },
-      { name: '--cascade-color-primary', resolvedDefault: '#3b82f6' },
+      { name: '--cascivo-gray-700', resolvedDefault: 'oklch(0.373 0.015 264)' },
+      { name: '--cascivo-color-accent', resolvedDefault: 'oklch(0.623 0.214 250)' },
+      { name: '--cascivo-color-primary', resolvedDefault: '#3b82f6' },
     ],
   },
   registry: {
@@ -106,7 +106,7 @@ describe('integration: --fix rewrites hex literals to tokens', () => {
     const src = '.hero { color: #3b82f6; }'
     const result = fixCssLiterals(src, 'test.css', contract)
     expect(result.fixed).toBe(1)
-    expect(result.source).toContain('var(--cascade-color-primary)')
+    expect(result.source).toContain('var(--cascivo-color-primary)')
     expect(result.source).not.toContain('#3b82f6')
   })
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Callout',
@@ -18,16 +18,16 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'React.ReactNode', required: true },
   ],
   tokens: [
-    '--cascade-color-info',
-    '--cascade-color-warning',
-    '--cascade-color-success',
-    '--cascade-color-destructive',
-    '--cascade-radius-md',
-    '--cascade-space-1',
-    '--cascade-space-3',
-    '--cascade-space-4',
-    '--cascade-text-sm',
-    '--cascade-color-text',
+    '--cascivo-color-info',
+    '--cascivo-color-warning',
+    '--cascivo-color-success',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-md',
+    '--cascivo-space-1',
+    '--cascivo-space-3',
+    '--cascivo-space-4',
+    '--cascivo-text-sm',
+    '--cascivo-color-text',
   ],
   accessibility: {
     role: 'note',

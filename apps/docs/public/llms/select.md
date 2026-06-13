@@ -5,7 +5,7 @@ Native select menu styled to match the design system
 ## Install
 
 ```bash
-npx cascade add select
+npx cascivo add select
 ```
 
 ## Category
@@ -52,22 +52,22 @@ npx cascade add select
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text-muted`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text-muted`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
-- **ARIA role:** `combobox`
-- **Keyboard:** Tab, Space, ArrowUp, ArrowDown
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `listbox`
+- **Keyboard:** ArrowUp, ArrowDown, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

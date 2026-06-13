@@ -1,6 +1,6 @@
-import { Separator } from '@cascade-ui/components/separator'
+import { Separator } from '@cascivo/components/separator'
 
-const REPO = 'https://github.com/urbanisierung/cascade-ui'
+const REPO = 'https://github.com/urbanisierung/cascivo'
 
 interface NavLink {
   label: string
@@ -20,6 +20,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Proof',
     links: [
+      { label: 'Why cascivo', href: '/why' },
       { label: 'Accessibility', href: '/accessibility' },
       { label: 'Performance', href: '/performance' },
       { label: 'Benchmarks', href: '/docs/benchmarks' },
@@ -41,7 +42,7 @@ export function Footer() {
     <footer className="footer">
       <Separator />
       <div className="footer-inner">
-        <div className="footer-brand">cascade</div>
+        <div className="footer-brand">cascivo</div>
         <div className="footer-columns">
           {COLUMNS.map((col) => (
             <nav key={col.label} className="footer-column" aria-label={`Footer: ${col.label}`}>
@@ -59,7 +60,7 @@ export function Footer() {
           ))}
         </div>
         <div className="footer-note">
-          MIT licensed. Built with cascade — view source, it&apos;s all tokens.
+          MIT licensed. Built with cascivo — view source, it&apos;s all tokens.
         </div>
       </div>
     </footer>

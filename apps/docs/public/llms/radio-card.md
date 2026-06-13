@@ -5,7 +5,7 @@ Selectable card backed by a native radio input. Use RadioCardGroup for single-se
 ## Install
 
 ```bash
-npx cascade add radio-card
+npx cascivo add radio-card
 ```
 
 ## Category
@@ -43,20 +43,20 @@ Single-select plan picker
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
-- `--cascade-color-active-bg`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
+- `--cascivo-color-active-bg`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radiogroup`
 - **Keyboard:** ArrowDown, ArrowUp, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

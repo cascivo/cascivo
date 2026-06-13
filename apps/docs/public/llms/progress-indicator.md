@@ -5,7 +5,7 @@ Shows progress through the steps of a multi-step flow
 ## Install
 
 ```bash
-npx cascade add progress-indicator
+npx cascivo add progress-indicator
 ```
 
 ## Category
@@ -55,24 +55,24 @@ npx cascade add progress-indicator
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-on-accent`
-- `--cascade-color-border`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

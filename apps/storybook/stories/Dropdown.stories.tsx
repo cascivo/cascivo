@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Dropdown } from '@cascade-ui/components/dropdown'
+import { Button } from '@cascivo/components/button'
+import { Dropdown } from '@cascivo/components/dropdown'
 
 const items = [
   { label: 'Edit', value: 'edit' },

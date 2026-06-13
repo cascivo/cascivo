@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Combobox } from '@cascade-ui/components/combobox'
+import { Combobox } from '@cascivo/components/combobox'
 
 const options = [
   { value: 'us', label: 'United States' },

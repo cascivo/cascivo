@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
   "tags": ["layout", "shell", "sidebar", "navigation"],
   "category": "layout",
   "meta": {
@@ -61,22 +61,22 @@
       }
     ],
     "tokens": [
-      "--cascade-space-3",
-      "--cascade-space-4",
-      "--cascade-space-6",
-      "--cascade-duration-200",
-      "--cascade-ease-out",
-      "--cascade-color-border",
-      "--cascade-color-surface",
-      "--cascade-font-size-xs",
-      "--cascade-color-accent",
-      "--cascade-color-destructive",
-      "--cascade-color-destructive-subtle",
-      "--cascade-focus-ring"
+      "--cascivo-space-3",
+      "--cascivo-space-4",
+      "--cascivo-space-6",
+      "--cascivo-duration-200",
+      "--cascivo-ease-out",
+      "--cascivo-color-border",
+      "--cascivo-color-surface",
+      "--cascivo-font-size-xs",
+      "--cascivo-color-accent",
+      "--cascivo-color-destructive",
+      "--cascivo-color-destructive-subtle",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -86,7 +86,7 @@
         "description": "App shell with collapsible nav"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
     "tags": ["layout", "shell", "sidebar", "navigation"],
     "intent": {
       "whenToUse": [

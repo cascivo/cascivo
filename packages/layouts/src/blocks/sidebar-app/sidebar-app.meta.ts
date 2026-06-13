@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SidebarApp',
@@ -9,11 +9,11 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     { title: 'Default', code: '<SidebarApp />', description: 'App with sidebar navigation' },
   ],
-  dependencies: ['@cascade-ui/react', 'layout/app-shell'],
+  dependencies: ['@cascivo/react', 'layout/app-shell'],
   tags: ['block', 'sidebar', 'navigation', 'app-shell'],
   intent: {
     whenToUse: [

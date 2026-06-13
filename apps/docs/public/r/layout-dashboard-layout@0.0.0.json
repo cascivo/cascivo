@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "dashboard", "page"],
   "category": "layout",
   "meta": {
@@ -42,10 +42,10 @@
         "description": "Optional aside panel (20rem)"
       }
     ],
-    "tokens": ["--cascade-space-4", "--cascade-space-6"],
+    "tokens": ["--cascivo-space-4", "--cascivo-space-6"],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -55,7 +55,7 @@
         "description": "Stats + main layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "dashboard", "page"],
     "intent": {
       "whenToUse": [

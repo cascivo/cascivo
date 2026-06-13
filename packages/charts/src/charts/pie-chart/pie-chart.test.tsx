@@ -38,6 +38,11 @@ describe('PieChart', () => {
     expect(screen.getAllByText('Alpha').length).toBeGreaterThan(0)
   })
 
+  it('renders aria-live region for tooltip', () => {
+    render(<PieChart data={data} title="Pie" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no legend', () => {
       const { container } = render(<PieChart data={data} title="Plain" plain />)

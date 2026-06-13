@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-circle/progress-circle.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["progress", "loading", "circle", "feedback"],
   "category": "feedback",
   "meta": {
@@ -55,10 +55,10 @@
         "description": "Accessible name announced by screen readers"
       }
     ],
-    "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+    "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-color-text"],
     "accessibility": {
       "role": "progressbar",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -75,7 +75,7 @@
         "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["progress", "loading", "circle", "feedback"],
     "intent": {
       "whenToUse": [
@@ -117,7 +117,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Arc and track colors must resolve to --cascade-* tokens"
+          "note": "Arc and track colors must resolve to --cascivo-* tokens"
         }
       ]
     }

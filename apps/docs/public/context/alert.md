@@ -44,12 +44,12 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 
 ## Tokens
 
-- `--cascade-color-info`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-radius-md`
+- `--cascivo-color-info`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
 
 ## Examples
 
@@ -82,4 +82,4 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 | Area        | Level    | Note                                                                             |
 | ----------- | -------- | -------------------------------------------------------------------------------- |
 | variant     | flexible | Choose the severity variant that matches the message; default is neutral         |
-| token names | strict   | Severity colors must resolve to --cascade-color-info/success/warning/destructive |
+| token names | strict   | Severity colors must resolve to --cascivo-color-info/success/warning/destructive |

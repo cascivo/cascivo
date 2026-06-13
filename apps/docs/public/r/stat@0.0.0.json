@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stat/stat.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stat/stat.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["stat", "kpi", "metric", "number"],
   "category": "display",
   "meta": {
@@ -55,15 +55,15 @@
       }
     ],
     "tokens": [
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-color-text-muted",
-      "--cascade-color-success",
-      "--cascade-color-destructive"
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive"
     ],
     "accessibility": {
       "role": "none",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -80,7 +80,7 @@
         "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["stat", "kpi", "metric", "number"],
     "intent": {
       "whenToUse": [
@@ -120,7 +120,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Trend colors must resolve to --cascade-color-success/destructive"
+          "note": "Trend colors must resolve to --cascivo-color-success/destructive"
         }
       ]
     }

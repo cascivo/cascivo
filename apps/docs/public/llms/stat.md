@@ -5,7 +5,7 @@ Displays a key metric with optional delta, trend direction and help text
 ## Install
 
 ```bash
-npx cascade add stat
+npx cascivo add stat
 ```
 
 ## Category
@@ -44,20 +44,20 @@ npx cascade add stat
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

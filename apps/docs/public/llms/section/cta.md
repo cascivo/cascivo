@@ -5,7 +5,7 @@ Call-to-action band — quiet hairline-bordered section with title, description,
 ## Install
 
 ```bash
-npx cascade add section/cta
+npx cascivo add section/cta
 ```
 
 ## Category
@@ -42,22 +42,22 @@ Quiet bordered band with centered heading, description, and action buttons
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-surface-subtle`
-- `--cascade-text-2xl`
-- `--cascade-text-base`
-- `--cascade-font-bold`
-- `--cascade-text-secondary`
-- `--cascade-space-*`
+- `--cascivo-color-border`
+- `--cascivo-surface-subtle`
+- `--cascivo-text-2xl`
+- `--cascivo-text-base`
+- `--cascivo-font-bold`
+- `--cascivo-text-secondary`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `region`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

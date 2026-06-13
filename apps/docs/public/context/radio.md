@@ -43,12 +43,12 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -65,5 +65,5 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 | Area                          | Level    | Note                                                                           |
 | ----------------------------- | -------- | ------------------------------------------------------------------------------ |
-| token names                   | strict   | Control and label styling must resolve to the listed --cascade-\* tokens       |
+| token names                   | strict   | Control and label styling must resolve to the listed --cascivo-\* tokens       |
 | option labels and orientation | flexible | Labels are free text and the group supports horizontal or vertical orientation |

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Select',
@@ -21,17 +21,20 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-color-text-muted',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-color-text-muted',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
-    role: 'combobox',
-    wcag: 'AA',
-    keyboard: ['Tab', 'Space', 'ArrowUp', 'ArrowDown'],
+    // native <select> — keyboard behavior is browser-provided, not cascade-wired
+    role: 'listbox',
+    wcag: '2.2-AA',
+    keyboard: ['ArrowUp', 'ArrowDown', 'Space'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -43,7 +46,7 @@ export const meta: ComponentMeta = {
       code: '<Select label="Country" placeholder="Choose…" options={countries} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'dropdown', 'menu'],
   intent: {
     whenToUse: [
@@ -86,7 +89,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual props must resolve to --cascade-color-* / radius / focus-ring tokens',
+        note: 'Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens',
       },
       {
         area: 'option labels',

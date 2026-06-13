@@ -5,7 +5,7 @@ Slide-in panel from any edge, using popover=manual and @starting-style animation
 ## Install
 
 ```bash
-npx cascade add sheet
+npx cascivo add sheet
 ```
 
 ## Category
@@ -23,23 +23,23 @@ _No props._
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `dialog`
 - **Keyboard:** Escape, Tab, Shift+Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

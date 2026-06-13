@@ -5,7 +5,7 @@ Switch between related panels of content
 ## Install
 
 ```bash
-npx cascade add tabs
+npx cascivo add tabs
 ```
 
 ## Category
@@ -40,21 +40,21 @@ npx cascade add tabs
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-border`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-border`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `tablist`
 - **Keyboard:** ArrowLeft, ArrowRight, Home, End
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

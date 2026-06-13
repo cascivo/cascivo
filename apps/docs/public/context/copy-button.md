@@ -40,23 +40,23 @@ Renders a native <button> so Enter/Space, focus, and role come from the platform
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text`
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-success`
-- `--cascade-radius-control`
-- `--cascade-focus-ring`
-- `--cascade-control-height-sm`
-- `--cascade-control-height-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-success`
+- `--cascivo-radius-control`
+- `--cascivo-focus-ring`
+- `--cascivo-control-height-sm`
+- `--cascivo-control-height-md`
 
 ## Examples
 
 ### Default
 
 ```jsx
-<CopyButton value="npx cascade add button" />
+<CopyButton value="npx cascivo add button" />
 ```
 
 ### Small
@@ -78,4 +78,4 @@ Override the built-in copy/copied strings per instance
 | Area        | Level    | Note                                                                                              |
 | ----------- | -------- | ------------------------------------------------------------------------------------------------- |
 | labels      | flexible | copy/copied strings overridable via labels; default from i18n catalog                             |
-| token names | strict   | Styling resolves to semantic --cascade-color-\* tokens; copied state uses --cascade-color-success |
+| token names | strict   | Styling resolves to semantic --cascivo-color-\* tokens; copied state uses --cascivo-color-success |

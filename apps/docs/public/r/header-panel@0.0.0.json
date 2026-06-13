@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header-panel/header-panel.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
   "category": "navigation",
   "meta": {
@@ -59,16 +59,16 @@
       }
     ],
     "tokens": [
-      "--cascade-shell-header-block-size",
-      "--cascade-shell-panel-inline-size",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-shadow-md",
-      "--cascade-motion-enter"
+      "--cascivo-shell-header-block-size",
+      "--cascivo-shell-panel-inline-size",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-shadow-md",
+      "--cascivo-motion-enter"
     ],
     "accessibility": {
       "role": "region",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Escape", "Tab"]
     },
     "examples": [
@@ -78,7 +78,7 @@
         "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
     "intent": {
       "whenToUse": [
@@ -119,7 +119,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+          "note": "Surface, shadow, and sizing must resolve to --cascivo-* shell tokens"
         }
       ]
     }

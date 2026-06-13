@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input/input.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input/input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "text", "input"],
   "category": "inputs",
   "meta": {
@@ -57,17 +57,19 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-accent",
-      "--cascade-color-destructive",
-      "--cascade-radius-input",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-destructive",
+      "--cascivo-radius-input",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "textbox",
-      "wcag": "AA",
-      "keyboard": ["Tab", "Shift+Tab"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Shift+Tab"],
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -79,7 +81,7 @@
         "code": "<Input label=\"Email\" error=\"Invalid email address\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "text", "input"],
     "intent": {
       "whenToUse": [
@@ -125,7 +127,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-* tokens"
+          "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "label / hint / error copy",

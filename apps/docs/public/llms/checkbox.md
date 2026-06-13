@@ -5,7 +5,7 @@ Binary toggle for forms, with indeterminate support
 ## Install
 
 ```bash
-npx cascade add checkbox
+npx cascivo add checkbox
 ```
 
 ## Category
@@ -44,22 +44,22 @@ npx cascade add checkbox
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-text-on-accent`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `checkbox`
 - **Keyboard:** Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

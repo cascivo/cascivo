@@ -5,7 +5,7 @@ Non-modal panel anchored below the shell header at the inline-end edge — hosts
 ## Install
 
 ```bash
-npx cascade add header-panel
+npx cascivo add header-panel
 ```
 
 ## Category
@@ -42,23 +42,23 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Design tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-shell-panel-inline-size`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-shell-panel-inline-size`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `region`
 - **Keyboard:** Escape, Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

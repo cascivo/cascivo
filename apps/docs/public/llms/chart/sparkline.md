@@ -5,7 +5,7 @@ Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 ## Install
 
 ```bash
-npx cascade add chart/sparkline
+npx cascivo add chart/sparkline
 ```
 
 ## Category
@@ -28,22 +28,22 @@ npx cascade add chart/sparkline
 ### Inline sparkline
 
 ```tsx
-import { Sparkline } from '@cascade-ui/charts'
+import { Sparkline } from '@cascivo/charts'
 ;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

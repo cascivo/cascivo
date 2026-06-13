@@ -22,12 +22,12 @@ export interface CascadeConfig {
 }
 
 export const DEFAULT_CONFIG: CascadeConfig = {
-  registry: 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/registry.json',
+  registry: 'https://raw.githubusercontent.com/urbanisierung/cascivo/main/registry.json',
   outputDir: 'src/components/ui',
   theme: 'light',
 }
 
-const CONFIG_FILES = ['cascade.config.ts', 'cascade.config.js', 'cascade.config.mjs']
+const CONFIG_FILES = ['cascivo.config.ts', 'cascivo.config.js', 'cascivo.config.mjs']
 
 /** Apply defaults over a (possibly partial) user config object. */
 export function resolveConfig(partial: Partial<CascadeConfig> | null | undefined): CascadeConfig {
@@ -41,15 +41,15 @@ export function applyEnvOverrides(
 ): CascadeConfig {
   return {
     ...config,
-    ...(env.CASCADE_REGISTRY ? { registry: env.CASCADE_REGISTRY } : {}),
-    ...(env.CASCADE_OUTPUT_DIR ? { outputDir: env.CASCADE_OUTPUT_DIR } : {}),
+    ...(env.CASCIVO_REGISTRY ? { registry: env.CASCIVO_REGISTRY } : {}),
+    ...(env.CASCIVO_OUTPUT_DIR ? { outputDir: env.CASCIVO_OUTPUT_DIR } : {}),
   }
 }
 
 /**
- * Locate and load `cascade.config.{ts,js,mjs}` from `cwd`. Falls back to the
+ * Locate and load `cascivo.config.{ts,js,mjs}` from `cwd`. Falls back to the
  * default config when no file is found or the file cannot be loaded. Env vars
- * (`CASCADE_REGISTRY`, `CASCADE_OUTPUT_DIR`) take precedence.
+ * (`CASCIVO_REGISTRY`, `CASCIVO_OUTPUT_DIR`) take precedence.
  */
 export async function loadConfig(cwd: string = process.cwd()): Promise<CascadeConfig> {
   for (const file of CONFIG_FILES) {

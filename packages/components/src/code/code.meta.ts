@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Code',
@@ -9,29 +9,29 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md'],
   props: [{ name: 'size', type: "'sm' | 'md'", required: false, default: 'md' }],
   tokens: [
-    '--cascade-font-mono',
-    '--cascade-color-text',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-indicator',
-    '--cascade-text-xs',
-    '--cascade-text-sm',
+    '--cascivo-font-mono',
+    '--cascivo-color-text',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-indicator',
+    '--cascivo-text-xs',
+    '--cascivo-text-sm',
   ],
   accessibility: {
     role: 'code',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
-    { title: 'Default', code: '<Code>npx cascade add button</Code>' },
+    { title: 'Default', code: '<Code>npx cascivo add button</Code>' },
     {
       title: 'In a sentence',
       code: '<Text>Run <Code>vp check</Code> before committing.</Text>',
       description: 'Sits inline with surrounding text',
     },
-    { title: 'Small', code: '<Code size="sm">--cascade-color-accent</Code>' },
+    { title: 'Small', code: '<Code size="sm">--cascivo-color-accent</Code>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'code', 'inline', 'mono'],
   intent: {
     whenToUse: [
@@ -72,7 +72,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Font and surface must resolve to --cascade-font-mono and --cascade-* tokens',
+        note: 'Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens',
       },
     ],
   },

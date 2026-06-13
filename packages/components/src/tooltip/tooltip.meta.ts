@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Tooltip',
@@ -25,15 +25,18 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-sm',
-    '--cascade-z-tooltip',
+    '--cascivo-color-text',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-sm',
+    '--cascivo-z-tooltip',
   ],
   accessibility: {
     role: 'tooltip',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Escape'],
+    apgPattern: 'tooltip',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -41,7 +44,7 @@ export const meta: ComponentMeta = {
       code: '<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'hint', 'popover'],
   intent: {
     whenToUse: [

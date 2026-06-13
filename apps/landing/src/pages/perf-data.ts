@@ -6,7 +6,7 @@ export const LIBS = ['cascade', 'shadcn', 'carbon'] as const
 export type Lib = (typeof LIBS)[number]
 
 export const LIB_LABELS: Record<Lib, string> = {
-  cascade: 'cascade',
+  cascade: 'cascivo',
   shadcn: 'shadcn/ui',
   carbon: 'Carbon',
 }
@@ -90,16 +90,26 @@ export function bundleChartSeries(): ChartSeries[] | null {
   ]
 }
 
-export type MatrixRow = { component: string } & Partial<Record<Lib, number>>
+export type Lens = 'incremental' | 'standalone' | 'amortized'
+
+export type MatrixRow = {
+  component: string
+  notes: Partial<Record<Lib, string>>
+} & Partial<Record<`${Lib}_incremental` | `${Lib}_standalone` | `${Lib}_amortized`, number>>
 
 export function matrixRows(): MatrixRow[] | null {
   const matrix = bench.bundle?.matrix
   if (!matrix) return null
   return MATRIX_COMPONENTS.map((component) => {
-    const row: MatrixRow = { component }
+    const row: MatrixRow = { component, notes: {} }
     for (const lib of LIBS) {
       const cell = matrix[lib]?.[component]
-      if (cell) row[lib] = cell.incrementalGzKb
+      if (cell) {
+        row[`${lib}_incremental`] = cell.incrementalGzKb
+        row[`${lib}_standalone`] = cell.standaloneGzKb
+        row[`${lib}_amortized`] = cell.amortizedGzKb
+        if (cell.note) row.notes[lib] = cell.note
+      }
     }
     return row
   })

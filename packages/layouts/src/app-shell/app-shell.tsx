@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { ReactNode } from 'react'
 import styles from './app-shell.module.css'
 import { createShellState, type ShellState } from './shell-state'

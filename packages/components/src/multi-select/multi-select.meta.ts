@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'MultiSelect',
@@ -16,18 +16,18 @@ export const meta: ComponentMeta = {
     { name: 'labels', type: 'MultiSelectLabels', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-radius-input',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-focus-ring',
-    '--cascade-motion-enter',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-radius-input',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-focus-ring',
+    '--cascivo-motion-enter',
   ],
   accessibility: {
     role: 'listbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Space', 'Enter', 'Escape'],
   },
   examples: [
@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
       code: `<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['form', 'select', 'multi', 'input', 'popover'],
   intent: {
     whenToUse: [
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens',
+        note: 'Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'labels',

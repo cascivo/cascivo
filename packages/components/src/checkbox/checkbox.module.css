@@ -2,8 +2,8 @@
   .wrapper {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-2);
-    font-family: var(--cascade-font-sans);
+    gap: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
     cursor: pointer;
 
     &[data-disabled] {
@@ -31,13 +31,13 @@
     flex-shrink: 0;
     inline-size: 1.125rem;
     block-size: 1.125rem;
-    background-color: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border-strong);
-    border-radius: var(--cascade-radius-indicator);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border-strong);
+    border-radius: var(--cascivo-radius-indicator);
     transition:
-      background-color var(--cascade-duration-150) var(--cascade-ease-out),
-      border-color var(--cascade-duration-150) var(--cascade-ease-out),
-      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     /* Checkmark drawn via mask so it inherits theme color */
     &::after {
@@ -51,9 +51,9 @@
 
   .input:checked + .control,
   .input:indeterminate + .control {
-    --_check-color: var(--cascade-color-text-on-accent);
-    background-color: var(--cascade-color-accent);
-    border-color: var(--cascade-color-accent);
+    --_check-color: var(--cascivo-color-text-on-accent);
+    background-color: var(--cascivo-color-accent);
+    border-color: var(--cascivo-color-accent);
   }
 
   .input:checked + .control {
@@ -66,12 +66,30 @@
 
   .input:focus-visible + .control {
     outline: none;
-    box-shadow: var(--cascade-focus-ring);
+    box-shadow: var(--cascivo-focus-ring);
   }
 
   .label {
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
-    line-height: var(--cascade-leading-snug);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    line-height: var(--cascivo-leading-snug);
+  }
+}
+
+@media (forced-colors: active) {
+  .control {
+    border: 1px solid ButtonText;
+    background-color: Field;
+  }
+
+  .input:checked + .control,
+  .input:indeterminate + .control {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .input:focus-visible + .control {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

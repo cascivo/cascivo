@@ -5,7 +5,7 @@ Fixed-height spacing block using design token steps.
 ## Install
 
 ```bash
-npx cascade add layout/spacer
+npx cascivo add layout/spacer
 ```
 
 ## Category
@@ -30,16 +30,16 @@ Adds vertical space between elements
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `none`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

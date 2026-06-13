@@ -5,7 +5,7 @@ An accessible date-picker with a calendar popover.
 ## Install
 
 ```bash
-npx cascade add date-picker
+npx cascivo add date-picker
 ```
 
 ## Category
@@ -70,22 +70,22 @@ Date range constraint
 
 ## Design tokens
 
-- `--cascade-date-picker-bg`
-- `--cascade-date-picker-border`
-- `--cascade-date-picker-radius`
-- `--cascade-date-picker-day-selected-bg`
-- `--cascade-date-picker-day-today-color`
+- `--cascivo-date-picker-bg`
+- `--cascivo-date-picker-border`
+- `--cascivo-date-picker-radius`
+- `--cascivo-date-picker-day-selected-bg`
+- `--cascivo-date-picker-day-today-color`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
 - **Keyboard:** Enter, Space, Escape, ArrowUp, ArrowDown, ArrowLeft, ArrowRight
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

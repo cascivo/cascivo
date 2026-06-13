@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Radar } from '@cascade-ui/charts'
+import { Radar } from '@cascivo/charts'
 
 const axes = ['Speed', 'Power', 'Range', 'Efficiency', 'Cost']
 const series = [

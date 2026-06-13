@@ -2,15 +2,15 @@
   .wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-1);
-    font-family: var(--cascade-font-sans);
+    gap: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
     position: relative;
   }
 
   .label {
-    font-size: var(--cascade-text-sm);
-    font-weight: var(--cascade-font-medium);
-    color: var(--cascade-color-text);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text);
   }
 
   .field {
@@ -24,27 +24,27 @@
     align-items: center;
     justify-content: space-between;
     inline-size: 100%;
-    padding-inline: var(--cascade-space-3);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
-    background-color: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-field);
+    padding-inline: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
     cursor: pointer;
     outline: none;
     text-align: start;
     transition:
-      border-color var(--cascade-duration-150) var(--cascade-ease-out),
-      box-shadow var(--cascade-duration-150) var(--cascade-ease-out);
+      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover:not(:disabled) {
-      border-color: var(--cascade-color-border-strong);
+      border-color: var(--cascivo-color-border-strong);
     }
 
     &:focus-visible {
-      border-color: var(--cascade-color-accent);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cascade-color-accent) 20%, transparent);
+      border-color: var(--cascivo-color-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cascivo-color-accent) 20%, transparent);
     }
 
     &:disabled {
@@ -64,7 +64,7 @@
   }
 
   .wrapper[data-state='error'] .trigger {
-    border-color: var(--cascade-color-danger);
+    border-color: var(--cascivo-color-danger);
   }
 
   .value {
@@ -74,19 +74,19 @@
   }
 
   .placeholder {
-    color: var(--cascade-color-text-subtle);
+    color: var(--cascivo-color-text-subtle);
   }
 
   .chevron {
     display: inline-block;
     inline-size: 0.75rem;
     block-size: 0.75rem;
-    border-inline-end: 2px solid var(--cascade-color-text-muted);
-    border-block-end: 2px solid var(--cascade-color-text-muted);
+    border-inline-end: 2px solid var(--cascivo-color-text-muted);
+    border-block-end: 2px solid var(--cascivo-color-text-muted);
     transform: rotate(45deg);
     flex-shrink: 0;
-    margin-inline-start: var(--cascade-space-2);
-    transition: transform var(--cascade-duration-150) var(--cascade-ease-out);
+    margin-inline-start: var(--cascivo-space-2);
+    transition: transform var(--cascivo-duration-150) var(--cascivo-ease-out);
   }
 
   .wrapper[data-state='open'] .chevron {
@@ -95,44 +95,44 @@
 
   .clear {
     position: absolute;
-    inset-inline-end: var(--cascade-space-8);
+    inset-inline-end: var(--cascivo-space-8);
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--cascade-color-text-muted);
-    font-size: var(--cascade-text-xs);
-    padding: var(--cascade-space-1);
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-xs);
+    padding: var(--cascivo-space-1);
     outline: none;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
 
     &:hover {
-      color: var(--cascade-color-text);
+      color: var(--cascivo-color-text);
     }
     &:focus-visible {
-      box-shadow: 0 0 0 2px var(--cascade-color-accent);
+      box-shadow: 0 0 0 2px var(--cascivo-color-accent);
     }
   }
 
   /* Listbox with @starting-style enter animation */
   .listbox {
     position: absolute;
-    inset-block-start: calc(100% + var(--cascade-space-1));
+    inset-block-start: calc(100% + var(--cascivo-space-1));
     inset-inline-start: 0;
     inline-size: 100%;
-    z-index: var(--cascade-z-dropdown);
+    z-index: var(--cascivo-z-dropdown);
     max-block-size: 16rem;
     overflow-y: auto;
-    background-color: var(--cascade-color-surface-overlay);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-overlay);
-    box-shadow: var(--cascade-shadow-overlay);
+    background-color: var(--cascivo-color-surface-overlay);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-overlay);
     opacity: 0;
     visibility: hidden;
     translate: 0 -0.25rem;
     transition:
-      opacity var(--cascade-motion-enter),
-      translate var(--cascade-motion-enter),
-      visibility var(--cascade-motion-enter);
+      opacity var(--cascivo-motion-enter),
+      translate var(--cascivo-motion-enter),
+      visibility var(--cascivo-motion-enter);
 
     &[data-state='open'] {
       opacity: 1;
@@ -149,42 +149,42 @@
   }
 
   .searchWrapper {
-    padding: var(--cascade-space-2);
-    border-block-end: 1px solid var(--cascade-color-border);
+    padding: var(--cascivo-space-2);
+    border-block-end: 1px solid var(--cascivo-color-border);
   }
 
   .search {
     inline-size: 100%;
-    padding-inline: var(--cascade-space-2);
-    padding-block: var(--cascade-space-1);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
-    background-color: var(--cascade-color-bg-subtle);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-field);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-bg-subtle);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-field);
     outline: none;
 
     &:focus-visible {
-      border-color: var(--cascade-color-accent);
+      border-color: var(--cascivo-color-accent);
     }
   }
 
   .option {
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
     cursor: pointer;
-    border-radius: var(--cascade-radius-item);
+    border-radius: var(--cascivo-radius-item);
 
     &[data-state='active'] {
-      background-color: var(--cascade-color-bg-subtle);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &[aria-selected='true'] {
-      background-color: color-mix(in srgb, var(--cascade-color-accent) 12%, transparent);
-      color: var(--cascade-color-accent);
+      background-color: color-mix(in srgb, var(--cascivo-color-accent) 12%, transparent);
+      color: var(--cascivo-color-accent);
     }
 
     &[data-disabled] {
@@ -194,19 +194,19 @@
   }
 
   .empty {
-    padding: var(--cascade-space-4);
+    padding: var(--cascivo-space-4);
     text-align: center;
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-muted);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-muted);
   }
 
   .error {
-    font-size: var(--cascade-text-xs);
-    color: var(--cascade-color-danger);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-danger);
   }
 
   .hint {
-    font-size: var(--cascade-text-xs);
-    color: var(--cascade-color-text-muted);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
   }
 }

@@ -5,7 +5,7 @@ Radar / spider chart with polar grid rings, spokes, and multi-series polygon ove
 ## Install
 
 ```bash
-npx cascade add chart/radar
+npx cascivo add chart/radar
 ```
 
 ## Category
@@ -31,7 +31,7 @@ npx cascade add chart/radar
 ### Basic radar chart
 
 ```tsx
-import { Radar } from '@cascade-ui/charts'
+import { Radar } from '@cascivo/charts'
 
 const axes = ['Speed','Power','Range','Efficiency','Cost']
 const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
@@ -40,23 +40,23 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

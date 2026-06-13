@@ -5,7 +5,7 @@ Placeholder for views that have no data to display
 ## Install
 
 ```bash
-npx cascade add empty-state
+npx cascivo add empty-state
 ```
 
 ## Category
@@ -48,20 +48,20 @@ npx cascade add empty-state
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-full`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-full`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Pagination',
@@ -29,21 +29,21 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-radius-input',
-    '--cascade-radius-button',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-radius-input',
+    '--cascivo-radius-button',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'navigation',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter', 'Space', 'ArrowUp', 'ArrowDown'],
   },
   examples: [
@@ -60,7 +60,7 @@ export const meta: ComponentMeta = {
       code: "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />",
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['pagination', 'navigation', 'table', 'data', 'pages'],
   intent: {
     whenToUse: [
@@ -102,7 +102,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surfaces, borders, and accent must resolve to --cascade-* tokens',
+        note: 'Surfaces, borders, and accent must resolve to --cascivo-* tokens',
       },
     ],
   },

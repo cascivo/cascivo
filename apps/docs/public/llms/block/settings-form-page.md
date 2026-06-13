@@ -5,7 +5,7 @@ Settings page with profile form inside a two-column settings layout.
 ## Install
 
 ```bash
-npx cascade add block/settings-form-page
+npx cascivo add block/settings-form-page
 ```
 
 ## Category
@@ -30,12 +30,12 @@ Settings form page
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/settings-layout`
 
 ## Tags

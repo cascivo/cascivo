@@ -1,11 +1,12 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale, bandScale } from '../../engine/scale'
 import { linePath } from '../../engine/shape'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface ComboChartBar {
   label: string
@@ -25,6 +26,7 @@ export interface ComboChartProps {
   secondAxis?: boolean
   width?: number
   height?: number
+  tooltip?: boolean
   className?: string
   /** Render only the marks — no axes or grid lines. For micro/inline charts. */
   plain?: boolean
@@ -38,6 +40,7 @@ export function ComboChart({
   secondAxis = false,
   width: fixedWidth,
   height,
+  tooltip,
   className,
   plain,
 }: ComboChartProps) {
@@ -50,6 +53,7 @@ export function ComboChart({
   const barMax = bars.reduce((m, b) => Math.max(m, b.value), 0) || 1
   const lineMin = line.length > 0 ? Math.min(...line.map((p) => p.y)) : 0
   const lineMax = line.length > 0 ? Math.max(...line.map((p) => p.y)) : 1
+  const hasData = bars.length > 0
 
   const fallback = (
     <table>
@@ -71,6 +75,58 @@ export function ComboChart({
     </table>
   )
 
+  /** Build tooltip model using the chart's resolved pixel dimensions. */
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (tooltip === false || !hasData) return undefined
+
+    const inner = {
+      width: w - margins.left - margins.right,
+      height: h - margins.top - margins.bottom,
+    }
+    if (inner.width <= 0) return undefined
+
+    const xScale = bandScale(
+      bars.map((b) => b.label),
+      [0, inner.width],
+      0.2,
+    )
+    const barYScale = linearScale([0, barMax], [inner.height, 0])
+    const lineYScale = secondAxis
+      ? linearScale([lineMin, lineMax || lineMin + 1], [inner.height, 0])
+      : barYScale
+
+    const barPoints: ChartPoint[] = bars.map((b, i) => ({
+      id: `bar-${i}`,
+      cx: margins.left + (xScale.map(b.label) ?? 0) + xScale.bandwidth / 2,
+      cy: margins.top + barYScale.map(b.value),
+      label: b.label,
+      value: b.value,
+      seriesId: 'bars',
+    }))
+
+    const linePoints: ChartPoint[] = line.map((p, i) => {
+      const bx = bars[i]
+        ? (xScale.map(bars[i]!.label) ?? 0) + xScale.bandwidth / 2
+        : (inner.width * p.x) / Math.max(1, line.length - 1)
+      return {
+        id: `line-${i}`,
+        cx: margins.left + bx,
+        cy: margins.top + lineYScale.map(p.y),
+        label: bars[i]?.label ?? String(p.x),
+        value: p.y,
+        seriesId: 'line',
+      }
+    })
+
+    return { points: [...barPoints, ...linePoints] }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -80,6 +136,7 @@ export function ComboChart({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -122,7 +179,7 @@ export function ComboChart({
                   y={by}
                   width={xScale.bandwidth}
                   height={Math.max(0, inner.height - by)}
-                  fill="var(--cascade-chart-1)"
+                  fill="var(--cascivo-chart-1)"
                   opacity={0.75}
                   aria-label={`${b.label}: ${b.value}`}
                 />
@@ -132,7 +189,7 @@ export function ComboChart({
               <path
                 d={pathD}
                 fill="none"
-                stroke="var(--cascade-chart-2)"
+                stroke="var(--cascivo-chart-2)"
                 strokeWidth={2.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"

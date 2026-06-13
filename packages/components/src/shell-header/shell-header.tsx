@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { type KeyboardEvent, type ReactNode, type RefObject } from 'react'
 import { usePopover } from '../popover/use-popover'
 import styles from './shell-header.module.css'

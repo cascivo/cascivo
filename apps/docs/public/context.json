@@ -2,7 +2,7 @@
   "generatedAt": "2026-06-13",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
-    "Signals only: useSignal, useComputed, useSignalEffect from @cascade-ui/core",
+    "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
     "No useState, useEffect, useContext, useLayoutEffect, useReducer in components",
     "DOM side effects via useSignalEffect, not useEffect",
     "useRef only for DOM element references",
@@ -11,11 +11,36 @@
     "data-state attributes only for states CSS cannot express (e.g. loading, error)",
     "FSM (useMachine) only when the component itself drives transitions",
     "CSS logical properties throughout (RTL-safe)",
-    "User-visible strings via @cascade-ui/i18n — no hardcoded English fallbacks",
+    "User-visible strings via @cascivo/i18n — no hardcoded English fallbacks",
     "WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested"
   ],
   "tokenCatalogUrl": "/tokens.catalog.json",
   "specs": [
+    {
+      "id": "at-matrix",
+      "title": "at-matrix",
+      "path": "/docs/specs/at-matrix.md"
+    },
+    {
+      "id": "at-methodology",
+      "title": "at-methodology",
+      "path": "/docs/specs/at-methodology.md"
+    },
+    {
+      "id": "brand-color",
+      "title": "brand-color",
+      "path": "/docs/specs/brand-color.md"
+    },
+    {
+      "id": "cascivo-launch-checklist",
+      "title": "cascivo-launch-checklist",
+      "path": "/docs/specs/cascivo-launch-checklist.md"
+    },
+    {
+      "id": "chart-palette",
+      "title": "chart-palette",
+      "path": "/docs/specs/chart-palette.md"
+    },
     {
       "id": "spec-color-usage",
       "title": "Color Usage",
@@ -37,6 +62,26 @@
       "path": "/docs/specs/decision-hierarchy.md"
     },
     {
+      "id": "legal-mapping",
+      "title": "legal-mapping",
+      "path": "/docs/specs/legal-mapping.md"
+    },
+    {
+      "id": "mobile-audit-docs",
+      "title": "mobile-audit-docs",
+      "path": "/docs/specs/mobile-audit-docs.md"
+    },
+    {
+      "id": "mobile-audit-landing",
+      "title": "mobile-audit-landing",
+      "path": "/docs/specs/mobile-audit-landing.md"
+    },
+    {
+      "id": "perf-methodology",
+      "title": "perf-methodology",
+      "path": "/docs/specs/perf-methodology.md"
+    },
+    {
       "id": "spec-spacing",
       "title": "Spacing",
       "path": "/docs/specs/spacing.md"
@@ -45,6 +90,11 @@
       "id": "t5-deferral",
       "title": "t5-deferral",
       "path": "/docs/specs/t5-deferral.md"
+    },
+    {
+      "id": "wcag-2.2",
+      "title": "wcag-2.2",
+      "path": "/docs/specs/wcag-2.2.md"
     }
   ],
   "boundaries": {
@@ -53,7 +103,7 @@
       "strict": [
         {
           "area": "token names",
-          "note": "Visual props must resolve to --cascade-* tokens; never hard-code color, spacing, or size values"
+          "note": "Visual props must resolve to --cascivo-* tokens; never hard-code color, spacing, or size values"
         },
         {
           "area": "a11y roles and keyboard",
@@ -65,17 +115,17 @@
         },
         {
           "area": "i18n for chrome text",
-          "note": "User-visible component chrome strings must use @cascade-ui/i18n; no hard-coded English fallbacks in component source"
+          "note": "User-visible component chrome strings must use @cascivo/i18n; no hard-coded English fallbacks in component source"
         },
         {
           "area": "CSS custom properties",
-          "note": "All visual values via --cascade-* tokens; no Tailwind, no inline styles, no CSS-in-JS"
+          "note": "All visual values via --cascivo-* tokens; no Tailwind, no inline styles, no CSS-in-JS"
         }
       ],
       "flexible": [
         {
           "area": "spacing step",
-          "note": "Choose any step on the --cascade-space-* scale to fit the layout; no single correct answer"
+          "note": "Choose any step on the --cascivo-space-* scale to fit the layout; no single correct answer"
         },
         {
           "area": "label copy",
@@ -105,7 +155,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Borders, surfaces, and radii must resolve to --cascade-* semantic tokens"
+          "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
         }
       ],
       "Alert": [
@@ -117,7 +167,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Severity colors must resolve to --cascade-color-info/success/warning/destructive"
+          "note": "Severity colors must resolve to --cascivo-color-info/success/warning/destructive"
         }
       ],
       "AlertDialog": [
@@ -134,7 +184,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive"
+          "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
         }
       ],
       "Avatar": [
@@ -146,7 +196,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Fallback and status colors must resolve to --cascade-* semantic tokens"
+          "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
         }
       ],
       "Badge": [
@@ -158,7 +208,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)"
+          "note": "Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)"
         }
       ],
       "Blockquote": [
@@ -170,7 +220,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Border and text colors must resolve to --cascade-* tokens"
+          "note": "Border and text colors must resolve to --cascivo-* tokens"
         }
       ],
       "Breadcrumb": [
@@ -182,14 +232,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Text colors and focus ring must resolve to --cascade-* tokens"
+          "note": "Text colors and focus ring must resolve to --cascivo-* tokens"
         }
       ],
       "Button": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+          "note": "Visual props must resolve to --cascivo-button-* / semantic tokens"
         },
         {
           "area": "label copy",
@@ -206,7 +256,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+          "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
         }
       ],
       "Checkbox": [
@@ -218,7 +268,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens"
+          "note": "Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens"
         }
       ],
       "CheckboxCard": [
@@ -230,7 +280,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+          "note": "Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface"
         }
       ],
       "Code": [
@@ -242,7 +292,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Font and surface must resolve to --cascade-font-mono and --cascade-* tokens"
+          "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
         }
       ],
       "Combobox": [
@@ -259,7 +309,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+          "note": "Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens"
         }
       ],
       "CommandMenu": [
@@ -276,7 +326,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens"
+          "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
         }
       ],
       "ContextMenu": [
@@ -288,7 +338,7 @@
         {
           "area": "anchor position",
           "level": "strict",
-          "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+          "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
         }
       ],
       "CopyButton": [
@@ -300,7 +350,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success"
+          "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
         }
       ],
       "DataTable": [
@@ -312,7 +362,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "All surfaces, borders, and spacing must resolve to --cascade-* tokens"
+          "note": "All surfaces, borders, and spacing must resolve to --cascivo-* tokens"
         }
       ],
       "DatePicker": [
@@ -329,7 +379,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Styling resolves to --cascade-date-picker-* component tokens"
+          "note": "Styling resolves to --cascivo-date-picker-* component tokens"
         }
       ],
       "Dropdown": [
@@ -346,14 +396,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens"
+          "note": "Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens"
         }
       ],
       "Editable": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+          "note": "Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens"
         },
         {
           "area": "placeholder copy",
@@ -375,14 +425,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Text and background colors must resolve to --cascade-* tokens"
+          "note": "Text and background colors must resolve to --cascivo-* tokens"
         }
       ],
       "FileUploader": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Status colors must resolve to --cascade-color-accent/success/danger tokens"
+          "note": "Status colors must resolve to --cascivo-color-accent/success/danger tokens"
         },
         {
           "area": "label and hint copy",
@@ -421,7 +471,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, and z-index must resolve to --cascade-* tokens"
+          "note": "Surface, border, and z-index must resolve to --cascivo-* tokens"
         }
       ],
       "HeaderPanel": [
@@ -433,7 +483,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+          "note": "Surface, shadow, and sizing must resolve to --cascivo-* shell tokens"
         }
       ],
       "Heading": [
@@ -452,7 +502,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+          "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "open/close delay",
@@ -469,7 +519,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-* tokens"
+          "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "label / hint / error copy",
@@ -486,7 +536,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Addon background, border, text, and radius must resolve to the listed --cascade-* tokens"
+          "note": "Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "addon alignment",
@@ -508,7 +558,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface and border must resolve to --cascade-* tokens"
+          "note": "Surface and border must resolve to --cascivo-* tokens"
         }
       ],
       "Link": [
@@ -520,7 +570,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Accent colors and focus ring must resolve to --cascade-* tokens"
+          "note": "Accent colors and focus ring must resolve to --cascivo-* tokens"
         }
       ],
       "List": [
@@ -532,14 +582,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Spacing and text color must resolve to --cascade-* tokens"
+          "note": "Spacing and text color must resolve to --cascivo-* tokens"
         }
       ],
       "Menu": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+          "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "item content",
@@ -556,7 +606,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens"
+          "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "size",
@@ -573,7 +623,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens"
+          "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "labels",
@@ -590,7 +640,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+          "note": "Visual props must resolve to the listed --cascivo-* semantic tokens"
         },
         {
           "area": "formatting and bounds",
@@ -607,7 +657,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Slot styling must resolve to the listed --cascade-* tokens"
+          "note": "Slot styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "length and type",
@@ -619,7 +669,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Trigger and item styling must resolve to the listed --cascade-* tokens"
+          "note": "Trigger and item styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "item set and labels",
@@ -636,14 +686,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surfaces, borders, and accent must resolve to --cascade-* tokens"
+          "note": "Surfaces, borders, and accent must resolve to --cascivo-* tokens"
         }
       ],
       "PasswordInput": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascade-* tokens"
+          "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "labels",
@@ -655,7 +705,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Panel styling must resolve to the listed --cascade-* tokens"
+          "note": "Panel styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "content",
@@ -672,7 +722,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Fill and status colors must resolve to --cascade-* tokens"
+          "note": "Fill and status colors must resolve to --cascivo-* tokens"
         }
       ],
       "ProgressCircle": [
@@ -684,7 +734,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Arc and track colors must resolve to --cascade-* tokens"
+          "note": "Arc and track colors must resolve to --cascivo-* tokens"
         }
       ],
       "ProgressIndicator": [
@@ -696,7 +746,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Step and connector colors must resolve to --cascade-* tokens"
+          "note": "Step and connector colors must resolve to --cascivo-* tokens"
         }
       ],
       "Prose": [
@@ -708,14 +758,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "All typography and surface styling resolves to --cascade-* tokens"
+          "note": "All typography and surface styling resolves to --cascivo-* tokens"
         }
       ],
       "Radio": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+          "note": "Control and label styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "option labels and orientation",
@@ -727,7 +777,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Card and indicator styling must resolve to the listed --cascade-* tokens"
+          "note": "Card and indicator styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "title and description",
@@ -739,7 +789,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Star styling must resolve to the listed --cascade-* tokens"
+          "note": "Star styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "scale and labels",
@@ -751,7 +801,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Field and control styling must resolve to the listed --cascade-* tokens"
+          "note": "Field and control styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "debounce and copy",
@@ -763,7 +813,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Segment styling must resolve to the listed --cascade-* tokens"
+          "note": "Segment styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "option labels",
@@ -775,7 +825,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual props must resolve to --cascade-color-* / radius / focus-ring tokens"
+          "note": "Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens"
         },
         {
           "area": "option labels",
@@ -792,7 +842,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Color must resolve to --cascade-color-border"
+          "note": "Color must resolve to --cascivo-color-border"
         }
       ],
       "Sheet": [
@@ -816,7 +866,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+          "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
         }
       ],
       "SideNav": [
@@ -828,7 +878,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+          "note": "Sizing, surfaces, and motion must resolve to --cascivo-* tokens"
         }
       ],
       "Skeleton": [
@@ -840,7 +890,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Background and radius must resolve to --cascade-* tokens"
+          "note": "Background and radius must resolve to --cascivo-* tokens"
         }
       ],
       "SkipNav": [
@@ -859,7 +909,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+          "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
         },
         {
           "area": "min/max/step",
@@ -876,7 +926,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Radius must resolve to --cascade-radius-full"
+          "note": "Radius must resolve to --cascivo-radius-full"
         }
       ],
       "Stat": [
@@ -888,7 +938,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Trend colors must resolve to --cascade-color-success/destructive"
+          "note": "Trend colors must resolve to --cascivo-color-success/destructive"
         }
       ],
       "Status": [
@@ -900,7 +950,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "State colors must resolve to --cascade-color-success/warning/error/info"
+          "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
         }
       ],
       "Switcher": [
@@ -912,7 +962,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Accent and surface colors must resolve to --cascade-* tokens"
+          "note": "Accent and surface colors must resolve to --cascivo-* tokens"
         }
       ],
       "Tabs": [
@@ -924,7 +974,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Accent, borders, and focus ring must resolve to --cascade-* tokens"
+          "note": "Accent, borders, and focus ring must resolve to --cascivo-* tokens"
         }
       ],
       "Tag": [
@@ -936,7 +986,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Variant colors must resolve to --cascade-color-*-subtle tokens"
+          "note": "Variant colors must resolve to --cascivo-color-*-subtle tokens"
         }
       ],
       "TagsInput": [
@@ -960,14 +1010,14 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Font, leading, and color must resolve to --cascade-* tokens"
+          "note": "Font, leading, and color must resolve to --cascivo-* tokens"
         }
       ],
       "Textarea": [
         {
           "area": "token names",
           "level": "strict",
-          "note": "Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens"
+          "note": "Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens"
         },
         {
           "area": "resize and rows",
@@ -1003,7 +1053,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+          "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
         },
         {
           "area": "label copy",
@@ -1087,7 +1137,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Borders, surfaces, and radii must resolve to --cascade-* semantic tokens"
+            "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
           }
         ]
       },
@@ -1140,7 +1190,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Severity colors must resolve to --cascade-color-info/success/warning/destructive"
+            "note": "Severity colors must resolve to --cascivo-color-info/success/warning/destructive"
           }
         ]
       },
@@ -1206,7 +1256,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive"
+            "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
           }
         ]
       },
@@ -1250,7 +1300,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Fallback and status colors must resolve to --cascade-* semantic tokens"
+            "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
           }
         ]
       },
@@ -1298,7 +1348,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)"
+            "note": "Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)"
           }
         ]
       },
@@ -1345,7 +1395,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Border and text colors must resolve to --cascade-* tokens"
+            "note": "Border and text colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -1393,7 +1443,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Text colors and focus ring must resolve to --cascade-* tokens"
+            "note": "Text colors and focus ring must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -1440,7 +1490,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+            "note": "Visual props must resolve to --cascivo-button-* / semantic tokens"
           },
           {
             "area": "label copy",
@@ -1489,7 +1539,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+            "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -1548,7 +1598,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens"
+            "note": "Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens"
           }
         ]
       },
@@ -1604,7 +1654,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+            "note": "Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface"
           }
         ]
       },
@@ -1652,7 +1702,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Font and surface must resolve to --cascade-font-mono and --cascade-* tokens"
+            "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
           }
         ]
       },
@@ -1715,7 +1765,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+            "note": "Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens"
           }
         ]
       },
@@ -1782,7 +1832,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens"
+            "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
           }
         ]
       },
@@ -1830,7 +1880,7 @@
           {
             "area": "anchor position",
             "level": "strict",
-            "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+            "note": "Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click"
           }
         ]
       },
@@ -1882,7 +1932,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success"
+            "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
           }
         ]
       },
@@ -1931,7 +1981,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "All surfaces, borders, and spacing must resolve to --cascade-* tokens"
+            "note": "All surfaces, borders, and spacing must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -1989,7 +2039,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Styling resolves to --cascade-date-picker-* component tokens"
+            "note": "Styling resolves to --cascivo-date-picker-* component tokens"
           }
         ]
       },
@@ -2047,7 +2097,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens"
+            "note": "Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens"
           }
         ]
       },
@@ -2091,7 +2141,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+            "note": "Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens"
           },
           {
             "area": "placeholder copy",
@@ -2154,7 +2204,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Text and background colors must resolve to --cascade-* tokens"
+            "note": "Text and background colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -2207,7 +2257,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Status colors must resolve to --cascade-color-accent/success/danger tokens"
+            "note": "Status colors must resolve to --cascivo-color-accent/success/danger tokens"
           },
           {
             "area": "label and hint copy",
@@ -2315,7 +2365,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, and z-index must resolve to --cascade-* tokens"
+            "note": "Surface, border, and z-index must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -2364,7 +2414,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+            "note": "Surface, shadow, and sizing must resolve to --cascivo-* shell tokens"
           }
         ]
       },
@@ -2461,7 +2511,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+            "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "open/close delay",
@@ -2525,7 +2575,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-* tokens"
+            "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "label / hint / error copy",
@@ -2579,7 +2629,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Addon background, border, text, and radius must resolve to the listed --cascade-* tokens"
+            "note": "Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "addon alignment",
@@ -2632,7 +2682,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface and border must resolve to --cascade-* tokens"
+            "note": "Surface and border must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -2680,7 +2730,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Accent colors and focus ring must resolve to --cascade-* tokens"
+            "note": "Accent colors and focus ring must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -2724,7 +2774,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Spacing and text color must resolve to --cascade-* tokens"
+            "note": "Spacing and text color must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -2774,7 +2824,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+            "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "item content",
@@ -2838,7 +2888,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens"
+            "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "size",
@@ -2902,7 +2952,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens"
+            "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "labels",
@@ -2957,7 +3007,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+            "note": "Visual props must resolve to the listed --cascivo-* semantic tokens"
           },
           {
             "area": "formatting and bounds",
@@ -3012,7 +3062,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Slot styling must resolve to the listed --cascade-* tokens"
+            "note": "Slot styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "length and type",
@@ -3070,7 +3120,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Trigger and item styling must resolve to the listed --cascade-* tokens"
+            "note": "Trigger and item styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "item set and labels",
@@ -3124,7 +3174,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surfaces, borders, and accent must resolve to --cascade-* tokens"
+            "note": "Surfaces, borders, and accent must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -3171,7 +3221,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascade-* tokens"
+            "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "labels",
@@ -3225,7 +3275,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Panel styling must resolve to the listed --cascade-* tokens"
+            "note": "Panel styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "content",
@@ -3280,7 +3330,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Fill and status colors must resolve to --cascade-* tokens"
+            "note": "Fill and status colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -3330,7 +3380,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Arc and track colors must resolve to --cascade-* tokens"
+            "note": "Arc and track colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -3378,7 +3428,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Step and connector colors must resolve to --cascade-* tokens"
+            "note": "Step and connector colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -3426,7 +3476,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "All typography and surface styling resolves to --cascade-* tokens"
+            "note": "All typography and surface styling resolves to --cascivo-* tokens"
           }
         ]
       },
@@ -3475,7 +3525,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+            "note": "Control and label styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "option labels and orientation",
@@ -3529,7 +3579,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Card and indicator styling must resolve to the listed --cascade-* tokens"
+            "note": "Card and indicator styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "title and description",
@@ -3578,7 +3628,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Star styling must resolve to the listed --cascade-* tokens"
+            "note": "Star styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "scale and labels",
@@ -3631,7 +3681,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Field and control styling must resolve to the listed --cascade-* tokens"
+            "note": "Field and control styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "debounce and copy",
@@ -3685,7 +3735,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Segment styling must resolve to the listed --cascade-* tokens"
+            "note": "Segment styling must resolve to the listed --cascivo-* tokens"
           },
           {
             "area": "option labels",
@@ -3740,7 +3790,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Visual props must resolve to --cascade-color-* / radius / focus-ring tokens"
+            "note": "Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens"
           },
           {
             "area": "option labels",
@@ -3789,7 +3839,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Color must resolve to --cascade-color-border"
+            "note": "Color must resolve to --cascivo-color-border"
           }
         ]
       },
@@ -3892,7 +3942,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+            "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
           }
         ]
       },
@@ -3936,7 +3986,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+            "note": "Sizing, surfaces, and motion must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -3985,7 +4035,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Background and radius must resolve to --cascade-* tokens"
+            "note": "Background and radius must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -4077,7 +4127,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+            "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
           },
           {
             "area": "min/max/step",
@@ -4131,7 +4181,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Radius must resolve to --cascade-radius-full"
+            "note": "Radius must resolve to --cascivo-radius-full"
           }
         ]
       },
@@ -4179,7 +4229,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Trend colors must resolve to --cascade-color-success/destructive"
+            "note": "Trend colors must resolve to --cascivo-color-success/destructive"
           }
         ]
       },
@@ -4232,7 +4282,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "State colors must resolve to --cascade-color-success/warning/error/info"
+            "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
           }
         ]
       },
@@ -4276,7 +4326,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Accent and surface colors must resolve to --cascade-* tokens"
+            "note": "Accent and surface colors must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -4325,7 +4375,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Accent, borders, and focus ring must resolve to --cascade-* tokens"
+            "note": "Accent, borders, and focus ring must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -4378,7 +4428,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Variant colors must resolve to --cascade-color-*-subtle tokens"
+            "note": "Variant colors must resolve to --cascivo-color-*-subtle tokens"
           }
         ]
       },
@@ -4479,7 +4529,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Font, leading, and color must resolve to --cascade-* tokens"
+            "note": "Font, leading, and color must resolve to --cascivo-* tokens"
           }
         ]
       },
@@ -4527,7 +4577,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens"
+            "note": "Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens"
           },
           {
             "area": "resize and rows",
@@ -4678,7 +4728,7 @@
           {
             "area": "token names",
             "level": "strict",
-            "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+            "note": "Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens"
           },
           {
             "area": "label copy",

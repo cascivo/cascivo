@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { CSSProperties } from 'react'
 import styles from './progress-bar.module.css'
 
@@ -59,7 +59,7 @@ export function ProgressBar({
           style={
             indeterminate
               ? undefined
-              : ({ '--cascade-progress-value': `${percent}%` } as CSSProperties)
+              : ({ '--cascivo-progress-value': `${percent}%` } as CSSProperties)
           }
         />
       </div>

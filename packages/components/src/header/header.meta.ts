@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Header',
@@ -30,35 +30,35 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-header-bg',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-bg-subtle',
-    '--cascade-focus-ring',
-    '--cascade-z-raised',
+    '--cascivo-header-bg',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-focus-ring',
+    '--cascivo-z-raised',
   ],
   accessibility: {
     role: 'banner',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab'],
   },
   examples: [
     {
       title: 'Basic',
-      code: "<Header brand=\"cascade\" links={[{ label: 'Docs', href: '/docs' }]} />",
+      code: "<Header brand=\"cascivo\" links={[{ label: 'Docs', href: '/docs' }]} />",
     },
     {
       title: 'With actions',
-      code: '<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />',
+      code: '<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />',
     },
     {
       title: 'Sticky',
-      code: '<Header sticky brand="cascade" links={links} />',
+      code: '<Header sticky brand="cascivo" links={links} />',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'app-shell', 'top-bar', 'banner'],
   intent: {
     whenToUse: [
@@ -95,7 +95,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, border, and z-index must resolve to --cascade-* tokens',
+        note: 'Surface, border, and z-index must resolve to --cascivo-* tokens',
       },
     ],
   },

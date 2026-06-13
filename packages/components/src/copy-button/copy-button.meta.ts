@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'CopyButton',
@@ -23,24 +23,24 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-text-subtle',
-    '--cascade-color-text',
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-success',
-    '--cascade-radius-control',
-    '--cascade-focus-ring',
-    '--cascade-control-height-sm',
-    '--cascade-control-height-md',
+    '--cascivo-color-surface',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-text',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-success',
+    '--cascivo-radius-control',
+    '--cascivo-focus-ring',
+    '--cascivo-control-height-sm',
+    '--cascivo-control-height-md',
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
   },
   examples: [
-    { title: 'Default', code: '<CopyButton value="npx cascade add button" />' },
+    { title: 'Default', code: '<CopyButton value="npx cascivo add button" />' },
     { title: 'Small', code: '<CopyButton value="pnpm install" size="sm" />' },
     {
       title: 'Custom labels',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Override the built-in copy/copied strings per instance',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['clipboard', 'copy', 'button', 'snippet'],
   intent: {
     whenToUse: [
@@ -94,7 +94,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success',
+        note: 'Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success',
       },
     ],
   },

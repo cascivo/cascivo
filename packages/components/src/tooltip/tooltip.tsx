@@ -1,5 +1,5 @@
 'use client'
-import { createMachine, useMachine, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { createMachine, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
 import {
   cloneElement,
   useId,

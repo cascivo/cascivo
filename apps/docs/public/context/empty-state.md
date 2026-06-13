@@ -43,11 +43,11 @@ Presentational by role; the title carries the meaning as text and the action is 
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-full`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-full`
 
 ## Examples
 
@@ -73,4 +73,4 @@ Presentational by role; the title carries the meaning as text and the action is 
 | Area            | Level    | Note                                                                    |
 | --------------- | -------- | ----------------------------------------------------------------------- |
 | size and action | flexible | Action and icon are optional; size scales for full-page vs in-panel use |
-| token names     | strict   | Text and background colors must resolve to --cascade-\* tokens          |
+| token names     | strict   | Text and background colors must resolve to --cascivo-\* tokens          |

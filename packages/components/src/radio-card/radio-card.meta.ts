@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'RadioCard',
@@ -20,14 +20,14 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the card' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-border',
-    '--cascade-radius-surface',
-    '--cascade-color-active-bg',
+    '--cascivo-color-accent',
+    '--cascivo-color-border',
+    '--cascivo-radius-surface',
+    '--cascivo-color-active-bg',
   ],
   accessibility: {
     role: 'radiogroup',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Space'],
   },
   examples: [
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
       description: 'Single-select plan picker',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['radio', 'card', 'selectable', 'form'],
   intent: {
     whenToUse: [
@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Card and indicator styling must resolve to the listed --cascade-* tokens',
+        note: 'Card and indicator styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'title and description',

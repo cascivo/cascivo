@@ -5,7 +5,7 @@ Container for grouping related content
 ## Install
 
 ```bash
-npx cascade add card
+npx cascivo add card
 ```
 
 ## Category
@@ -40,19 +40,19 @@ npx cascade add card
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-card`
-- `--cascade-shadow-md`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-card`
+- `--cascivo-shadow-md`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `region`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

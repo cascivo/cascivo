@@ -5,7 +5,7 @@ Right-click context menu anchored at pointer coordinates via CSS custom properti
 ## Install
 
 ```bash
-npx cascade add context-menu
+npx cascivo add context-menu
 ```
 
 ## Category
@@ -23,23 +23,23 @@ _No props._
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
-- `--cascade-color-bg-subtle`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
+- `--cascivo-color-bg-subtle`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
 - **Keyboard:** ArrowDown, ArrowUp, Enter, Space, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

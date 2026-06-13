@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input-group/input-group.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input-group/input-group.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "input", "addon", "group", "layout"],
   "category": "inputs",
   "meta": {
@@ -40,14 +40,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-bg-subtle",
-      "--cascade-color-border",
-      "--cascade-color-text-subtle",
-      "--cascade-radius-input"
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-border",
+      "--cascivo-color-text-subtle",
+      "--cascivo-radius-input"
     ],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -68,7 +68,7 @@
         "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "input", "addon", "group", "layout"],
     "intent": {
       "whenToUse": [
@@ -104,7 +104,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Addon background, border, text, and radius must resolve to the listed --cascade-* tokens"
+          "note": "Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "addon alignment",

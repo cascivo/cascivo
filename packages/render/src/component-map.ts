@@ -49,7 +49,7 @@ import {
   ToastProvider,
   Toggle,
   Tooltip,
-} from '@cascade-ui/react'
+} from '@cascivo/react'
 
 type AnyComponent = React.ComponentType<Record<string, unknown>>
 const cast = (c: unknown) => c as AnyComponent

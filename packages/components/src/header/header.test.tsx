@@ -10,7 +10,7 @@ const links: HeaderLink[] = [
 
 describe('Header', () => {
   it('renders a banner landmark', () => {
-    render(<Header brand="cascade" />)
+    render(<Header brand="cascivo" />)
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
@@ -28,7 +28,7 @@ describe('Header', () => {
   })
 
   it('does not render a nav when no links are given', () => {
-    render(<Header brand="cascade" />)
+    render(<Header brand="cascivo" />)
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
   })
 
@@ -46,17 +46,17 @@ describe('Header', () => {
   })
 
   it('sets data-sticky when sticky', () => {
-    render(<Header sticky brand="cascade" />)
+    render(<Header sticky brand="cascivo" />)
     expect(screen.getByRole('banner')).toHaveAttribute('data-sticky', 'true')
   })
 
   it('omits data-sticky by default', () => {
-    render(<Header brand="cascade" />)
+    render(<Header brand="cascivo" />)
     expect(screen.getByRole('banner')).not.toHaveAttribute('data-sticky')
   })
 
   it('merges className', () => {
-    render(<Header brand="cascade" className="custom" />)
+    render(<Header brand="cascivo" className="custom" />)
     expect(screen.getByRole('banner')).toHaveClass('custom')
   })
 })

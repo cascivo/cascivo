@@ -5,7 +5,7 @@ Accessible dialog overlay using native <dialog> element
 ## Install
 
 ```bash
-npx cascade add modal
+npx cascivo add modal
 ```
 
 ## Category
@@ -45,22 +45,22 @@ npx cascade add modal
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-border`
-- `--cascade-radius-modal`
-- `--cascade-shadow-xl`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-radius-modal`
+- `--cascivo-shadow-xl`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `dialog`
 - **Keyboard:** Escape, Tab, Shift+Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

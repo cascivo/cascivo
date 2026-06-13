@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AuthLayout',
@@ -17,15 +17,15 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-bg-subtle',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-lg',
-    '--cascade-space-4',
-    '--cascade-space-6',
-    '--cascade-space-8',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-lg',
+    '--cascivo-space-4',
+    '--cascivo-space-6',
+    '--cascivo-space-8',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Login',
@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
       description: 'Centered auth card with logo',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'auth', 'login', 'page'],
   intent: {
     whenToUse: [

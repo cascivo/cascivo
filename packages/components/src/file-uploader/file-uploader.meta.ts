@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'FileUploader',
@@ -46,15 +46,15 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, description: 'Disables the upload zone' },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-color-success',
-    '--cascade-color-danger',
-    '--cascade-color-danger-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-color-success',
+    '--cascivo-color-danger',
+    '--cascivo-color-danger-subtle',
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
   },
   examples: [
@@ -74,7 +74,7 @@ export const meta: ComponentMeta = {
       description: 'Shows file list',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['upload', 'file', 'drop', 'drag', 'input', 'form'],
   intent: {
     whenToUse: [
@@ -121,7 +121,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Status colors must resolve to --cascade-color-accent/success/danger tokens',
+        note: 'Status colors must resolve to --cascivo-color-accent/success/danger tokens',
       },
       {
         area: 'label and hint copy',

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'NotificationCenter',
@@ -22,11 +22,11 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     { title: 'Default', code: '<NotificationCenter />', description: 'Notification center' },
   ],
-  dependencies: ['@cascade-ui/react', 'layout/stack'],
+  dependencies: ['@cascivo/react', 'layout/stack'],
   tags: ['block', 'notifications', 'alerts'],
   intent: {
     whenToUse: [

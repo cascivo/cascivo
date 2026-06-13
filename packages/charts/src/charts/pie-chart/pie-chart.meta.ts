@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PieChart',
@@ -30,25 +30,25 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-chart-2',
-    '--cascade-chart-3',
-    '--cascade-chart-4',
-    '--cascade-chart-5',
-    '--cascade-chart-6',
-    '--cascade-chart-7',
-    '--cascade-chart-8',
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic pie chart',
-      code: `import { PieChart } from '@cascade-ui/charts'
+      code: `import { PieChart } from '@cascivo/charts'
 
 <PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'pie', 'donut', 'data-viz'],
   intent: {
     whenToUse: [

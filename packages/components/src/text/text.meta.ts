@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Text',
@@ -19,20 +19,20 @@ export const meta: ComponentMeta = {
     { name: 'muted', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-font-sans',
-    '--cascade-font-normal',
-    '--cascade-font-medium',
-    '--cascade-font-semibold',
-    '--cascade-leading-normal',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-text-sm',
-    '--cascade-text-base',
-    '--cascade-text-lg',
+    '--cascivo-font-sans',
+    '--cascivo-font-normal',
+    '--cascivo-font-medium',
+    '--cascivo-font-semibold',
+    '--cascivo-leading-normal',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-text-sm',
+    '--cascivo-text-base',
+    '--cascivo-text-lg',
   ],
   accessibility: {
     role: 'paragraph',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       description: 'Use as="span" inside other flow content',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'text', 'paragraph', 'body'],
   intent: {
     whenToUse: [
@@ -85,7 +85,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Font, leading, and color must resolve to --cascade-* tokens',
+        note: 'Font, leading, and color must resolve to --cascivo-* tokens',
       },
     ],
   },

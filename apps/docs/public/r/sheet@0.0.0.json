@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/sheet/sheet.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/sheet/sheet.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "drawer", "panel", "slide"],
   "category": "overlay",
   "meta": {
@@ -24,20 +24,20 @@
     "sizes": [],
     "props": [],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-lg",
-      "--cascade-shadow-xl",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-lg",
+      "--cascivo-shadow-xl",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit"
     ],
     "accessibility": {
       "role": "dialog",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Escape", "Tab", "Shift+Tab"]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "drawer", "panel", "slide"],
     "intent": {
       "whenToUse": [

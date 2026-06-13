@@ -5,7 +5,7 @@ Shows determinate or indeterminate progress of a task
 ## Install
 
 ```bash
-npx cascade add progress-bar
+npx cascivo add progress-bar
 ```
 
 ## Category
@@ -61,23 +61,23 @@ npx cascade add progress-bar
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-full`
-- `--cascade-motion-enter`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-full`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

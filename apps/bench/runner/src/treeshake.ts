@@ -23,9 +23,9 @@ export type TreeshakeResult = {
 }
 
 export async function measureTreeshake(repoRoot: string): Promise<TreeshakeResult> {
-  const bare = await bundleSize(`import '@cascade-ui/react'`, repoRoot)
-  const button = await bundleSize(`export { Button } from '@cascade-ui/react'`, repoRoot)
-  const full = await bundleSize(`export * from '@cascade-ui/react'`, repoRoot)
+  const bare = await bundleSize(`import '@cascivo/react'`, repoRoot)
+  const button = await bundleSize(`export { Button } from '@cascivo/react'`, repoRoot)
+  const full = await bundleSize(`export * from '@cascivo/react'`, repoRoot)
   return {
     bareImportGzBytes: bare,
     buttonOnlyGzKb: button / 1024,

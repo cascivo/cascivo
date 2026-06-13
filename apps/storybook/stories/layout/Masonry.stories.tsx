@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Masonry } from '@cascade-ui/layouts/masonry'
+import { Masonry } from '@cascivo/layouts/masonry'
 
 const meta: Meta<typeof Masonry> = {
   title: 'Layout/Masonry',
@@ -13,9 +13,9 @@ const tile = (label: string, h: number) => (
   <div
     style={{
       height: `${h}px`,
-      background: 'var(--cascade-surface-subtle)',
-      border: '1px solid var(--cascade-color-border)',
-      borderRadius: 'var(--cascade-radius-md)',
+      background: 'var(--cascivo-surface-subtle)',
+      border: '1px solid var(--cascivo-color-border)',
+      borderRadius: 'var(--cascivo-radius-md)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

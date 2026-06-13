@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { AnchorHTMLAttributes } from 'react'
 import styles from './link.module.css'
 

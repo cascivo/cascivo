@@ -2,34 +2,34 @@
   .header {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-2);
-    block-size: var(--cascade-shell-header-block-size);
-    padding-inline: var(--cascade-space-3);
-    background: var(--cascade-color-surface);
-    border-block-end: 1px solid var(--cascade-color-border);
-    font-family: var(--cascade-font-sans);
+    gap: var(--cascivo-space-2);
+    block-size: var(--cascivo-shell-header-block-size);
+    padding-inline: var(--cascivo-space-3);
+    background: var(--cascivo-color-surface);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    font-family: var(--cascivo-font-sans);
     position: relative;
   }
 
   .skipLink {
     position: absolute;
-    inset-block-start: var(--cascade-space-2);
-    inset-inline-start: var(--cascade-space-2);
+    inset-block-start: var(--cascivo-space-2);
+    inset-inline-start: var(--cascivo-space-2);
     z-index: 100;
-    padding: var(--cascade-space-2) var(--cascade-space-3);
-    background: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-control);
-    color: var(--cascade-color-text);
+    padding: var(--cascivo-space-2) var(--cascivo-space-3);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+    color: var(--cascivo-color-text);
     text-decoration: none;
-    font-size: var(--cascade-text-sm);
+    font-size: var(--cascivo-text-sm);
     /* Visually hidden until focused */
     clip-path: inset(50%);
 
     &:focus-visible {
       clip-path: none;
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
   }
 
@@ -41,37 +41,37 @@
     block-size: 2.5rem;
     border: none;
     background: transparent;
-    border-radius: var(--cascade-radius-control);
-    color: var(--cascade-color-text);
+    border-radius: var(--cascivo-radius-control);
+    color: var(--cascivo-color-text);
     cursor: pointer;
     flex-shrink: 0;
 
     &:hover {
-      background: var(--cascade-color-bg-subtle);
+      background: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
   }
 
   .brand {
     display: inline-flex;
     align-items: baseline;
-    gap: var(--cascade-space-1);
-    color: var(--cascade-color-text);
+    gap: var(--cascivo-space-1);
+    color: var(--cascivo-color-text);
     text-decoration: none;
     white-space: nowrap;
-    font-size: var(--cascade-text-sm);
+    font-size: var(--cascivo-text-sm);
   }
 
   .brandPrefix {
-    font-weight: var(--cascade-font-normal);
+    font-weight: var(--cascivo-font-normal);
   }
 
   .brandName {
-    font-weight: var(--cascade-font-semibold);
+    font-weight: var(--cascivo-font-semibold);
   }
 
   .nav {
@@ -81,7 +81,7 @@
   .navList {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -90,29 +90,29 @@
   .navLink {
     display: inline-flex;
     align-items: center;
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
     text-decoration: none;
     white-space: nowrap;
-    border-radius: var(--cascade-radius-control);
-    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+    border-radius: var(--cascivo-radius-control);
+    transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-text);
-      background: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &[data-state='active'] {
-      color: var(--cascade-color-text);
-      font-weight: var(--cascade-font-semibold);
-      background: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      font-weight: var(--cascivo-font-semibold);
+      background: var(--cascivo-color-bg-subtle);
     }
   }
 
@@ -124,37 +124,37 @@
   .navMenuTrigger {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascade-space-1);
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-subtle);
+    gap: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
     cursor: pointer;
     white-space: nowrap;
-    transition: color var(--cascade-duration-150) var(--cascade-ease-out);
+    transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-text);
-      background: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &[data-state='active'] {
-      color: var(--cascade-color-text);
-      font-weight: var(--cascade-font-semibold);
-      background: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      font-weight: var(--cascivo-font-semibold);
+      background: var(--cascivo-color-bg-subtle);
     }
   }
 
   .chevron {
-    transition: transform var(--cascade-duration-150) var(--cascade-ease-out);
+    transition: transform var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     :is([aria-expanded='true']) & {
       transform: rotate(180deg);
@@ -163,23 +163,23 @@
 
   .navMenuPanel {
     position: fixed;
-    position-anchor: var(--cascade-popover-anchor, inherit);
+    position-anchor: var(--cascivo-popover-anchor, inherit);
     inset-block-start: anchor(end);
     inset-inline-start: anchor(start);
-    margin: var(--cascade-space-1) 0 0;
-    padding: var(--cascade-space-1);
+    margin: var(--cascivo-space-1) 0 0;
+    padding: var(--cascivo-space-1);
     min-inline-size: 12rem;
-    background: var(--cascade-color-surface);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-control);
-    box-shadow: var(--cascade-shadow-md);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+    box-shadow: var(--cascivo-shadow-md);
     list-style: none;
 
     translate: 0 0;
     transition:
-      translate var(--cascade-motion-enter),
-      display var(--cascade-motion-enter) allow-discrete,
-      overlay var(--cascade-motion-enter) allow-discrete;
+      translate var(--cascivo-motion-enter),
+      display var(--cascivo-motion-enter) allow-discrete,
+      overlay var(--cascivo-motion-enter) allow-discrete;
 
     @starting-style {
       translate: 0 -0.5rem;
@@ -188,31 +188,31 @@
     &[data-state='closed'] {
       translate: 0 -0.5rem;
       transition:
-        translate var(--cascade-motion-exit),
-        display var(--cascade-motion-exit) allow-discrete,
-        overlay var(--cascade-motion-exit) allow-discrete;
+        translate var(--cascivo-motion-exit),
+        display var(--cascivo-motion-exit) allow-discrete,
+        overlay var(--cascivo-motion-exit) allow-discrete;
     }
   }
 
   .navMenuItem {
     display: block;
-    padding-inline: var(--cascade-space-3);
-    padding-block: var(--cascade-space-2);
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
     text-decoration: none;
-    border-radius: var(--cascade-radius-item);
+    border-radius: var(--cascivo-radius-item);
     white-space: nowrap;
 
     &:hover,
     &:focus-visible {
-      background: var(--cascade-color-bg-subtle);
+      background: var(--cascivo-color-bg-subtle);
       outline: none;
     }
 
     &[data-state='active'] {
-      background: var(--cascade-color-active-bg);
-      font-weight: var(--cascade-font-medium);
+      background: var(--cascivo-color-active-bg);
+      font-weight: var(--cascivo-font-medium);
     }
   }
 
@@ -223,7 +223,7 @@
   .actions {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-1);
+    gap: var(--cascivo-space-1);
   }
 
   .action {
@@ -235,22 +235,22 @@
     border: none;
     border-block-end: 2px solid transparent;
     background: transparent;
-    color: var(--cascade-color-text);
+    color: var(--cascivo-color-text);
     cursor: pointer;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
 
     &:hover {
-      background: var(--cascade-color-bg-subtle);
+      background: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
 
     &[data-state='active'] {
-      border-block-end-color: var(--cascade-color-accent);
-      background: var(--cascade-color-bg-subtle);
+      border-block-end-color: var(--cascivo-color-accent);
+      background: var(--cascivo-color-bg-subtle);
     }
   }
 
@@ -265,7 +265,7 @@
   .end {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-2);
-    padding-inline-start: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
+    padding-inline-start: var(--cascivo-space-2);
   }
 }

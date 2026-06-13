@@ -5,7 +5,7 @@ Typed signal-based form store (createForm/useForm) with sync/async validation an
 ## Install
 
 ```bash
-npx cascade add form
+npx cascivo add form
 ```
 
 ## Category
@@ -54,17 +54,17 @@ function Demo() {
 
 ## Design tokens
 
-- `--cascade-space-4`
+- `--cascivo-space-4`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `form`
 - **Keyboard:** Tab, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

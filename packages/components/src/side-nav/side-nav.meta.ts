@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SideNav',
@@ -43,24 +43,24 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-sidenav-inline-size',
-    '--cascade-sidenav-rail-inline-size',
-    '--cascade-sidenav-bg',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-accent',
-    '--cascade-color-accent-subtle',
-    '--cascade-focus-ring',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
-    '--cascade-motion-emphasis',
+    '--cascivo-sidenav-inline-size',
+    '--cascivo-sidenav-rail-inline-size',
+    '--cascivo-sidenav-bg',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-subtle',
+    '--cascivo-focus-ring',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+    '--cascivo-motion-emphasis',
   ],
   accessibility: {
     role: 'navigation',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter', 'Space', 'ArrowDown', 'ArrowUp', 'Escape'],
   },
   examples: [
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       description: 'Rail widens as CSS overlay on hover without reflowing adjacent content',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'sidebar', 'app-shell', 'collapsible'],
   intent: {
     whenToUse: [
@@ -121,7 +121,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Sizing, surfaces, and motion must resolve to --cascade-* tokens',
+        note: 'Sizing, surfaces, and motion must resolve to --cascivo-* tokens',
       },
     ],
   },

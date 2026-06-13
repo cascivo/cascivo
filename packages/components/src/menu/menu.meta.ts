@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Menu',
@@ -9,21 +9,21 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
-    '--cascade-color-bg-subtle',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+    '--cascivo-color-bg-subtle',
   ],
   accessibility: {
     role: 'menu',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'menu', 'dropdown', 'floating'],
   intent: {
     whenToUse: [
@@ -66,7 +66,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens',
+        note: 'Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'item content',

@@ -1,5 +1,5 @@
-import { BarChart } from '@cascade-ui/charts'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { BarChart } from '@cascivo/charts'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 import bench from 'virtual:bench'
 
 const axe = bench.a11y
@@ -11,7 +11,7 @@ const BUNDLE_SERIES = bundle
         id: 'gzip',
         label: 'Total gzip (KB)',
         data: [
-          { x: 'cascade', y: bundle.apps.cascade.totalGzKb },
+          { x: 'cascivo', y: bundle.apps.cascade.totalGzKb },
           { x: 'shadcn', y: bundle.apps.shadcn.totalGzKb },
           { x: 'carbon', y: bundle.apps.carbon.totalGzKb },
         ],
@@ -36,7 +36,7 @@ export function ProofTeasers() {
             </CardHeader>
             <CardContent>
               <p className="proof-number">{axe.cascade.violations}</p>
-              <p className="proof-number-label">axe violations · WCAG 2.1 AA · four app states</p>
+              <p className="proof-number-label">axe violations · WCAG 2.2 AA · four app states</p>
               <p className="proof-line">
                 Same scan, same rules: shadcn {axe.shadcn.violations} · Carbon{' '}
                 {axe.carbon.violations}. Plus a keyboard and ARIA matrix generated from every
@@ -61,7 +61,7 @@ export function ProofTeasers() {
               <BarChart
                 plain
                 orientation="horizontal"
-                title="Total gzip size: cascade vs shadcn vs Carbon"
+                title="Total gzip size: cascivo vs shadcn vs Carbon"
                 series={BUNDLE_SERIES}
                 x={(d) => d.x}
                 y={(d) => d.y}

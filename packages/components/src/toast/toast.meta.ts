@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Toast',
@@ -19,17 +19,19 @@ export const meta: ComponentMeta = {
     { name: 'duration', type: 'number', required: false, default: '5000' },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-success',
-    '--cascade-color-warning',
-    '--cascade-color-destructive',
-    '--cascade-radius-md',
-    '--cascade-z-toast',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-success',
+    '--cascivo-color-warning',
+    '--cascivo-color-destructive',
+    '--cascivo-radius-md',
+    '--cascivo-z-toast',
   ],
   accessibility: {
     role: 'status',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -37,7 +39,7 @@ export const meta: ComponentMeta = {
       code: 'const { toast } = useToast()\ntoast({ title: "Saved", variant: "success" })',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'notification', 'feedback'],
   intent: {
     whenToUse: [

@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/segmented-control/segmented-control.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "toggle", "group", "segmented", "input"],
   "category": "inputs",
   "meta": {
@@ -52,17 +52,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-bg-subtle",
-      "--cascade-color-border",
-      "--cascade-color-surface",
-      "--cascade-color-text",
-      "--cascade-radius-md",
-      "--cascade-radius-sm",
-      "--cascade-shadow-sm"
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-border",
+      "--cascivo-color-surface",
+      "--cascivo-color-text",
+      "--cascivo-radius-md",
+      "--cascivo-radius-sm",
+      "--cascivo-shadow-sm"
     ],
     "accessibility": {
       "role": "group",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowLeft", "ArrowRight"]
     },
     "examples": [
@@ -71,7 +71,7 @@
         "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "toggle", "group", "segmented", "input"],
     "intent": {
       "whenToUse": [
@@ -112,7 +112,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Segment styling must resolve to the listed --cascade-* tokens"
+          "note": "Segment styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "option labels",

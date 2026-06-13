@@ -1,5 +1,5 @@
 'use client'
-import { Button, Form, Input, Select, Toggle, useForm } from '@cascade-ui/react'
+import { Button, Form, Input, Select, Toggle, useForm } from '@cascivo/react'
 import { SettingsLayout } from '../../settings-layout/settings-layout'
 
 interface SettingsValues extends Record<string, unknown> {

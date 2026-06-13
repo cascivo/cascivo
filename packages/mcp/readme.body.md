@@ -5,15 +5,15 @@ Add it to your MCP client configuration:
 ```json
 {
   "mcpServers": {
-    "cascade": {
+    "cascivo": {
       "command": "npx",
-      "args": ["-y", "@cascade-ui/mcp"]
+      "args": ["-y", "@cascivo/mcp"]
     }
   }
 }
 ```
 
-The server speaks the MCP stdio transport. By default it reads the `registry.json` bundled with the package; override with the `CASCADE_REGISTRY_PATH` environment variable to point at a local registry.
+The server speaks the MCP stdio transport. By default it reads the `registry.json` bundled with the package; override with the `CASCIVO_REGISTRY_PATH` environment variable to point at a local registry.
 
 ## Tools
 
@@ -22,7 +22,7 @@ The server speaks the MCP stdio transport. By default it reads the `registry.jso
 | `list_components`   | `{ category? }`                       | All component manifests, optionally filtered by category |
 | `get_component`     | `{ name }`                            | The full manifest for one component                      |
 | `search_components` | `{ query }`                           | Components matching name, tags, or description           |
-| `add_to_project`    | `{ name, outputDir? }`                | Runs `cascade add <name>` as a child process             |
+| `add_to_project`    | `{ name, outputDir? }`                | Runs `cascivo add <name>` as a child process             |
 | `create_theme`      | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer)             |
 | `scaffold_page`     | `{ description, components? }`        | A JSX page layout string                                 |
 
@@ -31,7 +31,7 @@ The server speaks the MCP stdio transport. By default it reads the `registry.jso
 ## Programmatic use
 
 ```ts
-import { createServer } from '@cascade-ui/mcp'
+import { createServer } from '@cascivo/mcp'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
 const server = createServer({ registryPath: './registry.json' })

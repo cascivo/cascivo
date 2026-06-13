@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/file-uploader/file-uploader.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["upload", "file", "drop", "drag", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -91,15 +91,15 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-accent-subtle",
-      "--cascade-color-success",
-      "--cascade-color-danger",
-      "--cascade-color-danger-subtle"
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-subtle",
+      "--cascivo-color-success",
+      "--cascivo-color-danger",
+      "--cascivo-color-danger-subtle"
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space"]
     },
     "examples": [
@@ -119,7 +119,7 @@
         "description": "Shows file list"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["upload", "file", "drop", "drag", "input", "form"],
     "intent": {
       "whenToUse": [
@@ -164,7 +164,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Status colors must resolve to --cascade-color-accent/success/danger tokens"
+          "note": "Status colors must resolve to --cascivo-color-accent/success/danger tokens"
         },
         {
           "area": "label and hint copy",

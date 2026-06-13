@@ -17,7 +17,7 @@ cascade components with user-visible chrome text (labels, aria strings, empty st
 
 ## i18n-first rule
 
-All user-visible chrome strings in cascade components use `@cascade-ui/i18n`. The built-in catalog provides defaults; components accept a `labels` prop to override per-instance.
+All user-visible chrome strings in cascade components use `@cascivo/i18n`. The built-in catalog provides defaults; components accept a `labels` prop to override per-instance.
 
 **Strict:** Component chrome strings (aria-labels, placeholder text, button labels, empty states) must come from the i18n catalog via `t(builtin.<component>.<key>)`. Never hard-code English strings in component source.
 

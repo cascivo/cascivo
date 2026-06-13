@@ -6,15 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/react",
-    "@cascade-ui/icons",
-    "layout/app-shell",
-    "layout/page-header"
-  ],
+  "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
   "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
   "category": "display",
   "meta": {
@@ -26,18 +21,18 @@
     "sizes": [],
     "props": [],
     "tokens": [
-      "--cascade-shell-header-block-size",
-      "--cascade-shell-panel-inline-size",
-      "--cascade-shell-aside-inline-size",
-      "--cascade-color-border",
-      "--cascade-color-surface",
-      "--cascade-color-scrim",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit"
+      "--cascivo-shell-header-block-size",
+      "--cascivo-shell-panel-inline-size",
+      "--cascivo-shell-aside-inline-size",
+      "--cascivo-color-border",
+      "--cascivo-color-surface",
+      "--cascivo-color-scrim",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit"
     ],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": ["Escape", "Tab"]
     },
     "examples": [
@@ -47,12 +42,7 @@
         "description": "Full console shell demo"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/react",
-      "@cascade-ui/icons",
-      "layout/app-shell",
-      "layout/page-header"
-    ],
+    "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
     "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
     "intent": {
       "whenToUse": [

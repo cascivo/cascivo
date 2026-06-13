@@ -1,9 +1,9 @@
 /**
- * @cascade-ui/react — the prebuilt distribution of every cascade component.
+ * @cascivo/react — the prebuilt distribution of every cascade component.
  *
  * For users who want to consume cascade as a normal library instead of
  * copy-pasting source via the CLI. Bundles all components + their CSS
- * (import '@cascade-ui/react/styles.css').
+ * (import '@cascivo/react/styles.css').
  */
 export * from '../../components/src/button/button'
 export * from '../../components/src/input/input'
@@ -54,7 +54,7 @@ export * from '../../components/src/alert-dialog/alert-dialog'
 export * from '../../components/src/sheet/sheet'
 export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/hover-card/hover-card'
-export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascade-ui/core'
+export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascivo/core'
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'

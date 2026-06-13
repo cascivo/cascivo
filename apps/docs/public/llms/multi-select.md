@@ -5,7 +5,7 @@ Searchable multi-value select with popover listbox
 ## Install
 
 ```bash
-npx cascade add multi-select
+npx cascivo add multi-select
 ```
 
 ## Category
@@ -45,25 +45,25 @@ npx cascade add multi-select
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-radius-input`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-focus-ring`
-- `--cascade-motion-enter`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-radius-input`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-focus-ring`
+- `--cascivo-motion-enter`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `listbox`
 - **Keyboard:** ArrowDown, ArrowUp, Space, Enter, Escape
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

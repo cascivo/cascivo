@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'StatsBand',
@@ -25,16 +25,16 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-text-2xl',
-    '--cascade-text-sm',
-    '--cascade-font-bold',
-    '--cascade-font-mono',
-    '--cascade-text-secondary',
-    '--cascade-color-border',
-    '--cascade-surface-subtle',
-    '--cascade-space-*',
+    '--cascivo-text-2xl',
+    '--cascivo-text-sm',
+    '--cascivo-font-bold',
+    '--cascivo-font-mono',
+    '--cascivo-text-secondary',
+    '--cascivo-color-border',
+    '--cascivo-surface-subtle',
+    '--cascivo-space-*',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'KPI band with trends',
@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
       description: 'Four KPI cells — three with sparkline trends and signed deltas',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/charts'],
+  dependencies: ['@cascivo/core', '@cascivo/charts'],
   tags: ['section', 'stats', 'kpi', 'charts'],
   intent: {
     whenToUse: [

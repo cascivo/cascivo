@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+  "dependencies": ["@cascivo/charts", "@cascivo/react"],
   "tags": ["block", "dashboard", "charts", "kpi"],
   "category": "display",
   "meta": {
@@ -23,7 +23,7 @@
     "tokens": [],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -33,7 +33,7 @@
         "description": "Charts dashboard demo"
       }
     ],
-    "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+    "dependencies": ["@cascivo/charts", "@cascivo/react"],
     "tags": ["block", "dashboard", "charts", "kpi"],
     "intent": {
       "whenToUse": [

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { createLocale } from '@cascade-ui/i18n'
+import { createLocale } from '@cascivo/i18n'
 import { CommandMenu, type CommandGroup } from './command-menu'
 
 const onSelect = vi.fn()

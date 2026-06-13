@@ -46,17 +46,17 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-radius-input`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -95,4 +95,4 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 | Area              | Level    | Note                                                              |
 | ----------------- | -------- | ----------------------------------------------------------------- |
 | page size options | flexible | pageSizeOptions and the size select are optional                  |
-| token names       | strict   | Surfaces, borders, and accent must resolve to --cascade-\* tokens |
+| token names       | strict   | Surfaces, borders, and accent must resolve to --cascivo-\* tokens |

@@ -14,15 +14,15 @@
 
   .divider {
     inline-size: 4px;
-    background: var(--cascade-color-border);
+    background: var(--cascivo-color-border);
     cursor: col-resize;
-    transition: background var(--cascade-duration-150, 150ms) ease;
+    transition: background var(--cascivo-duration-150, 150ms) ease;
     outline: none;
     position: relative;
   }
 
   .divider:hover,
   .divider:focus-visible {
-    background: var(--cascade-color-accent);
+    background: var(--cascivo-color-accent);
   }
 }

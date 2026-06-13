@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/switcher/switcher.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/switcher/switcher.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
   "category": "navigation",
   "meta": {
@@ -42,16 +42,16 @@
       }
     ],
     "tokens": [
-      "--cascade-color-text",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-accent",
-      "--cascade-color-accent-subtle",
-      "--cascade-color-border",
-      "--cascade-focus-ring"
+      "--cascivo-color-text",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-subtle",
+      "--cascivo-color-border",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "list",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Tab", "Enter"]
     },
     "examples": [
@@ -61,7 +61,7 @@
         "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
     "intent": {
       "whenToUse": [
@@ -97,7 +97,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Accent and surface colors must resolve to --cascade-* tokens"
+          "note": "Accent and surface colors must resolve to --cascivo-* tokens"
         }
       ]
     }

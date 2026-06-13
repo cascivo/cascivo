@@ -42,33 +42,33 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 ## Tokens
 
-- `--cascade-header-bg`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-bg-subtle`
-- `--cascade-focus-ring`
-- `--cascade-z-raised`
+- `--cascivo-header-bg`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-focus-ring`
+- `--cascivo-z-raised`
 
 ## Examples
 
 ### Basic
 
 ```jsx
-<Header brand="cascade" links={[{ label: 'Docs', href: '/docs' }]} />
+<Header brand="cascivo" links={[{ label: 'Docs', href: '/docs' }]} />
 ```
 
 ### With actions
 
 ```jsx
-<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />
+<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />
 ```
 
 ### Sticky
 
 ```jsx
-<Header sticky brand="cascade" links={links} />
+<Header sticky brand="cascivo" links={links} />
 ```
 
 ## Boundaries
@@ -76,4 +76,4 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 | Area              | Level    | Note                                                             |
 | ----------------- | -------- | ---------------------------------------------------------------- |
 | links and actions | flexible | Brand, links, and actions slots are optional and composable      |
-| token names       | strict   | Surface, border, and z-index must resolve to --cascade-\* tokens |
+| token names       | strict   | Surface, border, and z-index must resolve to --cascivo-\* tokens |

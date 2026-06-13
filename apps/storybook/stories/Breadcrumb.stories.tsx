@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Breadcrumb } from '@cascade-ui/components/breadcrumb'
+import { Breadcrumb } from '@cascivo/components/breadcrumb'
 
 const meta: Meta<typeof Breadcrumb> = {
   title: 'Navigation/Breadcrumb',

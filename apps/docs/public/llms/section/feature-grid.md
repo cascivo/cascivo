@@ -5,7 +5,7 @@ Feature section — AutoGrid of items with optional title, description, and icon
 ## Install
 
 ```bash
-npx cascade add section/feature-grid
+npx cascivo add section/feature-grid
 ```
 
 ## Category
@@ -55,24 +55,24 @@ Four-item text-only feature grid with section heading
 
 ## Design tokens
 
-- `--cascade-text-2xl`
-- `--cascade-text-base`
-- `--cascade-text-sm`
-- `--cascade-font-bold`
-- `--cascade-font-semibold`
-- `--cascade-text-secondary`
-- `--cascade-color-border`
-- `--cascade-surface-subtle`
-- `--cascade-space-*`
+- `--cascivo-text-2xl`
+- `--cascivo-text-base`
+- `--cascivo-text-sm`
+- `--cascivo-font-bold`
+- `--cascivo-font-semibold`
+- `--cascivo-text-secondary`
+- `--cascivo-color-border`
+- `--cascivo-surface-subtle`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `region`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

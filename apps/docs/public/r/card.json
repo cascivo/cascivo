@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/card/card.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/card/card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["container", "layout", "surface"],
   "category": "display",
   "meta": {
@@ -37,14 +37,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-card",
-      "--cascade-shadow-md"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-card",
+      "--cascivo-shadow-md"
     ],
     "accessibility": {
       "role": "region",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -53,7 +53,7 @@
         "code": "<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["container", "layout", "surface"],
     "intent": {
       "whenToUse": [
@@ -89,7 +89,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+          "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
         }
       ]
     }

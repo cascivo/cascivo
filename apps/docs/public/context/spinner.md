@@ -40,7 +40,7 @@ role="status" with an accessible label (default "Loading", i18n-driven) so assis
 
 ## Tokens
 
-- `--cascade-radius-full`
+- `--cascivo-radius-full`
 
 ## Examples
 
@@ -61,4 +61,4 @@ role="status" with an accessible label (default "Loading", i18n-driven) so assis
 | Area        | Level    | Note                                         |
 | ----------- | -------- | -------------------------------------------- |
 | size        | flexible | sm/md/lg to fit inline vs standalone use     |
-| token names | strict   | Radius must resolve to --cascade-radius-full |
+| token names | strict   | Radius must resolve to --cascivo-radius-full |

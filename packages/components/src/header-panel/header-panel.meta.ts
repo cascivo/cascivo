@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'HeaderPanel',
@@ -27,16 +27,16 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-shell-header-block-size',
-    '--cascade-shell-panel-inline-size',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
+    '--cascivo-shell-header-block-size',
+    '--cascivo-shell-panel-inline-size',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
   ],
   accessibility: {
     role: 'region',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Escape', 'Tab'],
   },
   examples: [
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Pair with a ShellHeader action: action active=open, onAction toggles open',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'panel', 'shell', 'console', 'overlay', 'notifications'],
   intent: {
     whenToUse: [
@@ -90,7 +90,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, shadow, and sizing must resolve to --cascade-* shell tokens',
+        note: 'Surface, shadow, and sizing must resolve to --cascivo-* shell tokens',
       },
     ],
   },

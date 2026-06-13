@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["clipboard", "copy", "button", "snippet"],
   "category": "inputs",
   "meta": {
@@ -43,26 +43,26 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-text-subtle",
-      "--cascade-color-text",
-      "--cascade-color-border",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-success",
-      "--cascade-radius-control",
-      "--cascade-focus-ring",
-      "--cascade-control-height-sm",
-      "--cascade-control-height-md"
+      "--cascivo-color-surface",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-text",
+      "--cascivo-color-border",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-success",
+      "--cascivo-radius-control",
+      "--cascivo-focus-ring",
+      "--cascivo-control-height-sm",
+      "--cascivo-control-height-md"
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space"]
     },
     "examples": [
       {
         "title": "Default",
-        "code": "<CopyButton value=\"npx cascade add button\" />"
+        "code": "<CopyButton value=\"npx cascivo add button\" />"
       },
       {
         "title": "Small",
@@ -74,7 +74,7 @@
         "description": "Override the built-in copy/copied strings per instance"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["clipboard", "copy", "button", "snippet"],
     "intent": {
       "whenToUse": [
@@ -118,7 +118,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success"
+          "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
         }
       ]
     }

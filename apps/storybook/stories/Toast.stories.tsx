@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { ToastProvider, useToast, type ToastOptions } from '@cascade-ui/components/toast'
+import { Button } from '@cascivo/components/button'
+import { ToastProvider, useToast, type ToastOptions } from '@cascivo/components/toast'
 
 function ToastTrigger(options: ToastOptions) {
   const { toast } = useToast()

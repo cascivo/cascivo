@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-picker/date-picker.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["date", "calendar", "picker", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -97,15 +97,15 @@
       }
     ],
     "tokens": [
-      "--cascade-date-picker-bg",
-      "--cascade-date-picker-border",
-      "--cascade-date-picker-radius",
-      "--cascade-date-picker-day-selected-bg",
-      "--cascade-date-picker-day-today-color"
+      "--cascivo-date-picker-bg",
+      "--cascivo-date-picker-border",
+      "--cascivo-date-picker-radius",
+      "--cascivo-date-picker-day-selected-bg",
+      "--cascivo-date-picker-day-today-color"
     ],
     "accessibility": {
       "role": "combobox",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space", "Escape", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
     },
     "examples": [
@@ -125,7 +125,7 @@
         "description": "Date range constraint"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["date", "calendar", "picker", "input", "form"],
     "intent": {
       "whenToUse": [
@@ -175,7 +175,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Styling resolves to --cascade-date-picker-* component tokens"
+          "note": "Styling resolves to --cascivo-date-picker-* component tokens"
         }
       ]
     }

@@ -5,7 +5,7 @@ Mutually exclusive toggle group
 ## Install
 
 ```bash
-npx cascade add segmented-control
+npx cascivo add segmented-control
 ```
 
 ## Category
@@ -52,23 +52,23 @@ npx cascade add segmented-control
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-surface`
-- `--cascade-color-text`
-- `--cascade-radius-md`
-- `--cascade-radius-sm`
-- `--cascade-shadow-sm`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-color-text`
+- `--cascivo-radius-md`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-sm`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `group`
 - **Keyboard:** ArrowLeft, ArrowRight
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

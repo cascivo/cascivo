@@ -44,11 +44,11 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -68,5 +68,5 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 | Area        | Level    | Note                                                                                   |
 | ----------- | -------- | -------------------------------------------------------------------------------------- |
-| token names | strict   | Track and thumb colors must resolve to --cascade-color-\* / radius / focus-ring tokens |
+| token names | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
 | label copy  | flexible | Optional label describing the setting being toggled                                    |

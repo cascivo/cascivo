@@ -5,7 +5,7 @@ Resizable two-pane split layout with keyboard and pointer drag support.
 ## Install
 
 ```bash
-npx cascade add layout/split-view
+npx cascivo add layout/split-view
 ```
 
 ## Category
@@ -35,19 +35,19 @@ Two-pane split with draggable divider
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-duration-150`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-duration-150`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `separator`
 - **Keyboard:** ArrowLeft, ArrowRight
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Card',
@@ -17,19 +17,19 @@ export const meta: ComponentMeta = {
     { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-card',
-    '--cascade-shadow-md',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-card',
+    '--cascivo-shadow-md',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.2-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic card',
       code: `<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['container', 'layout', 'surface'],
   intent: {
     whenToUse: [
@@ -66,7 +66,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surface, border, radius, and shadow must resolve to --cascade-* tokens',
+        note: 'Surface, border, radius, and shadow must resolve to --cascivo-* tokens',
       },
     ],
   },

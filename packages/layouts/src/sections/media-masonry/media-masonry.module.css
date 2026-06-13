@@ -2,19 +2,19 @@
   .header {
     display: flex;
     flex-direction: column;
-    gap: var(--cascade-space-3);
+    gap: var(--cascivo-space-3);
   }
 
   .title {
-    font-size: var(--cascade-text-2xl);
-    font-weight: var(--cascade-font-bold);
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
     text-wrap: balance;
     margin: 0;
   }
 
   .description {
-    font-size: var(--cascade-text-base);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-base);
+    color: var(--cascivo-text-secondary);
     max-inline-size: 60ch;
     margin: 0;
   }

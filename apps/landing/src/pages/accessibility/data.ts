@@ -6,7 +6,7 @@ interface RegistryEntry {
   category: string
   meta: {
     name: string
-    accessibility?: { role: string; wcag: string; keyboard?: string[] }
+    accessibility?: { role: string; wcag: string; keyboard?: string[]; apgPattern?: string }
   }
 }
 
@@ -15,6 +15,7 @@ export interface A11yRow {
   category: string
   role: string
   wcag: string
+  apgPattern: string | null
   keyboard: string[]
 }
 
@@ -32,6 +33,7 @@ export const A11Y_ROWS: A11yRow[] = entries.flatMap((e) =>
           category: e.category,
           role: e.meta.accessibility.role,
           wcag: e.meta.accessibility.wcag,
+          apgPattern: e.meta.accessibility.apgPattern ?? null,
           keyboard: e.meta.accessibility.keyboard ?? [],
         },
       ]

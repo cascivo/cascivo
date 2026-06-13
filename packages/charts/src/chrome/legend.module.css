@@ -2,22 +2,22 @@
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--cascade-space-2);
-    padding-block: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-2);
   }
 
   .item {
     display: flex;
     align-items: center;
-    gap: var(--cascade-space-1);
-    padding: var(--cascade-space-1) var(--cascade-space-2);
-    border: 1px solid var(--cascade-color-border);
-    border-radius: var(--cascade-radius-sm);
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-1) var(--cascivo-space-2);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-sm);
     background: transparent;
     cursor: pointer;
-    font-size: var(--cascade-font-size-sm);
-    color: var(--cascade-color-text);
-    transition: opacity var(--cascade-duration-150, 150ms) ease;
+    font-size: var(--cascivo-font-size-sm);
+    color: var(--cascivo-color-text);
+    transition: opacity var(--cascivo-duration-150, 150ms) ease;
   }
 
   .item[data-state='off'] {

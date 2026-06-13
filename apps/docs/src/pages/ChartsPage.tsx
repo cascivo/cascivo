@@ -1,19 +1,58 @@
-import { LineChart } from '@cascade-ui/charts'
-import { AreaChart } from '@cascade-ui/charts'
-import { BarChart } from '@cascade-ui/charts'
-import { PieChart } from '@cascade-ui/charts'
-import { ScatterChart } from '@cascade-ui/charts'
-import { Sparkline } from '@cascade-ui/charts'
-import { Meter } from '@cascade-ui/charts'
-import { Kpi } from '@cascade-ui/charts'
-import { Histogram } from '@cascade-ui/charts'
-import { Boxplot } from '@cascade-ui/charts'
-import { BubbleChart } from '@cascade-ui/charts'
-import { ComboChart } from '@cascade-ui/charts'
-import { Heatmap } from '@cascade-ui/charts'
-import { Treemap } from '@cascade-ui/charts'
-import { Radar } from '@cascade-ui/charts'
-import { Bullet } from '@cascade-ui/charts'
+import { LineChart } from '@cascivo/charts'
+import { AreaChart } from '@cascivo/charts'
+import { BarChart } from '@cascivo/charts'
+import { PieChart } from '@cascivo/charts'
+import { ScatterChart } from '@cascivo/charts'
+import { Sparkline } from '@cascivo/charts'
+import { Meter } from '@cascivo/charts'
+import { Kpi } from '@cascivo/charts'
+import { Histogram } from '@cascivo/charts'
+import { Boxplot } from '@cascivo/charts'
+import { BubbleChart } from '@cascivo/charts'
+import { ComboChart } from '@cascivo/charts'
+import { Heatmap } from '@cascivo/charts'
+import { Treemap } from '@cascivo/charts'
+import { Radar } from '@cascivo/charts'
+import { Bullet } from '@cascivo/charts'
+
+// Palette gallery — all 10 themes, 8-series BarChart (one slot per Okabe-Ito color)
+const PALETTE_THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+] as const
+
+const PALETTE_DEMO_DATA = [
+  { label: 'Q1', s1: 40, s2: 28, s3: 35, s4: 22, s5: 31, s6: 18, s7: 25, s8: 15 },
+  { label: 'Q2', s1: 55, s2: 38, s3: 42, s4: 30, s5: 44, s6: 25, s7: 33, s8: 20 },
+  { label: 'Q3', s1: 48, s2: 32, s3: 38, s4: 26, s5: 37, s6: 21, s7: 28, s8: 17 },
+] as const
+
+type PaletteRow = (typeof PALETTE_DEMO_DATA)[number]
+
+const PALETTE_SERIES: Array<{ id: string; label: string; key: keyof Omit<PaletteRow, 'label'> }> = [
+  { id: 'c1', label: 'Series 1', key: 's1' },
+  { id: 'c2', label: 'Series 2', key: 's2' },
+  { id: 'c3', label: 'Series 3', key: 's3' },
+  { id: 'c4', label: 'Series 4', key: 's4' },
+  { id: 'c5', label: 'Series 5', key: 's5' },
+  { id: 'c6', label: 'Series 6', key: 's6' },
+  { id: 'c7', label: 'Series 7', key: 's7' },
+  { id: 'c8', label: 'Series 8', key: 's8' },
+]
+
+const paletteSeries = PALETTE_SERIES.map(({ id, label, key }) => ({
+  id,
+  label,
+  data: PALETTE_DEMO_DATA.map((row) => ({ x: row.label, y: row[key] })),
+}))
 
 // Deterministic demo data — no Math.random, index-based
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -191,7 +230,7 @@ export function ChartsPage() {
               label="Active users trend"
               width={160}
               height={40}
-              color="var(--cascade-chart-2)"
+              color="var(--cascivo-chart-2)"
             />
           </div>
           <div>
@@ -201,7 +240,7 @@ export function ChartsPage() {
               label="Error rate trend"
               width={160}
               height={40}
-              color="var(--cascade-chart-4)"
+              color="var(--cascivo-chart-4)"
             />
           </div>
         </div>
@@ -350,6 +389,49 @@ export function ChartsPage() {
       </section>
 
       <section class="doc-section">
+        <h2>Keyboard Tooltip Demo</h2>
+        <p>
+          Tab to focus the chart, use Arrow keys to traverse data points, Escape to clear.
+          Announcement plays in the aria-live region (read by screen readers).
+        </p>
+        <p>Tab into the chart, then use ← → arrow keys to navigate. Press Escape to dismiss.</p>
+        <BarChart
+          series={[
+            {
+              id: 'alpha',
+              label: 'Alpha',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 400 + i * 120 })),
+            },
+            {
+              id: 'beta',
+              label: 'Beta',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 300 + i * 80 })),
+            },
+            {
+              id: 'gamma',
+              label: 'Gamma',
+              data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'].map((m, i) => ({ x: m, y: 200 + i * 60 })),
+            },
+          ]}
+          x={(d) => d.x}
+          y={(d) => d.y}
+          title="Keyboard tooltip demo — Alpha, Beta, Gamma series"
+          description="Use Tab to focus, arrow keys to navigate data points, and Escape to dismiss the tooltip."
+          height={280}
+          tooltip
+        />
+        <p
+          style={{
+            fontSize: '0.875rem',
+            color: 'var(--cascivo-text-secondary)',
+            marginBlockStart: '0.5rem',
+          }}
+        >
+          Screen readers will announce each data point as you navigate (e.g., "Jan · 400 — Alpha").
+        </p>
+      </section>
+
+      <section class="doc-section">
         <h2>Micro charts</h2>
         <p>
           Every chrome-bearing chart accepts <code>plain</code> — no axes, no grid, no legend.
@@ -364,7 +446,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Revenue
@@ -384,7 +466,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Visits
@@ -404,7 +486,7 @@ export function ChartsPage() {
               style={{
                 fontSize: '0.75rem',
                 marginBottom: '0.25rem',
-                color: 'var(--cascade-text-secondary)',
+                color: 'var(--cascivo-text-secondary)',
               }}
             >
               Sales Q1
@@ -422,7 +504,7 @@ export function ChartsPage() {
         </div>
 
         <h3 style={{ marginBlockStart: '1.5rem' }}>Plain chart in a table cell</h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascivo-text-secondary)' }}>
           A plain LineChart at 120×32 embedded directly in a data table cell.
         </p>
         <div style={{ overflowX: 'auto' }}>
@@ -435,7 +517,7 @@ export function ChartsPage() {
                     style={{
                       padding: '0.5rem 1rem',
                       textAlign: 'start',
-                      borderBlockEnd: '1px solid var(--cascade-color-border)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border)',
                       fontWeight: 500,
                     }}
                   >
@@ -454,7 +536,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                     }}
                   >
                     {row.label}
@@ -462,7 +544,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                       fontVariantNumeric: 'tabular-nums',
                     }}
                   >
@@ -471,7 +553,7 @@ export function ChartsPage() {
                   <td
                     style={{
                       padding: '0.5rem 1rem',
-                      borderBlockEnd: '1px solid var(--cascade-color-border-subtle)',
+                      borderBlockEnd: '1px solid var(--cascivo-color-border-subtle)',
                     }}
                   >
                     <LineChart
@@ -491,7 +573,7 @@ export function ChartsPage() {
         </div>
 
         <h3 style={{ marginBlockStart: '1.5rem' }}>Multi-series plain area chart</h3>
-        <p style={{ fontSize: '0.875rem', color: 'var(--cascade-text-secondary)' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--cascivo-text-secondary)' }}>
           In plain mode, series are distinguishable by color only — no legend. Suitable for
           glanceable comparisons, not analytical detail.
         </p>
@@ -503,6 +585,56 @@ export function ChartsPage() {
           plain
           height={64}
         />
+      </section>
+
+      <section class="doc-section">
+        <h2>Chart Palette Gallery</h2>
+        <p>
+          Same data, all 10 themes — receipt for CVD-safe per-theme palettes. Eight series map to
+          chart color slots 1–8 (Okabe-Ito base, theme-adjusted).{' '}
+          <a href="/docs/specs/chart-palette.md">docs/specs/chart-palette.md</a>
+        </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gap: '1.5rem',
+            marginBlockStart: '1rem',
+          }}
+        >
+          {PALETTE_THEMES.map((t) => (
+            <div
+              key={t}
+              data-theme={t}
+              style={{
+                padding: '1rem',
+                background: 'var(--cascivo-color-bg)',
+                borderRadius: 'var(--cascivo-radius-md, 0.5rem)',
+                border: '1px solid var(--cascivo-color-border)',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  color: 'var(--cascivo-color-text-secondary, var(--cascivo-color-text))',
+                  marginBlockEnd: '0.5rem',
+                }}
+              >
+                {t}
+              </div>
+              <BarChart
+                series={paletteSeries}
+                x={(d) => d.x}
+                y={(d) => d.y}
+                title={`8-series palette — ${t} theme`}
+                height={200}
+              />
+            </div>
+          ))}
+        </div>
       </section>
     </article>
   )

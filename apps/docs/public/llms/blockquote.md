@@ -5,7 +5,7 @@ Quoted passage with optional attribution footer
 ## Install
 
 ```bash
-npx cascade add blockquote
+npx cascivo add blockquote
 ```
 
 ## Category
@@ -36,23 +36,23 @@ Attribution renders as <footer><cite>
 
 ## Design tokens
 
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-font-sans`
-- `--cascade-font-medium`
-- `--cascade-leading-relaxed`
-- `--cascade-text-sm`
-- `--cascade-text-base`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-font-sans`
+- `--cascivo-font-medium`
+- `--cascivo-leading-relaxed`
+- `--cascivo-text-sm`
+- `--cascivo-text-base`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `blockquote`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

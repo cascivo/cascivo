@@ -1,11 +1,11 @@
 @layer cascade.component {
   .list {
     margin: 0;
-    padding-inline-start: var(--cascade-space-6);
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-base);
-    line-height: var(--cascade-leading-normal);
-    color: var(--cascade-color-text);
+    padding-inline-start: var(--cascivo-space-6);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-base);
+    line-height: var(--cascivo-leading-normal);
+    color: var(--cascivo-color-text);
 
     &[data-marker='disc'] {
       list-style-type: disc;
@@ -22,6 +22,6 @@
   }
 
   .item {
-    margin-block: var(--cascade-space-1);
+    margin-block: var(--cascivo-space-1);
   }
 }

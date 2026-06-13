@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import { HeaderPanel } from '@cascade-ui/components/header-panel'
-import { Switcher } from '@cascade-ui/components/switcher'
-import { Button } from '@cascade-ui/components/button'
+import { HeaderPanel } from '@cascivo/components/header-panel'
+import { Switcher } from '@cascivo/components/switcher'
+import { Button } from '@cascivo/components/button'
 
 const meta: Meta<typeof HeaderPanel> = {
   title: 'Shell/HeaderPanel',

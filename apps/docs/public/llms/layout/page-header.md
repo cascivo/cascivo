@@ -5,7 +5,7 @@ Page-level header with title, description, breadcrumb, and actions slots.
 ## Install
 
 ```bash
-npx cascade add layout/page-header
+npx cascivo add layout/page-header
 ```
 
 ## Category
@@ -34,22 +34,22 @@ Title with description
 
 ## Design tokens
 
-- `--cascade-space-2`
-- `--cascade-space-4`
-- `--cascade-font-size-2xl`
-- `--cascade-font-weight-bold`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-font-size-sm`
+- `--cascivo-space-2`
+- `--cascivo-space-4`
+- `--cascivo-font-size-2xl`
+- `--cascivo-font-weight-bold`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-font-size-sm`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `banner`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

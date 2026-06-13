@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Popover',
@@ -9,20 +9,20 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
   ],
   accessibility: {
     role: 'dialog',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Escape'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'floating', 'anchor', 'popover'],
   intent: {
     whenToUse: [
@@ -64,7 +64,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Panel styling must resolve to the listed --cascade-* tokens',
+        note: 'Panel styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'content',

@@ -41,16 +41,16 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 
 ## Tokens
 
-- `--cascade-font-sans`
-- `--cascade-font-normal`
-- `--cascade-font-medium`
-- `--cascade-font-semibold`
-- `--cascade-leading-normal`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-text-sm`
-- `--cascade-text-base`
-- `--cascade-text-lg`
+- `--cascivo-font-sans`
+- `--cascivo-font-normal`
+- `--cascivo-font-medium`
+- `--cascivo-font-semibold`
+- `--cascivo-leading-normal`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-text-sm`
+- `--cascivo-text-base`
+- `--cascivo-text-lg`
 
 ## Examples
 
@@ -83,4 +83,4 @@ Use as="span" inside other flow content
 | Area               | Level    | Note                                                         |
 | ------------------ | -------- | ------------------------------------------------------------ |
 | as / size / weight | flexible | Choose element and treatment to fit context                  |
-| token names        | strict   | Font, leading, and color must resolve to --cascade-\* tokens |
+| token names        | strict   | Font, leading, and color must resolve to --cascivo-\* tokens |

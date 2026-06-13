@@ -6,10 +6,10 @@ export default defineConfig({
       entry: './src/index.ts',
       formats: ['es'],
       fileName: 'index',
-      cssFileName: 'cascade',
+      cssFileName: 'cascivo',
     },
     rollupOptions: {
-      external: [/^react($|\/)/, /^react-dom($|\/)/, '@preact/signals-react', '@cascade-ui/core'],
+      external: [/^react($|\/)/, /^react-dom($|\/)/, '@preact/signals-react', '@cascivo/core'],
       output: {
         // Components are client components; preserve the directive for RSC consumers.
         banner: "'use client';",

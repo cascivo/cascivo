@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["checkbox", "card", "selectable", "form"],
   "category": "inputs",
   "meta": {
@@ -60,10 +60,10 @@
         "description": "Disables the card"
       }
     ],
-    "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
+    "tokens": ["--cascivo-color-accent", "--cascivo-color-border", "--cascivo-radius-surface"],
     "accessibility": {
       "role": "checkbox",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Space"]
     },
     "examples": [
@@ -73,7 +73,7 @@
         "description": "Multi-select feature toggles"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["checkbox", "card", "selectable", "form"],
     "intent": {
       "whenToUse": [
@@ -121,7 +121,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+          "note": "Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface"
         }
       ]
     }

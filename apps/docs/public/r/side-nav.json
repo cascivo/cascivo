@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/side-nav/side-nav.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
   "category": "navigation",
   "meta": {
@@ -84,24 +84,24 @@
       }
     ],
     "tokens": [
-      "--cascade-sidenav-inline-size",
-      "--cascade-sidenav-rail-inline-size",
-      "--cascade-sidenav-bg",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-accent",
-      "--cascade-color-accent-subtle",
-      "--cascade-focus-ring",
-      "--cascade-motion-enter",
-      "--cascade-motion-exit",
-      "--cascade-motion-emphasis"
+      "--cascivo-sidenav-inline-size",
+      "--cascivo-sidenav-rail-inline-size",
+      "--cascivo-sidenav-bg",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-subtle",
+      "--cascivo-focus-ring",
+      "--cascivo-motion-enter",
+      "--cascivo-motion-exit",
+      "--cascivo-motion-emphasis"
     ],
     "accessibility": {
       "role": "navigation",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
     },
     "examples": [
@@ -124,7 +124,7 @@
         "description": "Rail widens as CSS overlay on hover without reflowing adjacent content"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
     "intent": {
       "whenToUse": [
@@ -160,7 +160,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+          "note": "Sizing, surfaces, and motion must resolve to --cascivo-* tokens"
         }
       ]
     }

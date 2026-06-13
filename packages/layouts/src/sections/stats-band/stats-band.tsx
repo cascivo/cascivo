@@ -1,6 +1,6 @@
 'use client'
-import { cn } from '@cascade-ui/core'
-import { Sparkline } from '@cascade-ui/charts'
+import { cn } from '@cascivo/core'
+import { Sparkline } from '@cascivo/charts'
 import type { HTMLAttributes } from 'react'
 import { AutoGrid } from '../../auto-grid/auto-grid'
 import styles from './stats-band.module.css'

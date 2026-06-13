@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'LoginPage',
@@ -16,9 +16,9 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<LoginPage />', description: 'Login page' }],
-  dependencies: ['@cascade-ui/react', 'layout/auth-layout'],
+  dependencies: ['@cascivo/react', 'layout/auth-layout'],
   tags: ['block', 'login', 'auth', 'form', 'page'],
   intent: {
     whenToUse: [

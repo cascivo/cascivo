@@ -5,7 +5,7 @@ Page-section shell with block padding, centered inner width, and stack gap.
 ## Install
 
 ```bash
-npx cascade add layout/section
+npx cascivo add layout/section
 ```
 
 ## Category
@@ -34,16 +34,16 @@ Centered 72rem content column with 2rem block padding
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `region`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

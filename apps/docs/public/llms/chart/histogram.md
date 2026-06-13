@@ -5,7 +5,7 @@ Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 ## Install
 
 ```bash
-npx cascade add chart/histogram
+npx cascivo add chart/histogram
 ```
 
 ## Category
@@ -31,7 +31,7 @@ npx cascade add chart/histogram
 ### Basic histogram
 
 ```tsx
-import { Histogram } from '@cascade-ui/charts'
+import { Histogram } from '@cascivo/charts'
 
 const data = Array.from({length:100}, () => Math.random() * 100)
 <Histogram data={data} title="Distribution" label="Value" />
@@ -39,16 +39,16 @@ const data = Array.from({length:100}, () => Math.random() * 100)
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

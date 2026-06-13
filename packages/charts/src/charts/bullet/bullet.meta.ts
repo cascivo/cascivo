@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Bullet',
@@ -29,21 +29,21 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-color-neutral-200',
-    '--cascade-color-neutral-300',
-    '--cascade-color-neutral-400',
+    '--cascivo-chart-1',
+    '--cascivo-color-neutral-200',
+    '--cascivo-color-neutral-300',
+    '--cascivo-color-neutral-400',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic bullet chart',
-      code: `import { Bullet } from '@cascade-ui/charts'
+      code: `import { Bullet } from '@cascivo/charts'
 
 <Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'bullet', 'kpi', 'progress', 'data-viz'],
   intent: {
     whenToUse: [

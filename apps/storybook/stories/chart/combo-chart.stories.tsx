@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ComboChart } from '@cascade-ui/charts'
+import { ComboChart } from '@cascivo/charts'
 
 const bars = [
   { label: 'Jan', value: 120 },

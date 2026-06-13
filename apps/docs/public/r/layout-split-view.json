@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/split-view/split-view.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "split", "resizable", "pane"],
   "category": "layout",
   "meta": {
@@ -60,10 +60,10 @@
         "description": "Label for the separator"
       }
     ],
-    "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+    "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-duration-150"],
     "accessibility": {
       "role": "separator",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": ["ArrowLeft", "ArrowRight"]
     },
     "examples": [
@@ -73,7 +73,7 @@
         "description": "Two-pane split with draggable divider"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "split", "resizable", "pane"],
     "intent": {
       "whenToUse": [

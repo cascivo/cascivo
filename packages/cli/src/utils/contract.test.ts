@@ -4,11 +4,11 @@ import { buildContract, normalizeValue } from './contract.js'
 const fixture = {
   catalog: {
     tokens: [
-      { name: '--cascade-color-accent', resolvedDefault: 'oklch(0.623 0.214 250)' },
-      { name: '--cascade-color-brand', resolvedDefault: 'oklch(0.623 0.214 250)' },
-      { name: '--cascade-color-fg', resolvedDefault: '#111111' },
-      { name: '--cascade-space-2', resolvedDefault: '8px' },
-      { name: '--cascade-color-themed', resolvedDefault: null },
+      { name: '--cascivo-color-accent', resolvedDefault: 'oklch(0.623 0.214 250)' },
+      { name: '--cascivo-color-brand', resolvedDefault: 'oklch(0.623 0.214 250)' },
+      { name: '--cascivo-color-fg', resolvedDefault: '#111111' },
+      { name: '--cascivo-space-2', resolvedDefault: '8px' },
+      { name: '--cascivo-color-themed', resolvedDefault: null },
     ],
   },
   registry: {
@@ -51,18 +51,18 @@ describe('buildContract — tokensByValue', () => {
 
   it('maps a normalized value to its token name(s)', () => {
     expect(contract.tokensByValue.get(normalizeValue('oklch(0.623 0.214 250)'))).toEqual([
-      '--cascade-color-accent',
-      '--cascade-color-brand',
+      '--cascivo-color-accent',
+      '--cascivo-color-brand',
     ])
   })
 
   it('maps a hex value', () => {
-    expect(contract.tokensByValue.get('#111111')).toEqual(['--cascade-color-fg'])
+    expect(contract.tokensByValue.get('#111111')).toEqual(['--cascivo-color-fg'])
   })
 
   it('skips tokens with null resolvedDefault', () => {
     const all = [...contract.tokensByValue.values()].flat()
-    expect(all).not.toContain('--cascade-color-themed')
+    expect(all).not.toContain('--cascivo-color-themed')
   })
 })
 

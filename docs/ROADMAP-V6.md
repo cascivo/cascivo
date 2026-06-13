@@ -35,13 +35,13 @@ Why current perf story doesn't convince anyone:
 2. **No competitor baseline.** Nobody has published a credible shadcn-vs-Carbon-vs-anything
    runtime comparison. That's an opening — and it means we set the methodology bar.
 3. **Bundle numbers exist but aren't comparative.** `audit:bundle` enforces 50KB gzip on
-   `@cascade-ui/react`, but a consumer cares about _app cost_: what does the same page cost
+   `@cascivo/react`, but a consumer cares about _app cost_: what does the same page cost
    built with cascade vs shadcn vs Carbon?
 4. **The re-render story is our strongest, least-told claim.** Signal-driven components commit
    ≤1 re-render per interaction; useState-world re-renders cascade through the tree. Re-render
    counts are deterministic integers — unimpeachable in a way timings never are. We don't
    measure them today.
-5. **Treeshaking is unproven.** `@cascade-ui/react` ships no `sideEffects` field — bundlers
+5. **Treeshaking is unproven.** `@cascivo/react` ships no `sideEffects` field — bundlers
    likely can't drop unused components. A benchmark suite would surface this embarrassment;
    better we fix it first.
 
@@ -51,7 +51,7 @@ Why current perf story doesn't convince anyone:
 | --- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | A   | Bench harness + protocol | T1      | `apps/bench/` workspace: shared scenario protocol (PROTOCOL.md), cascade reference app (table/form/dialog routes), runner skeleton (app lifecycle, stats lib, results schema), protocol conformance Playwright spec.          |
 | B   | Competitor apps          | T2      | `bench-app-shadcn` (Tailwind v4 + Radix + TanStack Table, components committed) and `bench-app-carbon` (`@carbon/react` + Sass) implementing the identical protocol. Pinned versions, idiomatic usage per library's own docs. |
-| C   | Bundle suite             | T3      | Whole-app JS/CSS min+gzip per library; per-component incremental-cost matrix (app-with minus baseline); `sideEffects` fix + treeshake gate for `@cascade-ui/react`.                                                           |
+| C   | Bundle suite             | T3      | Whole-app JS/CSS min+gzip per library; per-component incremental-cost matrix (app-with minus baseline); `sideEffects` fix + treeshake gate for `@cascivo/react`.                                                              |
 | D   | Runtime suite            | T4      | CDP-trace click→paint for 8 scenarios × 3 libraries, 4× CPU throttle, 12 samples, median+IQR, Mann-Whitney significance; React Profiler commit counts per scenario.                                                           |
 | E   | Lighthouse + a11y        | T5      | LHCI median-of-5 (FCP/LCP/TBT/transfer) per app; axe-core sweep — cascade gated at zero violations, competitors reported as parity context, never as a score.                                                                 |
 | —   | Publish + CI + DoD       | T6      | `results.json` → `BENCHMARKS.md` + docs Benchmarks page + landing link + `METHODOLOGY.md`; `bench.yml` workflow (smoke on CI, headline numbers from a disclosed dedicated machine); DoD checklist.                            |
@@ -93,7 +93,7 @@ Why current perf story doesn't convince anyone:
       `data-bench` controls, same row counts).
 - [ ] Bundle table: whole-app JS gz / CSS gz / total per library + 8-component incremental
       matrix; numbers within ±2% across repeated builds.
-- [ ] `@cascade-ui/react` ships `sideEffects` metadata; treeshake gate proves a bare import
+- [ ] `@cascivo/react` ships `sideEffects` metadata; treeshake gate proves a bare import
       bundles to <1KB and `import { Button }` costs a fraction of the full bundle.
 - [ ] Runtime table: 8 scenarios × 3 libraries with median + IQR from ≥12 samples at 4× CPU
       throttle; non-significant deltas (p ≥ 0.05) rendered as ties.

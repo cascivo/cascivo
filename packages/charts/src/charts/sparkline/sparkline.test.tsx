@@ -33,4 +33,9 @@ describe('Sparkline', () => {
     expect(svg?.getAttribute('width')).toBe('200')
     expect(svg?.getAttribute('height')).toBe('48')
   })
+
+  it('renders aria-live region for tooltip', () => {
+    render(<Sparkline data={[1, 2, 3, 4, 5]} label="Revenue trend" />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
 })

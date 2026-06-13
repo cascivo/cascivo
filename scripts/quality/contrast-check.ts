@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Reads a CSS file, extracts --cascade-color-* custom properties,
+ * Reads a CSS file, extracts --cascivo-color-* custom properties,
  * checks text/surface color pairs for WCAG AA contrast (4.5:1 minimum),
  * and exits non-zero if any pair fails.
  *
@@ -98,8 +98,8 @@ function contrastRatioFromLuminances(lum1: number, lum2: number): number {
 
 function extractTokens(css: string): Map<string, string> {
   const map = new Map<string, string>()
-  // Match --cascade-color-* or --cascade-border-* : #rrggbb, #rgb, or oklch(...)
-  const re = /(--cascade-(?:color|border)-[\w-]+)\s*:\s*(oklch\([^;]+\)|#[0-9a-fA-F]{3,6})/g
+  // Match --cascivo-color-* or --cascivo-border-* : #rrggbb, #rgb, or oklch(...)
+  const re = /(--cascivo-(?:color|border)-[\w-]+)\s*:\s*(oklch\([^;]+\)|#[0-9a-fA-F]{3,6})/g
   let m: RegExpExecArray | null
   while ((m = re.exec(css)) !== null) {
     map.set(m[1], m[2].trim())
@@ -139,10 +139,10 @@ function buildSemanticPairs(
 ): Array<[string, string, string, string, number]> {
   const explicit: Array<[string, string, number]> = [
     // [foreground-token, background-token, min-ratio]
-    ['--cascade-color-foreground', '--cascade-color-background', 4.5],
-    ['--cascade-color-foreground-muted', '--cascade-color-surface', 4.5],
-    ['--cascade-color-accent-foreground', '--cascade-color-accent', 4.5],
-    ['--cascade-border-default', '--cascade-color-background', 3.0],
+    ['--cascivo-color-foreground', '--cascivo-color-background', 4.5],
+    ['--cascivo-color-foreground-muted', '--cascivo-color-surface', 4.5],
+    ['--cascivo-color-accent-foreground', '--cascivo-color-accent', 4.5],
+    ['--cascivo-border-default', '--cascivo-color-background', 3.0],
   ]
 
   const pairs: Array<[string, string, string, string, number]> = []
@@ -167,7 +167,7 @@ function main() {
   const tokens = extractTokens(css)
 
   if (tokens.size === 0) {
-    console.log('No --cascade-color-* hex/oklch tokens found. Nothing to check.')
+    console.log('No --cascivo-color-* hex/oklch tokens found. Nothing to check.')
     process.exit(0)
   }
 

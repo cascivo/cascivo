@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SegmentedControl',
@@ -15,17 +15,17 @@ export const meta: ComponentMeta = {
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
   ],
   tokens: [
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-surface',
-    '--cascade-color-text',
-    '--cascade-radius-md',
-    '--cascade-radius-sm',
-    '--cascade-shadow-sm',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-surface',
+    '--cascivo-color-text',
+    '--cascivo-radius-md',
+    '--cascivo-radius-sm',
+    '--cascivo-shadow-sm',
   ],
   accessibility: {
     role: 'group',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight'],
   },
   examples: [
@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
       code: `<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'toggle', 'group', 'segmented', 'input'],
   intent: {
     whenToUse: [
@@ -76,7 +76,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Segment styling must resolve to the listed --cascade-* tokens',
+        note: 'Segment styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'option labels',

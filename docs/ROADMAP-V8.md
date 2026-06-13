@@ -48,14 +48,14 @@ every page from scratch. v8 ships **ready-to-use composition, out of the box**:
 
 ## Workstreams
 
-| #   | Workstream             | Tranche | Summary                                                                                                                                                             |
-| --- | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Plain charts           | T1      | `plain` prop on every chrome-bearing chart in `@cascade-ui/charts`: no axes/grid/legend, collapsed margins, small default height, a11y preserved; micro-chart docs. |
-| B   | Layout primitives      | T2      | `Masonry` (dual `@supports` native masonry + CSS-columns fallback) and `AutoGrid` (`auto-fill`/`minmax(min(…,100%),1fr)`), tests + manifests.                       |
-| C   | Section concept + hero | T3      | New `section/` registry type wired through generate.ts/CLI/MCP; `Section` wrapper primitive; `Hero` (centered + split variants) and `Cta` sections.                 |
-| D   | Sections wave 2        | T4      | `FeatureGrid`, `MediaMasonry`, `StatsBand` (dogfoods plain charts), `PageFooter` — all static, plain CSS, props-driven content.                                     |
-| E   | Docs gallery           | T5      | `/layouts` gallery page (primitives, sections, blocks — live previews + copy-paste commands), docs nav entry, Storybook stories for new entries.                    |
-| F   | Quality gates          | T6      | Docs Playwright smoke + axe (light/dark) for the gallery, RTL spot check, masonry fallback verification, regeneration/drift, DoD walkthrough.                       |
+| #   | Workstream             | Tranche | Summary                                                                                                                                                          |
+| --- | ---------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Plain charts           | T1      | `plain` prop on every chrome-bearing chart in `@cascivo/charts`: no axes/grid/legend, collapsed margins, small default height, a11y preserved; micro-chart docs. |
+| B   | Layout primitives      | T2      | `Masonry` (dual `@supports` native masonry + CSS-columns fallback) and `AutoGrid` (`auto-fill`/`minmax(min(…,100%),1fr)`), tests + manifests.                    |
+| C   | Section concept + hero | T3      | New `section/` registry type wired through generate.ts/CLI/MCP; `Section` wrapper primitive; `Hero` (centered + split variants) and `Cta` sections.              |
+| D   | Sections wave 2        | T4      | `FeatureGrid`, `MediaMasonry`, `StatsBand` (dogfoods plain charts), `PageFooter` — all static, plain CSS, props-driven content.                                  |
+| E   | Docs gallery           | T5      | `/layouts` gallery page (primitives, sections, blocks — live previews + copy-paste commands), docs nav entry, Storybook stories for new entries.                 |
+| F   | Quality gates          | T6      | Docs Playwright smoke + axe (light/dark) for the gallery, RTL spot check, masonry fallback verification, regeneration/drift, DoD walkthrough.                    |
 
 ## Decisions baked in
 
@@ -84,7 +84,7 @@ every page from scratch. v8 ships **ready-to-use composition, out of the box**:
 7. **Sparkline, Meter and Kpi don't change.** They are the already-plain reference
    implementations; no `plain` prop noise on components with no chrome to remove.
 8. **Plain charts ship via npm**, not copy-paste — they're a feature of
-   `@cascade-ui/charts` (the registry's `install` pathway). Chart manifests regenerate to
+   `@cascivo/charts` (the registry's `install` pathway). Chart manifests regenerate to
    document the new prop.
 9. **The gallery shows, it doesn't tell.** `/layouts` renders live previews (real
    components, fixture content) grouped Primitives / Sections / Blocks, each with its
@@ -113,7 +113,7 @@ every page from scratch. v8 ships **ready-to-use composition, out of the box**:
       `left`/`right` physical properties in new CSS, grep-verified).
 - [x] Storybook stories exist for both new primitives, all six sections, and a plain-charts
       story.
-- [x] `@cascade-ui/charts` bundle stays within its 80KB gz budget after the plain-mode
+- [x] `@cascivo/charts` bundle stays within its 80KB gz budget after the plain-mode
       changes.
 - [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
@@ -125,7 +125,7 @@ every page from scratch. v8 ships **ready-to-use composition, out of the box**:
 - Full page _templates_ (entire landing/marketing page compositions) — sections compose into
   these; templates are a v9 candidate once sections prove out.
 - Landing-page adoption of `section/hero` — only after v7 ships; don't couple the tranches.
-- CascadeView (`@cascade-ui/render`) schema support for sections — needs schema versioning
+- CascadeView (`@cascivo/render`) schema support for sections — needs schema versioning
   thought; sections work today via copy-paste.
 - JS-measured row-major masonry fallback — violates the plain-CSS thesis; wait for native
   support to widen instead.

@@ -59,28 +59,28 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-accent`
-- `--cascade-font-sans`
-- `--cascade-text-sm`
-- `--cascade-text-xs`
-- `--cascade-font-semibold`
-- `--cascade-font-medium`
-- `--cascade-radius-lg`
-- `--cascade-radius-sm`
-- `--cascade-space-2`
-- `--cascade-space-3`
-- `--cascade-space-4`
-- `--cascade-data-table-max-height`
-- `--cascade-duration-150`
-- `--cascade-duration-500`
-- `--cascade-ease-out`
-- `--cascade-ease-in-out`
+- `--cascivo-color-surface`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-accent`
+- `--cascivo-font-sans`
+- `--cascivo-text-sm`
+- `--cascivo-text-xs`
+- `--cascivo-font-semibold`
+- `--cascivo-font-medium`
+- `--cascivo-radius-lg`
+- `--cascivo-radius-sm`
+- `--cascivo-space-2`
+- `--cascivo-space-3`
+- `--cascivo-space-4`
+- `--cascivo-data-table-max-height`
+- `--cascivo-duration-150`
+- `--cascivo-duration-500`
+- `--cascivo-ease-out`
+- `--cascivo-ease-in-out`
 
 ## Examples
 
@@ -121,4 +121,4 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 | Area                 | Level    | Note                                                                   |
 | -------------------- | -------- | ---------------------------------------------------------------------- |
 | sortMode and density | flexible | Choose client/server sort and density to fit data size and layout      |
-| token names          | strict   | All surfaces, borders, and spacing must resolve to --cascade-\* tokens |
+| token names          | strict   | All surfaces, borders, and spacing must resolve to --cascivo-\* tokens |

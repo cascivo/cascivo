@@ -5,7 +5,7 @@ Multi-selectable card backed by a native checkbox. Use multiple independent Chec
 ## Install
 
 ```bash
-npx cascade add checkbox-card
+npx cascivo add checkbox-card
 ```
 
 ## Category
@@ -49,19 +49,19 @@ Multi-select feature toggles
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `checkbox`
 - **Keyboard:** Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

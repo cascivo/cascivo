@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Skeleton',
@@ -30,19 +30,19 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-sm',
-    '--cascade-radius-full',
-    '--cascade-radius-component',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-radius-full',
+    '--cascivo-radius-component',
   ],
-  accessibility: { role: 'none', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'none', wcag: '2.2-AA', keyboard: [] },
   examples: [
     { title: 'Text', code: '<Skeleton lines={3} />' },
     { title: 'Avatar', code: '<Skeleton variant="circle" width="3rem" height="3rem" />' },
     { title: 'Image', code: '<Skeleton variant="rect" height="12rem" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['loading', 'placeholder', 'shimmer'],
   intent: {
     whenToUse: [
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Background and radius must resolve to --cascade-* tokens',
+        note: 'Background and radius must resolve to --cascivo-* tokens',
       },
     ],
   },

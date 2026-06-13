@@ -2,6 +2,36 @@
   "generatedAt": "2026-06-13",
   "specs": [
     {
+      "id": "at-matrix",
+      "title": "at-matrix",
+      "path": "/docs/specs/at-matrix.md",
+      "summary": "This matrix records assistive-technology (AT) test results for the representative component set defined in `at-methodology.md`. Testing was performed manually; stacks not available in the current environment are marked `not tested`. Results are point-in-time — re-run when components change."
+    },
+    {
+      "id": "at-methodology",
+      "title": "at-methodology",
+      "path": "/docs/specs/at-methodology.md",
+      "summary": "This document defines cascade's assistive-technology (AT) testing methodology."
+    },
+    {
+      "id": "brand-color",
+      "title": "brand-color",
+      "path": "/docs/specs/brand-color.md",
+      "summary": "| Token                      | oklch value             | Approx hex | Usage                                                                                                                            | | -------------------------- | ----------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- | | `--cascivo-brand-primary`  | `oklch(0.55 0.15 240)`  | `#0079bf`  | Hero bg, CTA button, logo gradient start                                                                                         | | `--cascivo-brand-accent`   | `oklch(0.72 0.13 195)`  | `#00bdbe`  | Gradient end, accent UI, flow highlights                                                                                         | | `--cascivo-brand-ink`      | `oklch(0.22 0.03 250)`  | `#101c28`  | Wordmark on light, body text on brand surfaces                                                                                   | | `--cascivo-brand-paper`    | `oklch(0.99 0.005 250)` | `#f9fcff`  | Brand surface (hero, OG card background)                                                                                         | | `--cascivo-brand-gradient` | —                       | —          | `linear-gradient(135deg, var(--cascivo-brand-primary), var(--cascivo-brand-accent))` — hero fill, logo gradient variant, OG card |"
+    },
+    {
+      "id": "cascivo-launch-checklist",
+      "title": "cascivo-launch-checklist",
+      "path": "/docs/specs/cascivo-launch-checklist.md",
+      "summary": "Code prerequisites completed in v15 T1–T4. External steps the owner must perform:"
+    },
+    {
+      "id": "chart-palette",
+      "title": "chart-palette",
+      "path": "/docs/specs/chart-palette.md",
+      "summary": "The `--cascivo-chart-1..8` tokens are grounded in the **Okabe-Ito 8-color palette**, the de-facto standard for scientific figures requiring color vision deficiency (CVD) safety."
+    },
+    {
       "id": "spec-color-usage",
       "title": "Color Usage",
       "path": "/docs/specs/color-usage.md",
@@ -26,16 +56,46 @@
       "summary": "When guidance conflicts, resolve it in this order:"
     },
     {
+      "id": "legal-mapping",
+      "title": "legal-mapping",
+      "path": "/docs/specs/legal-mapping.md",
+      "summary": "Cascade targets WCAG 2.2 AA conformance at the component level. All three major accessibility frameworks — EAA, EN 301 549, and US Section 508 — reference WCAG as their technical standard."
+    },
+    {
+      "id": "mobile-audit-docs",
+      "title": "mobile-audit-docs",
+      "path": "/docs/specs/mobile-audit-docs.md",
+      "summary": "| Location                  | Class/element               | Issue                                                                                                                     | | ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | | `app.css:73`              | `.doc-page`                 | `max-width: 760px` — not constrained to viewport width; becomes effectively `760px` when padding pushes content           | | `app.css:34`              | `.page`                     | `padding: var(--cascivo-space-6)` fixed — 1.5rem each side on a 320px screen leaves 272px usable, no sub-30rem adjustment | | `app.css`                 | No `@media` blocks at all   | Zero responsive behavior in global CSS                                                                                    | | `app.css:90`              | `.doc-head h1`              | `font-size: var(--cascivo-text-3xl)` fixed — no fluid scaling on small screens                                            | | `app.css:243`             | `.code-shiki pre`           | `overflow-x: auto` present but no font-size reduction at narrow widths                                                    | | `app.css:161`             | `.table-wrap`               | `overflow-x: auto` present but no scroll hint; no stacked layout at narrow screens                                        | | `app-shell.module.css:63` | `@media (max-width: 64rem)` | Only breakpoint: nav becomes off-canvas drawer (already implemented in AppShell). No sub-375px handling.                  | | `ChartsPage.tsx`          | Chart components            | No explicit width constraints; charts could overflow if SVG viewBox expands beyond container                              | | `PlaygroundPage.tsx`      | Side-by-side split pane     | `display: flex` horizontal split with no responsive stack at narrow widths                                                | | `app.css:133`             | `.doc-meta-grid`            | `minmax(160px, 1fr)` — at 320px with padding, this fits ~1 col but edge case worth verifying                              |"
+    },
+    {
+      "id": "mobile-audit-landing",
+      "title": "mobile-audit-landing",
+      "path": "/docs/specs/mobile-audit-landing.md",
+      "summary": "| Location          | Class/element                      | Issue                                                                                                                                                                | | ----------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | `landing.css:67`  | `.hero-ctas`                       | No `flex-wrap` — two buttons overflow at 320px                                                                                                                       | | `landing.css:60`  | `.hero-tagline` / `.hero-sub`      | `max-width: 44rem` — fixed, not `min(100%, 44rem)`                                                                                                                   | | `landing.css:543` | `.principles`                      | 4-col at base, only collapses at `32rem` — at 320px the border-inline-end creates visual orphan                                                                      | | `landing.css:694` | `.console-body`                    | `grid-template-columns: auto 1fr` — `auto` side-nav is fixed-width, causes overflow below 56rem                                                                      | | `landing.css:713` | `.console-grid`                    | `1fr 1fr` collapses at 56rem but console-body doesn't align with that                                                                                                | | `landing.css:742` | `.kpi-row`                         | 4-col → 2-col at 56rem → 1-col at 32rem: the 56rem→32rem gap (375–512px) still shows 2 cols                                                                          | | Header            | `ShellHeader` nav                  | All nav links visible at all widths; no hamburger/off-canvas at mobile                                                                                               | | `landing.css:308` | `.footer-columns`                  | 3-col → 1-col at `max-width: 32rem` — uses max-width (desktop-first)                                                                                                 | | `landing.css:335` | Multiple `@media (max-width: ...)` | All breakpoints are desktop-first `max-width`; no mobile-first `min-width` base                                                                                      | | Various           | `.section`                         | `max-width: 1040px` with `padding: ... var(--cascivo-space-6)` — at 320px `space-6` = 1.5rem each side = 3rem total from 320px = 272px content, acceptable but tight | | `landing.css:377` | `.json-playground-demo`            | `1fr 1fr` grid → collapses at `max-width: 48rem` (desktop-first)                                                                                                     | | `.signals-grid`   | `landing.css:920`                  | `2fr` → 1fr at `40rem` (desktop-first)                                                                                                                               | | `.agents-grid`    | `landing.css:987`                  | `2fr` → 1fr at `56rem` (desktop-first)                                                                                                                               |"
+    },
+    {
+      "id": "perf-methodology",
+      "title": "perf-methodology",
+      "path": "/docs/specs/perf-methodology.md",
+      "summary": "This document diagnoses the current state of the per-component incremental bundle matrix before any fixes land (T3-T2 and later). Read `apps/bench/METHODOLOGY.md` for the overall benchmark methodology; this doc focuses specifically on the incremental matrix and the two known defects that corrupt its output."
+    },
+    {
       "id": "spec-spacing",
       "title": "Spacing",
       "path": "/docs/specs/spacing.md",
-      "summary": "cascade uses a fixed spacing scale defined as `--cascade-space-*` tokens. All spacing in components must reference these tokens rather than hard-coded pixel values."
+      "summary": "cascade uses a fixed spacing scale defined as `--cascivo-space-*` tokens. All spacing in components must reference these tokens rather than hard-coded pixel values."
     },
     {
       "id": "t5-deferral",
       "title": "t5-deferral",
       "path": "/docs/specs/t5-deferral.md",
       "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
+    },
+    {
+      "id": "wcag-2.2",
+      "title": "wcag-2.2",
+      "path": "/docs/specs/wcag-2.2.md",
+      "summary": "Three criteria added in WCAG 2.2 require explicit cascade handling. This document records the implementation approach and verification status for each."
     }
   ]
 }

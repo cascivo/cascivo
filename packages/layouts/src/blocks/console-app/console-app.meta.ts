@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ConsoleApp',
@@ -10,23 +10,18 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-shell-header-block-size',
-    '--cascade-shell-panel-inline-size',
-    '--cascade-shell-aside-inline-size',
-    '--cascade-color-border',
-    '--cascade-color-surface',
-    '--cascade-color-scrim',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
+    '--cascivo-shell-header-block-size',
+    '--cascivo-shell-panel-inline-size',
+    '--cascivo-shell-aside-inline-size',
+    '--cascivo-color-border',
+    '--cascivo-color-surface',
+    '--cascivo-color-scrim',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: ['Escape', 'Tab'] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: ['Escape', 'Tab'] },
   examples: [{ title: 'Default', code: '<ConsoleApp />', description: 'Full console shell demo' }],
-  dependencies: [
-    '@cascade-ui/react',
-    '@cascade-ui/icons',
-    'layout/app-shell',
-    'layout/page-header',
-  ],
+  dependencies: ['@cascivo/react', '@cascivo/icons', 'layout/app-shell', 'layout/page-header'],
   tags: ['block', 'console', 'shell', 'navigation', 'carbon-parity'],
   intent: {
     whenToUse: [

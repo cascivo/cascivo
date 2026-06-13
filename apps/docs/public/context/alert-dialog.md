@@ -39,14 +39,14 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-lg`
-- `--cascade-shadow-xl`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-lg`
+- `--cascivo-shadow-xl`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
 
 ## Boundaries
 
@@ -54,4 +54,4 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | dismiss behavior | strict   | No light-dismiss — closing must go through onConfirm/onCancel                                                       |
 | action labels    | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog                                     |
-| token names      | strict   | Visual styling resolves to semantic --cascade-color-\* tokens; destructive variant uses --cascade-color-destructive |
+| token names      | strict   | Visual styling resolves to semantic --cascivo-color-\* tokens; destructive variant uses --cascivo-color-destructive |

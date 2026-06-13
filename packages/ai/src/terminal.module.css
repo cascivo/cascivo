@@ -3,15 +3,15 @@
     background: oklch(0.12 0.01 250);
     color: oklch(0.9 0.02 145);
     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-    font-size: var(--cascade-font-size-sm, 0.875rem);
+    font-size: var(--cascivo-font-size-sm, 0.875rem);
     line-height: 1.6;
-    padding: var(--cascade-space-4);
-    border-radius: var(--cascade-radius-surface);
+    padding: var(--cascivo-space-4);
+    border-radius: var(--cascivo-radius-surface);
     overflow-x: auto;
   }
   .line {
     display: flex;
-    gap: var(--cascade-space-2);
+    gap: var(--cascivo-space-2);
   }
   .prefix {
     color: oklch(0.7 0.15 145);

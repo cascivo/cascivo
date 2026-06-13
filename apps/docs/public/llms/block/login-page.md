@@ -5,7 +5,7 @@ Authentication login page with email and password form.
 ## Install
 
 ```bash
-npx cascade add block/login-page
+npx cascivo add block/login-page
 ```
 
 ## Category
@@ -30,12 +30,12 @@ Login page
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/auth-layout`
 
 ## Tags

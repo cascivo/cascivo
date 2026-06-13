@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Checkbox',
@@ -15,23 +15,26 @@ export const meta: ComponentMeta = {
     { name: 'onChange', type: 'React.ChangeEventHandler<HTMLInputElement>', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'checkbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space'],
+    apgPattern: 'checkbox',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'With label', code: '<Checkbox label="Accept terms" />' },
     { title: 'Indeterminate', code: '<Checkbox label="Select all" indeterminate />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'toggle', 'boolean'],
   intent: {
     whenToUse: [
@@ -83,7 +86,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens',
+        note: 'Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens',
       },
     ],
   },

@@ -148,23 +148,23 @@ All five must exit 0. The drift check is especially important: regenerated artif
 
 Several CI jobs build apps **without** a prior `pnpm build` step (perf, storybook deploy, landing deploy). When those apps import a workspace package whose `package.json` exports point to `./dist/`, Rolldown fails to resolve the import because no dist exists.
 
-**Rule:** Every `@cascade-ui/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`.
+**Rule:** Every `@cascivo/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`.
 
 The alias maps the package name to its TypeScript source entry so Rolldown can bundle it directly:
 
 ```ts
-'@cascade-ui/render': resolve(root, 'packages/render/src/index.ts'),
-'@cascade-ui/icons':  resolve(root, 'packages/icons/src/index.tsx'),
+'@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
+'@cascivo/icons':  resolve(root, 'packages/icons/src/index.tsx'),
 ```
 
-**Checklist when adding a new `@cascade-ui/*` package or changing an existing package's exports:**
+**Checklist when adding a new `@cascivo/*` package or changing an existing package's exports:**
 
 1. Check if the package's `package.json` `exports["."].import` points to `./dist/`.
 2. If yes, add a source alias to **all** of the following:
    - `apps/docs/vite.config.ts`
    - `apps/landing/vite.config.ts`
    - `apps/storybook/.storybook/main.ts` (`viteFinal` alias block)
-3. Verify each builds locally: `pnpm exec vp run @cascade-ui/docs#build @cascade-ui/landing#build @cascade-ui/storybook#build`
+3. Verify each builds locally: `pnpm exec vp run @cascivo/docs#build @cascivo/landing#build @cascivo/storybook#build`
 
 Packages that export source directly (components, layouts, charts, themes, tokens) do **not** need aliases — Rolldown resolves them via the `exports` map to their `.tsx`/`.css` source files.
 
@@ -174,7 +174,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 
 ### Project Identity
 
-- **Name**: cascade / `@cascade-ui`
+- **Name**: cascivo / `@cascivo`
 - **Tagline**: The CSS-native, signal-driven, AI-first React design system
 - **Competitors**: shadcn/ui, IBM Carbon Design System
 - **Core thesis**: Modern CSS + fine-grained signals + AI-native tooling = zero compromise on quality, performance, or developer experience
@@ -184,7 +184,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 1. **Simplicity** — adoption must be frictionless. No config hell, no wrapper components, no hidden magic.
 2. **Owned code** — components are copy-pasted into user projects (shadcn model). Users own what they use.
 3. **Modern CSS only** — `@layer`, `@container`, `:has()`, CSS custom properties. No Tailwind, no CSS-in-JS.
-4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascade-ui/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
+4. **Signal-driven** — custom micro-FSM + Preact Signals in `@cascivo/core`. No `useState`/`useContext` for component interactivity. Zero unnecessary re-renders.
 5. **Beautiful by default** — three first-party themes (light, dark, warm). Theming via `data-theme` attribute + CSS custom properties. Scoped to any container.
 6. **AI-first** — every component has a machine-readable manifest. MCP server, Claude Code skills, and auto-generated docs all derive from it.
 
@@ -192,7 +192,7 @@ Packages that export source directly (components, layouts, charts, themes, token
 
 - Always use the **latest stable** version of every dependency (dev or runtime).
 - Peer dependencies must be explicit and version-ranged (`>=18.0.0`).
-- Runtime dependencies in `@cascade-ui/core`: none beyond `@preact/signals-react`.
+- Runtime dependencies in `@cascivo/core`: none beyond `@preact/signals-react`.
 - Dev tooling: use vite+ (`vp`) as the single CLI — it bundles Oxlint, Oxfmt, Rolldown, Vitest (all Rust-backed).
 - vite+ is alpha (v0.1.24) — accepted risk. On `vp` breaking changes, check https://viteplus.dev before updating.
 
@@ -201,24 +201,24 @@ Packages that export source directly (components, layouts, charts, themes, token
 ```
 cascade/
 ├── packages/
-│   ├── core/           # @cascade-ui/core — micro-FSM, Preact Signals integration, base utilities
-│   ├── tokens/         # @cascade-ui/tokens — CSS design tokens (primitive → semantic → component)
-│   ├── themes/         # @cascade-ui/themes — light.css, dark.css, warm.css
+│   ├── core/           # @cascivo/core — micro-FSM, Preact Signals integration, base utilities
+│   ├── tokens/         # @cascivo/tokens — CSS design tokens (primitive → semantic → component)
+│   ├── themes/         # @cascivo/themes — light.css, dark.css, warm.css
 │   ├── components/     # Registry source — component TSX + CSS + manifest + tests (not published to npm)
-│   ├── react/          # @cascade-ui/react — prebuilt npm distribution of all components (use without copying)
-│   ├── i18n/           # @cascade-ui/i18n — signal-driven locale store, typed catalogs, Intl formatting
-│   ├── storage/        # @cascade-ui/storage — persisted signals over localStorage/IndexedDB, SSR-safe
-│   ├── icons/          # @cascade-ui/icons — optional SVG icon components
-│   ├── cli/            # cascade CLI — npx cascade init / add / list / update
-│   └── mcp/            # @cascade-ui/mcp — MCP server exposing component registry to AI agents
+│   ├── react/          # @cascivo/react — prebuilt npm distribution of all components (use without copying)
+│   ├── i18n/           # @cascivo/i18n — signal-driven locale store, typed catalogs, Intl formatting
+│   ├── storage/        # @cascivo/storage — persisted signals over localStorage/IndexedDB, SSR-safe
+│   ├── icons/          # @cascivo/icons — optional SVG icon components
+│   ├── cli/            # cascivo CLI — npx cascivo init / add / list / update
+│   └── mcp/            # @cascivo/mcp — MCP server exposing component registry to AI agents
 ├── apps/
-│   ├── docs/           # Vite + Preact + cascade (dogfood) — auto-generated from manifests
+│   ├── docs/           # Vite + Preact + cascivo (dogfood) — auto-generated from manifests
 │   ├── storybook/      # Storybook — auto-generated stories from manifests
-│   ├── landing/        # Landing page — built with cascade
+│   ├── landing/        # Landing page — built with cascivo
 │   └── examples/
 │       ├── react-vite/ # Vite + React example app
 │       └── react-next/ # Next.js App Router example (RSC demo)
-├── skills/             # Claude Code skills — cascade:add, cascade:design-page, cascade:create-theme, cascade:extend
+├── skills/             # Claude Code skills — cascivo:add, cascivo:design-page, cascivo:create-theme, cascivo:extend
 ├── scripts/
 │   ├── factory/        # Dark factory — headless Claude Code agents, factory-supervisor.sh
 │   └── registry/       # registry.json generation + GitHub raw URL map
@@ -254,11 +254,11 @@ pnpm workspaces (`pnpm-workspace.yaml`) remain the underlying monorepo mechanism
 Three-level CSS custom property system:
 
 ```
-Primitive tokens:  --cascade-color-blue-500: #3b82f6
+Primitive tokens:  --cascivo-color-blue-500: #3b82f6
         ↓ (theme maps primitive → semantic)
-Semantic tokens:   --cascade-color-accent: var(--cascade-color-blue-500)
+Semantic tokens:   --cascivo-color-accent: var(--cascivo-color-blue-500)
         ↓ (component maps semantic → usage)
-Component tokens:  --cascade-button-bg: var(--cascade-color-accent)
+Component tokens:  --cascivo-button-bg: var(--cascivo-color-accent)
 ```
 
 Themes override the semantic layer only. Users override component tokens for per-component brand adaptation. Applied via `data-theme="light|dark|warm"` on any DOM element.
@@ -283,7 +283,7 @@ export const meta: ComponentMeta = {
     keyboard: string[],   // ['Enter', 'Space']
   },
   examples: ExampleMeta[],     // { title, code, description }
-  dependencies: string[],      // ['@cascade-ui/core']
+  dependencies: string[],      // ['@cascivo/core']
   tags: string[],              // for search/discovery
 }
 ```
@@ -293,8 +293,8 @@ export const meta: ComponentMeta = {
 | Surface             | Package                           | Purpose                                                                                      |
 | ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
 | Component manifest  | `component.meta.ts` per component | Ground truth for all AI surfaces                                                             |
-| MCP server          | `@cascade-ui/mcp`                 | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
-| Claude Code skills  | `skills/`                         | `cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend`               |
+| MCP server          | `@cascivo/mcp`                    | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
+| Claude Code skills  | `skills/`                         | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`               |
 | Auto-generated docs | `apps/docs/`                      | Markdown + interactive examples generated from manifests                                     |
 | Registry manifest   | `registry.json`                   | Machine-readable index — CLI + MCP + docs all read from this                                 |
 
@@ -317,9 +317,9 @@ Tiered automation:
 
 ### Distribution Model
 
-- `@cascade-ui/core`, `@cascade-ui/tokens`, `@cascade-ui/themes`, `@cascade-ui/icons`, `@cascade-ui/mcp`: versioned npm packages
-- Components: copy-paste via `npx cascade add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
-- Themes: `import '@cascade-ui/themes/light.css'`
+- `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons`, `@cascivo/mcp`: versioned npm packages
+- Components: copy-paste via `npx cascivo add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
+- Themes: `import '@cascivo/themes/light.css'`
 
 ### Browser & Accessibility Targets
 
@@ -333,18 +333,18 @@ These rules are non-negotiable. Violating them ships broken code.
 
 #### Reactivity — use signals, not React hooks
 
-| Allowed                                                               | Forbidden                                    |
-| --------------------------------------------------------------------- | -------------------------------------------- |
-| `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core` | `useState`                                   |
-| `useRef` for DOM references                                           | `useContext`                                 |
-| `useMachine` / `createMachine` for genuine internal FSM state         | `useEffect`, `useLayoutEffect`, `useReducer` |
+| Allowed                                                            | Forbidden                                    |
+| ------------------------------------------------------------------ | -------------------------------------------- |
+| `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core` | `useState`                                   |
+| `useRef` for DOM references                                        | `useContext`                                 |
+| `useMachine` / `createMachine` for genuine internal FSM state      | `useEffect`, `useLayoutEffect`, `useReducer` |
 
 #### React apps must subscribe explicitly
 
 The docs app is Preact (signals are natively reactive there). The React apps —
 `apps/landing`, `apps/examples/*`, `apps/bench/*` — get NO Babel signals transform:
 **any component that reads `signal.value` during render must call `useSignals()`
-(from `@cascade-ui/core`) as its first statement**, or it will never re-render on
+(from `@cascivo/core`) as its first statement**, or it will never re-render on
 signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals
 that don't open).
 
@@ -401,7 +401,7 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 ```css
 .component {
   padding-block: 0.5rem; /* static fallback — all browsers */
-  padding-block: --cascade-step(2); /* progressive — Chrome 133+ */
+  padding-block: --cascivo-step(2); /* progressive — Chrome 133+ */
 }
 ```
 
@@ -412,6 +412,6 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
 2. Every machine transition is reachable by code inside the component (not just by external props).
 3. DOM side effects use `useSignalEffect`, not `useEffect`.
-4. All tests pass: `vp run @cascade-ui/components#test`.
-5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascade-ui/react` distribution).
-6. User-visible strings default from the `@cascade-ui/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.
+4. All tests pass: `vp run @cascivo/components#test`.
+5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascivo/react` distribution).
+6. User-visible strings default from the `@cascivo/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.

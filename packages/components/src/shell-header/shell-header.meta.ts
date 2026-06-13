@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ShellHeader',
@@ -60,24 +60,24 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-shell-header-block-size',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-accent',
-    '--cascade-radius-control',
+    '--cascivo-shell-header-block-size',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-radius-control',
   ],
   accessibility: {
     role: 'banner',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter', 'Space', 'ArrowDown', 'ArrowUp', 'Escape'],
   },
   examples: [
     {
       title: 'Console header',
       code: `<ShellHeader
-  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}
+  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },
@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       description: 'Brand with prefix, dropdown nav, global icon action',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'header', 'shell', 'console', 'menu', 'app-shell'],
   intent: {
     whenToUse: [
@@ -134,7 +134,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Surfaces, sizing, and accent must resolve to --cascade-* shell tokens',
+        note: 'Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens',
       },
     ],
   },

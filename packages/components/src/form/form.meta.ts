@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Form',
@@ -14,10 +14,10 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true },
     { name: 'className', type: 'string', required: false },
   ],
-  tokens: ['--cascade-space-4'],
+  tokens: ['--cascivo-space-4'],
   accessibility: {
     role: 'form',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter'],
   },
   examples: [
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
 }`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'validation', 'signals', 'input'],
   intent: {
     whenToUse: [

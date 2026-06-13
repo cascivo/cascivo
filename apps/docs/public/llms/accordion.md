@@ -5,7 +5,7 @@ Vertically stacked, collapsible content sections
 ## Install
 
 ```bash
-npx cascade add accordion
+npx cascivo add accordion
 ```
 
 ## Category
@@ -41,21 +41,21 @@ npx cascade add accordion
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text`
-- `--cascade-radius-md`
-- `--cascade-focus-ring`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text`
+- `--cascivo-radius-md`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

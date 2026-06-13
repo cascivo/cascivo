@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { OtpInput } from '@cascade-ui/components/otp-input'
+import { OtpInput } from '@cascivo/components/otp-input'
 
 const meta: Meta<typeof OtpInput> = {
   title: 'Inputs/OtpInput',

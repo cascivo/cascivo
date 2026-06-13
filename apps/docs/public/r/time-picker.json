@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/time-picker/time-picker.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["time", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -87,20 +87,20 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-border",
-      "--cascade-color-border-strong",
-      "--cascade-color-text",
-      "--cascade-color-text-muted",
-      "--cascade-color-accent",
-      "--cascade-color-danger",
-      "--cascade-radius-input",
-      "--cascade-radius-md"
+      "--cascivo-color-surface",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-border",
+      "--cascivo-color-border-strong",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-accent",
+      "--cascivo-color-danger",
+      "--cascivo-radius-input",
+      "--cascivo-radius-md"
     ],
     "accessibility": {
       "role": "textbox",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Tab"]
     },
     "examples": [
@@ -109,7 +109,7 @@
         "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["time", "input", "form"],
     "intent": {
       "whenToUse": [

@@ -1,20 +1,20 @@
 @layer cascade.component {
   .cta {
-    border-block: 1px solid var(--cascade-color-border);
-    background-color: var(--cascade-surface-subtle);
+    border-block: 1px solid var(--cascivo-color-border);
+    background-color: var(--cascivo-surface-subtle);
   }
 
   .title {
-    font-size: var(--cascade-text-2xl);
-    font-weight: var(--cascade-font-bold);
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
     text-wrap: balance;
     text-align: center;
     margin: 0;
   }
 
   .description {
-    font-size: var(--cascade-text-base);
-    color: var(--cascade-text-secondary);
+    font-size: var(--cascivo-text-base);
+    color: var(--cascivo-text-secondary);
     text-align: center;
     max-inline-size: 56ch;
     margin-inline: auto;
@@ -24,7 +24,7 @@
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--cascade-space-3);
+    gap: var(--cascivo-space-3);
     justify-content: center;
   }
 }

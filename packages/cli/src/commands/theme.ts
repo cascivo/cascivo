@@ -24,10 +24,10 @@ export async function theme(args: string[]): Promise<void> {
     return
   }
 
-  installPackages(['@cascade-ui/themes'])
+  installPackages(['@cascivo/themes'])
 
   console.log(`\nImport the theme in your root CSS or entry file:`)
-  console.log(`  import '@cascade-ui/themes/${name}.css'`)
+  console.log(`  import '@cascivo/themes/${name}.css'`)
   console.log(`Then set it on a container:`)
   console.log(`  <div data-theme="${name}">…</div>`)
 }

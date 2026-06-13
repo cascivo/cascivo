@@ -21,7 +21,7 @@ const RAW = {
         'https://example.com/button/button.tsx',
         'https://example.com/button/button.module.css',
       ],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: ['action', 'form', 'interactive'],
     },
     {

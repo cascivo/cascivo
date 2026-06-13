@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio/radio.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio/radio.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "choice", "group"],
   "category": "inputs",
   "meta": {
@@ -46,17 +46,20 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-accent",
-      "--cascade-color-border-strong",
-      "--cascade-color-text-on-accent",
-      "--cascade-radius-full",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-accent",
+      "--cascivo-color-border-strong",
+      "--cascivo-color-text-on-accent",
+      "--cascivo-radius-full",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "radio",
-      "wcag": "AA",
-      "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+      "wcag": "2.2-AA",
+      "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"],
+      "apgPattern": "radio",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -64,7 +67,7 @@
         "code": "<RadioGroup name=\"plan\" defaultValue=\"pro\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "choice", "group"],
     "intent": {
       "whenToUse": [
@@ -105,7 +108,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+          "note": "Control and label styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "option labels and orientation",

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AlertDialog',
@@ -9,22 +9,22 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-lg',
-    '--cascade-shadow-xl',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
-    '--cascade-color-accent',
-    '--cascade-color-destructive',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-lg',
+    '--cascivo-shadow-xl',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+    '--cascivo-color-accent',
+    '--cascivo-color-destructive',
   ],
   accessibility: {
     role: 'alertdialog',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Shift+Tab', 'Enter', 'Space'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'dialog', 'confirm', 'destructive'],
   intent: {
     whenToUse: [
@@ -86,7 +86,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive',
+        note: 'Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive',
       },
     ],
   },

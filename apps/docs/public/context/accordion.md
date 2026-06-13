@@ -41,11 +41,11 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 
 ## Tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text`
-- `--cascade-radius-md`
-- `--cascade-focus-ring`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text`
+- `--cascivo-radius-md`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -65,4 +65,4 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 | Area               | Level    | Note                                                                      |
 | ------------------ | -------- | ------------------------------------------------------------------------- |
 | single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive       |
-| token names        | strict   | Borders, surfaces, and radii must resolve to --cascade-\* semantic tokens |
+| token names        | strict   | Borders, surfaces, and radii must resolve to --cascivo-\* semantic tokens |

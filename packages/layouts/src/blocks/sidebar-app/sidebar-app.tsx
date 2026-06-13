@@ -1,5 +1,5 @@
 'use client'
-import { Header, SideNav } from '@cascade-ui/react'
+import { Header, SideNav } from '@cascivo/react'
 import { AppShell } from '../../app-shell/app-shell'
 
 export function SidebarApp() {

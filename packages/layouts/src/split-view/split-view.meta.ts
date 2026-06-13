@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SplitView',
@@ -20,10 +20,10 @@ export const meta: ComponentMeta = {
     { name: 'max', type: 'number', required: false, description: 'Maximum ratio for start pane' },
     { name: 'aria-label', type: 'string', required: false, description: 'Label for the separator' },
   ],
-  tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-duration-150'],
+  tokens: ['--cascivo-color-border', '--cascivo-color-accent', '--cascivo-duration-150'],
   accessibility: {
     role: 'separator',
-    wcag: 'AA',
+    wcag: '2.1-AA',
     keyboard: ['ArrowLeft', 'ArrowRight'],
   },
   examples: [
@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
       description: 'Two-pane split with draggable divider',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'split', 'resizable', 'pane'],
   intent: {
     whenToUse: [

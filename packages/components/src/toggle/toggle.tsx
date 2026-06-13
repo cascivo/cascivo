@@ -1,5 +1,5 @@
 'use client'
-import { cn, createMachine, useMachine, useSignals } from '@cascade-ui/core'
+import { cn, createMachine, useMachine, useSignals } from '@cascivo/core'
 import type { ButtonHTMLAttributes } from 'react'
 import styles from './toggle.module.css'
 

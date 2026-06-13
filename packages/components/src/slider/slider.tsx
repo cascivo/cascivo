@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { InputHTMLAttributes } from 'react'
 import styles from './slider.module.css'
 

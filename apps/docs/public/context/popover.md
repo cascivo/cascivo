@@ -34,16 +34,16 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-md`
-- `--cascade-shadow-md`
-- `--cascade-motion-enter`
-- `--cascade-motion-exit`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-md`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 
 ## Boundaries
 
 | Area        | Level    | Note                                                                      |
 | ----------- | -------- | ------------------------------------------------------------------------- |
-| token names | strict   | Panel styling must resolve to the listed --cascade-\* tokens              |
+| token names | strict   | Panel styling must resolve to the listed --cascivo-\* tokens              |
 | content     | flexible | Trigger and panel content are arbitrary children supplied by the consumer |

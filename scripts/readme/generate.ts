@@ -41,7 +41,7 @@ function componentsTable(): string {
 
 function buildReadme(dir: string, pkg: Pkg, isRoot: boolean): string {
   const sections: string[] = [MARKER, '']
-  sections.push(isRoot ? '# cascade' : `# ${pkg.name}`, '')
+  sections.push(isRoot ? '# cascivo' : `# ${pkg.name}`, '')
   if (pkg.description) sections.push(`> ${pkg.description}`, '')
   const bodyPath = join(dir, 'readme.body.md')
   if (existsSync(bodyPath)) sections.push(readFileSync(bodyPath, 'utf8').trim(), '')
@@ -49,13 +49,13 @@ function buildReadme(dir: string, pkg: Pkg, isRoot: boolean): string {
   if (installable) {
     sections.push('## Install', '', '```sh', `pnpm add ${pkg.name}`, '```', '')
   }
-  if (isRoot || pkg.name === '@cascade-ui/react' || pkg.name === '@cascade-ui/components') {
+  if (isRoot || pkg.name === '@cascivo/react' || pkg.name === '@cascivo/components') {
     sections.push(componentsTable())
   }
   sections.push(
     '---',
     '',
-    '[Docs](https://urbanisierung.github.io/cascade-ui/) · AI agents: use [`@cascade-ui/mcp`](https://github.com/urbanisierung/cascade-ui/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascade-ui/blob/main/registry.json) · MIT',
+    '[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT',
     '',
   )
   return sections.join('\n')

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ContextMenu',
@@ -9,21 +9,21 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-md',
-    '--cascade-shadow-md',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
-    '--cascade-color-bg-subtle',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-md',
+    '--cascivo-shadow-md',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+    '--cascivo-color-bg-subtle',
   ],
   accessibility: {
     role: 'menu',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'menu', 'context', 'right-click'],
   intent: {
     whenToUse: [
@@ -64,7 +64,7 @@ export const meta: ComponentMeta = {
       {
         area: 'anchor position',
         level: 'strict',
-        note: 'Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click',
+        note: 'Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click',
       },
     ],
   },

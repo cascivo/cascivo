@@ -44,13 +44,13 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 ## Tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-surface`
-- `--cascade-color-text`
-- `--cascade-radius-md`
-- `--cascade-radius-sm`
-- `--cascade-shadow-sm`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-surface`
+- `--cascivo-color-text`
+- `--cascivo-radius-md`
+- `--cascivo-radius-sm`
+- `--cascivo-shadow-sm`
 
 ## Examples
 
@@ -72,5 +72,5 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 | Area          | Level    | Note                                                                    |
 | ------------- | -------- | ----------------------------------------------------------------------- |
-| token names   | strict   | Segment styling must resolve to the listed --cascade-\* tokens          |
+| token names   | strict   | Segment styling must resolve to the listed --cascivo-\* tokens          |
 | option labels | flexible | option label and value are free, and individual options may be disabled |

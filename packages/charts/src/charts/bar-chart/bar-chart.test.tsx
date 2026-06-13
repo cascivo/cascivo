@@ -55,6 +55,11 @@ describe('BarChart', () => {
     expect(container.querySelector('table')).toBeTruthy()
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<BarChart series={series} x={x} y={y} title="Bar" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
       const { container } = render(<BarChart series={series} x={x} y={y} title="Plain" plain />)

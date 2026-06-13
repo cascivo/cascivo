@@ -5,7 +5,7 @@ Time-series or numeric line chart with multi-series support, hover tooltip, and 
 ## Install
 
 ```bash
-npx cascade add chart/line-chart
+npx cascivo add chart/line-chart
 ```
 
 ## Category
@@ -37,7 +37,7 @@ npx cascade add chart/line-chart
 ### Basic line chart
 
 ```tsx
-import { LineChart } from '@cascade-ui/charts'
+import { LineChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]
 <LineChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />
@@ -45,23 +45,24 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

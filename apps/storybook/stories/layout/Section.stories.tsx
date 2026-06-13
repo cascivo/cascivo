@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Section } from '@cascade-ui/layouts/section'
+import { Section } from '@cascivo/layouts/section'
 
 const meta: Meta<typeof Section> = {
   title: 'Layout/Section',
@@ -13,9 +13,9 @@ const placeholder = (label: string, h = '4rem') => (
   <div
     style={{
       height: h,
-      background: 'var(--cascade-surface-subtle)',
-      border: '1px solid var(--cascade-color-border)',
-      borderRadius: 'var(--cascade-radius-md)',
+      background: 'var(--cascivo-surface-subtle)',
+      border: '1px solid var(--cascivo-color-border)',
+      borderRadius: 'var(--cascivo-radius-md)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Prose',
@@ -9,31 +9,31 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-font-sans',
-    '--cascade-font-mono',
-    '--cascade-font-semibold',
-    '--cascade-leading-tight',
-    '--cascade-leading-relaxed',
-    '--cascade-tracking-tight',
-    '--cascade-color-text',
-    '--cascade-color-text-subtle',
-    '--cascade-color-accent',
-    '--cascade-color-accent-hover',
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-radius-indicator',
-    '--cascade-radius-surface',
+    '--cascivo-font-sans',
+    '--cascivo-font-mono',
+    '--cascivo-font-semibold',
+    '--cascivo-leading-tight',
+    '--cascivo-leading-relaxed',
+    '--cascivo-tracking-tight',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-hover',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-radius-indicator',
+    '--cascivo-radius-surface',
   ],
   accessibility: {
     role: 'generic',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
     {
       title: 'Authored content',
-      code: '<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>',
+      code: '<Prose><h2>Install</h2><p>Run <code>npx cascivo init</code>.</p></Prose>',
     },
     {
       title: 'Rendered markdown',
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
       description: 'The use case: HTML you do not control (CMS, markdown pipelines)',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'prose', 'content', 'markdown', 'article'],
   intent: {
     whenToUse: [
@@ -82,7 +82,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'All typography and surface styling resolves to --cascade-* tokens',
+        note: 'All typography and surface styling resolves to --cascivo-* tokens',
       },
     ],
   },

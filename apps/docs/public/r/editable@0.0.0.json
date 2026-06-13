@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/editable/editable.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/editable/editable.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "editable", "inline", "input", "text"],
   "category": "inputs",
   "meta": {
@@ -57,18 +57,18 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-color-accent",
-      "--cascade-color-text",
-      "--cascade-color-text-muted",
-      "--cascade-color-bg-subtle",
-      "--cascade-radius-sm",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-radius-sm",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter", "Escape"]
     },
     "examples": [
@@ -81,7 +81,7 @@
         "code": "<Editable value=\"\" onValueChange={() => {}} placeholder=\"Enter text\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "editable", "inline", "input", "text"],
     "intent": {
       "whenToUse": [
@@ -117,7 +117,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+          "note": "Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens"
         },
         {
           "area": "placeholder copy",

@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/status/status.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/status/status.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["status", "indicator", "dot", "badge"],
   "category": "display",
   "meta": {
@@ -38,17 +38,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-success",
-      "--cascade-color-warning",
-      "--cascade-color-error",
-      "--cascade-color-info",
-      "--cascade-color-text-muted",
-      "--cascade-color-text",
-      "--cascade-radius-full"
+      "--cascivo-color-success",
+      "--cascivo-color-warning",
+      "--cascivo-color-error",
+      "--cascivo-color-info",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-text",
+      "--cascivo-radius-full"
     ],
     "accessibility": {
       "role": "none",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -66,7 +66,7 @@
         "description": "The pulse animation respects prefers-reduced-motion"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["status", "indicator", "dot", "badge"],
     "intent": {
       "whenToUse": [
@@ -111,7 +111,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "State colors must resolve to --cascade-color-success/warning/error/info"
+          "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
         }
       ]
     }

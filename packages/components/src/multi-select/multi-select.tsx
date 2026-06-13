@@ -1,8 +1,8 @@
 'use client'
-import { useSignal, useComputed, useSignalEffect, useSignals, cn } from '@cascade-ui/core'
+import { useSignal, useComputed, useSignalEffect, useSignals, cn } from '@cascivo/core'
 import { useRef } from 'react'
 import type { HTMLAttributes } from 'react'
-import { t, builtin } from '@cascade-ui/i18n'
+import { t, builtin } from '@cascivo/i18n'
 import { usePopover } from '../popover/use-popover'
 import styles from './multi-select.module.css'
 

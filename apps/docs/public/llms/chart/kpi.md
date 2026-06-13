@@ -5,7 +5,7 @@ KPI card showing a primary metric with optional delta indicator, icon, and spark
 ## Install
 
 ```bash
-npx cascade add chart/kpi
+npx cascivo add chart/kpi
 ```
 
 ## Category
@@ -29,22 +29,22 @@ npx cascade add chart/kpi
 ### Basic KPI card
 
 ```tsx
-import { Kpi } from '@cascade-ui/charts'
+import { Kpi } from '@cascivo/charts'
 ;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `figure`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

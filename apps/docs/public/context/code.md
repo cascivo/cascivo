@@ -38,20 +38,20 @@ Renders a native <code> element so assistive tech can expose the content as code
 
 ## Tokens
 
-- `--cascade-font-mono`
-- `--cascade-color-text`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-radius-indicator`
-- `--cascade-text-xs`
-- `--cascade-text-sm`
+- `--cascivo-font-mono`
+- `--cascivo-color-text`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-radius-indicator`
+- `--cascivo-text-xs`
+- `--cascivo-text-sm`
 
 ## Examples
 
 ### Default
 
 ```jsx
-<Code>npx cascade add button</Code>
+<Code>npx cascivo add button</Code>
 ```
 
 ### In a sentence
@@ -67,7 +67,7 @@ Sits inline with surrounding text
 ### Small
 
 ```jsx
-<Code size="sm">--cascade-color-accent</Code>
+<Code size="sm">--cascivo-color-accent</Code>
 ```
 
 ## Boundaries
@@ -75,4 +75,4 @@ Sits inline with surrounding text
 | Area        | Level    | Note                                                                         |
 | ----------- | -------- | ---------------------------------------------------------------------------- |
 | size        | flexible | sm fits dense UI; md matches body text                                       |
-| token names | strict   | Font and surface must resolve to --cascade-font-mono and --cascade-\* tokens |
+| token names | strict   | Font and surface must resolve to --cascivo-font-mono and --cascivo-\* tokens |

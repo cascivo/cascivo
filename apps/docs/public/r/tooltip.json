@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tooltip/tooltip.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "hint", "popover"],
   "category": "overlay",
   "meta": {
@@ -48,15 +48,18 @@
       }
     ],
     "tokens": [
-      "--cascade-color-text",
-      "--cascade-color-text-on-accent",
-      "--cascade-radius-sm",
-      "--cascade-z-tooltip"
+      "--cascivo-color-text",
+      "--cascivo-color-text-on-accent",
+      "--cascivo-radius-sm",
+      "--cascivo-z-tooltip"
     ],
     "accessibility": {
       "role": "tooltip",
-      "wcag": "AA",
-      "keyboard": ["Tab", "Escape"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Escape"],
+      "apgPattern": "tooltip",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -64,7 +67,7 @@
         "code": "<Tooltip content=\"Copy to clipboard\"><Button>Copy</Button></Tooltip>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "hint", "popover"],
     "intent": {
       "whenToUse": [

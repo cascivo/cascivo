@@ -5,7 +5,7 @@ Displays a user image with initials fallback
 ## Install
 
 ```bash
-npx cascade add avatar
+npx cascivo add avatar
 ```
 
 ## Category
@@ -58,19 +58,19 @@ npx cascade add avatar
 
 ## Design tokens
 
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-destructive`
-- `--cascade-radius-full`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-full`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

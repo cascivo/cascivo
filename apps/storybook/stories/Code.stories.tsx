@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Code } from '@cascade-ui/components/code'
+import { Code } from '@cascivo/components/code'
 
 const meta: Meta<typeof Code> = {
   title: 'Display/Code',
   component: Code,
-  args: { children: 'npx cascade add button' },
+  args: { children: 'npx cascivo add button' },
 }
 export default meta
 type Story = StoryObj<typeof Code>
 
 export const Default: Story = {}
-export const Small: Story = { args: { size: 'sm', children: '--cascade-color-accent' } }
+export const Small: Story = { args: { size: 'sm', children: '--cascivo-color-accent' } }
 
 export const InProse: Story = {
   render: () => (

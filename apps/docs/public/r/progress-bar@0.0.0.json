@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-bar/progress-bar.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["progress", "loading", "status", "feedback"],
   "category": "feedback",
   "meta": {
@@ -61,18 +61,18 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-success",
-      "--cascade-color-destructive",
-      "--cascade-color-border",
-      "--cascade-color-text",
-      "--cascade-color-text-subtle",
-      "--cascade-radius-full",
-      "--cascade-motion-enter"
+      "--cascivo-color-accent",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-radius-full",
+      "--cascivo-motion-enter"
     ],
     "accessibility": {
       "role": "progressbar",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": []
     },
     "examples": [
@@ -89,7 +89,7 @@
         "code": "<ProgressBar value={100} status=\"success\" label=\"Upload complete\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["progress", "loading", "status", "feedback"],
     "intent": {
       "whenToUse": [
@@ -131,7 +131,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Fill and status colors must resolve to --cascade-* tokens"
+          "note": "Fill and status colors must resolve to --cascivo-* tokens"
         }
       ]
     }

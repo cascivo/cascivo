@@ -5,7 +5,7 @@ Dashboard page layout with stats strip, main content area, and optional aside.
 ## Install
 
 ```bash
-npx cascade add layout/dashboard-layout
+npx cascivo add layout/dashboard-layout
 ```
 
 ## Category
@@ -32,17 +32,17 @@ Stats + main layout
 
 ## Design tokens
 
-- `--cascade-space-4`
-- `--cascade-space-6`
+- `--cascivo-space-4`
+- `--cascivo-space-6`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'CommandMenu',
@@ -42,21 +42,21 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-modal',
-    '--cascade-radius-sm',
-    '--cascade-shadow-xl',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-modal',
+    '--cascivo-radius-sm',
+    '--cascivo-shadow-xl',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
   ],
   accessibility: {
     role: 'combobox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Cmd/Ctrl+K', 'ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Escape'],
   },
   examples: [
@@ -65,7 +65,7 @@ export const meta: ComponentMeta = {
       code: `<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'command', 'palette', 'search', 'cmdk', 'keyboard'],
   intent: {
     whenToUse: [
@@ -125,7 +125,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens',
+        note: 'Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens',
       },
     ],
   },

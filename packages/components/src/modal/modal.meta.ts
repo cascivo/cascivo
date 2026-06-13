@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Modal',
@@ -15,16 +15,19 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-border',
-    '--cascade-radius-modal',
-    '--cascade-shadow-xl',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-border',
+    '--cascivo-radius-modal',
+    '--cascivo-shadow-xl',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'dialog',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
+    apgPattern: 'dialog-modal',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -32,7 +35,7 @@ export const meta: ComponentMeta = {
       code: `<Modal open={isOpen} onClose={() => setIsOpen(false)} title="Confirm action">\n  <p>Are you sure?</p>\n</Modal>`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'dialog', 'popup'],
   intent: {
     whenToUse: [
@@ -80,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens',
+        note: 'Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'size',

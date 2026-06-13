@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PageFooter',
@@ -29,16 +29,16 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-text-sm',
-    '--cascade-font-mono',
-    '--cascade-font-semibold',
-    '--cascade-text-primary',
-    '--cascade-text-secondary',
-    '--cascade-color-border',
-    '--cascade-color-accent',
-    '--cascade-space-*',
+    '--cascivo-text-sm',
+    '--cascivo-font-mono',
+    '--cascivo-font-semibold',
+    '--cascivo-text-primary',
+    '--cascivo-text-secondary',
+    '--cascivo-color-border',
+    '--cascivo-color-accent',
+    '--cascivo-space-*',
   ],
-  accessibility: { role: 'contentinfo', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'contentinfo', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Site footer',
@@ -47,14 +47,14 @@ export const meta: ComponentMeta = {
   meta="MIT licensed. Built with care."
   groups={[
     { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },
-    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' }, { label: 'Changelog', href: '/changelog' }] },
+    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' }, { label: 'Changelog', href: '/changelog' }] },
     { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },
   ]}
 />`,
       description: 'Three-column footer with brand and license meta',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'footer', 'navigation'],
   intent: {
     whenToUse: [

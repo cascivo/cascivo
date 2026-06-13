@@ -39,14 +39,14 @@ describe('Skeleton', () => {
 
   it('applies width and height as inline custom properties', () => {
     const root = renderSkeleton(<Skeleton variant="rect" width="200px" height="4rem" />)
-    expect(root.style.getPropertyValue('--cascade-skeleton-width')).toBe('200px')
-    expect(root.style.getPropertyValue('--cascade-skeleton-height')).toBe('4rem')
+    expect(root.style.getPropertyValue('--cascivo-skeleton-width')).toBe('200px')
+    expect(root.style.getPropertyValue('--cascivo-skeleton-height')).toBe('4rem')
   })
 
   it('omits size custom properties when not provided', () => {
     const root = renderSkeleton(<Skeleton variant="rect" />)
-    expect(root.style.getPropertyValue('--cascade-skeleton-width')).toBe('')
-    expect(root.style.getPropertyValue('--cascade-skeleton-height')).toBe('')
+    expect(root.style.getPropertyValue('--cascivo-skeleton-width')).toBe('')
+    expect(root.style.getPropertyValue('--cascivo-skeleton-height')).toBe('')
   })
 
   it('merges custom className', () => {

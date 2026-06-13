@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/spinner/spinner.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/spinner/spinner.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["loading", "progress", "feedback"],
   "category": "feedback",
   "meta": {
@@ -37,11 +37,12 @@
         "description": "Accessible label announced by screen readers"
       }
     ],
-    "tokens": ["--cascade-radius-full"],
+    "tokens": ["--cascivo-radius-full"],
     "accessibility": {
       "role": "status",
-      "wcag": "AA",
-      "keyboard": []
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": false
     },
     "examples": [
       {
@@ -53,7 +54,7 @@
         "code": "<Spinner size=\"lg\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["loading", "progress", "feedback"],
     "intent": {
       "whenToUse": [
@@ -94,7 +95,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Radius must resolve to --cascade-radius-full"
+          "note": "Radius must resolve to --cascivo-radius-full"
         }
       ]
     }

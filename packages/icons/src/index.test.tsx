@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import * as icons from './index'
 import { Check, ChevronDown, X } from './index'
 
-describe('@cascade-ui/icons', () => {
+describe('@cascivo/icons', () => {
   it('exports VERSION', () => {
     expect(icons.VERSION).toBe('0.0.0')
   })

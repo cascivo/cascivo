@@ -4,7 +4,7 @@ import { defineConfig } from 'vite-plus'
 export default defineConfig({
   resolve: {
     alias: {
-      '@cascade-ui/react': resolve(__dirname, '../react/src/index.ts'),
+      '@cascivo/react': resolve(__dirname, '../react/src/index.ts'),
     },
   },
   build: {
@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', '@preact/signals-react', '@cascade-ui/react'],
+      external: ['react', 'react-dom', '@preact/signals-react', '@cascivo/react'],
     },
   },
   test: {

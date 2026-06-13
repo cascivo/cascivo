@@ -5,7 +5,7 @@ Small status label or category indicator
 ## Install
 
 ```bash
-npx cascade add badge
+npx cascivo add badge
 ```
 
 ## Category
@@ -55,20 +55,20 @@ npx cascade add badge
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-badge`
+- `--cascivo-color-accent`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-badge`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `status`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

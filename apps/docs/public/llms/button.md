@@ -5,7 +5,7 @@ Triggers an action or event
 ## Install
 
 ```bash
-npx cascade add button
+npx cascivo add button
 ```
 
 ## Category
@@ -62,23 +62,23 @@ npx cascade add button
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-color-text-on-accent`
-- `--cascade-color-destructive`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

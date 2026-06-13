@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'List',
@@ -17,16 +17,16 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-font-sans',
-    '--cascade-leading-normal',
-    '--cascade-color-text',
-    '--cascade-text-base',
-    '--cascade-space-1',
-    '--cascade-space-6',
+    '--cascivo-font-sans',
+    '--cascivo-leading-normal',
+    '--cascivo-color-text',
+    '--cascivo-text-base',
+    '--cascivo-space-1',
+    '--cascivo-space-6',
   ],
   accessibility: {
     role: 'list',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       description: 'Keeps list semantics without visual markers',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'list', 'ul', 'ol'],
   intent: {
     whenToUse: [
@@ -81,7 +81,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Spacing and text color must resolve to --cascade-* tokens',
+        note: 'Spacing and text color must resolve to --cascivo-* tokens',
       },
     ],
   },

@@ -9,15 +9,15 @@ describe('generateThemeCss', () => {
   })
 
   it('maps the primary color to the accent token', () => {
-    expect(css).toContain('--cascade-color-accent: #3b82f6;')
+    expect(css).toContain('--cascivo-color-accent: #3b82f6;')
   })
 
   it('derives hover via color-mix', () => {
-    expect(css).toContain('--cascade-color-accent-hover: color-mix(in oklab, #3b82f6, black 12%);')
+    expect(css).toContain('--cascivo-color-accent-hover: color-mix(in oklab, #3b82f6, black 12%);')
   })
 
   it('uses the accent color for the focus ring', () => {
-    expect(css).toContain('--cascade-color-focus-ring: #8b5cf6;')
+    expect(css).toContain('--cascivo-color-focus-ring: #8b5cf6;')
   })
 
   it('honors a custom theme name', () => {

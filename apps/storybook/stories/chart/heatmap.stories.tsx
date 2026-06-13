@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Heatmap } from '@cascade-ui/charts'
+import { Heatmap } from '@cascivo/charts'
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 const hours = ['AM', 'Midday', 'PM']

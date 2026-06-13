@@ -5,7 +5,7 @@ Star rating input with accessible radio group pattern
 ## Install
 
 ```bash
-npx cascade add rating-group
+npx cascivo add rating-group
 ```
 
 ## Category
@@ -52,20 +52,20 @@ npx cascade add rating-group
 
 ## Design tokens
 
-- `--cascade-color-warning`
-- `--cascade-color-border-strong`
-- `--cascade-color-accent`
-- `--cascade-radius-sm`
+- `--cascivo-color-warning`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-radius-sm`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radiogroup`
 - **Keyboard:** Tab, Space, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

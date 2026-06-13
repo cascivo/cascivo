@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Input } from '@cascade-ui/components/input'
+import { Input } from '@cascivo/components/input'
 
 const meta: Meta<typeof Input> = {
   title: 'Inputs/Input',

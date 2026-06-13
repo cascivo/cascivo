@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'DatePicker',
@@ -42,15 +42,15 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-date-picker-bg',
-    '--cascade-date-picker-border',
-    '--cascade-date-picker-radius',
-    '--cascade-date-picker-day-selected-bg',
-    '--cascade-date-picker-day-today-color',
+    '--cascivo-date-picker-bg',
+    '--cascivo-date-picker-border',
+    '--cascivo-date-picker-radius',
+    '--cascivo-date-picker-day-selected-bg',
+    '--cascivo-date-picker-day-today-color',
   ],
   accessibility: {
     role: 'combobox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'],
   },
   examples: [
@@ -70,7 +70,7 @@ export const meta: ComponentMeta = {
       description: 'Date range constraint',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['date', 'calendar', 'picker', 'input', 'form'],
   intent: {
     whenToUse: [
@@ -117,7 +117,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Styling resolves to --cascade-date-picker-* component tokens',
+        note: 'Styling resolves to --cascivo-date-picker-* component tokens',
       },
     ],
   },

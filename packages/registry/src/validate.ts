@@ -145,7 +145,7 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
 
   return {
     schemaVersion: 2,
-    name: 'cascade',
+    name: 'cascivo',
     items: (components as Record<string, unknown>[]).map((c) => {
       const item: RegistryItem = {
         schemaVersion: 2,

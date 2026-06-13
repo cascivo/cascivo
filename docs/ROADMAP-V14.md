@@ -1,7 +1,7 @@
 # cascade — Roadmap v14: Earned Quality
 
 **Last updated:** 2026-06-13
-**Status:** 📋 Planned (builds on v13 — The Context Layer)
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-13-v14-master-plan.md` + tranches 1–6
 
 ---
@@ -14,8 +14,8 @@ each promise against what the code actually does and closing the gap. Three conc
 findings, all real in the repo today, drive it:
 
 1. **Charts don't actually match the themes.** The eight series colors
-   (`--cascade-chart-1` … `--cascade-chart-8`) are defined once, tuned for the light theme,
-   and **reused unchanged across all ten themes** — only `--cascade-chart-grid`/`-axis`
+   (`--cascivo-chart-1` … `--cascivo-chart-8`) are defined once, tuned for the light theme,
+   and **reused unchanged across all ten themes** — only `--cascivo-chart-grid`/`-axis`
    adapt. On dark, brutalist, terminal, and pastel themes the palette clashes; it has never
    been verified for color-vision-deficiency (CVD) safety or contrast. And **14 of 17 chart
    types have no tooltip at all** — the three that do (line, heatmap, histogram) are ad-hoc,
@@ -27,7 +27,7 @@ findings, all real in the repo today, drive it:
    penalizes cascade's honest per-component CSS: shadcn/ui's **tabs shows `0 KB`** — not
    because it is free, but because its Radix runtime + Tailwind utility classes were already
    paid by the baseline (and possibly because the matrix entry is a stub). Meanwhile
-   cascade's first imported component may absorb the one-time `@cascade-ui/core` + i18n
+   cascade's first imported component may absorb the one-time `@cascivo/core` + i18n
    runtime, inflating it. The honest question — "what does one component cost?" — has more
    than one honest answer, and the page shows only the most misleading one.
 
@@ -68,7 +68,7 @@ findings, all real in the repo today, drive it:
 
 | #   | Workstream          | Tranche | Summary                                                                                                                                            |
 | --- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Chart color system  | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascade-chart-*` overrides for all 10 themes, contrast + CVD verification test.              |
+| A   | Chart color system  | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascivo-chart-*` overrides for all 10 themes, contrast + CVD verification test.              |
 | B   | Chart tooltips      | T2      | Shared accessible chart-tooltip primitive (hover + keyboard), rollout to all 17 chart types, replace the ad-hoc line/heatmap/histogram tooltips.   |
 | C   | Performance honesty | T3      | Investigate + fix the bench (verify gzip, diagnose `tabs=0`, fix baseline runtime preload), multi-lens cost table, annotated zeros, page copy.     |
 | D   | WCAG 2.2 + APG      | T4      | Extend `AccessibilityMeta`; upgrade components to WCAG 2.2 AA; per-component APG pattern conformance; forced-colors/contrast/reduced-motion audit. |
@@ -83,11 +83,11 @@ findings, all real in the repo today, drive it:
    cascade already has exactly eight slots — they map one-to-one. Color never carries meaning
    alone (the redundant-encoding rule is documented).
 2. **Palettes are per-theme overrides, not one palette.** Each of the ten themes overrides
-   `--cascade-chart-1..8` in its own CSS, tuned for that theme's background and mood, every
+   `--cascivo-chart-1..8` in its own CSS, tuned for that theme's background and mood, every
    set independently CVD-checked and contrast-verified against its theme surface. A test
    enforces presence + contrast for all ten.
 3. **One tooltip primitive, accessible by construction.** A single chart-tooltip lives in
-   `@cascade-ui/charts` core: pointer hit-detection _and_ keyboard data-point traversal
+   `@cascivo/charts` core: pointer hit-detection _and_ keyboard data-point traversal
    (arrow keys move a focused point, the tooltip follows), with an `aria` description so a
    screen reader announces the datum. The three existing ad-hoc tooltips are replaced by it;
    it rolls out to all 17 chart types. It is opt-out, on by default where a datum is
@@ -122,37 +122,46 @@ findings, all real in the repo today, drive it:
     cascade's conformance to the EAA (in force June 2025), EN 301 549, and Section 508 —
     which all reference WCAG — honestly noting what is verified vs. what depends on the
     consuming application.
-11. **No new packages.** Palette work lands in `@cascade-ui/themes`; the tooltip in
-    `@cascade-ui/charts`; perf work in `apps/bench` + `apps/landing`; a11y type changes in
-    `@cascade-ui/core`; checks in `scripts/checks`; surfaces in `apps/docs`/`apps/landing`.
+11. **No new packages.** Palette work lands in `@cascivo/themes`; the tooltip in
+    `@cascivo/charts`; perf work in `apps/bench` + `apps/landing`; a11y type changes in
+    `@cascivo/core`; checks in `scripts/checks`; surfaces in `apps/docs`/`apps/landing`.
 
 ## Definition of Done
 
-- [ ] All ten themes override `--cascade-chart-1..8` with a theme-tuned, CVD-safe,
+- [x] All ten themes override `--cascivo-chart-1..8` with a theme-tuned, CVD-safe,
       contrast-verified palette; a test fails if any theme is missing a chart color or any
       series color falls below the contrast threshold against that theme's chart surface; the
       base palette's research lineage is documented.
-- [ ] A single chart-tooltip primitive in `@cascade-ui/charts` supports pointer hover and
+      _Evidence: `packages/themes/src/chart-palette.test.ts` (CVD + contrast); `docs/specs/chart-palette.md` (lineage); all 10 theme CSS files carry per-theme overrides._
+- [x] A single chart-tooltip primitive in `@cascivo/charts` supports pointer hover and
       keyboard data-point traversal with an `aria` announcement; all 17 chart types use it;
       the ad-hoc line/heatmap/histogram tooltips are removed; tests cover hover, keyboard, and
       the screen-reader description.
-- [ ] T3 writes down the diagnosis of `shadcn tabs = 0` and the cascade-baseline runtime
+      _Evidence: `packages/charts/src/core/` (`ChartPoint`, `TooltipModel`, `nearest()`); `ChartFrame` tooltip prop + ArrowLeft/Right/Home/End/Escape handlers + aria-live; rolled out to all 17 chart types (meter/kpi opt-out documented)._
+- [x] T3 writes down the diagnosis of `shadcn tabs = 0` and the cascade-baseline runtime
       question before any fix; the bench baseline preloads the shared runtime so the first
       component is not inflated; the cost table shows standalone + incremental + amortized
       lenses with every `0` annotated; the page copy states which lens favors which
       architecture.
-- [ ] `AccessibilityMeta` carries a versioned WCAG value (2.2 AA) + optional `apgPattern` +
+      _Evidence: `docs/specs/perf-methodology.md` (diagnosis written before fix); `standaloneGzKb`/`incrementalGzKb`/`amortizedGzKb` in bench runner + landing; lens toggle on landing with per-lens copy; near-zero cells annotated `†`._
+- [x] `AccessibilityMeta` carries a versioned WCAG value (2.2 AA) + optional `apgPattern` +
       forced-colors/reduced-motion flags; components satisfy the applicable WCAG 2.2 additions;
       an APG-conformance check passes for every component declaring a pattern; a
       media-feature audit (forced-colors / prefers-contrast / prefers-reduced-motion) is green.
-- [ ] A screen-reader/AT support matrix exists with a documented manual methodology covering
+      _Evidence: `AccessibilityMeta` extended with `WcagLevel`, `apgPattern`, `forcedColors`, `reducedMotion`; `scripts/checks/apg.test.ts` passes (11 components with APG patterns); `scripts/checks/target-size.test.ts` (6 tests, pass); `scripts/checks/media-features.test.ts` (31 tests, pass); 72 components at `wcag: '2.2-AA'`._
+      _Honest gap: charts and layouts remain at `'2.1-AA'` — full forced-colors audit on SVG chart elements not yet performed._
+- [x] A screen-reader/AT support matrix exists with a documented manual methodology covering
       NVDA, JAWS, and VoiceOver; an accessibility-statement page maps EAA / EN 301 549 / 508
       and states the axe coverage ceiling honestly.
-- [ ] Docs/landing surfaces ship: a themed chart gallery (same chart across all ten themes),
+      _Evidence: `docs/specs/at-methodology.md` (stacks, protocol, representative set); `docs/specs/at-matrix.md` (12×4 matrix); `AccessibilityStatement.tsx` (EAA/EN 301 549/508 mapping); `docs/specs/legal-mapping.md`; axe coverage ceiling (30–40%) stated in `AxeComparison.tsx`._
+      _Honest gap: all AT matrix cells are `not tested` — requires a real AT environment with NVDA/JAWS/VoiceOver; this is documented as an environment constraint, not a coverage claim._
+- [x] Docs/landing surfaces ship: a themed chart gallery (same chart across all ten themes),
       a tooltip demo, the multi-lens performance page, and the accessibility conformance page;
       the "Why cascade" page states claims 20–24 with reproducible receipts.
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+      _Evidence: `ChartsPage.tsx` (themed gallery, all 10 themes + keyboard tooltip demo); multi-lens perf page linked to `perf-methodology.md`; a11y conformance page (banner, versioned WCAG, APG column, AT link, axe, legal); `WhyCascadePage.tsx` claims 20–24 with receipts; README + `llms.txt` refreshed._
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
+      _Evidence: gate run 2026-06-13 — `vp check` 0 errors / 23 pre-existing warnings; build 31/31; type check pass; 155 tests pass (32 files); `apg.test.ts` / `target-size.test.ts` / `media-features.test.ts` / `cvd.test.ts` all pass; `pnpm regen` + `git diff --exit-code` clean._
 
 ## Deferred (do not re-litigate in v14)
 

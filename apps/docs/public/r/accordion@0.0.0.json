@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/accordion/accordion.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/accordion/accordion.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["navigation", "collapse", "disclosure"],
   "category": "navigation",
   "meta": {
@@ -46,16 +46,19 @@
       }
     ],
     "tokens": [
-      "--cascade-color-border",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-text",
-      "--cascade-radius-md",
-      "--cascade-focus-ring"
+      "--cascivo-color-border",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-text",
+      "--cascivo-radius-md",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
-      "keyboard": ["Enter", "Space"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Enter", "Space"],
+      "apgPattern": "accordion",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -63,7 +66,7 @@
         "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["navigation", "collapse", "disclosure"],
     "intent": {
       "whenToUse": [
@@ -99,7 +102,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Borders, surfaces, and radii must resolve to --cascade-* semantic tokens"
+          "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
         }
       ]
     }

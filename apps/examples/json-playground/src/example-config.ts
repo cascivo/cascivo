@@ -1,8 +1,8 @@
-import type { ViewConfig } from '@cascade-ui/render'
+import type { ViewConfig } from '@cascivo/render'
 
 export const exampleConfig: ViewConfig = {
   $schema:
-    'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/render/schema/view.v1.json',
+    'https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json',
   version: 1,
   view: {
     regions: {

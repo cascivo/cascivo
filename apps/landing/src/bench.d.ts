@@ -37,7 +37,19 @@ declare module 'virtual:bench' {
         LibId,
         { jsGzKb: number; cssGzKb: number; totalGzKb: number; jsRawKb: number; cssRawKb: number }
       >
-      matrix: Record<LibId, Record<string, { totalGzKb: number; incrementalGzKb: number }>>
+      matrix: Record<
+        LibId,
+        Record<
+          string,
+          {
+            totalGzKb: number
+            incrementalGzKb: number
+            standaloneGzKb: number
+            amortizedGzKb: number
+            note?: string
+          }
+        >
+      >
       treeshake?: { bareImportGzBytes: number; buttonOnlyGzKb: number; fullGzKb: number }
     }
     runtime?: Record<

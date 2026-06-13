@@ -49,7 +49,7 @@ describe('resolveFromDirectory', () => {
     const result = await resolveFromDirectory('@myns', failingFetch)
     expect(result).toBeNull()
     expect(warnSpy).toHaveBeenCalledOnce()
-    expect(warnSpy.mock.calls[0]![0]).toMatch(/Could not reach cascade-ui\.dev directory/)
+    expect(warnSpy.mock.calls[0]![0]).toMatch(/Could not reach cascivo\.com directory/)
     expect(warnSpy.mock.calls[0]![0]).toMatch(/ECONNREFUSED/)
   })
 
@@ -61,6 +61,6 @@ describe('resolveFromDirectory', () => {
   })
 
   it('exports DIRECTORY_URL', () => {
-    expect(DIRECTORY_URL).toBe('https://cascade-ui.dev/r/registries.json')
+    expect(DIRECTORY_URL).toBe('https://cascivo.com/r/registries.json')
   })
 })

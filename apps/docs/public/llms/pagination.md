@@ -5,7 +5,7 @@ Controls for navigating paged data sets, with page size selection
 ## Install
 
 ```bash
-npx cascade add pagination
+npx cascivo add pagination
 ```
 
 ## Category
@@ -59,28 +59,28 @@ npx cascade add pagination
 
 ## Design tokens
 
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-radius-input`
-- `--cascade-radius-button`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-radius-button`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter, Space, ArrowUp, ArrowDown
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

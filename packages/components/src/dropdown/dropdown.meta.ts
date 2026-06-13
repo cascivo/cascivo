@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Dropdown',
@@ -25,16 +25,19 @@ export const meta: ComponentMeta = {
     { name: 'onOpenChange', type: '(open: boolean) => void', required: false },
   ],
   tokens: [
-    '--cascade-color-surface-overlay',
-    '--cascade-color-border',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-md',
-    '--cascade-z-dropdown',
+    '--cascivo-color-surface-overlay',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-md',
+    '--cascivo-z-dropdown',
   ],
   accessibility: {
     role: 'menu',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
+    apgPattern: 'menu',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -42,7 +45,7 @@ export const meta: ComponentMeta = {
       code: '<Dropdown trigger={<Button>Actions</Button>} items={[{ label: "Edit", value: "edit" }]} onSelect={handle} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'menu', 'actions'],
   intent: {
     whenToUse: [
@@ -93,7 +96,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens',
+        note: 'Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens',
       },
     ],
   },

@@ -1,6 +1,6 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { Signal } from '@preact/signals-react'
 import styles from './legend.module.css'
 
@@ -39,7 +39,7 @@ export function Legend({ series, hidden }: LegendProps) {
           >
             <span
               className={styles['swatch']}
-              style={{ background: s.color || `var(--cascade-chart-${i + 1})` }}
+              style={{ background: s.color || `var(--cascivo-chart-${i + 1})` }}
               aria-hidden="true"
             />
             {s.label}

@@ -5,7 +5,7 @@ Combination bar + line chart on shared or dual y-axes.
 ## Install
 
 ```bash
-npx cascade add chart/combo-chart
+npx cascivo add chart/combo-chart
 ```
 
 ## Category
@@ -23,6 +23,7 @@ npx cascade add chart/combo-chart
 | `secondAxis`  | `boolean`                            | no       | —       | Render line on a secondary right y-axis                               |
 | `width`       | `number`                             | no       | —       | —                                                                     |
 | `height`      | `number`                             | no       | `320`   | —                                                                     |
+| `tooltip`     | `boolean`                            | no       | —       | Enable hover/keyboard tooltip                                         |
 | `className`   | `string`                             | no       | —       | —                                                                     |
 | `plain`       | `boolean`                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -31,7 +32,7 @@ npx cascade add chart/combo-chart
 ### Basic combo chart
 
 ```tsx
-import { ComboChart } from '@cascade-ui/charts'
+import { ComboChart } from '@cascivo/charts'
 
 const bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]
 const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
@@ -40,17 +41,18 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

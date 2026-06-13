@@ -20,7 +20,7 @@
     }
 
     &[data-size='lg'] .value {
-      font-size: var(--cascade-text-sm);
+      font-size: var(--cascivo-text-sm);
     }
   }
 
@@ -31,22 +31,22 @@
   }
 
   .track {
-    stroke: var(--cascade-color-border);
+    stroke: var(--cascivo-color-border);
   }
 
   .fill {
-    stroke: var(--cascade-color-accent);
+    stroke: var(--cascivo-color-accent);
     transform: rotate(-90deg);
     transform-origin: center;
-    transition: stroke-dashoffset var(--cascade-duration-300) var(--cascade-ease-out);
+    transition: stroke-dashoffset var(--cascivo-duration-300) var(--cascivo-ease-out);
   }
 
   .value {
     position: absolute;
-    font-family: var(--cascade-font-sans);
-    font-size: var(--cascade-text-xs);
-    font-weight: var(--cascade-font-semibold);
-    color: var(--cascade-color-text);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }

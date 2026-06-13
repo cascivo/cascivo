@@ -5,7 +5,7 @@ Hides content visually while keeping it available to screen readers
 ## Install
 
 ```bash
-npx cascade add visually-hidden
+npx cascivo add visually-hidden
 ```
 
 ## Category
@@ -41,12 +41,12 @@ Gives an icon-only control an accessible name
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

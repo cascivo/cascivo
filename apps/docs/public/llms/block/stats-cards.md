@@ -5,7 +5,7 @@ Grid of KPI stat cards with trend badges.
 ## Install
 
 ```bash
-npx cascade add block/stats-cards
+npx cascivo add block/stats-cards
 ```
 
 ## Category
@@ -30,12 +30,12 @@ Demo KPI stats
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 
 ## Tags
 

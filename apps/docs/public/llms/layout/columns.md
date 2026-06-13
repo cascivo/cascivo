@@ -5,7 +5,7 @@ Equal-width multi-column layout that collapses to single column on narrow viewpo
 ## Install
 
 ```bash
-npx cascade add layout/columns
+npx cascivo add layout/columns
 ```
 
 ## Category
@@ -35,16 +35,16 @@ Three equal columns
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

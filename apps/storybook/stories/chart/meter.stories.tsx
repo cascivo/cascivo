@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Meter } from '@cascade-ui/charts'
+import { Meter } from '@cascivo/charts'
 
 const meta: Meta<typeof Meter> = {
   title: 'Charts/Meter',

@@ -10,7 +10,7 @@
       "description": "A callout block for highlighting important content",
       "version": "1.0.0",
       "files": [{ "url": "https://example.com/callout.tsx" }],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["display", "callout"]
     },
     {

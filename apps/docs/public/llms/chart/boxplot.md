@@ -5,7 +5,7 @@ Box-and-whisker plot with five-number summary and outlier dots per series.
 ## Install
 
 ```bash
-npx cascade add chart/boxplot
+npx cascivo add chart/boxplot
 ```
 
 ## Category
@@ -29,7 +29,7 @@ npx cascade add chart/boxplot
 ### Basic boxplot
 
 ```tsx
-import { Boxplot } from '@cascade-ui/charts'
+import { Boxplot } from '@cascivo/charts'
 
 const series = [
   { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },
@@ -40,23 +40,23 @@ const series = [
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-chart-2`
-- `--cascade-chart-3`
-- `--cascade-chart-4`
-- `--cascade-chart-5`
-- `--cascade-chart-6`
-- `--cascade-chart-7`
-- `--cascade-chart-8`
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

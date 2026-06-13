@@ -5,7 +5,7 @@ A centered content page with a breadcrumb navigation and page header.
 ## Install
 
 ```bash
-npx cascade add block/page-with-breadcrumb
+npx cascivo add block/page-with-breadcrumb
 ```
 
 ## Category
@@ -28,12 +28,12 @@ Page with breadcrumb
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/page-header`
 - `layout/center`
 

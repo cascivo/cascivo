@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Treemap } from '@cascade-ui/charts'
+import { Treemap } from '@cascivo/charts'
 
 const data = [
   { id: 'react', label: 'React', value: 42 },

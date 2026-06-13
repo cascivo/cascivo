@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Link',
@@ -19,15 +19,15 @@ export const meta: ComponentMeta = {
     { name: 'href', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-accent',
-    '--cascade-color-accent-hover',
-    '--cascade-color-accent-active',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-accent',
+    '--cascivo-color-accent-hover',
+    '--cascivo-color-accent-active',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'link',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter'],
   },
   examples: [
@@ -43,7 +43,7 @@ export const meta: ComponentMeta = {
       description: 'Opens in a new tab with rel="noreferrer" and a visual indicator.',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['link', 'anchor', 'navigation'],
   intent: {
     whenToUse: [
@@ -84,7 +84,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Accent colors and focus ring must resolve to --cascade-* tokens',
+        note: 'Accent colors and focus ring must resolve to --cascivo-* tokens',
       },
     ],
   },

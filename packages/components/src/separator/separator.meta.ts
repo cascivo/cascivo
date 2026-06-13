@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Separator',
@@ -22,17 +22,17 @@ export const meta: ComponentMeta = {
       description: 'When true, the separator is purely visual and hidden from assistive tech',
     },
   ],
-  tokens: ['--cascade-color-border'],
+  tokens: ['--cascivo-color-border'],
   accessibility: {
     role: 'separator',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
     { title: 'Horizontal', code: '<Separator />' },
     { title: 'Vertical', code: '<Separator orientation="vertical" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['divider', 'rule', 'layout'],
   intent: {
     whenToUse: [
@@ -69,7 +69,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Color must resolve to --cascade-color-border',
+        note: 'Color must resolve to --cascivo-color-border',
       },
     ],
   },

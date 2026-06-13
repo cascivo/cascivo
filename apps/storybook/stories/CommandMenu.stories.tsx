@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
+import { CommandMenu, type CommandGroup } from '@cascivo/components/command-menu'
 
 const groups: CommandGroup[] = [
   {

@@ -64,13 +64,13 @@ export default defineConfig({
       // production bundles (prod react-dom compiles onRender away). Marginally
       // slower than the prod build — intentional on a page that demos re-renders.
       'react-dom/client': 'react-dom/profiling',
-      '@cascade-ui/core': resolve(root, 'packages/core/src/index.ts'),
-      '@cascade-ui/storage': resolve(root, 'packages/storage/src/index.ts'),
-      '@cascade-ui/i18n': resolve(root, 'packages/i18n/src/index.ts'),
-      '@cascade-ui/ai': resolve(root, 'packages/ai/src/index.ts'),
-      '@cascade-ui/render': resolve(root, 'packages/render/src/index.ts'),
-      '@cascade-ui/icons': resolve(root, 'packages/icons/src/index.tsx'),
-      '@cascade-ui/registry': resolve(root, 'packages/registry/src/index.ts'),
+      '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+      '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
+      '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
+      '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
+      '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
+      '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
     },
   },
 })

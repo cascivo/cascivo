@@ -11,6 +11,7 @@ import { LayoutsPage } from './pages/LayoutsPage'
 import { DirectoryPage } from './pages/DirectoryPage'
 import { ContextExplorerPage } from './pages/ContextExplorerPage'
 import { WhyCascadePage } from './pages/WhyCascadePage'
+import { BrandPage } from './pages/BrandPage'
 import { theme } from './theme'
 
 export function App() {
@@ -32,6 +33,7 @@ export function App() {
           <Route path="/directory" component={DirectoryPage} />
           <Route path="/context" component={ContextExplorerPage} />
           <Route path="/why" component={WhyCascadePage} />
+          <Route path="/brand" component={BrandPage} />
           <Route path="/perf/data-table" component={PerfDataTable} />
           <Route path="/components/:name" component={ComponentPage} />
           <Route default component={ComponentPage} />

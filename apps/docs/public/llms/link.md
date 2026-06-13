@@ -5,7 +5,7 @@ Styled anchor for navigation, standalone or inline within prose
 ## Install
 
 ```bash
-npx cascade add link
+npx cascivo add link
 ```
 
 ## Category
@@ -66,21 +66,21 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-accent-active`
-- `--cascade-radius-sm`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-accent-active`
+- `--cascivo-radius-sm`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `link`
 - **Keyboard:** Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

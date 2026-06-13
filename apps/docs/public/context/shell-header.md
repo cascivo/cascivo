@@ -47,13 +47,13 @@ role="banner" landmarks the header; nav dropdowns expose aria-expanded, icon act
 
 ## Tokens
 
-- `--cascade-shell-header-block-size`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-radius-control`
+- `--cascivo-shell-header-block-size`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-radius-control`
 
 ## Examples
 
@@ -63,7 +63,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```jsx
 <ShellHeader
-  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}
+  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },
@@ -77,4 +77,4 @@ Brand with prefix, dropdown nav, global icon action
 | Area                      | Level    | Note                                                                   |
 | ------------------------- | -------- | ---------------------------------------------------------------------- |
 | nav / actions / end slots | flexible | Brand, nav, actions, and end are composable and optional               |
-| token names               | strict   | Surfaces, sizing, and accent must resolve to --cascade-\* shell tokens |
+| token names               | strict   | Surfaces, sizing, and accent must resolve to --cascivo-\* shell tokens |

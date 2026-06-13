@@ -1,8 +1,8 @@
 {
-  "name": "@cascade-ui/example-react-vite",
+  "name": "@cascivo/example-react-vite",
   "version": "0.0.0",
   "private": true,
-  "description": "Vite + React example app using cascade",
+  "description": "Vite + React example app using cascivo",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -10,9 +10,9 @@
     "test": "echo 'example: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

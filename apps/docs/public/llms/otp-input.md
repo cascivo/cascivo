@@ -5,7 +5,7 @@ Segmented one-time code input
 ## Install
 
 ```bash
-npx cascade add otp-input
+npx cascivo add otp-input
 ```
 
 ## Category
@@ -45,23 +45,23 @@ npx cascade add otp-input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `group`
 - **Keyboard:** ArrowLeft, ArrowRight, Backspace
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

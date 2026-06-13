@@ -1,8 +1,8 @@
 {
-  "name": "@cascade-ui/docs",
+  "name": "@cascivo/docs",
   "version": "0.0.0",
   "private": true,
-  "description": "Documentation site for cascade — generated from component manifests",
+  "description": "Documentation site for cascivo — generated from component manifests",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -14,16 +14,16 @@
     "test:perf": "playwright test perf.spec.ts"
   },
   "dependencies": {
-    "@cascade-ui/ai": "workspace:*",
-    "@cascade-ui/charts": "workspace:*",
-    "@cascade-ui/components": "workspace:*",
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/icons": "workspace:*",
-    "@cascade-ui/layouts": "workspace:*",
-    "@cascade-ui/render": "workspace:*",
-    "@cascade-ui/storage": "workspace:^",
-    "@cascade-ui/themes": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/ai": "workspace:*",
+    "@cascivo/charts": "workspace:*",
+    "@cascivo/components": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/icons": "workspace:*",
+    "@cascivo/layouts": "workspace:*",
+    "@cascivo/render": "workspace:*",
+    "@cascivo/storage": "workspace:^",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "preact": "catalog:",
     "preact-iso": "catalog:"
   },

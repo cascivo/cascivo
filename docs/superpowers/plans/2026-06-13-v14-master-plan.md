@@ -17,12 +17,12 @@ numbers shown through standalone/incremental/amortized lenses with a fixed basel
 (5) a real assistive-technology support matrix + legal-framework mapping with the axe ceiling
 stated.
 
-**Architecture:** No new packages. Palettes are per-theme `--cascade-chart-1..8` overrides in
-`@cascade-ui/themes` (one source-of-truth base set + ten theme tunings) verified by a
-`scripts/checks` test. The tooltip is a primitive in `@cascade-ui/charts` core, consumed by
+**Architecture:** No new packages. Palettes are per-theme `--cascivo-chart-1..8` overrides in
+`@cascivo/themes` (one source-of-truth base set + ten theme tunings) verified by a
+`scripts/checks` test. The tooltip is a primitive in `@cascivo/charts` core, consumed by
 every chart in `packages/charts/src/charts/*`. Performance work touches the bench runner
 (`apps/bench/runner/src`), the bench matrix apps, and the landing perf page
-(`apps/landing/src/pages`). Accessibility type changes land in `@cascade-ui/core`
+(`apps/landing/src/pages`). Accessibility type changes land in `@cascivo/core`
 (`AccessibilityMeta`), are populated in every `*.meta.ts`, and are enforced by new checks in
 `scripts/checks`; the AT matrix + accessibility statement are docs/landing pages.
 
@@ -36,9 +36,9 @@ small CVD-simulation function (pure, in-repo) — no runtime dep added to shippe
 
 ### Charts (verified in the repo)
 
-- **Series colors:** `--cascade-chart-1` … `--cascade-chart-8` are oklch values defined in
+- **Series colors:** `--cascivo-chart-1` … `--cascivo-chart-8` are oklch values defined in
   `packages/tokens/src/index.css` (lines ~194–201) and `packages/themes/src/light.css`. The
-  **dark and warm theme files only override `--cascade-chart-grid` and `-axis`** (grep:
+  **dark and warm theme files only override `--cascivo-chart-grid` and `-axis`** (grep:
   2 `cascade-chart-` matches each, both grid/axis) — the eight series colors are **not**
   overridden by any theme. Ten theme files exist: `light, dark, warm, brutalist, corporate,
 flat, midnight, minimal, pastel, terminal`.
@@ -48,7 +48,7 @@ histogram, kpi, line, meter, pie, radar, scatter, sparkline, treemap`), only `li
   a `tooltipRef` div whose `textContent`/`transform`/`opacity` are mutated on pointer move —
   **mouse-only, no keyboard, no `aria`**. `chart-frame.tsx` (the shared frame) has no tooltip
   support. There is no shared chart-tooltip component.
-- **Color consumption:** charts read `--cascade-chart-N` (verify the exact accessor —
+- **Color consumption:** charts read `--cascivo-chart-N` (verify the exact accessor —
   likely a `colorAt(i)` / CSS `var()` per series in each chart's tsx/css).
 
 ### External palette research (user asked to study popular systems)
@@ -81,7 +81,7 @@ histogram, kpi, line, meter, pie, radar, scatter, sparkline, treemap`), only `li
   Tailwind utility classes tabs uses are already present in the baseline build → near-zero
   marginal; (c) tree-shaking + min+gzip rounds a tiny delta to 0.0. T3 determines which.
 - **Why cascade may look big — hypothesis to test:** if the cascade `baseline` matrix entry
-  does **not** import `@cascade-ui/core` + `@cascade-ui/i18n`, the **first** component's
+  does **not** import `@cascivo/core` + `@cascivo/i18n`, the **first** component's
   incremental absorbs that one-time runtime, inflating every per-component figure. T3 checks
   the baseline entry's imports and fixes the baseline to preload the shared runtime.
 
@@ -112,13 +112,13 @@ keyboard: string[] }`. Every component manifest sets `wcag: 'AA'` (meaning WCAG 
 
 | #   | Decision                                                                                                                                                                                                                                                                                                                                              | Rationale                                                             |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 1   | Base categorical palette derived from Okabe-Ito (8 colors), expressed in oklch, mapped 1:1 onto `--cascade-chart-1..8`; documented lineage + the "≤4 categories use the high-contrast subset" guidance + redundant-encoding rule                                                                                                                      | CVD-safe scientific standard; matches cascade's 8 slots               |
-| 2   | Per-theme overrides: each of the 10 theme CSS files sets all 8 `--cascade-chart-*`, tuned for that theme's surface (lighter/desaturated for dark themes, etc.), each set independently CVD- and contrast-checked against that theme's `--cascade-chart-surface`/background                                                                            | "Match the themes" requires per-theme tuning, not one palette         |
+| 1   | Base categorical palette derived from Okabe-Ito (8 colors), expressed in oklch, mapped 1:1 onto `--cascivo-chart-1..8`; documented lineage + the "≤4 categories use the high-contrast subset" guidance + redundant-encoding rule                                                                                                                      | CVD-safe scientific standard; matches cascade's 8 slots               |
+| 2   | Per-theme overrides: each of the 10 theme CSS files sets all 8 `--cascivo-chart-*`, tuned for that theme's surface (lighter/desaturated for dark themes, etc.), each set independently CVD- and contrast-checked against that theme's `--cascivo-chart-surface`/background                                                                            | "Match the themes" requires per-theme tuning, not one palette         |
 | 3   | A `scripts/checks` test (`chart-palette.test.ts`) asserts: every theme defines all 8 series colors; each series color meets a documented contrast ratio vs the theme chart background; adjacent series are distinguishable under simulated protanopia/deuteranopia/tritanopia (a pure in-repo CVD-sim of the oklch→sRGB values)                       | Earned, not asserted; regression-proof                                |
-| 4   | One chart-tooltip primitive in `@cascade-ui/charts` core (`core/chart-tooltip.tsx`): positioned overlay + a focusable data-point layer; pointer hit-detection picks the nearest datum; arrow-key traversal moves a focused datum and the tooltip follows; `role`/`aria-live` announces the datum text via a `formatTooltip` hook                      | Accessible by construction; hover + keyboard; one impl for all charts |
+| 4   | One chart-tooltip primitive in `@cascivo/charts` core (`core/chart-tooltip.tsx`): positioned overlay + a focusable data-point layer; pointer hit-detection picks the nearest datum; arrow-key traversal moves a focused datum and the tooltip follows; `role`/`aria-live` announces the datum text via a `formatTooltip` hook                         | Accessible by construction; hover + keyboard; one impl for all charts |
 | 5   | Rollout: every chart in `packages/charts/src/charts/*` adopts the primitive via the shared `chart-frame`; the ad-hoc tooltips in line/heatmap/histogram are removed and re-expressed through it; charts where a datum isn't point-identifiable (e.g. meter/kpi single value) document why they opt out                                                | Consistency; remove ad-hoc DOM mutation                               |
 | 6   | T3 produces a written diagnosis FIRST (`docs/specs/perf-methodology.md` or a tranche note) answering: is it min+gzip? is shadcn tabs a stub entry or shared-dep amortization? does the cascade baseline preload the runtime? Only then fix                                                                                                            | Investigate before re-presenting (roadmap decision 4)                 |
-| 7   | Fix the cascade baseline matrix entry to import `@cascade-ui/core` + i18n (the shared runtime any real app loads once) so per-component incrementals reflect marginal cost, not first-import runtime; if shadcn/carbon baselines need the analogous shared-runtime preload for fairness, apply symmetrically and document                             | Removes first-component inflation; apples-to-apples                   |
+| 7   | Fix the cascade baseline matrix entry to import `@cascivo/core` + i18n (the shared runtime any real app loads once) so per-component incrementals reflect marginal cost, not first-import runtime; if shadcn/carbon baselines need the analogous shared-runtime preload for fairness, apply symmetrically and document                                | Removes first-component inflation; apples-to-apples                   |
 | 8   | Cost table gains three lenses: `standaloneGzKb` (component + its deps, isolated build), `incrementalGzKb` (marginal over runtime-preloaded baseline), `amortizedGzKb` (shared deps spread across the measured component set); each `0`/near-0 cell renders an inline note ("shared runtime already counted"); page copy explains lens vs architecture | Three honest answers > one misleading one                             |
 | 9   | `AccessibilityMeta` gains: `wcag: '2.1-AA' \| '2.2-AA' \| '2.2-AAA'` (versioned; default target `'2.2-AA'`), `apgPattern?: string`, `forcedColors?: boolean`, `reducedMotion?: boolean`; existing `'AA'` values migrated to `'2.2-AA'` after the component meets 2.2                                                                                  | Encodes the version + pattern + media-feature support, was implicit   |
 | 10  | WCAG 2.2 upgrade: apply the applicable additions — 2.5.8 Target Size (interactive targets ≥ 24×24px or spacing exception), 2.4.11 Focus Not Obscured (sticky/overlay don't hide focus), 2.5.7 Dragging (slider/any drag has a single-pointer alternative); a per-criterion check or documented review per component                                   | The bump is proven, not a string edit (roadmap decision 6)            |
@@ -133,7 +133,7 @@ keyboard: string[] }`. Every component manifest sets `wcag: 'AA'` (meaning WCAG 
 
 | Tranche | File                          | Contents                                                                                                                            | Risk                                                                              |
 | ------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| T1      | `2026-06-13-v14-tranche-1.md` | Palette research doc, Okabe-Ito-based base set, per-theme `--cascade-chart-*` for all 10 themes, CVD+contrast verification test     | Medium (color tuning across 10 themes; CVD-sim correctness)                       |
+| T1      | `2026-06-13-v14-tranche-1.md` | Palette research doc, Okabe-Ito-based base set, per-theme `--cascivo-chart-*` for all 10 themes, CVD+contrast verification test     | Medium (color tuning across 10 themes; CVD-sim correctness)                       |
 | T2      | `2026-06-13-v14-tranche-2.md` | Chart-tooltip primitive (hover + keyboard + aria), rollout to all 17 charts, remove ad-hoc tooltips                                 | Medium-high (keyboard traversal + hit-detection across heterogeneous chart types) |
 | T3      | `2026-06-13-v14-tranche-3.md` | Bench diagnosis write-up, baseline runtime-preload fix, standalone/amortized metrics, multi-lens table + annotated zeros, page copy | Medium-high (bench methodology + fairness across three libs)                      |
 | T4      | `2026-06-13-v14-tranche-4.md` | `AccessibilityMeta` extension, WCAG 2.2 AA upgrades, APG conformance check, forced-colors/contrast/reduced-motion audit + fills     | High (system-wide a11y upgrade + check authoring)                                 |

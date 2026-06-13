@@ -5,7 +5,7 @@ Bullet chart with background range bands, measure bar, and target tick.
 ## Install
 
 ```bash
-npx cascade add chart/bullet
+npx cascivo add chart/bullet
 ```
 
 ## Category
@@ -31,25 +31,25 @@ npx cascade add chart/bullet
 ### Basic bullet chart
 
 ```tsx
-import { Bullet } from '@cascade-ui/charts'
+import { Bullet } from '@cascivo/charts'
 ;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
 ## Design tokens
 
-- `--cascade-chart-1`
-- `--cascade-color-neutral-200`
-- `--cascade-color-neutral-300`
-- `--cascade-color-neutral-400`
+- `--cascivo-chart-1`
+- `--cascivo-color-neutral-200`
+- `--cascivo-color-neutral-300`
+- `--cascivo-color-neutral-400`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

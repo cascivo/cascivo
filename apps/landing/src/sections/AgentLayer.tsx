@@ -1,6 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 import buttonMetaSource from '../../../../packages/components/src/button/button.meta.ts?raw'
 import { CopyCommand } from './CopyCommand'
 
@@ -82,18 +82,17 @@ const MCP_CLIENTS = [
   {
     id: 'claude',
     label: 'Claude Code',
-    command: 'claude mcp add cascade -- npx -y @cascade-ui/mcp',
+    command: 'claude mcp add cascivo -- npx -y @cascivo/mcp',
   },
   {
     id: 'cursor',
     label: 'Cursor',
-    command: '"cascade": { "command": "npx", "args": ["-y", "@cascade-ui/mcp"] }',
+    command: '"cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] }',
   },
   {
     id: 'vscode',
     label: 'VS Code',
-    command:
-      'code --add-mcp \'{"name":"cascade","command":"npx","args":["-y","@cascade-ui/mcp"]}\'',
+    command: 'code --add-mcp \'{"name":"cascivo","command":"npx","args":["-y","@cascivo/mcp"]}\'',
   },
 ]
 
@@ -125,11 +124,9 @@ const RELAY_SLICE_JSON = JSON.stringify(RELAY_SLICE, null, 2)
 export function AgentLayer() {
   return (
     <section className="agents" id="agents" data-reveal="">
-      <h2>Your agent already knows cascade</h2>
+      <h2>Your agent already knows cascivo</h2>
       <p className="agents-sub">
-        Every component ships a machine-readable manifest. The MCP server, the Claude Code skills,
-        the docs, and <a href="/llms.txt">llms.txt</a> are all generated from it — what your agent
-        reads is what you ship.
+        Your agent already knows cascivo — and cascivo can audit what it writes.
       </p>
 
       <div className="agents-grid">
@@ -172,11 +169,11 @@ export function AgentLayer() {
           <h3>Then just ask</h3>
           <blockquote className="agent-prompt-text">
             &ldquo;Add a deploys table with status badges and a new-deploy dialog to my settings
-            page — use cascade components.&rdquo;
+            page — use cascivo components.&rdquo;
           </blockquote>
           <p className="agent-caption">
             The agent resolves components via MCP, copies owned code via the CLI, and validates
-            against the manifest — the same flow as <code>npx cascade add</code>.
+            against the manifest — the same flow as <code>npx @cascivo/cli add</code>.
           </p>
         </article>
 
@@ -197,6 +194,47 @@ export function AgentLayer() {
             CascadeView renders <code>view.v1.json</code> configs straight to live cascade UI — the
             JSON on the left is the source of the panel on the right.{' '}
             <a href="/docs/playground">Edit it in the playground →</a>
+          </p>
+        </article>
+
+        <article className="agent-artifact">
+          <h3>Audit the agent&apos;s output</h3>
+          <pre
+            className="agent-code code-bad"
+            tabIndex={0}
+          >{`color: #3b82f6;  /* ← hard-coded */`}</pre>
+          <pre className="agent-code" tabIndex={0}>{`npx @cascivo/cli audit --ai src/`}</pre>
+          <pre
+            className="agent-code"
+            tabIndex={0}
+          >{`Dashboard.tsx:14  warn  hardcoded-value  #3b82f6 → var(--cascivo-color-accent)
+---
+0 errors, 1 warning`}</pre>
+          <p className="agent-caption">
+            <code>cascivo audit --ai</code> scans agent-generated code for hard-coded values,
+            invented props, missing required props, and raw strings where i18n is expected.
+          </p>
+        </article>
+
+        <article className="agent-artifact">
+          <h3>One file. Everything an agent needs.</h3>
+          <pre className="agent-code" tabIndex={0}>{`# cascivo llms.txt — generated at build time
+
+## Button
+
+Intent: trigger a user action or navigation event.
+
+tokens:
+  --cascivo-button-bg: var(--cascivo-color-primary)
+  --cascivo-button-fg: var(--cascivo-color-primary-fg)
+  --cascivo-button-radius: var(--cascivo-radius-button)
+
+variants: primary | secondary | ghost | destructive
+sizes: sm | md | lg`}</pre>
+          <p className="agent-caption">
+            llms.txt consolidates every component&apos;s manifest, intent block, token catalog, and
+            design specs into a single LLM-readable document — generated at build time from the same
+            source that drives the MCP server and the docs. <a href="/llms.txt">View llms.txt →</a>
           </p>
         </article>
       </div>

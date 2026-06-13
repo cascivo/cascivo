@@ -12,17 +12,17 @@ test('layouts page renders group headings', async ({ page }) => {
 
 test('layouts page has copy buttons for all entries (≥ 9)', async ({ page }) => {
   await page.goto('/layouts')
-  // Each entry renders a CopyButton with "npx cascade add …"
-  const copyButtons = page.locator('button code').filter({ hasText: 'npx cascade add' })
+  // Each entry renders a CopyButton with "npx cascivo add …"
+  const copyButtons = page.locator('button code').filter({ hasText: 'npx cascivo add' })
   const count = await copyButtons.count()
   // 3 primitives (auto-grid, masonry, section) + 6 sections + blocks
   expect(count).toBeGreaterThanOrEqual(9)
 })
 
-test('layouts page has npx cascade add hero copy button', async ({ page }) => {
+test('layouts page has npx cascivo add hero copy button', async ({ page }) => {
   await page.goto('/layouts')
   await expect(
-    page.locator('button code').filter({ hasText: 'npx cascade add hero' }),
+    page.locator('button code').filter({ hasText: 'npx cascivo add hero' }),
   ).toBeVisible()
 })
 

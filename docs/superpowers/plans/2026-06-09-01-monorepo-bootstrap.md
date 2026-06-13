@@ -22,18 +22,18 @@ cascade/                              ← repo root (already exists as native-ui
 ├── .npmrc                            CREATE — pnpm settings
 ├── packages/
 │   ├── core/
-│   │   ├── package.json              CREATE — @cascade-ui/core
+│   │   ├── package.json              CREATE — @cascivo/core
 │   │   ├── vite.config.ts            CREATE — library pack config
 │   │   ├── tsconfig.json             CREATE — extends tsconfig.base.json
 │   │   └── src/
 │   │       ├── index.ts              CREATE — placeholder export
 │   │       └── index.test.ts         CREATE — smoke test
 │   ├── tokens/
-│   │   ├── package.json              CREATE — @cascade-ui/tokens (CSS only, no build)
+│   │   ├── package.json              CREATE — @cascivo/tokens (CSS only, no build)
 │   │   └── src/
 │   │       └── index.css             CREATE — placeholder
 │   ├── themes/
-│   │   ├── package.json              CREATE — @cascade-ui/themes (CSS only, no build)
+│   │   ├── package.json              CREATE — @cascivo/themes (CSS only, no build)
 │   │   └── src/
 │   │       ├── light.css             CREATE — placeholder
 │   │       ├── dark.css              CREATE — placeholder
@@ -41,7 +41,7 @@ cascade/                              ← repo root (already exists as native-ui
 │   ├── components/
 │   │   └── package.json              CREATE — private registry source, never published
 │   ├── icons/
-│   │   ├── package.json              CREATE — @cascade-ui/icons placeholder
+│   │   ├── package.json              CREATE — @cascivo/icons placeholder
 │   │   ├── vite.config.ts            CREATE — library pack config
 │   │   ├── tsconfig.json             CREATE
 │   │   └── src/
@@ -55,7 +55,7 @@ cascade/                              ← repo root (already exists as native-ui
 │   │       ├── index.ts              CREATE — placeholder
 │   │       └── index.test.ts         CREATE — smoke test
 │   └── mcp/
-│       ├── package.json              CREATE — @cascade-ui/mcp placeholder
+│       ├── package.json              CREATE — @cascivo/mcp placeholder
 │       ├── vite.config.ts            CREATE — library pack config
 │       ├── tsconfig.json             CREATE
 │       └── src/
@@ -63,16 +63,16 @@ cascade/                              ← repo root (already exists as native-ui
 │           └── index.test.ts         CREATE — smoke test
 ├── apps/
 │   ├── docs/
-│   │   └── package.json              CREATE — @cascade-ui/docs placeholder
+│   │   └── package.json              CREATE — @cascivo/docs placeholder
 │   ├── storybook/
-│   │   └── package.json              CREATE — @cascade-ui/storybook placeholder
+│   │   └── package.json              CREATE — @cascivo/storybook placeholder
 │   ├── landing/
-│   │   └── package.json              CREATE — @cascade-ui/landing placeholder
+│   │   └── package.json              CREATE — @cascivo/landing placeholder
 │   └── examples/
 │       ├── react-vite/
-│       │   └── package.json          CREATE — @cascade-ui/example-react-vite placeholder
+│       │   └── package.json          CREATE — @cascivo/example-react-vite placeholder
 │       └── react-next/
-│           └── package.json          CREATE — @cascade-ui/example-react-next placeholder
+│           └── package.json          CREATE — @cascivo/example-react-next placeholder
 ├── skills/
 │   └── README.md                     CREATE — skills directory placeholder
 ├── registry.json                     CREATE — empty component registry
@@ -104,8 +104,8 @@ cascade/                              ← repo root (already exists as native-ui
     "build": "vp run -r build",
     "test": "vp run -r test",
     "check": "vp check",
-    "dev:docs": "vp run @cascade-ui/docs#dev",
-    "dev:landing": "vp run @cascade-ui/landing#dev",
+    "dev:docs": "vp run @cascivo/docs#dev",
+    "dev:landing": "vp run @cascivo/landing#dev",
     "ready": "vp check && vp run -r test && vp run -r build"
   },
   "devDependencies": {
@@ -248,7 +248,7 @@ CSS-only packages (tokens, themes) have no build step — they export source CSS
 
 ```json
 {
-  "name": "@cascade-ui/core",
+  "name": "@cascivo/core",
   "version": "0.0.0",
   "private": false,
   "type": "module",
@@ -331,7 +331,7 @@ export const VERSION = '0.0.0'
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
 
-describe('@cascade-ui/core', () => {
+describe('@cascivo/core', () => {
   it('exports VERSION', () => {
     expect(VERSION).toBe('0.0.0')
   })
@@ -344,7 +344,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 
 ```json
 {
-  "name": "@cascade-ui/tokens",
+  "name": "@cascivo/tokens",
   "version": "0.0.0",
   "private": false,
   "exports": {
@@ -360,9 +360,9 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 - [ ] **Step 7: Create `packages/tokens/src/index.css`**
 
 ```css
-/* @cascade-ui/tokens — placeholder until Plan 2 */
+/* @cascivo/tokens — placeholder until Plan 2 */
 :root {
-  --cascade-version: '0.0.0';
+  --cascivo-version: '0.0.0';
 }
 ```
 
@@ -370,7 +370,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 
 ```json
 {
-  "name": "@cascade-ui/themes",
+  "name": "@cascivo/themes",
   "version": "0.0.0",
   "private": false,
   "exports": {
@@ -383,7 +383,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
     "test": "echo 'themes: no tests yet'"
   },
   "peerDependencies": {
-    "@cascade-ui/tokens": "workspace:*"
+    "@cascivo/tokens": "workspace:*"
   }
 }
 ```
@@ -393,7 +393,7 @@ CSS-only package — no TypeScript, no build step. Exports are raw CSS files.
 Create `packages/themes/src/light.css`:
 
 ```css
-/* @cascade-ui/themes/light — placeholder until Plan 2 */
+/* @cascivo/themes/light — placeholder until Plan 2 */
 [data-theme='light'] {
   color-scheme: light;
 }
@@ -402,7 +402,7 @@ Create `packages/themes/src/light.css`:
 Create `packages/themes/src/dark.css`:
 
 ```css
-/* @cascade-ui/themes/dark — placeholder until Plan 2 */
+/* @cascivo/themes/dark — placeholder until Plan 2 */
 [data-theme='dark'] {
   color-scheme: dark;
 }
@@ -411,7 +411,7 @@ Create `packages/themes/src/dark.css`:
 Create `packages/themes/src/warm.css`:
 
 ```css
-/* @cascade-ui/themes/warm — placeholder until Plan 2 */
+/* @cascivo/themes/warm — placeholder until Plan 2 */
 [data-theme='warm'] {
   color-scheme: light;
 }
@@ -425,7 +425,7 @@ Private — never published. This is the registry source only. Needs `vite.confi
 
 ```json
 {
-  "name": "@cascade-ui/components",
+  "name": "@cascivo/components",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -434,8 +434,8 @@ Private — never published. This is the registry source only. Needs `vite.confi
     "test": "vp test"
   },
   "devDependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "@types/react": "catalog:",
     "react": "catalog:",
     "typescript": "catalog:",
@@ -476,7 +476,7 @@ export default defineConfig({
 
 ```json
 {
-  "name": "@cascade-ui/icons",
+  "name": "@cascivo/icons",
   "version": "0.0.0",
   "private": false,
   "type": "module",
@@ -552,7 +552,7 @@ export const VERSION = '0.0.0'
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
 
-describe('@cascade-ui/icons', () => {
+describe('@cascivo/icons', () => {
   it('exports VERSION', () => {
     expect(VERSION).toBe('0.0.0')
   })
@@ -648,7 +648,7 @@ describe('cascade CLI', () => {
 
 ```json
 {
-  "name": "@cascade-ui/mcp",
+  "name": "@cascivo/mcp",
   "version": "0.0.0",
   "private": false,
   "type": "module",
@@ -719,7 +719,7 @@ export const VERSION = '0.0.0'
 import { describe, expect, it } from 'vitest'
 import { VERSION } from './index.js'
 
-describe('@cascade-ui/mcp', () => {
+describe('@cascivo/mcp', () => {
   it('exports VERSION', () => {
     expect(VERSION).toBe('0.0.0')
   })
@@ -738,7 +738,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 ```json
 {
-  "name": "@cascade-ui/docs",
+  "name": "@cascivo/docs",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -749,9 +749,9 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
     "test": "echo 'docs: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@cascivo/themes": "workspace:*",
     "preact": "catalog:"
   },
   "devDependencies": {
@@ -765,7 +765,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 ```json
 {
-  "name": "@cascade-ui/storybook",
+  "name": "@cascivo/storybook",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -775,7 +775,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
     "test": "echo 'storybook: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/components": "workspace:*"
+    "@cascivo/components": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",
@@ -788,7 +788,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 ```json
 {
-  "name": "@cascade-ui/landing",
+  "name": "@cascivo/landing",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -799,9 +799,9 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
     "test": "echo 'landing: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@cascivo/themes": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -818,7 +818,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 ```json
 {
-  "name": "@cascade-ui/example-react-vite",
+  "name": "@cascivo/example-react-vite",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -828,9 +828,9 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
     "test": "echo 'example: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@cascivo/themes": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -847,7 +847,7 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
 
 ```json
 {
-  "name": "@cascade-ui/example-react-next",
+  "name": "@cascivo/example-react-next",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -857,9 +857,9 @@ App packages have no `vp pack` — they use `vp build` / `vp dev`. Plan 7 (docs)
     "test": "echo 'next example: no tests yet'"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@cascivo/themes": "workspace:*",
     "next": "latest",
     "react": "catalog:",
     "react-dom": "catalog:"

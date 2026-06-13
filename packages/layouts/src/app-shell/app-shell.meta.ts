@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AppShell',
@@ -27,20 +27,20 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-space-3',
-    '--cascade-space-4',
-    '--cascade-space-6',
-    '--cascade-duration-200',
-    '--cascade-ease-out',
-    '--cascade-color-border',
-    '--cascade-color-surface',
-    '--cascade-font-size-xs',
-    '--cascade-color-accent',
-    '--cascade-color-destructive',
-    '--cascade-color-destructive-subtle',
-    '--cascade-focus-ring',
+    '--cascivo-space-3',
+    '--cascivo-space-4',
+    '--cascivo-space-6',
+    '--cascivo-duration-200',
+    '--cascivo-ease-out',
+    '--cascivo-color-border',
+    '--cascivo-color-surface',
+    '--cascivo-font-size-xs',
+    '--cascivo-color-accent',
+    '--cascivo-color-destructive',
+    '--cascivo-color-destructive-subtle',
+    '--cascivo-focus-ring',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'App shell with collapsible nav',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n', '@cascade-ui/storage'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n', '@cascivo/storage'],
   tags: ['layout', 'shell', 'sidebar', 'navigation'],
   intent: {
     whenToUse: [

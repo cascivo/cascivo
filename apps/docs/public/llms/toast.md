@@ -5,7 +5,7 @@ Transient notification surfaced via the useToast hook
 ## Install
 
 ```bash
-npx cascade add toast
+npx cascivo add toast
 ```
 
 ## Category
@@ -45,23 +45,23 @@ toast({ title: 'Saved', variant: 'success' })
 
 ## Design tokens
 
-- `--cascade-color-surface-overlay`
-- `--cascade-color-success`
-- `--cascade-color-warning`
-- `--cascade-color-destructive`
-- `--cascade-radius-md`
-- `--cascade-z-toast`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-success`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
+- `--cascivo-radius-md`
+- `--cascivo-z-toast`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `status`
 - **Keyboard:** Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

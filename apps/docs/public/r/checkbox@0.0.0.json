@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox/checkbox.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "toggle", "boolean"],
   "category": "inputs",
   "meta": {
@@ -52,17 +52,20 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-accent",
-      "--cascade-color-border-strong",
-      "--cascade-color-text-on-accent",
-      "--cascade-radius-sm",
-      "--cascade-focus-ring"
+      "--cascivo-color-surface",
+      "--cascivo-color-accent",
+      "--cascivo-color-border-strong",
+      "--cascivo-color-text-on-accent",
+      "--cascivo-radius-sm",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "checkbox",
-      "wcag": "AA",
-      "keyboard": ["Space"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Space"],
+      "apgPattern": "checkbox",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {
@@ -74,7 +77,7 @@
         "code": "<Checkbox label=\"Select all\" indeterminate />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "toggle", "boolean"],
     "intent": {
       "whenToUse": [
@@ -125,7 +128,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens"
+          "note": "Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens"
         }
       ]
     }

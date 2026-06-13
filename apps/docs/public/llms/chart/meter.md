@@ -5,7 +5,7 @@ Progress meter in bar or gauge variant with threshold coloring.
 ## Install
 
 ```bash
-npx cascade add chart/meter
+npx cascivo add chart/meter
 ```
 
 ## Category
@@ -35,22 +35,22 @@ npx cascade add chart/meter
 ### Basic meter
 
 ```tsx
-import { Meter } from '@cascade-ui/charts'
+import { Meter } from '@cascivo/charts'
 ;<Meter value={72} label="CPU usage" />
 ```
 
 ## Design tokens
 
-- `--cascade-chart-1`
+- `--cascivo-chart-1`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `meter`
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

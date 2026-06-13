@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Radio',
@@ -14,17 +14,20 @@ export const meta: ComponentMeta = {
     { name: 'name', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-accent',
-    '--cascade-color-border-strong',
-    '--cascade-color-text-on-accent',
-    '--cascade-radius-full',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-accent',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-text-on-accent',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'radio',
-    wcag: 'AA',
-    keyboard: ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'],
+    wcag: '2.2-AA',
+    keyboard: ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'],
+    apgPattern: 'radio',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {
@@ -32,7 +35,7 @@ export const meta: ComponentMeta = {
       code: '<RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'choice', 'group'],
   intent: {
     whenToUse: [
@@ -74,7 +77,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Control and label styling must resolve to the listed --cascade-* tokens',
+        note: 'Control and label styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'option labels and orientation',

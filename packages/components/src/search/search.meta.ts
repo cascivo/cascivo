@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Search',
@@ -22,19 +22,19 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-color-border-strong',
-    '--cascade-color-accent',
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-bg-subtle',
-    '--cascade-radius-input',
-    '--cascade-focus-ring',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-accent',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-input',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'searchbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter'],
   },
   examples: [
@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Large', code: '<Search size="lg" placeholder="Search products…" />' },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['search', 'input', 'filter', 'form'],
   intent: {
     whenToUse: [
@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Field and control styling must resolve to the listed --cascade-* tokens',
+        note: 'Field and control styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'debounce and copy',

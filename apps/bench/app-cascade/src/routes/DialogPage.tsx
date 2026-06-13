@@ -1,5 +1,5 @@
-import { useSignal, useSignals } from '@cascade-ui/core'
-import { Button, Input, Modal } from '@cascade-ui/react'
+import { useSignal, useSignals } from '@cascivo/core'
+import { Button, Input, Modal } from '@cascivo/react'
 
 export function DialogPage() {
   useSignals()

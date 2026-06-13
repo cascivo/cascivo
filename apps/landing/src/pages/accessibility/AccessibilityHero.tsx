@@ -1,4 +1,4 @@
-import { Stat } from '@cascade-ui/components/stat'
+import { Stat } from '@cascivo/components/stat'
 import { AXE, A11Y_COVERED, REGISTRY_TOTAL } from './data'
 
 export function AccessibilityHero() {
@@ -10,16 +10,16 @@ export function AccessibilityHero() {
       </h1>
       <p className="proof-hero-sub">
         Every number on this page is generated at build time — from the component manifests in
-        registry.json and from the bench suite&apos;s axe runs against cascade, shadcn/ui, and
+        registry.json and from the bench suite&apos;s axe runs against cascivo, shadcn/ui, and
         Carbon. Nothing below is hand-written.
       </p>
       <div className="proof-hero-stats">
         {AXE && (
           <>
             <Stat
-              label="cascade — axe violations"
+              label="cascivo — axe violations"
               value={AXE.cascade.violations}
-              helpText="WCAG 2.1 AA · four app states"
+              helpText="WCAG 2.2 AA · four app states"
             />
             <Stat
               label="shadcn/ui — axe violations"
@@ -40,7 +40,7 @@ export function AccessibilityHero() {
         />
         <Stat
           label="conformance target"
-          value="WCAG 2.1 AA"
+          value="WCAG 2.2 AA"
           helpText="CI fails on a single axe violation"
         />
       </div>

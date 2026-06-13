@@ -5,7 +5,7 @@ On/off switch built as an accessible button
 ## Install
 
 ```bash
-npx cascade add toggle
+npx cascivo add toggle
 ```
 
 ## Category
@@ -49,21 +49,21 @@ npx cascade add toggle
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border-strong`
-- `--cascade-color-surface`
-- `--cascade-radius-full`
-- `--cascade-focus-ring`
+- `--cascivo-color-accent`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-surface`
+- `--cascivo-radius-full`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `switch`
 - **Keyboard:** Space, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

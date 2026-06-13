@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { useSignal, useSignalEffect } from '@cascade-ui/core'
-import type { Signal } from '@cascade-ui/core'
+import { useSignal, useSignalEffect } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
 
 let anchorCounter = 0
 
@@ -24,10 +24,10 @@ export interface UsePopoverReturn {
 const supportsAnchor =
   typeof CSS !== 'undefined' &&
   typeof CSS.supports === 'function' &&
-  CSS.supports('anchor-name: --cascade-a')
+  CSS.supports('anchor-name: --cascivo-a')
 
 export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
-  const anchorName = useRef(`--cascade-popover-${++anchorCounter}`).current
+  const anchorName = useRef(`--cascivo-popover-${++anchorCounter}`).current
   const triggerRef = useRef<HTMLElement>(null)
   const popoverRef = useRef<HTMLElement>(null)
   const isOpen = useSignal(options.open ?? false)

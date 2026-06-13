@@ -5,7 +5,7 @@ Indeterminate loading indicator
 ## Install
 
 ```bash
-npx cascade add spinner
+npx cascivo add spinner
 ```
 
 ## Category
@@ -41,17 +41,17 @@ npx cascade add spinner
 
 ## Design tokens
 
-- `--cascade-radius-full`
+- `--cascivo-radius-full`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `status`
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

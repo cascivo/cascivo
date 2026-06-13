@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'InputGroup',
@@ -14,14 +14,14 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true },
   ],
   tokens: [
-    '--cascade-color-bg-subtle',
-    '--cascade-color-border',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-input',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-input',
   ],
   accessibility: {
     role: 'generic',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -42,7 +42,7 @@ export const meta: ComponentMeta = {
       code: `<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'input', 'addon', 'group', 'layout'],
   intent: {
     whenToUse: [
@@ -79,7 +79,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Addon background, border, text, and radius must resolve to the listed --cascade-* tokens',
+        note: 'Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'addon alignment',

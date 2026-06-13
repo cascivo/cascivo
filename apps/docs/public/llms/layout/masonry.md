@@ -5,7 +5,7 @@ Masonry layout — native CSS masonry where supported, multi-column fallback els
 ## Install
 
 ```bash
-npx cascade add layout/masonry
+npx cascivo add layout/masonry
 ```
 
 ## Category
@@ -35,16 +35,16 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 
 ## Design tokens
 
-- `--cascade-space-*`
+- `--cascivo-space-*`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

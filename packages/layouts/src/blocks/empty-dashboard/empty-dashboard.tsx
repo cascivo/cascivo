@@ -1,5 +1,5 @@
 'use client'
-import { Button, EmptyState } from '@cascade-ui/react'
+import { Button, EmptyState } from '@cascivo/react'
 import { DashboardLayout } from '../../dashboard-layout/dashboard-layout'
 
 export interface EmptyDashboardProps {

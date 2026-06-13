@@ -5,7 +5,7 @@ Numeric input with stepper buttons, clamping, precision, and locale formatting
 ## Install
 
 ```bash
-npx cascade add number-input
+npx cascivo add number-input
 ```
 
 ## Category
@@ -66,25 +66,25 @@ npx cascade add number-input
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-destructive`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-destructive`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `spinbutton`
 - **Keyboard:** ArrowUp, ArrowDown, Enter, Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

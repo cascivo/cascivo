@@ -4,22 +4,22 @@
     margin: 0;
     padding: 0;
     border: none;
-    background: var(--cascade-color-surface);
-    box-shadow: var(--cascade-shadow-overlay);
+    background: var(--cascivo-color-surface);
+    box-shadow: var(--cascivo-shadow-overlay);
     display: flex;
     flex-direction: column;
 
     /* Transitions for enter/exit */
     transition:
-      translate var(--cascade-motion-enter),
-      display var(--cascade-motion-enter) allow-discrete,
-      overlay var(--cascade-motion-enter) allow-discrete;
+      translate var(--cascivo-motion-enter),
+      display var(--cascivo-motion-enter) allow-discrete,
+      overlay var(--cascivo-motion-enter) allow-discrete;
 
     &[data-state='closed'] {
       transition:
-        translate var(--cascade-motion-exit),
-        display var(--cascade-motion-exit) allow-discrete,
-        overlay var(--cascade-motion-exit) allow-discrete;
+        translate var(--cascivo-motion-exit),
+        display var(--cascivo-motion-exit) allow-discrete,
+        overlay var(--cascivo-motion-exit) allow-discrete;
     }
 
     /* Side: end (right) */
@@ -28,8 +28,8 @@
       inset-inline-end: 0;
       width: min(24rem, 90vw);
       height: 100%;
-      border-inline-start: 1px solid var(--cascade-color-border);
-      border-radius: var(--cascade-radius-overlay) 0 0 var(--cascade-radius-overlay);
+      border-inline-start: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-overlay) 0 0 var(--cascivo-radius-overlay);
       translate: 100% 0;
 
       &[data-state='open'] {
@@ -49,8 +49,8 @@
       inset-inline-start: 0;
       width: min(24rem, 90vw);
       height: 100%;
-      border-inline-end: 1px solid var(--cascade-color-border);
-      border-radius: 0 var(--cascade-radius-overlay) var(--cascade-radius-overlay) 0;
+      border-inline-end: 1px solid var(--cascivo-color-border);
+      border-radius: 0 var(--cascivo-radius-overlay) var(--cascivo-radius-overlay) 0;
       translate: -100% 0;
 
       &[data-state='open'] {
@@ -71,8 +71,8 @@
       width: 100%;
       height: auto;
       max-height: 80vh;
-      border-block-end: 1px solid var(--cascade-color-border);
-      border-radius: 0 0 var(--cascade-radius-overlay) var(--cascade-radius-overlay);
+      border-block-end: 1px solid var(--cascivo-color-border);
+      border-radius: 0 0 var(--cascivo-radius-overlay) var(--cascivo-radius-overlay);
       translate: 0 -100%;
 
       &[data-state='open'] {
@@ -93,8 +93,8 @@
       width: 100%;
       height: auto;
       max-height: 80vh;
-      border-block-start: 1px solid var(--cascade-color-border);
-      border-radius: var(--cascade-radius-overlay) var(--cascade-radius-overlay) 0 0;
+      border-block-start: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-overlay) var(--cascivo-radius-overlay) 0 0;
       translate: 0 100%;
 
       &[data-state='open'] {
@@ -112,9 +112,9 @@
       background-color: rgb(0 0 0 / 0.4);
       opacity: 1;
       transition:
-        opacity var(--cascade-motion-enter),
-        display var(--cascade-motion-enter) allow-discrete,
-        overlay var(--cascade-motion-enter) allow-discrete;
+        opacity var(--cascivo-motion-enter),
+        display var(--cascivo-motion-enter) allow-discrete,
+        overlay var(--cascivo-motion-enter) allow-discrete;
 
       @starting-style {
         opacity: 0;
@@ -124,9 +124,9 @@
     &[data-state='closed']::backdrop {
       opacity: 0;
       transition:
-        opacity var(--cascade-motion-exit),
-        display var(--cascade-motion-exit) allow-discrete,
-        overlay var(--cascade-motion-exit) allow-discrete;
+        opacity var(--cascivo-motion-exit),
+        display var(--cascivo-motion-exit) allow-discrete,
+        overlay var(--cascivo-motion-exit) allow-discrete;
     }
   }
 
@@ -134,15 +134,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--cascade-space-4) var(--cascade-space-6);
-    border-block-end: 1px solid var(--cascade-color-border);
+    padding: var(--cascivo-space-4) var(--cascivo-space-6);
+    border-block-end: 1px solid var(--cascivo-color-border);
     flex-shrink: 0;
   }
 
   .title {
-    font-size: var(--cascade-text-lg);
-    font-weight: var(--cascade-font-semibold);
-    color: var(--cascade-color-text);
+    font-size: var(--cascivo-text-lg);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
   }
 
   .close {
@@ -152,29 +152,29 @@
     width: 2rem;
     height: 2rem;
     padding: 0;
-    font-size: var(--cascade-text-sm);
-    color: var(--cascade-color-text-muted);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--cascade-radius-control);
+    border-radius: var(--cascivo-radius-control);
     cursor: pointer;
     transition:
-      color var(--cascade-duration-150) var(--cascade-ease-out),
-      background-color var(--cascade-duration-150) var(--cascade-ease-out);
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascade-color-text);
-      background-color: var(--cascade-color-bg-subtle);
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: var(--cascade-focus-ring);
+      box-shadow: var(--cascivo-focus-ring);
     }
   }
 
   .body {
-    padding: var(--cascade-space-6);
+    padding: var(--cascivo-space-6);
     overflow-y: auto;
     flex: 1;
   }

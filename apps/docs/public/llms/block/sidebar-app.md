@@ -5,7 +5,7 @@ Full app shell with collapsible side navigation and top header.
 ## Install
 
 ```bash
-npx cascade add block/sidebar-app
+npx cascivo add block/sidebar-app
 ```
 
 ## Category
@@ -28,12 +28,12 @@ App with sidebar navigation
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/app-shell`
 
 ## Tags

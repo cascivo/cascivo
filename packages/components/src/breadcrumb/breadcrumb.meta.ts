@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Breadcrumb',
@@ -20,15 +20,15 @@ export const meta: ComponentMeta = {
     { name: 'ariaLabel', type: 'string', required: false, default: 'Breadcrumb' },
   ],
   tokens: [
-    '--cascade-color-text',
-    '--cascade-color-text-muted',
-    '--cascade-color-text-subtle',
-    '--cascade-radius-sm',
-    '--cascade-focus-ring',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-focus-ring',
   ],
   accessibility: {
     role: 'navigation',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter'],
   },
   examples: [
@@ -42,7 +42,7 @@ export const meta: ComponentMeta = {
       description: 'Long trails collapse to the first item, an ellipsis, and the trailing items.',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['breadcrumb', 'navigation', 'hierarchy'],
   intent: {
     whenToUse: [
@@ -83,7 +83,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Text colors and focus ring must resolve to --cascade-* tokens',
+        note: 'Text colors and focus ring must resolve to --cascivo-* tokens',
       },
     ],
   },

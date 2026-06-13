@@ -1,8 +1,8 @@
-import { Alert } from '@cascade-ui/components/alert'
-import { Avatar } from '@cascade-ui/components/avatar'
-import { Card } from '@cascade-ui/components/card'
-import { Separator } from '@cascade-ui/components/separator'
-import { Tooltip } from '@cascade-ui/components/tooltip'
+import { Alert } from '@cascivo/components/alert'
+import { Avatar } from '@cascivo/components/avatar'
+import { Card } from '@cascivo/components/card'
+import { Separator } from '@cascivo/components/separator'
+import { Tooltip } from '@cascivo/components/tooltip'
 import { INCIDENT, ONCALL } from './data'
 
 export function SideRegion() {

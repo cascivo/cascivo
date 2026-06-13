@@ -5,7 +5,7 @@ Visual or semantic divider between content
 ## Install
 
 ```bash
-npx cascade add separator
+npx cascivo add separator
 ```
 
 ## Category
@@ -35,16 +35,16 @@ npx cascade add separator
 
 ## Design tokens
 
-- `--cascade-color-border`
+- `--cascivo-color-border`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `separator`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

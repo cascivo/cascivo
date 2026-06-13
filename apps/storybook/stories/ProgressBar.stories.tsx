@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ProgressBar } from '@cascade-ui/components/progress-bar'
+import { ProgressBar } from '@cascivo/components/progress-bar'
 
 const meta: Meta<typeof ProgressBar> = {
   title: 'Feedback/ProgressBar',

@@ -8,7 +8,7 @@
 
 ## 1. Identity
 
-**Name:** cascade / `@cascade-ui`
+**Name:** cascade / `@cascivo`
 **Tagline:** The CSS-native, signal-driven, AI-first React design system
 **Competitors:** shadcn/ui, IBM Carbon Design System
 
@@ -47,11 +47,11 @@
 
 | Layer            | Distribution       | Package                      |
 | ---------------- | ------------------ | ---------------------------- |
-| State primitives | npm                | `@cascade-ui/core`           |
-| Design tokens    | npm                | `@cascade-ui/tokens`         |
-| Themes           | npm                | `@cascade-ui/themes`         |
-| Icons            | npm (optional)     | `@cascade-ui/icons`          |
-| MCP server       | npm                | `@cascade-ui/mcp`            |
+| State primitives | npm                | `@cascivo/core`              |
+| Design tokens    | npm                | `@cascivo/tokens`            |
+| Themes           | npm                | `@cascivo/themes`            |
+| Icons            | npm (optional)     | `@cascivo/icons`             |
+| MCP server       | npm                | `@cascivo/mcp`               |
 | Components       | copy-paste via CLI | fetched from GitHub raw URLs |
 
 Components are never imported from an npm package. `npx cascade add button` copies source into `src/components/ui/button/`. Users own the code, can modify freely, and receive updates by pulling the latest source.
@@ -63,13 +63,13 @@ Components are never imported from an npm package. `npx cascade add button` copi
 ```
 cascade/
 ├── packages/
-│   ├── core/           @cascade-ui/core    — micro-FSM, Preact Signals, base utilities
-│   ├── tokens/         @cascade-ui/tokens  — CSS design tokens (3 levels)
-│   ├── themes/         @cascade-ui/themes  — light.css, dark.css, warm.css
+│   ├── core/           @cascivo/core    — micro-FSM, Preact Signals, base utilities
+│   ├── tokens/         @cascivo/tokens  — CSS design tokens (3 levels)
+│   ├── themes/         @cascivo/themes  — light.css, dark.css, warm.css
 │   ├── components/     (registry source)   — component TSX + CSS + manifest + tests
-│   ├── icons/          @cascade-ui/icons   — optional SVG icon components
+│   ├── icons/          @cascivo/icons   — optional SVG icon components
 │   ├── cli/            cascade             — npx cascade init/add/list/update
-│   └── mcp/            @cascade-ui/mcp     — MCP server
+│   └── mcp/            @cascivo/mcp     — MCP server
 ├── apps/
 │   ├── docs/           — Vite + Preact docs (dogfood cascade via preact/compat)
 │   ├── storybook/      — Storybook (auto-generated stories from manifests)
@@ -111,11 +111,11 @@ Primary CLI: `vp` (vite+, v0.1.24, installed globally). Single command for dev, 
 
 pnpm workspaces (`pnpm-workspace.yaml`) is the underlying monorepo mechanism. `vp run` orchestrates tasks across packages.
 
-**Dependency policy:** always use latest stable versions. Runtime deps in `@cascade-ui/core`: only `@preact/signals-react`. Peer deps: `react >=18.0.0`.
+**Dependency policy:** always use latest stable versions. Runtime deps in `@cascivo/core`: only `@preact/signals-react`. Peer deps: `react >=18.0.0`.
 
 ---
 
-## 6. `@cascade-ui/core` API
+## 6. `@cascivo/core` API
 
 Tiny, stable, purpose-built. The only runtime dep components take on.
 
@@ -159,7 +159,7 @@ export const meta: ComponentMeta = {
     keyboard: string[],     // ['Enter', 'Space']
   },
   examples: ExampleMeta[],  // { title, code, description } — hand-authored
-  dependencies: string[],   // ['@cascade-ui/core']
+  dependencies: string[],   // ['@cascivo/core']
   tags: string[],           // for search/discovery
 }
 ```
@@ -175,26 +175,26 @@ export const meta: ComponentMeta = {
 Three-level CSS custom property system:
 
 ```css
-/* Level 1 — primitives (defined in @cascade-ui/tokens, never used directly in components) */
---cascade-blue-500: #3b82f6;
---cascade-gray-900: #111827;
+/* Level 1 — primitives (defined in @cascivo/tokens, never used directly in components) */
+--cascivo-blue-500: #3b82f6;
+--cascivo-gray-900: #111827;
 
 /* Level 2 — semantic (themes override this layer only) */
 [data-theme='light'] {
-  --cascade-color-accent: var(--cascade-blue-500);
-  --cascade-color-surface: #ffffff;
-  --cascade-color-text: var(--cascade-gray-900);
+  --cascivo-color-accent: var(--cascivo-blue-500);
+  --cascivo-color-surface: #ffffff;
+  --cascivo-color-text: var(--cascivo-gray-900);
 }
 
 /* Level 3 — component (users override for brand adaptation) */
 .cascade-button {
-  background: var(--cascade-button-bg, var(--cascade-color-accent));
-  color: var(--cascade-button-text, #ffffff);
-  border-radius: var(--cascade-button-radius, 6px);
+  background: var(--cascivo-button-bg, var(--cascivo-color-accent));
+  color: var(--cascivo-button-text, #ffffff);
+  border-radius: var(--cascivo-button-radius, 6px);
 }
 ```
 
-**Themes** override the semantic layer only. Shipped in `@cascade-ui/themes`:
+**Themes** override the semantic layer only. Shipped in `@cascivo/themes`:
 
 - `light.css` — minimal/sharp, neutral grays, clean lines
 - `dark.css` — bold/editorial, high contrast, developer-cool
@@ -211,7 +211,7 @@ Users adapt brand by overriding component-level tokens — no forking of theme f
 **Commands:**
 
 ```bash
-npx cascade init              # install @cascade-ui/core + tokens, create cascade.config.ts
+npx cascade init              # install @cascivo/core + tokens, create cascade.config.ts
 npx cascade add button        # copy component source into outputDir
 npx cascade add button input  # multiple components at once
 npx cascade list              # table of all available components
@@ -245,7 +245,7 @@ export default {
         "https://raw.githubusercontent.com/.../.../button.tsx",
         "https://raw.githubusercontent.com/.../.../button.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["action", "form", "interactive"]
     }
   ]
@@ -260,7 +260,7 @@ No hosting infrastructure — GitHub raw URLs are the CDN. `vp run registry:gene
 
 ## 10. AI Layer
 
-### MCP Server (`@cascade-ui/mcp`)
+### MCP Server (`@cascivo/mcp`)
 
 Six tools, all reading from `registry.json` + component manifests:
 
@@ -382,7 +382,7 @@ Each component page is auto-generated from its manifest. The theme switcher uses
 These are out of scope for v1 but should be addressed before v2:
 
 - **Component update strategy:** when cascade ships a new version of Button, how do users know? Git diff? CLI `cascade update --check`?
-- **Custom icon design:** `@cascade-ui/icons` needs its own icon design language (stroke weight, corner radius tied to token system)
+- **Custom icon design:** `@cascivo/icons` needs its own icon design language (stroke weight, corner radius tied to token system)
 - **Forms integration:** recommend a validation library pairing (react-hook-form? zod?) — not bundled but officially documented
 - **vite+ migration:** when vite+ stabilises, migrate from `vp` alpha → stable release
 - **Hosted registry:** evaluate moving from GitHub raw to a CDN-backed registry API once adoption warrants it

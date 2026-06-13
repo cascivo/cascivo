@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio-card/radio-card.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["radio", "card", "selectable", "form"],
   "category": "inputs",
   "meta": {
@@ -49,14 +49,14 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-border",
-      "--cascade-radius-surface",
-      "--cascade-color-active-bg"
+      "--cascivo-color-accent",
+      "--cascivo-color-border",
+      "--cascivo-radius-surface",
+      "--cascivo-color-active-bg"
     ],
     "accessibility": {
       "role": "radiogroup",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Space"]
     },
     "examples": [
@@ -66,7 +66,7 @@
         "description": "Single-select plan picker"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["radio", "card", "selectable", "form"],
     "intent": {
       "whenToUse": [
@@ -107,7 +107,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Card and indicator styling must resolve to the listed --cascade-* tokens"
+          "note": "Card and indicator styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "title and description",

@@ -47,12 +47,12 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-accent`
-- `--cascade-color-text-muted`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-accent`
+- `--cascivo-color-text-muted`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -72,5 +72,5 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 | Area          | Level    | Note                                                                         |
 | ------------- | -------- | ---------------------------------------------------------------------------- |
-| token names   | strict   | Visual props must resolve to --cascade-color-\* / radius / focus-ring tokens |
+| token names   | strict   | Visual props must resolve to --cascivo-color-\* / radius / focus-ring tokens |
 | option labels | flexible | Free, supplied by the consumer via the options array                         |

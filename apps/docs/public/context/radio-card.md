@@ -43,10 +43,10 @@ Each card is a <label> wrapping a native <input type="radio"> and RadioCardGroup
 
 ## Tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-border`
-- `--cascade-radius-surface`
-- `--cascade-color-active-bg`
+- `--cascivo-color-accent`
+- `--cascivo-color-border`
+- `--cascivo-radius-surface`
+- `--cascivo-color-active-bg`
 
 ## Examples
 
@@ -66,5 +66,5 @@ Single-select plan picker
 
 | Area                  | Level    | Note                                                                      |
 | --------------------- | -------- | ------------------------------------------------------------------------- |
-| token names           | strict   | Card and indicator styling must resolve to the listed --cascade-\* tokens |
+| token names           | strict   | Card and indicator styling must resolve to the listed --cascivo-\* tokens |
 | title and description | flexible | title and description accept arbitrary ReactNode content                  |

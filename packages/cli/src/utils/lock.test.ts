@@ -21,7 +21,7 @@ describe('lock', () => {
   it('write + read round-trip', async () => {
     let lock = createLock()
     lock = updateLockEntry(lock, 'button', {
-      registry: 'https://cascade-ui.dev/r',
+      registry: 'https://cascivo.com/r',
       version: '1.2.0',
       installedAt: '2026-06-12',
       files: { 'src/components/ui/button/button.tsx': 'sha256-abc' },

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Cta',
@@ -36,15 +36,15 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-border',
-    '--cascade-surface-subtle',
-    '--cascade-text-2xl',
-    '--cascade-text-base',
-    '--cascade-font-bold',
-    '--cascade-text-secondary',
-    '--cascade-space-*',
+    '--cascivo-color-border',
+    '--cascivo-surface-subtle',
+    '--cascivo-text-2xl',
+    '--cascivo-text-base',
+    '--cascivo-font-bold',
+    '--cascivo-text-secondary',
+    '--cascivo-space-*',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'CTA band',
@@ -52,7 +52,7 @@ export const meta: ComponentMeta = {
       description: 'Quiet bordered band with centered heading, description, and action buttons',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'cta', 'marketing'],
   intent: {
     whenToUse: [

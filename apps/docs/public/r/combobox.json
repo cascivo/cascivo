@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/combobox/combobox.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/combobox/combobox.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["select", "combobox", "dropdown", "filter", "search"],
   "category": "inputs",
   "meta": {
@@ -94,26 +94,26 @@
       }
     ],
     "tokens": [
-      "--cascade-color-surface",
-      "--cascade-color-surface-overlay",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-border",
-      "--cascade-color-border-strong",
-      "--cascade-color-text",
-      "--cascade-color-text-muted",
-      "--cascade-color-text-subtle",
-      "--cascade-color-accent",
-      "--cascade-color-danger",
-      "--cascade-radius-input",
-      "--cascade-radius-md",
-      "--cascade-radius-sm",
-      "--cascade-shadow-lg",
-      "--cascade-motion-enter",
-      "--cascade-z-dropdown"
+      "--cascivo-color-surface",
+      "--cascivo-color-surface-overlay",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-border",
+      "--cascivo-color-border-strong",
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-color-danger",
+      "--cascivo-radius-input",
+      "--cascivo-radius-md",
+      "--cascivo-radius-sm",
+      "--cascivo-shadow-lg",
+      "--cascivo-motion-enter",
+      "--cascivo-z-dropdown"
     ],
     "accessibility": {
       "role": "combobox",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"]
     },
     "examples": [
@@ -122,7 +122,7 @@
         "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onChange={(value) => console.log(value)}\n/>"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["select", "combobox", "dropdown", "filter", "search"],
     "intent": {
       "whenToUse": [
@@ -177,7 +177,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+          "note": "Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens"
         }
       ]
     }

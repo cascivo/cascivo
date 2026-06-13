@@ -2,12 +2,12 @@
   /* Fallback: CSS multi-columns. Items flow column-major (top-to-bottom per column). */
   .masonry {
     column-count: var(--_cols, 3);
-    column-gap: var(--_gap, var(--cascade-space-4));
+    column-gap: var(--_gap, var(--cascivo-space-4));
   }
 
   .masonry > * {
     break-inside: avoid;
-    margin-block-end: var(--_gap, var(--cascade-space-4));
+    margin-block-end: var(--_gap, var(--cascivo-space-4));
   }
 
   /* Native masonry — grid-template-rows syntax (Firefox / spec baseline). */
@@ -17,7 +17,7 @@
       column-count: initial;
       grid-template-columns: repeat(var(--_cols, 3), minmax(0, 1fr));
       grid-template-rows: masonry;
-      gap: var(--_gap, var(--cascade-space-4));
+      gap: var(--_gap, var(--cascivo-space-4));
     }
 
     .masonry > * {
@@ -31,7 +31,7 @@
       display: masonry;
       column-count: initial;
       masonry-template-tracks: repeat(var(--_cols, 3), minmax(0, 1fr));
-      gap: var(--_gap, var(--cascade-space-4));
+      gap: var(--_gap, var(--cascivo-space-4));
     }
 
     .masonry > * {

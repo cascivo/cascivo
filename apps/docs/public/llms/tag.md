@@ -5,7 +5,7 @@ Compact chip for labeling, categorizing, or filtering content
 ## Install
 
 ```bash
-npx cascade add tag
+npx cascivo add tag
 ```
 
 ## Category
@@ -58,29 +58,29 @@ Renders a trailing remove button labeled by dismissLabel
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-text-subtle`
-- `--cascade-color-info`
-- `--cascade-color-info-subtle`
-- `--cascade-color-success`
-- `--cascade-color-success-subtle`
-- `--cascade-color-warning`
-- `--cascade-color-warning-subtle`
-- `--cascade-color-destructive`
-- `--cascade-color-destructive-subtle`
-- `--cascade-radius-badge`
-- `--cascade-focus-ring`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-info`
+- `--cascivo-color-info-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-success-subtle`
+- `--cascivo-color-warning`
+- `--cascivo-color-warning-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
+- `--cascivo-radius-badge`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 - **Keyboard:** Enter, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

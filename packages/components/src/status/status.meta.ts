@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Status',
@@ -23,17 +23,17 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-color-success',
-    '--cascade-color-warning',
-    '--cascade-color-error',
-    '--cascade-color-info',
-    '--cascade-color-text-muted',
-    '--cascade-color-text',
-    '--cascade-radius-full',
+    '--cascivo-color-success',
+    '--cascivo-color-warning',
+    '--cascivo-color-error',
+    '--cascivo-color-info',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-text',
+    '--cascivo-radius-full',
   ],
   accessibility: {
     role: 'none',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [
@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
       description: 'The pulse animation respects prefers-reduced-motion',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['status', 'indicator', 'dot', 'badge'],
   intent: {
     whenToUse: [
@@ -91,7 +91,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'State colors must resolve to --cascade-color-success/warning/error/info',
+        note: 'State colors must resolve to --cascivo-color-success/warning/error/info',
       },
     ],
   },

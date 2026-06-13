@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'RatingGroup',
@@ -17,21 +17,21 @@ export const meta: ComponentMeta = {
     { name: 'labels', type: 'RatingGroupLabels', required: false },
   ],
   tokens: [
-    '--cascade-color-warning',
-    '--cascade-color-border-strong',
-    '--cascade-color-accent',
-    '--cascade-radius-sm',
+    '--cascivo-color-warning',
+    '--cascivo-color-border-strong',
+    '--cascivo-color-accent',
+    '--cascivo-radius-sm',
   ],
   accessibility: {
     role: 'radiogroup',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Space', 'Enter'],
   },
   examples: [
     { title: 'Basic', code: '<RatingGroup value={3} onValueChange={() => {}} />' },
     { title: 'Read only', code: '<RatingGroup value={4} readOnly />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'rating', 'stars', 'input', 'feedback'],
   intent: {
     whenToUse: [
@@ -68,7 +68,7 @@ export const meta: ComponentMeta = {
       {
         area: 'token names',
         level: 'strict',
-        note: 'Star styling must resolve to the listed --cascade-* tokens',
+        note: 'Star styling must resolve to the listed --cascivo-* tokens',
       },
       {
         area: 'scale and labels',

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { EmptyState } from '@cascade-ui/components/empty-state'
+import { Button } from '@cascivo/components/button'
+import { EmptyState } from '@cascivo/components/empty-state'
 
 const meta: Meta<typeof EmptyState> = {
   title: 'Display/EmptyState',

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ShellHeader } from '@cascade-ui/components/shell-header'
+import { ShellHeader } from '@cascivo/components/shell-header'
 
 const meta: Meta<typeof ShellHeader> = {
   title: 'Shell/ShellHeader',
@@ -60,7 +60,7 @@ const helpIcon = (
 
 export const Default: Story = {
   args: {
-    brand: { prefix: 'cascade', name: 'Console', href: '#' },
+    brand: { prefix: 'cascivo', name: 'Console', href: '#' },
     nav,
     actions: [
       { id: 'notifications', label: 'Notifications', icon: bellIcon },
@@ -71,7 +71,7 @@ export const Default: Story = {
 
 export const WithDropdowns: Story = {
   args: {
-    brand: { prefix: 'cascade', name: 'Console', href: '#' },
+    brand: { prefix: 'cascivo', name: 'Console', href: '#' },
     nav,
   },
 }
@@ -103,7 +103,7 @@ export const BrandOnly: Story = {
 
 export const Accessibility: Story = {
   args: {
-    brand: { prefix: 'cascade', name: 'Console', href: '#' },
+    brand: { prefix: 'cascivo', name: 'Console', href: '#' },
     nav,
     actions: [{ id: 'notifications', label: 'Notifications', icon: bellIcon }],
   },

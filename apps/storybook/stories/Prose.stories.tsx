@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Prose } from '@cascade-ui/components/prose'
+import { Prose } from '@cascivo/components/prose'
 
 const meta: Meta<typeof Prose> = {
   title: 'Display/Prose',
@@ -14,7 +14,7 @@ export const Article: Story = {
       <h1>Getting started</h1>
       <p>
         cascade components are <a href="#owned">owned code</a> — run{' '}
-        <code>npx cascade add button</code> and the source is yours.
+        <code>npx cascivo add button</code> and the source is yours.
       </p>
       <h2>Principles</h2>
       <ul>
@@ -35,7 +35,7 @@ export const Article: Story = {
         <tbody>
           <tr>
             <td>Semantic</td>
-            <td>--cascade-color-accent</td>
+            <td>--cascivo-color-accent</td>
           </tr>
         </tbody>
       </table>

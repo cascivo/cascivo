@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auth-layout/auth-layout.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "auth", "login", "page"],
   "category": "layout",
   "meta": {
@@ -37,17 +37,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-bg-subtle",
-      "--cascade-color-surface",
-      "--cascade-color-border",
-      "--cascade-radius-lg",
-      "--cascade-space-4",
-      "--cascade-space-6",
-      "--cascade-space-8"
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-radius-lg",
+      "--cascivo-space-4",
+      "--cascivo-space-6",
+      "--cascivo-space-8"
     ],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -57,7 +57,7 @@
         "description": "Centered auth card with logo"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "auth", "login", "page"],
     "intent": {
       "whenToUse": [

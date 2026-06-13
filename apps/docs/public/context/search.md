@@ -50,15 +50,15 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 ## Tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-color-accent`
-- `--cascade-color-text`
-- `--cascade-color-text-muted`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-input`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-input`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -84,5 +84,5 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 | Area              | Level    | Note                                                                         |
 | ----------------- | -------- | ---------------------------------------------------------------------------- |
-| token names       | strict   | Field and control styling must resolve to the listed --cascade-\* tokens     |
+| token names       | strict   | Field and control styling must resolve to the listed --cascivo-\* tokens     |
 | debounce and copy | flexible | debounceMs and the placeholder/label/clear copy are free to suit the context |

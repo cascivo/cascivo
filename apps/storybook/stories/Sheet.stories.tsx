@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Sheet } from '@cascade-ui/components/sheet'
+import { Button } from '@cascivo/components/button'
+import { Sheet } from '@cascivo/components/sheet'
 
 const meta: Meta = {
   title: 'Overlay/Sheet',

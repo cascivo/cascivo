@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Sheet',
@@ -9,20 +9,20 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [
-    '--cascade-color-surface',
-    '--cascade-color-border',
-    '--cascade-radius-lg',
-    '--cascade-shadow-xl',
-    '--cascade-motion-enter',
-    '--cascade-motion-exit',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-lg',
+    '--cascivo-shadow-xl',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
   ],
   accessibility: {
     role: 'dialog',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'drawer', 'panel', 'slide'],
   intent: {
     whenToUse: [

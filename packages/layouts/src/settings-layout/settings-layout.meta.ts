@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SettingsLayout',
@@ -11,8 +11,8 @@ export const meta: ComponentMeta = {
     { name: 'menu', type: 'ReactNode', required: true, description: 'Side navigation menu' },
     { name: 'children', type: 'ReactNode', required: true, description: 'Settings content area' },
   ],
-  tokens: ['--cascade-space-8'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  tokens: ['--cascivo-space-8'],
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',
@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
       description: 'Menu + content layout',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'settings', 'page'],
   intent: {
     whenToUse: [

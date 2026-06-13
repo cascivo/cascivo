@@ -5,7 +5,7 @@ Drag-and-drop file upload zone with file list and status indicators.
 ## Install
 
 ```bash
-npx cascade add file-uploader
+npx cascivo add file-uploader
 ```
 
 ## Category
@@ -65,22 +65,22 @@ Shows file list
 
 ## Design tokens
 
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-success`
-- `--cascade-color-danger`
-- `--cascade-color-danger-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success`
+- `--cascivo-color-danger`
+- `--cascivo-color-danger-subtle`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

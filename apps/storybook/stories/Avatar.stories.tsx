@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Avatar } from '@cascade-ui/components/avatar'
+import { Avatar } from '@cascivo/components/avatar'
 
 const meta: Meta<typeof Avatar> = {
   title: 'Display/Avatar',

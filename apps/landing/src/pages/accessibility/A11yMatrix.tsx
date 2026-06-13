@@ -1,9 +1,9 @@
 'use client'
-import { useComputed, useSignal, useSignals } from '@cascade-ui/core'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
-import { Kbd } from '@cascade-ui/components/kbd'
-import { SegmentedControl } from '@cascade-ui/components/segmented-control'
-import { VisuallyHidden } from '@cascade-ui/components/visually-hidden'
+import { useComputed, useSignal, useSignals } from '@cascivo/core'
+import { DataTable, type Column } from '@cascivo/components/data-table'
+import { Kbd } from '@cascivo/components/kbd'
+import { SegmentedControl } from '@cascivo/components/segmented-control'
+import { VisuallyHidden } from '@cascivo/components/visually-hidden'
 import { A11Y_CATEGORIES, A11Y_COVERED, A11Y_ROWS, KEYBOARD_DOCUMENTED, type A11yRow } from './data'
 
 const COLUMNS: Column<A11yRow>[] = [
@@ -14,7 +14,28 @@ const COLUMNS: Column<A11yRow>[] = [
     header: 'Role',
     render: (r) => <code className="a11y-role">{r.role}</code>,
   },
-  { key: 'wcag', header: 'WCAG' },
+  {
+    key: 'wcag',
+    header: 'WCAG',
+    render: (r) =>
+      r.wcag
+        .replace('2.2-AA', 'WCAG 2.2 AA')
+        .replace('2.1-AA', 'WCAG 2.1 AA')
+        .replace(/^AA$/, 'WCAG AA'),
+  },
+  {
+    key: 'apgPattern',
+    header: 'APG Pattern',
+    render: (r) =>
+      r.apgPattern ? (
+        <code className="a11y-role">{r.apgPattern}</code>
+      ) : (
+        <>
+          <span aria-hidden="true">—</span>
+          <VisuallyHidden>no pattern</VisuallyHidden>
+        </>
+      ),
+  },
   {
     key: 'keyboard',
     header: 'Keyboard',

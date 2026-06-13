@@ -20,7 +20,7 @@ describe('Grid', () => {
   it('sets gap CSS var', () => {
     const { container } = render(<Grid gap={6} />)
     expect((container.firstChild as HTMLElement).style.getPropertyValue('--_grid-gap')).toBe(
-      'var(--cascade-space-6)',
+      'var(--cascivo-space-6)',
     )
   })
 })

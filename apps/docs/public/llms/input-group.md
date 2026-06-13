@@ -5,7 +5,7 @@ Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/unit
 ## Install
 
 ```bash
-npx cascade add input-group
+npx cascivo add input-group
 ```
 
 ## Category
@@ -64,19 +64,19 @@ npx cascade add input-group
 
 ## Design tokens
 
-- `--cascade-color-bg-subtle`
-- `--cascade-color-border`
-- `--cascade-color-text-subtle`
-- `--cascade-radius-input`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-border`
+- `--cascivo-color-text-subtle`
+- `--cascivo-radius-input`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

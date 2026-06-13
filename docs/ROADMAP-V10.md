@@ -80,7 +80,7 @@ Worth building, in two batches:
    shadcn / Carbon — but `apps/bench/results/results.json` is a **placeholder** (`meta`
    only, "run pnpm bench to populate") and the only consumer is a table page buried in
    `/docs/benchmarks`. The bench must actually run, and the results deserve charts on the
-   storefront, rendered with `@cascade-ui/charts` (dogfood).
+   storefront, rendered with `@cascivo/charts` (dogfood).
 3. **The a11y story is documented but unassembled.** Every one of the 106 registry entries
    carries `meta.accessibility` (role, WCAG level, keyboard keys); the landing and bench
    apps run axe (WCAG 2.1 AA) in CI; themes are contrast-audited; all CSS uses logical
@@ -99,7 +99,7 @@ Worth building, in two batches:
 | A   | Multi-page foundation | T1      | Pathname router + shared page chrome in the landing app; `/accessibility` + `/performance` routes; bench data module; run `pnpm bench` to populate real results. |
 | B   | Components batch A    | T2      | `copy-button`, `stat`, `status`, `visually-hidden`, `skip-nav`, `progress-circle` — manifests, tests, i18n, react exports, registry regen.                       |
 | C   | Accessibility page    | T3      | Hero claim + topline numbers, comparative axe chart, generated keyboard/ARIA matrix from registry.json, engineering-practices grid, CI-gate section.             |
-| D   | Performance page      | T4      | Bundle / latency / re-render / Lighthouse charts from results.json via `@cascade-ui/charts`, per-component cost matrix, methodology + honesty section.           |
+| D   | Performance page      | T4      | Bundle / latency / re-render / Lighthouse charts from results.json via `@cascivo/charts`, per-component cost matrix, methodology + honesty section.              |
 | E   | Home page upgrades    | T5      | Hero feature chips, stats band (registry + bench numbers), a11y + performance teaser sections, footer columns.                                                   |
 | F   | Typography + backlog  | T6      | `heading`, `text`, `code`, `blockquote`, `list`, `prose`; queue 8 components to factory-backlog.json; final quality gates + DoD.                                 |
 
@@ -117,7 +117,7 @@ Worth building, in two batches:
    map (`/`, `/accessibility`, `/performance`, `/og`). No router library. The build copies
    `index.html` to `accessibility/index.html` and `performance/index.html` so static hosts
    serve deep links without rewrite rules.
-4. **Proof pages dogfood the system.** Charts come from `@cascade-ui/charts` (including
+4. **Proof pages dogfood the system.** Charts come from `@cascivo/charts` (including
    `plain` mode for micro charts), tables from `DataTable`, keys from `Kbd`, stats from the
    new `Stat`, copy affordances from the new `CopyButton`, and the a11y page itself uses
    `SkipNav` — the page about accessibility is built with the a11y components it announces.
@@ -150,7 +150,7 @@ Worth building, in two batches:
 - [x] `/performance` renders: bundle-size comparison chart, per-component incremental cost
       table, interaction-latency charts (median + spread), re-render count comparison,
       Lighthouse stats, and a methodology section with the bench meta block — all from
-      results.json, rendered with `@cascade-ui/charts`.
+      results.json, rendered with `@cascivo/charts`.
 - [ ] `apps/bench/results/results.json` contains real populated results (bundle, runtime,
       renders, lighthouse, a11y) with provenance meta; the placeholder is gone.
       <!-- DEFERRED: results.json is a placeholder; T1.5 bench run skipped (30-60 min); run pnpm bench to populate -->

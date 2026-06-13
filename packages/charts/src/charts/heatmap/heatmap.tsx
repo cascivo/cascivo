@@ -1,10 +1,11 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { bandScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface HeatmapDatum {
   x: string
@@ -33,7 +34,6 @@ export function Heatmap({
   plain,
 }: HeatmapProps) {
   useSignals()
-  const tooltip = useSignal<{ x: number; y: number; text: string } | null>(null)
   const resolvedHeight = height ?? (plain ? 48 : 320)
   const margins = plain ? PLAIN_MARGINS : { top: 20, right: 20, bottom: 60, left: 60 }
 
@@ -67,6 +67,34 @@ export function Heatmap({
     </table>
   )
 
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (data.length === 0) return undefined
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+    if (innerW <= 0) return undefined
+    const xScale = bandScale(xs, [0, innerW], 0.05)
+    const yScale = bandScale(ys, [0, innerH], 0.05)
+
+    const points: ChartPoint[] = data.map((d, i) => {
+      const rx = xScale.map(d.x) ?? 0
+      const ry = yScale.map(d.y) ?? 0
+      return {
+        id: `cell-${i}`,
+        cx: margins.left + rx + xScale.bandwidth / 2,
+        cy: margins.top + ry + yScale.bandwidth / 2,
+        label: `${d.x}×${d.y}`,
+        value: d.value,
+      }
+    })
+    return { points }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -76,6 +104,7 @@ export function Heatmap({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={data.length > 0 ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const inner = {
@@ -100,20 +129,10 @@ export function Heatmap({
                   y={ry}
                   width={xScale.bandwidth}
                   height={yScale.bandwidth}
-                  fill={`color-mix(in oklab, var(--cascade-chart-1) ${pct}%, var(--cascade-color-neutral-100))`}
-                  stroke="var(--cascade-surface-base)"
+                  fill={`color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-color-neutral-100))`}
+                  stroke="var(--cascivo-surface-base)"
                   strokeWidth={1}
                   aria-label={`${d.x}, ${d.y}: ${d.value}`}
-                  onMouseEnter={() => {
-                    tooltip.value = {
-                      x: rx + xScale.bandwidth / 2,
-                      y: ry,
-                      text: `${d.x}×${d.y}: ${d.value}`,
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    tooltip.value = null
-                  }}
                 />
               )
             })}
@@ -127,17 +146,6 @@ export function Heatmap({
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>
-            )}
-            {tooltip.value && (
-              <text
-                x={tooltip.value.x}
-                y={tooltip.value.y - 6}
-                fontSize={11}
-                textAnchor="middle"
-                fill="var(--cascade-text-primary)"
-              >
-                {tooltip.value.text}
-              </text>
             )}
           </g>
         )

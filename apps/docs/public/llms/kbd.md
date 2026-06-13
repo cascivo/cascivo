@@ -5,7 +5,7 @@ Displays a keyboard key or shortcut
 ## Install
 
 ```bash
-npx cascade add kbd
+npx cascivo add kbd
 ```
 
 ## Category
@@ -49,20 +49,20 @@ Compose multiple keys to show a shortcut
 
 ## Design tokens
 
-- `--cascade-color-text-subtle`
-- `--cascade-color-surface-raised`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-radius-sm`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-surface-raised`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-radius-sm`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `kbd`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

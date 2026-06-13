@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'BubbleChart',
@@ -18,6 +18,12 @@ export const meta: ComponentMeta = {
     { name: 'description', type: 'string', required: false },
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false, default: '320' },
+    {
+      name: 'tooltip',
+      type: 'boolean',
+      required: false,
+      description: 'Enable hover/keyboard tooltip',
+    },
     { name: 'className', type: 'string', required: false },
     {
       name: 'plain',
@@ -28,26 +34,35 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascade-chart-1',
-    '--cascade-chart-2',
-    '--cascade-chart-3',
-    '--cascade-chart-4',
-    '--cascade-chart-5',
-    '--cascade-chart-6',
-    '--cascade-chart-7',
-    '--cascade-chart-8',
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate points)',
+      'Home/End (first/last point)',
+      'Escape (clear focus)',
+    ],
+  },
   examples: [
     {
       title: 'Basic bubble chart',
-      code: `import { BubbleChart } from '@cascade-ui/charts'
+      code: `import { BubbleChart } from '@cascivo/charts'
 
 const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]
 <BubbleChart series={series} title="Bubble" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'bubble', 'scatter', 'three-dimensional', 'data-viz'],
   intent: {
     whenToUse: [

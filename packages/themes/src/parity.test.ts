@@ -18,7 +18,7 @@ const themeFiles = [
 
 function tokenKeys(file: string): Set<string> {
   const css = readFileSync(join(SRC, file), 'utf8')
-  return new Set([...css.matchAll(/^\s*(--cascade-[a-z0-9-]+)\s*:/gm)].map((m) => m[1]!))
+  return new Set([...css.matchAll(/^\s*(--cascivo-[a-z0-9-]+)\s*:/gm)].map((m) => m[1]!))
 }
 
 describe('theme token parity', () => {

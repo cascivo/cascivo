@@ -1,12 +1,12 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
-import { Badge } from '@cascade-ui/components/badge'
-import { Button } from '@cascade-ui/components/button'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
-import { Modal } from '@cascade-ui/components/modal'
-import { Select } from '@cascade-ui/components/select'
-import { Input } from '@cascade-ui/components/input'
-import { useToast } from '@cascade-ui/components/toast'
+import { useSignal, useSignals } from '@cascivo/core'
+import { Badge } from '@cascivo/components/badge'
+import { Button } from '@cascivo/components/button'
+import { DataTable, type Column } from '@cascivo/components/data-table'
+import { Modal } from '@cascivo/components/modal'
+import { Select } from '@cascivo/components/select'
+import { Input } from '@cascivo/components/input'
+import { useToast } from '@cascivo/components/toast'
 import { DEPLOYS, type Deploy } from './data'
 
 type BadgeVariant = 'success' | 'secondary' | 'destructive' | 'outline'
@@ -103,15 +103,15 @@ function DeploysInner() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 'var(--cascade-space-4)',
-            padding: 'var(--cascade-space-4)',
+            gap: 'var(--cascivo-space-4)',
+            padding: 'var(--cascivo-space-4)',
           }}
         >
           <Select label="Service" options={serviceOptions} defaultValue="gateway" />
           <Select label="Environment" options={envOptions} defaultValue="production" />
           <Input label="Git ref" placeholder="main" />
           <div
-            style={{ display: 'flex', gap: 'var(--cascade-space-3)', justifyContent: 'flex-end' }}
+            style={{ display: 'flex', gap: 'var(--cascivo-space-3)', justifyContent: 'flex-end' }}
           >
             <Button
               variant="secondary"

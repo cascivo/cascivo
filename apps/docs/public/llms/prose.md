@@ -5,7 +5,7 @@ Wrapper that styles raw descendant HTML — headings, lists, code, quotes, table
 ## Install
 
 ```bash
-npx cascade add prose
+npx cascivo add prose
 ```
 
 ## Category
@@ -24,7 +24,7 @@ _No props._
 <Prose>
   <h2>Install</h2>
   <p>
-    Run <code>npx cascade init</code>.
+    Run <code>npx cascivo init</code>.
   </p>
 </Prose>
 ```
@@ -39,30 +39,30 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 
 ## Design tokens
 
-- `--cascade-font-sans`
-- `--cascade-font-mono`
-- `--cascade-font-semibold`
-- `--cascade-leading-tight`
-- `--cascade-leading-relaxed`
-- `--cascade-tracking-tight`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-hover`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-border-strong`
-- `--cascade-radius-indicator`
-- `--cascade-radius-surface`
+- `--cascivo-font-sans`
+- `--cascivo-font-mono`
+- `--cascivo-font-semibold`
+- `--cascivo-leading-tight`
+- `--cascivo-leading-relaxed`
+- `--cascivo-tracking-tight`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-hover`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-radius-indicator`
+- `--cascivo-radius-surface`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `generic`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

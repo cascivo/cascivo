@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/link/link.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/link/link.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["link", "anchor", "navigation"],
   "category": "navigation",
   "meta": {
@@ -48,15 +48,15 @@
       }
     ],
     "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-accent-hover",
-      "--cascade-color-accent-active",
-      "--cascade-radius-sm",
-      "--cascade-focus-ring"
+      "--cascivo-color-accent",
+      "--cascivo-color-accent-hover",
+      "--cascivo-color-accent-active",
+      "--cascivo-radius-sm",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "link",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter"]
     },
     "examples": [
@@ -75,7 +75,7 @@
         "description": "Opens in a new tab with rel=\"noreferrer\" and a visual indicator."
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["link", "anchor", "navigation"],
     "intent": {
       "whenToUse": [
@@ -115,7 +115,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Accent colors and focus ring must resolve to --cascade-* tokens"
+          "note": "Accent colors and focus ring must resolve to --cascivo-* tokens"
         }
       ]
     }

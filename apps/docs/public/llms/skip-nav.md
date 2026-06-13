@@ -5,7 +5,7 @@ Skip link that jumps keyboard users past the navigation to the main content
 ## Install
 
 ```bash
-npx cascade add skip-nav
+npx cascivo add skip-nav
 ```
 
 ## Category
@@ -46,22 +46,22 @@ SkipNavLink must be the first focusable element on the page
 
 ## Design tokens
 
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-radius-control`
-- `--cascade-focus-ring`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-radius-control`
+- `--cascivo-focus-ring`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `link`
 - **Keyboard:** Tab, Enter
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

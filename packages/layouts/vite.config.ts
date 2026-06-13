@@ -4,7 +4,7 @@ import { defineConfig } from 'vite-plus'
 export default defineConfig({
   resolve: {
     alias: {
-      '@cascade-ui/react': path.resolve(__dirname, '../react/src/index.ts'),
+      '@cascivo/react': path.resolve(__dirname, '../react/src/index.ts'),
     },
   },
   test: {

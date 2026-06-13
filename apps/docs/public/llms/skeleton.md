@@ -5,7 +5,7 @@ Animated loading placeholder that mirrors the shape of pending content
 ## Install
 
 ```bash
-npx cascade add skeleton
+npx cascivo add skeleton
 ```
 
 ## Category
@@ -49,20 +49,20 @@ npx cascade add skeleton
 
 ## Design tokens
 
-- `--cascade-color-border`
-- `--cascade-color-bg-subtle`
-- `--cascade-radius-sm`
-- `--cascade-radius-full`
-- `--cascade-radius-component`
+- `--cascivo-color-border`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-radius-full`
+- `--cascivo-radius-component`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

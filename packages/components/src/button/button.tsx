@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { ButtonHTMLAttributes } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './button.module.css'

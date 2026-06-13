@@ -40,12 +40,12 @@ role="list" structures the entries; each switch target is a real link with the a
 
 ## Tokens
 
-- `--cascade-color-text`
-- `--cascade-color-bg-subtle`
-- `--cascade-color-accent`
-- `--cascade-color-accent-subtle`
-- `--cascade-color-border`
-- `--cascade-focus-ring`
+- `--cascivo-color-text`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-border`
+- `--cascivo-focus-ring`
 
 ## Examples
 
@@ -69,4 +69,4 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 | Area        | Level    | Note                                                          |
 | ----------- | -------- | ------------------------------------------------------------- |
 | dividers    | flexible | Dividers group entries as needed                              |
-| token names | strict   | Accent and surface colors must resolve to --cascade-\* tokens |
+| token names | strict   | Accent and surface colors must resolve to --cascivo-\* tokens |

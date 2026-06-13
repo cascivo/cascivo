@@ -1,8 +1,8 @@
 'use client'
 
 import { useRef, type ReactNode } from 'react'
-import { useSignal, useSignalEffect } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { useSignal, useSignalEffect } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'
 
 export interface SheetProps {

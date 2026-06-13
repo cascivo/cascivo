@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import '@cascade-ui/themes/light'
-import { DataTable } from '@cascade-ui/react'
+import '@cascivo/themes/light'
+import { DataTable } from '@cascivo/react'
 import { buildRows } from '../data'
 createRoot(document.getElementById('root')!).render(
   <DataTable

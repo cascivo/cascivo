@@ -5,10 +5,10 @@
   "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Histogram",
     "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
@@ -69,19 +69,19 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
-    "tokens": ["--cascade-chart-1"],
+    "tokens": ["--cascivo-chart-1"],
     "accessibility": {
       "role": "img",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
       {
         "title": "Basic histogram",
-        "code": "import { Histogram } from '@cascade-ui/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
+        "code": "import { Histogram } from '@cascivo/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
     "intent": {
       "whenToUse": [

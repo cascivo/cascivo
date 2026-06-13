@@ -1,6 +1,6 @@
 'use client'
-import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useRef, type ReactNode } from 'react'
 import styles from './toast.module.css'
 
@@ -19,7 +19,7 @@ interface ToastRecord extends ToastOptions {
 
 const MAX_VISIBLE = 3
 const DEFAULT_DURATION = 5000
-// must outlast --cascade-motion-exit (150ms)
+// must outlast --cascivo-motion-exit (150ms)
 const EXIT_DURATION = 160
 
 // App-global queue: toasts are not tied to a single render tree, so a module

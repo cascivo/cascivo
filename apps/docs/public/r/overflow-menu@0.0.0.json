@@ -6,13 +6,13 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/overflow-menu/overflow-menu.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "menu", "actions", "kebab", "table"],
   "category": "overlay",
   "meta": {
@@ -64,17 +64,17 @@
       }
     ],
     "tokens": [
-      "--cascade-color-text",
-      "--cascade-color-text-muted",
-      "--cascade-color-bg-subtle",
-      "--cascade-color-destructive",
-      "--cascade-color-destructive-subtle",
-      "--cascade-radius-button",
-      "--cascade-focus-ring"
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-destructive",
+      "--cascivo-color-destructive-subtle",
+      "--cascivo-radius-button",
+      "--cascivo-focus-ring"
     ],
     "accessibility": {
       "role": "menu",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
     },
     "examples": [
@@ -87,7 +87,7 @@
         "code": "<OverflowMenu size=\"sm\" placement=\"bottom-start\" items={items} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "menu", "actions", "kebab", "table"],
     "intent": {
       "whenToUse": [
@@ -132,7 +132,7 @@
         {
           "area": "token names",
           "level": "strict",
-          "note": "Trigger and item styling must resolve to the listed --cascade-* tokens"
+          "note": "Trigger and item styling must resolve to the listed --cascivo-* tokens"
         },
         {
           "area": "item set and labels",

@@ -1,11 +1,12 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { linearScale } from '../../engine/scale'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface ScatterDatum {
   x: number
@@ -30,12 +31,13 @@ export interface ScatterChartProps {
   xTicks?: number
   yTicks?: number
   legend?: boolean
+  tooltip?: boolean
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
 }
 
-const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascade-chart-${i + 1})`)
+const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function ScatterChart({
   series,
@@ -47,6 +49,7 @@ export function ScatterChart({
   xTicks = 5,
   yTicks = 5,
   legend,
+  tooltip,
   className,
   plain,
 }: ScatterChartProps) {
@@ -89,6 +92,36 @@ export function ScatterChart({
     </table>
   )
 
+  /** Build tooltip model using the chart's resolved pixel dimensions. */
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (tooltip === false || !hasData) return undefined
+
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+    const xScale = linearScale([xMin, xMax], [0, innerW])
+    const yScale = linearScale([yMin, yMax], [innerH, 0])
+
+    const points: ChartPoint[] = series.flatMap((s) => {
+      if (hidden.value.has(s.id)) return []
+      return s.data.map((d, i) => ({
+        id: `${s.id}-${i}`,
+        cx: margins.left + xScale.map(d.x),
+        cy: margins.top + yScale.map(d.y),
+        label: `(${d.x}, ${d.y})`,
+        value: d.y,
+        seriesId: s.id,
+      }))
+    })
+
+    return { points }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <ChartFrame
@@ -100,6 +133,7 @@ export function ScatterChart({
         className={className}
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
+        tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

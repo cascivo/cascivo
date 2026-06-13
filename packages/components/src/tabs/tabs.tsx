@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignals, type Signal } from '@cascade-ui/core'
+import { cn, useSignal, useSignals, type Signal } from '@cascivo/core'
 import {
   createContext,
   useId,

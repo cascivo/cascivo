@@ -5,7 +5,7 @@ App top bar with brand, primary navigation links, and an actions slot
 ## Install
 
 ```bash
-npx cascade add header
+npx cascivo add header
 ```
 
 ## Category
@@ -31,42 +31,42 @@ npx cascade add header
 ### Basic
 
 ```tsx
-<Header brand="cascade" links={[{ label: 'Docs', href: '/docs' }]} />
+<Header brand="cascivo" links={[{ label: 'Docs', href: '/docs' }]} />
 ```
 
 ### With actions
 
 ```tsx
-<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />
+<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />
 ```
 
 ### Sticky
 
 ```tsx
-<Header sticky brand="cascade" links={links} />
+<Header sticky brand="cascivo" links={links} />
 ```
 
 ## Design tokens
 
-- `--cascade-header-bg`
-- `--cascade-color-surface`
-- `--cascade-color-border`
-- `--cascade-color-text`
-- `--cascade-color-text-subtle`
-- `--cascade-color-bg-subtle`
-- `--cascade-focus-ring`
-- `--cascade-z-raised`
+- `--cascivo-header-bg`
+- `--cascivo-color-surface`
+- `--cascivo-color-border`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-focus-ring`
+- `--cascivo-z-raised`
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `banner`
 - **Keyboard:** Tab
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

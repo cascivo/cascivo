@@ -10,12 +10,12 @@ switcher, a live re-render counter, an artifact-driven agent section, and real b
 (favicon/OG/meta) — all dogfooded, token-only, slop-free.
 
 **Architecture:** `apps/landing` stays a single-page React+Vite app dogfooding
-`@cascade-ui/react` + all five themes. New page skeleton: Header → Hero → Principles strip →
+`@cascivo/react` + all five themes. New page skeleton: Header → Hero → Principles strip →
 Relay console (demo wall) → Themes → Signals counter → Agent layer → QuickStart → CTA band →
 Footer. Sections live in `src/sections/`, the console in `src/demo/` with a fixture-data
 module. All styling via cascade tokens in `landing.css` (grows, stays the only CSS file).
 
-**Tech stack:** unchanged — React 19, vp (vite+), `@cascade-ui/react` + `charts` + `render`
+**Tech stack:** unchanged — React 19, vp (vite+), `@cascivo/react` + `charts` + `render`
 (CascadeView), five themes, Playwright (new for landing), `@axe-core/playwright`.
 
 ---
@@ -47,13 +47,13 @@ to Cloudflare Pages (`cascade-ui-landing`).
 
 **Dogfood inventory available to the console:** 97 registry components incl. AppShell,
 ShellHeader, SideNav, DataTable, Tabs, Modal, Toast, Alert, Badge, Switch/Toggle, Card,
-Input, Select, Checkbox, Tooltip, Avatar, Separator, Progress, Spinner; `@cascade-ui/charts`
-ships 16 charts (area, bar, line, sparkline, kpi, meter, …); `@cascade-ui/render` ships
+Input, Select, Checkbox, Tooltip, Avatar, Separator, Progress, Spinner; `@cascivo/charts`
+ships 16 charts (area, bar, line, sparkline, kpi, meter, …); `@cascivo/render` ships
 CascadeView (JSON → UI, schema `view.v1.json`).
 
 **AI artifacts that exist but aren't surfaced:** `component.meta.ts` per component; MCP server
-(`@cascade-ui/mcp`, 6 tools: list/get/search_components, add_to_project, create_theme,
-scaffold_page; `npx @cascade-ui/mcp`); 4 Claude Code skills (cascade:add/design-page/
+(`@cascivo/mcp`, 6 tools: list/get/search_components, add_to_project, create_theme,
+scaffold_page; `npx @cascivo/mcp`); 4 Claude Code skills (cascade:add/design-page/
 create-theme/extend); `https://cascade-ui.dev/llms.txt` + per-component `/llms/<name>.md`;
 `registry.json` public; `view.v1.json` schema.
 
@@ -104,13 +104,13 @@ That's the cascade twist that makes this a concept, not a clone.
 | 1   | Page skeleton: Header → Hero → Principles strip → Relay console → ThemeDemo → Signals counter → Agent layer → QuickStart → CTA band → Footer (sections deleted: Features, ComponentGrid; JsonPlayground absorbed into Agent layer)                                                                                                                                                                             | 5–7 demonstrating sections; every scroll-stop renders proof                               |
 | 2   | Header dogfoods `ShellHeader` (brand, nav: Components→docs, Storybook, GitHub; right slot: 5-theme switcher). Sticky, hairline border                                                                                                                                                                                                                                                                          | Chrome itself is a component demo                                                         |
 | 3   | Hero copy fixed: H1 **"Native to the web. Fluent in agent."**; sub: "cascade is a React design system built on modern platform CSS and fine-grained signals — with a machine-readable manifest behind every component. Copy the code. Own it. Let your agent build with it."; badge `{n}+ components · 5 themes · MIT`; CTAs **Start building** (docs) + **GitHub**; copyable `npx cascade add button` beneath | Category + differentiators, no competitor names, ~45 words total                          |
-| 4   | Theme state: one signal on `document.documentElement` (`data-theme`), default from `prefers-color-scheme` (light/dark), persisted via `@cascade-ui/storage`; switch animates via View Transitions when supported AND motion allowed                                                                                                                                                                            | The hero interaction; uses our own storage package                                        |
+| 4   | Theme state: one signal on `document.documentElement` (`data-theme`), default from `prefers-color-scheme` (light/dark), persisted via `@cascivo/storage`; switch animates via View Transitions when supported AND motion allowed                                                                                                                                                                               | The hero interaction; uses our own storage package                                        |
 | 5   | Relay console domain: deploy/ops ("Relay") — SideNav (Overview/Deploys/Incidents/Traffic/Flags/Settings), KPI row (4 KpiCards w/ sparklines), traffic AreaChart, deploys DataTable (sha/service/env/status/duration), incident Alert + on-call Card (warm-scoped), feature-flags Switch list, "New deploy" Modal → Toast                                                                                       | Dev-tool audience recognizes the domain; exercises ≥25 components incl. charts + overlays |
 | 6   | Fixture realism rules: 7-char hex SHAs, plausible service names, durations that sum, error-rate decimals, masked tokens (`rly_••••8f3a`), ISO-ish timestamps, zero lorem; one dry microcopy line ("All regions nominal. Boring is good.")                                                                                                                                                                      | The shadcn cents-precision trick                                                          |
 | 7   | Scoped-theme proof: the on-call card carries `data-theme="warm"` permanently + a small mono label `data-theme="warm"` — stays warm while everything else switches                                                                                                                                                                                                                                              | The capability no competitor has, demonstrated not described                              |
 | 8   | Signals section: side-by-side "Settings form" — left cascade (signals), right an intentionally-identical useState twin built locally; each wrapped in `<Profiler>` with live commit tickers; microcopy: "Open DevTools and count along. Same form, same typing — N commits vs 0." Links docs Benchmarks page                                                                                                   | Honest, verifiable, interactive — replaces the "zero re-renders" adjective                |
 | 9   | useState twin is exempt from the no-hooks rule (it's the comparison subject, in the landing app, not a component) — annotated with a comment + lint disable if oxlint complains                                                                                                                                                                                                                                | CLAUDE.md rules bind cascade components, not demo foils                                   |
-| 10  | Agent layer = four artifacts: (a) real Button manifest excerpt imported at build time from `packages/components/src/button/button.meta.ts`, (b) MCP install Tabs (Claude Code `claude mcp add cascade -- npx -y @cascade-ui/mcp` / Cursor deep-link+JSON / VS Code JSON) each with copy button, (c) one example prompt block, (d) CascadeView rendering a Relay slice from a visible JSON pane                 | Decision 6 of roadmap: clickable/copyable within one viewport                             |
+| 10  | Agent layer = four artifacts: (a) real Button manifest excerpt imported at build time from `packages/components/src/button/button.meta.ts`, (b) MCP install Tabs (Claude Code `claude mcp add cascade -- npx -y @cascivo/mcp` / Cursor deep-link+JSON / VS Code JSON) each with copy button, (c) one example prompt block, (d) CascadeView rendering a Relay slice from a visible JSON pane                    | Decision 6 of roadmap: clickable/copyable within one viewport                             |
 | 11  | Conditional benchmarks teaser inside Signals section: `import.meta.glob('../../../bench/results/results.json')` — renders 3 numbers + link to docs Benchmarks page only when v6 results exist                                                                                                                                                                                                                  | v7 must not block on v6; no hardcoded numbers                                             |
 | 12  | Brand: SVG favicon (the word-mark "c" in accent on canvas token), OG image 1200×630 generated by screenshotting a hidden `/og` route with Playwright, committed as `public/og.png`; full meta/OG/Twitter tags in index.html                                                                                                                                                                                    | Fixes the naked-URL share; OG generated from real components, not Figma                   |
 | 13  | New landing test suite: Playwright on port 4180 — smoke (sections present, table sorts, modal opens, toast fires, theme switch flips `data-theme`, scoped card stays warm), axe sweep (light + dark, zero violations), reduced-motion check (carousel frozen)                                                                                                                                                  | The DoD is executable                                                                     |
@@ -128,10 +128,10 @@ That's the cascade twist that makes this a concept, not a clone.
 
 ## Cross-cutting rules (every tranche)
 
-1. **Tokens only.** No raw colors/sizes in landing.css — `--cascade-*` custom properties
+1. **Tokens only.** No raw colors/sizes in landing.css — `--cascivo-*` custom properties
    exclusively. No new fonts. v5 design language (6px controls, hairlines, quiet shadows)
    binds every new section.
-2. **Dogfood or justify.** UI on the page is `@cascade-ui/react`/`charts`/`render` components;
+2. **Dogfood or justify.** UI on the page is `@cascivo/react`/`charts`/`render` components;
    bare HTML only for layout scaffolding and the useState twin. If a needed pattern has no
    cascade component, note it in the tranche output as a component-gap finding (input for a
    future factory backlog entry) — don't hand-roll a lookalike.
@@ -147,11 +147,11 @@ no-preference)`; JS-driven cycling (hero/theme carousel) checks
    `pnpm exec vp check --fix` → `git diff --exit-code`. Lint baseline 10 warnings — don't add
    an 11th.
 6. **CLAUDE.md hook rules**: landing is an app — signals preferred (`useSignal` from
-   `@cascade-ui/core`), and the ONLY sanctioned hook exception is the useState twin (decision
+   `@cascivo/core`), and the ONLY sanctioned hook exception is the useState twin (decision
    9).
 7. **Branch**: `feature/v7-landing` off `main` (after v6 merges) or off the current feature
    branch if not — record which in the first commit message.
-8. **Eyeball every change**: `pnpm --filter @cascade-ui/landing dev`, check light AND dark at
+8. **Eyeball every change**: `pnpm --filter @cascivo/landing dev`, check light AND dark at
    1440 and 390 widths before each commit. T5 formalizes this with screenshots; T1–T4 still
    look.
 
@@ -160,12 +160,12 @@ no-preference)`; JS-driven cycling (hero/theme carousel) checks
 1. **ShellHeader in a marketing context**: built for apps — verify it accepts plain `<a href>`
    nav items and a right-slot custom child (theme switcher). If its nav model fights marketing
    use, compose Header from primitives (still cascade components) instead — note the gap.
-2. **AppShell in the console**: AppShell imports `@cascade-ui/storage` and manages viewport
+2. **AppShell in the console**: AppShell imports `@cascivo/storage` and manages viewport
    layout — full-viewport behavior inside a scrolling marketing page may fight. The console
    may need a _framed_ composition (SideNav + header inside a Card-like bordered container)
    rather than literal AppShell. Tranche 2 decides after reading AppShell's CSS; either is
    acceptable, the frame must look like an app window.
-3. **Charts bundle weight**: `@cascade-ui/charts` has an 80KB gz budget — importing 3 chart
+3. **Charts bundle weight**: `@cascivo/charts` has an 80KB gz budget — importing 3 chart
    types is fine, importing the barrel may pull all 16. Import per-chart entry points if the
    package exposes them (re-verify `packages/charts/package.json#exports`); otherwise measure
    landing JS before/after and keep total page JS < 120KB gz (budget asserted in T5).
