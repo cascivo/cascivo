@@ -1,5 +1,13 @@
 import type { ComponentChildren } from 'preact'
 import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import {
+  buildContract,
+  findCssLiteralViolations,
+  findJsxPropViolations,
+  type Contract,
+  type LiteralFinding,
+  type PropFinding,
+} from '@cascade-ui/cli/audit-ai'
 
 // ---------------------------------------------------------------------------
 // Artifact shapes (subset of the generated JSON we render).
@@ -76,6 +84,14 @@ interface CatalogFile {
   tokens: CatalogToken[]
 }
 
+interface RegistryItem {
+  meta?: { name: string; props?: { name: string; type?: string; required?: boolean }[] }
+}
+
+interface RegistryV2 {
+  items: RegistryItem[]
+}
+
 // ---------------------------------------------------------------------------
 // Shared cell styles (kept inline to match the docs' token-driven convention).
 // ---------------------------------------------------------------------------
@@ -107,6 +123,48 @@ const cardStyle = {
   padding: 'var(--cascade-space-4)',
 }
 
+const DIRTY_SNIPPET = `/* CSS: hardcoded values */
+.hero {
+  color: oklch(0.623 0.214 250);
+  padding: 2rem;
+}
+
+/* TSX: unknown prop */
+import { Button } from '@cascade-ui/react'
+export function Hero() {
+  return <Button frobnicate variant="primary">Save</Button>
+}`
+
+/** Split a mixed CSS+TSX blob into its CSS and TSX line ranges. The TSX portion
+ *  starts at the first import / JSX-ish line; everything before is CSS. */
+function splitSnippet(source: string): { css: string; tsx: string } {
+  const lines = source.split('\n')
+  const tsxStart = lines.findIndex((l) => /^\s*import\b/.test(l))
+  if (tsxStart === -1) return { css: source, tsx: '' }
+  return {
+    css: lines.slice(0, tsxStart).join('\n'),
+    tsx: lines.slice(tsxStart).join('\n'),
+  }
+}
+
+/** Apply the safe, unambiguous literal→token rewrite to a CSS source. Mirrors
+ *  the CLI `audit --ai --fix` behaviour: only single-match (error) findings are
+ *  rewritten to `var(--token)`; ambiguous (info) matches are left untouched. */
+function applyCssFix(css: string, contract: Contract): string {
+  const findings = findCssLiteralViolations(css, 'snippet.css', contract).filter(
+    (f) => f.level === 'error' && f.suggestedToken,
+  )
+  if (findings.length === 0) return css
+  const lines = css.split('\n')
+  for (const f of findings) {
+    const idx = f.line - 1
+    const line = lines[idx]
+    if (line === undefined) continue
+    lines[idx] = line.replace(f.value, `var(${f.suggestedToken})`)
+  }
+  return lines.join('\n')
+}
+
 export function ContextExplorerPage() {
   useSignals()
 
@@ -116,6 +174,7 @@ export function ContextExplorerPage() {
   const boundaries = useSignal<BoundariesFile | null>(null)
   const specs = useSignal<SpecsFile | null>(null)
   const catalog = useSignal<CatalogFile | null>(null)
+  const registry = useSignal<RegistryV2 | null>(null)
   const sizes = useSignal<{ context: number; catalog: number } | null>(null)
 
   // Intent browser selection.
@@ -124,21 +183,30 @@ export function ContextExplorerPage() {
   const layerFilter = useSignal<string>('all')
   const groupFilter = useSignal<string>('all')
 
-  // --- Fetch all four artifacts. ---
+  // Audit demo.
+  const auditInput = useSignal<string>(DIRTY_SNIPPET)
+  const cssFindings = useSignal<LiteralFinding[]>([])
+  const propFindings = useSignal<PropFinding[]>([])
+  const showFix = useSignal<boolean>(false)
+  const debounced = useSignal<string>(DIRTY_SNIPPET)
+
+  // --- Fetch all four artifacts + the registry prop index. ---
   useSignalEffect(() => {
     Promise.all([
       fetch('/context.json').then((r) => bodyOrThrow<ContextFile>(r, 'context.json')),
       fetch('/boundaries.json').then((r) => bodyOrThrow<BoundariesFile>(r, 'boundaries.json')),
       fetch('/specs.json').then((r) => bodyOrThrow<SpecsFile>(r, 'specs.json')),
       fetch('/tokens.catalog.json').then((r) => bodyOrThrow<CatalogFile>(r, 'tokens.catalog.json')),
+      fetch('/r/registry.json').then((r) => bodyOrThrow<RegistryV2>(r, 'registry.json')),
       sizeOf('/context.json'),
       sizeOf('/tokens.catalog.json'),
     ])
-      .then(([ctx, bnd, spc, cat, ctxSize, catSize]) => {
+      .then(([ctx, bnd, spc, cat, reg, ctxSize, catSize]) => {
         context.value = ctx
         boundaries.value = bnd
         specs.value = spc
         catalog.value = cat
+        registry.value = reg
         sizes.value = { context: ctxSize, catalog: catSize }
         selected.value = ctx.components[0]?.name ?? ''
         loading.value = false
@@ -147,6 +215,33 @@ export function ContextExplorerPage() {
         error.value = err instanceof Error ? err.message : 'Failed to load context'
         loading.value = false
       })
+  })
+
+  // --- Debounce the audit textarea. ---
+  useSignalEffect(() => {
+    const value = auditInput.value
+    const handle = setTimeout(() => {
+      debounced.value = value
+    }, 250)
+    return () => clearTimeout(handle)
+  })
+
+  // --- Build the contract once data is in, then run the checkers. ---
+  useSignalEffect(() => {
+    const cat = catalog.value
+    const ctx = context.value
+    const reg = registry.value
+    if (!cat || !ctx || !reg) return
+
+    const contract = buildContract({
+      catalog: { tokens: cat.tokens },
+      context: { components: ctx.components },
+      registry: { components: reg.items },
+    })
+
+    const { css, tsx } = splitSnippet(debounced.value)
+    cssFindings.value = findCssLiteralViolations(css, 'snippet.css', contract)
+    propFindings.value = findJsxPropViolations(tsx, 'snippet.tsx', contract)
   })
 
   if (loading.value) {
@@ -189,7 +284,8 @@ export function ContextExplorerPage() {
         <h1>Context Explorer</h1>
         <p class="doc-lede">
           Browse the machine-readable context cascade ships to agents — component intent, design
-          boundaries, specs, and the full token catalog.
+          boundaries, specs, and the full token catalog — then run the same audit checkers the CLI
+          uses, live in your browser.
         </p>
       </header>
 
@@ -475,8 +571,138 @@ export function ContextExplorerPage() {
           {sizes.value?.catalog ?? '?'}KB (tokens.catalog.json) — fetched on demand, not bundled.
         </p>
       </section>
+
+      {/* ---------------- Audit --ai demo ---------------- */}
+      <section class="doc-section" style={sectionGap}>
+        <h2>
+          Try <code>audit --ai</code> in your browser
+        </h2>
+        <p style={muted}>
+          Edit the snippet — the same checkers the CLI runs validate it against the live contract.
+          Only literal values that exactly match a token are flagged; arbitrary brand values are
+          allowed.
+        </p>
+
+        <textarea
+          value={auditInput.value}
+          onInput={(e) => {
+            auditInput.value = (e.target as HTMLTextAreaElement).value
+          }}
+          spellcheck={false}
+          rows={12}
+          style={{
+            ...controlStyle,
+            width: '100%',
+            fontFamily: 'var(--cascade-font-mono, monospace)',
+            fontSize: 'var(--cascade-text-sm)',
+            resize: 'vertical',
+          }}
+        />
+
+        <div style={{ marginBlockStart: 'var(--cascade-space-4)' }}>
+          <h3>Findings ({cssFindings.value.length + propFindings.value.length})</h3>
+          {cssFindings.value.length + propFindings.value.length === 0 ? (
+            <p style={{ color: 'var(--cascade-color-success)' }}>No violations found.</p>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table
+                style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  fontSize: 'var(--cascade-text-sm)',
+                }}
+              >
+                <thead>
+                  <tr
+                    style={{
+                      textAlign: 'left',
+                      borderBlockEnd: '1px solid var(--cascade-color-border)',
+                    }}
+                  >
+                    <Th>File:line</Th>
+                    <Th>Level</Th>
+                    <Th>Rule</Th>
+                    <Th>Detail</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cssFindings.value.map((f, i) => (
+                    <FindingRow
+                      key={`css-${i}`}
+                      file={f.file}
+                      line={f.line}
+                      level={f.level}
+                      rule={f.rule}
+                      detail={`${f.property}: ${f.value}${
+                        f.suggestedToken
+                          ? ` → var(${f.suggestedToken})`
+                          : f.allMatches
+                            ? ` (matches: ${f.allMatches.join(', ')})`
+                            : ''
+                      }`}
+                    />
+                  ))}
+                  {propFindings.value.map((f, i) => (
+                    <FindingRow
+                      key={`prop-${i}`}
+                      file={f.file}
+                      line={f.line}
+                      level={f.level}
+                      rule={f.rule}
+                      detail={f.message}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        <div style={{ marginBlockStart: 'var(--cascade-space-4)' }}>
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--cascade-space-2)',
+              cursor: 'pointer',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={showFix.value}
+              onChange={(e) => {
+                showFix.value = (e.target as HTMLInputElement).checked
+              }}
+            />
+            <span>Show safe literal→token fix (CSS only)</span>
+          </label>
+
+          {showFix.value && (
+            <pre
+              style={{
+                ...cardStyle,
+                marginBlockStart: 'var(--cascade-space-3)',
+                overflowX: 'auto',
+                fontSize: 'var(--cascade-text-sm)',
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              <code>{applyCssFix(splitSnippet(debounced.value).css, currentContract())}</code>
+            </pre>
+          )}
+        </div>
+      </section>
     </article>
   )
+
+  // Build the contract on demand for the fix preview (data is guaranteed loaded here).
+  function currentContract(): Contract {
+    return buildContract({
+      catalog: { tokens: catalog.value?.tokens ?? [] },
+      context: { components: context.value?.components ?? [] },
+      registry: { components: registry.value?.items ?? [] },
+    })
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -529,6 +755,46 @@ function Th({ children }: { children: ComponentChildren }) {
 
 function Td({ children }: { children: ComponentChildren }) {
   return <td style={{ padding: 'var(--cascade-space-2)', verticalAlign: 'top' }}>{children}</td>
+}
+
+function FindingRow({
+  file,
+  line,
+  level,
+  rule,
+  detail,
+}: {
+  file: string
+  line: number
+  level: 'error' | 'info'
+  rule: string
+  detail: string
+}) {
+  return (
+    <tr style={{ borderBlockEnd: '1px solid var(--cascade-color-border-subtle)' }}>
+      <Td>
+        <code>
+          {file}:{line}
+        </code>
+      </Td>
+      <Td>
+        <span
+          style={{
+            color:
+              level === 'error'
+                ? 'var(--cascade-color-destructive)'
+                : 'var(--cascade-color-text-subtle)',
+          }}
+        >
+          {level}
+        </span>
+      </Td>
+      <Td>
+        <code>{rule}</code>
+      </Td>
+      <Td>{detail}</Td>
+    </tr>
+  )
 }
 
 // ---------------------------------------------------------------------------
