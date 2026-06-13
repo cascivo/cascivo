@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -62,7 +62,7 @@
     "examples": [
       {
         "title": "Default",
-        "code": "<CopyButton value=\"npx cascade add button\" />"
+        "code": "<CopyButton value=\"npx cascivo add button\" />"
       },
       {
         "title": "Small",

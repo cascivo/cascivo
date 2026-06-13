@@ -5,7 +5,7 @@ Radar / spider chart with polar grid rings, spokes, and multi-series polygon ove
 ## Install
 
 ```bash
-npx cascade add chart/radar
+npx cascivo add chart/radar
 ```
 
 ## Category

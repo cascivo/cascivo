@@ -5,7 +5,7 @@ Shows determinate or indeterminate progress of a task
 ## Install
 
 ```bash
-npx cascade add progress-bar
+npx cascivo add progress-bar
 ```
 
 ## Category

@@ -5,7 +5,7 @@ A centered content page with a breadcrumb navigation and page header.
 ## Install
 
 ```bash
-npx cascade add block/page-with-breadcrumb
+npx cascivo add block/page-with-breadcrumb
 ```
 
 ## Category

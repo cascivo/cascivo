@@ -49,7 +49,7 @@ describe('env expansion', () => {
   it('fails when required env var is unset', async () => {
     const { resolveItemUrl } = await import('./resolve.js')
     const config = {
-      registry: 'https://cascade-ui.dev/r',
+      registry: 'https://cascivo.com/r',
       outputDir: 'src/components/ui',
       theme: 'light' as const,
       registries: {

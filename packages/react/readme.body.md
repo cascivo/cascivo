@@ -1,7 +1,7 @@
-Every cascade component, prebuilt as a normal installable library — for users
+Every cascivo component, prebuilt as a normal installable library — for users
 who just want to **use** the design system without owning the source. If you
 want to customize component internals, use the copy-paste flow instead
-(`npx cascade add <component>`); both consume the same tokens and themes, and
+(`npx cascivo add <component>`); both consume the same tokens and themes, and
 can coexist in one project.
 
 ## Use

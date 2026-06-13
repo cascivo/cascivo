@@ -37,7 +37,7 @@ const CLAIMS: Claim[] = [
     number: 16,
     title: 'AI output is audited',
     substance:
-      "cascade audit --ai flags hard-coded color/spacing values (with the suggested token), invented props on known components, missing required props, and raw strings where i18n is expected — in the user's own codebase, not just in this repo. The same checkers run live in the browser on the Context Explorer page.",
+      "cascivo audit --ai flags hard-coded color/spacing values (with the suggested token), invented props on known components, missing required props, and raw strings where i18n is expected — in the user's own codebase, not just in this repo. The same checkers run live in the browser on the Context Explorer page.",
     receipt: { label: 'Try audit --ai live in Context Explorer', href: '/context' },
   },
   {
@@ -54,7 +54,7 @@ const CLAIMS: Claim[] = [
       'Button, Badge, and Alert now use CSS @function token math and if(style()) variant selection, each guarded by an @supports fallback. The system works pixel-identically in Safari and Firefox; the CSS-native path is a Chrome-leading progressive enhancement. A fallback-audit script asserts no @function or if() usage is ever shipped without a guarded fallback.',
     receipt: {
       label: 'functions.css — CSS @function helpers',
-      href: 'https://github.com/urbanisierung/cascade-ui/blob/main/packages/tokens/src/functions.css',
+      href: 'https://github.com/urbanisierung/cascivo/blob/main/packages/tokens/src/functions.css',
     },
   },
   {
@@ -102,7 +102,7 @@ const CLAIMS: Claim[] = [
     number: 24,
     title: 'AT-tested + legally mapped',
     substance:
-      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) documents tested components, OS/AT combos, and any known gaps. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascade artifact that satisfies it. Both are browsable in the docs accessibility section.',
+      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) documents tested components, OS/AT combos, and any known gaps. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
     receipt: { label: 'Accessibility statement', href: '/accessibility' },
   },
 ]
@@ -111,10 +111,10 @@ export function WhyCascadePage() {
   return (
     <article class="doc-page">
       <header class="doc-head">
-        <div class="doc-eyebrow">Why cascade</div>
+        <div class="doc-eyebrow">Why cascivo</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–24 are v13–v14's additions to the cascade pitch. Each
+          "AI-first" is easy to say. Claims 14–24 are v13–v14's additions to the cascivo pitch. Each
           one links its receipt — the artifact that proves it shipped.
         </p>
       </header>

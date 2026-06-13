@@ -5,7 +5,7 @@ Displays a key metric with optional delta, trend direction and help text
 ## Install
 
 ```bash
-npx cascade add stat
+npx cascivo add stat
 ```
 
 ## Category

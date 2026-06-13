@@ -5,7 +5,7 @@ Kebab icon button revealing a menu of row-level actions
 ## Install
 
 ```bash
-npx cascade add overflow-menu
+npx cascivo add overflow-menu
 ```
 
 ## Category

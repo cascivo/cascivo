@@ -8,7 +8,7 @@ const meta: Meta<typeof AiChat> = {
   args: {
     messages: [
       { id: '1', role: 'user', content: 'How do I add a Button?' },
-      { id: '2', role: 'assistant', content: 'Run: npx cascade add button' },
+      { id: '2', role: 'assistant', content: 'Run: npx cascivo add button' },
     ],
     onSend: () => {},
   },

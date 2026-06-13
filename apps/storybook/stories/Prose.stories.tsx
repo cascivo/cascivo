@@ -14,7 +14,7 @@ export const Article: Story = {
       <h1>Getting started</h1>
       <p>
         cascade components are <a href="#owned">owned code</a> — run{' '}
-        <code>npx cascade add button</code> and the source is yours.
+        <code>npx cascivo add button</code> and the source is yours.
       </p>
       <h2>Principles</h2>
       <ul>

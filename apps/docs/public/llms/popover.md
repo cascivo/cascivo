@@ -5,7 +5,7 @@ Anchored floating panel built on CSS Anchor Positioning + Popover API
 ## Install
 
 ```bash
-npx cascade add popover
+npx cascivo add popover
 ```
 
 ## Category

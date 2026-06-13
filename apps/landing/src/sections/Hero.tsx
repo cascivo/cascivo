@@ -22,7 +22,7 @@ export function Hero() {
         Native to the web. <span className="hero-title-accent">Fluent in agent.</span>
       </h1>
       <p className="hero-sub">
-        cascade is a React design system built on modern platform CSS and fine-grained signals —
+        cascivo is a React design system built on modern platform CSS and fine-grained signals —
         with a machine-readable manifest behind every component. Copy the code. Own it. Let your
         agent build with it.
       </p>
@@ -46,13 +46,13 @@ export function Hero() {
         <Button
           variant="secondary"
           onClick={() => {
-            window.location.href = 'https://github.com/urbanisierung/cascade-ui'
+            window.location.href = 'https://github.com/urbanisierung/cascivo'
           }}
         >
           GitHub
         </Button>
       </div>
-      <CopyCommand command="npx cascade add button" />
+      <CopyCommand command="npx cascivo add button" />
     </section>
   )
 }

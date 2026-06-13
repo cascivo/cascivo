@@ -5,7 +5,7 @@ Fixed-height spacing block using design token steps.
 ## Install
 
 ```bash
-npx cascade add layout/spacer
+npx cascivo add layout/spacer
 ```
 
 ## Category

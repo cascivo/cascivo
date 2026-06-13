@@ -47,7 +47,7 @@ export const meta: ComponentMeta = {
   meta="MIT licensed. Built with care."
   groups={[
     { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },
-    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' }, { label: 'Changelog', href: '/changelog' }] },
+    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' }, { label: 'Changelog', href: '/changelog' }] },
     { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },
   ]}
 />`,

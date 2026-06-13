@@ -9,8 +9,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/accordion/accordion.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/accordion/accordion.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "collapse", "disclosure"],
@@ -114,8 +114,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/alert/alert.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/alert/alert.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["notification", "message", "feedback"],
@@ -247,8 +247,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/alert-dialog/alert-dialog.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "dialog", "confirm", "destructive"],
@@ -347,8 +347,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar/avatar.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar/avatar.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["user", "profile", "image"],
@@ -462,8 +462,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/badge/badge.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["label", "status", "tag"],
@@ -568,8 +568,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blockquote/blockquote.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blockquote/blockquote.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "quote", "blockquote", "citation"],
@@ -666,8 +666,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/breadcrumb/breadcrumb.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["breadcrumb", "navigation", "hierarchy"],
@@ -778,8 +778,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button/button.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button/button.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["action", "form", "interactive"],
@@ -909,8 +909,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/card/card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["container", "layout", "surface"],
@@ -1001,8 +1001,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox/checkbox.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "toggle", "boolean"],
@@ -1132,8 +1132,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["checkbox", "card", "selectable", "form"],
@@ -1256,8 +1256,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code/code.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code/code.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "code", "inline", "mono"],
@@ -1293,7 +1293,7 @@
         "examples": [
           {
             "title": "Default",
-            "code": "<Code>npx cascade add button</Code>"
+            "code": "<Code>npx cascivo add button</Code>"
           },
           {
             "title": "In a sentence",
@@ -1358,8 +1358,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/combobox/combobox.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["select", "combobox", "dropdown", "filter", "search"],
@@ -1538,8 +1538,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/command-menu/command-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
@@ -1706,8 +1706,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/context-menu/context-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "context", "right-click"],
@@ -1787,8 +1787,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["clipboard", "copy", "button", "snippet"],
@@ -1839,7 +1839,7 @@
         "examples": [
           {
             "title": "Default",
-            "code": "<CopyButton value=\"npx cascade add button\" />"
+            "code": "<CopyButton value=\"npx cascivo add button\" />"
           },
           {
             "title": "Small",
@@ -1908,8 +1908,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/data-table/data-table.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
@@ -2126,8 +2126,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-picker/date-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "calendar", "picker", "input", "form"],
@@ -2312,8 +2312,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dropdown/dropdown.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "actions"],
@@ -2441,8 +2441,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/editable/editable.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/editable/editable.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "editable", "inline", "input", "text"],
@@ -2571,8 +2571,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/empty-state/empty-state.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
@@ -2691,8 +2691,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/file-uploader/file-uploader.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
@@ -2868,8 +2868,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/form/form.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/form/form.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "validation", "signals", "input"],
@@ -2973,8 +2973,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header/header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header/header.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
@@ -3034,15 +3034,15 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<Header brand=\"cascade\" links={[{ label: 'Docs', href: '/docs' }]} />"
+            "code": "<Header brand=\"cascivo\" links={[{ label: 'Docs', href: '/docs' }]} />"
           },
           {
             "title": "With actions",
-            "code": "<Header brand=\"cascade\" actions={<Button size=\"sm\">Sign in</Button>} />"
+            "code": "<Header brand=\"cascivo\" actions={<Button size=\"sm\">Sign in</Button>} />"
           },
           {
             "title": "Sticky",
-            "code": "<Header sticky brand=\"cascade\" links={links} />"
+            "code": "<Header sticky brand=\"cascivo\" links={links} />"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3094,8 +3094,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header-panel/header-panel.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
@@ -3216,8 +3216,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/heading/heading.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/heading/heading.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "heading", "title"],
@@ -3331,8 +3331,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/hover-card/hover-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/hover-card/hover-card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "hover", "preview", "floating"],
@@ -3418,8 +3418,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input/input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input/input.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "text", "input"],
@@ -3558,8 +3558,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input-group/input-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input-group/input-group.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "input", "addon", "group", "layout"],
@@ -3675,8 +3675,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/kbd/kbd.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/kbd/kbd.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["keyboard", "shortcut", "hotkey"],
@@ -3770,8 +3770,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/link/link.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["link", "anchor", "navigation"],
@@ -3888,8 +3888,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/list/list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/list/list.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "list", "ul", "ol"],
@@ -3991,8 +3991,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu/menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu/menu.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "dropdown", "floating"],
@@ -4084,8 +4084,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/modal/modal.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/modal/modal.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "dialog", "popup"],
@@ -4215,8 +4215,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/multi-select/multi-select.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "select", "multi", "input", "popover"],
@@ -4350,8 +4350,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/number-input/number-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/number-input/number-input.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
@@ -4536,8 +4536,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/otp-input/otp-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/otp-input/otp-input.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "otp", "code", "input", "verification"],
@@ -4656,8 +4656,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/overflow-menu/overflow-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
@@ -4796,8 +4796,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/pagination/pagination.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/pagination/pagination.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["pagination", "navigation", "table", "data", "pages"],
@@ -4942,8 +4942,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/password-input/password-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/password-input/password-input.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "password", "input", "security"],
@@ -5076,8 +5076,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/popover/popover.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/popover/popover.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "floating", "anchor", "popover"],
@@ -5162,8 +5162,8 @@
       "category": "feedback",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-bar/progress-bar.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["progress", "loading", "status", "feedback"],
@@ -5296,8 +5296,8 @@
       "category": "feedback",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-circle/progress-circle.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["progress", "loading", "circle", "feedback"],
@@ -5416,8 +5416,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-indicator/progress-indicator.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-indicator/progress-indicator.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-indicator/progress-indicator.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
@@ -5532,8 +5532,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/prose/prose.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/prose/prose.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "prose", "content", "markdown", "article"],
@@ -5570,7 +5570,7 @@
         "examples": [
           {
             "title": "Authored content",
-            "code": "<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>"
+            "code": "<Prose><h2>Install</h2><p>Run <code>npx cascivo init</code>.</p></Prose>"
           },
           {
             "title": "Rendered markdown",
@@ -5631,8 +5631,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio/radio.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio/radio.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "choice", "group"],
@@ -5747,8 +5747,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio-card/radio-card.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["radio", "card", "selectable", "form"],
@@ -5862,8 +5862,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/rating-group/rating-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/rating-group/rating-group.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "rating", "stars", "input", "feedback"],
@@ -5990,8 +5990,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/search/search.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["search", "input", "filter", "form"],
@@ -6159,8 +6159,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/segmented-control/segmented-control.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "toggle", "group", "segmented", "input"],
@@ -6279,8 +6279,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/select/select.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/select/select.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "dropdown", "menu"],
@@ -6415,8 +6415,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/separator/separator.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/separator/separator.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["divider", "rule", "layout"],
@@ -6507,8 +6507,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/sheet/sheet.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "drawer", "panel", "slide"],
@@ -6588,8 +6588,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/shell-header/shell-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
@@ -6668,7 +6668,7 @@
         "examples": [
           {
             "title": "Console header",
-            "code": "<ShellHeader\n  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+            "code": "<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
             "description": "Brand with prefix, dropdown nav, global icon action"
           }
         ],
@@ -6731,8 +6731,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/side-nav/side-nav.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
@@ -6894,8 +6894,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/skeleton/skeleton.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["loading", "placeholder", "shimmer"],
@@ -7013,8 +7013,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/skip-nav/skip-nav.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/skip-nav/skip-nav.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
@@ -7123,8 +7123,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/slider/slider.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/slider/slider.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "range", "input"],
@@ -7254,8 +7254,8 @@
       "category": "feedback",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/spinner/spinner.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/spinner/spinner.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["loading", "progress", "feedback"],
@@ -7352,8 +7352,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stat/stat.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["stat", "kpi", "metric", "number"],
@@ -7475,8 +7475,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/status/status.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/status/status.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["status", "indicator", "dot", "badge"],
@@ -7589,8 +7589,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/switcher/switcher.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
@@ -7689,8 +7689,8 @@
       "category": "navigation",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tabs/tabs.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tabs/tabs.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "tabs", "sections"],
@@ -7793,8 +7793,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tag/tag.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tag/tag.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["chip", "label", "filter", "category"],
@@ -7923,8 +7923,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tags-input/tags-input.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "tags", "chips", "multi", "input"],
@@ -8047,8 +8047,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/text/text.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["typography", "text", "paragraph", "body"],
@@ -8170,8 +8170,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/textarea/textarea.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/textarea/textarea.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "text", "multiline"],
@@ -8300,8 +8300,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/time-picker/time-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["time", "input", "form"],
@@ -8453,8 +8453,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toast/toast.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toast/toast.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "notification", "feedback"],
@@ -8568,8 +8568,8 @@
       "category": "inputs",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggle/toggle.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggle/toggle.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["switch", "form", "boolean"],
@@ -8694,8 +8694,8 @@
       "category": "overlay",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tooltip/tooltip.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "hint", "popover"],
@@ -8815,8 +8815,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/visually-hidden/visually-hidden.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/visually-hidden/visually-hidden.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
@@ -8905,8 +8905,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
       "tags": ["layout", "shell", "sidebar", "navigation"],
@@ -9017,8 +9017,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auth-layout/auth-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "auth", "login", "page"],
@@ -9100,8 +9100,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auto-grid/auto-grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "responsive"],
@@ -9172,8 +9172,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/center/center.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/center/center.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "center", "wrapper"],
@@ -9241,8 +9241,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/columns/columns.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/columns/columns.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "columns"],
@@ -9316,8 +9316,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "dashboard", "page"],
@@ -9397,8 +9397,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/grid/grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "columns"],
@@ -9478,8 +9478,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/masonry/masonry.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "masonry", "gallery"],
@@ -9555,8 +9555,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/page-header/page-header.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/page-header/page-header.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "header", "page"],
@@ -9656,8 +9656,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/section/section.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/section/section.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "section", "page"],
@@ -9733,8 +9733,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/settings-layout/settings-layout.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "settings", "page"],
@@ -9808,8 +9808,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/spacer/spacer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "spacer", "spacing"],
@@ -9872,8 +9872,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/split-view/split-view.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "split", "resizable", "pane"],
@@ -9966,8 +9966,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/stack/stack.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/stack/stack.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["layout", "flex", "stack", "spacing"],
@@ -10064,7 +10064,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx"
       ],
       "dependencies": [
         "@cascivo/react",
@@ -10144,7 +10144,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
       ],
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
       "tags": ["block", "dashboard", "charts", "kpi"],
@@ -10205,7 +10205,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
       "tags": ["block", "dashboard", "empty-state", "page"],
@@ -10268,7 +10268,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/auth-layout"],
       "tags": ["block", "login", "auth", "form", "page"],
@@ -10331,7 +10331,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/stack"],
       "tags": ["block", "notifications", "alerts"],
@@ -10400,7 +10400,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
@@ -10456,7 +10456,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/settings-layout"],
       "tags": ["block", "settings", "form", "page"],
@@ -10519,7 +10519,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/app-shell"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
@@ -10580,7 +10580,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
       ],
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "stats", "kpi", "cards"],
@@ -10648,7 +10648,7 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
       ],
       "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
       "tags": ["block", "users", "table", "page"],
@@ -12639,8 +12639,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/cta/cta.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/cta/cta.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "cta", "marketing"],
@@ -12735,8 +12735,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "features", "grid"],
@@ -12840,8 +12840,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/hero/hero.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/hero/hero.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "hero", "marketing"],
@@ -12960,8 +12960,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "gallery", "masonry"],
@@ -13063,8 +13063,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
       ],
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "footer", "navigation"],
@@ -13113,7 +13113,7 @@
         "examples": [
           {
             "title": "Site footer",
-            "code": "<PageFooter\n  brand=\"Cascade\"\n  meta=\"MIT licensed. Built with care.\"\n  groups={[\n    { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },\n    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' }, { label: 'Changelog', href: '/changelog' }] },\n    { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },\n  ]}\n/>",
+            "code": "<PageFooter\n  brand=\"Cascade\"\n  meta=\"MIT licensed. Built with care.\"\n  groups={[\n    { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },\n    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' }, { label: 'Changelog', href: '/changelog' }] },\n    { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },\n  ]}\n/>",
             "description": "Three-column footer with brand and license meta"
           }
         ],
@@ -13148,8 +13148,8 @@
       "category": "layout",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.tsx",
-        "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
       "tags": ["section", "stats", "kpi", "charts"],

@@ -22,7 +22,7 @@ const groups = [
     title: 'Developers',
     links: [
       { label: 'Docs', href: '/docs' },
-      { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
+      { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
       { label: 'Changelog', href: '/changelog' },
     ],
   },

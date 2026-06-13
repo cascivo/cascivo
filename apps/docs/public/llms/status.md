@@ -5,7 +5,7 @@ Colored dot with a label communicating the state of a system or entity
 ## Install
 
 ```bash
-npx cascade add status
+npx cascivo add status
 ```
 
 ## Category

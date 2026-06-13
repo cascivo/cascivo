@@ -51,7 +51,7 @@ Renders a native <code> element so assistive tech can expose the content as code
 ### Default
 
 ```jsx
-<Code>npx cascade add button</Code>
+<Code>npx cascivo add button</Code>
 ```
 
 ### In a sentence

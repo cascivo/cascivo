@@ -40,7 +40,7 @@ export const meta: ComponentMeta = {
     keyboard: ['Enter', 'Space'],
   },
   examples: [
-    { title: 'Default', code: '<CopyButton value="npx cascade add button" />' },
+    { title: 'Default', code: '<CopyButton value="npx cascivo add button" />' },
     { title: 'Small', code: '<CopyButton value="pnpm install" size="sm" />' },
     {
       title: 'Custom labels',

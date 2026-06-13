@@ -59,7 +59,7 @@ function makeFetch(
   overrides: Record<string, unknown> = {},
 ): (url: string, init?: RequestInit) => Promise<Response> {
   const defaults: Record<string, unknown> = {
-    'https://cascade-ui.dev/r/registries.json': DIRECTORY,
+    'https://cascivo.com/r/registries.json': DIRECTORY,
     'https://acme.dev/r/registry.json': REMOTE_REGISTRY,
     ...overrides,
   }

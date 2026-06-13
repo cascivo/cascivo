@@ -12,7 +12,7 @@ export function A11yCta() {
         <Button
           onClick={() => {
             window.location.href =
-              'https://github.com/urbanisierung/cascade-ui/blob/main/apps/bench/METHODOLOGY.md'
+              'https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md'
           }}
         >
           Read the methodology

@@ -2,8 +2,8 @@
 
 # @cascivo/registry-starter
 
-> Starter template for publishing a third-party cascade component registry
+> Starter template for publishing a third-party cascivo component registry
 
 ---
 
-[Docs](https://urbanisierung.github.io/cascade-ui/) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascade-ui/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascade-ui/blob/main/registry.json) · MIT
+[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

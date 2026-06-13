@@ -5,7 +5,7 @@ Console application header: brand with prefix, dropdown nav menus, global icon a
 ## Install
 
 ```bash
-npx cascade add shell-header
+npx cascivo add shell-header
 ```
 
 ## Category
@@ -37,7 +37,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```tsx
 <ShellHeader
-  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}
+  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },

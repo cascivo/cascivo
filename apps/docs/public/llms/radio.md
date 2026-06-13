@@ -5,7 +5,7 @@ Single choice from a set, grouped with RadioGroup
 ## Install
 
 ```bash
-npx cascade add radio
+npx cascivo add radio
 ```
 
 ## Category

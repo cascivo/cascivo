@@ -47,15 +47,15 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic',
-      code: "<Header brand=\"cascade\" links={[{ label: 'Docs', href: '/docs' }]} />",
+      code: "<Header brand=\"cascivo\" links={[{ label: 'Docs', href: '/docs' }]} />",
     },
     {
       title: 'With actions',
-      code: '<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />',
+      code: '<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />',
     },
     {
       title: 'Sticky',
-      code: '<Header sticky brand="cascade" links={links} />',
+      code: '<Header sticky brand="cascivo" links={links} />',
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],

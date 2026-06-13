@@ -5,7 +5,7 @@ Indeterminate loading indicator
 ## Install
 
 ```bash
-npx cascade add spinner
+npx cascivo add spinner
 ```
 
 ## Category

@@ -5,7 +5,7 @@ Selectable card backed by a native radio input. Use RadioCardGroup for single-se
 ## Install
 
 ```bash
-npx cascade add radio-card
+npx cascivo add radio-card
 ```
 
 ## Category

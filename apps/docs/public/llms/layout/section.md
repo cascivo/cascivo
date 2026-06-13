@@ -5,7 +5,7 @@ Page-section shell with block padding, centered inner width, and stack gap.
 ## Install
 
 ```bash
-npx cascade add layout/section
+npx cascivo add layout/section
 ```
 
 ## Category

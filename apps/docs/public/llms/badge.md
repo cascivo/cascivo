@@ -5,7 +5,7 @@ Small status label or category indicator
 ## Install
 
 ```bash
-npx cascade add badge
+npx cascivo add badge
 ```
 
 ## Category

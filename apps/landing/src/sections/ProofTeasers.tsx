@@ -11,7 +11,7 @@ const BUNDLE_SERIES = bundle
         id: 'gzip',
         label: 'Total gzip (KB)',
         data: [
-          { x: 'cascade', y: bundle.apps.cascade.totalGzKb },
+          { x: 'cascivo', y: bundle.apps.cascade.totalGzKb },
           { x: 'shadcn', y: bundle.apps.shadcn.totalGzKb },
           { x: 'carbon', y: bundle.apps.carbon.totalGzKb },
         ],
@@ -61,7 +61,7 @@ export function ProofTeasers() {
               <BarChart
                 plain
                 orientation="horizontal"
-                title="Total gzip size: cascade vs shadcn vs Carbon"
+                title="Total gzip size: cascivo vs shadcn vs Carbon"
                 series={BUNDLE_SERIES}
                 x={(d) => d.x}
                 y={(d) => d.y}

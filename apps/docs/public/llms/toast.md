@@ -5,7 +5,7 @@ Transient notification surfaced via the useToast hook
 ## Install
 
 ```bash
-npx cascade add toast
+npx cascivo add toast
 ```
 
 ## Category

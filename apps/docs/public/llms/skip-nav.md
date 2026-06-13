@@ -5,7 +5,7 @@ Skip link that jumps keyboard users past the navigation to the main content
 ## Install
 
 ```bash
-npx cascade add skip-nav
+npx cascivo add skip-nav
 ```
 
 ## Category

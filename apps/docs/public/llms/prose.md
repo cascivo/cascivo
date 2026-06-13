@@ -5,7 +5,7 @@ Wrapper that styles raw descendant HTML — headings, lists, code, quotes, table
 ## Install
 
 ```bash
-npx cascade add prose
+npx cascivo add prose
 ```
 
 ## Category
@@ -24,7 +24,7 @@ _No props._
 <Prose>
   <h2>Install</h2>
   <p>
-    Run <code>npx cascade init</code>.
+    Run <code>npx cascivo init</code>.
   </p>
 </Prose>
 ```

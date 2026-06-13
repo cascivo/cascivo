@@ -5,7 +5,7 @@ Time-series or numeric line chart with multi-series support, hover tooltip, and 
 ## Install
 
 ```bash
-npx cascade add chart/line-chart
+npx cascivo add chart/line-chart
 ```
 
 ## Category

@@ -57,8 +57,8 @@ export function DirectoryPage() {
         <div class="doc-eyebrow">Registry</div>
         <h1>Directory</h1>
         <p class="doc-lede">
-          Third-party and first-party component registries compatible with the cascade CLI. Install
-          components from any registry with <code>npx cascade add @ns/&lt;component&gt;</code>.
+          Third-party and first-party component registries compatible with the cascivo CLI. Install
+          components from any registry with <code>npx cascivo add @ns/&lt;component&gt;</code>.
         </p>
       </header>
 
@@ -128,7 +128,7 @@ export function DirectoryPage() {
 }
 
 function RegistryCard({ entry }: { entry: RegistryEntry }) {
-  const snippet = `npx cascade add ${entry.namespace}/<component>`
+  const snippet = `npx cascivo add ${entry.namespace}/<component>`
 
   return (
     <Card>

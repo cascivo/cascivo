@@ -5,7 +5,7 @@ Multi-line text input with optional label, hint, and error state
 ## Install
 
 ```bash
-npx cascade add textarea
+npx cascivo add textarea
 ```
 
 ## Category

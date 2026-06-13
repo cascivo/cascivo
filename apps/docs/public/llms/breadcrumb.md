@@ -5,7 +5,7 @@ Shows the current page location within a navigation hierarchy
 ## Install
 
 ```bash
-npx cascade add breadcrumb
+npx cascivo add breadcrumb
 ```
 
 ## Category

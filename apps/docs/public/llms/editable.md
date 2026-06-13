@@ -5,7 +5,7 @@ Inline click-to-edit text field
 ## Install
 
 ```bash
-npx cascade add editable
+npx cascivo add editable
 ```
 
 ## Category

@@ -430,7 +430,7 @@ importers:
 
   apps/examples/registry-starter:
     devDependencies:
-      cascade:
+      '@cascivo/cli':
         specifier: workspace:^
         version: link:../../../packages/cli
 

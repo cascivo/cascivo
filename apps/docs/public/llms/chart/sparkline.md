@@ -5,7 +5,7 @@ Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 ## Install
 
 ```bash
-npx cascade add chart/sparkline
+npx cascivo add chart/sparkline
 ```
 
 ## Category

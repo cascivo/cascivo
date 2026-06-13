@@ -10,14 +10,14 @@ export function AccessibilityHero() {
       </h1>
       <p className="proof-hero-sub">
         Every number on this page is generated at build time — from the component manifests in
-        registry.json and from the bench suite&apos;s axe runs against cascade, shadcn/ui, and
+        registry.json and from the bench suite&apos;s axe runs against cascivo, shadcn/ui, and
         Carbon. Nothing below is hand-written.
       </p>
       <div className="proof-hero-stats">
         {AXE && (
           <>
             <Stat
-              label="cascade — axe violations"
+              label="cascivo — axe violations"
               value={AXE.cascade.violations}
               helpText="WCAG 2.1 AA · four app states"
             />

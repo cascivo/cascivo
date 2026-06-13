@@ -5,7 +5,7 @@ Authentication login page with email and password form.
 ## Install
 
 ```bash
-npx cascade add block/login-page
+npx cascivo add block/login-page
 ```
 
 ## Category

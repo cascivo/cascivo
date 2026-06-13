@@ -5,7 +5,7 @@ Filterable single-select with an animated custom listbox, built on the dropdown 
 ## Install
 
 ```bash
-npx cascade add combobox
+npx cascivo add combobox
 ```
 
 ## Category

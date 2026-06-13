@@ -5,7 +5,7 @@ Drag-and-drop file upload zone with file list and status indicators.
 ## Install
 
 ```bash
-npx cascade add file-uploader
+npx cascivo add file-uploader
 ```
 
 ## Category

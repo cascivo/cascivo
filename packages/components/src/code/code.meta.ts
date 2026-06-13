@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     keyboard: [],
   },
   examples: [
-    { title: 'Default', code: '<Code>npx cascade add button</Code>' },
+    { title: 'Default', code: '<Code>npx cascivo add button</Code>' },
     {
       title: 'In a sentence',
       code: '<Text>Run <Code>vp check</Code> before committing.</Text>',

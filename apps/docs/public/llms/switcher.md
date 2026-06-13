@@ -5,7 +5,7 @@ App/product switcher list — lives inside HeaderPanel, renders links with activ
 ## Install
 
 ```bash
-npx cascade add switcher
+npx cascivo add switcher
 ```
 
 ## Category

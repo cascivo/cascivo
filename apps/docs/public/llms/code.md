@@ -5,7 +5,7 @@ Inline code span for identifiers, commands, and short snippets
 ## Install
 
 ```bash
-npx cascade add code
+npx cascivo add code
 ```
 
 ## Category
@@ -28,7 +28,7 @@ npx cascade add code
 ### Default
 
 ```tsx
-<Code>npx cascade add button</Code>
+<Code>npx cascivo add button</Code>
 ```
 
 ### In a sentence

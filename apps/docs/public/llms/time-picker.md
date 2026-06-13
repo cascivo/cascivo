@@ -5,7 +5,7 @@ Native time input wrapper with label, hint, error, and size variants
 ## Install
 
 ```bash
-npx cascade add time-picker
+npx cascivo add time-picker
 ```
 
 ## Category

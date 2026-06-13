@@ -16,12 +16,12 @@ export const VERSION = '0.0.0'
 
 export type { CascadeConfig, ThemeName } from './utils/config.js'
 
-const HELP = `cascade ${VERSION} — the CSS-native, signal-driven, AI-first design system
+const HELP = `cascivo ${VERSION} — the CSS-native, signal-driven, AI-first design system
 
-Usage: cascade <command> [options]
+Usage: cascivo <command> [options]
 
 Commands:
-  init                     Set up cascade in the current project
+  init                     Set up cascivo in the current project
   add <component...>       Add one or more components to your project
   list [--installed]       List available components
   update [component]       Update installed components (--check: list outdated)
@@ -30,10 +30,10 @@ Commands:
   theme add <name>         Install a theme (light | dark | warm)
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
-  audit --ai <paths...>    Audit AI-generated code against the cascade contract
-  registry build           Build a static registry from a cascade-registry.json file
+  audit --ai <paths...>    Audit AI-generated code against the cascivo contract
+  registry build           Build a static registry from a cascivo-registry.json file
 
-Run "cascade <command> --help" for details.`
+Run "cascivo <command> --help" for details.`
 
 export async function run(args: string[]): Promise<void> {
   const [command, ...rest] = args

@@ -5,7 +5,7 @@ Right-click context menu anchored at pointer coordinates via CSS custom properti
 ## Install
 
 ```bash
-npx cascade add context-menu
+npx cascivo add context-menu
 ```
 
 ## Category

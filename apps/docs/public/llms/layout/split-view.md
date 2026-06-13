@@ -5,7 +5,7 @@ Resizable two-pane split layout with keyboard and pointer drag support.
 ## Install
 
 ```bash
-npx cascade add layout/split-view
+npx cascivo add layout/split-view
 ```
 
 ## Category

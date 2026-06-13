@@ -5,7 +5,7 @@ Star rating input with accessible radio group pattern
 ## Install
 
 ```bash
-npx cascade add rating-group
+npx cascivo add rating-group
 ```
 
 ## Category

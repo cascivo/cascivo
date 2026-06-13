@@ -5,7 +5,7 @@ Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/unit
 ## Install
 
 ```bash
-npx cascade add input-group
+npx cascivo add input-group
 ```
 
 ## Category

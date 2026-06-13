@@ -5,7 +5,7 @@ Password input with reveal toggle and optional strength meter
 ## Install
 
 ```bash
-npx cascade add password-input
+npx cascivo add password-input
 ```
 
 ## Category

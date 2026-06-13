@@ -5,7 +5,7 @@ On/off switch built as an accessible button
 ## Install
 
 ```bash
-npx cascade add toggle
+npx cascivo add toggle
 ```
 
 ## Category

@@ -5,7 +5,7 @@ Vertically stacked, collapsible content sections
 ## Install
 
 ```bash
-npx cascade add accordion
+npx cascivo add accordion
 ```
 
 ## Category

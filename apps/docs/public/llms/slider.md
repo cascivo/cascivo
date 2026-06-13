@@ -5,7 +5,7 @@ Range input for selecting a value within bounds
 ## Install
 
 ```bash
-npx cascade add slider
+npx cascivo add slider
 ```
 
 ## Category

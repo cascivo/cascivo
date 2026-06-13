@@ -5,7 +5,7 @@ Bubble chart mapping x, y, and size dimensions; radius is area-proportional via 
 ## Install
 
 ```bash
-npx cascade add chart/bubble-chart
+npx cascivo add chart/bubble-chart
 ```
 
 ## Category

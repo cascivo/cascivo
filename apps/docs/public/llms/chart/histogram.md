@@ -5,7 +5,7 @@ Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 ## Install
 
 ```bash
-npx cascade add chart/histogram
+npx cascivo add chart/histogram
 ```
 
 ## Category

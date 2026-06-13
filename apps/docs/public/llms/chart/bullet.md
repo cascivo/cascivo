@@ -5,7 +5,7 @@ Bullet chart with background range bands, measure bar, and target tick.
 ## Install
 
 ```bash
-npx cascade add chart/bullet
+npx cascivo add chart/bullet
 ```
 
 ## Category

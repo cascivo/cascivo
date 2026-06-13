@@ -5,7 +5,7 @@ Contextual label shown on hover or focus
 ## Install
 
 ```bash
-npx cascade add tooltip
+npx cascivo add tooltip
 ```
 
 ## Category

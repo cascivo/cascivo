@@ -18,8 +18,8 @@ describe('applyEnvOverrides', () => {
 
   it('overrides outputDir and registry from env vars', () => {
     const config = applyEnvOverrides(DEFAULT_CONFIG, {
-      CASCADE_OUTPUT_DIR: 'app/ui',
-      CASCADE_REGISTRY: 'https://example.com/r.json',
+      CASCIVO_OUTPUT_DIR: 'app/ui',
+      CASCIVO_REGISTRY: 'https://example.com/r.json',
     })
     expect(config.outputDir).toBe('app/ui')
     expect(config.registry).toBe('https://example.com/r.json')
@@ -93,9 +93,9 @@ describe('loadConfig', () => {
     expect(await loadConfig(dir)).toEqual(DEFAULT_CONFIG)
   })
 
-  it('loads and merges a cascade.config.ts default export', async () => {
+  it('loads and merges a cascivo.config.ts default export', async () => {
     await writeFile(
-      join(dir, 'cascade.config.ts'),
+      join(dir, 'cascivo.config.ts'),
       `export default { outputDir: 'lib/ui', theme: 'warm' }\n`,
     )
     const config = await loadConfig(dir)

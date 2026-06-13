@@ -5,7 +5,7 @@ Container for grouping related content
 ## Install
 
 ```bash
-npx cascade add card
+npx cascivo add card
 ```
 
 ## Category

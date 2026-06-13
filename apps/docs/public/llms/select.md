@@ -5,7 +5,7 @@ Native select menu styled to match the design system
 ## Install
 
 ```bash
-npx cascade add select
+npx cascivo add select
 ```
 
 ## Category

@@ -5,11 +5,11 @@ const VALID_DIR = {
   schemaVersion: 1,
   registries: [
     {
-      namespace: '@cascade',
-      name: 'cascade (first-party)',
-      description: 'The official cascade registry.',
-      homepage: 'https://cascade-ui.dev',
-      registryUrl: 'https://cascade-ui.dev/r/{name}.json',
+      namespace: '@cascivo',
+      name: 'cascivo (first-party)',
+      description: 'The official cascivo registry.',
+      homepage: 'https://cascivo.com',
+      registryUrl: 'https://cascivo.com/r/{name}.json',
       tags: ['official'],
       verified: true,
     },
@@ -56,10 +56,10 @@ describe('validateDirectory', () => {
     const result = validateDirectory({
       schemaVersion: 1,
       registries: [
-        { ...VALID_DIR.registries[0], namespace: '@cascade' },
+        { ...VALID_DIR.registries[0], namespace: '@cascivo' },
         {
           ...VALID_DIR.registries[0],
-          namespace: '@cascde',
+          namespace: '@cascvo',
           name: 'other',
           registryUrl: 'https://other.dev/r/{name}.json',
         },

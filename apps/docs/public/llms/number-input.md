@@ -5,7 +5,7 @@ Numeric input with stepper buttons, clamping, precision, and locale formatting
 ## Install
 
 ```bash
-npx cascade add number-input
+npx cascivo add number-input
 ```
 
 ## Category

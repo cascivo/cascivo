@@ -5,8 +5,8 @@ import { ShellHeader } from './shell-header'
 
 describe('ShellHeader', () => {
   it('renders brand prefix and name', () => {
-    render(<ShellHeader brand={{ prefix: 'cascade', name: 'Console', href: '/' }} />)
-    const brand = screen.getByRole('link', { name: 'cascade Console' })
+    render(<ShellHeader brand={{ prefix: 'cascivo', name: 'Console', href: '/' }} />)
+    const brand = screen.getByRole('link', { name: 'cascivo Console' })
     expect(brand).toHaveAttribute('href', '/')
   })
 

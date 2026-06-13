@@ -47,13 +47,13 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 
 /**
  * Resolve the registry.json location. Checks, in order: an explicit path, the
- * `CASCADE_REGISTRY_PATH` env var, a copy bundled next to the built server
+ * `CASCIVO_REGISTRY_PATH` env var, a copy bundled next to the built server
  * (published package), and the monorepo root (dev).
  */
 export function resolveRegistryPath(explicit?: string): string {
   const candidates = [
     explicit,
-    process.env.CASCADE_REGISTRY_PATH,
+    process.env.CASCIVO_REGISTRY_PATH,
     join(HERE, 'registry.json'),
     join(HERE, '..', '..', '..', 'registry.json'),
     join(HERE, '..', '..', 'registry.json'),
@@ -106,7 +106,7 @@ export interface RegistryDirectoryEntry {
   homepage?: string
 }
 
-const DIRECTORY_URL = 'https://cascade-ui.dev/r/registries.json'
+const DIRECTORY_URL = 'https://cascivo.com/r/registries.json'
 const FETCH_TIMEOUT_MS = 15_000
 const MAX_BODY_BYTES = 1_048_576 // 1 MB
 

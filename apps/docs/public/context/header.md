@@ -56,19 +56,19 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 ### Basic
 
 ```jsx
-<Header brand="cascade" links={[{ label: 'Docs', href: '/docs' }]} />
+<Header brand="cascivo" links={[{ label: 'Docs', href: '/docs' }]} />
 ```
 
 ### With actions
 
 ```jsx
-<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />
+<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />
 ```
 
 ### Sticky
 
 ```jsx
-<Header sticky brand="cascade" links={links} />
+<Header sticky brand="cascivo" links={links} />
 ```
 
 ## Boundaries

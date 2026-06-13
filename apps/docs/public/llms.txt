@@ -5,10 +5,10 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 
 ## Key resources
 
-- Registry JSON: https://cascade-ui.dev/registry.json
-- View schema: https://cascade-ui.dev/view.v1.json
+- Registry JSON: https://cascivo.com/registry.json
+- View schema: https://cascivo.com/view.v1.json
 - MCP server: npx @cascivo/mcp
-- llms.txt: https://cascade-ui.dev/llms.txt
+- llms.txt: https://cascivo.com/llms.txt
 
 ## MCP tools
 
@@ -22,9 +22,9 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 
 The context layer provides machine-readable WHY — intent, boundaries, and closed-set tokens.
 
-- Context bundle: https://cascade-ui.dev/context.json
-- Token catalog (closed set): https://cascade-ui.dev/tokens.catalog.json
-- Per-component context: https://cascade-ui.dev/context/<name>.md
+- Context bundle: https://cascivo.com/context.json
+- Token catalog (closed set): https://cascivo.com/tokens.catalog.json
+- Per-component context: https://cascivo.com/context/<name>.md
 
 ## How to select a component
 
@@ -39,7 +39,7 @@ New MCP tools:
 - `get_context` — full context for one component (intent + boundaries + tokens)
 - `select_component` — deterministic ranking of components by need description
 
-## Component authoring rules (for cascade:extend)
+## Component authoring rules (for cascivo:extend)
 
 - Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`
 - No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`

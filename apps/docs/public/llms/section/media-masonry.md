@@ -5,7 +5,7 @@ Masonry gallery section — native CSS masonry where supported, multi-column fal
 ## Install
 
 ```bash
-npx cascade add section/media-masonry
+npx cascivo add section/media-masonry
 ```
 
 ## Category

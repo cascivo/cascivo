@@ -5,7 +5,7 @@ Placeholder for views that have no data to display
 ## Install
 
 ```bash
-npx cascade add empty-state
+npx cascivo add empty-state
 ```
 
 ## Category

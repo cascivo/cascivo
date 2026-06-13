@@ -191,7 +191,7 @@ export const layoutPreviews: Record<string, () => JSX.Element> = {
             title: 'Developers',
             links: [
               { label: 'Docs', href: '/docs' },
-              { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
+              { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
             ],
           },
           {

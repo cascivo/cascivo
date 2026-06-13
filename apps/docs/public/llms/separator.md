@@ -5,7 +5,7 @@ Visual or semantic divider between content
 ## Install
 
 ```bash
-npx cascade add separator
+npx cascivo add separator
 ```
 
 ## Category

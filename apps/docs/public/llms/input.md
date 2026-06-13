@@ -5,7 +5,7 @@ Text input field with optional label, hint, and error state
 ## Install
 
 ```bash
-npx cascade add input
+npx cascivo add input
 ```
 
 ## Category

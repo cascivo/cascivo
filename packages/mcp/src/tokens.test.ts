@@ -72,7 +72,7 @@ describe('loadTokenCatalog', () => {
     // Since local files exist in the monorepo, we test the error throwing logic directly
     await expect(
       (async () => {
-        const res = await makeFailFetch(404)('https://cascade-ui.dev/tokens.catalog.json')
+        const res = await makeFailFetch(404)('https://cascivo.com/tokens.catalog.json')
         if (!res.ok) throw new Error(`Failed to fetch token catalog: ${res.status}`)
       })(),
     ).rejects.toThrow('Failed to fetch token catalog: 404')

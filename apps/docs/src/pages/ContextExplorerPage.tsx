@@ -283,7 +283,7 @@ export function ContextExplorerPage() {
         <div class="doc-eyebrow">For AI agents</div>
         <h1>Context Explorer</h1>
         <p class="doc-lede">
-          Browse the machine-readable context cascade ships to agents — component intent, design
+          Browse the machine-readable context cascivo ships to agents — component intent, design
           boundaries, specs, and the full token catalog — then run the same audit checkers the CLI
           uses, live in your browser.
         </p>

@@ -96,7 +96,7 @@ function componentMarkdown(entry: RegistryEntry): string {
   lines.push('## Install')
   lines.push('')
   lines.push('```bash')
-  lines.push(`npx cascade add ${entry.name}`)
+  lines.push(`npx cascivo add ${entry.name}`)
   lines.push('```')
   lines.push('')
 
@@ -184,7 +184,7 @@ function componentMarkdown(entry: RegistryEntry): string {
 }
 
 function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
-  const BASE_URL = 'https://cascade-ui.dev'
+  const BASE_URL = 'https://cascivo.com'
   const lines: string[] = []
 
   lines.push('# cascade — The CSS-native, signal-driven, AI-first React design system')
@@ -232,7 +232,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `get_context` — full context for one component (intent + boundaries + tokens)')
   lines.push('- `select_component` — deterministic ranking of components by need description')
   lines.push('')
-  lines.push('## Component authoring rules (for cascade:extend)')
+  lines.push('## Component authoring rules (for cascivo:extend)')
   lines.push('')
   lines.push('- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`')
   lines.push('- No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`')

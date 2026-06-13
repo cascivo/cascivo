@@ -439,14 +439,14 @@ export const demos: Record<string, () => JSX.Element> = {
   accordion: () => (
     <Accordion type="single" defaultValue="what">
       <AccordionItem value="what">
-        <AccordionTrigger>What is cascade?</AccordionTrigger>
+        <AccordionTrigger>What is cascivo?</AccordionTrigger>
         <AccordionContent>
           A CSS-native, signal-driven, AI-first React design system.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="how">
         <AccordionTrigger>How do I install it?</AccordionTrigger>
-        <AccordionContent>Run npx cascade add &lt;component&gt; to copy it in.</AccordionContent>
+        <AccordionContent>Run npx cascivo add &lt;component&gt; to copy it in.</AccordionContent>
       </AccordionItem>
     </Accordion>
   ),
@@ -664,7 +664,7 @@ export const demos: Record<string, () => JSX.Element> = {
       </HoverCardTrigger>
       <HoverCardContent>
         <div>
-          <strong>cascade-ui</strong>
+          <strong>cascivo</strong>
           <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem' }}>
             CSS-native, signal-driven, AI-first React design system.
           </p>
@@ -775,7 +775,7 @@ export const demos: Record<string, () => JSX.Element> = {
   // Use ShellHeader for console apps; use Header for landing pages.
   'shell-header': () => (
     <ShellHeader
-      brand={{ prefix: 'cascade', name: 'Console', href: '#' }}
+      brand={{ prefix: 'cascivo', name: 'Console', href: '#' }}
       nav={[
         { label: 'Overview', href: '#', active: true },
         {

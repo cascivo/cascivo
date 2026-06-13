@@ -37,7 +37,7 @@ export async function update(
   }
 
   if (!name) {
-    console.error('Usage: cascade update <component>')
+    console.error('Usage: cascivo update <component>')
     return
   }
 
@@ -47,7 +47,7 @@ export async function update(
   const registry = await fetchRegistry(config.registry)
   const entry = findComponent(registry, name)
   if (!entry) {
-    console.error(`Component "${name}" not found in registry. Run "cascade list".`)
+    console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
     return
   }
 
@@ -214,7 +214,7 @@ async function twoWayUpdate(
 async function updateCheck(config: CascadeConfig): Promise<void> {
   const lock = await readLock()
   if (!lock || Object.keys(lock.items).length === 0) {
-    console.log('No installed components found in cascade.lock.')
+    console.log('No installed components found in cascivo.lock.')
     return
   }
 

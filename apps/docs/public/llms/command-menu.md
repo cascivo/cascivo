@@ -5,7 +5,7 @@ Cmd+K command palette with fuzzy search over grouped commands
 ## Install
 
 ```bash
-npx cascade add command-menu
+npx cascivo add command-menu
 ```
 
 ## Category

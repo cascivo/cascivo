@@ -5,7 +5,7 @@ Controls for navigating paged data sets, with page size selection
 ## Install
 
 ```bash
-npx cascade add pagination
+npx cascivo add pagination
 ```
 
 ## Category

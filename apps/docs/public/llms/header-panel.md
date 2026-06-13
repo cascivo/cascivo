@@ -5,7 +5,7 @@ Non-modal panel anchored below the shell header at the inline-end edge — hosts
 ## Install
 
 ```bash
-npx cascade add header-panel
+npx cascivo add header-panel
 ```
 
 ## Category

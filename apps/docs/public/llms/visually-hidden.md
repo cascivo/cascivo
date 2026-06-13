@@ -5,7 +5,7 @@ Hides content visually while keeping it available to screen readers
 ## Install
 
 ```bash
-npx cascade add visually-hidden
+npx cascivo add visually-hidden
 ```
 
 ## Category

@@ -5,7 +5,7 @@ Typed signal-based form store (createForm/useForm) with sync/async validation an
 ## Install
 
 ```bash
-npx cascade add form
+npx cascivo add form
 ```
 
 ## Category

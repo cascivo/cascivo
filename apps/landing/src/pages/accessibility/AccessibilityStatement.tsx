@@ -4,23 +4,23 @@ const WCAG22_COUNT = A11Y_ROWS.filter((r) => r.wcag === '2.2-AA').length
 const APG_COUNT = A11Y_ROWS.filter((r) => r.apgPattern !== null).length
 const TOTAL = A11Y_ROWS.length
 
-const LEGAL_ROWS: { responsibility: string; cascade: boolean; integrator: boolean }[] = [
-  { responsibility: 'Component-level WCAG conformance', cascade: true, integrator: false },
-  { responsibility: 'APG pattern keyboard interactions', cascade: true, integrator: false },
+const LEGAL_ROWS: { responsibility: string; cascivo: boolean; integrator: boolean }[] = [
+  { responsibility: 'Component-level WCAG conformance', cascivo: true, integrator: false },
+  { responsibility: 'APG pattern keyboard interactions', cascivo: true, integrator: false },
   {
     responsibility: 'Media features (reduced-motion, forced-colors)',
-    cascade: true,
+    cascivo: true,
     integrator: false,
   },
-  { responsibility: 'Representative AT testing', cascade: true, integrator: false },
+  { responsibility: 'Representative AT testing', cascivo: true, integrator: false },
   {
     responsibility: 'Accessible content (alt text, labels, headings)',
-    cascade: false,
+    cascivo: false,
     integrator: true,
   },
-  { responsibility: 'End-to-end product conformance', cascade: false, integrator: true },
-  { responsibility: 'VPAT / GPAT for the final product', cascade: false, integrator: true },
-  { responsibility: 'Third-party component conformance', cascade: false, integrator: true },
+  { responsibility: 'End-to-end product conformance', cascivo: false, integrator: true },
+  { responsibility: 'VPAT / GPAT for the final product', cascivo: false, integrator: true },
+  { responsibility: 'Third-party component conformance', cascivo: false, integrator: true },
 ]
 
 export function AccessibilityStatement() {
@@ -93,7 +93,7 @@ export function AccessibilityStatement() {
         normative thresholds. Full mapping in <code>docs/specs/legal-mapping.md</code>.
       </p>
       <table className="a11y-stmt-table">
-        <caption>Responsibility split — cascade vs. integrator</caption>
+        <caption>Responsibility split — cascivo vs. integrator</caption>
         <thead>
           <tr>
             <th scope="col">Responsibility</th>
@@ -105,7 +105,7 @@ export function AccessibilityStatement() {
           {LEGAL_ROWS.map((row) => (
             <tr key={row.responsibility}>
               <td>{row.responsibility}</td>
-              <td>{row.cascade ? '✓' : ''}</td>
+              <td>{row.cascivo ? '✓' : ''}</td>
               <td>{row.integrator ? '✓' : ''}</td>
             </tr>
           ))}
@@ -117,7 +117,7 @@ export function AccessibilityStatement() {
       <ul className="a11y-stmt-limits">
         <li>Conformance is at the component level, not the application level.</li>
         <li>AT testing is representative (12 components × 4 stacks), not exhaustive.</li>
-        <li>No third-party VPAT has been issued for cascade.</li>
+        <li>No third-party VPAT has been issued for cascivo.</li>
         <li>
           Legal accessibility compliance of the final product is the integrator&apos;s
           responsibility.

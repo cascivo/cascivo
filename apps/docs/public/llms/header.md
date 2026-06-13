@@ -5,7 +5,7 @@ App top bar with brand, primary navigation links, and an actions slot
 ## Install
 
 ```bash
-npx cascade add header
+npx cascivo add header
 ```
 
 ## Category
@@ -31,19 +31,19 @@ npx cascade add header
 ### Basic
 
 ```tsx
-<Header brand="cascade" links={[{ label: 'Docs', href: '/docs' }]} />
+<Header brand="cascivo" links={[{ label: 'Docs', href: '/docs' }]} />
 ```
 
 ### With actions
 
 ```tsx
-<Header brand="cascade" actions={<Button size="sm">Sign in</Button>} />
+<Header brand="cascivo" actions={<Button size="sm">Sign in</Button>} />
 ```
 
 ### Sticky
 
 ```tsx
-<Header sticky brand="cascade" links={links} />
+<Header sticky brand="cascivo" links={links} />
 ```
 
 ## Design tokens

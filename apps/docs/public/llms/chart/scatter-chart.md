@@ -5,7 +5,7 @@ Scatter plot with variable point radius, multi-series, and hover tooltip.
 ## Install
 
 ```bash
-npx cascade add chart/scatter-chart
+npx cascivo add chart/scatter-chart
 ```
 
 ## Category

@@ -132,11 +132,11 @@ export async function resolveItemUrl(
 
       // Built-in @cascade namespace fallback
       if (ns === '@cascade') {
-        return { url: `https://cascade-ui.dev/r/${name}.json` }
+        return { url: `https://cascivo.com/r/${name}.json` }
       }
 
       throw new Error(
-        `Unknown namespace "${ns}". Add it to registries in cascade.config.ts or check the directory at cascade-ui.dev`,
+        `Unknown namespace "${ns}". Add it to registries in cascivo.config.ts or check the directory at cascivo.com`,
       )
     }
   }

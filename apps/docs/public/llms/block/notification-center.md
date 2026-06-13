@@ -5,7 +5,7 @@ A list of notification alerts with a mark-all-read action.
 ## Install
 
 ```bash
-npx cascade add block/notification-center
+npx cascivo add block/notification-center
 ```
 
 ## Category

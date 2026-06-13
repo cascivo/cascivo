@@ -5,7 +5,7 @@ Call-to-action band — quiet hairline-bordered section with title, description,
 ## Install
 
 ```bash
-npx cascade add section/cta
+npx cascivo add section/cta
 ```
 
 ## Category

@@ -5,7 +5,7 @@ Two-column settings page layout with a fixed-width menu and fluid content area.
 ## Install
 
 ```bash
-npx cascade add layout/settings-layout
+npx cascivo add layout/settings-layout
 ```
 
 ## Category

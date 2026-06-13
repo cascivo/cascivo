@@ -4,7 +4,7 @@ import { StreamingText, AiLabel, Terminal, AiChat } from '@cascivo/ai'
 const MCP_SETUP = `// .claude/settings.json
 {
   "mcpServers": {
-    "cascade": {
+    "cascivo": {
       "command": "npx",
       "args": ["@cascivo/mcp"]
     }
@@ -25,7 +25,7 @@ const VIEW_QUICKSTART = `// view.json — describe a page in JSON, generate owne
 }
 
 // Generate owned code:
-// npx cascade generate view.json --out src/pages/Dashboard.tsx`
+// npx cascivo generate view.json --out src/pages/Dashboard.tsx`
 
 export function AiPage() {
   return (
@@ -34,15 +34,15 @@ export function AiPage() {
         <div class="doc-eyebrow">For AI agents</div>
         <h1>Machine-readable endpoints</h1>
         <p class="doc-lede">
-          cascade is built AI-first. Every component ships a machine-readable manifest. The MCP
+          cascivo is built AI-first. Every component ships a machine-readable manifest. The MCP
           server, llms.txt, and registry.json give agents everything needed to add, generate, and
-          validate cascade usage without hallucination.
+          validate cascivo usage without hallucination.
         </p>
       </header>
 
       <section class="doc-section">
         <h2>MCP server setup</h2>
-        <p>Add the cascade MCP server to your Claude Code (or any MCP-compatible agent) config:</p>
+        <p>Add the cascivo MCP server to your Claude Code (or any MCP-compatible agent) config:</p>
         <CodeBlock code={MCP_SETUP} lang="bash" />
         <p>Available MCP tools:</p>
         <ul>
@@ -97,7 +97,7 @@ export function AiPage() {
             <a href="/view.v1.json">
               <code>/view.v1.json</code>
             </a>{' '}
-            — JSON Schema for cascade view configs
+            — JSON Schema for cascivo view configs
           </li>
         </ul>
       </section>
@@ -105,26 +105,23 @@ export function AiPage() {
       <section class="doc-section">
         <h2>Claude Code skills</h2>
         <p>
-          Install the cascade skills from the{' '}
-          <a href="https://github.com/urbanisierung/cascade-ui/tree/main/skills">
-            skills/ directory
-          </a>
-          :
+          Install the cascivo skills from the{' '}
+          <a href="https://github.com/urbanisierung/cascivo/tree/main/skills">skills/ directory</a>:
         </p>
         <ul>
           <li>
-            <code>cascade:add</code> — add components, resolve fuzzy names, verify imports compile
+            <code>cascivo:add</code> — add components, resolve fuzzy names, verify imports compile
           </li>
           <li>
-            <code>cascade:design-page</code> — natural language → scaffold_view → validate →
+            <code>cascivo:design-page</code> — natural language → scaffold_view → validate →
             generate
           </li>
           <li>
-            <code>cascade:create-theme</code> — brand colors → semantic token overrides → WCAG AA
+            <code>cascivo:create-theme</code> — brand colors → semantic token overrides → WCAG AA
             check
           </li>
           <li>
-            <code>cascade:extend</code> — scaffold a new component following cascade authoring rules
+            <code>cascivo:extend</code> — scaffold a new component following cascivo authoring rules
           </li>
         </ul>
       </section>
@@ -137,7 +134,7 @@ export function AiPage() {
 
         <h3>StreamingText</h3>
         <p>Animates text character-by-character, mimicking token-by-token LLM output.</p>
-        <StreamingText text="Hello, I am cascade — the AI-first design system." speed={3} />
+        <StreamingText text="Hello, I am cascivo — the AI-first design system." speed={3} />
 
         <h3>AiLabel</h3>
         <p>Status badge for AI operations.</p>
@@ -151,7 +148,7 @@ export function AiPage() {
         <p>Animated terminal output for showing CLI commands.</p>
         <Terminal
           lines={[
-            { text: 'npx cascade add button', prefix: '$', type: 'command' },
+            { text: 'npx cascivo add button', prefix: '$', type: 'command' },
             { text: '✓ Button added to src/components/Button.tsx', type: 'output' },
             { text: '✓ Done in 0.12s', type: 'output' },
           ]}
@@ -164,7 +161,7 @@ export function AiPage() {
           <AiChat
             messages={[
               { id: '1', role: 'user', content: 'How do I add a Button component?' },
-              { id: '2', role: 'assistant', content: 'Run: npx cascade add button' },
+              { id: '2', role: 'assistant', content: 'Run: npx cascivo add button' },
             ]}
             onSend={() => {}}
           />

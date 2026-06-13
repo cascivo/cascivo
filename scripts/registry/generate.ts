@@ -19,7 +19,7 @@ const REPO_ROOT = join(HERE, '..', '..')
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 
 const BASE_URL = (
-  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main'
+  process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/urbanisierung/cascivo/main'
 ).replace(/\/+$/, '')
 
 type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section'

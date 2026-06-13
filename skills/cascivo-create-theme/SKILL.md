@@ -1,13 +1,13 @@
 ---
-name: cascade:create-theme
-description: Create a custom cascade theme from brand colors. Generates a @layer cascade.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
+name: cascivo:create-theme
+description: Create a custom cascivo theme from brand colors. Generates a @layer cascade.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
 ---
 
-# cascade:create-theme
+# cascivo:create-theme
 
 ## When to use
 
-The user wants to apply their brand colors to cascade components (e.g. "use our primary color #1a73e8 and surface color #f8f9fa").
+The user wants to apply their brand colors to cascivo components (e.g. "use our primary color #1a73e8 and surface color #f8f9fa").
 
 ## Procedure
 
@@ -24,10 +24,10 @@ Ask the user for:
 
 ### 2. Read the semantic token list
 
-Do NOT use a hardcoded token list. Read the cascade token documentation at runtime:
+Do NOT use a hardcoded token list. Read the cascivo token documentation at runtime:
 
 - Read `packages/tokens/src/index.css` from the local repo, or
-- Fetch `https://cascade-ui.dev/llms.txt` which lists the semantic tokens.
+- Fetch `https://cascivo.com/llms.txt` which lists the semantic tokens.
 
 Identify the semantic tokens to override (these are `--cascivo-color-*` custom properties at the semantic layer, not primitive tokens).
 
@@ -36,7 +36,7 @@ Identify the semantic tokens to override (these are `--cascivo-color-*` custom p
 Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 
 ```css
-/* Brand theme for cascade */
+/* Brand theme for cascivo */
 @layer cascade.theme {
   [data-theme='<name>'] {
     --cascivo-color-accent: <primary-hex>;
@@ -53,7 +53,7 @@ Derive hover/subtle variants by lightening/darkening the base colors by ~10%.
 
 ### 4. Verify WCAG AA contrast
 
-Run the contrast-check script from the cascade repo:
+Run the contrast-check script from the cascivo repo:
 
 ```bash
 node scripts/quality/contrast-check.ts src/themes/<name>.css

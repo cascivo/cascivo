@@ -96,7 +96,7 @@ export function RelayConsole() {
         data-reveal=""
       >
         <p className="console-note">
-          The console below is live — 25+ cascade components, real markup. Switch the theme in the
+          The console below is live — 25+ cascivo components, real markup. Switch the theme in the
           header; the on-call card stays <code>data-theme=&quot;warm&quot;</code> on purpose.
         </p>
         <div className="console-frame">

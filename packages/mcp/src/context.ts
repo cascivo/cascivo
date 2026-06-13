@@ -48,7 +48,7 @@ export interface ContextBundle {
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const CONTEXT_BASE_URL = 'https://cascade-ui.dev'
+const CONTEXT_BASE_URL = 'https://cascivo.com'
 
 export async function loadContext(fetchFn?: FetchFn): Promise<ContextBundle> {
   const localPaths = [

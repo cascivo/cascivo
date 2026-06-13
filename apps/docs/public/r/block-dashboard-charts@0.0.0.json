@@ -6,7 +6,7 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
     }
   ],
   "dependencies": ["@cascivo/charts", "@cascivo/react"],

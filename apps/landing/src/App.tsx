@@ -40,14 +40,14 @@ type Route = { Page: ComponentType; title: string }
 
 const HOME: Route = {
   Page: HomePage,
-  title: 'cascade — the CSS-native, signal-driven, AI-first React design system',
+  title: 'cascivo — the CSS-native, signal-driven, AI-first React design system',
 }
 
 const ROUTES: Record<string, Route> = {
   '/': HOME,
-  '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascade' },
-  '/performance': { Page: PerformancePage, title: 'Performance — cascade' },
-  '/og': { Page: OgCard, title: 'cascade' },
+  '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascivo' },
+  '/performance': { Page: PerformancePage, title: 'Performance — cascivo' },
+  '/og': { Page: OgCard, title: 'cascivo' },
 }
 
 export function App() {

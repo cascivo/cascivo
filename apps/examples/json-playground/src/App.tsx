@@ -63,7 +63,7 @@ function App() {
         }}
       >
         <strong style={{ flex: 1, fontSize: 'var(--cascivo-text-sm)' }}>
-          cascade JSON Playground
+          cascivo JSON Playground
         </strong>
         <span
           style={{

@@ -44,7 +44,7 @@ export function OgCard() {
           maxWidth: '56rem',
         }}
       >
-        cascade — CSS-native. Signal-driven. AI-first.
+        cascivo — CSS-native. Signal-driven. AI-first.
       </p>
       <div
         style={{

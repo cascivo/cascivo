@@ -5,7 +5,7 @@ Icon button that copies a value to the clipboard with copied feedback
 ## Install
 
 ```bash
-npx cascade add copy-button
+npx cascivo add copy-button
 ```
 
 ## Category
@@ -35,7 +35,7 @@ npx cascade add copy-button
 ### Default
 
 ```tsx
-<CopyButton value="npx cascade add button" />
+<CopyButton value="npx cascivo add button" />
 ```
 
 ### Small

@@ -5,7 +5,7 @@ Two-dimensional heatmap with band scales and color-mix cell interpolation.
 ## Install
 
 ```bash
-npx cascade add chart/heatmap
+npx cascivo add chart/heatmap
 ```
 
 ## Category

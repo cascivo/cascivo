@@ -5,7 +5,7 @@ Section heading with semantic level decoupled from visual size
 ## Install
 
 ```bash
-npx cascade add heading
+npx cascivo add heading
 ```
 
 ## Category

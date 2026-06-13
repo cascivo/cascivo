@@ -5,7 +5,7 @@ Page hero section — centered or split layout with eyebrow, title, description,
 ## Install
 
 ```bash
-npx cascade add section/hero
+npx cascivo add section/hero
 ```
 
 ## Category

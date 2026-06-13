@@ -5,7 +5,7 @@ Search input with debounced search callback and clear button
 ## Install
 
 ```bash
-npx cascade add search
+npx cascivo add search
 ```
 
 ## Category

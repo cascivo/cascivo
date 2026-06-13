@@ -5,7 +5,7 @@ Slide-in panel from any edge, using popover=manual and @starting-style animation
 ## Install
 
 ```bash
-npx cascade add sheet
+npx cascivo add sheet
 ```
 
 ## Category

@@ -5,7 +5,7 @@ Combination bar + line chart on shared or dual y-axes.
 ## Install
 
 ```bash
-npx cascade add chart/combo-chart
+npx cascivo add chart/combo-chart
 ```
 
 ## Category

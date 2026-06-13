@@ -5,7 +5,7 @@ Settings page with profile form inside a two-column settings layout.
 ## Install
 
 ```bash
-npx cascade add block/settings-form-page
+npx cascivo add block/settings-form-page
 ```
 
 ## Category

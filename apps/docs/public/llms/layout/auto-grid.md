@@ -5,7 +5,7 @@ Media-query-free responsive grid — columns auto-fill based on available space.
 ## Install
 
 ```bash
-npx cascade add layout/auto-grid
+npx cascivo add layout/auto-grid
 ```
 
 ## Category

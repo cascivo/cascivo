@@ -18,7 +18,7 @@ async function promptTheme(): Promise<ThemeName> {
 }
 
 function configFileContents(theme: ThemeName): string {
-  return `import type { CascadeConfig } from 'cascade'
+  return `import type { CascadeConfig } from '@cascivo/cli'
 
 const config: CascadeConfig = {
   registry: '${DEFAULT_CONFIG.registry}',
@@ -35,13 +35,13 @@ export async function init(cwd: string = process.cwd()): Promise<void> {
 
   const theme = await promptTheme()
 
-  const configPath = join(cwd, 'cascade.config.ts')
+  const configPath = join(cwd, 'cascivo.config.ts')
   await writeFileSafe(configPath, configFileContents(theme))
 
-  console.log(`\nCreated cascade.config.ts (theme: ${theme})`)
+  console.log(`\nCreated cascivo.config.ts (theme: ${theme})`)
   console.log('Import the theme in your root CSS or entry file:')
   console.log(`  import '@cascivo/themes/${theme}.css'`)
   console.log(`Then set the theme on your root element:`)
   console.log(`  <html data-theme="${theme}">`)
-  console.log('\nAdd components with: cascade add <name>')
+  console.log('\nAdd components with: cascivo add <name>')
 }

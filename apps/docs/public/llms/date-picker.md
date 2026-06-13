@@ -5,7 +5,7 @@ An accessible date-picker with a calendar popover.
 ## Install
 
 ```bash
-npx cascade add date-picker
+npx cascivo add date-picker
 ```
 
 ## Category

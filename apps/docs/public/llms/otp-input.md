@@ -5,7 +5,7 @@ Segmented one-time code input
 ## Install
 
 ```bash
-npx cascade add otp-input
+npx cascivo add otp-input
 ```
 
 ## Category

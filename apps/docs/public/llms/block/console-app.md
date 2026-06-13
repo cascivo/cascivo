@@ -5,7 +5,7 @@ Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notif
 ## Install
 
 ```bash
-npx cascade add block/console-app
+npx cascivo add block/console-app
 ```
 
 ## Category

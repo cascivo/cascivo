@@ -4,7 +4,7 @@ import { Code } from '@cascivo/components/code'
 const meta: Meta<typeof Code> = {
   title: 'Display/Code',
   component: Code,
-  args: { children: 'npx cascade add button' },
+  args: { children: 'npx cascivo add button' },
 }
 export default meta
 type Story = StoryObj<typeof Code>

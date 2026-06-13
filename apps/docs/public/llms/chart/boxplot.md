@@ -5,7 +5,7 @@ Box-and-whisker plot with five-number summary and outlier dots per series.
 ## Install
 
 ```bash
-npx cascade add chart/boxplot
+npx cascivo add chart/boxplot
 ```
 
 ## Category

@@ -56,7 +56,7 @@ Renders a native <button> so Enter/Space, focus, and role come from the platform
 ### Default
 
 ```jsx
-<CopyButton value="npx cascade add button" />
+<CopyButton value="npx cascivo add button" />
 ```
 
 ### Small

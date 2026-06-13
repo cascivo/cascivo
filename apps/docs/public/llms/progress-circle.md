@@ -5,7 +5,7 @@ Circular determinate progress indicator rendered as an SVG arc
 ## Install
 
 ```bash
-npx cascade add progress-circle
+npx cascivo add progress-circle
 ```
 
 ## Category

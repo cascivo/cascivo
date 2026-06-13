@@ -2,12 +2,12 @@
   "name": "@cascivo/registry-starter",
   "version": "0.0.0",
   "private": true,
-  "description": "Starter template for publishing a third-party cascade component registry",
+  "description": "Starter template for publishing a third-party cascivo component registry",
   "type": "module",
   "scripts": {
-    "build": "cascade registry build --in cascade-registry.json --out public/r"
+    "build": "cascivo registry build --in cascivo-registry.json --out public/r"
   },
   "devDependencies": {
-    "cascade": "workspace:^"
+    "@cascivo/cli": "workspace:^"
   }
 }

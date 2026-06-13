@@ -5,7 +5,7 @@ Flex layout primitive for vertical or horizontal stacking with gap control.
 ## Install
 
 ```bash
-npx cascade add layout/stack
+npx cascivo add layout/stack
 ```
 
 ## Category

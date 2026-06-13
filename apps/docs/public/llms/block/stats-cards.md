@@ -5,7 +5,7 @@ Grid of KPI stat cards with trend badges.
 ## Install
 
 ```bash
-npx cascade add block/stats-cards
+npx cascivo add block/stats-cards
 ```
 
 ## Category

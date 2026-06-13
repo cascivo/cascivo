@@ -5,7 +5,7 @@ Binary toggle for forms, with indeterminate support
 ## Install
 
 ```bash
-npx cascade add checkbox
+npx cascivo add checkbox
 ```
 
 ## Category

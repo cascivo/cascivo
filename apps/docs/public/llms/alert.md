@@ -5,7 +5,7 @@ Highlights a short, important message inline
 ## Install
 
 ```bash
-npx cascade add alert
+npx cascivo add alert
 ```
 
 ## Category

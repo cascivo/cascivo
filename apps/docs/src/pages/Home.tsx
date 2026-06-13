@@ -19,8 +19,8 @@ const SKIP_PREVIEW: Set<string> = new Set([
   'tooltip',
 ])
 
-const QUICK_START = `npx cascade init
-npx cascade add button`
+const QUICK_START = `npx cascivo init
+npx cascivo add button`
 
 const USAGE = `import { Button } from './components/ui/button/button'
 
@@ -34,7 +34,7 @@ export function Home() {
   return (
     <article class="doc-page">
       <header class="doc-head">
-        <div class="doc-eyebrow">cascade ui</div>
+        <div class="doc-eyebrow">cascivo</div>
         <h1>The CSS-native, signal-driven, AI-first design system</h1>
         <p class="doc-lede">
           {components.length} owned components. Copy-paste via CLI, styled with modern CSS, driven

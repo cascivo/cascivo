@@ -5,7 +5,7 @@ Equal-width multi-column layout that collapses to single column on narrow viewpo
 ## Install
 
 ```bash
-npx cascade add layout/columns
+npx cascivo add layout/columns
 ```
 
 ## Category

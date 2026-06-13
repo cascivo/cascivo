@@ -5,7 +5,7 @@ Triggers an action or event
 ## Install
 
 ```bash
-npx cascade add button
+npx cascivo add button
 ```
 
 ## Category

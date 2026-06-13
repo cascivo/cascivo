@@ -5,7 +5,7 @@ CSS grid layout primitive with responsive column collapsing.
 ## Install
 
 ```bash
-npx cascade add layout/grid
+npx cascivo add layout/grid
 ```
 
 ## Category

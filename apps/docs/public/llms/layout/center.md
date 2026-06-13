@@ -5,7 +5,7 @@ Horizontally centered container with a configurable max-width.
 ## Install
 
 ```bash
-npx cascade add layout/center
+npx cascivo add layout/center
 ```
 
 ## Category

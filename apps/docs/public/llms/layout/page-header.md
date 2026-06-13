@@ -5,7 +5,7 @@ Page-level header with title, description, breadcrumb, and actions slots.
 ## Install
 
 ```bash
-npx cascade add layout/page-header
+npx cascivo add layout/page-header
 ```
 
 ## Category

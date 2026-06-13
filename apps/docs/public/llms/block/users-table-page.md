@@ -5,7 +5,7 @@ Full users management page with table, search, and invite action.
 ## Install
 
 ```bash
-npx cascade add block/users-table-page
+npx cascivo add block/users-table-page
 ```
 
 ## Category

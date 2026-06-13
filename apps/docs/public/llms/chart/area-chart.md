@@ -5,7 +5,7 @@ Area chart with optional stacking, multi-series support, and hover tooltip.
 ## Install
 
 ```bash
-npx cascade add chart/area-chart
+npx cascivo add chart/area-chart
 ```
 
 ## Category

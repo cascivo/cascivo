@@ -5,7 +5,7 @@ Free-form multi-value chip input
 ## Install
 
 ```bash
-npx cascade add tags-input
+npx cascivo add tags-input
 ```
 
 ## Category

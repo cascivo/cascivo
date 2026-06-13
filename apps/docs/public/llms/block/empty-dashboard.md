@@ -5,7 +5,7 @@ Dashboard page showing an empty state with a call-to-action button.
 ## Install
 
 ```bash
-npx cascade add block/empty-dashboard
+npx cascivo add block/empty-dashboard
 ```
 
 ## Category

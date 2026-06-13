@@ -209,16 +209,16 @@ cascade/
 │   ├── i18n/           # @cascivo/i18n — signal-driven locale store, typed catalogs, Intl formatting
 │   ├── storage/        # @cascivo/storage — persisted signals over localStorage/IndexedDB, SSR-safe
 │   ├── icons/          # @cascivo/icons — optional SVG icon components
-│   ├── cli/            # cascade CLI — npx cascade init / add / list / update
+│   ├── cli/            # cascivo CLI — npx cascivo init / add / list / update
 │   └── mcp/            # @cascivo/mcp — MCP server exposing component registry to AI agents
 ├── apps/
-│   ├── docs/           # Vite + Preact + cascade (dogfood) — auto-generated from manifests
+│   ├── docs/           # Vite + Preact + cascivo (dogfood) — auto-generated from manifests
 │   ├── storybook/      # Storybook — auto-generated stories from manifests
-│   ├── landing/        # Landing page — built with cascade
+│   ├── landing/        # Landing page — built with cascivo
 │   └── examples/
 │       ├── react-vite/ # Vite + React example app
 │       └── react-next/ # Next.js App Router example (RSC demo)
-├── skills/             # Claude Code skills — cascade:add, cascade:design-page, cascade:create-theme, cascade:extend
+├── skills/             # Claude Code skills — cascivo:add, cascivo:design-page, cascivo:create-theme, cascivo:extend
 ├── scripts/
 │   ├── factory/        # Dark factory — headless Claude Code agents, factory-supervisor.sh
 │   └── registry/       # registry.json generation + GitHub raw URL map
@@ -294,7 +294,7 @@ export const meta: ComponentMeta = {
 | ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
 | Component manifest  | `component.meta.ts` per component | Ground truth for all AI surfaces                                                             |
 | MCP server          | `@cascivo/mcp`                    | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
-| Claude Code skills  | `skills/`                         | `cascade:add`, `cascade:design-page`, `cascade:create-theme`, `cascade:extend`               |
+| Claude Code skills  | `skills/`                         | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`               |
 | Auto-generated docs | `apps/docs/`                      | Markdown + interactive examples generated from manifests                                     |
 | Registry manifest   | `registry.json`                   | Machine-readable index — CLI + MCP + docs all read from this                                 |
 
@@ -318,7 +318,7 @@ Tiered automation:
 ### Distribution Model
 
 - `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons`, `@cascivo/mcp`: versioned npm packages
-- Components: copy-paste via `npx cascade add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
+- Components: copy-paste via `npx cascivo add <component>` (source fetched from GitHub raw URLs, indexed in `registry.json`)
 - Themes: `import '@cascivo/themes/light.css'`
 
 ### Browser & Accessibility Targets

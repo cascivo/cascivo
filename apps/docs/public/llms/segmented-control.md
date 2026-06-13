@@ -5,7 +5,7 @@ Mutually exclusive toggle group
 ## Install
 
 ```bash
-npx cascade add segmented-control
+npx cascivo add segmented-control
 ```
 
 ## Category

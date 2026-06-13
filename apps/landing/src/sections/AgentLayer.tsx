@@ -82,17 +82,17 @@ const MCP_CLIENTS = [
   {
     id: 'claude',
     label: 'Claude Code',
-    command: 'claude mcp add cascade -- npx -y @cascivo/mcp',
+    command: 'claude mcp add cascivo -- npx -y @cascivo/mcp',
   },
   {
     id: 'cursor',
     label: 'Cursor',
-    command: '"cascade": { "command": "npx", "args": ["-y", "@cascivo/mcp"] }',
+    command: '"cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] }',
   },
   {
     id: 'vscode',
     label: 'VS Code',
-    command: 'code --add-mcp \'{"name":"cascade","command":"npx","args":["-y","@cascivo/mcp"]}\'',
+    command: 'code --add-mcp \'{"name":"cascivo","command":"npx","args":["-y","@cascivo/mcp"]}\'',
   },
 ]
 
@@ -124,7 +124,7 @@ const RELAY_SLICE_JSON = JSON.stringify(RELAY_SLICE, null, 2)
 export function AgentLayer() {
   return (
     <section className="agents" id="agents" data-reveal="">
-      <h2>Your agent already knows cascade</h2>
+      <h2>Your agent already knows cascivo</h2>
       <p className="agents-sub">
         Every component ships a machine-readable manifest. The MCP server, the Claude Code skills,
         the docs, and <a href="/llms.txt">llms.txt</a> are all generated from it — what your agent
@@ -171,11 +171,11 @@ export function AgentLayer() {
           <h3>Then just ask</h3>
           <blockquote className="agent-prompt-text">
             &ldquo;Add a deploys table with status badges and a new-deploy dialog to my settings
-            page — use cascade components.&rdquo;
+            page — use cascivo components.&rdquo;
           </blockquote>
           <p className="agent-caption">
             The agent resolves components via MCP, copies owned code via the CLI, and validates
-            against the manifest — the same flow as <code>npx cascade add</code>.
+            against the manifest — the same flow as <code>npx cascivo add</code>.
           </p>
         </article>
 

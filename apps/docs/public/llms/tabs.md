@@ -5,7 +5,7 @@ Switch between related panels of content
 ## Install
 
 ```bash
-npx cascade add tabs
+npx cascivo add tabs
 ```
 
 ## Category

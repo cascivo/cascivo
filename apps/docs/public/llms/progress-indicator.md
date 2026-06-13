@@ -5,7 +5,7 @@ Shows progress through the steps of a multi-step flow
 ## Install
 
 ```bash
-npx cascade add progress-indicator
+npx cascivo add progress-indicator
 ```
 
 ## Category

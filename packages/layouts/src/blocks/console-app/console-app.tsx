@@ -21,7 +21,7 @@ export function ConsoleApp() {
       persistKey={false}
       header={
         <ShellHeader
-          brand={{ prefix: 'cascade', name: 'Console', href: '#' }}
+          brand={{ prefix: 'cascivo', name: 'Console', href: '#' }}
           onMenuClick={shell.toggleSideNav}
           menuExpanded={!shell.sideNavCollapsed.value}
           nav={[

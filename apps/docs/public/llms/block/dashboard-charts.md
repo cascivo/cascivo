@@ -5,7 +5,7 @@ Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
 ## Install
 
 ```bash
-npx cascade add block/dashboard-charts
+npx cascivo add block/dashboard-charts
 ```
 
 ## Category

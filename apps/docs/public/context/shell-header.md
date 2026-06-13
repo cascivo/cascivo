@@ -63,7 +63,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```jsx
 <ShellHeader
-  brand={{ prefix: 'cascade', name: 'Console', href: '/' }}
+  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },

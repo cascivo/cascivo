@@ -5,7 +5,7 @@ Animated loading placeholder that mirrors the shape of pending content
 ## Install
 
 ```bash
-npx cascade add skeleton
+npx cascivo add skeleton
 ```
 
 ## Category

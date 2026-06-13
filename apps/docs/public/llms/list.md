@@ -5,7 +5,7 @@ Styled unordered or ordered list with ListItem
 ## Install
 
 ```bash
-npx cascade add list
+npx cascivo add list
 ```
 
 ## Category

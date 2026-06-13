@@ -5,7 +5,7 @@ Menu of actions revealed from a trigger
 ## Install
 
 ```bash
-npx cascade add dropdown
+npx cascivo add dropdown
 ```
 
 ## Category

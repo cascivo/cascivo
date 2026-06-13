@@ -56,7 +56,7 @@ Adds no roles of its own — it styles descendant native elements, so the docume
 <Prose>
   <h2>Install</h2>
   <p>
-    Run <code>npx cascade init</code>.
+    Run <code>npx cascivo init</code>.
   </p>
 </Prose>
 ```

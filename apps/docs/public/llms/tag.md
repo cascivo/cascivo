@@ -5,7 +5,7 @@ Compact chip for labeling, categorizing, or filtering content
 ## Install
 
 ```bash
-npx cascade add tag
+npx cascivo add tag
 ```
 
 ## Category

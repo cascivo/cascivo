@@ -5,7 +5,7 @@ Bar chart with vertical/horizontal orientation, grouped or stacked modes, and mu
 ## Install
 
 ```bash
-npx cascade add chart/bar-chart
+npx cascivo add chart/bar-chart
 ```
 
 ## Category

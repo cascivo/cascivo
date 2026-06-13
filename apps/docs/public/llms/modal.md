@@ -5,7 +5,7 @@ Accessible dialog overlay using native <dialog> element
 ## Install
 
 ```bash
-npx cascade add modal
+npx cascivo add modal
 ```
 
 ## Category

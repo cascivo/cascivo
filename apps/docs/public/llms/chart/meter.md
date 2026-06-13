@@ -5,7 +5,7 @@ Progress meter in bar or gauge variant with threshold coloring.
 ## Install
 
 ```bash
-npx cascade add chart/meter
+npx cascivo add chart/meter
 ```
 
 ## Category

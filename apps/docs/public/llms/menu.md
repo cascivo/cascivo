@@ -5,7 +5,7 @@ Dropdown menu with keyboard navigation, built on usePopover
 ## Install
 
 ```bash
-npx cascade add menu
+npx cascivo add menu
 ```
 
 ## Category

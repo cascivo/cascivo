@@ -23,7 +23,7 @@ const faq = (
     </AccordionItem>
     <AccordionItem value="how">
       <AccordionTrigger>How do I install it?</AccordionTrigger>
-      <AccordionContent>Run npx cascade add &lt;component&gt; to copy it in.</AccordionContent>
+      <AccordionContent>Run npx cascivo add &lt;component&gt; to copy it in.</AccordionContent>
     </AccordionItem>
     <AccordionItem value="why">
       <AccordionTrigger>Why signals?</AccordionTrigger>

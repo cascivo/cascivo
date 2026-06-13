@@ -5,7 +5,7 @@ Styled anchor for navigation, standalone or inline within prose
 ## Install
 
 ```bash
-npx cascade add link
+npx cascivo add link
 ```
 
 ## Category

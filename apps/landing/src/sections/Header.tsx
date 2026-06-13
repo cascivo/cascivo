@@ -9,7 +9,7 @@ export function Header() {
   useSignals()
   return (
     <ShellHeader
-      brand={{ name: 'cascade', href: '/' }}
+      brand={{ name: 'cascivo', href: '/' }}
       nav={[
         { label: 'Components', href: '/docs' },
         { label: 'Storybook', href: '/storybook' },
@@ -23,7 +23,7 @@ export function Header() {
           href: '/performance',
           active: path.startsWith('/performance'),
         },
-        { label: 'GitHub', href: 'https://github.com/urbanisierung/cascade-ui' },
+        { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
       ]}
       end={
         <div className="header-themes" role="group" aria-label="Theme">

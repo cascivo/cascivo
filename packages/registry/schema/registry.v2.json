@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cascade-ui.dev/schema/registry.v2.json",
+  "$id": "https://cascivo.com/schema/registry.v2.json",
   "title": "Cascade Registry Index v2",
   "description": "Index file for a cascade component registry",
   "type": "object",

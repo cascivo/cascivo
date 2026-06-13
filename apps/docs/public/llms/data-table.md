@@ -5,7 +5,7 @@ Signal-driven data table with client/server sort, filter, pagination, multi-sele
 ## Install
 
 ```bash
-npx cascade add data-table
+npx cascivo add data-table
 ```
 
 ## Category

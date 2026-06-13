@@ -4,10 +4,10 @@
 
 > Prebuilt cascade design system components — use without copying source
 
-Every cascade component, prebuilt as a normal installable library — for users
+Every cascivo component, prebuilt as a normal installable library — for users
 who just want to **use** the design system without owning the source. If you
 want to customize component internals, use the copy-paste flow instead
-(`npx cascade add <component>`); both consume the same tokens and themes, and
+(`npx cascivo add <component>`); both consume the same tokens and themes, and
 can coexist in one project.
 
 ## Use
@@ -173,4 +173,4 @@ pnpm add @cascivo/react
 
 ---
 
-[Docs](https://urbanisierung.github.io/cascade-ui/) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascade-ui/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascade-ui/blob/main/registry.json) · MIT
+[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

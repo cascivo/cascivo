@@ -5,7 +5,7 @@ Squarified treemap for visualizing part-to-whole hierarchical data.
 ## Install
 
 ```bash
-npx cascade add chart/treemap
+npx cascivo add chart/treemap
 ```
 
 ## Category

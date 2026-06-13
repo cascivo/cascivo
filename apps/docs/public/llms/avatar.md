@@ -5,7 +5,7 @@ Displays a user image with initials fallback
 ## Install
 
 ```bash
-npx cascade add avatar
+npx cascivo add avatar
 ```
 
 ## Category

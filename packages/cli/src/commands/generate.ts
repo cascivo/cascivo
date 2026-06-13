@@ -187,7 +187,7 @@ export async function generate(args: string[], config: CascadeConfig): Promise<v
 
   if (!inputArg) {
     console.error(
-      'Usage: cascade generate <config.json> [--out output.tsx] [--components-dir ./src/components/ui]',
+      'Usage: cascivo generate <config.json> [--out output.tsx] [--components-dir ./src/components/ui]',
     )
     process.exitCode = 1
     return

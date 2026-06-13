@@ -5,7 +5,7 @@ KPI card showing a primary metric with optional delta indicator, icon, and spark
 ## Install
 
 ```bash
-npx cascade add chart/kpi
+npx cascivo add chart/kpi
 ```
 
 ## Category

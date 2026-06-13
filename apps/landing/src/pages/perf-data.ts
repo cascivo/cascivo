@@ -6,7 +6,7 @@ export const LIBS = ['cascade', 'shadcn', 'carbon'] as const
 export type Lib = (typeof LIBS)[number]
 
 export const LIB_LABELS: Record<Lib, string> = {
-  cascade: 'cascade',
+  cascade: 'cascivo',
   shadcn: 'shadcn/ui',
   carbon: 'Carbon',
 }

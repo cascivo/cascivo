@@ -5,6 +5,11 @@ import results from '../../../bench/results/results.json'
 
 const LIBS = ['cascade', 'shadcn', 'carbon'] as const
 type Lib = (typeof LIBS)[number]
+const LIB_LABELS: Record<Lib, string> = {
+  cascade: 'cascivo',
+  shadcn: 'shadcn/ui',
+  carbon: 'Carbon',
+}
 
 function ms(v: number) {
   return `${v.toFixed(1)}ms`
@@ -23,7 +28,7 @@ export function Benchmarks() {
     <article>
       <h1>Benchmarks</h1>
       <p>
-        cascade vs shadcn/ui vs Carbon — identical apps, pinned versions, trace-based timing.
+        cascivo vs shadcn/ui vs Carbon — identical apps, pinned versions, trace-based timing.
         Methodology and reproduction: <code>apps/bench/METHODOLOGY.md</code>. Run{' '}
         <code>pnpm bench</code> to reproduce.
       </p>
@@ -54,7 +59,7 @@ export function Benchmarks() {
                 if (!a) return null
                 return (
                   <tr key={lib}>
-                    <td>{lib}</td>
+                    <td>{LIB_LABELS[lib]}</td>
                     <td>{a.jsGzKb}KB</td>
                     <td>{a.cssGzKb}KB</td>
                     <td>
@@ -80,7 +85,7 @@ export function Benchmarks() {
               <tr>
                 <th>Scenario</th>
                 {LIBS.map((l) => (
-                  <th key={l}>{l}</th>
+                  <th key={l}>{LIB_LABELS[l]}</th>
                 ))}
               </tr>
             </thead>
@@ -122,7 +127,7 @@ export function Benchmarks() {
               <tr>
                 <th>Scenario</th>
                 {LIBS.map((l) => (
-                  <th key={l}>{l}</th>
+                  <th key={l}>{LIB_LABELS[l]}</th>
                 ))}
               </tr>
             </thead>
@@ -165,7 +170,7 @@ export function Benchmarks() {
                 if (!l) return null
                 return (
                   <tr key={lib}>
-                    <td>{lib}</td>
+                    <td>{LIB_LABELS[lib]}</td>
                     <td>{l.fcpMs}ms</td>
                     <td>{l.lcpMs}ms</td>
                     <td>{l.tbtMs}ms</td>
@@ -183,7 +188,7 @@ export function Benchmarks() {
           <h2>Accessibility (axe-core sweep — parity gate, not a score)</h2>
           <p>
             Automated tools detect roughly 57% of WCAG issues at best; these numbers are a floor,
-            not a ranking. cascade CI fails on any violation. Competitor numbers are context only.
+            not a ranking. cascivo CI fails on any violation. Competitor numbers are context only.
           </p>
           <table>
             <thead>
@@ -201,7 +206,7 @@ export function Benchmarks() {
                 if (!entry) return null
                 return (
                   <tr key={lib}>
-                    <td>{lib}</td>
+                    <td>{LIB_LABELS[lib]}</td>
                     <td>{entry.violations}</td>
                     <td>{entry.rules.join(', ') || '—'}</td>
                   </tr>

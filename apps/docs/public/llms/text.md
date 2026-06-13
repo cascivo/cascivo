@@ -5,7 +5,7 @@ Body text with size, weight, and muted variants
 ## Install
 
 ```bash
-npx cascade add text
+npx cascivo add text
 ```
 
 ## Category

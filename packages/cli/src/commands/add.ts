@@ -36,7 +36,7 @@ export async function add(
   opts: { dryRun?: boolean; yes?: boolean } = {},
 ): Promise<void> {
   if (names.length === 0) {
-    console.error('Usage: cascade add <component...>')
+    console.error('Usage: cascivo add <component...>')
     return
   }
 
@@ -60,7 +60,7 @@ export async function add(
       return
     }
 
-    const isThirdParty = (itemUrl: string) => !itemUrl.includes('cascade-ui.dev')
+    const isThirdParty = (itemUrl: string) => !itemUrl.includes('cascivo.com')
 
     for (const { item, itemUrl, registryBase } of plan.items) {
       if (isThirdParty(itemUrl)) {
@@ -89,7 +89,7 @@ export async function add(
   for (const name of bareSpecs) {
     const entry = findComponent(registry, name)
     if (!entry) {
-      console.error(`Component "${name}" not found in registry. Run "cascade list".`)
+      console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
       continue
     }
 

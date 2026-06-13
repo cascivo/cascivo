@@ -5,7 +5,7 @@ Confirmation dialog requiring explicit user action; no light-dismiss
 ## Install
 
 ```bash
-npx cascade add alert-dialog
+npx cascivo add alert-dialog
 ```
 
 ## Category

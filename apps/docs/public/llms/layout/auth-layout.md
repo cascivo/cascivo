@@ -5,7 +5,7 @@ Centered card layout for authentication pages (login, register, forgot password)
 ## Install
 
 ```bash
-npx cascade add layout/auth-layout
+npx cascivo add layout/auth-layout
 ```
 
 ## Category

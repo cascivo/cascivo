@@ -5,7 +5,7 @@ Searchable multi-value select with popover listbox
 ## Install
 
 ```bash
-npx cascade add multi-select
+npx cascivo add multi-select
 ```
 
 ## Category

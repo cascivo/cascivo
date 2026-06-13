@@ -5,7 +5,7 @@ Feature section — AutoGrid of items with optional title, description, and icon
 ## Install
 
 ```bash
-npx cascade add section/feature-grid
+npx cascivo add section/feature-grid
 ```
 
 ## Category

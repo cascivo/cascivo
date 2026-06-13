@@ -5,7 +5,7 @@ Collapsible sidebar navigation with optional icons and one level of grouping
 ## Install
 
 ```bash
-npx cascade add side-nav
+npx cascivo add side-nav
 ```
 
 ## Category

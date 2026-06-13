@@ -69,7 +69,7 @@ export function scaffoldView(
 
   const config: ViewConfig = {
     $schema:
-      'https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/render/schema/view.v1.json',
+      'https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json',
     version: 1,
     view: {
       ...(layout !== 'none' ? { layout } : {}),

@@ -5,7 +5,7 @@ Quoted passage with optional attribution footer
 ## Install
 
 ```bash
-npx cascade add blockquote
+npx cascivo add blockquote
 ```
 
 ## Category

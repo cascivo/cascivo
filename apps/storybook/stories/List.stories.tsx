@@ -21,8 +21,8 @@ export const Unordered: Story = {
 export const Ordered: Story = {
   render: () => (
     <List as="ol">
-      <ListItem>npx cascade init</ListItem>
-      <ListItem>npx cascade add button</ListItem>
+      <ListItem>npx cascivo init</ListItem>
+      <ListItem>npx cascivo add button</ListItem>
       <ListItem>Import and render</ListItem>
     </List>
   ),

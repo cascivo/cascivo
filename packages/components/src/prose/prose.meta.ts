@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Authored content',
-      code: '<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>',
+      code: '<Prose><h2>Install</h2><p>Run <code>npx cascivo init</code>.</p></Prose>',
     },
     {
       title: 'Rendered markdown',

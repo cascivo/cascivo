@@ -5,7 +5,7 @@ Masonry layout — native CSS masonry where supported, multi-column fallback els
 ## Install
 
 ```bash
-npx cascade add layout/masonry
+npx cascivo add layout/masonry
 ```
 
 ## Category

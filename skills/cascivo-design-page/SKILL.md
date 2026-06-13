@@ -1,13 +1,13 @@
 ---
-name: cascade:design-page
-description: Generate a page layout from a natural language description using the cascade view schema, MCP scaffold_view, and the cascade generate CLI.
+name: cascivo:design-page
+description: Generate a page layout from a natural language description using the cascivo view schema, MCP scaffold_view, and the cascivo generate CLI.
 ---
 
-# cascade:design-page
+# cascivo:design-page
 
 ## When to use
 
-The user describes a page in plain English (e.g. "a dashboard with a sidebar nav, a KPI card row, and a data table") and wants cascade to generate the React code for it.
+The user describes a page in plain English (e.g. "a dashboard with a sidebar nav, a KPI card row, and a data table") and wants cascivo to generate the React code for it.
 
 ## Procedure
 
@@ -15,7 +15,7 @@ The user describes a page in plain English (e.g. "a dashboard with a sidebar nav
 
 Before generating anything, read the registry and llms.txt at runtime:
 
-- Read `https://cascade-ui.dev/llms.txt` (or local `apps/docs/public/llms.txt`) for the component index and authoring rules.
+- Read `https://cascivo.com/llms.txt` (or local `apps/docs/public/llms.txt`) for the component index and authoring rules.
 - For any component you plan to use, read its `/llms/<name>.md` file for the exact props and example usage.
 
 Do NOT rely on training-data knowledge of component APIs — always read from the live files.
@@ -27,7 +27,7 @@ Ask the user for any missing information needed to produce a reasonable first dr
 - Page name / route (e.g. `/dashboard`)
 - Key data shown (drives which components to pick)
 - Layout style (full-width, sidebar, centered, etc.)
-- Any specific cascade components they want to include
+- Any specific cascivo components they want to include
 
 ### 3. Call scaffold_view (MCP)
 
@@ -51,10 +51,10 @@ Call `validate_view` with the returned config. If validation fails:
 
 ### 5. Generate owned code
 
-Run the cascade CLI to turn the validated config into an owned React component:
+Run the cascivo CLI to turn the validated config into an owned React component:
 
 ```bash
-npx cascade generate view.json --out src/pages/<PageName>.tsx
+npx cascivo generate view.json --out src/pages/<PageName>.tsx
 ```
 
 Where `view.json` is the validated config written to a temp file (or the project root).

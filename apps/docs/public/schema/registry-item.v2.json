@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cascade-ui.dev/schema/registry-item.v2.json",
+  "$id": "https://cascivo.com/schema/registry-item.v2.json",
   "title": "Cascade Registry Item v2",
   "description": "A single registry item (component, theme, layout, etc.)",
   "type": "object",

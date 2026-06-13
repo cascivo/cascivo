@@ -5,7 +5,7 @@ Multi-selectable card backed by a native checkbox. Use multiple independent Chec
 ## Install
 
 ```bash
-npx cascade add checkbox-card
+npx cascivo add checkbox-card
 ```
 
 ## Category

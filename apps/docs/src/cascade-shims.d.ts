@@ -1,4 +1,4 @@
-// Type shims for cascade components — avoids cross-package TSC boundary issues.
+// Type shims for cascivo components — avoids cross-package TSC boundary issues.
 // Vite resolves the actual source at build time via the package exports map.
 
 declare module '*.module.css' {

@@ -6,7 +6,7 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
     }
   ],
   "dependencies": ["@cascivo/react", "layout/settings-layout"],

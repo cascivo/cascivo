@@ -8,29 +8,29 @@ The CSS-native, signal-driven, AI-first React design system.
 4. **Signal-driven** — custom micro-FSM + Preact Signals. No `useState`/`useContext` for interactivity. Zero unnecessary re-renders.
 5. **Beautiful by default** — three first-party themes (light, dark, warm) via `data-theme` on any container.
 6. **AI-first** — every component ships a machine-readable manifest; MCP server and Claude Code skills derive from it.
-7. **Context layer** — machine-readable intent (when-to-use, anti-patterns, selection edges), a closed-set token catalog, and `cascade audit --ai` — so agents select from closed sets and their output is checkable.
+7. **Context layer** — machine-readable intent (when-to-use, anti-patterns, selection edges), a closed-set token catalog, and `cascivo audit --ai` — so agents select from closed sets and their output is checkable.
 8. **Earned quality** — CVD-safe chart palettes (Okabe-Ito oklch, all 10 themes, CI-verified); keyboard-accessible chart tooltips (aria-live, all 17 chart types); honest multi-lens performance data (standalone / incremental / amortized); WCAG 2.2 AA + APG-conformant (CI-enforced, 72 components); AT support matrix (NVDA / JAWS / VoiceOver) + EAA / EN 301 549 / Section 508 legal mapping.
 
 ## Quick Start
 
 ```sh
-npx cascade init
-npx cascade add button
+npx cascivo init
+npx cascivo add button
 ```
 
 ## AI / Context Layer
 
-cascade ships the **WHAT** (manifests, tokens, MCP) and the **WHY** (context layer):
+cascivo ships the **WHAT** (manifests, tokens, MCP) and the **WHY** (context layer):
 
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with layer + resolved default
-- **`cascade audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code
+- **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code
 - **MCP tools**: `list_components`, `get_component`, `get_tokens`, `get_context`, `select_component`, `scaffold_view`
 
 ## Ecosystem
 
-The cascade registry model is open. Anyone can publish components and host their own registry.
+The cascivo registry model is open. Anyone can publish components and host their own registry.
 
 - **[Registry starter](apps/examples/registry-starter/)** — copy-paste template for publishing a third-party registry
 - **[Contributor guide](docs/CONTRIBUTING-REGISTRY.md)** — full loop: write → build → host → list in the directory
-- **Install from any registry:** `cascade add owner/repo/component-name`
+- **Install from any registry:** `cascivo add owner/repo/component-name`

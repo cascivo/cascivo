@@ -5,7 +5,7 @@ Dashboard page layout with stats strip, main content area, and optional aside.
 ## Install
 
 ```bash
-npx cascade add layout/dashboard-layout
+npx cascivo add layout/dashboard-layout
 ```
 
 ## Category

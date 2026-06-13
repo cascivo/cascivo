@@ -20,7 +20,7 @@ export interface TokenCatalog {
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const CATALOG_BASE_URL = 'https://cascade-ui.dev'
+const CATALOG_BASE_URL = 'https://cascivo.com'
 
 export async function loadTokenCatalog(fetchFn?: FetchFn): Promise<TokenCatalog> {
   const localPaths = [

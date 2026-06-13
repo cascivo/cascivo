@@ -5,7 +5,7 @@ Full app shell with collapsible side navigation and top header.
 ## Install
 
 ```bash
-npx cascade add block/sidebar-app
+npx cascivo add block/sidebar-app
 ```
 
 ## Category

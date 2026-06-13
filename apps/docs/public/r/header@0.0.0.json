@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.tsx"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header/header.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/header/header.module.css"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -71,15 +71,15 @@
     "examples": [
       {
         "title": "Basic",
-        "code": "<Header brand=\"cascade\" links={[{ label: 'Docs', href: '/docs' }]} />"
+        "code": "<Header brand=\"cascivo\" links={[{ label: 'Docs', href: '/docs' }]} />"
       },
       {
         "title": "With actions",
-        "code": "<Header brand=\"cascade\" actions={<Button size=\"sm\">Sign in</Button>} />"
+        "code": "<Header brand=\"cascivo\" actions={<Button size=\"sm\">Sign in</Button>} />"
       },
       {
         "title": "Sticky",
-        "code": "<Header sticky brand=\"cascade\" links={links} />"
+        "code": "<Header sticky brand=\"cascivo\" links={links} />"
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],

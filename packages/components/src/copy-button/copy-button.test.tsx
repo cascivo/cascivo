@@ -14,7 +14,7 @@ function stubClipboard() {
 
 describe('CopyButton', () => {
   it('renders a button with the default i18n copy label', () => {
-    render(<CopyButton value="npx cascade add stat" />)
+    render(<CopyButton value="npx cascivo add stat" />)
     const button = screen.getByRole('button', { name: 'Copy' })
     expect(button).toHaveAttribute('type', 'button')
     expect(button).toHaveAttribute('data-state', 'idle')
@@ -29,10 +29,10 @@ describe('CopyButton', () => {
 
   it('writes the value to the clipboard and flips to the copied state', async () => {
     const writeText = stubClipboard()
-    render(<CopyButton value="npx cascade add stat" />)
+    render(<CopyButton value="npx cascivo add stat" />)
     await userEvent.click(screen.getByRole('button', { name: 'Copy' }))
     expect(writeText).toHaveBeenCalledTimes(1)
-    expect(writeText).toHaveBeenCalledWith('npx cascade add stat')
+    expect(writeText).toHaveBeenCalledWith('npx cascivo add stat')
     const button = screen.getByRole('button', { name: 'Copied' })
     expect(button).toHaveAttribute('data-state', 'copied')
   })

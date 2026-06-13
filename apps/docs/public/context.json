@@ -32,6 +32,11 @@
       "path": "/docs/specs/brand-color.md"
     },
     {
+      "id": "cascivo-launch-checklist",
+      "title": "cascivo-launch-checklist",
+      "path": "/docs/specs/cascivo-launch-checklist.md"
+    },
+    {
       "id": "chart-palette",
       "title": "chart-palette",
       "path": "/docs/specs/chart-palette.md"

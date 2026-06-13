@@ -20,6 +20,12 @@
       "summary": "| Token                      | oklch value             | Approx hex | Usage                                                                                                                            | | -------------------------- | ----------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------- | | `--cascivo-brand-primary`  | `oklch(0.55 0.15 240)`  | `#0079bf`  | Hero bg, CTA button, logo gradient start                                                                                         | | `--cascivo-brand-accent`   | `oklch(0.72 0.13 195)`  | `#00bdbe`  | Gradient end, accent UI, flow highlights                                                                                         | | `--cascivo-brand-ink`      | `oklch(0.22 0.03 250)`  | `#101c28`  | Wordmark on light, body text on brand surfaces                                                                                   | | `--cascivo-brand-paper`    | `oklch(0.99 0.005 250)` | `#f9fcff`  | Brand surface (hero, OG card background)                                                                                         | | `--cascivo-brand-gradient` | —                       | —          | `linear-gradient(135deg, var(--cascivo-brand-primary), var(--cascivo-brand-accent))` — hero fill, logo gradient variant, OG card |"
     },
     {
+      "id": "cascivo-launch-checklist",
+      "title": "cascivo-launch-checklist",
+      "path": "/docs/specs/cascivo-launch-checklist.md",
+      "summary": "Code prerequisites completed in v15 T1–T4. External steps the owner must perform:"
+    },
+    {
       "id": "chart-palette",
       "title": "chart-palette",
       "path": "/docs/specs/chart-palette.md",

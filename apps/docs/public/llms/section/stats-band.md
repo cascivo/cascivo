@@ -5,7 +5,7 @@ KPI strip — horizontal band of stats with optional delta and inline sparkline 
 ## Install
 
 ```bash
-npx cascade add section/stats-band
+npx cascivo add section/stats-band
 ```
 
 ## Category

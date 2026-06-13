@@ -5,7 +5,7 @@ Full-page application shell with persisted collapsible sidebar. Includes a signa
 ## Install
 
 ```bash
-npx cascade add layout/app-shell
+npx cascivo add layout/app-shell
 ```
 
 ## Category

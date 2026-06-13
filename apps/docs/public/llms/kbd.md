@@ -5,7 +5,7 @@ Displays a keyboard key or shortcut
 ## Install
 
 ```bash
-npx cascade add kbd
+npx cascivo add kbd
 ```
 
 ## Category

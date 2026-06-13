@@ -5,7 +5,7 @@ Hover-triggered popover with configurable open/close delay
 ## Install
 
 ```bash
-npx cascade add hover-card
+npx cascivo add hover-card
 ```
 
 ## Category

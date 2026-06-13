@@ -62,7 +62,7 @@ export function LayoutsPage() {
         <h1>Layout primitives, sections &amp; blocks</h1>
         <p class="doc-lede">
           Copy-paste layout primitives, page sections, and full-page blocks. Add any entry to your
-          project with the cascade CLI or copy the source directly.
+          project with the cascivo CLI or copy the source directly.
         </p>
       </header>
 
@@ -106,7 +106,7 @@ export function LayoutsPage() {
                       <h3 style={{ margin: 0, fontSize: '1rem' }}>
                         <code>{entry.name}</code>
                       </h3>
-                      <CopyButton text={`npx cascade add ${addName}`} />
+                      <CopyButton text={`npx cascivo add ${addName}`} />
                     </div>
                     <p
                       style={{

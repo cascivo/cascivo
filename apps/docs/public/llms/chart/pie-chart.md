@@ -5,7 +5,7 @@ Pie or donut chart with hover segments and optional legend.
 ## Install
 
 ```bash
-npx cascade add chart/pie-chart
+npx cascivo add chart/pie-chart
 ```
 
 ## Category
