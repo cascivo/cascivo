@@ -68,7 +68,7 @@ npx cascade add segmented-control
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

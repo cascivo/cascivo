@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AiChat } from '@cascade-ui/ai'
+import { AiChat } from '@cascivo/ai'
 
 const meta: Meta<typeof AiChat> = {
   title: 'AI/AiChat',

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Heatmap',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic heatmap',
-      code: `import { Heatmap } from '@cascade-ui/charts'
+      code: `import { Heatmap } from '@cascivo/charts'
 
 const data = [
   {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},
@@ -41,7 +41,7 @@ const data = [
 <Heatmap data={data} title="Activity" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'heatmap', 'matrix', 'data-viz'],
   intent: {
     whenToUse: [

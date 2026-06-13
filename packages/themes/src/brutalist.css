@@ -1,7 +1,7 @@
 /* Cascade — Brutalist Theme */
 /* Neo-brutalism: cream background, zero radius, thick borders, hard offset shadows */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='brutalist'] {

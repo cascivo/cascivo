@@ -35,7 +35,7 @@ npx cascade add chart/meter
 ### Basic meter
 
 ```tsx
-import { Meter } from '@cascade-ui/charts'
+import { Meter } from '@cascivo/charts'
 ;<Meter value={72} label="CPU usage" />
 ```
 
@@ -50,7 +50,7 @@ import { Meter } from '@cascade-ui/charts'
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

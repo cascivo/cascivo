@@ -1,8 +1,8 @@
 'use client'
-import { useSignal, useSignals, cn } from '@cascade-ui/core'
+import { useSignal, useSignals, cn } from '@cascivo/core'
 import { useId } from 'react'
 import type { InputHTMLAttributes } from 'react'
-import { t, builtin } from '@cascade-ui/i18n'
+import { t, builtin } from '@cascivo/i18n'
 import styles from './password-input.module.css'
 
 export interface PasswordInputLabels {

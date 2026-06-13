@@ -1,6 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 import buttonMetaSource from '../../../../packages/components/src/button/button.meta.ts?raw'
 import { CopyCommand } from './CopyCommand'
 
@@ -82,18 +82,17 @@ const MCP_CLIENTS = [
   {
     id: 'claude',
     label: 'Claude Code',
-    command: 'claude mcp add cascade -- npx -y @cascade-ui/mcp',
+    command: 'claude mcp add cascade -- npx -y @cascivo/mcp',
   },
   {
     id: 'cursor',
     label: 'Cursor',
-    command: '"cascade": { "command": "npx", "args": ["-y", "@cascade-ui/mcp"] }',
+    command: '"cascade": { "command": "npx", "args": ["-y", "@cascivo/mcp"] }',
   },
   {
     id: 'vscode',
     label: 'VS Code',
-    command:
-      'code --add-mcp \'{"name":"cascade","command":"npx","args":["-y","@cascade-ui/mcp"]}\'',
+    command: 'code --add-mcp \'{"name":"cascade","command":"npx","args":["-y","@cascivo/mcp"]}\'',
   },
 ]
 

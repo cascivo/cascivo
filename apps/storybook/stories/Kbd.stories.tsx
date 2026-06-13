@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Kbd } from '@cascade-ui/components/kbd'
+import { Kbd } from '@cascivo/components/kbd'
 
 const meta: Meta<typeof Kbd> = {
   title: 'Display/Kbd',

@@ -80,7 +80,7 @@ Two-column layout with copy on the left and media on the right
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

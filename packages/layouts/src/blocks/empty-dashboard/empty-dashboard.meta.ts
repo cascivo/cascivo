@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'EmptyDashboard',
@@ -18,7 +18,7 @@ export const meta: ComponentMeta = {
   tokens: [],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<EmptyDashboard />', description: 'Empty dashboard' }],
-  dependencies: ['@cascade-ui/react', 'layout/dashboard-layout'],
+  dependencies: ['@cascivo/react', 'layout/dashboard-layout'],
   tags: ['block', 'dashboard', 'empty-state', 'page'],
   intent: {
     whenToUse: [

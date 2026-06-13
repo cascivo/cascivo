@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Breadcrumb',
@@ -42,7 +42,7 @@ export const meta: ComponentMeta = {
       description: 'Long trails collapse to the first item, an ellipsis, and the trailing items.',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['breadcrumb', 'navigation', 'hierarchy'],
   intent: {
     whenToUse: [

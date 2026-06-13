@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Grid',
@@ -26,7 +26,7 @@ export const meta: ComponentMeta = {
       description: '3-column grid with spanning item',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'grid', 'columns'],
   intent: {
     whenToUse: [

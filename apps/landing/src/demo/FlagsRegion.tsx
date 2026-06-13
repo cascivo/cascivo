@@ -1,7 +1,7 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
-import { Card } from '@cascade-ui/components/card'
-import { Toggle } from '@cascade-ui/components/toggle'
+import { useSignal, useSignals } from '@cascivo/core'
+import { Card } from '@cascivo/components/card'
+import { Toggle } from '@cascivo/components/toggle'
 import { FLAGS } from './data'
 
 export function FlagsRegion() {

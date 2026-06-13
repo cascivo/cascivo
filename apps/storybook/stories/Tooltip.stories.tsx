@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Tooltip } from '@cascade-ui/components/tooltip'
+import { Button } from '@cascivo/components/button'
+import { Tooltip } from '@cascivo/components/tooltip'
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Overlay/Tooltip',

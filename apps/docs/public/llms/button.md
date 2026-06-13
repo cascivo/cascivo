@@ -78,7 +78,7 @@ npx cascade add button
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

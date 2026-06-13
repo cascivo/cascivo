@@ -49,7 +49,7 @@ Title with description
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

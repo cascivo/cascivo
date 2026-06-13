@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "tags", "chips", "multi", "input"],
   "category": "inputs",
   "meta": {
@@ -76,7 +76,7 @@
         "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag…\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["form", "tags", "chips", "multi", "input"],
     "intent": {
       "whenToUse": [

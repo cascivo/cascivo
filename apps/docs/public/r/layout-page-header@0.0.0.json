@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "header", "page"],
   "category": "layout",
   "meta": {
@@ -75,7 +75,7 @@
         "description": "Title with description"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "header", "page"],
     "intent": {
       "whenToUse": [

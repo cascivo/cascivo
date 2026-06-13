@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["progress", "loading", "status", "feedback"],
   "category": "feedback",
   "meta": {
@@ -89,7 +89,7 @@
         "code": "<ProgressBar value={100} status=\"success\" label=\"Upload complete\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["progress", "loading", "status", "feedback"],
     "intent": {
       "whenToUse": [

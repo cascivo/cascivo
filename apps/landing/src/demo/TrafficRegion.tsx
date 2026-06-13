@@ -1,6 +1,6 @@
 'use client'
-import { signal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { AreaChart } from '@cascade-ui/charts'
+import { signal, useSignalEffect, useSignals } from '@cascivo/core'
+import { AreaChart } from '@cascivo/charts'
 import { TRAFFIC } from './data'
 
 const traffic = signal<number[]>([...TRAFFIC])

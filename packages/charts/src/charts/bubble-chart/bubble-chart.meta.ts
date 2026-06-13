@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'BubbleChart',
@@ -56,13 +56,13 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic bubble chart',
-      code: `import { BubbleChart } from '@cascade-ui/charts'
+      code: `import { BubbleChart } from '@cascivo/charts'
 
 const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]
 <BubbleChart series={series} title="Bubble" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'bubble', 'scatter', 'three-dimensional', 'data-viz'],
   intent: {
     whenToUse: [

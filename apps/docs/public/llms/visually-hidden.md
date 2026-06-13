@@ -46,7 +46,7 @@ Gives an icon-only control an accessible name
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

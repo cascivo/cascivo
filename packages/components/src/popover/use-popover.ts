@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { useSignal, useSignalEffect } from '@cascade-ui/core'
-import type { Signal } from '@cascade-ui/core'
+import { useSignal, useSignalEffect } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
 
 let anchorCounter = 0
 

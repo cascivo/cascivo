@@ -34,7 +34,7 @@ npx cascade add chart/scatter-chart
 ### Basic scatter chart
 
 ```tsx
-import { ScatterChart } from '@cascade-ui/charts'
+import { ScatterChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 <ScatterChart series={series} title="Scatter" />
@@ -59,7 +59,7 @@ const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

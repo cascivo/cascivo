@@ -37,7 +37,7 @@ describe('ComponentMeta types', () => {
       tokens: ['--cascivo-button-bg'],
       accessibility: { role: 'button', wcag: 'AA', keyboard: ['Enter', 'Space'] },
       examples: [{ title: 'Primary', code: '<Button>Click</Button>' }],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: ['action', 'cta'],
       intent,
     }
@@ -62,7 +62,7 @@ describe('ComponentMeta types', () => {
       tokens: ['--cascivo-badge-bg'],
       accessibility: { role: 'status', wcag: 'AA', keyboard: [] },
       examples: [{ title: 'Default', code: '<Badge>New</Badge>' }],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: ['label'],
     }
 

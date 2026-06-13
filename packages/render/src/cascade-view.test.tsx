@@ -1,5 +1,5 @@
-import { signal } from '@cascade-ui/core'
-import { createLocale, defineCatalog, defineMessages } from '@cascade-ui/i18n'
+import { signal } from '@cascivo/core'
+import { createLocale, defineCatalog, defineMessages } from '@cascivo/i18n'
 import { cleanup, render } from '@testing-library/react'
 import React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'

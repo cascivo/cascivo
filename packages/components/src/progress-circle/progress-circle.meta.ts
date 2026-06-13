@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressCircle',
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Custom max', code: '<ProgressCircle value={3} max={8} label="Steps completed" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['progress', 'loading', 'circle', 'feedback'],
   intent: {
     whenToUse: [

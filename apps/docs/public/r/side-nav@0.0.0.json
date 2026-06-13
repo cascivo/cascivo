@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
   "category": "navigation",
   "meta": {
@@ -124,7 +124,7 @@
         "description": "Rail widens as CSS overlay on hover without reflowing adjacent content"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
     "intent": {
       "whenToUse": [

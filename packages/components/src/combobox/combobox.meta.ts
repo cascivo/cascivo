@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Combobox',
@@ -60,7 +60,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['select', 'combobox', 'dropdown', 'filter', 'search'],
   intent: {
     whenToUse: [

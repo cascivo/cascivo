@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import '@cascade-ui/themes/light'
+import '@cascivo/themes/light'
 import { App } from './App'
 import { CommitCounter } from './harness'
 

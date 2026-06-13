@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'MediaMasonry',
@@ -65,7 +65,7 @@ export const meta: ComponentMeta = {
         'Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'gallery', 'masonry'],
   intent: {
     whenToUse: [

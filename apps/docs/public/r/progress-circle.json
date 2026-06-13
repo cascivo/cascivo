@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["progress", "loading", "circle", "feedback"],
   "category": "feedback",
   "meta": {
@@ -75,7 +75,7 @@
         "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["progress", "loading", "circle", "feedback"],
     "intent": {
       "whenToUse": [

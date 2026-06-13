@@ -61,7 +61,7 @@ npx cascade add progress-circle
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

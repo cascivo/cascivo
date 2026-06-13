@@ -1,7 +1,7 @@
 import type { CascadeConfig } from '../utils/config.js'
 import { parseAddress, resolveItemUrl } from '../utils/resolve.js'
 import { fetchJson } from '../utils/http.js'
-import type { RegistryItem } from '@cascade-ui/registry'
+import type { RegistryItem } from '@cascivo/registry'
 
 export async function view(args: string[], config: CascadeConfig): Promise<void> {
   const spec = args[0]

@@ -44,7 +44,7 @@ Three equal columns
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

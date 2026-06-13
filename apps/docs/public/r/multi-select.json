@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "select", "multi", "input", "popover"],
   "category": "inputs",
   "meta": {
@@ -76,7 +76,7 @@
         "code": "<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["form", "select", "multi", "input", "popover"],
     "intent": {
       "whenToUse": [

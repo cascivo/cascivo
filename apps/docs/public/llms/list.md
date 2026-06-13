@@ -71,7 +71,7 @@ Keeps list semantics without visual markers
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

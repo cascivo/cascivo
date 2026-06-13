@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Tooltip',
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       code: '<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'hint', 'popover'],
   intent: {
     whenToUse: [

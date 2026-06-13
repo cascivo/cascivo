@@ -32,7 +32,7 @@ npx cascade add chart/combo-chart
 ### Basic combo chart
 
 ```tsx
-import { ComboChart } from '@cascade-ui/charts'
+import { ComboChart } from '@cascivo/charts'
 
 const bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]
 const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
@@ -52,7 +52,7 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

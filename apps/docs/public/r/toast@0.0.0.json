@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "notification", "feedback"],
   "category": "overlay",
   "meta": {
@@ -67,7 +67,7 @@
         "code": "const { toast } = useToast()\ntoast({ title: \"Saved\", variant: \"success\" })"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "notification", "feedback"],
     "intent": {
       "whenToUse": [

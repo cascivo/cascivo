@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Radar',
@@ -54,14 +54,14 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic radar chart',
-      code: `import { Radar } from '@cascade-ui/charts'
+      code: `import { Radar } from '@cascivo/charts'
 
 const axes = ['Speed','Power','Range','Efficiency','Cost']
 const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 <Radar axes={axes} series={series} title="Model comparison" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'radar', 'spider', 'polar', 'data-viz'],
   intent: {
     whenToUse: [

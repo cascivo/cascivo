@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
   "tags": ["layout", "shell", "sidebar", "navigation"],
   "category": "layout",
   "meta": {
@@ -86,7 +86,7 @@
         "description": "App shell with collapsible nav"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
     "tags": ["layout", "shell", "sidebar", "navigation"],
     "intent": {
       "whenToUse": [

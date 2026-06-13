@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Sparkline } from '@cascade-ui/charts'
+import { Sparkline } from '@cascivo/charts'
 
 const meta: Meta<typeof Sparkline> = {
   title: 'Charts/Sparkline',

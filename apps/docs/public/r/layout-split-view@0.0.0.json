@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "split", "resizable", "pane"],
   "category": "layout",
   "meta": {
@@ -73,7 +73,7 @@
         "description": "Two-pane split with draggable divider"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "split", "resizable", "pane"],
     "intent": {
       "whenToUse": [

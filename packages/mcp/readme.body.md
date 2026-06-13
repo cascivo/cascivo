@@ -7,7 +7,7 @@ Add it to your MCP client configuration:
   "mcpServers": {
     "cascade": {
       "command": "npx",
-      "args": ["-y", "@cascade-ui/mcp"]
+      "args": ["-y", "@cascivo/mcp"]
     }
   }
 }
@@ -31,7 +31,7 @@ The server speaks the MCP stdio transport. By default it reads the `registry.jso
 ## Programmatic use
 
 ```ts
-import { createServer } from '@cascade-ui/mcp'
+import { createServer } from '@cascivo/mcp'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
 const server = createServer({ registryPath: './registry.json' })

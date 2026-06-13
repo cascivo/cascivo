@@ -61,7 +61,7 @@ npx cascade add empty-state
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

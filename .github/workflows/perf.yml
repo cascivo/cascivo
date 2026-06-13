@@ -25,13 +25,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Chromium
-        run: pnpm --filter @cascade-ui/docs exec playwright install chromium --with-deps
+        run: pnpm --filter @cascivo/docs exec playwright install chromium --with-deps
 
       - name: Build docs
-        run: pnpm exec vp run @cascade-ui/docs#build
+        run: pnpm exec vp run @cascivo/docs#build
 
       - name: Run latency benchmarks
-        run: pnpm --filter @cascade-ui/docs run test:perf
+        run: pnpm --filter @cascivo/docs run test:perf
         env:
           PERF_SCALE: 10
 

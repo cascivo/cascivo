@@ -1,5 +1,5 @@
 'use client'
-import { Breadcrumb } from '@cascade-ui/react'
+import { Breadcrumb } from '@cascivo/react'
 import { Center } from '../../center/center'
 import { PageHeader } from '../../page-header/page-header'
 

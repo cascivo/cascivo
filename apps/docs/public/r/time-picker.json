@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["time", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -109,7 +109,7 @@
         "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["time", "input", "form"],
     "intent": {
       "whenToUse": [

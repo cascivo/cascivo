@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'CommandMenu',
@@ -65,7 +65,7 @@ export const meta: ComponentMeta = {
       code: `<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'command', 'palette', 'search', 'cmdk', 'keyboard'],
   intent: {
     whenToUse: [

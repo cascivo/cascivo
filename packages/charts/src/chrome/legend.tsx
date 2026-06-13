@@ -1,6 +1,6 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { Signal } from '@preact/signals-react'
 import styles from './legend.module.css'
 

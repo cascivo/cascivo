@@ -1,6 +1,6 @@
 'use client'
-import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { createMachine, signal, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useRef, type ReactNode } from 'react'
 import styles from './toast.module.css'
 

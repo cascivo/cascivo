@@ -97,7 +97,7 @@ export interface Registry {
 // ---------------------------------------------------------------------------
 
 export const AUTHORING_RULES = [
-  'Signals only: useSignal, useComputed, useSignalEffect from @cascade-ui/core',
+  'Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core',
   'No useState, useEffect, useContext, useLayoutEffect, useReducer in components',
   'DOM side effects via useSignalEffect, not useEffect',
   'useRef only for DOM element references',
@@ -106,7 +106,7 @@ export const AUTHORING_RULES = [
   'data-state attributes only for states CSS cannot express (e.g. loading, error)',
   'FSM (useMachine) only when the component itself drives transitions',
   'CSS logical properties throughout (RTL-safe)',
-  'User-visible strings via @cascade-ui/i18n — no hardcoded English fallbacks',
+  'User-visible strings via @cascivo/i18n — no hardcoded English fallbacks',
   'WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested',
 ]
 

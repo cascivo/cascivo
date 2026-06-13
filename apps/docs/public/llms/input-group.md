@@ -76,7 +76,7 @@ npx cascade add input-group
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

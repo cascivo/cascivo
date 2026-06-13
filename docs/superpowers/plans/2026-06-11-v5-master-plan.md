@@ -14,7 +14,7 @@ CSS. T3 adds component capability (new TSX). T4–T5 are app-level. T6 regenerat
 verifies the DoD. Visual snapshots are intentionally broken from T1 until T6 — do not "fix" them
 mid-stream (decision 7).
 
-**Tech stack:** unchanged — vp (vite+), pnpm, signals (`@cascade-ui/core`), CSS modules with
+**Tech stack:** unchanged — vp (vite+), pnpm, signals (`@cascivo/core`), CSS modules with
 `@layer cascade.component`, oklch colors, registry/llms/readme/schema generators, Playwright.
 
 ---
@@ -63,10 +63,10 @@ rendered as _boxed addons_ (bordered, bg-subtle, outside the field) — not inli
 - Theme switching: custom `withTheme` decorator (`.storybook/preview.tsx:19-40`) wraps stories in
   `<div data-theme=…>`. Two defects: (a) Popover-API/top-layer elements (Menu, Tooltip, Modal,
   HeaderPanel…) escape the wrapper → unthemed; (b) document `<html>/<body>` never themed. Themes
-  CSS itself loads fine (each theme `@import`s `@cascade-ui/tokens`).
+  CSS itself loads fine (each theme `@import`s `@cascivo/tokens`).
 - Layout: global `layout: 'fullscreen'` + decorator padding — full-width inputs.
 - Grouping: only 7/63 stories have `title: 'Overlay/…'`; 56 are ungrouped root entries.
-- Charts: zero stories; `@cascade-ui/charts` not a storybook dependency. 16 charts exist:
+- Charts: zero stories; `@cascivo/charts` not a storybook dependency. 16 charts exist:
   area-chart, bar-chart, boxplot, bubble-chart, bullet, combo-chart, heatmap, histogram, kpi,
   line-chart, meter, pie-chart, radar, scatter-chart, sparkline, treemap.
 
@@ -154,8 +154,8 @@ defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
    visual specs are excluded from the gate in T1–T5; they regenerate in T6.
 3. **Lint baseline is 10 warnings** (pre-existing, none in v4/v5 code). Do not add an 11th.
 4. **Components dist rebuilds**: after changing `packages/components`, rebuild
-   `@cascade-ui/react` (`pnpm --filter @cascade-ui/react build`) and, if icons changed,
-   `@cascade-ui/icons` — layouts/storybook consume the dist.
+   `@cascivo/react` (`pnpm --filter @cascivo/react build`) and, if icons changed,
+   `@cascivo/icons` — layouts/storybook consume the dist.
 5. **New registry entries** need: `<name>.meta.ts`, package.json export, react re-export,
    Storybook story, docs demo entry (`apps/docs/src/demos.tsx`), regeneration commit.
 6. **Branch**: create `feature/v5-design` off `main` (after v4 merges) or off `feature/v4-shell`
@@ -179,7 +179,7 @@ defaultTheme, attributeName: 'data-theme', parentSelector: 'html' })`.
 7. **RadioCard arrow keys**: native radios in the same `name` give arrow-key roving for free —
    use real `<input type="radio">`, don't re-implement.
 8. **Preact docs app**: ShellHeader/SideNav/HeaderPanel run on signals + popover API — already
-   proven in `demos.tsx`. But `AppShell` imports `@cascade-ui/storage` (localStorage) — SSR-safe,
+   proven in `demos.tsx`. But `AppShell` imports `@cascivo/storage` (localStorage) — SSR-safe,
    fine in docs. The docs Layout replacement must keep theme switching on `documentElement`.
 9. **Visual spec selector**: `test/visual.spec.ts` screenshots `.preview` — the docs Layout
    rewrite must keep a `.preview` element on component pages or update the spec in the same

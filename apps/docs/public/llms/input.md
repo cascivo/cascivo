@@ -66,7 +66,7 @@ npx cascade add input
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

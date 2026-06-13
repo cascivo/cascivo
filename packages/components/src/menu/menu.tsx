@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, type KeyboardEvent, type ReactNode } from 'react'
-import { useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
 import styles from './menu.module.css'
 

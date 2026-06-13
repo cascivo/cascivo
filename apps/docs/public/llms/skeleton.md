@@ -62,7 +62,7 @@ npx cascade add skeleton
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

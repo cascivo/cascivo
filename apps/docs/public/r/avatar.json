@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["user", "profile", "image"],
   "category": "display",
   "meta": {
@@ -76,7 +76,7 @@
         "code": "<Avatar fallback=\"JD\" status=\"online\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["user", "profile", "image"],
     "intent": {
       "whenToUse": [

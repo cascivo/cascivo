@@ -1,9 +1,9 @@
 'use client'
-import { useComputed, useSignal, useSignals } from '@cascade-ui/core'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
-import { Kbd } from '@cascade-ui/components/kbd'
-import { SegmentedControl } from '@cascade-ui/components/segmented-control'
-import { VisuallyHidden } from '@cascade-ui/components/visually-hidden'
+import { useComputed, useSignal, useSignals } from '@cascivo/core'
+import { DataTable, type Column } from '@cascivo/components/data-table'
+import { Kbd } from '@cascivo/components/kbd'
+import { SegmentedControl } from '@cascivo/components/segmented-control'
+import { VisuallyHidden } from '@cascivo/components/visually-hidden'
 import { A11Y_CATEGORIES, A11Y_COVERED, A11Y_ROWS, KEYBOARD_DOCUMENTED, type A11yRow } from './data'
 
 const COLUMNS: Column<A11yRow>[] = [

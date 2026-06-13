@@ -31,7 +31,7 @@ export default config
 }
 
 export async function init(cwd: string = process.cwd()): Promise<void> {
-  installPackages(['@cascade-ui/core', '@cascade-ui/tokens'], cwd)
+  installPackages(['@cascivo/core', '@cascivo/tokens'], cwd)
 
   const theme = await promptTheme()
 
@@ -40,7 +40,7 @@ export async function init(cwd: string = process.cwd()): Promise<void> {
 
   console.log(`\nCreated cascade.config.ts (theme: ${theme})`)
   console.log('Import the theme in your root CSS or entry file:')
-  console.log(`  import '@cascade-ui/themes/${theme}.css'`)
+  console.log(`  import '@cascivo/themes/${theme}.css'`)
   console.log(`Then set the theme on your root element:`)
   console.log(`  <html data-theme="${theme}">`)
   console.log('\nAdd components with: cascade add <name>')

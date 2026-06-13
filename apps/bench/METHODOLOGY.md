@@ -4,7 +4,7 @@
 
 Three identical consumer apps are compared:
 
-- **cascade** (`bench-app-cascade`, port 4181) — using `@cascade-ui/react` with Preact Signals for
+- **cascade** (`bench-app-cascade`, port 4181) — using `@cascivo/react` with Preact Signals for
   state (idiomatic cascade pattern per the component docs)
 - **shadcn/ui** (`bench-app-shadcn`, port 4182) — using vendored shadcn/ui components with
   Tailwind v4, TanStack Table v8, and React `useState` (per ui.shadcn.com/docs/components/data-table)

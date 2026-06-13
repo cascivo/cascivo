@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'HoverCard',
@@ -22,7 +22,7 @@ export const meta: ComponentMeta = {
     keyboard: ['Tab', 'Escape'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'hover', 'preview', 'floating'],
   intent: {
     whenToUse: [

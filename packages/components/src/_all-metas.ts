@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 import { meta as accordionMeta } from './accordion/accordion.meta'
 import { meta as alertMeta } from './alert/alert.meta'
 import { meta as alertDialogMeta } from './alert-dialog/alert-dialog.meta'

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DatePicker } from '@cascade-ui/components/date-picker'
+import { DatePicker } from '@cascivo/components/date-picker'
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Inputs/DatePicker',

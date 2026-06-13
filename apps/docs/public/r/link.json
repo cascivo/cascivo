@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["link", "anchor", "navigation"],
   "category": "navigation",
   "meta": {
@@ -75,7 +75,7 @@
         "description": "Opens in a new tab with rel=\"noreferrer\" and a visual indicator."
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["link", "anchor", "navigation"],
     "intent": {
       "whenToUse": [

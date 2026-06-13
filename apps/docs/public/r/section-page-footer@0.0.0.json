@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["section", "footer", "navigation"],
   "category": "layout",
   "meta": {
@@ -64,7 +64,7 @@
         "description": "Three-column footer with brand and license meta"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["section", "footer", "navigation"],
     "intent": {
       "whenToUse": [

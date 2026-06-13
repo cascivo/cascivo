@@ -46,7 +46,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
   const fetchFn = options.fetchFn
 
   const server = new McpServer({
-    name: '@cascade-ui/mcp',
+    name: '@cascivo/mcp',
     version: options.version ?? '0.0.0',
   })
 

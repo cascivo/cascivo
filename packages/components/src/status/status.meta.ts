@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Status',
@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
       description: 'The pulse animation respects prefers-reduced-motion',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['status', 'indicator', 'dot', 'badge'],
   intent: {
     whenToUse: [

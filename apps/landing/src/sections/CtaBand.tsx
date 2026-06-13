@@ -1,4 +1,4 @@
-import { Button } from '@cascade-ui/components/button'
+import { Button } from '@cascivo/components/button'
 import { CopyCommand } from './CopyCommand'
 
 export function CtaBand() {

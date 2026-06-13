@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SettingsLayout',
@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
       description: 'Menu + content layout',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'settings', 'page'],
   intent: {
     whenToUse: [

@@ -54,7 +54,7 @@ npx cascade add slider
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

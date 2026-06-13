@@ -1,6 +1,6 @@
-import { signal, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { Badge } from '@cascade-ui/components/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { signal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { Badge } from '@cascivo/components/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@cascivo/components/card'
 
 interface RegistryEntry {
   namespace: string

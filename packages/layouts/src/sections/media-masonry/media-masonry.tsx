@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@cascade-ui/core'
+import { cn } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Masonry } from '../../masonry/masonry'
 import { Section } from '../../section/section'

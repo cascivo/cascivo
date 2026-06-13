@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'EmptyState',
@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
       code: '<EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['empty', 'placeholder', 'zero-state', 'no-data'],
   intent: {
     whenToUse: [

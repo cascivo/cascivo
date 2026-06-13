@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'BarChart',
@@ -49,13 +49,13 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic bar chart',
-      code: `import { BarChart } from '@cascade-ui/charts'
+      code: `import { BarChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'bar', 'data-viz'],
   intent: {
     whenToUse: [

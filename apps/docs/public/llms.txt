@@ -7,7 +7,7 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 
 - Registry JSON: https://cascade-ui.dev/registry.json
 - View schema: https://cascade-ui.dev/view.v1.json
-- MCP server: npx @cascade-ui/mcp
+- MCP server: npx @cascivo/mcp
 - llms.txt: https://cascade-ui.dev/llms.txt
 
 ## MCP tools
@@ -41,7 +41,7 @@ New MCP tools:
 
 ## Component authoring rules (for cascade:extend)
 
-- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`
+- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`
 - No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`
 - DOM side effects via `useSignalEffect`, not `useEffect`
 - `useRef` only for DOM element references
@@ -50,7 +50,7 @@ New MCP tools:
 - `data-state` attributes only for states CSS cannot express (e.g. loading, error)
 - FSM (`useMachine`) only when the component itself drives transitions
 - CSS logical properties throughout (RTL-safe): `margin-inline-start`, etc.
-- User-visible strings via `@cascade-ui/i18n` — no hardcoded English fallbacks
+- User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested
 
 ## Component index

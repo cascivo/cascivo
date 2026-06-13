@@ -1,6 +1,6 @@
 'use client'
 import { useId } from 'react'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { squarify } from '../../engine/treemap'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
   "category": "navigation",
   "meta": {
@@ -61,7 +61,7 @@
         "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
     "intent": {
       "whenToUse": [

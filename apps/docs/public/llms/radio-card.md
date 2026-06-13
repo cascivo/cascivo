@@ -56,7 +56,7 @@ Single-select plan picker
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

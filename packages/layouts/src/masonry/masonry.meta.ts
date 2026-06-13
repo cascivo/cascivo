@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Masonry',
@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
       description: 'Variable-height cards laid out in a masonry pattern; falls back to CSS columns',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'masonry', 'gallery'],
   intent: {
     whenToUse: [

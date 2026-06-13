@@ -62,7 +62,7 @@ Compose multiple keys to show a shortcut
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

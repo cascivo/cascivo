@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Search } from '@cascade-ui/components/search'
+import { Search } from '@cascivo/components/search'
 
 const meta: Meta<typeof Search> = {
   title: 'Inputs/Search',

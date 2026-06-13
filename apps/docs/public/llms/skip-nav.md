@@ -60,8 +60,8 @@ SkipNavLink must be the first focusable element on the page
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

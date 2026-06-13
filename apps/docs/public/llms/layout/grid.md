@@ -44,7 +44,7 @@ npx cascade add layout/grid
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

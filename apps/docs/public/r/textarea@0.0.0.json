@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "text", "multiline"],
   "category": "inputs",
   "meta": {
@@ -82,7 +82,7 @@
         "code": "<Textarea label=\"Bio\" error=\"Bio is required\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "text", "multiline"],
     "intent": {
       "whenToUse": [

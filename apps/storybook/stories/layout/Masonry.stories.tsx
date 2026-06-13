@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Masonry } from '@cascade-ui/layouts/masonry'
+import { Masonry } from '@cascivo/layouts/masonry'
 
 const meta: Meta<typeof Masonry> = {
   title: 'Layout/Masonry',

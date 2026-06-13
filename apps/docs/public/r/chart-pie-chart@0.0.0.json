@@ -5,10 +5,10 @@
   "description": "Pie or donut chart with hover segments and optional legend.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "pie", "donut", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "PieChart",
     "description": "Pie or donut chart with hover segments and optional legend.",
@@ -86,10 +86,10 @@
     "examples": [
       {
         "title": "Basic pie chart",
-        "code": "import { PieChart } from '@cascade-ui/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+        "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "pie", "donut", "data-viz"],
     "intent": {
       "whenToUse": [

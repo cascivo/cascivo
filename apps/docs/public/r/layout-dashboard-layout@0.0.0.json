@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "dashboard", "page"],
   "category": "layout",
   "meta": {
@@ -55,7 +55,7 @@
         "description": "Stats + main layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "dashboard", "page"],
     "intent": {
       "whenToUse": [

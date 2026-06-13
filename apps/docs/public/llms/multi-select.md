@@ -62,8 +62,8 @@ npx cascade add multi-select
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

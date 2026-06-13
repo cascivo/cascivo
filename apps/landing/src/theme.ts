@@ -1,5 +1,5 @@
-import { effect } from '@cascade-ui/core'
-import { persistedSignal } from '@cascade-ui/storage'
+import { effect } from '@cascivo/core'
+import { persistedSignal } from '@cascivo/storage'
 
 export const THEMES = [
   'light',

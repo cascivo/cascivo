@@ -36,7 +36,7 @@ Demo users table
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/page-header`
 - `layout/stack`
 

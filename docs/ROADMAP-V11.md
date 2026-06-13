@@ -171,7 +171,7 @@ v11's deliverables make these seven claims true and loud:
       rendering behind an opt-in prop).
 - [ ] `createForm` accepts any Standard Schema validator (zod/valibot/arktype verified in
       tests); built-in validation messages come from the i18n catalog.
-- [ ] `tokens.dtcg.json` (spec 2025.10) is generated from `@cascade-ui/tokens` and
+- [ ] `tokens.dtcg.json` (spec 2025.10) is generated from `@cascivo/tokens` and
       published; `cascade tokens import <file>` produces a working theme from a DTCG file.
 - [ ] `llms-full.txt` is generated and published; docs ship an agent-integration guide and
       a generated per-component a11y conformance page; the "why cascade" page states the

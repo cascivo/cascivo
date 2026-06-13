@@ -29,7 +29,7 @@ npx cascade add chart/boxplot
 ### Basic boxplot
 
 ```tsx
-import { Boxplot } from '@cascade-ui/charts'
+import { Boxplot } from '@cascivo/charts'
 
 const series = [
   { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },
@@ -56,7 +56,7 @@ const series = [
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

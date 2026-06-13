@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "menu", "dropdown", "floating"],
   "category": "overlay",
   "meta": {
@@ -38,7 +38,7 @@
       "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "menu", "dropdown", "floating"],
     "intent": {
       "whenToUse": [

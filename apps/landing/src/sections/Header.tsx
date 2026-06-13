@@ -1,6 +1,6 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
-import { ShellHeader } from '@cascade-ui/components/shell-header'
+import { useSignals } from '@cascivo/core'
+import { ShellHeader } from '@cascivo/components/shell-header'
 import { THEMES, setTheme, theme } from '../theme'
 
 const path = typeof window !== 'undefined' ? window.location.pathname : '/'

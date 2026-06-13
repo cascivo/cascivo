@@ -1,6 +1,6 @@
 'use client'
-import { batch, cn, signal, useSignal, useSignals } from '@cascade-ui/core'
-import type { Signal } from '@cascade-ui/core'
+import { batch, cn, signal, useSignal, useSignals } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
 import type { FormHTMLAttributes, ReactNode } from 'react'
 import type { StandardSchemaV1 } from './standard-schema'
 import styles from './form.module.css'

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'List',
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       description: 'Keeps list semantics without visual markers',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'list', 'ul', 'ol'],
   intent: {
     whenToUse: [

@@ -12,7 +12,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "collapse", "disclosure"],
       "meta": {
         "name": "Accordion",
@@ -65,7 +65,7 @@
             "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["navigation", "collapse", "disclosure"],
         "intent": {
           "whenToUse": [
@@ -117,7 +117,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["notification", "message", "feedback"],
       "meta": {
         "name": "Alert",
@@ -189,7 +189,7 @@
             "code": "<Alert variant=\"warning\" title=\"Update available\" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["notification", "message", "feedback"],
         "intent": {
           "whenToUse": [
@@ -250,7 +250,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "dialog", "confirm", "destructive"],
       "meta": {
         "name": "AlertDialog",
@@ -276,7 +276,7 @@
           "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "dialog", "confirm", "destructive"],
         "intent": {
           "whenToUse": [
@@ -350,7 +350,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["user", "profile", "image"],
       "meta": {
         "name": "Avatar",
@@ -413,7 +413,7 @@
             "code": "<Avatar fallback=\"JD\" status=\"online\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["user", "profile", "image"],
         "intent": {
           "whenToUse": [
@@ -465,7 +465,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["label", "status", "tag"],
       "meta": {
         "name": "Badge",
@@ -515,7 +515,7 @@
             "code": "<Badge variant=\"destructive\">Deprecated</Badge>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["label", "status", "tag"],
         "intent": {
           "whenToUse": [
@@ -571,7 +571,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "quote", "blockquote", "citation"],
       "meta": {
         "name": "Blockquote",
@@ -614,7 +614,7 @@
             "description": "Attribution renders as <footer><cite>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "quote", "blockquote", "citation"],
         "intent": {
           "whenToUse": [
@@ -669,7 +669,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["breadcrumb", "navigation", "hierarchy"],
       "meta": {
         "name": "Breadcrumb",
@@ -725,7 +725,7 @@
             "description": "Long trails collapse to the first item, an ellipsis, and the trailing items."
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["breadcrumb", "navigation", "hierarchy"],
         "intent": {
           "whenToUse": [
@@ -781,7 +781,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["action", "form", "interactive"],
       "meta": {
         "name": "Button",
@@ -852,7 +852,7 @@
             "code": "<Button variant=\"destructive\">Delete</Button>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["action", "form", "interactive"],
         "intent": {
           "whenToUse": [
@@ -912,7 +912,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["container", "layout", "surface"],
       "meta": {
         "name": "Card",
@@ -952,7 +952,7 @@
             "code": "<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["container", "layout", "surface"],
         "intent": {
           "whenToUse": [
@@ -1004,7 +1004,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "toggle", "boolean"],
       "meta": {
         "name": "Checkbox",
@@ -1068,7 +1068,7 @@
             "code": "<Checkbox label=\"Select all\" indeterminate />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "toggle", "boolean"],
         "intent": {
           "whenToUse": [
@@ -1135,7 +1135,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["checkbox", "card", "selectable", "form"],
       "meta": {
         "name": "CheckboxCard",
@@ -1195,7 +1195,7 @@
             "description": "Multi-select feature toggles"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["checkbox", "card", "selectable", "form"],
         "intent": {
           "whenToUse": [
@@ -1259,7 +1259,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "code", "inline", "mono"],
       "meta": {
         "name": "Code",
@@ -1305,7 +1305,7 @@
             "code": "<Code size=\"sm\">--cascivo-color-accent</Code>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "code", "inline", "mono"],
         "intent": {
           "whenToUse": [
@@ -1361,7 +1361,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["select", "combobox", "dropdown", "filter", "search"],
       "meta": {
         "name": "Combobox",
@@ -1470,7 +1470,7 @@
             "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onChange={(value) => console.log(value)}\n/>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["select", "combobox", "dropdown", "filter", "search"],
         "intent": {
           "whenToUse": [
@@ -1541,7 +1541,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
       "meta": {
         "name": "CommandMenu",
@@ -1634,7 +1634,7 @@
             "code": "<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
         "intent": {
           "whenToUse": [
@@ -1709,7 +1709,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "context", "right-click"],
       "meta": {
         "name": "ContextMenu",
@@ -1734,7 +1734,7 @@
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "menu", "context", "right-click"],
         "intent": {
           "whenToUse": [
@@ -1790,7 +1790,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["clipboard", "copy", "button", "snippet"],
       "meta": {
         "name": "CopyButton",
@@ -1851,7 +1851,7 @@
             "description": "Override the built-in copy/copied strings per instance"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["clipboard", "copy", "button", "snippet"],
         "intent": {
           "whenToUse": [
@@ -1911,7 +1911,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
       "meta": {
         "name": "DataTable",
@@ -2072,7 +2072,7 @@
             "code": "<DataTable\n  columns={columns}\n  rows={rows}\n  getRowId={(r) => r.id}\n  searchable\n  pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}\n  selection={{ mode: 'multi', onChange: setSelected }}\n  batchActions={[{ label: 'Delete', onClick: deleteRows }]}\n  stickyHeader\n  zebra\n/>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
         "intent": {
           "whenToUse": [
@@ -2129,7 +2129,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "calendar", "picker", "input", "form"],
       "meta": {
         "name": "DatePicker",
@@ -2249,7 +2249,7 @@
             "description": "Date range constraint"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["date", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -2315,7 +2315,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "actions"],
       "meta": {
         "name": "Dropdown",
@@ -2378,7 +2378,7 @@
             "code": "<Dropdown trigger={<Button>Actions</Button>} items={[{ label: \"Edit\", value: \"edit\" }]} onSelect={handle} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "menu", "actions"],
         "intent": {
           "whenToUse": [
@@ -2444,7 +2444,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "editable", "inline", "input", "text"],
       "meta": {
         "name": "Editable",
@@ -2512,7 +2512,7 @@
             "code": "<Editable value=\"\" onValueChange={() => {}} placeholder=\"Enter text\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "editable", "inline", "input", "text"],
         "intent": {
           "whenToUse": [
@@ -2574,7 +2574,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
       "meta": {
         "name": "EmptyState",
@@ -2633,7 +2633,7 @@
             "code": "<EmptyState icon=\"📄\" title=\"No documents yet\" description=\"Create your first document to get started.\" action={<Button>New document</Button>} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["empty", "placeholder", "zero-state", "no-data"],
         "intent": {
           "whenToUse": [
@@ -2694,7 +2694,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
       "meta": {
         "name": "FileUploader",
@@ -2800,7 +2800,7 @@
             "description": "Shows file list"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["upload", "file", "drop", "drag", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -2871,7 +2871,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "validation", "signals", "input"],
       "meta": {
         "name": "Form",
@@ -2914,7 +2914,7 @@
             "code": "function Demo() {\n  const form = useForm({\n    initialValues: { email: '' },\n    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },\n  })\n  const email = form.field('email')\n  return (\n    <Form form={form} onValid={console.log}>\n      <Input\n        label=\"Email\"\n        value={email.value}\n        onChange={(e) => email.onChange(e.currentTarget.value)}\n        onBlur={email.onBlur}\n        error={email.error}\n      />\n      <Button type=\"submit\">Save</Button>\n    </Form>\n  )\n}"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "validation", "signals", "input"],
         "intent": {
           "whenToUse": [
@@ -2976,7 +2976,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
       "meta": {
         "name": "Header",
@@ -3045,7 +3045,7 @@
             "code": "<Header sticky brand=\"cascade\" links={links} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["navigation", "app-shell", "top-bar", "banner"],
         "intent": {
           "whenToUse": [
@@ -3097,7 +3097,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
       "meta": {
         "name": "HeaderPanel",
@@ -3162,7 +3162,7 @@
             "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
         "intent": {
           "whenToUse": [
@@ -3219,7 +3219,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "heading", "title"],
       "meta": {
         "name": "Heading",
@@ -3274,7 +3274,7 @@
             "description": "Keep the document outline correct while controlling the visual scale"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "heading", "title"],
         "intent": {
           "whenToUse": [
@@ -3334,7 +3334,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "hover", "preview", "floating"],
       "meta": {
         "name": "HoverCard",
@@ -3358,7 +3358,7 @@
           "keyboard": ["Tab", "Escape"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "hover", "preview", "floating"],
         "intent": {
           "whenToUse": [
@@ -3421,7 +3421,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "text", "input"],
       "meta": {
         "name": "Input",
@@ -3489,7 +3489,7 @@
             "code": "<Input label=\"Email\" error=\"Invalid email address\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "text", "input"],
         "intent": {
           "whenToUse": [
@@ -3561,7 +3561,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "input", "addon", "group", "layout"],
       "meta": {
         "name": "InputGroup",
@@ -3616,7 +3616,7 @@
             "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "input", "addon", "group", "layout"],
         "intent": {
           "whenToUse": [
@@ -3678,7 +3678,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["keyboard", "shortcut", "hotkey"],
       "meta": {
         "name": "Kbd",
@@ -3722,7 +3722,7 @@
             "code": "<Kbd size=\"sm\">Esc</Kbd>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["keyboard", "shortcut", "hotkey"],
         "intent": {
           "whenToUse": [
@@ -3773,7 +3773,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["link", "anchor", "navigation"],
       "meta": {
         "name": "Link",
@@ -3835,7 +3835,7 @@
             "description": "Opens in a new tab with rel=\"noreferrer\" and a visual indicator."
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["link", "anchor", "navigation"],
         "intent": {
           "whenToUse": [
@@ -3891,7 +3891,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "list", "ul", "ol"],
       "meta": {
         "name": "List",
@@ -3942,7 +3942,7 @@
             "description": "Keeps list semantics without visual markers"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "list", "ul", "ol"],
         "intent": {
           "whenToUse": [
@@ -3994,7 +3994,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "dropdown", "floating"],
       "meta": {
         "name": "Menu",
@@ -4019,7 +4019,7 @@
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "menu", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -4087,7 +4087,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "dialog", "popup"],
       "meta": {
         "name": "Modal",
@@ -4146,7 +4146,7 @@
             "code": "<Modal open={isOpen} onClose={() => setIsOpen(false)} title=\"Confirm action\">\n  <p>Are you sure?</p>\n</Modal>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "dialog", "popup"],
         "intent": {
           "whenToUse": [
@@ -4218,7 +4218,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "select", "multi", "input", "popover"],
       "meta": {
         "name": "MultiSelect",
@@ -4281,7 +4281,7 @@
             "code": "<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["form", "select", "multi", "input", "popover"],
         "intent": {
           "whenToUse": [
@@ -4353,7 +4353,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
       "meta": {
         "name": "NumberInput",
@@ -4476,7 +4476,7 @@
             "code": "<NumberInput label=\"Opacity\" min={0} max={1} step={0.1} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["form", "number", "input", "spinbutton", "stepper"],
         "intent": {
           "whenToUse": [
@@ -4539,7 +4539,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "otp", "code", "input", "verification"],
       "meta": {
         "name": "OtpInput",
@@ -4601,7 +4601,7 @@
             "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["form", "otp", "code", "input", "verification"],
         "intent": {
           "whenToUse": [
@@ -4659,7 +4659,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "meta": {
         "name": "OverflowMenu",
@@ -4733,7 +4733,7 @@
             "code": "<OverflowMenu size=\"sm\" placement=\"bottom-start\" items={items} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
         "intent": {
           "whenToUse": [
@@ -4799,7 +4799,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["pagination", "navigation", "table", "data", "pages"],
       "meta": {
         "name": "Pagination",
@@ -4888,7 +4888,7 @@
             "code": "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["pagination", "navigation", "table", "data", "pages"],
         "intent": {
           "whenToUse": [
@@ -4945,7 +4945,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "password", "input", "security"],
       "meta": {
         "name": "PasswordInput",
@@ -5019,7 +5019,7 @@
             "code": "<PasswordInput showStrengthMeter placeholder=\"Create password\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["form", "password", "input", "security"],
         "intent": {
           "whenToUse": [
@@ -5079,7 +5079,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "floating", "anchor", "popover"],
       "meta": {
         "name": "Popover",
@@ -5103,7 +5103,7 @@
           "keyboard": ["Escape"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "floating", "anchor", "popover"],
         "intent": {
           "whenToUse": [
@@ -5165,7 +5165,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["progress", "loading", "status", "feedback"],
       "meta": {
         "name": "ProgressBar",
@@ -5241,7 +5241,7 @@
             "code": "<ProgressBar value={100} status=\"success\" label=\"Upload complete\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["progress", "loading", "status", "feedback"],
         "intent": {
           "whenToUse": [
@@ -5299,7 +5299,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["progress", "loading", "circle", "feedback"],
       "meta": {
         "name": "ProgressCircle",
@@ -5361,7 +5361,7 @@
             "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["progress", "loading", "circle", "feedback"],
         "intent": {
           "whenToUse": [
@@ -5419,7 +5419,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-indicator/progress-indicator.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-indicator/progress-indicator.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
       "meta": {
         "name": "ProgressIndicator",
@@ -5479,7 +5479,7 @@
             "code": "<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
         "intent": {
           "whenToUse": [
@@ -5535,7 +5535,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "prose", "content", "markdown", "article"],
       "meta": {
         "name": "Prose",
@@ -5578,7 +5578,7 @@
             "description": "The use case: HTML you do not control (CMS, markdown pipelines)"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "prose", "content", "markdown", "article"],
         "intent": {
           "whenToUse": [
@@ -5634,7 +5634,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "choice", "group"],
       "meta": {
         "name": "Radio",
@@ -5688,7 +5688,7 @@
             "code": "<RadioGroup name=\"plan\" defaultValue=\"pro\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "choice", "group"],
         "intent": {
           "whenToUse": [
@@ -5750,7 +5750,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["radio", "card", "selectable", "form"],
       "meta": {
         "name": "RadioCard",
@@ -5803,7 +5803,7 @@
             "description": "Single-select plan picker"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["radio", "card", "selectable", "form"],
         "intent": {
           "whenToUse": [
@@ -5865,7 +5865,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "rating", "stars", "input", "feedback"],
       "meta": {
         "name": "RatingGroup",
@@ -5936,7 +5936,7 @@
             "code": "<RatingGroup value={4} readOnly />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "rating", "stars", "input", "feedback"],
         "intent": {
           "whenToUse": [
@@ -5993,7 +5993,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["search", "input", "filter", "form"],
       "meta": {
         "name": "Search",
@@ -6101,7 +6101,7 @@
             "code": "<Search size=\"lg\" placeholder=\"Search products…\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["search", "input", "filter", "form"],
         "intent": {
           "whenToUse": [
@@ -6162,7 +6162,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "toggle", "group", "segmented", "input"],
       "meta": {
         "name": "SegmentedControl",
@@ -6220,7 +6220,7 @@
             "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "toggle", "group", "segmented", "input"],
         "intent": {
           "whenToUse": [
@@ -6282,7 +6282,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "dropdown", "menu"],
       "meta": {
         "name": "Select",
@@ -6355,7 +6355,7 @@
             "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "dropdown", "menu"],
         "intent": {
           "whenToUse": [
@@ -6418,7 +6418,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["divider", "rule", "layout"],
       "meta": {
         "name": "Separator",
@@ -6458,7 +6458,7 @@
             "code": "<Separator orientation=\"vertical\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["divider", "rule", "layout"],
         "intent": {
           "whenToUse": [
@@ -6510,7 +6510,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "drawer", "panel", "slide"],
       "meta": {
         "name": "Sheet",
@@ -6534,7 +6534,7 @@
           "keyboard": ["Escape", "Tab", "Shift+Tab"]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "drawer", "panel", "slide"],
         "intent": {
           "whenToUse": [
@@ -6591,7 +6591,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
       "meta": {
         "name": "ShellHeader",
@@ -6672,7 +6672,7 @@
             "description": "Brand with prefix, dropdown nav, global icon action"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -6734,7 +6734,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "meta": {
         "name": "SideNav",
@@ -6845,7 +6845,7 @@
             "description": "Rail widens as CSS overlay on hover without reflowing adjacent content"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
         "intent": {
           "whenToUse": [
@@ -6897,7 +6897,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["loading", "placeholder", "shimmer"],
       "meta": {
         "name": "Skeleton",
@@ -6959,7 +6959,7 @@
             "code": "<Skeleton variant=\"rect\" height=\"12rem\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["loading", "placeholder", "shimmer"],
         "intent": {
           "whenToUse": [
@@ -7016,7 +7016,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
       "meta": {
         "name": "SkipNav",
@@ -7070,7 +7070,7 @@
             "code": "<><SkipNavLink targetId=\"main-content\" /><SkipNavTarget id=\"main-content\" /></>"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
         "intent": {
           "whenToUse": [
@@ -7126,7 +7126,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "range", "input"],
       "meta": {
         "name": "Slider",
@@ -7200,7 +7200,7 @@
             "code": "<Slider label=\"Rating\" min={0} max={5} step={1} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "range", "input"],
         "intent": {
           "whenToUse": [
@@ -7257,7 +7257,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["loading", "progress", "feedback"],
       "meta": {
         "name": "Spinner",
@@ -7298,7 +7298,7 @@
             "code": "<Spinner size=\"lg\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["loading", "progress", "feedback"],
         "intent": {
           "whenToUse": [
@@ -7355,7 +7355,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["stat", "kpi", "metric", "number"],
       "meta": {
         "name": "Stat",
@@ -7422,7 +7422,7 @@
             "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["stat", "kpi", "metric", "number"],
         "intent": {
           "whenToUse": [
@@ -7478,7 +7478,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["status", "indicator", "dot", "badge"],
       "meta": {
         "name": "Status",
@@ -7531,7 +7531,7 @@
             "description": "The pulse animation respects prefers-reduced-motion"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["status", "indicator", "dot", "badge"],
         "intent": {
           "whenToUse": [
@@ -7592,7 +7592,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
       "meta": {
         "name": "Switcher",
@@ -7640,7 +7640,7 @@
             "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
         "intent": {
           "whenToUse": [
@@ -7692,7 +7692,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "tabs", "sections"],
       "meta": {
         "name": "Tabs",
@@ -7739,7 +7739,7 @@
             "code": "<Tabs defaultValue=\"account\"><TabsList><TabsTrigger value=\"account\">Account</TabsTrigger></TabsList><TabsContent value=\"account\">…</TabsContent></Tabs>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["navigation", "tabs", "sections"],
         "intent": {
           "whenToUse": [
@@ -7796,7 +7796,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["chip", "label", "filter", "category"],
       "meta": {
         "name": "Tag",
@@ -7865,7 +7865,7 @@
             "description": "Renders a trailing remove button labeled by dismissLabel"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["chip", "label", "filter", "category"],
         "intent": {
           "whenToUse": [
@@ -7926,7 +7926,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "tags", "chips", "multi", "input"],
       "meta": {
         "name": "TagsInput",
@@ -7989,7 +7989,7 @@
             "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag…\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["form", "tags", "chips", "multi", "input"],
         "intent": {
           "whenToUse": [
@@ -8050,7 +8050,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["typography", "text", "paragraph", "body"],
       "meta": {
         "name": "Text",
@@ -8117,7 +8117,7 @@
             "description": "Use as=\"span\" inside other flow content"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["typography", "text", "paragraph", "body"],
         "intent": {
           "whenToUse": [
@@ -8173,7 +8173,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["form", "text", "multiline"],
       "meta": {
         "name": "Textarea",
@@ -8242,7 +8242,7 @@
             "code": "<Textarea label=\"Bio\" error=\"Bio is required\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["form", "text", "multiline"],
         "intent": {
           "whenToUse": [
@@ -8303,7 +8303,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["time", "input", "form"],
       "meta": {
         "name": "TimePicker",
@@ -8399,7 +8399,7 @@
             "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["time", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -8456,7 +8456,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
         "name": "Toast",
@@ -8510,7 +8510,7 @@
             "code": "const { toast } = useToast()\ntoast({ title: \"Saved\", variant: \"success\" })"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "notification", "feedback"],
         "intent": {
           "whenToUse": [
@@ -8571,7 +8571,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["switch", "form", "boolean"],
       "meta": {
         "name": "Toggle",
@@ -8640,7 +8640,7 @@
             "code": "<Toggle checked={enabled} onChange={setEnabled} label=\"Dark mode\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["switch", "form", "boolean"],
         "intent": {
           "whenToUse": [
@@ -8697,7 +8697,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "hint", "popover"],
       "meta": {
         "name": "Tooltip",
@@ -8751,7 +8751,7 @@
             "code": "<Tooltip content=\"Copy to clipboard\"><Button>Copy</Button></Tooltip>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "hint", "popover"],
         "intent": {
           "whenToUse": [
@@ -8818,7 +8818,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
       "meta": {
         "name": "VisuallyHidden",
@@ -8852,7 +8852,7 @@
             "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
         "intent": {
           "whenToUse": [
@@ -8908,7 +8908,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
       "tags": ["layout", "shell", "sidebar", "navigation"],
       "meta": {
         "name": "AppShell",
@@ -8981,7 +8981,7 @@
             "description": "App shell with collapsible nav"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
         "tags": ["layout", "shell", "sidebar", "navigation"],
         "intent": {
           "whenToUse": [
@@ -9020,7 +9020,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "auth", "login", "page"],
       "meta": {
         "name": "AuthLayout",
@@ -9064,7 +9064,7 @@
             "description": "Centered auth card with logo"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "auth", "login", "page"],
         "intent": {
           "whenToUse": [
@@ -9103,7 +9103,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "responsive"],
       "meta": {
         "name": "AutoGrid",
@@ -9141,7 +9141,7 @@
             "description": "Items fill available space and wrap when narrower than 12rem"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "grid", "responsive"],
         "intent": {
           "whenToUse": [
@@ -9175,7 +9175,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "center", "wrapper"],
       "meta": {
         "name": "Center",
@@ -9205,7 +9205,7 @@
             "description": "Centered container with custom max-width"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "center", "wrapper"],
         "intent": {
           "whenToUse": [
@@ -9244,7 +9244,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "columns"],
       "meta": {
         "name": "Columns",
@@ -9280,7 +9280,7 @@
             "description": "Three equal columns"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "grid", "columns"],
         "intent": {
           "whenToUse": [
@@ -9319,7 +9319,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "dashboard", "page"],
       "meta": {
         "name": "DashboardLayout",
@@ -9361,7 +9361,7 @@
             "description": "Stats + main layout"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "dashboard", "page"],
         "intent": {
           "whenToUse": [
@@ -9400,7 +9400,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "grid", "columns"],
       "meta": {
         "name": "Grid",
@@ -9442,7 +9442,7 @@
             "description": "3-column grid with spanning item"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "grid", "columns"],
         "intent": {
           "whenToUse": [
@@ -9481,7 +9481,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "masonry", "gallery"],
       "meta": {
         "name": "Masonry",
@@ -9519,7 +9519,7 @@
             "description": "Variable-height cards laid out in a masonry pattern; falls back to CSS columns"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "masonry", "gallery"],
         "intent": {
           "whenToUse": [
@@ -9558,7 +9558,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "header", "page"],
       "meta": {
         "name": "PageHeader",
@@ -9620,7 +9620,7 @@
             "description": "Title with description"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "header", "page"],
         "intent": {
           "whenToUse": [
@@ -9659,7 +9659,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "section", "page"],
       "meta": {
         "name": "Section",
@@ -9697,7 +9697,7 @@
             "description": "Centered 72rem content column with 2rem block padding"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "section", "page"],
         "intent": {
           "whenToUse": [
@@ -9736,7 +9736,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "settings", "page"],
       "meta": {
         "name": "SettingsLayout",
@@ -9772,7 +9772,7 @@
             "description": "Menu + content layout"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "settings", "page"],
         "intent": {
           "whenToUse": [
@@ -9811,7 +9811,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "spacer", "spacing"],
       "meta": {
         "name": "Spacer",
@@ -9841,7 +9841,7 @@
             "description": "Adds vertical space between elements"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "spacer", "spacing"],
         "intent": {
           "whenToUse": [
@@ -9875,7 +9875,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "split", "resizable", "pane"],
       "meta": {
         "name": "SplitView",
@@ -9935,7 +9935,7 @@
             "description": "Two-pane split with draggable divider"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "split", "resizable", "pane"],
         "intent": {
           "whenToUse": [
@@ -9969,7 +9969,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["layout", "flex", "stack", "spacing"],
       "meta": {
         "name": "Stack",
@@ -10028,7 +10028,7 @@
             "description": "Row layout"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["layout", "flex", "stack", "spacing"],
         "intent": {
           "whenToUse": [
@@ -10067,8 +10067,8 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
       ],
       "dependencies": [
-        "@cascade-ui/react",
-        "@cascade-ui/icons",
+        "@cascivo/react",
+        "@cascivo/icons",
         "layout/app-shell",
         "layout/page-header"
       ],
@@ -10104,8 +10104,8 @@
           }
         ],
         "dependencies": [
-          "@cascade-ui/react",
-          "@cascade-ui/icons",
+          "@cascivo/react",
+          "@cascivo/icons",
           "layout/app-shell",
           "layout/page-header"
         ],
@@ -10146,7 +10146,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
       ],
-      "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+      "dependencies": ["@cascivo/charts", "@cascivo/react"],
       "tags": ["block", "dashboard", "charts", "kpi"],
       "meta": {
         "name": "DashboardCharts",
@@ -10169,7 +10169,7 @@
             "description": "Charts dashboard demo"
           }
         ],
-        "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
+        "dependencies": ["@cascivo/charts", "@cascivo/react"],
         "tags": ["block", "dashboard", "charts", "kpi"],
         "intent": {
           "whenToUse": [
@@ -10207,7 +10207,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
       "tags": ["block", "dashboard", "empty-state", "page"],
       "meta": {
         "name": "EmptyDashboard",
@@ -10237,7 +10237,7 @@
             "description": "Empty dashboard"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
+        "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
         "tags": ["block", "dashboard", "empty-state", "page"],
         "intent": {
           "whenToUse": [
@@ -10270,7 +10270,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react", "layout/auth-layout"],
       "tags": ["block", "login", "auth", "form", "page"],
       "meta": {
         "name": "LoginPage",
@@ -10300,7 +10300,7 @@
             "description": "Login page"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+        "dependencies": ["@cascivo/react", "layout/auth-layout"],
         "tags": ["block", "login", "auth", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -10333,7 +10333,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/stack"],
+      "dependencies": ["@cascivo/react", "layout/stack"],
       "tags": ["block", "notifications", "alerts"],
       "meta": {
         "name": "NotificationCenter",
@@ -10369,7 +10369,7 @@
             "description": "Notification center"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/stack"],
+        "dependencies": ["@cascivo/react", "layout/stack"],
         "tags": ["block", "notifications", "alerts"],
         "intent": {
           "whenToUse": [
@@ -10402,7 +10402,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "meta": {
         "name": "PageWithBreadcrumb",
@@ -10425,7 +10425,7 @@
             "description": "Page with breadcrumb"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+        "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
         "tags": ["block", "breadcrumb", "page", "navigation"],
         "intent": {
           "whenToUse": [
@@ -10458,7 +10458,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react", "layout/settings-layout"],
       "tags": ["block", "settings", "form", "page"],
       "meta": {
         "name": "SettingsFormPage",
@@ -10488,7 +10488,7 @@
             "description": "Settings form page"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+        "dependencies": ["@cascivo/react", "layout/settings-layout"],
         "tags": ["block", "settings", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -10521,7 +10521,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react", "layout/app-shell"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "meta": {
         "name": "SidebarApp",
@@ -10544,7 +10544,7 @@
             "description": "App with sidebar navigation"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+        "dependencies": ["@cascivo/react", "layout/app-shell"],
         "tags": ["block", "sidebar", "navigation", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -10582,7 +10582,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
       ],
-      "dependencies": ["@cascade-ui/react"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "stats", "kpi", "cards"],
       "meta": {
         "name": "StatsCards",
@@ -10612,7 +10612,7 @@
             "description": "Demo KPI stats"
           }
         ],
-        "dependencies": ["@cascade-ui/react"],
+        "dependencies": ["@cascivo/react"],
         "tags": ["block", "stats", "kpi", "cards"],
         "intent": {
           "whenToUse": [
@@ -10650,7 +10650,7 @@
       "files": [
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
       ],
-      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
       "tags": ["block", "users", "table", "page"],
       "meta": {
         "name": "UsersTablePage",
@@ -10686,7 +10686,7 @@
             "description": "Demo users table"
           }
         ],
-        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+        "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
         "tags": ["block", "users", "table", "page"],
         "intent": {
           "whenToUse": [
@@ -10717,7 +10717,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "area", "data-viz"],
       "meta": {
         "name": "AreaChart",
@@ -10837,10 +10837,10 @@
         "examples": [
           {
             "title": "Basic area chart",
-            "code": "import { AreaChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+            "code": "import { AreaChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "area", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -10868,7 +10868,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/bar-chart",
@@ -10877,7 +10877,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "bar", "data-viz"],
       "meta": {
         "name": "BarChart",
@@ -10982,10 +10982,10 @@
         "examples": [
           {
             "title": "Basic bar chart",
-            "code": "import { BarChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
+            "code": "import { BarChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "bar", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11013,7 +11013,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/boxplot",
@@ -11022,7 +11022,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
       "meta": {
         "name": "Boxplot",
@@ -11090,10 +11090,10 @@
         "examples": [
           {
             "title": "Basic boxplot",
-            "code": "import { Boxplot } from '@cascade-ui/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
+            "code": "import { Boxplot } from '@cascivo/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11121,7 +11121,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/bubble-chart",
@@ -11130,7 +11130,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
       "meta": {
         "name": "BubbleChart",
@@ -11208,10 +11208,10 @@
         "examples": [
           {
             "title": "Basic bubble chart",
-            "code": "import { BubbleChart } from '@cascade-ui/charts'\n\nconst series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]\n<BubbleChart series={series} title=\"Bubble\" />"
+            "code": "import { BubbleChart } from '@cascivo/charts'\n\nconst series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]\n<BubbleChart series={series} title=\"Bubble\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11234,7 +11234,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/bullet",
@@ -11243,7 +11243,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
       "meta": {
         "name": "Bullet",
@@ -11320,10 +11320,10 @@
         "examples": [
           {
             "title": "Basic bullet chart",
-            "code": "import { Bullet } from '@cascade-ui/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
+            "code": "import { Bullet } from '@cascivo/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11351,7 +11351,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/combo-chart",
@@ -11360,7 +11360,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
       "meta": {
         "name": "ComboChart",
@@ -11442,10 +11442,10 @@
         "examples": [
           {
             "title": "Basic combo chart",
-            "code": "import { ComboChart } from '@cascade-ui/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
+            "code": "import { ComboChart } from '@cascivo/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11473,7 +11473,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/heatmap",
@@ -11482,7 +11482,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
       "meta": {
         "name": "Heatmap",
@@ -11541,10 +11541,10 @@
         "examples": [
           {
             "title": "Basic heatmap",
-            "code": "import { Heatmap } from '@cascade-ui/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+            "code": "import { Heatmap } from '@cascivo/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "heatmap", "matrix", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11567,7 +11567,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/histogram",
@@ -11576,7 +11576,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "meta": {
         "name": "Histogram",
@@ -11647,10 +11647,10 @@
         "examples": [
           {
             "title": "Basic histogram",
-            "code": "import { Histogram } from '@cascade-ui/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
+            "code": "import { Histogram } from '@cascivo/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11678,7 +11678,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/kpi",
@@ -11687,7 +11687,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
       "meta": {
         "name": "Kpi",
@@ -11747,10 +11747,10 @@
         "examples": [
           {
             "title": "Basic KPI card",
-            "code": "import { Kpi } from '@cascade-ui/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
+            "code": "import { Kpi } from '@cascivo/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11778,7 +11778,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/line-chart",
@@ -11787,7 +11787,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "line", "time-series", "data-viz"],
       "meta": {
         "name": "LineChart",
@@ -11915,10 +11915,10 @@
         "examples": [
           {
             "title": "Basic line chart",
-            "code": "import { LineChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+            "code": "import { LineChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "line", "time-series", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -11946,7 +11946,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/meter",
@@ -11955,7 +11955,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
       "meta": {
         "name": "Meter",
@@ -12020,10 +12020,10 @@
         "examples": [
           {
             "title": "Basic meter",
-            "code": "import { Meter } from '@cascade-ui/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
+            "code": "import { Meter } from '@cascivo/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12051,7 +12051,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/pie-chart",
@@ -12060,7 +12060,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "pie", "donut", "data-viz"],
       "meta": {
         "name": "PieChart",
@@ -12139,10 +12139,10 @@
         "examples": [
           {
             "title": "Basic pie chart",
-            "code": "import { PieChart } from '@cascade-ui/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+            "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "pie", "donut", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12170,7 +12170,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/radar",
@@ -12179,7 +12179,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
       "meta": {
         "name": "Radar",
@@ -12259,10 +12259,10 @@
         "examples": [
           {
             "title": "Basic radar chart",
-            "code": "import { Radar } from '@cascade-ui/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
+            "code": "import { Radar } from '@cascivo/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "radar", "spider", "polar", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12285,7 +12285,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/scatter-chart",
@@ -12294,7 +12294,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "scatter", "plot", "data-viz"],
       "meta": {
         "name": "ScatterChart",
@@ -12396,10 +12396,10 @@
         "examples": [
           {
             "title": "Basic scatter chart",
-            "code": "import { ScatterChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
+            "code": "import { ScatterChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "scatter", "plot", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12427,7 +12427,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/sparkline",
@@ -12436,7 +12436,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
       "meta": {
         "name": "Sparkline",
@@ -12492,10 +12492,10 @@
         "examples": [
           {
             "title": "Inline sparkline",
-            "code": "import { Sparkline } from '@cascade-ui/charts'\n\n<Sparkline data={[10, 20, 15, 30, 25]} label=\"Trend\" endDot />"
+            "code": "import { Sparkline } from '@cascivo/charts'\n\n<Sparkline data={[10, 20, 15, 30, 25]} label=\"Trend\" endDot />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12523,7 +12523,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "chart/treemap",
@@ -12532,7 +12532,7 @@
       "category": "chart",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
+      "dependencies": ["@cascivo/charts"],
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
       "meta": {
         "name": "Treemap",
@@ -12599,10 +12599,10 @@
         "examples": [
           {
             "title": "Basic treemap",
-            "code": "import { Treemap } from '@cascade-ui/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
+            "code": "import { Treemap } from '@cascivo/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
           }
         ],
-        "dependencies": ["@cascade-ui/charts"],
+        "dependencies": ["@cascivo/charts"],
         "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
         "intent": {
           "whenToUse": [
@@ -12630,7 +12630,7 @@
           "flexibility": []
         }
       },
-      "install": "@cascade-ui/charts"
+      "install": "@cascivo/charts"
     },
     {
       "name": "section/cta",
@@ -12642,7 +12642,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["section", "cta", "marketing"],
       "meta": {
         "name": "Cta",
@@ -12699,7 +12699,7 @@
             "description": "Quiet bordered band with centered heading, description, and action buttons"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["section", "cta", "marketing"],
         "intent": {
           "whenToUse": [
@@ -12738,7 +12738,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["section", "features", "grid"],
       "meta": {
         "name": "FeatureGrid",
@@ -12804,7 +12804,7 @@
             "description": "Four-item text-only feature grid with section heading"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["section", "features", "grid"],
         "intent": {
           "whenToUse": [
@@ -12843,7 +12843,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["section", "hero", "marketing"],
       "meta": {
         "name": "Hero",
@@ -12924,7 +12924,7 @@
             "description": "Two-column layout with copy on the left and media on the right"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["section", "hero", "marketing"],
         "intent": {
           "whenToUse": [
@@ -12963,7 +12963,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["section", "gallery", "masonry"],
       "meta": {
         "name": "MediaMasonry",
@@ -13032,7 +13032,7 @@
             "description": "Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["section", "gallery", "masonry"],
         "intent": {
           "whenToUse": [
@@ -13066,7 +13066,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
       ],
-      "dependencies": ["@cascade-ui/core"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["section", "footer", "navigation"],
       "meta": {
         "name": "PageFooter",
@@ -13117,7 +13117,7 @@
             "description": "Three-column footer with brand and license meta"
           }
         ],
-        "dependencies": ["@cascade-ui/core"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["section", "footer", "navigation"],
         "intent": {
           "whenToUse": [
@@ -13151,7 +13151,7 @@
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.tsx",
         "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+      "dependencies": ["@cascivo/core", "@cascivo/charts"],
       "tags": ["section", "stats", "kpi", "charts"],
       "meta": {
         "name": "StatsBand",
@@ -13197,7 +13197,7 @@
             "description": "Four KPI cells — three with sparkline trends and signed deltas"
           }
         ],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+        "dependencies": ["@cascivo/core", "@cascivo/charts"],
         "tags": ["section", "stats", "kpi", "charts"],
         "intent": {
           "whenToUse": [

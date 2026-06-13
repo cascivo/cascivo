@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascade-ui/components/hover-card'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@cascivo/components/hover-card'
 
 const meta: Meta = {
   title: 'Overlay/HoverCard',
@@ -12,12 +12,12 @@ export const Default: Story = {
     <HoverCard>
       <HoverCardTrigger>
         <a href="#" style={{ textDecoration: 'underline' }}>
-          @cascade-ui
+          @cascivo
         </a>
       </HoverCardTrigger>
       <HoverCardContent>
         <div>
-          <strong>cascade-ui</strong>
+          <strong>cascivo</strong>
           <p style={{ margin: '0.25rem 0 0' }}>
             CSS-native, signal-driven, AI-first React design system.
           </p>

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Stat',
@@ -47,7 +47,7 @@ export const meta: ComponentMeta = {
       code: '<Stat label="Axe violations" value={0} helpText="WCAG 2.1 AA, 4 app states" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['stat', 'kpi', 'metric', 'number'],
   intent: {
     whenToUse: [

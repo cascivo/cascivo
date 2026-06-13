@@ -57,7 +57,7 @@ npx cascade add stat
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

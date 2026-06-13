@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Histogram } from '@cascade-ui/charts'
+import { Histogram } from '@cascivo/charts'
 
 // Deterministic sample: normal-ish distribution 0-100
 const data = [

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { RadioCard, RadioCardGroup } from '@cascade-ui/components/radio-card'
+import { RadioCard, RadioCardGroup } from '@cascivo/components/radio-card'
 
 const meta: Meta<typeof RadioCardGroup> = {
   title: 'Inputs/RadioCard',

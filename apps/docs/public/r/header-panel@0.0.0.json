@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
   "category": "navigation",
   "meta": {
@@ -78,7 +78,7 @@
         "description": "Pair with a ShellHeader action: action active=open, onAction toggles open"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
     "intent": {
       "whenToUse": [

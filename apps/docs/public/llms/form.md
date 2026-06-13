@@ -64,7 +64,7 @@ function Demo() {
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

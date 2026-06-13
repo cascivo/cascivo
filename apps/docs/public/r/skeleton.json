@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["loading", "placeholder", "shimmer"],
   "category": "display",
   "meta": {
@@ -75,7 +75,7 @@
         "code": "<Skeleton variant=\"rect\" height=\"12rem\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["loading", "placeholder", "shimmer"],
     "intent": {
       "whenToUse": [

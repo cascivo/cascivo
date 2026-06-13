@@ -7,8 +7,8 @@ import {
   useSignal,
   useSignalEffect,
   useSignals,
-} from '@cascade-ui/core'
-import { builtin, currentLocale, t } from '@cascade-ui/i18n'
+} from '@cascivo/core'
+import { builtin, currentLocale, t } from '@cascivo/i18n'
 import { useId, useRef, type KeyboardEvent } from 'react'
 import styles from './date-picker.module.css'
 

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "list", "ul", "ol"],
   "category": "display",
   "meta": {
@@ -64,7 +64,7 @@
         "description": "Keeps list semantics without visual markers"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "list", "ul", "ol"],
     "intent": {
       "whenToUse": [

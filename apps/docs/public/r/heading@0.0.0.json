@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "heading", "title"],
   "category": "display",
   "meta": {
@@ -68,7 +68,7 @@
         "description": "Keep the document outline correct while controlling the visual scale"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "heading", "title"],
     "intent": {
       "whenToUse": [

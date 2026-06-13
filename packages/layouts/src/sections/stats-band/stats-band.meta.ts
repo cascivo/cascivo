@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'StatsBand',
@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
       description: 'Four KPI cells — three with sparkline trends and signed deltas',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/charts'],
+  dependencies: ['@cascivo/core', '@cascivo/charts'],
   tags: ['section', 'stats', 'kpi', 'charts'],
   intent: {
     whenToUse: [

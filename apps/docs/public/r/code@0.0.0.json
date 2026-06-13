@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "code", "inline", "mono"],
   "category": "display",
   "meta": {
@@ -59,7 +59,7 @@
         "code": "<Code size=\"sm\">--cascivo-color-accent</Code>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "code", "inline", "mono"],
     "intent": {
       "whenToUse": [

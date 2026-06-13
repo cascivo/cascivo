@@ -44,7 +44,7 @@ npx cascade add separator
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

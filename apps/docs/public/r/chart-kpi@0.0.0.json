@@ -5,10 +5,10 @@
   "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Kpi",
     "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
@@ -67,10 +67,10 @@
     "examples": [
       {
         "title": "Basic KPI card",
-        "code": "import { Kpi } from '@cascade-ui/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
+        "code": "import { Kpi } from '@cascivo/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
     "intent": {
       "whenToUse": [

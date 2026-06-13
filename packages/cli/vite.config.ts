@@ -7,7 +7,7 @@ const root = resolve(fileURLToPath(new URL('.', import.meta.url)), '../..')
 export default defineConfig({
   resolve: {
     alias: {
-      '@cascade-ui/registry': resolve(root, 'packages/registry/src/index.ts'),
+      '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
     },
   },
   build: {
@@ -17,7 +17,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: [/^node:/, '@cascade-ui/registry'],
+      external: [/^node:/, '@cascivo/registry'],
     },
   },
   test: {

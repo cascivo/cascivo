@@ -50,7 +50,7 @@ Create the files at the user's chosen location (e.g. `src/components/<name>/`).
 **`<name>.tsx`**
 
 - `'use client'` at the top (RSC compatibility)
-- Import `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core` — not React hooks
+- Import `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core` — not React hooks
 - Use `useRef<HTMLElement>(null)` only for DOM element references
 - Use `useMachine` only if the component itself drives transitions (user interaction inside the component causes state changes — not external props)
 - Sync controlled props into signals during render: `signal.value = prop`

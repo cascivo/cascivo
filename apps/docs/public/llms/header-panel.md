@@ -57,8 +57,8 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

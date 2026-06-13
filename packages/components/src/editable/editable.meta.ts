@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Editable',
@@ -37,7 +37,7 @@ export const meta: ComponentMeta = {
       code: '<Editable value="" onValueChange={() => {}} placeholder="Enter text" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'editable', 'inline', 'input', 'text'],
   intent: {
     whenToUse: [

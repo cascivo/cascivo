@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["notification", "message", "feedback"],
   "category": "display",
   "meta": {
@@ -85,7 +85,7 @@
         "code": "<Alert variant=\"warning\" title=\"Update available\" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["notification", "message", "feedback"],
     "intent": {
       "whenToUse": [

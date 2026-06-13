@@ -1,6 +1,6 @@
 'use client'
-import { batch, cn, useComputed, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { batch, cn, useComputed, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { Fragment, useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import { Button } from '../button/button'

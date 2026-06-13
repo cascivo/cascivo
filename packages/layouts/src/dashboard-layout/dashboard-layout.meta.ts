@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'DashboardLayout',
@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
       description: 'Stats + main layout',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'dashboard', 'page'],
   intent: {
     whenToUse: [

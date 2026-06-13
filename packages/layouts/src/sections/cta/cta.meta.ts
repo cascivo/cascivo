@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Cta',
@@ -52,7 +52,7 @@ export const meta: ComponentMeta = {
       description: 'Quiet bordered band with centered heading, description, and action buttons',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'cta', 'marketing'],
   intent: {
     whenToUse: [

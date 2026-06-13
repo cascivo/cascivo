@@ -27,7 +27,7 @@ findings, all real in the repo today, drive it:
    penalizes cascade's honest per-component CSS: shadcn/ui's **tabs shows `0 KB`** — not
    because it is free, but because its Radix runtime + Tailwind utility classes were already
    paid by the baseline (and possibly because the matrix entry is a stub). Meanwhile
-   cascade's first imported component may absorb the one-time `@cascade-ui/core` + i18n
+   cascade's first imported component may absorb the one-time `@cascivo/core` + i18n
    runtime, inflating it. The honest question — "what does one component cost?" — has more
    than one honest answer, and the page shows only the most misleading one.
 
@@ -87,7 +87,7 @@ findings, all real in the repo today, drive it:
    set independently CVD-checked and contrast-verified against its theme surface. A test
    enforces presence + contrast for all ten.
 3. **One tooltip primitive, accessible by construction.** A single chart-tooltip lives in
-   `@cascade-ui/charts` core: pointer hit-detection _and_ keyboard data-point traversal
+   `@cascivo/charts` core: pointer hit-detection _and_ keyboard data-point traversal
    (arrow keys move a focused point, the tooltip follows), with an `aria` description so a
    screen reader announces the datum. The three existing ad-hoc tooltips are replaced by it;
    it rolls out to all 17 chart types. It is opt-out, on by default where a datum is
@@ -122,9 +122,9 @@ findings, all real in the repo today, drive it:
     cascade's conformance to the EAA (in force June 2025), EN 301 549, and Section 508 —
     which all reference WCAG — honestly noting what is verified vs. what depends on the
     consuming application.
-11. **No new packages.** Palette work lands in `@cascade-ui/themes`; the tooltip in
-    `@cascade-ui/charts`; perf work in `apps/bench` + `apps/landing`; a11y type changes in
-    `@cascade-ui/core`; checks in `scripts/checks`; surfaces in `apps/docs`/`apps/landing`.
+11. **No new packages.** Palette work lands in `@cascivo/themes`; the tooltip in
+    `@cascivo/charts`; perf work in `apps/bench` + `apps/landing`; a11y type changes in
+    `@cascivo/core`; checks in `scripts/checks`; surfaces in `apps/docs`/`apps/landing`.
 
 ## Definition of Done
 
@@ -133,7 +133,7 @@ findings, all real in the repo today, drive it:
       series color falls below the contrast threshold against that theme's chart surface; the
       base palette's research lineage is documented.
       _Evidence: `packages/themes/src/chart-palette.test.ts` (CVD + contrast); `docs/specs/chart-palette.md` (lineage); all 10 theme CSS files carry per-theme overrides._
-- [x] A single chart-tooltip primitive in `@cascade-ui/charts` supports pointer hover and
+- [x] A single chart-tooltip primitive in `@cascivo/charts` supports pointer hover and
       keyboard data-point traversal with an `aria` announcement; all 17 chart types use it;
       the ad-hoc line/heatmap/histogram tooltips are removed; tests cover hover, keyboard, and
       the screen-reader description.

@@ -1,11 +1,11 @@
 'use client'
 import { useRef, useState } from 'react'
-import { signal, useSignals, type Signal } from '@cascade-ui/core'
-import { Badge } from '@cascade-ui/components/badge'
-import { Button } from '@cascade-ui/components/button'
-import { Card } from '@cascade-ui/components/card'
-import { Checkbox } from '@cascade-ui/components/checkbox'
-import { Input } from '@cascade-ui/components/input'
+import { signal, useSignals, type Signal } from '@cascivo/core'
+import { Badge } from '@cascivo/components/badge'
+import { Button } from '@cascivo/components/button'
+import { Card } from '@cascivo/components/card'
+import { Checkbox } from '@cascivo/components/checkbox'
+import { Input } from '@cascivo/components/input'
 
 /* The useState twin below is the comparison subject — the one sanctioned hook
    exception on this page (v7 master plan, decision 9). */

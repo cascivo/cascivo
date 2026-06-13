@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["loading", "progress", "feedback"],
   "category": "feedback",
   "meta": {
@@ -54,7 +54,7 @@
         "code": "<Spinner size=\"lg\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["loading", "progress", "feedback"],
     "intent": {
       "whenToUse": [

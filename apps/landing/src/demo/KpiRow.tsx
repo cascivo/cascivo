@@ -1,6 +1,6 @@
-import { Card } from '@cascade-ui/components/card'
-import { Badge } from '@cascade-ui/components/badge'
-import { Sparkline } from '@cascade-ui/charts'
+import { Card } from '@cascivo/components/card'
+import { Badge } from '@cascivo/components/badge'
+import { Sparkline } from '@cascivo/charts'
 import { KPIS } from './data'
 
 export function KpiRow() {

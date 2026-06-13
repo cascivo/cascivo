@@ -39,7 +39,7 @@ Adds vertical space between elements
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { OverflowMenu } from '@cascade-ui/components/overflow-menu'
+import { OverflowMenu } from '@cascivo/components/overflow-menu'
 
 const items = [
   { label: 'Edit', value: 'edit' },

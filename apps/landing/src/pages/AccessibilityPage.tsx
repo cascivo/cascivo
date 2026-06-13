@@ -1,4 +1,4 @@
-import { SkipNavLink, SkipNavTarget } from '@cascade-ui/components/skip-nav'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { AccessibilityHero } from './accessibility/AccessibilityHero'

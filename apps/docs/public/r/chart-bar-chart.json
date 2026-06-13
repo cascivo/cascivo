@@ -5,10 +5,10 @@
   "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "bar", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "BarChart",
     "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
@@ -112,10 +112,10 @@
     "examples": [
       {
         "title": "Basic bar chart",
-        "code": "import { BarChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
+        "code": "import { BarChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "bar", "data-viz"],
     "intent": {
       "whenToUse": [

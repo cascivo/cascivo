@@ -125,7 +125,7 @@ const schema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: SCHEMA_ID,
   title: 'CascadeView v1 Config',
-  description: 'JSON-configured UI layout for @cascade-ui/render <CascadeView />',
+  description: 'JSON-configured UI layout for @cascivo/render <CascadeView />',
   type: 'object',
   properties: {
     $schema: { type: 'string' },

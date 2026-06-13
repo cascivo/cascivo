@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Badge } from '@cascade-ui/components/badge'
+import { Badge } from '@cascivo/components/badge'
 
 const meta: Meta<typeof Badge> = {
   title: 'Display/Badge',

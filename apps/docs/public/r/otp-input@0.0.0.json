@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "otp", "code", "input", "verification"],
   "category": "inputs",
   "meta": {
@@ -75,7 +75,7 @@
         "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["form", "otp", "code", "input", "verification"],
     "intent": {
       "whenToUse": [

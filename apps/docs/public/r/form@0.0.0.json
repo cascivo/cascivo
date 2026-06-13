@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "validation", "signals", "input"],
   "category": "inputs",
   "meta": {
@@ -56,7 +56,7 @@
         "code": "function Demo() {\n  const form = useForm({\n    initialValues: { email: '' },\n    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },\n  })\n  const email = form.field('email')\n  return (\n    <Form form={form} onValid={console.log}>\n      <Input\n        label=\"Email\"\n        value={email.value}\n        onChange={(e) => email.onChange(e.currentTarget.value)}\n        onBlur={email.onBlur}\n        error={email.error}\n      />\n      <Button type=\"submit\">Save</Button>\n    </Form>\n  )\n}"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "validation", "signals", "input"],
     "intent": {
       "whenToUse": [

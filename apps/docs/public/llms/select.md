@@ -67,7 +67,7 @@ npx cascade add select
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

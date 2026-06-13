@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Pagination } from '@cascade-ui/components/pagination'
+import { Pagination } from '@cascivo/components/pagination'
 
 const meta: Meta<typeof Pagination> = {
   title: 'Navigation/Pagination',

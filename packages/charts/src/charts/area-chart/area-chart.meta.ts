@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AreaChart',
@@ -63,13 +63,13 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic area chart',
-      code: `import { AreaChart } from '@cascade-ui/charts'
+      code: `import { AreaChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 <AreaChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'area', 'data-viz'],
   intent: {
     whenToUse: [

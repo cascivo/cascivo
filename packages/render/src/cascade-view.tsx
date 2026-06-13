@@ -1,6 +1,6 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
-import { translateKey } from '@cascade-ui/i18n'
+import { useSignals } from '@cascivo/core'
+import { translateKey } from '@cascivo/i18n'
 import React from 'react'
 import type { Signal } from '@preact/signals-react'
 import { componentMap } from './component-map'

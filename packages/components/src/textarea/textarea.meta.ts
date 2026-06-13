@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Textarea',
@@ -39,7 +39,7 @@ export const meta: ComponentMeta = {
     { title: 'With label', code: '<Textarea label="Message" placeholder="Type here…" />' },
     { title: 'With error', code: '<Textarea label="Bio" error="Bio is required" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'text', 'multiline'],
   intent: {
     whenToUse: [

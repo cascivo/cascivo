@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, type ReactNode } from 'react'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { usePopover, type UsePopoverOptions, type UsePopoverReturn } from './use-popover'
 import styles from './popover.module.css'
 

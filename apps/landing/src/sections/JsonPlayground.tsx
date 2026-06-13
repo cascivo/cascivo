@@ -1,5 +1,5 @@
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 
 const DEMO_CONFIG: ViewConfig = {
   version: 1,

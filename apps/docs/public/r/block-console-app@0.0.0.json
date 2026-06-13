@@ -9,12 +9,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/console-app/console-app.tsx"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/react",
-    "@cascade-ui/icons",
-    "layout/app-shell",
-    "layout/page-header"
-  ],
+  "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
   "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
   "category": "display",
   "meta": {
@@ -47,12 +42,7 @@
         "description": "Full console shell demo"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/react",
-      "@cascade-ui/icons",
-      "layout/app-shell",
-      "layout/page-header"
-    ],
+    "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
     "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
     "intent": {
       "whenToUse": [

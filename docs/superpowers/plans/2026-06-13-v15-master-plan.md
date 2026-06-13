@@ -34,10 +34,10 @@ Playwright (mobile screenshot verification).
 
 ### Branding footprint (verified by grep in the repo)
 
-- **`@cascade-ui/*` packages:** 24 `package.json` files reference the scope. Package dirs:
+- **`@cascivo/*` packages:** 24 `package.json` files reference the scope. Package dirs:
   `ai, charts, cli, components, core, i18n, icons, layouts, mcp, react, registry, render, storage,
 themes, tokens` (15 dirs; `components`/`registry` are not published). Root is
-  `@cascade-ui/monorepo`.
+  `@cascivo/monorepo`.
 - **`--cascivo-*` token prefix:** 113 CSS files use it. Base tokens in `packages/tokens/src/index.css`;
   semantic overrides in `packages/themes/src/*.css` (10 themes: `light, dark, warm, brutalist,
 corporate, flat, midnight, minimal, pastel, terminal`); component tokens throughout
@@ -48,16 +48,16 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 - **Registry URLs:** hardcoded `https://raw.githubusercontent.com/urbanisierung/cascade-ui/main`
   in `scripts/registry/generate.ts:22`, `packages/cli/src/utils/config.ts:25`, and ~every entry of
   `registry.json`. `resolve.ts:94` builds URLs from `owner`/`repo`.
-- **MCP:** `packages/mcp/src/server.ts:49` name `@cascade-ui/mcp`; base URLs
+- **MCP:** `packages/mcp/src/server.ts:49` name `@cascivo/mcp`; base URLs
   `https://cascade-ui.dev` in `context.ts:51`, `tokens.ts:23` (+ test fixtures).
-- **Component manifests:** 72 `*.meta.ts` set `dependencies: ['@cascade-ui/core', …]`.
+- **Component manifests:** 72 `*.meta.ts` set `dependencies: ['@cascivo/core', …]`.
 - **`data-theme`:** used in 32 files — **left unchanged** (generic theming attribute, not brand).
 - **i18n:** the built-in catalog is keyed by object access (`builtin.<component>.<key>`), not a
   `"cascade"` string prefix — no rename needed beyond the package import.
 - **Skills:** `skills/` defines `cascade:add`, `cascade:design-page`, `cascade:create-theme`,
   `cascade:extend` (per CLAUDE.md).
 - **Vite alias rule (CLAUDE.md):** `apps/docs/vite.config.ts`, `apps/landing/vite.config.ts`, and
-  `apps/storybook/.storybook/main.ts` carry `@cascade-ui/*` → source-path aliases for packages whose
+  `apps/storybook/.storybook/main.ts` carry `@cascivo/*` → source-path aliases for packages whose
   `exports["."].import` resolves to `./dist/` (`core, storage, i18n, ai, render, icons`). These MUST
   be renamed in T3 or the apps fail to build without a prior `pnpm build`.
 
@@ -91,7 +91,7 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | 1   | Name is **cascivo**; rename is total across packages, tokens, CLI, registry, MCP, domain, copy. Derivation recorded in `BRAND.md`: drop `-ui`, keep `casc-` root, add Romance `-ivo` ("active/flowing"); `/kas-ˈsee-vo/`; `.com` owned                 | Decided + domain owned (`docs/BRAND.md`); no half-rename                     |
 | 2   | CSS prefix `--cascivo-*` → `--cascivo-*` everywhere (113 files), no aliases; a grep gate asserts zero `--cascivo-` remain                                                                                                                              | Full rebrand, pre-1.0 breakage accepted (user decision)                      |
-| 3   | npm namespace **scoped `@cascivo/*` only** (15 packages, 1:1 from `@cascade-ui/*`); root `@cascivo/monorepo`; requires npm org `cascivo`                                                                                                               | User decision; scales to 15 packages, matches current structure              |
+| 3   | npm namespace **scoped `@cascivo/*` only** (15 packages, 1:1 from `@cascivo/*`); root `@cascivo/monorepo`; requires npm org `cascivo`                                                                                                                  | User decision; scales to 15 packages, matches current structure              |
 | 4   | CLI package `@cascivo/cli`, **bin `cascivo`**, invoked `npx @cascivo/cli init`; unscoped `cascivo` shorthand deferred                                                                                                                                  | Scoped-only decision; bin name independent of package name                   |
 | 5   | `data-theme` attribute unchanged                                                                                                                                                                                                                       | Generic, not brand; renaming breaks every consumer's theme switch            |
 | 6   | Brand color system as `--cascivo-brand-*` (primary cascade-blue `oklch(0.55 0.15 240)`, accent flow-teal `oklch(0.72 0.13 195)`, ink `oklch(0.22 0.03 250)`, primary→accent gradient), separate from the 10 neutral component themes; contrast-checked | "Brand colors that match the library"; marketing identity ≠ component themes |
@@ -111,7 +111,7 @@ corporate, flat, midnight, minimal, pastel, terminal`); component tokens through
 | ------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | T1      | `2026-06-13-v15-tranche-1.md` | Rewrite `BRAND.md` (name derivation, logo proposal, brand palette w/ contrast); logo SVG; brand color spec. Docs/assets only       | Low (no code rename; design judgement)                                   |
 | T2      | `2026-06-13-v15-tranche-2.md` | `--cascivo-*` → `--cascivo-*` across tokens + 10 themes + all component/app CSS + consumers; add `--cascivo-brand-*`; grep gate    | Medium (113 files; must catch JS string refs to var names too)           |
-| T3      | `2026-06-13-v15-tranche-3.md` | `@cascade-ui/*` → `@cascivo/*`: 24 package.json, imports, tsconfig paths, 3 vite alias blocks, 72 meta.dependencies, exports, root | High (largest mechanical change; vite-alias rule; build must stay green) |
+| T3      | `2026-06-13-v15-tranche-3.md` | `@cascivo/*` → `@cascivo/*`: 24 package.json, imports, tsconfig paths, 3 vite alias blocks, 72 meta.dependencies, exports, root    | High (largest mechanical change; vite-alias rule; build must stay green) |
 | T4      | `2026-06-13-v15-tranche-4.md` | CLI → `@cascivo/cli` (bin `cascivo`); registry URLs + `REGISTRY_BASE_URL`; MCP name + base URLs; skills `cascivo:*`; regen + drift | Medium (registry regen + drift gate; parameterize external URLs)         |
 | T5      | `2026-06-13-v15-tranche-5.md` | Landing mobile-first rebuild: audit screenshots, fluid type, off-canvas nav, every section, heavy-demo treatments; verify          | High (the priority surface; heavy demos; visual quality bar)             |
 | T6      | `2026-06-13-v15-tranche-6.md` | Docs mobile-first: off-canvas nav + focus trap, fluid type, responsive tables/code/charts, container-query sections, AppShell pass | Medium-high (shared AppShell affects all docs pages)                     |

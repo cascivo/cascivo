@@ -70,7 +70,7 @@ npx cascade add avatar
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

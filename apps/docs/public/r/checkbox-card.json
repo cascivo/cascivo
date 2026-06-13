@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["checkbox", "card", "selectable", "form"],
   "category": "inputs",
   "meta": {
@@ -73,7 +73,7 @@
         "description": "Multi-select feature toggles"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["checkbox", "card", "selectable", "form"],
     "intent": {
       "whenToUse": [

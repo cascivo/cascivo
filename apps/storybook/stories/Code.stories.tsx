@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Code } from '@cascade-ui/components/code'
+import { Code } from '@cascivo/components/code'
 
 const meta: Meta<typeof Code> = {
   title: 'Display/Code',

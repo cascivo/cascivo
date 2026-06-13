@@ -6,8 +6,8 @@ import {
   useSignal,
   useSignalEffect,
   useSignals,
-} from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+} from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef, type KeyboardEvent } from 'react'
 import styles from './combobox.module.css'
 

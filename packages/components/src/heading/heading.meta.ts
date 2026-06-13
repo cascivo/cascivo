@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Heading',
@@ -42,7 +42,7 @@ export const meta: ComponentMeta = {
       description: 'Keep the document outline correct while controlling the visual scale',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'heading', 'title'],
   intent: {
     whenToUse: [

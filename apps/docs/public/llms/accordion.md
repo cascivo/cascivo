@@ -55,7 +55,7 @@ npx cascade add accordion
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

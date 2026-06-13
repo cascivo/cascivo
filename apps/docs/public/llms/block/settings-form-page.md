@@ -35,7 +35,7 @@ Settings form page
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/settings-layout`
 
 ## Tags

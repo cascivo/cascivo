@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Input',
@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
     { title: 'With label', code: '<Input label="Email" placeholder="you@example.com" />' },
     { title: 'With error', code: '<Input label="Email" error="Invalid email address" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'text', 'input'],
   intent: {
     whenToUse: [

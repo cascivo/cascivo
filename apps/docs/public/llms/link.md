@@ -80,7 +80,7 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

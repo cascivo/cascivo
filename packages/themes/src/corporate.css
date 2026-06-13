@@ -1,7 +1,7 @@
 /* Cascade — Corporate Theme */
 /* Enterprise/data-dense, crisp 2px radius, conservative blue, tight hairlines */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='corporate'] {

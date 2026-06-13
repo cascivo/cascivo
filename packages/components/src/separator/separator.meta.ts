@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Separator',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
     { title: 'Horizontal', code: '<Separator />' },
     { title: 'Vertical', code: '<Separator orientation="vertical" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['divider', 'rule', 'layout'],
   intent: {
     whenToUse: [

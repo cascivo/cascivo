@@ -35,7 +35,7 @@ Demo KPI stats
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 
 ## Tags
 

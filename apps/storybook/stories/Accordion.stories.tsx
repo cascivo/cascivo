@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@cascade-ui/components/accordion'
+} from '@cascivo/components/accordion'
 
 const meta: Meta<typeof Accordion> = {
   title: 'Navigation/Accordion',

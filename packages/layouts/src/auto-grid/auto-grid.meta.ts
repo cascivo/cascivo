@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AutoGrid',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
       description: 'Items fill available space and wrap when narrower than 12rem',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'grid', 'responsive'],
   intent: {
     whenToUse: [

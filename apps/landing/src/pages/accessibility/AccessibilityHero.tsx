@@ -1,4 +1,4 @@
-import { Stat } from '@cascade-ui/components/stat'
+import { Stat } from '@cascivo/components/stat'
 import { AXE, A11Y_COVERED, REGISTRY_TOTAL } from './data'
 
 export function AccessibilityHero() {

@@ -47,7 +47,7 @@ Two-pane split with draggable divider
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -72,7 +72,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec vp run @cascade-ui/docs#build
+      - run: pnpm exec vp run @cascivo/docs#build
       - run: >
           npx wrangler pages deploy apps/docs/dist
           --project-name=${{ vars.CF_PROJECT_DOCS || 'cascade-ui-docs' }}
@@ -93,7 +93,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec vp run @cascade-ui/landing#build
+      - run: pnpm exec vp run @cascivo/landing#build
       - run: >
           npx wrangler pages deploy apps/landing/dist
           --project-name=${{ vars.CF_PROJECT_LANDING || 'cascade-ui-landing' }}
@@ -115,7 +115,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build Storybook
-        run: pnpm --filter @cascade-ui/storybook exec storybook build
+        run: pnpm --filter @cascivo/storybook exec storybook build
       - run: >
           npx wrangler pages deploy apps/storybook/storybook-static
           --project-name=${{ vars.CF_PROJECT_STORYBOOK || 'cascade-ui-storybook' }}
@@ -136,7 +136,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec vp run @cascade-ui/json-playground#build
+      - run: pnpm exec vp run @cascivo/json-playground#build
       - run: >
           npx wrangler pages deploy apps/examples/json-playground/dist
           --project-name=${{ vars.CF_PROJECT_PLAYGROUND || 'cascade-ui-playground' }}

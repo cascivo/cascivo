@@ -57,7 +57,7 @@ Quiet bordered band with centered heading, description, and action buttons
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

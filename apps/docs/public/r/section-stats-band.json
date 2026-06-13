@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+  "dependencies": ["@cascivo/core", "@cascivo/charts"],
   "tags": ["section", "stats", "kpi", "charts"],
   "category": "layout",
   "meta": {
@@ -59,7 +59,7 @@
         "description": "Four KPI cells — three with sparkline trends and signed deltas"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
+    "dependencies": ["@cascivo/core", "@cascivo/charts"],
     "tags": ["section", "stats", "kpi", "charts"],
     "intent": {
       "whenToUse": [

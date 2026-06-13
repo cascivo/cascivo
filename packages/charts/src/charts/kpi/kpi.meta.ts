@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Kpi',
@@ -37,12 +37,12 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic KPI card',
-      code: `import { Kpi } from '@cascade-ui/charts'
+      code: `import { Kpi } from '@cascivo/charts'
 
 <Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'kpi', 'metric', 'dashboard', 'data-viz'],
   intent: {
     whenToUse: [

@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/react", "layout/stack"],
+  "dependencies": ["@cascivo/react", "layout/stack"],
   "tags": ["block", "notifications", "alerts"],
   "category": "display",
   "meta": {
@@ -46,7 +46,7 @@
         "description": "Notification center"
       }
     ],
-    "dependencies": ["@cascade-ui/react", "layout/stack"],
+    "dependencies": ["@cascivo/react", "layout/stack"],
     "tags": ["block", "notifications", "alerts"],
     "intent": {
       "whenToUse": [

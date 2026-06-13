@@ -1,5 +1,5 @@
-import { effect, signal } from '@cascade-ui/core'
-import type { ReadonlySignal, Signal } from '@cascade-ui/core'
+import { effect, signal } from '@cascivo/core'
+import type { ReadonlySignal, Signal } from '@cascivo/core'
 import { localStorageDriver, type StorageDriver } from './drivers'
 
 interface Envelope {

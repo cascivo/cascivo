@@ -1,14 +1,14 @@
 /* Import tokens + all ten themes (theme switching via data-theme) */
-@import '@cascade-ui/themes/light';
-@import '@cascade-ui/themes/dark';
-@import '@cascade-ui/themes/warm';
-@import '@cascade-ui/themes/flat';
-@import '@cascade-ui/themes/minimal';
-@import '@cascade-ui/themes/midnight';
-@import '@cascade-ui/themes/pastel';
-@import '@cascade-ui/themes/brutalist';
-@import '@cascade-ui/themes/corporate';
-@import '@cascade-ui/themes/terminal';
+@import '@cascivo/themes/light';
+@import '@cascivo/themes/dark';
+@import '@cascivo/themes/warm';
+@import '@cascivo/themes/flat';
+@import '@cascivo/themes/minimal';
+@import '@cascivo/themes/midnight';
+@import '@cascivo/themes/pastel';
+@import '@cascivo/themes/brutalist';
+@import '@cascivo/themes/corporate';
+@import '@cascivo/themes/terminal';
 
 *,
 *::before,

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'MultiSelect',
@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
       code: `<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['form', 'select', 'multi', 'input', 'popover'],
   intent: {
     whenToUse: [

@@ -85,7 +85,7 @@ This is not an accurate measurement of shadcn's Tabs cost. It is a stub that was
 replaced with a real component import.
 
 **By contrast**, the cascade tabs entry (`apps/bench/app-cascade/src/matrix/tabs.tsx`)
-correctly imports `{ Tabs, TabsList, TabsTrigger, TabsContent }` from `@cascade-ui/react`,
+correctly imports `{ Tabs, TabsList, TabsTrigger, TabsContent }` from `@cascivo/react`,
 and carbon's tabs entry imports `{ Tab, Tabs, TabList, TabPanels, TabPanel }` from
 `@carbon/react`. Only shadcn is a stub.
 
@@ -97,16 +97,16 @@ The cascade baseline entry is:
 
 ```tsx
 import { createRoot } from 'react-dom/client'
-import '@cascade-ui/themes/light'
+import '@cascivo/themes/light'
 createRoot(document.getElementById('root')!).render(<div>baseline</div>)
 ```
 
-It imports only the theme CSS. It does not import `@cascade-ui/core` (the micro-FSM +
-Preact Signals runtime) or `@cascade-ui/i18n` (the signal-driven locale store). These are
+It imports only the theme CSS. It does not import `@cascivo/core` (the micro-FSM +
+Preact Signals runtime) or `@cascivo/i18n` (the signal-driven locale store). These are
 one-time shared dependencies that every cascade component transitively pulls in.
 
 **Effect:** The first cascade component that appears in any matrix entry (e.g., `button`)
-absorbs the full `@cascade-ui/core` + `@cascade-ui/i18n` runtime cost in its incremental
+absorbs the full `@cascivo/core` + `@cascivo/i18n` runtime cost in its incremental
 number. Subsequent components that already share this transitive bundle see artificially
 lower incremental costs if they are measured in isolation (each matrix entry is its own
 build, so each component entry independently absorbs the runtime again).
@@ -124,17 +124,17 @@ dependencies in the baseline.
 
 ## Per-lib baseline composition (current state — before fix)
 
-| Library | What baseline imports                                   | What is missing                        |
-| ------- | ------------------------------------------------------- | -------------------------------------- |
-| cascade | `@cascade-ui/themes/light` (CSS only)                   | `@cascade-ui/core`, `@cascade-ui/i18n` |
-| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)   | nothing (correct)                      |
-| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`) | nothing (correct)                      |
+| Library | What baseline imports                                   | What is missing                  |
+| ------- | ------------------------------------------------------- | -------------------------------- |
+| cascade | `@cascivo/themes/light` (CSS only)                      | `@cascivo/core`, `@cascivo/i18n` |
+| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)   | nothing (correct)                |
+| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`) | nothing (correct)                |
 
 ## Planned fix (T3-T2)
 
 T3-T2 will correct both defects:
 
-1. **Fix cascade baseline** — add explicit imports of `@cascade-ui/core` and `@cascade-ui/i18n`
+1. **Fix cascade baseline** — add explicit imports of `@cascivo/core` and `@cascivo/i18n`
    to `apps/bench/app-cascade/src/matrix/baseline.tsx` so the shared runtime is amortized
    into the baseline, not charged to each component.
 
@@ -151,10 +151,10 @@ T3-T2 will correct both defects:
 
 ## Per-lib baseline composition (after fix)
 
-| Library | Baseline imports                                                                                            | Notes                                                                                     |
-| ------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| cascade | `@cascade-ui/themes/light` + `useSignals` from `@cascade-ui/core` + `currentLocale` from `@cascade-ui/i18n` | Named imports force the runtime into the baseline bundle without tree-shaking them away   |
-| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)                                                       | Unchanged — already correct; `@radix-ui/react-slot` is pulled in by individual components |
-| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`)                                                     | Unchanged — already correct                                                               |
+| Library | Baseline imports                                                                                   | Notes                                                                                     |
+| ------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| cascade | `@cascivo/themes/light` + `useSignals` from `@cascivo/core` + `currentLocale` from `@cascivo/i18n` | Named imports force the runtime into the baseline bundle without tree-shaking them away   |
+| shadcn  | `index.css` (Tailwind v4 via `@import "tailwindcss"`)                                              | Unchanged — already correct; `@radix-ui/react-slot` is pulled in by individual components |
+| carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`)                                            | Unchanged — already correct                                                               |
 
 The shadcn tabs matrix entry now imports from a real shadcn-style `Tabs` component backed by `@radix-ui/react-tabs` (added as an explicit dep in `apps/bench/app-shadcn/package.json`). The vendored component lives at `apps/bench/app-shadcn/src/components/ui/tabs.tsx`.

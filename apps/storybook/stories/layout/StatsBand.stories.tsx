@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { StatsBand } from '@cascade-ui/layouts/sections/stats-band'
+import { StatsBand } from '@cascivo/layouts/sections/stats-band'
 
 const meta: Meta<typeof StatsBand> = {
   title: 'Sections/StatsBand',

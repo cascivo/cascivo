@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { useId, useRef, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
 import styles from './chart-frame.module.css'

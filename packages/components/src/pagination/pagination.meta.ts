@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Pagination',
@@ -60,7 +60,7 @@ export const meta: ComponentMeta = {
       code: "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />",
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['pagination', 'navigation', 'table', 'data', 'pages'],
   intent: {
     whenToUse: [

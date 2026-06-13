@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Hero } from '@cascade-ui/layouts/sections/hero'
+import { Hero } from '@cascivo/layouts/sections/hero'
 
 const meta: Meta<typeof Hero> = {
   title: 'Sections/Hero',

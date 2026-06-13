@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "toggle", "boolean"],
   "category": "inputs",
   "meta": {
@@ -77,7 +77,7 @@
         "code": "<Checkbox label=\"Select all\" indeterminate />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "toggle", "boolean"],
     "intent": {
       "whenToUse": [

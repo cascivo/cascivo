@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignal, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignal, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import type { ButtonHTMLAttributes } from 'react'
 import styles from './copy-button.module.css'
 

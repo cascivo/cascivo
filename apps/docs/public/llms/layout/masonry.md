@@ -44,7 +44,7 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

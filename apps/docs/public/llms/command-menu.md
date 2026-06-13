@@ -74,8 +74,8 @@ npx cascade add command-menu
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

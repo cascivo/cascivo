@@ -14,7 +14,7 @@ const contract: Contract = buildContract({
   context: { components: [] },
 })
 
-const IMPORT = `import { Avatar, Button } from '@cascade-ui/react'\n`
+const IMPORT = `import { Avatar, Button } from '@cascivo/react'\n`
 
 describe('findRequiredPropViolations', () => {
   it('flags a missing required prop', () => {

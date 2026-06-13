@@ -1,5 +1,5 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'

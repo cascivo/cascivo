@@ -54,7 +54,7 @@ npx cascade add tabs
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

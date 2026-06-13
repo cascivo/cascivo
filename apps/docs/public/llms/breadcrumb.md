@@ -63,8 +63,8 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
+- `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Tag } from '@cascade-ui/components/tag'
+import { Tag } from '@cascivo/components/tag'
 
 const meta: Meta<typeof Tag> = {
   title: 'Display/Tag',

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'TimePicker',
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       code: `<TimePicker label="Meeting time" onChange={(v) => console.log(v)} />`,
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['time', 'input', 'form'],
   intent: {
     whenToUse: [

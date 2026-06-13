@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["clipboard", "copy", "button", "snippet"],
   "category": "inputs",
   "meta": {
@@ -74,7 +74,7 @@
         "description": "Override the built-in copy/copied strings per instance"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["clipboard", "copy", "button", "snippet"],
     "intent": {
       "whenToUse": [

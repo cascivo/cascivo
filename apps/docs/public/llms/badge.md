@@ -68,7 +68,7 @@ npx cascade add badge
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

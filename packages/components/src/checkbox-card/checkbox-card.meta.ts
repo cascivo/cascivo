@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'CheckboxCard',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Multi-select feature toggles',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['checkbox', 'card', 'selectable', 'form'],
   intent: {
     whenToUse: [

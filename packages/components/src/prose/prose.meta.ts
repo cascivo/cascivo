@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Prose',
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
       description: 'The use case: HTML you do not control (CMS, markdown pipelines)',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'prose', 'content', 'markdown', 'article'],
   intent: {
     whenToUse: [

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "choice", "group"],
   "category": "inputs",
   "meta": {
@@ -67,7 +67,7 @@
         "code": "<RadioGroup name=\"plan\" defaultValue=\"pro\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "choice", "group"],
     "intent": {
       "whenToUse": [

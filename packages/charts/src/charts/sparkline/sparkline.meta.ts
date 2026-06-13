@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Sparkline',
@@ -25,12 +25,12 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Inline sparkline',
-      code: `import { Sparkline } from '@cascade-ui/charts'
+      code: `import { Sparkline } from '@cascivo/charts'
 
 <Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'sparkline', 'inline', 'trend', 'data-viz'],
   intent: {
     whenToUse: [

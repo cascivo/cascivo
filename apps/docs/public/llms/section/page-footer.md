@@ -76,7 +76,7 @@ Three-column footer with brand and license meta
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

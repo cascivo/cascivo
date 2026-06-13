@@ -62,7 +62,7 @@ npx cascade add editable
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

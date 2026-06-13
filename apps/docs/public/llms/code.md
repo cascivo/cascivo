@@ -64,7 +64,7 @@ Sits inline with surrounding text
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
   "category": "navigation",
   "meta": {
@@ -67,7 +67,7 @@
         "code": "<><SkipNavLink targetId=\"main-content\" /><SkipNavTarget id=\"main-content\" /></>"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
     "intent": {
       "whenToUse": [

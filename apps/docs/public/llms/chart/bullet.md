@@ -31,7 +31,7 @@ npx cascade add chart/bullet
 ### Basic bullet chart
 
 ```tsx
-import { Bullet } from '@cascade-ui/charts'
+import { Bullet } from '@cascivo/charts'
 ;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
@@ -49,7 +49,7 @@ import { Bullet } from '@cascade-ui/charts'
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

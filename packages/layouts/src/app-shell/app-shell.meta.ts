@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AppShell',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'App shell with collapsible nav',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n', '@cascade-ui/storage'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n', '@cascivo/storage'],
   tags: ['layout', 'shell', 'sidebar', 'navigation'],
   intent: {
     whenToUse: [

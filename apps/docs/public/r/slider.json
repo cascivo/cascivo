@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "range", "input"],
   "category": "inputs",
   "meta": {
@@ -87,7 +87,7 @@
         "code": "<Slider label=\"Rating\" min={0} max={5} step={1} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "range", "input"],
     "intent": {
       "whenToUse": [

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'DataTable',
@@ -112,7 +112,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['table', 'data', 'grid', 'sort', 'filter', 'pagination', 'selection'],
   intent: {
     whenToUse: [

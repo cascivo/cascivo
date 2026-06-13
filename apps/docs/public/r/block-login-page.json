@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+  "dependencies": ["@cascivo/react", "layout/auth-layout"],
   "tags": ["block", "login", "auth", "form", "page"],
   "category": "display",
   "meta": {
@@ -40,7 +40,7 @@
         "description": "Login page"
       }
     ],
-    "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
+    "dependencies": ["@cascivo/react", "layout/auth-layout"],
     "tags": ["block", "login", "auth", "form", "page"],
     "intent": {
       "whenToUse": [

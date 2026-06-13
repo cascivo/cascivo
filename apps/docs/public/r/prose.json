@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "prose", "content", "markdown", "article"],
   "category": "display",
   "meta": {
@@ -56,7 +56,7 @@
         "description": "The use case: HTML you do not control (CMS, markdown pipelines)"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "prose", "content", "markdown", "article"],
     "intent": {
       "whenToUse": [

@@ -60,7 +60,7 @@ export function renderReport(r: Results): string {
     if (r.bundle.treeshake) {
       const ts = r.bundle.treeshake
       parts.push(
-        '### Treeshake (@cascade-ui/react)',
+        '### Treeshake (@cascivo/react)',
         '',
         `- Bare import: ${ts.bareImportGzBytes}B gz`,
         `- Button only: ${ts.buttonOnlyGzKb.toFixed(2)}KB gz`,

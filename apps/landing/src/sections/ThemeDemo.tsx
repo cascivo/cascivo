@@ -1,7 +1,7 @@
-import { Button } from '@cascade-ui/components/button'
-import { Input } from '@cascade-ui/components/input'
-import { Checkbox } from '@cascade-ui/components/checkbox'
-import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { Button } from '@cascivo/components/button'
+import { Input } from '@cascivo/components/input'
+import { Checkbox } from '@cascivo/components/checkbox'
+import { Card, CardContent, CardHeader, CardTitle } from '@cascivo/components/card'
 
 const THEMES = [
   'light',

@@ -35,7 +35,7 @@ Empty dashboard
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/dashboard-layout`
 
 ## Tags

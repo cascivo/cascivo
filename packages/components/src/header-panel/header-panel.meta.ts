@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'HeaderPanel',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Pair with a ShellHeader action: action active=open, onAction toggles open',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'panel', 'shell', 'console', 'overlay', 'notifications'],
   intent: {
     whenToUse: [

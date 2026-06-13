@@ -5,10 +5,10 @@
   "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "scatter", "plot", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "ScatterChart",
     "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -109,10 +109,10 @@
     "examples": [
       {
         "title": "Basic scatter chart",
-        "code": "import { ScatterChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
+        "code": "import { ScatterChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "scatter", "plot", "data-viz"],
     "intent": {
       "whenToUse": [

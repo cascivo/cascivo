@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { KeyboardEvent, ReactNode } from 'react'
 import { useRef } from 'react'
 import styles from './split-view.module.css'

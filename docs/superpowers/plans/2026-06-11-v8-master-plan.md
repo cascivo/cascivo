@@ -5,14 +5,14 @@
 > superpowers:subagent-driven-development or superpowers:executing-plans.
 
 **Goal:** Execute `docs/ROADMAP-V8.md` — ship ready-to-use composition: a `plain` mode for
-every chrome-bearing chart in `@cascade-ui/charts` (micro charts everywhere), two new plain-CSS
+every chrome-bearing chart in `@cascivo/charts` (micro charts everywhere), two new plain-CSS
 layout primitives (`Masonry`, `AutoGrid`), a new `section/` registry family (hero, feature
 grid, CTA, masonry gallery, stats band, footer — all static, copy-paste, token-only), and the
 docs `/layouts` gallery that finally surfaces the whole layouts family.
 
 **Architecture:** Sections and primitives live in `packages/layouts` (private, copy-paste
 registry source — unchanged distribution model). Plain charts are a feature of the published
-`@cascade-ui/charts` package. The registry generator's typed source roots gain one root
+`@cascivo/charts` package. The registry generator's typed source roots gain one root
 (`sections/`); CLI, MCP and llms generation are registry-driven and pick the new entries up
 with minimal or zero changes (re-verify per tranche). Docs gain one gallery page and a nav
 entry.
@@ -40,7 +40,7 @@ copying files for everything else.
 `stack`, `grid` (12-col span grid), `columns`, `center`, `spacer`, `split-view`; app layouts
 `app-shell`, `auth-layout`, `dashboard-layout`, `settings-layout`, `page-header`; 10 blocks
 (`console-app`, `dashboard-charts`, `login-page`, `stats-cards`, …). House style per
-`grid/grid.tsx` + `grid.module.css`: `'use client'`, `cn` from `@cascade-ui/core`, props
+`grid/grid.tsx` + `grid.module.css`: `'use client'`, `cn` from `@cascivo/core`, props
 extend `HTMLAttributes`, knobs passed as private custom properties
 (`['--_grid-cols' as string]: String(cols)`), CSS under `@layer cascade.component` with
 `container-type: inline-size` + `@container` breakpoints. Each entry ships `<name>.tsx`,
@@ -64,7 +64,7 @@ Routes in `App.tsx`: `/`, `/ai`, `/charts`, `/playground`, `/perf/data-table`,
 `/components/:name`, default → ComponentPage. **Caveat:** registry names with slashes
 (`layout/grid`) likely don't match `/components/:name` — the gallery must not depend on
 per-entry detail routes (re-verify in T5). Demos in `src/demos.tsx` import component sources
-directly via `@cascade-ui/components/<name>` subpath exports (Preact compat). Playwright
+directly via `@cascivo/components/<name>` subpath exports (Preact compat). Playwright
 suite exists at `apps/docs/test/` (`visual.spec.ts`, `perf.spec.ts`), port 4173.
 
 **Storybook** (`apps/storybook/stories/`): hand-written `*.stories.tsx` per component —
@@ -106,9 +106,9 @@ typed-registry twist. No new distribution machinery needed.
 | 6   | Chart `plain?: boolean` prop on every chrome-bearing chart. Plain mode: margins collapse to `PLAIN_MARGINS` (2px uniform), no `Axis`/`GridLines`/`Legend` rendered, default `height` becomes 48 (explicit `width`/`height` recommended), `data-plain` attribute on the frame for CSS hooks | One boolean, no forked components; markup shrinks to pure marks             |
 | 7   | Plain keeps a11y: `role="img"` + title/desc stay, table `fallback` stays. Plain does NOT remove hover/interaction layers where a chart has them (audit in T1)                                                                                                                              | Minimal ≠ inaccessible                                                      |
 | 8   | `Sparkline`, `Meter`, `Kpi` get no `plain` prop — they are already plain                                                                                                                                                                                                                   | No prop noise without chrome to remove                                      |
-| 9   | `StatsBand` section dogfoods plain charts (sparkline/plain-area in stat cells) — `@cascade-ui/charts` is already a layouts devDependency; the copied section declares it in its manifest `dependencies`                                                                                    | Ties the two workstreams together visibly                                   |
+| 9   | `StatsBand` section dogfoods plain charts (sparkline/plain-area in stat cells) — `@cascivo/charts` is already a layouts devDependency; the copied section declares it in its manifest `dependencies`                                                                                       | Ties the two workstreams together visibly                                   |
 | 10  | Docs: one new `/layouts` gallery page (groups: Primitives, Sections, Blocks; live previews + per-entry `npx cascade add <name>` copy command), one nav link in `Layout.tsx` beside Charts. No per-entry detail routes in v8 (slash-name routing caveat)                                    | Show don't tell; avoids router surgery                                      |
-| 11  | Docs render section/primitive previews by importing sources directly (extend `packages/layouts/package.json#exports` for the entries the gallery imports), mirroring how `demos.tsx` imports `@cascade-ui/components/*`                                                                    | Existing pattern; no build step added to layouts                            |
+| 11  | Docs render section/primitive previews by importing sources directly (extend `packages/layouts/package.json#exports` for the entries the gallery imports), mirroring how `demos.tsx` imports `@cascivo/components/*`                                                                       | Existing pattern; no build step added to layouts                            |
 | 12  | Storybook: hand-written stories (house style) for Masonry, AutoGrid, all six sections, plus one `PlainCharts` story sheet                                                                                                                                                                  | Stories are hand-authored in this repo today                                |
 | 13  | No new dependencies anywhere; charts bundle stays within the 80KB gz budget                                                                                                                                                                                                                | Dependency policy; perf is the brand                                        |
 | 14  | Anti-slop rules bind section design: tokens only, hairlines, no gradients/glassmorphism, no emoji, sentence case, system fonts. Section demo copy is realistic, never lorem ipsum                                                                                                          | Sections multiply into user projects                                        |
@@ -178,7 +178,7 @@ typed-registry twist. No new distribution machinery needed.
    gallery must render inline previews and NOT link to detail pages for prefixed entries
    (decision 10). Verify existing behavior didn't silently regress for `layout/*` either.
 9. **Preact compat for section previews**: docs renders React components via preact/compat —
-   sections are static so risk is low, but StatsBand pulls `@cascade-ui/charts` (signals) —
+   sections are static so risk is low, but StatsBand pulls `@cascivo/charts` (signals) —
    the existing `/charts` docs page proves charts render under compat; mirror its import
    pattern.
 10. **Charts bundle budget**: `plain` adds branches, not bytes of dependency — but verify

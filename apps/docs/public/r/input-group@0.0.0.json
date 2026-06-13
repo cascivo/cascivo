@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "input", "addon", "group", "layout"],
   "category": "inputs",
   "meta": {
@@ -68,7 +68,7 @@
         "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "input", "addon", "group", "layout"],
     "intent": {
       "whenToUse": [

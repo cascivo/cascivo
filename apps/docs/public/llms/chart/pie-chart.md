@@ -36,7 +36,7 @@ npx cascade add chart/pie-chart
 ### Basic pie chart
 
 ```tsx
-import { PieChart } from '@cascade-ui/charts'
+import { PieChart } from '@cascivo/charts'
 ;<PieChart
   data={[
     { label: 'A', value: 60 },
@@ -64,7 +64,7 @@ import { PieChart } from '@cascade-ui/charts'
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

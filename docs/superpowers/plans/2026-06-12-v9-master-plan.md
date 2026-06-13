@@ -26,7 +26,7 @@ toolchain.
 
 ### The signals-subscription bug (root cause of "switches cannot be changed")
 
-`@cascade-ui/core` re-exports raw `@preact/signals-react`
+`@cascivo/core` re-exports raw `@preact/signals-react`
 (`packages/core/src/signals.ts:11` re-exports `useSignals` from
 `@preact/signals-react/runtime`). In a plain React app without the Babel signals transform,
 **a component that reads `signal.value` during render only re-renders on signal writes if it
@@ -86,7 +86,7 @@ become whatever the parent stage sets, hence "invisible".
 footer; `useSignals()` + lazy `createShellState` via `useSignal` + `peek()` (house
 pattern); i18n via `t(builtin.appShell.*)`. `shell-state.ts`: `ShellState` interface with
 `sideNavCollapsed` / `sideNavOpen` / `asideOpen` signals (`persistedSignal` from
-`@cascade-ui/storage` when `persistKey` set) + `toggleSideNav` / `toggleAside`. Existing
+`@cascivo/storage` when `persistKey` set) + `toggleSideNav` / `toggleAside`. Existing
 related components: `ProgressBar` (`packages/components/src/progress-bar/`, props `value`,
 `max`, `status: 'active'|'success'|'error'`) — a form-level component, not shell chrome;
 don't reuse it for the top bar (different anatomy: 2–3px edge-to-edge strip). The shell has
@@ -121,7 +121,7 @@ by the missing subscriptions.
 - **Scroll animation:** none today. Only the hero theme-switch view transition
   (landing.css:114–156) and hover transitions; `prefers-reduced-motion` is already
   respected once (landing.css:528).
-- **Icons in landing:** `@cascade-ui/icons` is NOT a landing dependency and NOT aliased in
+- **Icons in landing:** `@cascivo/icons` is NOT a landing dependency and NOT aliased in
   `apps/landing/vite.config.ts`. Icons' package exports point at `dist/` — per the
   CLAUDE.md "Workspace package aliases" section, adding the dependency requires adding the
   source alias (`packages/icons/src/index.tsx`) too, or the deploy job breaks again.
@@ -146,7 +146,7 @@ by the missing subscriptions.
 | 7   | Error surface: `role="alert"` strip below the header with the `failLoading` message + dismiss button; dismiss label from i18n builtin catalog (`builtin.appShell.dismissError` — new key in the appShell namespace)                                                                                 | CLAUDE.md component-chrome i18n rule applies to shell chrome             |
 | 8   | Loading state is never persisted (plain `signal()`, not `persistedSignal`)                                                                                                                                                                                                                          | Transient by definition                                                  |
 | 9   | Console spacing: `.kpi-row` gap → `space-4`, `.console-grid` gap → `space-6`, `.region` gap → `space-4`, KPI + flags cards `padding="sm"` → `"md"`, deploys table drops `density="compact"`. Core Card/DataTable: audit against docs + Storybook; change core only if the cramping reproduces there | Landing-level first; core changes ripple into every user project         |
-| 10  | SideNav icons: Overview→`Dashboard`, Deploys→`Zap`, Incidents→`AlertTriangle`, Traffic→`Activity`, Flags→`Tag`, Settings→`Settings`; landing adds `@cascade-ui/icons` dep **and** the Vite source alias                                                                                             | Component supports `icon`; alias rule per CLAUDE.md                      |
+| 10  | SideNav icons: Overview→`Dashboard`, Deploys→`Zap`, Incidents→`AlertTriangle`, Traffic→`Activity`, Flags→`Tag`, Settings→`Settings`; landing adds `@cascivo/icons` dep **and** the Vite source alias                                                                                                | Component supports `icon`; alias rule per CLAUDE.md                      |
 | 11  | Titlebar menu: `Menu`/`MenuTrigger`/`MenuItem` with View status page / Copy incident link / Sign out, actions fire toasts (reuse DeploysRegion's ToastProvider pattern or hoist one provider around the console)                                                                                    | Real component, demo-safe actions                                        |
 | 12  | Console motion budget = 3: traffic chart ticks every 2s (signal-driven `setInterval` in `useSignalEffect`, paused when `document.hidden` or `prefers-reduced-motion`), CSS pulse dot on the incident alert, CSS breathe on the `building` deploy badge                                              | Alive, not noisy; reduced-motion-gated                                   |
 | 13  | Agent-render artifact: `grid-column: 1 / -1` on `.agent-render` within `.agents-grid`; widen the internal panes accordingly                                                                                                                                                                         | Full content width as requested; pure CSS                                |

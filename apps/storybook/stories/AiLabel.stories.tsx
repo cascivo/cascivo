@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AiLabel } from '@cascade-ui/ai'
+import { AiLabel } from '@cascivo/ai'
 
 const meta: Meta<typeof AiLabel> = {
   title: 'AI/AiLabel',

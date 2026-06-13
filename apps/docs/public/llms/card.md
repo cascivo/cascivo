@@ -52,7 +52,7 @@ npx cascade add card
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@cascivo/components/card'
 
 const FEATURES = [
   {

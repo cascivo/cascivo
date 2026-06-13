@@ -1,6 +1,6 @@
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import type React from 'react'
-import { Button, Checkbox, Input } from '@cascade-ui/react'
+import { Button, Checkbox, Input } from '@cascivo/react'
 
 const OPTIONS = Array.from({ length: 50 }, (_, i) => i)
 

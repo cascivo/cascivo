@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
+import { DataTable, type Column } from '@cascivo/components/data-table'
 
 interface Person {
   id: string

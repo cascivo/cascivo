@@ -52,7 +52,7 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

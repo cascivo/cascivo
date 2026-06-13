@@ -44,7 +44,7 @@ Items fill available space and wrap when narrower than 12rem
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -22,7 +22,7 @@ const contract: Contract = buildContract({
   context: { components: [] },
 })
 
-const IMPORT = `import { Button } from '@cascade-ui/react'\n`
+const IMPORT = `import { Button } from '@cascivo/react'\n`
 
 describe('findJsxPropViolations', () => {
   it('flags an unknown prop on a cascade component', () => {

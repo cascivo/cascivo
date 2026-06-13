@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "masonry", "gallery"],
   "category": "layout",
   "meta": {
@@ -51,7 +51,7 @@
         "description": "Variable-height cards laid out in a masonry pattern; falls back to CSS columns"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "masonry", "gallery"],
     "intent": {
       "whenToUse": [

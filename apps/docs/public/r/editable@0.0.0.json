@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "editable", "inline", "input", "text"],
   "category": "inputs",
   "meta": {
@@ -81,7 +81,7 @@
         "code": "<Editable value=\"\" onValueChange={() => {}} placeholder=\"Enter text\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "editable", "inline", "input", "text"],
     "intent": {
       "whenToUse": [

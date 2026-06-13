@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "center", "wrapper"],
   "category": "layout",
   "meta": {
@@ -43,7 +43,7 @@
         "description": "Centered container with custom max-width"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "center", "wrapper"],
     "intent": {
       "whenToUse": [

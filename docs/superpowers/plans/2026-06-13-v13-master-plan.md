@@ -5,9 +5,9 @@
 > superpowers:subagent-driven-development or superpowers:executing-plans.
 >
 > **Hard dependency:** v13 builds on the shipped state of the monorepo as of v12. T1 extends
-> `ComponentMeta` in `@cascade-ui/core` and the `RegistryItem` meta in `@cascade-ui/registry`;
+> `ComponentMeta` in `@cascivo/core` and the `RegistryItem` meta in `@cascivo/registry`;
 > T2 extends the existing `scripts/llms` + `scripts/registry` generators and the
-> `@cascade-ui/mcp` server; T3 extends the CLI's `audit`/`doctor` surface (v12). Re-verify
+> `@cascivo/mcp` server; T3 extends the CLI's `audit`/`doctor` surface (v12). Re-verify
 > each surface at tranche start — if a named file/command is absent, STOP and re-sequence.
 
 **Goal:** Execute `docs/ROADMAP-V13.md` — close the gap between publishing the system's
@@ -18,14 +18,14 @@ user's repo; (4) machine-readable design specs + strict-vs-flexible boundaries +
 exceptions log; (5) progressive CSS-native logic (`@function`/`if(style())`) on a pilot set
 with fallbacks; (6) a Context Explorer page and reproducible receipts.
 
-**Architecture:** No new packages. Intent types live in `@cascade-ui/core` (consumed by
-component manifests) and are mirrored into `@cascade-ui/registry`'s published item `meta`.
+**Architecture:** No new packages. Intent types live in `@cascivo/core` (consumed by
+component manifests) and are mirrored into `@cascivo/registry`'s published item `meta`.
 The token catalog, `context.json`, per-component `context.md`, and `specs.json` are
 **generated** by new `scripts/` generators wired into the existing regen pipeline
-(`registry:generate` / `llms:generate`) and guarded by the drift gate. `@cascade-ui/mcp`
+(`registry:generate` / `llms:generate`) and guarded by the drift gate. `@cascivo/mcp`
 gains read tools over the context bundle. The CLI's `audit` command (v12) gains an `--ai`
 mode that parses user TSX/CSS against the catalog + registry. CSS-native logic lands as
-`@supports`-guarded additions to `@cascade-ui/tokens` and a pilot of component CSS, with a
+`@supports`-guarded additions to `@cascivo/tokens` and a pilot of component CSS, with a
 fallback-audit script in `scripts/checks`.
 
 **Tech stack:** unchanged — React 18+, modern CSS, Preact signals, vitest, vp toolchain.
@@ -70,14 +70,14 @@ else: …)` enables conditional branching. Many gotchas: silent failures on arg-
 category, states, variants, sizes, props, tokens, accessibility{role,wcag,keyboard},
 examples, dependencies, tags`. **No intent/why fields.** 72 `*.meta.ts` files in
   `packages/components/src/**`. `PropMeta` has `name, type, required, default?, description?`.
-- **Registry:** `@cascade-ui/registry` `RegistryItem` (schema v2) has `meta?: unknown` —
+- **Registry:** `@cascivo/registry` `RegistryItem` (schema v2) has `meta?: unknown` —
   the intent block rides there for published items. `advisories` already added (v12). The
   generator is `scripts/registry`.
 - **Tokens:** single source `packages/tokens/src/index.css` (~10k) — primitive → semantic →
   component custom properties. Themes (`packages/themes`) override the semantic layer; the
   v9 parity test (`packages/themes/src/parity.test.ts`) guards the key set.
 - **AI surfaces today:** `scripts/llms/generate.ts` emits `apps/docs/public/llms.txt` + per
-  item `/llms/<name>.md`. `@cascade-ui/mcp` (`packages/mcp/src/server.ts`) registers tools:
+  item `/llms/<name>.md`. `@cascivo/mcp` (`packages/mcp/src/server.ts`) registers tools:
   `list_components`, `get_component`, `scaffold_view`, `validate_view`, `add_to_project`
   (and `theme`). New tools extend this file.
 - **CLI:** commands include `init/add/list/update/theme/generate/doctor/audit` (audit +
@@ -110,7 +110,7 @@ examples, dependencies, tags`. **No intent/why fields.** 72 `*.meta.ts` files in
 | 8   | Design spec files: `docs/specs/{spacing,color-usage,decision-hierarchy,content-tone}.md` (markdown the agent consumes) + a generator emitting `specs.json`; content seeded by consolidating `CLAUDE.md` token architecture + house rules (not duplicating — specs reference and structure them)                                                                                                                                                        | Spec files as infrastructure (article 1); intent preservation (article 2)    |
 | 9   | Boundary registry: `docs/specs/boundaries.json` (generated from per-component `intent.flexibility` + a small hand-authored global section) listing strict areas (e.g. token names, a11y roles) vs flexible (e.g. spacing within scale, copy) — surfaced to agents via context                                                                                                                                                                          | "Define boundaries, not consistency" (article 2)                             |
 | 10  | Exceptions log: `docs/specs/exceptions.md` — a structured list of real historical exceptions and _why_ they exist (e.g. a component that deliberately breaks a house rule), each with a stable id; folded into `context.json`                                                                                                                                                                                                                          | Preserve historical reasoning to prevent AI regression (article 2)           |
-| 11  | CSS-native pilot: `@cascade-ui/tokens` gains an optional `functions.css` defining `@function` token-math helpers (e.g. a tint/shade or density-scale function); Button/Badge/Alert CSS adopt one `@function` and/or one `if(style(--variant: …): …; else: …)` for variant→token selection; every use wrapped so a non-supporting browser falls back to the current static value                                                                        | Article 3, progressive; small + reversible (roadmap decision 7)              |
+| 11  | CSS-native pilot: `@cascivo/tokens` gains an optional `functions.css` defining `@function` token-math helpers (e.g. a tint/shade or density-scale function); Button/Badge/Alert CSS adopt one `@function` and/or one `if(style(--variant: …): …; else: …)` for variant→token selection; every use wrapped so a non-supporting browser falls back to the current static value                                                                           | Article 3, progressive; small + reversible (roadmap decision 7)              |
 | 12  | Fallback discipline: every `@function`/`if()` use sits behind `@supports (…)` (or pairs a static declaration before the enhanced one so unsupported browsers ignore the unknown-function declaration and keep the static one); a `scripts/checks` script parses pilot CSS and fails if an `@function`/`if()` declaration has no preceding/guarded static fallback                                                                                      | No regression; emerging-feature accepted-risk stance                         |
 | 13  | Context Explorer docs page (`apps/docs`, Preact, signals, house rules): browse intent per component, the boundary map, the spec files, and the token catalog; an interactive `audit --ai` demo (paste code → findings, run client-side against the catalog/registry JSON)                                                                                                                                                                              | Receipts surface; dogfoods the context bundle                                |
 | 14  | "Why cascade" page extends with claims 14–19, each linking its receipt (intent example, catalog JSON, audit demo, context bundle, CSS-native pilot with fallback proof, before/after agent-generation comparison)                                                                                                                                                                                                                                      | Receipts-not-adjectives bar (v11/v12)                                        |
@@ -168,7 +168,7 @@ examples, dependencies, tags`. **No intent/why fields.** 72 `*.meta.ts` files in
    keyword overlap with `whenToUse`. Snapshot a few queries in tests.
 5. **`audit --ai` false positives (T3):** the highest-risk item. Literal flags only when an
    exact token match exists; prop flags only on confirmed cascade elements (track imports
-   from `@cascade-ui/react` / known component names — decided in T3); ambiguous → info.
+   from `@cascivo/react` / known component names — decided in T3); ambiguous → info.
    Build the fixture suite to include _negative_ cases (correct code must report clean).
 6. **JSX parsing scope (T3):** full TS type inference is out of scope. Detect components by
    JSX element name + import source; detect props by attribute name. Spread props

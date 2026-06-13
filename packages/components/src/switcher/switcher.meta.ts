@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Switcher',
@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
       description: 'Place inside a HeaderPanel opened by a Grid action in ShellHeader',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['navigation', 'switcher', 'shell', 'console', 'app-switcher'],
   intent: {
     whenToUse: [

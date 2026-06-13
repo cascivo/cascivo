@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Menu',
@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
   },
   examples: [],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['overlay', 'menu', 'dropdown', 'floating'],
   intent: {
     whenToUse: [

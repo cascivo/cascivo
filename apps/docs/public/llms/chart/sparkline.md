@@ -28,7 +28,7 @@ npx cascade add chart/sparkline
 ### Inline sparkline
 
 ```tsx
-import { Sparkline } from '@cascade-ui/charts'
+import { Sparkline } from '@cascivo/charts'
 ;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
@@ -43,7 +43,7 @@ import { Sparkline } from '@cascade-ui/charts'
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

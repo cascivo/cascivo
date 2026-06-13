@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["section", "hero", "marketing"],
   "category": "layout",
   "meta": {
@@ -94,7 +94,7 @@
         "description": "Two-column layout with copy on the left and media on the right"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["section", "hero", "marketing"],
     "intent": {
       "whenToUse": [

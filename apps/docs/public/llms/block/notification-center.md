@@ -36,7 +36,7 @@ Notification center
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/stack`
 
 ## Tags

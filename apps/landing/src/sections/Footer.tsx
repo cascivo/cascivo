@@ -1,4 +1,4 @@
-import { Separator } from '@cascade-ui/components/separator'
+import { Separator } from '@cascivo/components/separator'
 
 const REPO = 'https://github.com/urbanisierung/cascade-ui'
 

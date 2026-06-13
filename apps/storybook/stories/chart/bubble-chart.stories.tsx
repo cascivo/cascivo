@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BubbleChart } from '@cascade-ui/charts'
+import { BubbleChart } from '@cascivo/charts'
 
 const series = [
   {

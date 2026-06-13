@@ -29,7 +29,7 @@ npx cascade add chart/heatmap
 ### Basic heatmap
 
 ```tsx
-import { Heatmap } from '@cascade-ui/charts'
+import { Heatmap } from '@cascivo/charts'
 
 const data = [
   {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},
@@ -50,7 +50,7 @@ const data = [
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

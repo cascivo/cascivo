@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Modal',
@@ -35,7 +35,7 @@ export const meta: ComponentMeta = {
       code: `<Modal open={isOpen} onClose={() => setIsOpen(false)} title="Confirm action">\n  <p>Are you sure?</p>\n</Modal>`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'dialog', 'popup'],
   intent: {
     whenToUse: [

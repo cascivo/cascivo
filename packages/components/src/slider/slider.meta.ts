@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Slider',
@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
     { title: 'Basic', code: '<Slider label="Volume" defaultValue={50} />' },
     { title: 'Stepped', code: '<Slider label="Rating" min={0} max={5} step={1} />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'range', 'input'],
   intent: {
     whenToUse: [

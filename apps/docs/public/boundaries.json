@@ -16,7 +16,7 @@
       },
       {
         "area": "i18n for chrome text",
-        "note": "User-visible component chrome strings must use @cascade-ui/i18n; no hard-coded English fallbacks in component source"
+        "note": "User-visible component chrome strings must use @cascivo/i18n; no hard-coded English fallbacks in component source"
       },
       {
         "area": "CSS custom properties",

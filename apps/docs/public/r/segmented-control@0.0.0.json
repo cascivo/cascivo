@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "toggle", "group", "segmented", "input"],
   "category": "inputs",
   "meta": {
@@ -71,7 +71,7 @@
         "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "toggle", "group", "segmented", "input"],
     "intent": {
       "whenToUse": [

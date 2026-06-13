@@ -41,7 +41,7 @@ npx cascade add chart/bar-chart
 ### Basic bar chart
 
 ```tsx
-import { BarChart } from '@cascade-ui/charts'
+import { BarChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />
@@ -65,7 +65,7 @@ const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

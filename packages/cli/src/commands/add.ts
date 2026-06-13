@@ -6,7 +6,7 @@ import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
 import { parseAddress, resolveClosure } from '../utils/resolve.js'
 import { resolveFromDirectory } from '../utils/directory.js'
-import type { RegistryItem } from '@cascade-ui/registry'
+import type { RegistryItem } from '@cascivo/registry'
 
 /** Dependencies always present in a cascade project — never auto-installed. */
 const ASSUMED_DEPS = new Set(['react', 'react-dom'])
@@ -94,7 +94,7 @@ export async function add(
     }
 
     if (entry.type === 'chart') {
-      const pkg = entry.install ?? '@cascade-ui/charts'
+      const pkg = entry.install ?? '@cascivo/charts'
       console.log(`Chart "${entry.name}" is distributed as an npm package.`)
       console.log(`Install it with: npm install ${pkg}`)
       console.log(`Then import: import { ${entry.meta.name} } from '${pkg}'`)

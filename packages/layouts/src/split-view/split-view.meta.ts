@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SplitView',
@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
       description: 'Two-pane split with draggable divider',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'split', 'resizable', 'pane'],
   intent: {
     whenToUse: [

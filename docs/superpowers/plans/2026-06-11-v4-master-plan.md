@@ -40,7 +40,7 @@ Popover API, oklch tokens, Vitest + Testing Library + Playwright.
 4. **Breakpoint resolved at interaction time** — `toggleSideNav()` checks
    `matchMedia('(min-width: 64rem)')` when called; CSS owns all layout switching. No resize
    listeners, no breakpoint signals.
-5. **`@cascade-ui/react` bundle budget raised to 60 KB gzip** (from 50) to absorb the shell
+5. **`@cascivo/react` bundle budget raised to 60 KB gzip** (from 50) to absorb the shell
    family; CI budget updated in the same PR that first exceeds 50.
 6. **Aside hides entirely below 64rem** — no mobile bottom-sheet in v4; revisit on demand.
 7. **Icon fallback in rail mode** — items without `icon` render the first grapheme of their label
@@ -61,7 +61,7 @@ Verified on `main` (2026-06-11):
   all icons live in a single `packages/icons/src/index.tsx`.
 - i18n builtin catalog: `packages/i18n/src/builtin.ts` — `defineMessages('cascade.<ns>', {...})` +
   `defineCatalog(builtin.<ns>, 'de', {...})`.
-- `persistedSignal(key, initial)` from `@cascade-ui/storage` is SSR-safe and the established
+- `persistedSignal(key, initial)` from `@cascivo/storage` is SSR-safe and the established
   persistence mechanism (see current `app-shell.tsx`).
 - House pattern for controlled props: `const sig = useSignal(prop); if (prop !== undefined) sig.value = prop`
   — sync during render (CLAUDE.md Part 3).
@@ -85,7 +85,7 @@ Verified on `main` (2026-06-11):
 | 11  | Body scroll behind the open mobile drawer                                           | No JS scroll-lock; scrim covers content and `overscroll-behavior: contain` on the drawer. Recorded decision: keep it CSS-only.                  | 4       |
 | 12  | Multiple AppShells on one page (docs demos) sharing `persistKey`                    | Demos pass `persistKey={false}`; default key unchanged for apps. Document in the block story.                                                   | 4       |
 | 13  | Existing `AppShell` consumers (blocks, docs) must not break                         | All new props optional; internal collapse keeps working when no `state` is passed; existing blocks' visual snapshots are the regression check.  | 4       |
-| 14  | Bundle budget breach when shell family lands in `@cascade-ui/react`                 | Budget raised to 60 KB gzip in the same PR (Decision 5); CI gate updated together with the code, never separately.                              | 5       |
+| 14  | Bundle budget breach when shell family lands in `@cascivo/react`                    | Budget raised to 60 KB gzip in the same PR (Decision 5); CI gate updated together with the code, never separately.                              | 5       |
 
 ---
 
@@ -106,7 +106,7 @@ worktrees). T4 consumes all three (console block composes every piece). T5 gates
 
 ## Exit criteria per tranche
 
-- **T1:** ShellHeader exported from `@cascade-ui/react`; dropdown menus fully keyboard-operable
+- **T1:** ShellHeader exported from `@cascivo/react`; dropdown menus fully keyboard-operable
   (open/cycle/close/restore-focus in tests); skip link focusable and first in tab order; axe-core
   zero violations with a menu open; existing `Header` untouched (`git diff` clean for its dir).
 - **T2:** Collapsed SideNav renders icons only (no clipped labels in the DOM layout); every item
@@ -114,7 +114,7 @@ worktrees). T4 consumes all three (console block composes every piece). T5 gates
   icons exported and tree-shakable; expanded-state visual snapshot unchanged.
 - **T3:** HeaderPanel light-dismisses, restores focus, and auto-closes when a sibling panel opens
   (platform `popover="auto"` behavior covered by a test); Switcher renders dividers and
-  `aria-current`; both exported from `@cascade-ui/react`.
+  `aria-current`; both exported from `@cascivo/react`.
 - **T4:** `createShellState` drives collapse/drawer/aside from ShellHeader buttons in the console
   block; state persists across reload (Playwright); mobile drawer opens with scrim, closes on
   scrim click + Escape; existing AppShell consumers pass unchanged (snapshot + type check).

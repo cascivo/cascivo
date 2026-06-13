@@ -1,13 +1,13 @@
 import type { ComponentChildren, JSX } from 'preact'
-import { AutoGrid } from '@cascade-ui/layouts/auto-grid'
-import { Masonry } from '@cascade-ui/layouts/masonry'
-import { Section } from '@cascade-ui/layouts/section'
-import { Hero } from '@cascade-ui/layouts/sections/hero'
-import { Cta } from '@cascade-ui/layouts/sections/cta'
-import { FeatureGrid } from '@cascade-ui/layouts/sections/feature-grid'
-import { MediaMasonry } from '@cascade-ui/layouts/sections/media-masonry'
-import { StatsBand } from '@cascade-ui/layouts/sections/stats-band'
-import { PageFooter } from '@cascade-ui/layouts/sections/page-footer'
+import { AutoGrid } from '@cascivo/layouts/auto-grid'
+import { Masonry } from '@cascivo/layouts/masonry'
+import { Section } from '@cascivo/layouts/section'
+import { Hero } from '@cascivo/layouts/sections/hero'
+import { Cta } from '@cascivo/layouts/sections/cta'
+import { FeatureGrid } from '@cascivo/layouts/sections/feature-grid'
+import { MediaMasonry } from '@cascivo/layouts/sections/media-masonry'
+import { StatsBand } from '@cascivo/layouts/sections/stats-band'
+import { PageFooter } from '@cascivo/layouts/sections/page-footer'
 
 const tile = (label: string, h = '4rem') => (
   <div

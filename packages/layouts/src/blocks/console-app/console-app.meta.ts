@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ConsoleApp',
@@ -21,12 +21,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: ['Escape', 'Tab'] },
   examples: [{ title: 'Default', code: '<ConsoleApp />', description: 'Full console shell demo' }],
-  dependencies: [
-    '@cascade-ui/react',
-    '@cascade-ui/icons',
-    'layout/app-shell',
-    'layout/page-header',
-  ],
+  dependencies: ['@cascivo/react', '@cascivo/icons', 'layout/app-shell', 'layout/page-header'],
   tags: ['block', 'console', 'shell', 'navigation', 'carbon-parity'],
   intent: {
     whenToUse: [

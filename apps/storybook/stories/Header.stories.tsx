@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Header } from '@cascade-ui/components/header'
-import { Button } from '@cascade-ui/components/button'
+import { Header } from '@cascivo/components/header'
+import { Button } from '@cascivo/components/button'
 
 const meta: Meta<typeof Header> = {
   title: 'Navigation/Header',

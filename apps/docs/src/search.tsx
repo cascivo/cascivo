@@ -1,8 +1,8 @@
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { useLocation } from 'preact-iso'
-import { CommandMenu, type CommandGroup } from '@cascade-ui/components/command-menu'
-import { Button } from '@cascade-ui/components/button'
-import { Kbd } from '@cascade-ui/components/kbd'
+import { CommandMenu, type CommandGroup } from '@cascivo/components/command-menu'
+import { Button } from '@cascivo/components/button'
+import { Kbd } from '@cascivo/components/kbd'
 import { buildNav } from './nav'
 
 export function DocsSearch() {

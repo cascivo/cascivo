@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["empty", "placeholder", "zero-state", "no-data"],
   "category": "display",
   "meta": {
@@ -72,7 +72,7 @@
         "code": "<EmptyState icon=\"📄\" title=\"No documents yet\" description=\"Create your first document to get started.\" action={<Button>New document</Button>} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["empty", "placeholder", "zero-state", "no-data"],
     "intent": {
       "whenToUse": [

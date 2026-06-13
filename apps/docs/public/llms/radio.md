@@ -54,7 +54,7 @@ npx cascade add radio
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

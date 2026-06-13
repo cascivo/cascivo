@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Button',
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
     { title: 'Loading', code: '<Button loading>Saving…</Button>' },
     { title: 'Destructive', code: '<Button variant="destructive">Delete</Button>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['action', 'form', 'interactive'],
   intent: {
     whenToUse: [

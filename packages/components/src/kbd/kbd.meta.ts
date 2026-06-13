@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Kbd',
@@ -29,7 +29,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Small', code: '<Kbd size="sm">Esc</Kbd>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['keyboard', 'shortcut', 'hotkey'],
   intent: {
     whenToUse: [

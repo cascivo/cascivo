@@ -59,7 +59,7 @@ npx cascade add checkbox
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { RatingGroup } from '@cascade-ui/components/rating-group'
+import { RatingGroup } from '@cascivo/components/rating-group'
 
 const meta: Meta<typeof RatingGroup> = {
   title: 'Inputs/RatingGroup',

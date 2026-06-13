@@ -5,10 +5,10 @@
   "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Treemap",
     "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
@@ -74,10 +74,10 @@
     "examples": [
       {
         "title": "Basic treemap",
-        "code": "import { Treemap } from '@cascade-ui/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
+        "code": "import { Treemap } from '@cascivo/charts'\n\nconst data = [\n  {id:'a',label:'Alpha',value:40},\n  {id:'b',label:'Beta',value:25},\n  {id:'c',label:'Gamma',value:20},\n  {id:'d',label:'Delta',value:15},\n]\n<Treemap data={data} title=\"Market share\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
     "intent": {
       "whenToUse": [

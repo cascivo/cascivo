@@ -14,9 +14,9 @@ This document is the ground truth for what has been built and what still needs b
 | Area                  | What exists                                                                                            |
 | --------------------- | ------------------------------------------------------------------------------------------------------ |
 | Monorepo              | pnpm workspace, vite+ toolchain, all packages scaffolded                                               |
-| `@cascade-ui/core`    | `createMachine`, `useMachine`, `cn`, `composeRefs`, `mergeProps`, signal re-exports, full type exports |
-| `@cascade-ui/tokens`  | Full CSS primitive token set (colors, spacing, typography, radius, shadows, animation, z-index)        |
-| `@cascade-ui/themes`  | `light.css`, `dark.css`, `warm.css` — semantic layer + `data-theme` scoping                            |
+| `@cascivo/core`       | `createMachine`, `useMachine`, `cn`, `composeRefs`, `mergeProps`, signal re-exports, full type exports |
+| `@cascivo/tokens`     | Full CSS primitive token set (colors, spacing, typography, radius, shadows, animation, z-index)        |
+| `@cascivo/themes`     | `light.css`, `dark.css`, `warm.css` — semantic layer + `data-theme` scoping                            |
 | `packages/components` | Button, Input, Card, Badge, Modal — TSX + CSS Modules + `meta.ts` + tests                              |
 | `apps/docs`           | Vite + Preact dev server running at localhost:5173 — component showcase with live theme switcher       |
 
@@ -45,7 +45,7 @@ Each component lives at `packages/components/src/<name>/` and consists of four f
 
 1. `<name>.tsx` — React component with `'use client'`, typed props extending HTML attrs, CSS Modules, `data-variant`/`data-size`/`data-state` attributes for styling hooks
 2. `<name>.module.css` — `@layer cascade.component { }` block, all values via `--cascivo-*` tokens, `:has()` and `@container` where appropriate
-3. `<name>.meta.ts` — `ComponentMeta` object (import type from `@cascade-ui/core`)
+3. `<name>.meta.ts` — `ComponentMeta` object (import type from `@cascivo/core`)
 4. `<name>.test.tsx` — vitest + @testing-library/react, setup via `packages/components/src/setup.ts`
 
 After adding each component, add its export to `packages/components/package.json`:
@@ -156,7 +156,7 @@ A11y: role `button` on trigger, `aria-expanded`, keyboard: `Enter`/`Space` toggl
 **Spinner** (`packages/components/src/spinner/`)  
 Props: `size?: 'sm' | 'md' | 'lg'`, `label?: string` (for screen readers).  
 Implementation: pure CSS animation, no JS. Single `<span>` with rotating border.  
-CSS: same spinner CSS already used inside Button's loading state — extract into this shared component. Button should import from `@cascade-ui/components/spinner`.  
+CSS: same spinner CSS already used inside Button's loading state — extract into this shared component. Button should import from `@cascivo/components/spinner`.  
 A11y: `role="status"`, `aria-label` (defaults to "Loading").
 
 ---
@@ -187,7 +187,7 @@ scripts/
     "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/button/button.tsx",
     "https://raw.githubusercontent.com/cascade-ui/cascade/main/packages/components/src/button/button.module.css"
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["action", "form", "interactive"]
 }
 ```
@@ -205,7 +205,7 @@ Implement the four commands. CLI has no runtime deps beyond Node built-ins.
 **`cascade init`** — `packages/cli/src/commands/init.ts`
 
 1. Detect package manager (pnpm/npm/yarn) from lock files
-2. Install `@cascade-ui/core @cascade-ui/tokens` using detected PM
+2. Install `@cascivo/core @cascivo/tokens` using detected PM
 3. Ask user for theme preference (light/dark/warm) via readline
 4. Create `cascade.config.ts` in project root
 5. Print instructions for importing chosen theme in root CSS
@@ -225,7 +225,7 @@ Fetch `registry.json`, render a table (name, category, description) to stdout. `
 Fetch latest file content from registry URLs, show a unified diff, prompt for confirmation, write files.
 
 **`cascade theme add <theme>`** — `packages/cli/src/commands/theme.ts`  
-Install `@cascade-ui/themes`, print import instruction.
+Install `@cascivo/themes`, print import instruction.
 
 **Shared utilities:**
 
@@ -267,7 +267,7 @@ All tools read `registry.json` — accept `registryPath` as a constructor param 
   "mcpServers": {
     "cascade": {
       "command": "npx",
-      "args": ["-y", "@cascade-ui/mcp"]
+      "args": ["-y", "@cascivo/mcp"]
     }
   }
 }
@@ -335,8 +335,8 @@ Configure Storybook 8 (or later) for React with Vite builder.
 1. Add to `apps/storybook/package.json`:
    - `@storybook/react-vite`
    - `@storybook/addon-essentials`
-   - `@cascade-ui/components: workspace:*`
-   - `@cascade-ui/themes: workspace:*`
+   - `@cascivo/components: workspace:*`
+   - `@cascivo/themes: workspace:*`
 2. `apps/storybook/.storybook/main.ts` — framework: `@storybook/react-vite`, stories glob
 3. `apps/storybook/.storybook/preview.ts` — import light theme CSS, set `data-theme="light"` on body
 
@@ -348,7 +348,7 @@ Pattern for every component (example: Button):
 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react'
-import { Button } from '@cascade-ui/components/button'
+import { Button } from '@cascivo/components/button'
 
 const meta: Meta<typeof Button> = {
   component: Button,
@@ -453,7 +453,7 @@ scripts/
 2. Find first item with status = "pending"
 3. Set status = "in-progress", write back
 4. Run generate-component.sh <name> <spec>
-5. Run: vp check && vp run @cascade-ui/components#test
+5. Run: vp check && vp run @cascivo/components#test
    → pass: set status = "review", git add, git commit, gh pr create
    → fail: run self-heal.sh (max 5 attempts)
          → still fail: set status = "escalated", send notification
@@ -489,7 +489,7 @@ Add entries for all 15 remaining components (Textarea, Select, Checkbox, Radio, 
 When a release tag is pushed (`v*`):
 
 1. Build all library packages
-2. Publish `@cascade-ui/core`, `@cascade-ui/tokens`, `@cascade-ui/themes`, `@cascade-ui/icons`, `@cascade-ui/mcp`, `cascade` (CLI) to npm
+2. Publish `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons`, `@cascivo/mcp`, `cascade` (CLI) to npm
 3. Publish docs to GitHub Pages
 
 ### Icons package (`packages/icons/src/`)
@@ -537,7 +537,7 @@ When an agent picks up any component from Phase 1:
 6. Create packages/components/src/<name>/<name>.meta.ts
 7. Create packages/components/src/<name>/<name>.test.tsx
 8. Add export to packages/components/package.json exports map
-9. Run: vp run @cascade-ui/components#test (all tests must pass)
+9. Run: vp run @cascivo/components#test (all tests must pass)
 10. Run: vp check
 11. Commit: git commit -m "feat(components): add <Name> component"
 12. Add demo to apps/docs/src/App.tsx

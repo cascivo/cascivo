@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "grid", "responsive"],
   "category": "layout",
   "meta": {
@@ -51,7 +51,7 @@
         "description": "Items fill available space and wrap when narrower than 12rem"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "grid", "responsive"],
     "intent": {
       "whenToUse": [

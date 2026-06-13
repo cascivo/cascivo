@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'OverflowMenu',
@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
       code: '<OverflowMenu size="sm" placement="bottom-start" items={items} />',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'menu', 'actions', 'kebab', 'table'],
   intent: {
     whenToUse: [

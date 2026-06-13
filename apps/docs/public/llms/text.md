@@ -79,7 +79,7 @@ Use as="span" inside other flow content
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

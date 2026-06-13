@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "hover", "preview", "floating"],
   "category": "overlay",
   "meta": {
@@ -37,7 +37,7 @@
       "keyboard": ["Tab", "Escape"]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "hover", "preview", "floating"],
     "intent": {
       "whenToUse": [

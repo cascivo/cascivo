@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "menu", "actions", "kebab", "table"],
   "category": "overlay",
   "meta": {
@@ -87,7 +87,7 @@
         "code": "<OverflowMenu size=\"sm\" placement=\"bottom-start\" items={items} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "menu", "actions", "kebab", "table"],
     "intent": {
       "whenToUse": [

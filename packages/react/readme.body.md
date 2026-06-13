@@ -8,11 +8,11 @@ can coexist in one project.
 
 ```tsx
 // once, in your entry file
-import '@cascade-ui/react/styles.css'
-import '@cascade-ui/themes/light'
+import '@cascivo/react/styles.css'
+import '@cascivo/themes/light'
 
 // anywhere
-import { Button, Card, CardContent, Toggle } from '@cascade-ui/react'
+import { Button, Card, CardContent, Toggle } from '@cascivo/react'
 
 export function App() {
   return (

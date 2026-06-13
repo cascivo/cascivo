@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressBar',
@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
       code: '<ProgressBar value={100} status="success" label="Upload complete" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['progress', 'loading', 'status', 'feedback'],
   intent: {
     whenToUse: [

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["breadcrumb", "navigation", "hierarchy"],
   "category": "navigation",
   "meta": {
@@ -69,7 +69,7 @@
         "description": "Long trails collapse to the first item, an ellipsis, and the trailing items."
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["breadcrumb", "navigation", "hierarchy"],
     "intent": {
       "whenToUse": [

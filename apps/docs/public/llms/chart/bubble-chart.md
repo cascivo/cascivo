@@ -30,7 +30,7 @@ npx cascade add chart/bubble-chart
 ### Basic bubble chart
 
 ```tsx
-import { BubbleChart } from '@cascade-ui/charts'
+import { BubbleChart } from '@cascivo/charts'
 
 const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]
 <BubbleChart series={series} title="Bubble" />
@@ -55,7 +55,7 @@ const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

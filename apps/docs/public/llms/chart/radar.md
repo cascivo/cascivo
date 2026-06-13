@@ -31,7 +31,7 @@ npx cascade add chart/radar
 ### Basic radar chart
 
 ```tsx
-import { Radar } from '@cascade-ui/charts'
+import { Radar } from '@cascivo/charts'
 
 const axes = ['Speed','Power','Range','Efficiency','Cost']
 const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
@@ -56,7 +56,7 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

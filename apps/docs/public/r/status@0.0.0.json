@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["status", "indicator", "dot", "badge"],
   "category": "display",
   "meta": {
@@ -66,7 +66,7 @@
         "description": "The pulse animation respects prefers-reduced-motion"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["status", "indicator", "dot", "badge"],
     "intent": {
       "whenToUse": [

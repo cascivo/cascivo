@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Cta } from '@cascade-ui/layouts/sections/cta'
+import { Cta } from '@cascivo/layouts/sections/cta'
 
 const meta: Meta<typeof Cta> = {
   title: 'Sections/Cta',

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PasswordInput',
@@ -38,7 +38,7 @@ export const meta: ComponentMeta = {
       code: '<PasswordInput showStrengthMeter placeholder="Create password" />',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['form', 'password', 'input', 'security'],
   intent: {
     whenToUse: [

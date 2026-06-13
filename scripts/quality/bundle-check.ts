@@ -6,11 +6,11 @@ import { fileURLToPath } from 'node:url'
 const root = fileURLToPath(new URL('../..', import.meta.url))
 
 const BUDGETS = [
-  { pkg: '@cascade-ui/react', distFile: 'packages/react/dist/index.mjs', maxGzipKB: 50 },
-  { pkg: '@cascade-ui/charts', distFile: 'packages/charts/dist/index.mjs', maxGzipKB: 80 },
+  { pkg: '@cascivo/react', distFile: 'packages/react/dist/index.mjs', maxGzipKB: 50 },
+  { pkg: '@cascivo/charts', distFile: 'packages/charts/dist/index.mjs', maxGzipKB: 80 },
 ]
 
-// @cascade-ui/ai budget checked separately — it may not have a dist yet
+// @cascivo/ai budget checked separately — it may not have a dist yet
 async function gzipSize(filePath: string): Promise<number> {
   return new Promise((resolve, reject) => {
     let size = 0

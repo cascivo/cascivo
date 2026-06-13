@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Toggle',
@@ -37,7 +37,7 @@ export const meta: ComponentMeta = {
       code: '<Toggle checked={enabled} onChange={setEnabled} label="Dark mode" />',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['switch', 'form', 'boolean'],
   intent: {
     whenToUse: [

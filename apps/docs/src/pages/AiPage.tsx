@@ -1,12 +1,12 @@
 import { CodeBlock } from './components/CodeBlock'
-import { StreamingText, AiLabel, Terminal, AiChat } from '@cascade-ui/ai'
+import { StreamingText, AiLabel, Terminal, AiChat } from '@cascivo/ai'
 
 const MCP_SETUP = `// .claude/settings.json
 {
   "mcpServers": {
     "cascade": {
       "command": "npx",
-      "args": ["@cascade-ui/mcp"]
+      "args": ["@cascivo/mcp"]
     }
   }
 }`
@@ -132,7 +132,7 @@ export function AiPage() {
       <section class="doc-section">
         <h2>AI components</h2>
         <p>
-          The <code>@cascade-ui/ai</code> package ships four AI-native components.
+          The <code>@cascivo/ai</code> package ships four AI-native components.
         </p>
 
         <h3>StreamingText</h3>

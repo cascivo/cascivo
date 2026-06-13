@@ -1,5 +1,5 @@
 'use client'
-import { BarChart } from '@cascade-ui/charts'
+import { BarChart } from '@cascivo/charts'
 import { AXE } from './data'
 
 const LIBS = ['cascade', 'shadcn', 'carbon'] as const

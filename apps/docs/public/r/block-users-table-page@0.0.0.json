@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+  "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
   "tags": ["block", "users", "table", "page"],
   "category": "display",
   "meta": {
@@ -46,7 +46,7 @@
         "description": "Demo users table"
       }
     ],
-    "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+    "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
     "tags": ["block", "users", "table", "page"],
     "intent": {
       "whenToUse": [

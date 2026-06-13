@@ -33,8 +33,8 @@ Charts dashboard demo
 
 ## Dependencies
 
-- `@cascade-ui/charts`
-- `@cascade-ui/react`
+- `@cascivo/charts`
+- `@cascivo/react`
 
 ## Tags
 

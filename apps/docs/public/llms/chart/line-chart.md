@@ -37,7 +37,7 @@ npx cascade add chart/line-chart
 ### Basic line chart
 
 ```tsx
-import { LineChart } from '@cascade-ui/charts'
+import { LineChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]
 <LineChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />
@@ -62,7 +62,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

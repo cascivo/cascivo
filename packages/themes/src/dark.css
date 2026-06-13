@@ -1,7 +1,7 @@
 /* Cascade — Dark Theme */
 /* Bold/editorial, high contrast, developer-cool */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='dark'] {

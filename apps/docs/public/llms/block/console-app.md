@@ -45,8 +45,8 @@ Full console shell demo
 
 ## Dependencies
 
-- `@cascade-ui/react`
-- `@cascade-ui/icons`
+- `@cascivo/react`
+- `@cascivo/icons`
 - `layout/app-shell`
 - `layout/page-header`
 

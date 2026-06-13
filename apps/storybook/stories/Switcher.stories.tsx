@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Switcher } from '@cascade-ui/components/switcher'
-import { Grid, BarChart, Settings } from '@cascade-ui/icons'
+import { Switcher } from '@cascivo/components/switcher'
+import { Grid, BarChart, Settings } from '@cascivo/icons'
 
 const meta: Meta<typeof Switcher> = {
   title: 'Shell/Switcher',

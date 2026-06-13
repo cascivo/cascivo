@@ -70,7 +70,7 @@ npx cascade add time-picker
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

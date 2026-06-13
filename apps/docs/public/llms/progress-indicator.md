@@ -72,7 +72,7 @@ npx cascade add progress-indicator
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

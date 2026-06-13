@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["section", "cta", "marketing"],
   "category": "layout",
   "meta": {
@@ -70,7 +70,7 @@
         "description": "Quiet bordered band with centered heading, description, and action buttons"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["section", "cta", "marketing"],
     "intent": {
       "whenToUse": [

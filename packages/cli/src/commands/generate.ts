@@ -3,7 +3,7 @@ import { basename, dirname, join } from 'node:path'
 import type { CascadeConfig } from '../utils/config.js'
 import { fetchRegistry } from '../utils/registry.js'
 
-// Inline validation types to avoid runtime dep on @cascade-ui/render
+// Inline validation types to avoid runtime dep on @cascivo/render
 interface PropMeta {
   name: string
   type: string

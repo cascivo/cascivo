@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { SegmentedControl } from '@cascade-ui/components/segmented-control'
+import { SegmentedControl } from '@cascivo/components/segmented-control'
 
 const options = [
   { label: 'Day', value: 'day' },

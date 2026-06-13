@@ -17,7 +17,7 @@ gallery; (4) bundle/hydration weight → size budgets + RSC boundary audit + pub
 receipts; (5) a11y fragility → contract tests that travel with copied code +
 `audit --a11y` + nested-composition matrix.
 
-**Architecture:** No new packages. `@cascade-ui/registry` (v11) gains advisory + drift
+**Architecture:** No new packages. `@cascivo/registry` (v11) gains advisory + drift
 types; the CLI gains `audit` and extends `doctor`/`add`; `packages/components` gains
 contract-test files + composition tests; `packages/themes` optionally gains axis partials;
 `apps/docs` gains Theme Studio, Size, and theming-docs surfaces; `.github/` gains the
@@ -58,7 +58,7 @@ style script — decided in T4 after evaluating what vp exposes).
   `search`, `view`, `tokens import`). `doctor.ts` exists today (component-rule checks) —
   `--drift` extends it. v11 adds `utils/lock.ts` (item → registry, version, file hashes)
   and `utils/merge.ts` (diff3) — `audit` and drift reuse both.
-- **Registry**: v11's `@cascade-ui/registry` owns schema v2 (additive evolution
+- **Registry**: v11's `@cascivo/registry` owns schema v2 (additive evolution
   guaranteed by its validator design — unknown fields warn, never fail), per-item
   `version` + `changelog`, static `r/<name>.json` + `r/<name>@<version>.json`.
   Advisories slot in as a new optional item field.
@@ -72,7 +72,7 @@ style script — decided in T4 after evaluating what vp exposes).
   llms + conformance generators (v11) establish the generated-surface pattern; Playground
   page exists (`PlaygroundPage.tsx`) — the Theme Studio is a sibling page.
 - **Prebuilt distribution**: `packages/react` re-exports all components
-  (`@cascade-ui/react`) — the size-budget target. Copy-paste path has no library bundle
+  (`@cascivo/react`) — the size-budget target. Copy-paste path has no library bundle
   by construction.
 - **Examples**: `apps/examples/react-next` (Next.js App Router, RSC demo) — the RSC
   matrix host. Landing/examples are real React: `useSignals()` rule applies.
@@ -88,7 +88,7 @@ style script — decided in T4 after evaluating what vp exposes).
 
 | #   | Decision                                                                                                                                                                                                                                                                                                                                                                                                | Rationale                                                                    |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| 1   | Advisory schema (in `@cascade-ui/registry`): item-level `advisories: [{ id: 'CSA-2026-001', severity: 'low'\|'moderate'\|'high'\|'critical', affectedVersions: semver-range, fixedIn: version, summary, refs[] }]`; surfaced in both the index and per-item JSON                                                                                                                                        | Additive on schema v2; community registries inherit the mechanism            |
+| 1   | Advisory schema (in `@cascivo/registry`): item-level `advisories: [{ id: 'CSA-2026-001', severity: 'low'\|'moderate'\|'high'\|'critical', affectedVersions: semver-range, fixedIn: version, summary, refs[] }]`; surfaced in both the index and per-item JSON                                                                                                                                           | Additive on schema v2; community registries inherit the mechanism            |
 | 2   | `cascade audit`: for each lock entry, fetch current item JSON from its **recorded source registry**, match `affectedVersions` against locked version; output table (item, severity, advisory, fixedIn, drift status) + exit 1 on findings ≥ a `--level` threshold                                                                                                                                       | npm-audit ergonomics on owned code; CI-friendly                              |
 | 3   | `audit` pairs every finding with provenance from drift analysis — "affected AND customized" warns that `update` will three-way merge, never that it auto-fixes                                                                                                                                                                                                                                          | Honesty rule; roadmap decision 2                                             |
 | 4   | `cascade doctor --drift`: per lock entry, fetch `r/<name>@<lockedVersion>.json` base → classify pristine (hash match) / customized (line diff count vs base) / conflicted (marker scan) / unknown (no lock entry); `--json` for tooling                                                                                                                                                                 | Line-level core-vs-custom answer to pain #1b; reuses v11 base-fetch path     |
@@ -99,7 +99,7 @@ style script — decided in T4 after evaluating what vp exposes).
 | 9   | Theme Studio = docs page (`ThemeStudioPage.tsx`): semantic-token + axis editors, live preview rendering real components (reuse docs demos), exports: theme CSS file, DTCG JSON, shareable URL (full state in location.hash, no backend)                                                                                                                                                                 | tweakcn-class tool, first-party; pain #3                                     |
 | 10  | Axes: palette / shape (radius + border treatment) / density (spacing multiplier) / type (font stack + scale) as CSS partials generated by the studio. First-party themes re-expressed as presets ONLY if the v9 parity test + visual review pass; else axes stay studio-output-only in v12                                                                                                              | Distinctiveness without destabilizing shipped themes                         |
 | 11  | Theme gallery: docs page listing first-party + directory theme items (v11 `type: 'theme'`) with preview swatches + `cascade add` snippets                                                                                                                                                                                                                                                               | Community surface for distinctiveness; builds on v11 directory               |
-| 12  | Size receipts: script measures per-component cost via isolated Rolldown builds of single-component entries from `@cascade-ui/react` (minified + gzip); budgets in a committed `size-budgets.json`; CI compares; docs Size page generated from results                                                                                                                                                   | Receipts not vibes; budget file makes regressions reviewable                 |
+| 12  | Size receipts: script measures per-component cost via isolated Rolldown builds of single-component entries from `@cascivo/react` (minified + gzip); budgets in a committed `size-budgets.json`; CI compares; docs Size page generated from results                                                                                                                                                      | Receipts not vibes; budget file makes regressions reviewable                 |
 | 13  | RSC audit: classification file `rsc-matrix.json` (component → server-safe \| client + reason); test walks component sources asserting directive presence matches the matrix; `react-next` example gains a page rendering all server-safe components inside an RSC                                                                                                                                       | Pain #4b; CLAUDE.md's RSC claim becomes enforced                             |
 | 14  | Contract tests travel: each component gains `<name>.contract.test.tsx` — keyboard + ARIA assertions only, importing exclusively from the component's own files + @testing-library (no monorepo-internal imports, so it runs in user projects); registry `files` includes it; `cascade add` copies by default, `--no-tests`/config opt-out                                                               | Pain #5a: the broken-keyboard effect gets a tripwire in the user's repo      |
 | 15  | `cascade audit --a11y`: locates installed components (lock/outputDir), runs vitest on their copied contract tests + axe smoke per component (requires vitest + jsdom in the user project — detected, with actionable install hint if missing)                                                                                                                                                           | Audits the _customized_ code, which our CI can never see                     |
@@ -166,7 +166,7 @@ style script — decided in T4 after evaluating what vp exposes).
 9. **RSC matrix churn (T4):** new components must declare their classification —
    enforcement test fails on unlisted components, which is the desired pressure; factory
    templates updated accordingly.
-10. **Contract-test portability (T5):** no monorepo aliases, no `@cascade-ui/*` dev-only
+10. **Contract-test portability (T5):** no monorepo aliases, no `@cascivo/*` dev-only
     imports, testing-library + vitest only, relative imports into the component's own
     folder. Prove it: a fixture "user project" in CLI integration tests installs a
     component + tests and runs them green WITHOUT the monorepo's vitest config.

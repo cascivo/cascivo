@@ -164,4 +164,4 @@ The cascade registry model is open. Anyone can publish components and host their
 
 ---
 
-[Docs](https://urbanisierung.github.io/cascade-ui/) · AI agents: use [`@cascade-ui/mcp`](https://github.com/urbanisierung/cascade-ui/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascade-ui/blob/main/registry.json) · MIT
+[Docs](https://urbanisierung.github.io/cascade-ui/) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascade-ui/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascade-ui/blob/main/registry.json) · MIT

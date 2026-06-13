@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "paths": {
-      "@cascade-ui/core": ["../../packages/core/src/index.ts"]
+      "@cascivo/core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src"],

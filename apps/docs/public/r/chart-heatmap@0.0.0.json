@@ -5,10 +5,10 @@
   "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
+  "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "heatmap", "matrix", "data-viz"],
   "category": "chart",
-  "install": "@cascade-ui/charts",
+  "install": "@cascivo/charts",
   "meta": {
     "name": "Heatmap",
     "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
@@ -66,10 +66,10 @@
     "examples": [
       {
         "title": "Basic heatmap",
-        "code": "import { Heatmap } from '@cascade-ui/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
+        "code": "import { Heatmap } from '@cascivo/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
+    "dependencies": ["@cascivo/charts"],
     "tags": ["chart", "heatmap", "matrix", "data-viz"],
     "intent": {
       "whenToUse": [

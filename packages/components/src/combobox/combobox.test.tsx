@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { createLocale } from '@cascade-ui/i18n'
+import { createLocale } from '@cascivo/i18n'
 import { Combobox, type ComboboxOption } from './combobox'
 
 const options: ComboboxOption[] = [

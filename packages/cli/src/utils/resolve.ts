@@ -1,6 +1,6 @@
 import type { CascadeConfig, RegistryNamespaceConfig } from './config.js'
 import { fetchJson } from './http.js'
-import type { RegistryItem } from '@cascade-ui/registry'
+import type { RegistryItem } from '@cascivo/registry'
 
 export type AddressKind = 'bare' | 'namespace' | 'url' | 'github'
 

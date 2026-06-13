@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Alert',
@@ -46,7 +46,7 @@ export const meta: ComponentMeta = {
       code: '<Alert variant="warning" title="Update available" action={{ label: \'Update now\', onClick: update }}>A new version is ready.</Alert>',
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['notification', 'message', 'feedback'],
   intent: {
     whenToUse: [

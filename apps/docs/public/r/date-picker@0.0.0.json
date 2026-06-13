@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["date", "calendar", "picker", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -125,7 +125,7 @@
         "description": "Date range constraint"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["date", "calendar", "picker", "input", "form"],
     "intent": {
       "whenToUse": [

@@ -1,5 +1,5 @@
-import { BarChart } from '@cascade-ui/charts'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { BarChart } from '@cascivo/charts'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 import bench from 'virtual:bench'
 
 const axe = bench.a11y

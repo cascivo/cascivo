@@ -1,5 +1,5 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
+import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 

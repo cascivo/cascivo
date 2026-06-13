@@ -43,7 +43,7 @@ Centered 72rem content column with 2rem block padding
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

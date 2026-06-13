@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { FeatureGrid } from '@cascade-ui/layouts/sections/feature-grid'
+import { FeatureGrid } from '@cascivo/layouts/sections/feature-grid'
 
 const meta: Meta<typeof FeatureGrid> = {
   title: 'Sections/FeatureGrid',

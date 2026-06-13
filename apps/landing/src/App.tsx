@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { useSignalEffect } from '@cascade-ui/core'
+import { useSignalEffect } from '@cascivo/core'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'

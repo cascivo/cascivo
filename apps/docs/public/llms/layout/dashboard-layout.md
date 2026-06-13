@@ -42,7 +42,7 @@ Stats + main layout
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

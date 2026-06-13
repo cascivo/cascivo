@@ -69,7 +69,7 @@ This ensures the chart is fully readable without functional color vision.
 
 ## Per-Theme Tuning
 
-The base palette (`--cascivo-chart-1..8` in `@cascade-ui/tokens`) is used unmodified for:
+The base palette (`--cascivo-chart-1..8` in `@cascivo/tokens`) is used unmodified for:
 
 - `light` (default)
 - `corporate`

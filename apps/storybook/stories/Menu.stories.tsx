@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
+import { Button } from '@cascivo/components/button'
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascivo/components/menu'
 
 const meta: Meta = {
   title: 'Overlay/Menu',

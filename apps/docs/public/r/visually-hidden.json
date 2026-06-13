@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
   "category": "display",
   "meta": {
@@ -47,7 +47,7 @@
         "code": "<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
     "intent": {
       "whenToUse": [

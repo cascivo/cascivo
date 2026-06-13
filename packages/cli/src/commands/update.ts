@@ -9,7 +9,7 @@ import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { readLock, writeLock, sha256, updateLockEntry } from '../utils/lock.js'
 import { fetchJson } from '../utils/http.js'
 import { merge } from '../utils/merge.js'
-import type { RegistryItem } from '@cascade-ui/registry'
+import type { RegistryItem } from '@cascivo/registry'
 
 async function confirm(question: string): Promise<boolean> {
   const rl = createInterface({ input: stdin, output: stdout })

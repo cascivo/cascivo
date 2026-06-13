@@ -1,6 +1,6 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useRef, type ChangeEvent, type KeyboardEvent } from 'react'
 import styles from './search.module.css'
 

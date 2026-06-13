@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Blockquote } from '@cascade-ui/components/blockquote'
+import { Blockquote } from '@cascivo/components/blockquote'
 
 const meta: Meta<typeof Blockquote> = {
   title: 'Display/Blockquote',

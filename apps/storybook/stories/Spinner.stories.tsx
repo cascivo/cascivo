@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Spinner } from '@cascade-ui/components/spinner'
+import { Spinner } from '@cascivo/components/spinner'
 
 const meta: Meta<typeof Spinner> = {
   title: 'Feedback/Spinner',

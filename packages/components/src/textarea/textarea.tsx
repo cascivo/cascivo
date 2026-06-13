@@ -1,5 +1,5 @@
 'use client'
-import { createMachine, useMachine, cn } from '@cascade-ui/core'
+import { createMachine, useMachine, cn } from '@cascivo/core'
 import type { TextareaHTMLAttributes } from 'react'
 import styles from './textarea.module.css'
 

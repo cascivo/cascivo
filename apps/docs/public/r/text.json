@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "text", "paragraph", "body"],
   "category": "display",
   "meta": {
@@ -80,7 +80,7 @@
         "description": "Use as=\"span\" inside other flow content"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "text", "paragraph", "body"],
     "intent": {
       "whenToUse": [

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 const root = fileURLToPath(new URL('../..', import.meta.url))
 const distDir = join(root, 'apps/landing/dist')
 
-// CascadeView (@cascade-ui/render) loads all cascade components for its runtime component map;
+// CascadeView (@cascivo/render) loads all cascade components for its runtime component map;
 // tree-shaking cannot eliminate them. Budget raised from 120 to 135 KB to accommodate.
 const JS_BUDGET_KB = 135
 const CSS_BUDGET_KB = 60

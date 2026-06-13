@@ -155,7 +155,7 @@ checks pass.
 3. **`packages/themes/src/parity.test.ts`** — add `<name>` to the `themeFiles` array.
 4. **`apps/docs/src/theme.ts`** — extend the `Theme` union, the `THEMES` array, and
    the legacy-migration `if` check.
-5. **`apps/docs/src/app.css`** — add `@import '@cascade-ui/themes/<name>';`.
+5. **`apps/docs/src/app.css`** — add `@import '@cascivo/themes/<name>';`.
 6. **`apps/landing/src/theme.ts`** — add to the `THEMES` tuple.
 7. **`apps/landing/src/landing.css`** — add the `@import`.
 8. **`apps/landing/src/sections/ThemeDemo.tsx`** — add to its `THEMES` tuple.

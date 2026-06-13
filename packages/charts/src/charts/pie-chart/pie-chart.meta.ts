@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PieChart',
@@ -43,12 +43,12 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic pie chart',
-      code: `import { PieChart } from '@cascade-ui/charts'
+      code: `import { PieChart } from '@cascivo/charts'
 
 <PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'pie', 'donut', 'data-viz'],
   intent: {
     whenToUse: [

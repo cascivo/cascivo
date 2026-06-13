@@ -52,7 +52,7 @@ Attribution renders as <footer><cite>
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

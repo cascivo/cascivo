@@ -61,7 +61,7 @@ Multi-select feature toggles
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

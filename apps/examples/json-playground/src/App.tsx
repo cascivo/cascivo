@@ -1,13 +1,13 @@
 'use client'
-import { signal, useSignals } from '@cascade-ui/core'
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { signal, useSignals } from '@cascivo/core'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 import React, { useRef } from 'react'
 import { exampleConfigJson } from './example-config'
 
-import '@cascade-ui/themes/light'
-import '@cascade-ui/themes/dark'
-import '@cascade-ui/themes/warm'
+import '@cascivo/themes/light'
+import '@cascivo/themes/dark'
+import '@cascivo/themes/warm'
 
 const configSignal = signal<ViewConfig | null>(null)
 const parseErrorSignal = signal<string | null>(null)

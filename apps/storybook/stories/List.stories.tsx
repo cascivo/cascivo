@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { List, ListItem } from '@cascade-ui/components/list'
+import { List, ListItem } from '@cascivo/components/list'
 
 const meta: Meta<typeof List> = {
   title: 'Display/List',

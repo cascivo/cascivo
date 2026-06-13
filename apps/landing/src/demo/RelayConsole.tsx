@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import {
   Activity,
   AlertTriangle,
@@ -8,12 +8,12 @@ import {
   Settings,
   Tag,
   Zap,
-} from '@cascade-ui/icons'
+} from '@cascivo/icons'
 import type { MouseEvent } from 'react'
-import { Card } from '@cascade-ui/components/card'
-import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascade-ui/components/menu'
-import { SideNav } from '@cascade-ui/components/side-nav'
-import { ToastProvider, useToast } from '@cascade-ui/components/toast'
+import { Card } from '@cascivo/components/card'
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascivo/components/menu'
+import { SideNav } from '@cascivo/components/side-nav'
+import { ToastProvider, useToast } from '@cascivo/components/toast'
 import registry from '../../../../registry.json'
 import { DeploysRegion } from './DeploysRegion'
 import { FlagsRegion } from './FlagsRegion'

@@ -101,7 +101,7 @@ Everything inherits the v2 cross-cutting rules: signals not hooks, CSS-only moti
 
 ### Milestone 2.3 — Utility components (the "proper error boundary" workstream)
 
-- [ ] **ErrorBoundary** — a _real_ one, not a stub: class component internally (the only place React forces it; documented exception to the no-classes rule), `fallback` render prop receiving `{ error, reset }`, `onError` reporting hook, `resetKeys` for automatic recovery, optional default fallback UI built from EmptyState + Button ("Something went wrong — Try again"). Ships in `@cascade-ui/core` or `components` (decide: it has no styling of its own → lean `core`).
+- [ ] **ErrorBoundary** — a _real_ one, not a stub: class component internally (the only place React forces it; documented exception to the no-classes rule), `fallback` render prop receiving `{ error, reset }`, `onError` reporting hook, `resetKeys` for automatic recovery, optional default fallback UI built from EmptyState + Button ("Something went wrong — Try again"). Ships in `@cascivo/core` or `components` (decide: it has no styling of its own → lean `core`).
 - [ ] **Suspense affordances** — `SuspenseBoundary` convenience wrapping `Suspense` with a Skeleton/Spinner default fallback and a minimum-display-time signal (no flash-of-spinner).
 - [ ] **Portal** — declarative top-layer/portal helper used by Toast/Modal internally; exported because user code needs it for custom overlays.
 - [ ] **VisuallyHidden** + **FocusScope** (focus trap/restore used by Modal/Sheet/Menu) — extracted, exported, documented.
@@ -188,5 +188,5 @@ Open questions for the human before T1 planning:
 
 1. Light theme accent: keep cascade blue or follow the near-neutral-primary trend? (Brand decision.)
 2. AiChat markdown scope: minimal subset (bold/italic/code/fences/links/lists) vs full CommonMark — proposal is subset, confirm.
-3. ErrorBoundary home: `@cascade-ui/core` (proposal) or copy-paste component?
+3. ErrorBoundary home: `@cascivo/core` (proposal) or copy-paste component?
 4. Component-count target: the full Phase 2 list is ~25 components → catalog lands at ~70. Trim 2.2's tail (NavigationMenu, TreeView) if velocity demands?

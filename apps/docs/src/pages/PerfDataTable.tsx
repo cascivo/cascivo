@@ -1,4 +1,4 @@
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
+import { DataTable, type Column } from '@cascivo/components/data-table'
 
 interface Row {
   id: string

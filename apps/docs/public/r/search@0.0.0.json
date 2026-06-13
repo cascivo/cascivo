@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["search", "input", "filter", "form"],
   "category": "inputs",
   "meta": {
@@ -121,7 +121,7 @@
         "code": "<Search size=\"lg\" placeholder=\"Search products…\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["search", "input", "filter", "form"],
     "intent": {
       "whenToUse": [

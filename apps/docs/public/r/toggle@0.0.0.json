@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["switch", "form", "boolean"],
   "category": "inputs",
   "meta": {
@@ -82,7 +82,7 @@
         "code": "<Toggle checked={enabled} onChange={setEnabled} label=\"Dark mode\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["switch", "form", "boolean"],
     "intent": {
       "whenToUse": [

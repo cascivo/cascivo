@@ -64,9 +64,9 @@ App shell with collapsible nav
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/i18n`
-- `@cascade-ui/storage`
+- `@cascivo/core`
+- `@cascivo/i18n`
+- `@cascivo/storage`
 
 ## Tags
 

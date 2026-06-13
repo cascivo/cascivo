@@ -1,5 +1,5 @@
-import { Badge } from '@cascade-ui/components/badge'
-import { Button } from '@cascade-ui/components/button'
+import { Badge } from '@cascivo/components/badge'
+import { Button } from '@cascivo/components/button'
 import registry from '../../../../registry.json'
 import { CopyCommand } from './CopyCommand'
 

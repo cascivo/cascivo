@@ -9,7 +9,7 @@
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "paths": {
-      "@cascade-ui/react": ["../react/src/index.ts"]
+      "@cascivo/react": ["../react/src/index.ts"]
     }
   },
   "include": ["src", "../components/src/css-modules.d.ts", "../react/src/css-modules.d.ts"],

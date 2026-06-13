@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { useSignal, useSignals } from '@cascade-ui/core'
-import { BarChart } from '@cascade-ui/charts'
-import { DataTable, type Column } from '@cascade-ui/components/data-table'
-import { Stat } from '@cascade-ui/components/stat'
+import { useSignal, useSignals } from '@cascivo/core'
+import { BarChart } from '@cascivo/charts'
+import { DataTable, type Column } from '@cascivo/components/data-table'
+import { Stat } from '@cascivo/components/stat'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import {
@@ -113,7 +113,7 @@ function BundleSection() {
       />
       {treeshake && (
         <p className="perf-note">
-          Tree-shaking check: a bare <code>{`import {} from '@cascade-ui/react'`}</code> adds{' '}
+          Tree-shaking check: a bare <code>{`import {} from '@cascivo/react'`}</code> adds{' '}
           {fmtInt(treeshake.bareImportGzBytes)} bytes gzip. A Button-only build is{' '}
           {fmtKb(treeshake.buttonOnlyGzKb)} vs {fmtKb(treeshake.fullGzKb)} for the full library.
         </p>

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "section", "page"],
   "category": "layout",
   "meta": {
@@ -51,7 +51,7 @@
         "description": "Centered 72rem content column with 2rem block padding"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "section", "page"],
     "intent": {
       "whenToUse": [

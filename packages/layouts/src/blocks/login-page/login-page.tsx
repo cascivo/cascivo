@@ -1,5 +1,5 @@
 'use client'
-import { Button, Form, Input, useForm } from '@cascade-ui/react'
+import { Button, Form, Input, useForm } from '@cascivo/react'
 import { AuthLayout } from '../../auth-layout/auth-layout'
 
 interface LoginValues extends Record<string, unknown> {

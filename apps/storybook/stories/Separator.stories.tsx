@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Separator } from '@cascade-ui/components/separator'
+import { Separator } from '@cascivo/components/separator'
 
 const meta: Meta<typeof Separator> = {
   title: 'Display/Separator',

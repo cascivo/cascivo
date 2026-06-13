@@ -29,7 +29,7 @@ npx cascade add chart/kpi
 ### Basic KPI card
 
 ```tsx
-import { Kpi } from '@cascade-ui/charts'
+import { Kpi } from '@cascivo/charts'
 ;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
@@ -44,7 +44,7 @@ import { Kpi } from '@cascade-ui/charts'
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

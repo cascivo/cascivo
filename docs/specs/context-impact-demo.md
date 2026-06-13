@@ -148,7 +148,7 @@ These results are **constructed from domain knowledge**, not from a recorded liv
 
 **To reproduce with a live model run:**
 
-1. Start an MCP session with `@cascade-ui/mcp`.
+1. Start an MCP session with `@cascivo/mcp`.
 2. For each prompt, run two generations: (A) with only `list_components`; (B) with `select_component` + `get_context` + `get_tokens`.
 3. Pipe each output to `cascade audit --ai --json | jq '.summary'`.
 4. Record the finding counts.

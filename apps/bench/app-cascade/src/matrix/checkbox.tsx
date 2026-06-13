@@ -1,4 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import '@cascade-ui/themes/light'
-import { Checkbox } from '@cascade-ui/react'
+import '@cascivo/themes/light'
+import { Checkbox } from '@cascivo/react'
 createRoot(document.getElementById('root')!).render(<Checkbox label="Option" />)

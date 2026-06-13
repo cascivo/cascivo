@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["divider", "rule", "layout"],
   "category": "display",
   "meta": {
@@ -53,7 +53,7 @@
         "code": "<Separator orientation=\"vertical\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["divider", "rule", "layout"],
     "intent": {
       "whenToUse": [

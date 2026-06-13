@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'VisuallyHidden',
@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
       code: '<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['accessibility', 'screen-reader', 'sr-only', 'hidden'],
   intent: {
     whenToUse: [

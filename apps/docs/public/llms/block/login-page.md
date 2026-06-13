@@ -35,7 +35,7 @@ Login page
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/auth-layout`
 
 ## Tags

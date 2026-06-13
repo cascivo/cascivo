@@ -1,17 +1,17 @@
 import type { ReactNode } from 'react'
-import { Button } from '@cascade-ui/components/button'
-import { Input } from '@cascade-ui/components/input'
-import { Badge } from '@cascade-ui/components/badge'
-import { Card } from '@cascade-ui/components/card'
-import { Select } from '@cascade-ui/components/select'
-import { Toggle } from '@cascade-ui/components/toggle'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascade-ui/components/tabs'
+import { Button } from '@cascivo/components/button'
+import { Input } from '@cascivo/components/input'
+import { Badge } from '@cascivo/components/badge'
+import { Card } from '@cascivo/components/card'
+import { Select } from '@cascivo/components/select'
+import { Toggle } from '@cascivo/components/toggle'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@cascade-ui/components/accordion'
+} from '@cascivo/components/accordion'
 import registry from '../../../../registry.json'
 
 const componentCount = (registry as { components: unknown[] }).components.length

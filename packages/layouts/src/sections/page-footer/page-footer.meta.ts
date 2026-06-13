@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PageFooter',
@@ -54,7 +54,7 @@ export const meta: ComponentMeta = {
       description: 'Three-column footer with brand and license meta',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['section', 'footer', 'navigation'],
   intent: {
     whenToUse: [

@@ -11,7 +11,7 @@ import { existsSync } from 'node:fs'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 import { buildRegistry, parseLegacyRegistry } from '../../packages/registry/src/index.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -129,7 +129,7 @@ async function buildEntry(
     meta,
   }
   if (isChart) {
-    entry.install = '@cascade-ui/charts'
+    entry.install = '@cascivo/charts'
   }
   return entry
 }

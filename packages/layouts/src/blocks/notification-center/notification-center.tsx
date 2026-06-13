@@ -1,5 +1,5 @@
 'use client'
-import { Alert, Button } from '@cascade-ui/react'
+import { Alert, Button } from '@cascivo/react'
 import { Stack } from '../../stack/stack'
 
 interface Notification {

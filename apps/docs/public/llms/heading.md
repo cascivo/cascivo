@@ -71,7 +71,7 @@ Keep the document outline correct while controlling the visual scale
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Center',
@@ -19,7 +19,7 @@ export const meta: ComponentMeta = {
       description: 'Centered container with custom max-width',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'center', 'wrapper'],
   intent: {
     whenToUse: [

@@ -63,7 +63,7 @@ npx cascade add toggle
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

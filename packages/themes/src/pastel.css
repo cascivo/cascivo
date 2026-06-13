@@ -1,7 +1,7 @@
 /* Cascade — Pastel Theme */
 /* Playful/consumer, soft candy palette, pill controls, diffuse shadows */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='pastel'] {

@@ -55,8 +55,8 @@ Four KPI cells — three with sparkline trends and signed deltas
 
 ## Dependencies
 
-- `@cascade-ui/core`
-- `@cascade-ui/charts`
+- `@cascivo/core`
+- `@cascivo/charts`
 
 ## Tags
 

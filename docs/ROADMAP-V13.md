@@ -102,10 +102,10 @@ for `Alert` when the situation calls for `Toast`, hard-codes `#3b82f6` instead o
    Alert) get the `@function`/`if()` treatment in v13 — enough to prove the pattern and the
    fallback discipline. A full migration is explicitly deferred; the v9 theme-parity test and
    visual diffs gate even the pilot.
-8. **No new packages.** Intent types land in `@cascade-ui/core`; the token catalog, context
+8. **No new packages.** Intent types land in `@cascivo/core`; the token catalog, context
    bundle, and specs generators land in `scripts/` wired into the regen pipeline; MCP tools
-   extend `@cascade-ui/mcp`; the audit extends the existing CLI; CSS-native partials live in
-   `@cascade-ui/tokens`/component CSS. `@cascade-ui/registry` (v11) carries the intent type
+   extend `@cascivo/mcp`; the audit extends the existing CLI; CSS-native partials live in
+   `@cascivo/tokens`/component CSS. `@cascivo/registry` (v11) carries the intent type
    for the published registry items.
 
 ## Definition of Done

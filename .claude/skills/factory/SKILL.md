@@ -63,10 +63,10 @@ Create four files at `packages/components/src/<name>/`:
    per-component `prefers-reduced-motion` rules unless opting _out_ (continuous
    indicators).
    User-visible strings (labels, aria-labels, empty states) must come from the
-   `@cascade-ui/i18n` built-in catalog via `t(builtin...)` with a `labels` prop
+   `@cascivo/i18n` built-in catalog via `t(builtin...)` with a `labels` prop
    override — add new keys to `packages/i18n/src/builtin.ts` (en + de) as needed.
 3. `<name>.meta.ts` — a `ComponentMeta` object (`import type` from
-   `@cascade-ui/core`). Fill `props`, `tokens`, `accessibility`, `examples`,
+   `@cascivo/core`). Fill `props`, `tokens`, `accessibility`, `examples`,
    `tags` honestly from what you built. **Always include an `intent` block**;
    scaffold it with the placeholder below — the completeness check will fail
    until a human (or a later factory pass) authors the real content:
@@ -95,7 +95,7 @@ Set `milestone = "scaffold"`, commit `factory: scaffold <Name>`.
 Run, from the repo root:
 
 ```
-vp run @cascade-ui/components#test
+vp run @cascivo/components#test
 vp check
 ```
 

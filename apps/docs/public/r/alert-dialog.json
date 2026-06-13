@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "dialog", "confirm", "destructive"],
   "category": "overlay",
   "meta": {
@@ -39,7 +39,7 @@
       "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "dialog", "confirm", "destructive"],
     "intent": {
       "whenToUse": [

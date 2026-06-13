@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { MediaMasonry } from '@cascade-ui/layouts/sections/media-masonry'
+import { MediaMasonry } from '@cascivo/layouts/sections/media-masonry'
 
 const meta: Meta<typeof MediaMasonry> = {
   title: 'Sections/MediaMasonry',

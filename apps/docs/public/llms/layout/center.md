@@ -41,7 +41,7 @@ Centered container with custom max-width
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

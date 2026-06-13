@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Input } from '@cascade-ui/components/input'
-import { Form, createForm, useForm } from '@cascade-ui/components/form'
+import { Input } from '@cascivo/components/input'
+import { Form, createForm, useForm } from '@cascivo/components/form'
 
 function BasicDemo() {
   const form = useForm<{ email: string }>({

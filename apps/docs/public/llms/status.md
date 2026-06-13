@@ -68,7 +68,7 @@ The pulse animation respects prefers-reduced-motion
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

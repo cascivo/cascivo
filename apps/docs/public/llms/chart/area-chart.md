@@ -37,7 +37,7 @@ npx cascade add chart/area-chart
 ### Basic area chart
 
 ```tsx
-import { AreaChart } from '@cascade-ui/charts'
+import { AreaChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 <AreaChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />
@@ -62,7 +62,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

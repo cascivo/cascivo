@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Text',
@@ -44,7 +44,7 @@ export const meta: ComponentMeta = {
       description: 'Use as="span" inside other flow content',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'text', 'paragraph', 'body'],
   intent: {
     whenToUse: [

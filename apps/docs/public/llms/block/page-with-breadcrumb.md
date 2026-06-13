@@ -33,7 +33,7 @@ Page with breadcrumb
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/page-header`
 - `layout/center`
 

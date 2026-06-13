@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { PieChart } from '@cascade-ui/charts'
+import { PieChart } from '@cascivo/charts'
 
 const data = [
   { id: 'chrome', label: 'Chrome', value: 62 },

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'RadioCard',
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
       description: 'Single-select plan picker',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['radio', 'card', 'selectable', 'form'],
   intent: {
     whenToUse: [

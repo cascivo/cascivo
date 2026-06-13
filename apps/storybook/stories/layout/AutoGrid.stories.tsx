@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { AutoGrid } from '@cascade-ui/layouts/auto-grid'
+import { AutoGrid } from '@cascivo/layouts/auto-grid'
 
 const meta: Meta<typeof AutoGrid> = {
   title: 'Layout/AutoGrid',

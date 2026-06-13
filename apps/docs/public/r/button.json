@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["action", "form", "interactive"],
   "category": "inputs",
   "meta": {
@@ -84,7 +84,7 @@
         "code": "<Button variant=\"destructive\">Delete</Button>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["action", "form", "interactive"],
     "intent": {
       "whenToUse": [

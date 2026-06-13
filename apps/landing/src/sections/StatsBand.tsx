@@ -1,4 +1,4 @@
-import { Stat } from '@cascade-ui/components/stat'
+import { Stat } from '@cascivo/components/stat'
 import registry from '../../../../registry.json'
 import bench from 'virtual:bench'
 

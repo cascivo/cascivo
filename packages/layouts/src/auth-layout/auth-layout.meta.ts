@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'AuthLayout',
@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
       description: 'Centered auth card with logo',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'auth', 'login', 'page'],
   intent: {
     whenToUse: [

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["stat", "kpi", "metric", "number"],
   "category": "display",
   "meta": {
@@ -80,7 +80,7 @@
         "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["stat", "kpi", "metric", "number"],
     "intent": {
       "whenToUse": [

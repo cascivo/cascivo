@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["chip", "label", "filter", "category"],
   "category": "display",
   "meta": {
@@ -82,7 +82,7 @@
         "description": "Renders a trailing remove button labeled by dismissLabel"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["chip", "label", "filter", "category"],
     "intent": {
       "whenToUse": [

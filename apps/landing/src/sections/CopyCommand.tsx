@@ -1,6 +1,6 @@
 'use client'
-import { useSignal, useSignals } from '@cascade-ui/core'
-import { Button } from '@cascade-ui/components/button'
+import { useSignal, useSignals } from '@cascivo/core'
+import { Button } from '@cascivo/components/button'
 
 export function CopyCommand({ command }: { command: string }) {
   useSignals()

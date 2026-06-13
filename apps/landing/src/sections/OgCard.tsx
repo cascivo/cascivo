@@ -1,5 +1,5 @@
-import { Badge } from '@cascade-ui/components/badge'
-import { Card } from '@cascade-ui/components/card'
+import { Badge } from '@cascivo/components/badge'
+import { Card } from '@cascivo/components/card'
 import registry from '../../../../registry.json'
 
 const componentCount = (registry as { components: unknown[] }).components.length

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, type ReactNode, type MouseEvent as ReactMouseEvent } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './context-menu.module.css'
 
 export interface ContextMenuProps {

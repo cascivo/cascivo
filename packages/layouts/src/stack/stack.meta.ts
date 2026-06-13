@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Stack',
@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
       description: 'Row layout',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'flex', 'stack', 'spacing'],
   intent: {
     whenToUse: [

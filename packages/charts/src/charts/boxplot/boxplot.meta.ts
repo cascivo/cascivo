@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Boxplot',
@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic boxplot',
-      code: `import { Boxplot } from '@cascade-ui/charts'
+      code: `import { Boxplot } from '@cascivo/charts'
 
 const series = [
   { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },
@@ -50,7 +50,7 @@ const series = [
 <Boxplot series={series} title="Comparison" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'boxplot', 'box-whisker', 'statistics', 'data-viz'],
   intent: {
     whenToUse: [

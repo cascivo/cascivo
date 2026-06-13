@@ -77,7 +77,7 @@ npx cascade add progress-bar
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

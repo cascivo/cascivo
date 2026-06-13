@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Skeleton } from '@cascade-ui/components/skeleton'
+import { Skeleton } from '@cascivo/components/skeleton'
 
 const meta: Meta<typeof Skeleton> = {
   title: 'Display/Skeleton',

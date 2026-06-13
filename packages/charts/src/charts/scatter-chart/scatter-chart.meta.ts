@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ScatterChart',
@@ -61,13 +61,13 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic scatter chart',
-      code: `import { ScatterChart } from '@cascade-ui/charts'
+      code: `import { ScatterChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 <ScatterChart series={series} title="Scatter" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'scatter', 'plot', 'data-viz'],
   intent: {
     whenToUse: [

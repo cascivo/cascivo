@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascade-ui/components/card'
+import { Button } from '@cascivo/components/button'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 
 const meta: Meta<typeof Card> = {
   title: 'Display/Card',

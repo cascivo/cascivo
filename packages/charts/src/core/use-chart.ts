@@ -1,4 +1,4 @@
-import { useSignal, useSignalEffect } from '@cascade-ui/core'
+import { useSignal, useSignalEffect } from '@cascivo/core'
 import { useRef } from 'react'
 
 export interface ChartSize {

@@ -34,7 +34,7 @@ const FIXTURE_REGISTRY = {
         'https://example.com/app-shell/app-shell.tsx',
         'https://example.com/app-shell/app-shell.module.css',
       ],
-      dependencies: ['@cascade-ui/core'],
+      dependencies: ['@cascivo/core'],
       tags: [],
     },
     {
@@ -44,7 +44,7 @@ const FIXTURE_REGISTRY = {
       category: 'display',
       version: '0.0.0',
       files: ['https://example.com/blocks/users-table-page/users-table-page.tsx'],
-      dependencies: ['@cascade-ui/react'],
+      dependencies: ['@cascivo/react'],
       tags: [],
     },
   ],

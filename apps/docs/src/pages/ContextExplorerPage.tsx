@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import {
   buildContract,
   findCssLiteralViolations,
@@ -7,7 +7,7 @@ import {
   type Contract,
   type LiteralFinding,
   type PropFinding,
-} from '@cascade-ui/cli/audit-ai'
+} from '@cascivo/cli/audit-ai'
 
 // ---------------------------------------------------------------------------
 // Artifact shapes (subset of the generated JSON we render).
@@ -130,7 +130,7 @@ const DIRTY_SNIPPET = `/* CSS: hardcoded values */
 }
 
 /* TSX: unknown prop */
-import { Button } from '@cascade-ui/react'
+import { Button } from '@cascivo/react'
 export function Hero() {
   return <Button frobnicate variant="primary">Save</Button>
 }`

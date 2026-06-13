@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Bullet',
@@ -38,12 +38,12 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic bullet chart',
-      code: `import { Bullet } from '@cascade-ui/charts'
+      code: `import { Bullet } from '@cascivo/charts'
 
 <Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'bullet', 'kpi', 'progress', 'data-viz'],
   intent: {
     whenToUse: [

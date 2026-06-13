@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useRef, type ReactNode } from 'react'
-import { useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
 import styles from './hover-card.module.css'
 

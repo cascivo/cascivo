@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './streaming-text.module.css'
 
 export interface StreamingTextProps {

@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "dropdown", "menu"],
   "category": "inputs",
   "meta": {
@@ -86,7 +86,7 @@
         "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "dropdown", "menu"],
     "intent": {
       "whenToUse": [

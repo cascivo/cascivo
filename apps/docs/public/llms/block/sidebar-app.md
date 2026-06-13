@@ -33,7 +33,7 @@ App with sidebar navigation
 
 ## Dependencies
 
-- `@cascade-ui/react`
+- `@cascivo/react`
 - `layout/app-shell`
 
 ## Tags

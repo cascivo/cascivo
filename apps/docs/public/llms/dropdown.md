@@ -56,7 +56,7 @@ npx cascade add dropdown
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

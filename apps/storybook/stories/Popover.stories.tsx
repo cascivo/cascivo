@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascade-ui/components/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@cascade-ui/components/popover'
+import { Button } from '@cascivo/components/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@cascivo/components/popover'
 
 const meta: Meta = {
   title: 'Overlay/Popover',

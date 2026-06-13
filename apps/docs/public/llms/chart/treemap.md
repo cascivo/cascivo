@@ -29,7 +29,7 @@ npx cascade add chart/treemap
 ### Basic treemap
 
 ```tsx
-import { Treemap } from '@cascade-ui/charts'
+import { Treemap } from '@cascivo/charts'
 
 const data = [
   {id:'a',label:'Alpha',value:40},
@@ -58,7 +58,7 @@ const data = [
 
 ## Dependencies
 
-- `@cascade-ui/charts`
+- `@cascivo/charts`
 
 ## Tags
 

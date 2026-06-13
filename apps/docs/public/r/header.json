@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "app-shell", "top-bar", "banner"],
   "category": "navigation",
   "meta": {
@@ -82,7 +82,7 @@
         "code": "<Header sticky brand=\"cascade\" links={links} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["navigation", "app-shell", "top-bar", "banner"],
     "intent": {
       "whenToUse": [

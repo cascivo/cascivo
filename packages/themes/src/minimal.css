@@ -1,7 +1,7 @@
 /* Cascade — Minimal Theme */
 /* Very subtle shadows, rounder radius, near-invisible borders, monochrome accent */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='minimal'] {

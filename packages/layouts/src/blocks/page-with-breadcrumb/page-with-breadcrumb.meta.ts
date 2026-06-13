@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PageWithBreadcrumb',
@@ -13,7 +13,7 @@ export const meta: ComponentMeta = {
   examples: [
     { title: 'Default', code: '<PageWithBreadcrumb />', description: 'Page with breadcrumb' },
   ],
-  dependencies: ['@cascade-ui/react', 'layout/page-header', 'layout/center'],
+  dependencies: ['@cascivo/react', 'layout/page-header', 'layout/center'],
   tags: ['block', 'breadcrumb', 'page', 'navigation'],
   intent: {
     whenToUse: [

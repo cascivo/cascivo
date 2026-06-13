@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Histogram',
@@ -39,13 +39,13 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic histogram',
-      code: `import { Histogram } from '@cascade-ui/charts'
+      code: `import { Histogram } from '@cascivo/charts'
 
 const data = Array.from({length:100}, () => Math.random() * 100)
 <Histogram data={data} title="Distribution" label="Value" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'histogram', 'distribution', 'frequency', 'data-viz'],
   intent: {
     whenToUse: [

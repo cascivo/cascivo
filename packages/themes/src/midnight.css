@@ -1,7 +1,7 @@
 /* Cascade — Midnight Theme */
 /* Premium dark, deep indigo-black, violet accent, soft colored glow */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='midnight'] {

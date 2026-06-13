@@ -42,7 +42,7 @@ Menu + content layout
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

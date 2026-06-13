@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["form", "rating", "stars", "input", "feedback"],
   "category": "inputs",
   "meta": {
@@ -84,7 +84,7 @@
         "code": "<RatingGroup value={4} readOnly />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["form", "rating", "stars", "input", "feedback"],
     "intent": {
       "whenToUse": [

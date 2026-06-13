@@ -60,7 +60,7 @@ npx cascade add textarea
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

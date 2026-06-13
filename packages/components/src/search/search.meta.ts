@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Search',
@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
     },
     { title: 'Large', code: '<Search size="lg" placeholder="Search products…" />' },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['search', 'input', 'filter', 'form'],
   intent: {
     whenToUse: [

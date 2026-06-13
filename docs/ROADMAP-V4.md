@@ -29,7 +29,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 | `AppShell` (layouts)   | header / sideNav / aside grid slots, left collapse with `persistedSignal`                                                                           | Aside is not collapsible, no mobile drawer (nav simply squeezes), no shared shell state for header buttons to drive, no skip-link target, no scrim   |
 | Right panels           | `Sheet` exists (modal-ish slide-over)                                                                                                               | No non-modal header-attached panel (Carbon HeaderPanel), no app Switcher                                                                             |
 | `Menu` / `Popover`     | v3 primitives on CSS Anchor Positioning + Popover API — solid foundation                                                                            | — (this is what we build on)                                                                                                                         |
-| `@cascade-ui/icons`    | 36 icons                                                                                                                                            | Missing console staples: Bell, Home, Dashboard, Users, AppSwitcher/Grid, HelpCircle, LogOut, Folder, Server, Terminal, Database, Shield, Activity, … |
+| `@cascivo/icons`       | 36 icons                                                                                                                                            | Missing console staples: Bell, Home, Dashboard, Users, AppSwitcher/Grid, HelpCircle, LogOut, Folder, Server, Terminal, Database, Shield, Activity, … |
 
 ---
 
@@ -129,7 +129,7 @@ Everything inherits the standing cross-cutting rules: signals not hooks, CSS-onl
 - [ ] Every new/changed component: manifest, registry, schema enum, componentMap, MCP, llms.txt, stories (default + a11y), docs demo, i18n strings en + de — same-PR drift gate.
 - [ ] axe-core: zero violations on ShellHeader (menu open), SideNav (rail + flyout open), HeaderPanel (open), console-app block.
 - [ ] Visual regression baselines for the console-app block in all five themes.
-- [ ] Bundle budget: `@cascade-ui/react` stays < 60 KB gzip after the shell family lands (raised from 50 KB — recorded decision; the shell family is the single biggest component cluster shipped to date).
+- [ ] Bundle budget: `@cascivo/react` stays < 60 KB gzip after the shell family lands (raised from 50 KB — recorded decision; the shell family is the single biggest component cluster shipped to date).
 - [ ] v4 Definition of Done checklist mirrors this doc; final tranche verifies line by line.
 
 ### Carbon-parity acceptance checklist (the DoD core)
@@ -153,5 +153,5 @@ A console built from the `console-app` block must have, working end to end with 
 Open questions for the human before T1 planning:
 
 1. ShellHeader vs upgrading Header in place — proposal is a NEW component (marketing header and console header have diverging needs); confirm.
-2. Bundle budget raise 50 → 60 KB gzip for `@cascade-ui/react` — confirm, or shell family ships as copy-paste-only (not in the prebuilt package)?
+2. Bundle budget raise 50 → 60 KB gzip for `@cascivo/react` — confirm, or shell family ships as copy-paste-only (not in the prebuilt package)?
 3. Aside on mobile: hidden entirely (proposal) or bottom sheet?

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Bullet } from '@cascade-ui/charts'
+import { Bullet } from '@cascivo/charts'
 
 const meta: Meta<typeof Bullet> = {
   title: 'Charts/Bullet',

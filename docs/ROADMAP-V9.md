@@ -22,7 +22,7 @@ needs: a **top loading bar** clients can drive (progress + error states).
 ## The diagnosis
 
 1. **The landing app is React, but half its components forget the React signals contract.**
-   `@cascade-ui/core` re-exports `@preact/signals-react` — in a plain React app (no Babel
+   `@cascivo/core` re-exports `@preact/signals-react` — in a plain React app (no Babel
    transform), any component that reads `signal.value` during render **must call
    `useSignals()`** or it never re-subscribes. `Header.tsx` does this; `FlagsRegion`,
    `DeploysRegion`, `SignalsDemo` and `CopyCommand` don't. Result: toggles don't toggle, the
@@ -97,7 +97,7 @@ needs: a **top loading bar** clients can drive (progress + error states).
 9. **Scroll reveal is CSS + one IntersectionObserver.** Sections start
    `opacity: 0; translate: 0 0.75rem` and transition in when ≥15% visible, once. Reduced
    motion disables it entirely (content visible immediately). No animation library.
-10. **SideNav icons come from `@cascade-ui/icons`.** Overview→`Dashboard`, Deploys→`Zap`,
+10. **SideNav icons come from `@cascivo/icons`.** Overview→`Dashboard`, Deploys→`Zap`,
     Incidents→`AlertTriangle`, Traffic→`Activity`, Flags→`Tag`, Settings→`Settings`. The
     landing app adds the icons dependency **and** the source alias in its Vite config
     (icons exports point at `dist/` — the CLAUDE.md workspace-alias rule applies).

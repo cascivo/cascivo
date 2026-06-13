@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["typography", "quote", "blockquote", "citation"],
   "category": "display",
   "meta": {
@@ -56,7 +56,7 @@
         "description": "Attribution renders as <footer><cite>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["typography", "quote", "blockquote", "citation"],
     "intent": {
       "whenToUse": [

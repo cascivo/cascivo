@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Treemap',
@@ -40,7 +40,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic treemap',
-      code: `import { Treemap } from '@cascade-ui/charts'
+      code: `import { Treemap } from '@cascivo/charts'
 
 const data = [
   {id:'a',label:'Alpha',value:40},
@@ -51,7 +51,7 @@ const data = [
 <Treemap data={data} title="Market share" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'treemap', 'hierarchy', 'part-to-whole', 'data-viz'],
   intent: {
     whenToUse: [

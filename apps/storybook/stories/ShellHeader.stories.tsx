@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ShellHeader } from '@cascade-ui/components/shell-header'
+import { ShellHeader } from '@cascivo/components/shell-header'
 
 const meta: Meta<typeof ShellHeader> = {
   title: 'Shell/ShellHeader',

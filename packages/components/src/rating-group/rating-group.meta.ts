@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'RatingGroup',
@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
     { title: 'Basic', code: '<RatingGroup value={3} onValueChange={() => {}} />' },
     { title: 'Read only', code: '<RatingGroup value={4} readOnly />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'rating', 'stars', 'input', 'feedback'],
   intent: {
     whenToUse: [

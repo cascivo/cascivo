@@ -1,6 +1,6 @@
 'use client'
-import { useSignals } from '@cascade-ui/core'
-import { builtin, t } from '@cascade-ui/i18n'
+import { useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import styles from './ai-label.module.css'
 import type { HTMLAttributes } from 'react'
 

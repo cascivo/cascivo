@@ -1,7 +1,7 @@
 /* Cascade — Warm Theme */
 /* Organic/approachable, warm neutrals, rounded */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='warm'] {

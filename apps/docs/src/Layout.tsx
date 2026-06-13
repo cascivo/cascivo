@@ -1,12 +1,12 @@
 import type { ComponentChildren } from 'preact'
 import { useEffect } from 'preact/hooks'
-import { useSignal, useSignals } from '@cascade-ui/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { useLocation } from 'preact-iso'
-import { AppShell } from '@cascade-ui/layouts/app-shell'
-import { createShellState } from '@cascade-ui/layouts/shell-state'
-import { ShellHeader } from '@cascade-ui/components/shell-header'
-import { SideNav } from '@cascade-ui/components/side-nav'
-import { HeaderPanel } from '@cascade-ui/components/header-panel'
+import { AppShell } from '@cascivo/layouts/app-shell'
+import { createShellState } from '@cascivo/layouts/shell-state'
+import { ShellHeader } from '@cascivo/components/shell-header'
+import { SideNav } from '@cascivo/components/side-nav'
+import { HeaderPanel } from '@cascivo/components/header-panel'
 import {
   AlertCircle,
   BarChart,
@@ -18,7 +18,7 @@ import {
   Menu as MenuIcon,
   Server,
   Terminal,
-} from '@cascade-ui/icons'
+} from '@cascivo/icons'
 import { buildNav } from './nav'
 import { DocsSearch } from './search'
 import { applyTheme, theme, THEMES } from './theme'

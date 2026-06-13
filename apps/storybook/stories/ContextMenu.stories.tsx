@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ContextMenu, ContextMenuItem } from '@cascade-ui/components/context-menu'
+import { ContextMenu, ContextMenuItem } from '@cascivo/components/context-menu'
 
 const meta: Meta = {
   title: 'Overlay/ContextMenu',

@@ -12,7 +12,7 @@ import {
   Heatmap,
   Radar,
   Treemap,
-} from '@cascade-ui/charts'
+} from '@cascivo/charts'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
 

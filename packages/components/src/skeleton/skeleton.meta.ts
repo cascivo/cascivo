@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Skeleton',
@@ -42,7 +42,7 @@ export const meta: ComponentMeta = {
     { title: 'Avatar', code: '<Skeleton variant="circle" width="3rem" height="3rem" />' },
     { title: 'Image', code: '<Skeleton variant="rect" height="12rem" />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['loading', 'placeholder', 'shimmer'],
   intent: {
     whenToUse: [

@@ -1,6 +1,6 @@
-import { signal, useSignals } from '@cascade-ui/core'
-import { CascadeView } from '@cascade-ui/render'
-import type { ViewConfig } from '@cascade-ui/render'
+import { signal, useSignals } from '@cascivo/core'
+import { CascadeView } from '@cascivo/render'
+import type { ViewConfig } from '@cascivo/render'
 
 const EXAMPLE_CONFIG: ViewConfig = {
   version: 1,

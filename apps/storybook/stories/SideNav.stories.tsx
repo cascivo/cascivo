@@ -1,15 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { SideNav, type SideNavItem } from '@cascade-ui/components/side-nav'
-import {
-  Home,
-  BarChart,
-  Settings,
-  Users,
-  Database,
-  Server,
-  Shield,
-  Activity,
-} from '@cascade-ui/icons'
+import { SideNav, type SideNavItem } from '@cascivo/components/side-nav'
+import { Home, BarChart, Settings, Users, Database, Server, Shield, Activity } from '@cascivo/icons'
 
 const meta: Meta<typeof SideNav> = {
   title: 'Shell/SideNav',

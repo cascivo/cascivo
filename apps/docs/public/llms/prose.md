@@ -62,7 +62,7 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

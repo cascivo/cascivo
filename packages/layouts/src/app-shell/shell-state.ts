@@ -1,5 +1,5 @@
-import { signal, type Signal } from '@cascade-ui/core'
-import { persistedSignal } from '@cascade-ui/storage'
+import { signal, type Signal } from '@cascivo/core'
+import { persistedSignal } from '@cascivo/storage'
 
 export interface ShellState {
   /** Desktop: side nav collapsed to the icon rail. Persisted. */

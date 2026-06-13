@@ -48,7 +48,7 @@ Centered auth card with logo
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

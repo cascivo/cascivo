@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ProgressIndicator',
@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
       code: "<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />",
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['steps', 'wizard', 'stepper', 'progress', 'navigation'],
   intent: {
     whenToUse: [

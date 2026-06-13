@@ -53,7 +53,7 @@ export async function runDoctor(root: string): Promise<DoctorResult> {
       violations.push({
         file: tsxPath,
         rule: 'missing-react-export',
-        detail: `${name} not exported from @cascade-ui/react`,
+        detail: `${name} not exported from @cascivo/react`,
       })
     }
   }

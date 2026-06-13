@@ -1,7 +1,7 @@
 /* Cascade — Light Theme */
 /* Minimal/sharp, neutral grays, clean lines */
 
-@import '@cascade-ui/tokens';
+@import '@cascivo/tokens';
 
 @layer cascade.theme {
   [data-theme='light'],

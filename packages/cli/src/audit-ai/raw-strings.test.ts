@@ -16,7 +16,7 @@ const contract: Contract = buildContract({
   },
 })
 
-const IMPORT = `import { Tooltip, Card } from '@cascade-ui/react'\n`
+const IMPORT = `import { Tooltip, Card } from '@cascivo/react'\n`
 
 describe('findRawStringViolations', () => {
   it('warns on multi-word prose in a content component', () => {

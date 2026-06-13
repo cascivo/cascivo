@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Checkbox',
@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
     { title: 'With label', code: '<Checkbox label="Accept terms" />' },
     { title: 'Indeterminate', code: '<Checkbox label="Select all" indeterminate />' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['form', 'toggle', 'boolean'],
   intent: {
     whenToUse: [

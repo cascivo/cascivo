@@ -65,7 +65,7 @@ npx cascade add rating-group
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

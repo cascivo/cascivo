@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'DashboardCharts',
@@ -13,7 +13,7 @@ export const meta: ComponentMeta = {
   examples: [
     { title: 'Default', code: '<DashboardCharts />', description: 'Charts dashboard demo' },
   ],
-  dependencies: ['@cascade-ui/charts', '@cascade-ui/react'],
+  dependencies: ['@cascivo/charts', '@cascivo/react'],
   tags: ['block', 'dashboard', 'charts', 'kpi'],
   intent: {
     whenToUse: [

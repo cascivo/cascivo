@@ -1,4 +1,4 @@
-import type { ViewConfig } from '@cascade-ui/render'
+import type { ViewConfig } from '@cascivo/render'
 
 export const exampleConfig: ViewConfig = {
   $schema:

@@ -134,7 +134,7 @@ AT testing requires a physical Windows or macOS machine with the screen reader i
 
 **Recommended testing workflow:**
 
-1. Run the docs app locally (`pnpm dev --filter @cascade-ui/docs`).
+1. Run the docs app locally (`pnpm dev --filter @cascivo/docs`).
 2. Navigate to the component's page in Storybook or the docs app.
 3. Enable the AT and run each step in Section 3 against each Primary stack.
 4. Record results in `at-matrix.md` immediately.

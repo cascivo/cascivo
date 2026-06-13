@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'PageHeader',
@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
       description: 'Title with description',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['layout', 'header', 'page'],
   intent: {
     whenToUse: [

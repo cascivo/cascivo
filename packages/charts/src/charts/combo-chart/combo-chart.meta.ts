@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'ComboChart',
@@ -59,14 +59,14 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic combo chart',
-      code: `import { ComboChart } from '@cascade-ui/charts'
+      code: `import { ComboChart } from '@cascivo/charts'
 
 const bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]
 const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 <ComboChart bars={bars} line={line} title="Sales vs Target" />`,
     },
   ],
-  dependencies: ['@cascade-ui/charts'],
+  dependencies: ['@cascivo/charts'],
   tags: ['chart', 'combo', 'bar', 'line', 'dual-axis', 'data-viz'],
   intent: {
     whenToUse: [

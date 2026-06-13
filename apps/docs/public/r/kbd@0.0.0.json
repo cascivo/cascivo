@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["keyboard", "shortcut", "hotkey"],
   "category": "display",
   "meta": {
@@ -57,7 +57,7 @@
         "code": "<Kbd size=\"sm\">Esc</Kbd>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["keyboard", "shortcut", "hotkey"],
     "intent": {
       "whenToUse": [

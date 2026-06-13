@@ -51,7 +51,7 @@ npx cascade add tooltip
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

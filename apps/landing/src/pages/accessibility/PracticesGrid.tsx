@@ -13,7 +13,7 @@ const PRACTICES = [
   },
   {
     title: 'Translated chrome',
-    line: 'Screen-reader labels and component chrome strings resolve from the @cascade-ui/i18n builtin catalog — overridable per instance, never hardcoded English.',
+    line: 'Screen-reader labels and component chrome strings resolve from the @cascivo/i18n builtin catalog — overridable per instance, never hardcoded English.',
   },
   {
     title: 'Theme parity, tested',

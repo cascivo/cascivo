@@ -72,7 +72,7 @@ Four-item text-only feature grid with section heading
 
 ## Dependencies
 
-- `@cascade-ui/core`
+- `@cascivo/core`
 
 ## Tags
 

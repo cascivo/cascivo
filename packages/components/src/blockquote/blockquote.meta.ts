@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Blockquote',
@@ -38,7 +38,7 @@ export const meta: ComponentMeta = {
       description: 'Attribution renders as <footer><cite>',
     },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['typography', 'quote', 'blockquote', 'citation'],
   intent: {
     whenToUse: [

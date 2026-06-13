@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'TagsInput',
@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
       code: `<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder="Add tag…" />`,
     },
   ],
-  dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['form', 'tags', 'chips', 'multi', 'input'],
   intent: {
     whenToUse: [

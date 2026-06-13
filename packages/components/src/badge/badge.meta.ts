@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@cascade-ui/core'
+import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Badge',
@@ -29,7 +29,7 @@ export const meta: ComponentMeta = {
     { title: 'Success', code: '<Badge variant="success">Active</Badge>' },
     { title: 'Destructive', code: '<Badge variant="destructive">Deprecated</Badge>' },
   ],
-  dependencies: ['@cascade-ui/core'],
+  dependencies: ['@cascivo/core'],
   tags: ['label', 'status', 'tag'],
   intent: {
     whenToUse: [

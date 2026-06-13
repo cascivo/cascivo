@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["layout", "grid", "columns"],
   "category": "layout",
   "meta": {
@@ -49,7 +49,7 @@
         "description": "Three equal columns"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["layout", "grid", "columns"],
     "intent": {
       "whenToUse": [
