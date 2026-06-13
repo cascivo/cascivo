@@ -89,4 +89,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['navigation', 'header', 'shell', 'console', 'menu', 'app-shell'],
+  intent: {
+    whenToUse: [
+      'Building console/admin app chrome with brand, dropdown nav, and global icon actions',
+      'Providing a hamburger that toggles a SideNav and a skip-to-content link',
+      'Hosting global controls (notifications, switcher, user menu) in one top bar',
+    ],
+    whenNotToUse: [
+      'A simple marketing or app top bar — use Header',
+      'In-page section headings — use Heading',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Reaching for ShellHeader on a basic landing page',
+        good: '<Header> for simple top bars',
+        why: 'ShellHeader carries console machinery (dropdowns, icon actions, hamburger) that is overkill for simple sites',
+      },
+    ],
+    related: [
+      {
+        name: 'SideNav',
+        relationship: 'pairs-with',
+        reason: 'The hamburger toggles a SideNav in the app shell',
+      },
+      {
+        name: 'HeaderPanel',
+        relationship: 'pairs-with',
+        reason: 'Icon actions open HeaderPanels (notifications, switcher)',
+      },
+      {
+        name: 'Header',
+        relationship: 'alternative',
+        reason: 'Header is the simpler top bar for non-console apps',
+      },
+    ],
+    a11yRationale:
+      'role="banner" landmarks the header; nav dropdowns expose aria-expanded, icon actions use aria-pressed, the hamburger reports aria-expanded, and a skip-to-content link lets keyboard users bypass the chrome',
+    flexibility: [
+      {
+        area: 'nav / actions / end slots',
+        level: 'flexible',
+        note: 'Brand, nav, actions, and end are composable and optional',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Surfaces, sizing, and accent must resolve to --cascade-* shell tokens',
+      },
+    ],
+  },
 }

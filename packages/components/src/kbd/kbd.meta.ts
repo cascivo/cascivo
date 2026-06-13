@@ -31,4 +31,42 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['keyboard', 'shortcut', 'hotkey'],
+  intent: {
+    whenToUse: [
+      'Showing a keyboard key or shortcut the user should press',
+      'Documenting hotkeys in menus, tooltips, or help text',
+    ],
+    whenNotToUse: [
+      'Inline code, commands, or identifiers — use Code',
+      'A short label that is not a key press — use Badge or Text',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Kbd>npm install</Kbd>',
+        good: '<Code>npm install</Code>',
+        why: 'Kbd is for keys to press, not shell commands or code',
+      },
+    ],
+    related: [
+      {
+        name: 'Code',
+        relationship: 'alternative',
+        reason: 'Code marks literal code; Kbd marks keys to press',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <kbd> element so assistive tech identifies the content as keyboard input; compose multiple <kbd> for a chord rather than encoding the combination in one string',
+    flexibility: [
+      {
+        area: 'size',
+        level: 'flexible',
+        note: 'sm fits inline help; md matches body text',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Surface and border must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

@@ -47,4 +47,43 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['navigation', 'switcher', 'shell', 'console', 'app-switcher'],
+  intent: {
+    whenToUse: [
+      'Listing sibling apps/products the user can switch between',
+      'Rendering switch destinations inside a HeaderPanel opened from the shell header',
+      'Grouping switch targets with dividers and marking the active one',
+    ],
+    whenNotToUse: [
+      'Primary in-app navigation — use SideNav',
+      'A small action menu attached to a control — use Dropdown',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using Switcher as the main page navigation',
+        good: '<SideNav> for primary navigation; Switcher only for app/product switching',
+        why: 'Switcher models cross-app jumps, not navigation within the current app',
+      },
+    ],
+    related: [
+      {
+        name: 'HeaderPanel',
+        relationship: 'contained-by',
+        reason: 'Switcher is placed inside a HeaderPanel opened by a ShellHeader action',
+      },
+    ],
+    a11yRationale:
+      'role="list" structures the entries; each switch target is a real link with the active destination marked, so keyboard and screen-reader users can identify and reach the current app',
+    flexibility: [
+      {
+        area: 'dividers',
+        level: 'flexible',
+        note: 'Dividers group entries as needed',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Accent and surface colors must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

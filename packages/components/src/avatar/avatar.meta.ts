@@ -37,4 +37,43 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['user', 'profile', 'image'],
+  intent: {
+    whenToUse: [
+      'Representing a person or entity with a thumbnail image and initials fallback',
+      'Showing presence/status alongside an identity (status prop)',
+      'Compactly identifying authors in lists, comments, and headers',
+    ],
+    whenNotToUse: [
+      'Decorative imagery unrelated to identity — use a plain <img>',
+      'A generic icon or logo with no person/entity meaning',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Avatar src="/logo.png" /> with no alt and no fallback',
+        good: '<Avatar src="/jane.jpg" alt="Jane Doe" fallback="JD" />',
+        why: 'Without alt/fallback the identity is invisible to assistive tech and breaks on image load failure',
+      },
+    ],
+    related: [
+      {
+        name: 'Status',
+        relationship: 'alternative',
+        reason: 'Use Status for a standalone state dot not attached to an identity',
+      },
+    ],
+    a11yRationale:
+      'role="img" with alt names the person; on image error it falls back to initials so the identity survives; the status dot carries an accessible label rather than relying on color alone',
+    flexibility: [
+      {
+        area: 'size',
+        level: 'flexible',
+        note: 'Pick the size that fits the surrounding density',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Fallback and status colors must resolve to --cascade-* semantic tokens',
+      },
+    ],
+  },
 }
