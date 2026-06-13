@@ -6,5 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "cascade registry build --in cascade-registry.json --out public/r"
+  },
+  "devDependencies": {
+    "cascade": "workspace:^"
   }
 }
