@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-06-13T10:18:36.041Z",
+  "specs": [
+    {
+      "id": "spec-color-usage",
+      "title": "Color Usage",
+      "path": "/docs/specs/color-usage.md",
+      "summary": "cascade uses a three-level token system for color. AI agents and component authors must use semantic tokens, never primitive color values."
+    },
+    {
+      "id": "spec-content-tone",
+      "title": "Content Tone",
+      "path": "/docs/specs/content-tone.md",
+      "summary": "cascade components with user-visible chrome text (labels, aria strings, empty states) follow these voice guidelines."
+    },
+    {
+      "id": "spec-decision-hierarchy",
+      "title": "Decision Hierarchy",
+      "path": "/docs/specs/decision-hierarchy.md",
+      "summary": "When guidance conflicts, resolve it in this order:"
+    },
+    {
+      "id": "spec-spacing",
+      "title": "Spacing",
+      "path": "/docs/specs/spacing.md",
+      "summary": "cascade uses a fixed spacing scale defined as `--cascade-space-*` tokens. All spacing in components must reference these tokens rather than hard-coded pixel values."
+    }
+  ]
+}

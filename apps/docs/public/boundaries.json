@@ -1,0 +1,990 @@
+{
+  "generatedAt": "2026-06-13T10:18:36.041Z",
+  "global": {
+    "strict": [
+      {
+        "area": "token names",
+        "note": "Visual props must resolve to --cascade-* tokens; never hard-code color, spacing, or size values"
+      },
+      {
+        "area": "a11y roles and keyboard",
+        "note": "WCAG 2.1 AA contract is fixed; don't weaken roles, remove aria attributes, or break keyboard interaction"
+      },
+      {
+        "area": "reactivity model",
+        "note": "Signals only (useSignal, useComputed, useSignalEffect); no useState/useEffect/useContext/useReducer in cascade components"
+      },
+      {
+        "area": "i18n for chrome text",
+        "note": "User-visible component chrome strings must use @cascade-ui/i18n; no hard-coded English fallbacks in component source"
+      },
+      {
+        "area": "CSS custom properties",
+        "note": "All visual values via --cascade-* tokens; no Tailwind, no inline styles, no CSS-in-JS"
+      }
+    ],
+    "flexible": [
+      {
+        "area": "spacing step",
+        "note": "Choose any step on the --cascade-space-* scale to fit the layout; no single correct answer"
+      },
+      {
+        "area": "label copy",
+        "note": "User-facing copy (via labels prop) is free within content-tone guidance"
+      },
+      {
+        "area": "component composition",
+        "note": "Compose cascade components freely; blocks and sections are starting points, not locked layouts"
+      },
+      {
+        "area": "theme",
+        "note": "data-theme can be applied to any container, not just :root; themes can be scoped"
+      },
+      {
+        "area": "variant selection",
+        "note": "Which variant to use (primary/secondary/ghost) is a design decision — choose what fits the hierarchy"
+      }
+    ]
+  },
+  "perComponent": {
+    "Accordion": [
+      {
+        "area": "single vs multiple",
+        "level": "flexible",
+        "note": "type prop is free to choose based on whether sections are exclusive"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Borders, surfaces, and radii must resolve to --cascade-* semantic tokens"
+      }
+    ],
+    "Alert": [
+      {
+        "area": "variant",
+        "level": "flexible",
+        "note": "Choose the severity variant that matches the message; default is neutral"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Severity colors must resolve to --cascade-color-info/success/warning/destructive"
+      }
+    ],
+    "AlertDialog": [
+      {
+        "area": "dismiss behavior",
+        "level": "strict",
+        "note": "No light-dismiss — closing must go through onConfirm/onCancel"
+      },
+      {
+        "area": "action labels",
+        "level": "flexible",
+        "note": "confirm/cancel copy overridable via labels; defaults come from the i18n catalog"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive"
+      }
+    ],
+    "Avatar": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "Pick the size that fits the surrounding density"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Fallback and status colors must resolve to --cascade-* semantic tokens"
+      }
+    ],
+    "Badge": [
+      {
+        "area": "variant",
+        "level": "flexible",
+        "note": "Choose the variant that matches the semantic meaning"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)"
+      }
+    ],
+    "Blockquote": [
+      {
+        "area": "attribution",
+        "level": "flexible",
+        "note": "cite is optional; omit when the source is given in surrounding context"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Border and text colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "Breadcrumb": [
+      {
+        "area": "maxVisible",
+        "level": "flexible",
+        "note": "Collapse long trails to fit available width"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Text colors and focus ring must resolve to --cascade-* tokens"
+      }
+    ],
+    "Button": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Visual props must resolve to --cascade-button-* / semantic tokens"
+      },
+      {
+        "area": "label copy",
+        "level": "flexible",
+        "note": "Free, within tone guidance"
+      }
+    ],
+    "Card": [
+      {
+        "area": "variant and padding",
+        "level": "flexible",
+        "note": "Choose elevation and density to fit the surrounding layout"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, radius, and shadow must resolve to --cascade-* tokens"
+      }
+    ],
+    "Checkbox": [
+      {
+        "area": "native input props",
+        "level": "flexible",
+        "note": "Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Control styling resolves to semantic --cascade-color-* / --cascade-radius-sm tokens"
+      }
+    ],
+    "CheckboxCard": [
+      {
+        "area": "controlled vs uncontrolled",
+        "level": "flexible",
+        "note": "Supports both checked + onCheckedChange and defaultChecked"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+      }
+    ],
+    "Code": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "sm fits dense UI; md matches body text"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Font and surface must resolve to --cascade-font-mono and --cascade-* tokens"
+      }
+    ],
+    "Combobox": [
+      {
+        "area": "searchable",
+        "level": "flexible",
+        "note": "Filtering can be toggled off for short lists via searchable={false}"
+      },
+      {
+        "area": "controlled vs uncontrolled",
+        "level": "flexible",
+        "note": "Supports value + onChange or defaultValue"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+      }
+    ],
+    "CommandMenu": [
+      {
+        "area": "hotkey",
+        "level": "flexible",
+        "note": "Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering"
+      },
+      {
+        "area": "async items",
+        "level": "flexible",
+        "note": "onQueryChange + loading allow fetching items per keystroke"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens"
+      }
+    ],
+    "ContextMenu": [
+      {
+        "area": "menu contents",
+        "level": "flexible",
+        "note": "Accepts arbitrary ContextMenuItem children after the trigger child"
+      },
+      {
+        "area": "anchor position",
+        "level": "strict",
+        "note": "Anchored at pointer coordinates via --cascade-context-x/y custom properties set on right-click"
+      }
+    ],
+    "CopyButton": [
+      {
+        "area": "labels",
+        "level": "flexible",
+        "note": "copy/copied strings overridable via labels; default from i18n catalog"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success"
+      }
+    ],
+    "DataTable": [
+      {
+        "area": "sortMode and density",
+        "level": "flexible",
+        "note": "Choose client/server sort and density to fit data size and layout"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "All surfaces, borders, and spacing must resolve to --cascade-* tokens"
+      }
+    ],
+    "DatePicker": [
+      {
+        "area": "value format",
+        "level": "strict",
+        "note": "All date props are ISO YYYY-MM-DD strings"
+      },
+      {
+        "area": "locale formatting",
+        "level": "flexible",
+        "note": "Display, weekday labels, and week start derive from the current i18n locale via Intl"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Styling resolves to --cascade-date-picker-* component tokens"
+      }
+    ],
+    "Dropdown": [
+      {
+        "area": "trigger element",
+        "level": "flexible",
+        "note": "Any ReactElement works as the trigger; ref and aria props are merged in"
+      },
+      {
+        "area": "controlled vs uncontrolled",
+        "level": "flexible",
+        "note": "Supports open + onOpenChange or fully internal state"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens"
+      }
+    ],
+    "Editable": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+      },
+      {
+        "area": "placeholder copy",
+        "level": "flexible",
+        "note": "Free, within tone guidance"
+      },
+      {
+        "area": "submit-on-blur behavior",
+        "level": "flexible",
+        "note": "submitOnBlur toggles whether blurring confirms or cancels the edit"
+      }
+    ],
+    "EmptyState": [
+      {
+        "area": "size and action",
+        "level": "flexible",
+        "note": "Action and icon are optional; size scales for full-page vs in-panel use"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Text and background colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "FileUploader": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Status colors must resolve to --cascade-color-accent/success/danger tokens"
+      },
+      {
+        "area": "label and hint copy",
+        "level": "flexible",
+        "note": "Overridable via label/hint props or the labels object"
+      },
+      {
+        "area": "accept / maxSize constraints",
+        "level": "flexible",
+        "note": "Configure freely; rejected files surface through onRejected"
+      }
+    ],
+    "Form": [
+      {
+        "area": "validation strategy",
+        "level": "flexible",
+        "note": "Use schema, validate, or both; schema runs first and validate only if the schema passes"
+      },
+      {
+        "area": "field control composition",
+        "level": "flexible",
+        "note": "Any control can be wired via form.field(name); children are free-form"
+      },
+      {
+        "area": "submit semantics",
+        "level": "strict",
+        "note": "onValid only fires when validation produces no errors; submission is guarded by the submitting signal"
+      }
+    ],
+    "Header": [
+      {
+        "area": "links and actions",
+        "level": "flexible",
+        "note": "Brand, links, and actions slots are optional and composable"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, and z-index must resolve to --cascade-* tokens"
+      }
+    ],
+    "HeaderPanel": [
+      {
+        "area": "content",
+        "level": "flexible",
+        "note": "Children are arbitrary panel content"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+      }
+    ],
+    "Heading": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "size may override the level-derived default for visual scale"
+      },
+      {
+        "area": "level sequence",
+        "level": "strict",
+        "note": "Levels must not skip — maintain a valid heading hierarchy"
+      }
+    ],
+    "HoverCard": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "open/close delay",
+        "level": "flexible",
+        "note": "openDelay and closeDelay are tunable per instance (defaults 300/100ms)"
+      },
+      {
+        "area": "content",
+        "level": "flexible",
+        "note": "HoverCardContent accepts arbitrary children"
+      }
+    ],
+    "Input": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "label / hint / error copy",
+        "level": "flexible",
+        "note": "Free, within content tone guidance"
+      },
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "sm | md | lg, defaulting to md"
+      }
+    ],
+    "InputGroup": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Addon background, border, text, and radius must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "addon alignment",
+        "level": "flexible",
+        "note": "InputGroupAddon align is inline-start (leading) or inline-end (trailing)"
+      },
+      {
+        "area": "addon content",
+        "level": "flexible",
+        "note": "prefix/suffix and addon children accept arbitrary ReactNode"
+      }
+    ],
+    "Kbd": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "sm fits inline help; md matches body text"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface and border must resolve to --cascade-* tokens"
+      }
+    ],
+    "Link": [
+      {
+        "area": "variant",
+        "level": "flexible",
+        "note": "standalone vs inline depending on whether the link sits in prose"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Accent colors and focus ring must resolve to --cascade-* tokens"
+      }
+    ],
+    "List": [
+      {
+        "area": "marker",
+        "level": "flexible",
+        "note": "disc/decimal/none chosen to match content and visual needs"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Spacing and text color must resolve to --cascade-* tokens"
+      }
+    ],
+    "Menu": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "item content",
+        "level": "flexible",
+        "note": "MenuItem accepts arbitrary children; onSelect defines the action"
+      },
+      {
+        "area": "composition",
+        "level": "flexible",
+        "note": "MenuItem and MenuSeparator can be mixed freely under the trigger"
+      }
+    ],
+    "Modal": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "sm | md | lg, defaulting to md"
+      },
+      {
+        "area": "title / description / body",
+        "level": "flexible",
+        "note": "All optional; body accepts arbitrary children"
+      }
+    ],
+    "MultiSelect": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "labels",
+        "level": "flexible",
+        "note": "placeholder, selected(count), search, and noResults are overridable"
+      },
+      {
+        "area": "options",
+        "level": "flexible",
+        "note": "Caller supplies the option list and may mark individual options disabled"
+      }
+    ],
+    "NumberInput": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+      },
+      {
+        "area": "formatting and bounds",
+        "level": "flexible",
+        "note": "min, max, step, precision, and formatOptions are free to suit the value domain"
+      },
+      {
+        "area": "stepper labels",
+        "level": "flexible",
+        "note": "incrementLabel/decrementLabel override the i18n defaults"
+      }
+    ],
+    "OtpInput": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Slot styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "length and type",
+        "level": "flexible",
+        "note": "length and numeric/alphanumeric type are free to match the issued code format"
+      }
+    ],
+    "OverflowMenu": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Trigger and item styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "item set and labels",
+        "level": "flexible",
+        "note": "items, ariaLabel, and placement are free to suit the context"
+      }
+    ],
+    "Pagination": [
+      {
+        "area": "page size options",
+        "level": "flexible",
+        "note": "pageSizeOptions and the size select are optional"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surfaces, borders, and accent must resolve to --cascade-* tokens"
+      }
+    ],
+    "PasswordInput": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Field, toggle, and strength-meter styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "labels",
+        "level": "flexible",
+        "note": "reveal, hide, and strengthLabel can be overridden via the labels prop"
+      }
+    ],
+    "Popover": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Panel styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "content",
+        "level": "flexible",
+        "note": "Trigger and panel content are arbitrary children supplied by the consumer"
+      }
+    ],
+    "ProgressBar": [
+      {
+        "area": "determinate vs indeterminate",
+        "level": "flexible",
+        "note": "Presence of value selects the mode"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Fill and status colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "ProgressCircle": [
+      {
+        "area": "size and showValue",
+        "level": "flexible",
+        "note": "showValue pairs best with md/lg sizes"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Arc and track colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "ProgressIndicator": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "horizontal or vertical to fit the layout"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Step and connector colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "Prose": [
+      {
+        "area": "source HTML",
+        "level": "flexible",
+        "note": "Accepts authored children or rendered markup"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "All typography and surface styling resolves to --cascade-* tokens"
+      }
+    ],
+    "Radio": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "option labels and orientation",
+        "level": "flexible",
+        "note": "Labels are free text and the group supports horizontal or vertical orientation"
+      }
+    ],
+    "RadioCard": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Card and indicator styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "title and description",
+        "level": "flexible",
+        "note": "title and description accept arbitrary ReactNode content"
+      }
+    ],
+    "RatingGroup": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Star styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "scale and labels",
+        "level": "flexible",
+        "note": "max sets the scale and labels.rating customizes the per-star announcement"
+      }
+    ],
+    "Search": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Field and control styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "debounce and copy",
+        "level": "flexible",
+        "note": "debounceMs and the placeholder/label/clear copy are free to suit the context"
+      }
+    ],
+    "SegmentedControl": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Segment styling must resolve to the listed --cascade-* tokens"
+      },
+      {
+        "area": "option labels",
+        "level": "flexible",
+        "note": "option label and value are free, and individual options may be disabled"
+      }
+    ],
+    "Select": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Visual props must resolve to --cascade-color-* / radius / focus-ring tokens"
+      },
+      {
+        "area": "option labels",
+        "level": "flexible",
+        "note": "Free, supplied by the consumer via the options array"
+      }
+    ],
+    "Separator": [
+      {
+        "area": "decorative",
+        "level": "flexible",
+        "note": "Mark decorative when the break carries no meaning beyond visuals"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Color must resolve to --cascade-color-border"
+      }
+    ],
+    "Sheet": [
+      {
+        "area": "side",
+        "level": "strict",
+        "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+      },
+      {
+        "area": "body content",
+        "level": "flexible",
+        "note": "Any children; consumer owns the panel contents"
+      }
+    ],
+    "ShellHeader": [
+      {
+        "area": "nav / actions / end slots",
+        "level": "flexible",
+        "note": "Brand, nav, actions, and end are composable and optional"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surfaces, sizing, and accent must resolve to --cascade-* shell tokens"
+      }
+    ],
+    "SideNav": [
+      {
+        "area": "collapsed / expandOnHover",
+        "level": "flexible",
+        "note": "Rail behavior is configurable for density needs"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+      }
+    ],
+    "Skeleton": [
+      {
+        "area": "variant and dimensions",
+        "level": "flexible",
+        "note": "Shape, width, height, and line count match the pending content"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Background and radius must resolve to --cascade-* tokens"
+      }
+    ],
+    "SkipNav": [
+      {
+        "area": "target id",
+        "level": "flexible",
+        "note": "targetId/id may be customized as long as they match"
+      },
+      {
+        "area": "first-focusable placement",
+        "level": "strict",
+        "note": "SkipNavLink must be the first focusable element to function"
+      }
+    ],
+    "Slider": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+      },
+      {
+        "area": "min/max/step",
+        "level": "flexible",
+        "note": "Consumer-defined bounds and increment"
+      }
+    ],
+    "Spinner": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "sm/md/lg to fit inline vs standalone use"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Radius must resolve to --cascade-radius-full"
+      }
+    ],
+    "Stat": [
+      {
+        "area": "delta and trend",
+        "level": "flexible",
+        "note": "Optional — include only when change is meaningful"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Trend colors must resolve to --cascade-color-success/destructive"
+      }
+    ],
+    "Status": [
+      {
+        "area": "pulse",
+        "level": "flexible",
+        "note": "Enable pulse only for actively-changing states"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "State colors must resolve to --cascade-color-success/warning/error/info"
+      }
+    ],
+    "Switcher": [
+      {
+        "area": "dividers",
+        "level": "flexible",
+        "note": "Dividers group entries as needed"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Accent and surface colors must resolve to --cascade-* tokens"
+      }
+    ],
+    "Tabs": [
+      {
+        "area": "controlled vs uncontrolled",
+        "level": "flexible",
+        "note": "Use value or defaultValue depending on control needs"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Accent, borders, and focus ring must resolve to --cascade-* tokens"
+      }
+    ],
+    "Tag": [
+      {
+        "area": "variant and dismissibility",
+        "level": "flexible",
+        "note": "onDismiss is optional; variant matches semantic meaning"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Variant colors must resolve to --cascade-color-*-subtle tokens"
+      }
+    ],
+    "TagsInput": [
+      {
+        "area": "tag values",
+        "level": "flexible",
+        "note": "Free text, optionally constrained by the validate predicate and max count"
+      },
+      {
+        "area": "commit keys",
+        "level": "strict",
+        "note": "Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract"
+      }
+    ],
+    "Text": [
+      {
+        "area": "as / size / weight",
+        "level": "flexible",
+        "note": "Choose element and treatment to fit context"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Font, leading, and color must resolve to --cascade-* tokens"
+      }
+    ],
+    "Textarea": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens"
+      },
+      {
+        "area": "resize and rows",
+        "level": "flexible",
+        "note": "Consumer chooses initial rows and whether the field can resize"
+      }
+    ],
+    "TimePicker": [
+      {
+        "area": "value format",
+        "level": "strict",
+        "note": "Value is a 24-hour HH:mm string driven by the native time input"
+      },
+      {
+        "area": "min/max/step",
+        "level": "flexible",
+        "note": "Consumer-defined bounds and step granularity"
+      }
+    ],
+    "Toast": [
+      {
+        "area": "variant",
+        "level": "strict",
+        "note": "Limited to default | success | warning | destructive — drives color and live-region urgency"
+      },
+      {
+        "area": "duration",
+        "level": "flexible",
+        "note": "Consumer can tune auto-dismiss timing (default 5000ms)"
+      }
+    ],
+    "Toggle": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens"
+      },
+      {
+        "area": "label copy",
+        "level": "flexible",
+        "note": "Optional label describing the setting being toggled"
+      }
+    ],
+    "Tooltip": [
+      {
+        "area": "placement",
+        "level": "strict",
+        "note": "Limited to top | right | bottom | left, positioned via CSS anchor"
+      },
+      {
+        "area": "delay",
+        "level": "flexible",
+        "note": "Consumer can tune the show delay (default 200ms)"
+      }
+    ],
+    "VisuallyHidden": [
+      {
+        "area": "children",
+        "level": "flexible",
+        "note": "Any text/content meant for assistive tech"
+      },
+      {
+        "area": "visibility technique",
+        "level": "strict",
+        "note": "Must keep content in the a11y tree — never display:none"
+      }
+    ]
+  }
+}
