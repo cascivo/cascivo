@@ -33,6 +33,16 @@ describe('BubbleChart', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<BubbleChart series={series} title="Bubble" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('renders focusable layer when tooltip is enabled', () => {
+    render(<BubbleChart series={series} title="Bubble" tooltip />)
+    expect(screen.getByRole('application')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
       const { container } = render(<BubbleChart series={series} title="Plain" plain />)

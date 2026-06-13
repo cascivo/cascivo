@@ -95,7 +95,16 @@ export const meta: ComponentMeta = {
     '--cascade-chart-7',
     '--cascade-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: {
+    role: 'img',
+    wcag: 'AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate points)',
+      'Home/End (first/last point)',
+      'Escape (clear focus)',
+    ],
+  },
   examples: [
     {
       title: 'Basic line chart',

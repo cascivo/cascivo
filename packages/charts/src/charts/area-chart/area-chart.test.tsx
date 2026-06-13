@@ -48,6 +48,16 @@ describe('AreaChart', () => {
     expect(container.querySelector('table')).toBeTruthy()
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<AreaChart series={series} x={x} y={y} title="Area" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('renders focusable layer when tooltip is enabled', () => {
+    render(<AreaChart series={series} x={x} y={y} title="Area" tooltip />)
+    expect(screen.getByRole('application')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
       const { container } = render(<AreaChart series={series} x={x} y={y} title="Plain" plain />)

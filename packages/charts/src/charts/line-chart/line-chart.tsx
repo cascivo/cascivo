@@ -1,6 +1,5 @@
 'use client'
 import { useSignal, useSignals } from '@cascade-ui/core'
-import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
@@ -9,8 +8,8 @@ import { Legend } from '../../chrome/legend'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath } from '../../engine/shape'
-import { nearestIndex } from '../../engine/nearest'
 import type { Point } from '../../engine/shape'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface LineChartSeries<Datum> {
   id: string
@@ -52,14 +51,13 @@ export function LineChart<Datum = { x: number; y: number }>({
   xTicks = 5,
   yTicks = 5,
   legend,
+  tooltip,
   formatTooltip,
   className,
   plain,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
-  const crosshairRef = useRef<SVGLineElement>(null)
-  const tooltipRef = useRef<HTMLDivElement>(null)
 
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
@@ -95,6 +93,67 @@ export function LineChart<Datum = { x: number; y: number }>({
     </table>
   )
 
+  /** Build tooltip model using the chart's resolved pixel dimensions. */
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (tooltip === false || !hasData) return undefined
+
+    const innerW = w - margins.left - margins.right
+    const innerH = h - margins.top - margins.bottom
+
+    const xMin = usesDate
+      ? Math.min(...(allX as Date[]).map((d) => d.getTime()))
+      : Math.min(...(allX as number[]))
+    const xMax = usesDate
+      ? Math.max(...(allX as Date[]).map((d) => d.getTime()))
+      : Math.max(...(allX as number[]))
+    const yMin = Math.min(0, ...allY)
+    const yMax = Math.max(...allY)
+
+    const xScale = usesDate
+      ? timeScale([new Date(xMin), new Date(xMax)], [0, innerW])
+      : linearScale([xMin, xMax], [0, innerW])
+    const yScale = linearScale([yMin, yMax], [innerH, 0])
+
+    const points: ChartPoint[] = series.flatMap((s) => {
+      if (hidden.value.has(s.id)) return []
+      return s.data.map((d, i) => {
+        const xv = x(d)
+        const xPos = usesDate
+          ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
+          : (xScale as ReturnType<typeof linearScale>).map(xv as number)
+        const yPos = yScale.map(y(d))
+        const label = xv instanceof Date ? xv.toLocaleDateString() : String(xv)
+        return {
+          id: `${s.id}-${i}`,
+          cx: margins.left + xPos,
+          cy: margins.top + yPos,
+          label,
+          value: y(d),
+          seriesId: s.id,
+        } satisfies ChartPoint
+      })
+    })
+
+    if (!formatTooltip) return { points }
+
+    const format = (p: ChartPoint): string => {
+      const s = series.find((sv) => sv.id === p.seriesId)
+      const dIdx = parseInt(p.id.split('-').pop() ?? '0', 10)
+      if (s && s.data[dIdx] !== undefined) {
+        return formatTooltip(s.data[dIdx]!, s)
+      }
+      return `${p.label}: ${p.value}`
+    }
+
+    return { points, format }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <ChartFrame
@@ -106,9 +165,10 @@ export function LineChart<Datum = { x: number; y: number }>({
         className={className}
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
+        tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
       >
-        {({ width, height: h }) => {
-          const innerW = width - margins.left - margins.right
+        {({ width: w, height: h }) => {
+          const innerW = w - margins.left - margins.right
           const innerH = h - margins.top - margins.bottom
 
           const xMin = usesDate
@@ -125,50 +185,6 @@ export function LineChart<Datum = { x: number; y: number }>({
             : linearScale([xMin, xMax], [0, innerW])
           const yScale = linearScale([yMin, yMax], [innerH, 0])
 
-          // Compute all x-positions for crosshair nearest lookup
-          const allXNums = usesDate
-            ? (series[0]?.data ?? []).map((d) => {
-                const v = x(d)
-                return v instanceof Date ? v.getTime() : (v as number)
-              })
-            : (series[0]?.data ?? []).map((d) => x(d) as number)
-
-          // Pointer move handler — zero React re-renders
-          const handlePointerMove = (e: React.PointerEvent<SVGRectElement>) => {
-            const svgEl = e.currentTarget.closest('svg')
-            if (!svgEl) return
-            const rect = svgEl.getBoundingClientRect()
-            const pointerX = e.clientX - rect.left - margins.left
-            const xVal = usesDate
-              ? (xScale as ReturnType<typeof timeScale>).invert(pointerX).getTime()
-              : (xScale as ReturnType<typeof linearScale>).invert(pointerX)
-            const idx = nearestIndex(allXNums, xVal)
-            if (idx < 0) return
-            const xPos = usesDate
-              ? (xScale as ReturnType<typeof timeScale>).map(new Date(allXNums[idx]!))
-              : (xScale as ReturnType<typeof linearScale>).map(allXNums[idx]!)
-            if (crosshairRef.current) {
-              crosshairRef.current.setAttribute('x1', String(xPos))
-              crosshairRef.current.setAttribute('x2', String(xPos))
-              crosshairRef.current.style.opacity = '1'
-            }
-            if (tooltipRef.current && series[0]) {
-              const s = series[0]
-              const d = s.data[idx]
-              if (d) {
-                const text = formatTooltip ? formatTooltip(d, s) : String(y(d))
-                tooltipRef.current.textContent = text
-                tooltipRef.current.style.transform = `translate(${xPos + margins.left + 8}px, ${margins.top}px)`
-                tooltipRef.current.style.opacity = '1'
-              }
-            }
-          }
-
-          const handlePointerLeave = () => {
-            if (crosshairRef.current) crosshairRef.current.style.opacity = '0'
-            if (tooltipRef.current) tooltipRef.current.style.opacity = '0'
-          }
-
           return (
             <g>
               <g transform={`translate(${margins.left},${margins.top})`}>
@@ -177,7 +193,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                 )}
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
-                  const points: Point[] = s.data.map((d) => {
+                  const pts: Point[] = s.data.map((d) => {
                     const xv = x(d)
                     const xPos = usesDate
                       ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
@@ -188,7 +204,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                   return (
                     <path
                       key={s.id}
-                      d={linePath(points, curve)}
+                      d={linePath(pts, curve)}
                       fill="none"
                       stroke={color}
                       strokeWidth={2}
@@ -198,17 +214,6 @@ export function LineChart<Datum = { x: number; y: number }>({
                     />
                   )
                 })}
-                <line
-                  ref={crosshairRef}
-                  x1={0}
-                  x2={0}
-                  y1={0}
-                  y2={innerH}
-                  stroke="var(--cascade-chart-axis)"
-                  strokeWidth={1}
-                  strokeDasharray="4 2"
-                  style={{ opacity: 0, transition: 'opacity 150ms ease', pointerEvents: 'none' }}
-                />
                 {!plain && (
                   <>
                     <Axis
@@ -221,16 +226,6 @@ export function LineChart<Datum = { x: number; y: number }>({
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                   </>
                 )}
-                {/* Invisible pointer capture rect */}
-                <rect
-                  x={0}
-                  y={0}
-                  width={innerW}
-                  height={innerH}
-                  fill="transparent"
-                  onPointerMove={handlePointerMove}
-                  onPointerLeave={handlePointerLeave}
-                />
               </g>
             </g>
           )

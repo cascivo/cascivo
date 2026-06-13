@@ -39,6 +39,16 @@ describe('ScatterChart', () => {
     expect(container.querySelector('table')).toBeTruthy()
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<ScatterChart series={series} title="Scatter" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('renders focusable layer when tooltip is enabled', () => {
+    render(<ScatterChart series={series} title="Scatter" tooltip />)
+    expect(screen.getByRole('application')).toBeTruthy()
+  })
+
   it('shows legend for multiple series', () => {
     render(<ScatterChart series={series} title="Scatter" />)
     expect(screen.getAllByText('Group A').length).toBeGreaterThan(0)

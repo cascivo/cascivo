@@ -31,6 +31,16 @@ describe('ComboChart', () => {
     expect(screen.getByRole('table')).toBeDefined()
   })
 
+  it('renders aria-live region when tooltip is enabled', () => {
+    render(<ComboChart bars={bars} line={line} title="Combo" tooltip />)
+    expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
+  })
+
+  it('renders focusable layer when tooltip is enabled', () => {
+    render(<ComboChart bars={bars} line={line} title="Combo" tooltip />)
+    expect(screen.getByRole('application')).toBeTruthy()
+  })
+
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
       const { container } = render(<ComboChart bars={bars} line={line} title="Plain" plain />)

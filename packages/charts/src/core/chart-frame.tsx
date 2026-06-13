@@ -17,7 +17,14 @@ export interface ChartFrameProps {
   className?: string | undefined
   'data-state'?: string | undefined
   plain?: boolean | undefined
-  tooltip?: TooltipModel | undefined
+  /**
+   * Tooltip model. Pass a TooltipModel directly, or a factory function that
+   * receives the resolved chart size so cx/cy can be computed from scales.
+   */
+  tooltip?:
+    | TooltipModel
+    | ((size: { width: number; height: number }) => TooltipModel | undefined)
+    | undefined
 }
 
 export function ChartFrame({
@@ -42,15 +49,19 @@ export function ChartFrame({
   const focusedIndex = useSignal<number | null>(null)
   const ariaLiveRef = useRef<HTMLSpanElement>(null)
 
-  useSignalEffect(() => {
-    const idx = focusedIndex.value
-    if (!tooltip || !ariaLiveRef.current) return
-    const pt = idx !== null ? tooltip.points[idx] : undefined
-    ariaLiveRef.current.textContent = pt ? (tooltip.format ?? defaultFormat)(pt) : ''
-  })
-
   const w = fixedWidth ?? width.value
   const h = fixedHeight ?? height.value
+
+  // Resolve tooltip: function form receives resolved size, value form is used as-is
+  const resolvedTooltip: TooltipModel | undefined =
+    typeof tooltip === 'function' ? tooltip({ width: w, height: h }) : tooltip
+
+  useSignalEffect(() => {
+    const idx = focusedIndex.value
+    if (!resolvedTooltip || !ariaLiveRef.current) return
+    const pt = idx !== null ? resolvedTooltip.points[idx] : undefined
+    ariaLiveRef.current.textContent = pt ? (resolvedTooltip.format ?? defaultFormat)(pt) : ''
+  })
 
   const focusableLayerStyle: React.CSSProperties = {
     position: 'absolute',
@@ -60,7 +71,7 @@ export function ChartFrame({
   }
 
   const containerStyle: React.CSSProperties | undefined =
-    tooltip !== undefined ? { position: 'relative' } : undefined
+    resolvedTooltip !== undefined ? { position: 'relative' } : undefined
 
   return (
     <div
@@ -82,7 +93,7 @@ export function ChartFrame({
         {children({ width: w, height: h })}
       </svg>
       {fallback && <div className={styles['fallback']}>{fallback}</div>}
-      {tooltip !== undefined && (
+      {resolvedTooltip !== undefined && (
         <>
           {/* Visually-hidden aria-live region for screen-reader announcements */}
           <span
@@ -103,9 +114,9 @@ export function ChartFrame({
           />
           {/* Focus ring indicator — shown at the focused data point */}
           {focusedIndex.value !== null &&
-            tooltip.points[focusedIndex.value] !== undefined &&
+            resolvedTooltip.points[focusedIndex.value] !== undefined &&
             (() => {
-              const fp = tooltip.points[focusedIndex.value!]!
+              const fp = resolvedTooltip.points[focusedIndex.value!]!
               return (
                 <div
                   aria-hidden="true"
@@ -125,9 +136,13 @@ export function ChartFrame({
               )
             })()}
           {/* Tooltip overlay — shown when a point is focused */}
-          {focusedIndex.value !== null && tooltip.points[focusedIndex.value] !== undefined && (
-            <ChartTooltip point={tooltip.points[focusedIndex.value]!} model={tooltip} />
-          )}
+          {focusedIndex.value !== null &&
+            resolvedTooltip.points[focusedIndex.value] !== undefined && (
+              <ChartTooltip
+                point={resolvedTooltip.points[focusedIndex.value]!}
+                model={resolvedTooltip}
+              />
+            )}
           {/* Focusable layer covering the SVG for keyboard navigation */}
           <div
             role="application"
@@ -135,38 +150,38 @@ export function ChartFrame({
             tabIndex={0}
             style={focusableLayerStyle}
             onPointerMove={(e) => {
-              if (!tooltip.points.length) return
+              if (!resolvedTooltip.points.length) return
               const rect = e.currentTarget.getBoundingClientRect()
               const relX = e.clientX - rect.left
               const relY = e.clientY - rect.top
-              focusedIndex.value = nearest(tooltip.points, relX, relY, 'xy')
+              focusedIndex.value = nearest(resolvedTooltip.points, relX, relY, 'xy')
             }}
             onPointerLeave={() => {
               focusedIndex.value = null
             }}
             onKeyDown={(e) => {
-              if (!tooltip.points.length) return
+              if (!resolvedTooltip.points.length) return
               const current = focusedIndex.value
               if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                 e.preventDefault()
                 focusedIndex.value =
-                  current === null ? 0 : Math.min(current + 1, tooltip.points.length - 1)
+                  current === null ? 0 : Math.min(current + 1, resolvedTooltip.points.length - 1)
               } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
                 e.preventDefault()
                 focusedIndex.value =
-                  current === null ? tooltip.points.length - 1 : Math.max(current - 1, 0)
+                  current === null ? resolvedTooltip.points.length - 1 : Math.max(current - 1, 0)
               } else if (e.key === 'Home') {
                 e.preventDefault()
                 focusedIndex.value = 0
               } else if (e.key === 'End') {
                 e.preventDefault()
-                focusedIndex.value = tooltip.points.length - 1
+                focusedIndex.value = resolvedTooltip.points.length - 1
               } else if (e.key === 'Escape') {
                 focusedIndex.value = null
               }
             }}
             onFocus={() => {
-              if (tooltip.points.length > 0 && focusedIndex.value === null) {
+              if (resolvedTooltip.points.length > 0 && focusedIndex.value === null) {
                 focusedIndex.value = 0
               }
             }}

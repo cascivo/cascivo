@@ -10755,6 +10755,12 @@
             "required": false
           },
           {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover/keyboard tooltip"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -10780,7 +10786,12 @@
         "accessibility": {
           "role": "img",
           "wcag": "AA",
-          "keyboard": []
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate points)",
+            "Home/End (first/last point)",
+            "Escape (clear focus)"
+          ]
         },
         "examples": [
           {
@@ -11115,6 +11126,12 @@
             "default": "320"
           },
           {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover/keyboard tooltip"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -11140,7 +11157,12 @@
         "accessibility": {
           "role": "img",
           "wcag": "AA",
-          "keyboard": []
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate points)",
+            "Home/End (first/last point)",
+            "Escape (clear focus)"
+          ]
         },
         "examples": [
           {
@@ -11347,6 +11369,12 @@
             "default": "320"
           },
           {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover/keyboard tooltip"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -11363,7 +11391,12 @@
         "accessibility": {
           "role": "img",
           "wcag": "AA",
-          "keyboard": []
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate points)",
+            "Home/End (first/last point)",
+            "Escape (clear focus)"
+          ]
         },
         "examples": [
           {
@@ -11831,7 +11864,12 @@
         "accessibility": {
           "role": "img",
           "wcag": "AA",
-          "keyboard": []
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate points)",
+            "Home/End (first/last point)",
+            "Escape (clear focus)"
+          ]
         },
         "examples": [
           {
@@ -12276,6 +12314,12 @@
             "required": false
           },
           {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover/keyboard tooltip"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -12301,7 +12345,12 @@
         "accessibility": {
           "role": "img",
           "wcag": "AA",
-          "keyboard": []
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate points)",
+            "Home/End (first/last point)",
+            "Escape (clear focus)"
+          ]
         },
         "examples": [
           {

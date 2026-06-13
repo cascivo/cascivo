@@ -23,6 +23,12 @@ export const meta: ComponentMeta = {
     { name: 'xTicks', type: 'number', required: false, default: '5' },
     { name: 'yTicks', type: 'number', required: false, default: '5' },
     { name: 'legend', type: 'boolean', required: false },
+    {
+      name: 'tooltip',
+      type: 'boolean',
+      required: false,
+      description: 'Enable hover/keyboard tooltip',
+    },
     { name: 'className', type: 'string', required: false },
     {
       name: 'plain',
@@ -42,7 +48,16 @@ export const meta: ComponentMeta = {
     '--cascade-chart-7',
     '--cascade-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: {
+    role: 'img',
+    wcag: 'AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate points)',
+      'Home/End (first/last point)',
+      'Escape (clear focus)',
+    ],
+  },
   examples: [
     {
       title: 'Basic scatter chart',

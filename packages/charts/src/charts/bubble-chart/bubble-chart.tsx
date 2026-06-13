@@ -6,6 +6,7 @@ import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { linearScale, sqrtScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
+import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface BubbleDatum {
   x: number
@@ -24,6 +25,7 @@ export interface BubbleChartProps {
   description?: string
   width?: number
   height?: number
+  tooltip?: boolean
   className?: string
   /** Render only the marks — no axes or grid lines. For micro/inline charts. */
   plain?: boolean
@@ -39,6 +41,7 @@ export function BubbleChart({
   description,
   width: fixedWidth,
   height,
+  tooltip,
   className,
   plain,
 }: BubbleChartProps) {
@@ -52,6 +55,7 @@ export function BubbleChart({
   const [yMin, yMax] = allData.length > 0 ? extent(allData.map((d) => d.y)) : [0, 1]
   const [sMin, sMax] = allData.length > 0 ? extent(allData.map((d) => d.size)) : [0, 1]
   const sizeMap = sqrtScale([sMin, sMax], [MIN_R, MAX_R])
+  const hasData = allData.length > 0
 
   const fallback = (
     <table>
@@ -79,6 +83,41 @@ export function BubbleChart({
     </table>
   )
 
+  /** Build tooltip model using the chart's resolved pixel dimensions. */
+  const buildTooltip = ({
+    width: w,
+    height: h,
+  }: {
+    width: number
+    height: number
+  }): TooltipModel | undefined => {
+    if (tooltip === false || !hasData) return undefined
+
+    const inner = {
+      width: w - margins.left - margins.right,
+      height: h - margins.top - margins.bottom,
+    }
+    if (inner.width <= 0) return undefined
+
+    const xPad = (xMax - xMin) * 0.05 || 1
+    const yPad = (yMax - yMin) * 0.05 || 1
+    const xScale = linearScale([xMin - xPad, xMax + xPad], [0, inner.width])
+    const yScale = linearScale([yMin - yPad, yMax + yPad], [inner.height, 0])
+
+    const points: ChartPoint[] = series.flatMap((s, si) =>
+      s.data.map((d, di) => ({
+        id: `${si}-${di}`,
+        cx: margins.left + xScale.map(d.x),
+        cy: margins.top + yScale.map(d.y),
+        label: `${s.name} (${d.x}, ${d.y})`,
+        value: d.y,
+        seriesId: s.name,
+      })),
+    )
+
+    return { points }
+  }
+
   return (
     <ChartFrame
       title={title}
@@ -88,6 +127,7 @@ export function BubbleChart({
       fallback={fallback}
       className={className}
       plain={plain}
+      tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
     >
       {({ width, height: h }) => {
         const inner = {
