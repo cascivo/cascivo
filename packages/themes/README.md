@@ -2,7 +2,7 @@
 
 # @cascade-ui/themes
 
-> First-party cascade themes: light, dark, warm
+> First-party cascade themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal
 
 ## Install
 

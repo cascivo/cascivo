@@ -1,11 +1,22 @@
 import { installPackages } from '../utils/exec.js'
 
-const THEMES = ['light', 'dark', 'warm']
+const THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+]
 
 export async function theme(args: string[]): Promise<void> {
   const [sub, name] = args
   if (sub !== 'add' || !name) {
-    console.error('Usage: cascade theme add <light|dark|warm>')
+    console.error(`Usage: cascade theme add <${THEMES.join('|')}>`)
     return
   }
   if (!THEMES.includes(name)) {

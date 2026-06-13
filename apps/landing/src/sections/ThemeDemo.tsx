@@ -3,7 +3,18 @@ import { Input } from '@cascade-ui/components/input'
 import { Checkbox } from '@cascade-ui/components/checkbox'
 import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
 
-const THEMES = ['light', 'dark', 'warm', 'flat', 'minimal'] as const
+const THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+] as const
 
 function SignupCard() {
   return (
@@ -26,9 +37,9 @@ function SignupCard() {
 export function ThemeDemo() {
   return (
     <section className="section" data-reveal="">
-      <h2>One form, five personalities</h2>
+      <h2>One form, ten personalities</h2>
       <p className="section-sub">
-        The exact same markup rendered inside five <code>data-theme</code> containers. Themes
+        The exact same markup rendered inside ten <code>data-theme</code> containers. Themes
         override only the semantic token layer — no component changes.
       </p>
       <div className="theme-demo-grid">

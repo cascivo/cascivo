@@ -4,7 +4,7 @@
   "private": false,
   "description": "CLI — npx cascade init / add / list / update",
   "bin": {
-    "cascade": "./dist/index.mjs"
+    "cascade": "./bin/cascade.mjs"
   },
   "type": "module",
   "types": "./dist/index.d.mts",

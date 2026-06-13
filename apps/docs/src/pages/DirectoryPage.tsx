@@ -1,4 +1,4 @@
-import { useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
+import { signal, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import { Badge } from '@cascade-ui/components/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@cascade-ui/components/card'
 
@@ -17,10 +17,10 @@ interface RegistriesJson {
   registries: RegistryEntry[]
 }
 
-const registries = useSignal<RegistryEntry[]>([])
-const filter = useSignal('')
-const loading = useSignal(true)
-const error = useSignal<string | null>(null)
+const registries = signal<RegistryEntry[]>([])
+const filter = signal('')
+const loading = signal(true)
+const error = signal<string | null>(null)
 
 export function DirectoryPage() {
   useSignals()

@@ -1,0 +1,95 @@
+/* Cascade — Terminal Theme */
+/* Developer/CLI, phosphor green on near-black, zero radius, green glow */
+
+@import '@cascade-ui/tokens';
+
+@layer cascade.theme {
+  [data-theme='terminal'] {
+    color-scheme: dark;
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascade-color-background: oklch(0.17 0.01 150);
+    --cascade-color-surface: oklch(0.21 0.012 150);
+    --cascade-color-surface-2: oklch(0.26 0.014 150);
+    --cascade-color-bg: var(--cascade-color-background);
+    --cascade-color-bg-subtle: var(--cascade-color-surface);
+    --cascade-color-surface-raised: var(--cascade-color-surface-2);
+    --cascade-color-surface-overlay: var(--cascade-color-surface);
+    --cascade-color-border: oklch(0.4 0.08 150 / 60%);
+    --cascade-color-border-strong: oklch(0.55 0.1 150 / 80%);
+    --cascade-border-subtle: oklch(0.35 0.06 150 / 50%);
+    --cascade-border-default: oklch(0.4 0.08 150 / 60%);
+    --cascade-border-strong: oklch(0.55 0.1 150 / 80%);
+
+    /* ── Text ─────────────────────────────────────────── */
+    --cascade-color-foreground: oklch(0.9 0.06 150);
+    --cascade-color-foreground-muted: oklch(0.65 0.05 148);
+    --cascade-color-text: var(--cascade-color-foreground);
+    --cascade-color-text-subtle: var(--cascade-color-foreground-muted);
+    --cascade-color-text-muted: oklch(0.48 0.04 148);
+    --cascade-color-text-on-accent: oklch(0.17 0.01 150);
+    --cascade-color-text-on-destructive: oklch(0.17 0.01 150);
+
+    /* ── Accent — bright phosphor green ──────────────── */
+    --cascade-color-accent: oklch(0.82 0.2 145);
+    --cascade-color-accent-foreground: oklch(0.17 0.01 150);
+    --cascade-color-accent-hover: oklch(0.88 0.18 145);
+    --cascade-color-accent-active: oklch(0.92 0.15 145);
+    --cascade-color-accent-subtle: oklch(0.82 0.2 145 / 0.1);
+    --cascade-color-accent-muted: oklch(0.82 0.2 145 / 0.2);
+
+    /* ── Primary — accent-mapped ─────────────────────── */
+    --cascade-color-primary: var(--cascade-color-accent);
+    --cascade-color-primary-fg: oklch(0.17 0.01 150);
+    --cascade-color-primary-hover: var(--cascade-color-accent-hover);
+    --cascade-color-primary-active: var(--cascade-color-accent-active);
+    --cascade-color-active-bg: oklch(0.82 0.2 145 / 0.1);
+
+    /* ── Destructive — red on dark green bg ───────────── */
+    --cascade-color-destructive: oklch(0.72 0.16 22);
+    --cascade-color-destructive-hover: oklch(0.78 0.14 22);
+    --cascade-color-destructive-subtle: oklch(0.72 0.16 22 / 0.1);
+
+    /* ── Semantic status colors ───────────────────────── */
+    --cascade-color-error: oklch(0.72 0.16 22);
+    --cascade-color-warning: oklch(0.82 0.16 75);
+    --cascade-color-success: oklch(0.82 0.2 145);
+    --cascade-color-success-subtle: oklch(0.82 0.2 145 / 0.1);
+    --cascade-color-warning-subtle: oklch(0.82 0.16 75 / 0.1);
+    --cascade-color-info: oklch(0.82 0.2 145);
+    --cascade-color-info-subtle: oklch(0.82 0.2 145 / 0.1);
+    --cascade-color-success-foreground: oklch(0.82 0.2 145);
+    --cascade-color-warning-foreground: oklch(0.82 0.16 75);
+
+    /* ── Radius — zero ───────────────────────────────── */
+    --cascade-radius-base: 0;
+    --cascade-radius-control: 0;
+    --cascade-radius-surface: 0;
+    --cascade-radius-indicator: 0;
+    --cascade-radius-full: 0;
+    --cascade-radius-component: 0;
+    --cascade-radius-button: 0;
+    --cascade-radius-input: 0;
+    --cascade-radius-card: 0;
+    --cascade-radius-badge: 0;
+    --cascade-radius-modal: 0;
+
+    /* ── Shadows — none on surfaces, green glow on overlays ── */
+    --cascade-shadow-xs: none;
+    --cascade-shadow-sm: none;
+    --cascade-shadow-md: none;
+    --cascade-shadow-overlay: 0 0 0 1px oklch(0.82 0.2 145 / 0.3), 0 4px 24px oklch(0 0 0 / 0.5);
+    --cascade-shadow-lg: var(--cascade-shadow-overlay);
+
+    /* ── Focus ring — green glow ─────────────────────── */
+    --cascade-ring-width: 2px;
+    --cascade-ring-offset: 0px;
+    --cascade-ring-color: color-mix(in oklch, var(--cascade-color-accent) 60%, transparent);
+    --cascade-color-focus-ring: oklch(0.82 0.2 145);
+    --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
+
+    /* ── Chart overrides ─────────────────────────────── */
+    --cascade-chart-grid: oklch(0.4 0.08 150 / 40%);
+    --cascade-chart-axis: oklch(0.65 0.05 148);
+  }
+}

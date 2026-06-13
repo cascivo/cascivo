@@ -3,7 +3,18 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const SRC = join(__dirname)
-const themeFiles = ['dark', 'flat', 'light', 'minimal', 'warm'].map((n) => `${n}.css`)
+const themeFiles = [
+  'dark',
+  'flat',
+  'light',
+  'minimal',
+  'warm',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+].map((n) => `${n}.css`)
 
 function tokenKeys(file: string): Set<string> {
   const css = readFileSync(join(SRC, file), 'utf8')
