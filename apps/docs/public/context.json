@@ -17,6 +17,16 @@
   "tokenCatalogUrl": "/tokens.catalog.json",
   "specs": [
     {
+      "id": "at-matrix",
+      "title": "at-matrix",
+      "path": "/docs/specs/at-matrix.md"
+    },
+    {
+      "id": "at-methodology",
+      "title": "at-methodology",
+      "path": "/docs/specs/at-methodology.md"
+    },
+    {
       "id": "chart-palette",
       "title": "chart-palette",
       "path": "/docs/specs/chart-palette.md"
@@ -40,6 +50,11 @@
       "id": "spec-decision-hierarchy",
       "title": "Decision Hierarchy",
       "path": "/docs/specs/decision-hierarchy.md"
+    },
+    {
+      "id": "legal-mapping",
+      "title": "legal-mapping",
+      "path": "/docs/specs/legal-mapping.md"
     },
     {
       "id": "perf-methodology",

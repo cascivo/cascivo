@@ -2,6 +2,18 @@
   "generatedAt": "2026-06-13",
   "specs": [
     {
+      "id": "at-matrix",
+      "title": "at-matrix",
+      "path": "/docs/specs/at-matrix.md",
+      "summary": "This matrix records assistive-technology (AT) test results for the representative component set defined in `at-methodology.md`. Testing was performed manually; stacks not available in the current environment are marked `not tested`. Results are point-in-time — re-run when components change."
+    },
+    {
+      "id": "at-methodology",
+      "title": "at-methodology",
+      "path": "/docs/specs/at-methodology.md",
+      "summary": "This document defines cascade's assistive-technology (AT) testing methodology."
+    },
+    {
       "id": "chart-palette",
       "title": "chart-palette",
       "path": "/docs/specs/chart-palette.md",
@@ -30,6 +42,12 @@
       "title": "Decision Hierarchy",
       "path": "/docs/specs/decision-hierarchy.md",
       "summary": "When guidance conflicts, resolve it in this order:"
+    },
+    {
+      "id": "legal-mapping",
+      "title": "legal-mapping",
+      "path": "/docs/specs/legal-mapping.md",
+      "summary": "Cascade targets WCAG 2.2 AA conformance at the component level. All three major accessibility frameworks — EAA, EN 301 549, and US Section 508 — reference WCAG as their technical standard."
     },
     {
       "id": "perf-methodology",

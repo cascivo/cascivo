@@ -586,6 +586,56 @@ export function ChartsPage() {
           height={64}
         />
       </section>
+
+      <section class="doc-section">
+        <h2>Chart Palette Gallery</h2>
+        <p>
+          Same data, all 10 themes — receipt for CVD-safe per-theme palettes. Eight series map to
+          chart color slots 1–8 (Okabe-Ito base, theme-adjusted).{' '}
+          <a href="/docs/specs/chart-palette.md">docs/specs/chart-palette.md</a>
+        </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gap: '1.5rem',
+            marginBlockStart: '1rem',
+          }}
+        >
+          {PALETTE_THEMES.map((t) => (
+            <div
+              key={t}
+              data-theme={t}
+              style={{
+                padding: '1rem',
+                background: 'var(--cascade-color-bg)',
+                borderRadius: 'var(--cascade-radius-md, 0.5rem)',
+                border: '1px solid var(--cascade-color-border)',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  color: 'var(--cascade-color-text-secondary, var(--cascade-color-text))',
+                  marginBlockEnd: '0.5rem',
+                }}
+              >
+                {t}
+              </div>
+              <BarChart
+                series={paletteSeries}
+                x={(d) => d.x}
+                y={(d) => d.y}
+                title={`8-series palette — ${t} theme`}
+                height={200}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
     </article>
   )
 }
