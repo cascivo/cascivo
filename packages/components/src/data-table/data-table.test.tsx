@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascade-ui/i18n'
 import { createRenderProbe } from '../test-utils/render-count'
 import { DataTable, type Column } from './data-table'
+import styles from './data-table.module.css'
 
 interface Person {
   id: string
@@ -151,6 +152,124 @@ describe('DataTable', () => {
     render(<DataTable columns={columns} rows={[]} getRowId={(p) => p.id} />)
     expect(screen.getByRole('cell', { name: 'Keine Daten' })).toBeInTheDocument()
     await store.set('en')
+  })
+})
+
+describe('DataTable virtualized', () => {
+  const bigRows = Array.from({ length: 100_000 }, (_, i) => ({
+    id: `r${i}`,
+    name: `Row ${i}`,
+    age: i % 100,
+  }))
+
+  it('100k rows: renders at most windowSize + overscan*2 + 2 spacer rows', () => {
+    const windowSize = 20
+    const overscan = 3
+    render(
+      <DataTable
+        columns={columns}
+        rows={bigRows}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={40}
+        windowSize={windowSize}
+        overscan={overscan}
+      />,
+    )
+    const tbody = document.querySelector('tbody')!
+    // +1 header row counted by getAllByRole('row') — query tbody rows only
+    const tbodyRows = tbody.querySelectorAll('tr')
+    // max = windowSize + overscan*2 data rows + 1 top spacer (none at top when start=0) + 1 bottom spacer
+    // at scrollTop=0 there is no top spacer, so max = windowSize + overscan*2 + 1 bottom spacer
+    expect(tbodyRows.length).toBeLessThanOrEqual(windowSize + overscan * 2 + 2)
+  })
+
+  it('scroll signal update changes visible slice', () => {
+    const windowSize = 5
+    const overscan = 1
+    const rowHeight = 40
+    render(
+      <DataTable
+        columns={columns}
+        rows={bigRows}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={overscan}
+      />,
+    )
+    // Initially row 0 should be visible
+    expect(screen.getByRole('cell', { name: 'Row 0' })).toBeInTheDocument()
+
+    // Simulate scroll: fire scroll event on the scroller div
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    Object.defineProperty(scroller, 'scrollTop', { writable: true, value: rowHeight * 10 })
+    scroller.dispatchEvent(new Event('scroll'))
+
+    // Row 0 should no longer be visible (visibleStart = 10)
+    expect(screen.queryByRole('cell', { name: 'Row 0' })).not.toBeInTheDocument()
+    // Row 10 should be visible
+    expect(screen.getByRole('cell', { name: 'Row 10' })).toBeInTheDocument()
+  })
+
+  it('aria-rowcount equals total count and aria-rowindex values are correct', () => {
+    const rowCount = 50
+    const rows = bigRows.slice(0, rowCount)
+    render(
+      <DataTable
+        columns={columns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={40}
+        windowSize={10}
+        overscan={2}
+      />,
+    )
+    const table = screen.getByRole('table')
+    expect(table).toHaveAttribute('aria-rowcount', String(rowCount))
+
+    // First visible data row should have aria-rowindex="1"
+    const dataRows = document.querySelector('tbody')!.querySelectorAll('tr[aria-rowindex]')
+    expect(dataRows[0]).toHaveAttribute('aria-rowindex', '1')
+  })
+
+  it('selection by id survives virtualized scroll', async () => {
+    const user = userEvent.setup()
+    const rowHeight = 40
+    const windowSize = 5
+    const overscan = 1
+    const rows = bigRows.slice(0, 100)
+    render(
+      <DataTable
+        columns={columns}
+        rows={rows}
+        getRowId={(r) => r.id}
+        virtualized
+        rowHeight={rowHeight}
+        windowSize={windowSize}
+        overscan={overscan}
+        selection={{ mode: 'multi' }}
+      />,
+    )
+
+    // Select row r0 via checkbox (second checkbox — first is select-all)
+    const checkboxes = screen.getAllByRole('checkbox')
+    await user.click(checkboxes[1]!)
+
+    // Simulate scroll past row 0
+    const scroller = document.querySelector(`.${styles['scroller']}`) as HTMLDivElement
+    Object.defineProperty(scroller, 'scrollTop', { writable: true, value: rowHeight * 20 })
+    scroller.dispatchEvent(new Event('scroll'))
+
+    // Scroll back to top
+    Object.defineProperty(scroller, 'scrollTop', { writable: true, value: 0 })
+    scroller.dispatchEvent(new Event('scroll'))
+
+    // row r0 should still be selected
+    const firstDataRow = document.querySelector('tbody tr[aria-rowindex="1"]') as HTMLElement
+    expect(firstDataRow).toHaveAttribute('data-state', 'selected')
   })
 })
 

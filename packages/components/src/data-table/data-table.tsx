@@ -1,7 +1,8 @@
 'use client'
-import { batch, cn, useComputed, useSignal, useSignals } from '@cascade-ui/core'
+import { batch, cn, useComputed, useSignal, useSignalEffect, useSignals } from '@cascade-ui/core'
 import { builtin, t } from '@cascade-ui/i18n'
-import { Fragment, useId, type KeyboardEvent, type ReactNode } from 'react'
+import { Fragment, useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { flushSync } from 'react-dom'
 import { Button } from '../button/button'
 import { Checkbox } from '../checkbox/checkbox'
 import styles from './data-table.module.css'
@@ -53,6 +54,10 @@ export interface DataTableProps<Row> {
   description?: string
   labels?: DataTableLabels
   className?: string
+  virtualized?: boolean
+  rowHeight?: number
+  windowSize?: number
+  overscan?: number
 }
 
 interface Entry<Row> {
@@ -91,6 +96,10 @@ export function DataTable<Row>({
   description,
   labels,
   className,
+  virtualized = false,
+  rowHeight = 40,
+  windowSize = 20,
+  overscan = 3,
 }: DataTableProps<Row>) {
   useSignals()
   const baseId = useId()
@@ -121,6 +130,23 @@ export function DataTable<Row>({
   const pageSignal = useSignal(1)
   const pageSizeSignal = useSignal(pagination?.pageSize ?? 0)
   const expandedSignal = useSignal<ReadonlySet<string>>(new Set())
+
+  // Virtualization
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollTop = useSignal(0)
+
+  useSignalEffect(() => {
+    if (!virtualized) return
+    const el = scrollContainerRef.current
+    if (!el) return
+    const onScroll = () => {
+      flushSync(() => {
+        scrollTop.value = el.scrollTop
+      })
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  })
 
   const entries = useComputed<Entry<Row>[]>(() =>
     rowsSignal.value.map((row, index) => ({
@@ -163,6 +189,18 @@ export function DataTable<Row>({
     const start = (currentPage.value - 1) * pageSizeSignal.value
     return sorted.value.slice(start, start + pageSizeSignal.value)
   })
+
+  const visibleStart = useComputed(() =>
+    virtualized ? Math.floor(scrollTop.value / rowHeight) : 0,
+  )
+  const visibleEnd = useComputed(() =>
+    virtualized
+      ? Math.min(visibleStart.value + windowSize + overscan * 2, paged.value.length)
+      : paged.value.length,
+  )
+  const visibleEntries = useComputed<Entry<Row>[]>(() =>
+    virtualized ? paged.value.slice(visibleStart.value, visibleEnd.value) : paged.value,
+  )
 
   const cycleSort = (key: string) => {
     const current = sortSignal.value
@@ -232,6 +270,9 @@ export function DataTable<Row>({
   const allPageSelected =
     pageEntries.length > 0 && pageEntries.every((entry) => selectedIds.includes(entry.id))
   const somePageSelected = pageEntries.some((entry) => selectedIds.includes(entry.id))
+  const renderedEntries = visibleEntries.value
+  const vStart = visibleStart.value
+  const vEnd = visibleEnd.value
 
   const toggleAll = () => {
     const pageIds = pageEntries.map((entry) => entry.id)
@@ -308,12 +349,16 @@ export function DataTable<Row>({
           </div>
         </div>
       )}
-      <div className={styles['scroller']}>
+      <div
+        ref={virtualized ? scrollContainerRef : undefined}
+        className={cn(styles['scroller'], virtualized && styles['scrollerVirtualized'])}
+      >
         <table
           className={styles['table']}
           aria-labelledby={title !== undefined ? titleId : undefined}
           aria-describedby={description !== undefined ? descriptionId : undefined}
           aria-busy={loading || undefined}
+          aria-rowcount={virtualized ? pageEntries.length : undefined}
           onKeyDown={onTableKeyDown}
         >
           <colgroup>
@@ -394,16 +439,21 @@ export function DataTable<Row>({
                 </td>
               </tr>
             )}
+            {!loading && virtualized && vStart > 0 && (
+              <tr aria-hidden="true" style={{ height: vStart * rowHeight }} />
+            )}
             {!loading &&
-              pageEntries.map((entry, index) => {
+              renderedEntries.map((entry, index) => {
+                const absoluteIndex = virtualized ? vStart + index : index
                 const isSelected = selectedIds.includes(entry.id)
                 const isExpanded = expanded.has(entry.id)
                 return (
                   <Fragment key={entry.id}>
                     <tr
                       className={styles['row']}
-                      data-parity={index % 2 === 0 ? 'even' : 'odd'}
+                      data-parity={absoluteIndex % 2 === 0 ? 'even' : 'odd'}
                       data-state={isSelected ? 'selected' : undefined}
+                      aria-rowindex={virtualized ? vStart + index + 1 : undefined}
                     >
                       {renderExpandedRow && (
                         <td className={styles['controlCell']}>
@@ -456,6 +506,9 @@ export function DataTable<Row>({
                   </Fragment>
                 )
               })}
+            {!loading && virtualized && vEnd < pageEntries.length && (
+              <tr aria-hidden="true" style={{ height: (pageEntries.length - vEnd) * rowHeight }} />
+            )}
           </tbody>
         </table>
       </div>

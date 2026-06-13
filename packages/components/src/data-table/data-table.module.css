@@ -103,6 +103,12 @@
     max-block-size: var(--cascade-data-table-max-height, none);
   }
 
+  .scrollerVirtualized {
+    overflow: auto;
+    block-size: var(--cascade-data-table-height, 400px);
+    max-block-size: none;
+  }
+
   .table {
     inline-size: 100%;
     border-collapse: collapse;

@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import * as v from 'valibot'
 import { describe, expect, it, vi } from 'vitest'
+import { z } from 'zod'
 import { Input } from '../input/input'
 import { Form, createForm, useForm } from './form'
 
@@ -65,6 +67,122 @@ describe('createForm', () => {
     expect(form.values.value).toEqual({ email: '', age: 0 })
     expect(form.errors.value).toEqual({})
     expect(form.touched.value).toEqual({})
+  })
+})
+
+describe('Standard Schema validation', () => {
+  it('zod schema — reports field errors on invalid submit', async () => {
+    const schema = z.object({
+      email: z.string().email('Invalid email address'),
+      age: z.number().min(18, 'Must be 18 or older'),
+    })
+    const onValid = vi.fn()
+    const form = createForm<Values>({ initialValues: { email: '', age: 0 }, schema })
+    await form.submit(onValid)
+    expect(form.errors.value.email).toBe('Invalid email address')
+    expect(form.errors.value.age).toBe('Must be 18 or older')
+    expect(onValid).not.toHaveBeenCalled()
+  })
+
+  it('zod schema — calls onValid when all fields pass', async () => {
+    const schema = z.object({
+      email: z.string().email('Invalid email address'),
+      age: z.number().min(18, 'Must be 18 or older'),
+    })
+    const onValid = vi.fn()
+    const form = createForm<Values>({
+      initialValues: { email: 'user@example.com', age: 21 },
+      schema,
+    })
+    await form.submit(onValid)
+    expect(form.errors.value).toEqual({})
+    expect(onValid).toHaveBeenCalledWith({ email: 'user@example.com', age: 21 })
+  })
+
+  it('valibot schema — reports field errors on invalid submit', async () => {
+    const schema = v.object({
+      email: v.pipe(v.string(), v.email('Invalid email address')),
+      age: v.pipe(v.number(), v.minValue(18, 'Must be 18 or older')),
+    })
+    const onValid = vi.fn()
+    const form = createForm<Values>({ initialValues: { email: '', age: 0 }, schema })
+    await form.submit(onValid)
+    expect(form.errors.value.email).toBe('Invalid email address')
+    expect(form.errors.value.age).toBe('Must be 18 or older')
+    expect(onValid).not.toHaveBeenCalled()
+  })
+
+  it('valibot schema — calls onValid when all fields pass', async () => {
+    const schema = v.object({
+      email: v.pipe(v.string(), v.email('Invalid email address')),
+      age: v.pipe(v.number(), v.minValue(18, 'Must be 18 or older')),
+    })
+    const onValid = vi.fn()
+    const form = createForm<Values>({
+      initialValues: { email: 'user@example.com', age: 21 },
+      schema,
+    })
+    await form.submit(onValid)
+    expect(form.errors.value).toEqual({})
+    expect(onValid).toHaveBeenCalledWith({ email: 'user@example.com', age: 21 })
+  })
+
+  it('async schema — awaits async validate result', async () => {
+    // Build a manual async Standard Schema to test Promise path
+    const asyncSchema = {
+      '~standard': {
+        version: 1 as const,
+        vendor: 'test',
+        validate: async (value: unknown) => {
+          await Promise.resolve()
+          const v = value as { email: string }
+          if (!v.email.includes('@')) {
+            return { issues: [{ message: 'Async: invalid email', path: ['email'] }] }
+          }
+          return { value }
+        },
+      },
+    }
+    const onValid = vi.fn()
+    const form = createForm<Values>({
+      initialValues: { email: 'notanemail', age: 0 },
+      schema: asyncSchema,
+    })
+    await form.submit(onValid)
+    expect(form.errors.value.email).toBe('Async: invalid email')
+    expect(onValid).not.toHaveBeenCalled()
+    form.setValue('email', 'user@example.com')
+    await form.submit(onValid)
+    expect(onValid).toHaveBeenCalledWith({ email: 'user@example.com', age: 0 })
+  })
+
+  it('schema errors take precedence; validate() is skipped when schema fails', async () => {
+    const schema = z.object({
+      email: z.string().email('Schema error'),
+      age: z.number(),
+    })
+    const validate = vi.fn().mockReturnValue({})
+    const form = createForm<Values>({
+      initialValues: { email: 'bad', age: 0 },
+      schema,
+      validate,
+    })
+    await form.submit(vi.fn())
+    expect(form.errors.value.email).toBe('Schema error')
+    expect(validate).not.toHaveBeenCalled()
+  })
+
+  it('validate() runs when schema passes', async () => {
+    const schema = z.object({ email: z.string().email(), age: z.number() })
+    const validate = vi.fn().mockReturnValue({ age: 'Too young' })
+    const form = createForm<Values>({
+      initialValues: { email: 'user@example.com', age: 0 },
+      schema,
+      validate,
+    })
+    await form.submit(vi.fn())
+    expect(validate).toHaveBeenCalled()
+    expect(form.errors.value.age).toBe('Too young')
   })
 })
 
