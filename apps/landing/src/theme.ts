@@ -1,7 +1,18 @@
 import { effect } from '@cascade-ui/core'
 import { persistedSignal } from '@cascade-ui/storage'
 
-export const THEMES = ['light', 'dark', 'warm', 'flat', 'minimal'] as const
+export const THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+] as const
 export type ThemeName = (typeof THEMES)[number]
 
 const systemDefault = (): ThemeName =>

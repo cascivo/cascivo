@@ -11,13 +11,13 @@ them differ on **form** (radius, shadows, borders, focus, density) as much as on
 
 ## What exists today
 
-| Theme | Scheme | Radius base | Shadows | Borders | Accent | Personality |
-|---|---|---|---|---|---|---|
-| `light` | light | 6px | soft, rationed | neutral gray | blue, monochrome primary | clean default |
-| `dark` | dark | 6px | soft on dark | translucent white | blue | developer-cool, editorial |
-| `warm` | light | 8px | warm-tinted | warm gray | amber (colored fill) | organic, approachable |
-| `flat` | light | **0px** | **none** | **heavy, high-contrast** | vivid green | stark, bordered |
-| `minimal` | light | **12px** | very subtle | near-invisible | monochrome | soft, quiet |
+| Theme     | Scheme | Radius base | Shadows        | Borders                  | Accent                   | Personality               |
+| --------- | ------ | ----------- | -------------- | ------------------------ | ------------------------ | ------------------------- |
+| `light`   | light  | 6px         | soft, rationed | neutral gray             | blue, monochrome primary | clean default             |
+| `dark`    | dark   | 6px         | soft on dark   | translucent white        | blue                     | developer-cool, editorial |
+| `warm`    | light  | 8px         | warm-tinted    | warm gray                | amber (colored fill)     | organic, approachable     |
+| `flat`    | light  | **0px**     | **none**       | **heavy, high-contrast** | vivid green              | stark, bordered           |
+| `minimal` | light  | **12px**    | very subtle    | near-invisible           | monochrome               | soft, quiet               |
 
 The existing five already span a wide form range (0 → 12px radius, none → soft
 shadows, invisible → heavy borders). The five new themes are chosen to fill the
@@ -37,7 +37,7 @@ Every theme overrides the semantic layer. The available levers:
 - **Color scheme**: `color-scheme: light | dark`.
 
 > **Constraint — token parity.** `parity.test.ts` requires every theme to define
-> the *exact same set* of `--cascade-*` keys. New themes must mirror the full token
+> the _exact same set_ of `--cascade-*` keys. New themes must mirror the full token
 > list of an existing theme (use `light.css` as the canonical template).
 
 ## Proposed five new themes
@@ -45,13 +45,13 @@ Every theme overrides the semantic layer. The available levers:
 Chosen to balance the light/dark split and to occupy unused points in the
 radius/shadow/border space.
 
-| Theme | Scheme | Radius | Shadow signature | Border | Accent | Fills which gap |
-|---|---|---|---|---|---|---|
-| `midnight` | dark | 10px | soft **colored glow** | luminous, subtle | violet/indigo | premium dark (vs developer `dark`) |
-| `pastel` | light | **16px** (pill) | diffuse, soft, tinted | very light | candy pink + mint | playful / consumer |
-| `brutalist` | light | **0px** | **hard offset** `4px 4px 0` | **2px solid black** | acid yellow | bold editorial (vs flat's *no* shadow) |
-| `corporate` | light | **2px** | tight, minimal | crisp cool hairline | conservative blue | enterprise / data-dense (Carbon-like) |
-| `terminal` | dark | **0px** | none / green glow on overlays | hairline phosphor green | phosphor green | developer / CLI |
+| Theme       | Scheme | Radius          | Shadow signature              | Border                  | Accent            | Fills which gap                        |
+| ----------- | ------ | --------------- | ----------------------------- | ----------------------- | ----------------- | -------------------------------------- |
+| `midnight`  | dark   | 10px            | soft **colored glow**         | luminous, subtle        | violet/indigo     | premium dark (vs developer `dark`)     |
+| `pastel`    | light  | **16px** (pill) | diffuse, soft, tinted         | very light              | candy pink + mint | playful / consumer                     |
+| `brutalist` | light  | **0px**         | **hard offset** `4px 4px 0`   | **2px solid black**     | acid yellow       | bold editorial (vs flat's _no_ shadow) |
+| `corporate` | light  | **2px**         | tight, minimal                | crisp cool hairline     | conservative blue | enterprise / data-dense (Carbon-like)  |
+| `terminal`  | dark   | **0px**         | none / green glow on overlays | hairline phosphor green | phosphor green    | developer / CLI                        |
 
 Resulting radius spread across all 10: `0` (flat, brutalist, terminal) · `2px`
 (corporate) · `6px` (light, dark) · `8px` (warm) · `10px` (midnight) · `12px`
@@ -92,7 +92,7 @@ shadows. Friendly/consumer personality.
 ### 3. `brutalist` — bold editorial
 
 Neo-brutalism: zero radius, thick black borders, and the signature **hard offset
-drop shadow**. Differs from `flat` (which has *no* shadow and thinner borders) by
+drop shadow**. Differs from `flat` (which has _no_ shadow and thinner borders) by
 the chunky offset shadow that makes elements pop off the page.
 
 - `color-scheme: light`
@@ -106,7 +106,7 @@ the chunky offset shadow that makes elements pop off the page.
 - Focus ring: solid black, 3px, with offset
 - **Font note**: brutalism often pairs with a mono/grotesk face. Font is currently
   a primitive token (`--cascade-font-sans` in `tokens/index.css`, not themed). See
-  "Open questions" — theming fonts requires adding the key to *all* themes for parity.
+  "Open questions" — theming fonts requires adding the key to _all_ themes for parity.
 
 ### 4. `corporate` — enterprise / data-dense
 
@@ -183,7 +183,7 @@ checks pass.
 1. **Font theming.** `brutalist` and `terminal` want non-default (mono/grotesk)
    fonts, but `--cascade-font-sans`/`-mono` live in `tokens/index.css :root`, not
    in themes. Options: (a) keep fonts global, skip per-theme fonts; (b) add font
-   tokens to *all 10* themes to satisfy parity. Recommendation: **(a) for now** —
+   tokens to _all 10_ themes to satisfy parity. Recommendation: **(a) for now** —
    convey personality through radius/shadow/border/color; revisit fonts as a
    separate "themeable typography" change.
 2. **Density theming.** Same situation for `corporate`'s tighter density

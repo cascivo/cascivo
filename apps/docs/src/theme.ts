@@ -1,9 +1,30 @@
 import { effect } from '@cascade-ui/core'
 import { persistedSignal } from '@cascade-ui/storage'
 
-export type Theme = 'light' | 'dark' | 'warm' | 'flat' | 'minimal'
+export type Theme =
+  | 'light'
+  | 'dark'
+  | 'warm'
+  | 'flat'
+  | 'minimal'
+  | 'midnight'
+  | 'pastel'
+  | 'brutalist'
+  | 'corporate'
+  | 'terminal'
 
-export const THEMES: Theme[] = ['light', 'dark', 'warm', 'flat', 'minimal']
+export const THEMES: Theme[] = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+]
 
 const STORAGE_KEY = 'cascade-theme'
 
@@ -14,7 +35,12 @@ if (
   legacy === 'dark' ||
   legacy === 'warm' ||
   legacy === 'flat' ||
-  legacy === 'minimal'
+  legacy === 'minimal' ||
+  legacy === 'midnight' ||
+  legacy === 'pastel' ||
+  legacy === 'brutalist' ||
+  legacy === 'corporate' ||
+  legacy === 'terminal'
 ) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, value: legacy }))
 }

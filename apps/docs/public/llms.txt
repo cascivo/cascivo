@@ -153,4 +153,4 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
 - [visually-hidden](/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
 
-_Generated: 2026-06-12 from registry v0.0.0_
+_Generated: 2026-06-13 from registry v0.0.0_

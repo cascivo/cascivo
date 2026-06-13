@@ -6,6 +6,11 @@ import '@cascade-ui/themes/dark'
 import '@cascade-ui/themes/warm'
 import '@cascade-ui/themes/flat'
 import '@cascade-ui/themes/minimal'
+import '@cascade-ui/themes/midnight'
+import '@cascade-ui/themes/pastel'
+import '@cascade-ui/themes/brutalist'
+import '@cascade-ui/themes/corporate'
+import '@cascade-ui/themes/terminal'
 
 const withFrame: Decorator = (Story, context) => {
   if (context.parameters['layout'] === 'fullscreen') return <Story />
@@ -25,6 +30,11 @@ const preview: Preview = {
         warm: 'warm',
         flat: 'flat',
         minimal: 'minimal',
+        midnight: 'midnight',
+        pastel: 'pastel',
+        brutalist: 'brutalist',
+        corporate: 'corporate',
+        terminal: 'terminal',
       },
       defaultTheme: 'light',
       attributeName: 'data-theme',
