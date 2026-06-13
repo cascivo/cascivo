@@ -76,4 +76,63 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['upload', 'file', 'drop', 'drag', 'input', 'form'],
+  intent: {
+    whenToUse: [
+      'Letting users attach one or more files via click-to-browse or drag-and-drop',
+      'Showing per-file upload progress and status (uploading, complete, error) in a list',
+      'Enforcing client-side accept/maxSize constraints with a callback for rejected files',
+    ],
+    whenNotToUse: [
+      'A single short text value — use Input',
+      'Choosing from a fixed set of options rather than supplying a file — use Select or MultiSelect',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Treating the component as uncontrolled and ignoring onFilesAdded',
+        good: 'Track accepted files in state and pass them back via the files prop',
+        why: 'The file list is controlled — without wiring files/onFilesAdded/onRemove nothing renders in the list and status cannot update',
+      },
+      {
+        bad: 'Relying only on accept/maxSize for security',
+        good: 'Re-validate type and size on the server after upload',
+        why: 'Client-side accept/maxSize are UX filters, not enforcement; a determined user can bypass them',
+      },
+    ],
+    related: [
+      {
+        name: 'Form',
+        relationship: 'pairs-with',
+        reason: 'Place the uploader inside a Form when files are part of a larger submission',
+      },
+      {
+        name: 'Input',
+        relationship: 'alternative',
+        reason: 'Use a plain text Input when capturing a value rather than a file',
+      },
+    ],
+    a11yRationale:
+      'The drop zone is a real <button> so it is keyboard-operable (Enter/Space open the native file picker), the hidden file input is removed from the tab order and labelled via aria-describedby, and the file list uses aria-live="polite" so status changes are announced; each remove control carries an aria-label naming its file.',
+    content: {
+      tone: 'Plain, instructive labels and hints',
+      notes:
+        'Defaults come from the i18n catalog; hint should state accepted types/size limits, e.g. "PDF up to 5 MB"',
+    },
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Status colors must resolve to --cascade-color-accent/success/danger tokens',
+      },
+      {
+        area: 'label and hint copy',
+        level: 'flexible',
+        note: 'Overridable via label/hint props or the labels object',
+      },
+      {
+        area: 'accept / maxSize constraints',
+        level: 'flexible',
+        note: 'Configure freely; rejected files surface through onRejected',
+      },
+    ],
+  },
 }

@@ -47,4 +47,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['search', 'input', 'filter', 'form'],
+  intent: {
+    whenToUse: [
+      'A query field that filters or searches content, with a built-in clear button and debounced onSearch',
+      'Free-text search where results update as the user types (debounced) or on Enter',
+    ],
+    whenNotToUse: [
+      'General non-search text entry — use Input',
+      'Search that presents an inline list of suggestions/results to pick from — use Combobox',
+      'A bounded numeric value — use NumberInput',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Input placeholder="Search" onChange={(e) => runQuery(e.target.value)} />',
+        good: '<Search onSearch={(q) => runQuery(q)} debounceMs={300} />',
+        why: 'Search provides type="search" semantics, a magnifier affordance, a clear button, and built-in debouncing so you avoid firing a query on every keystroke',
+      },
+    ],
+    related: [
+      {
+        name: 'Input',
+        relationship: 'alternative',
+        reason: 'Use for general text entry that is not a search query',
+      },
+      {
+        name: 'Combobox',
+        relationship: 'alternative',
+        reason: 'Use when the query should surface a selectable list of suggestions',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <input type="search"> associated with a <label> (defaulting from the i18n catalog) so the field is announced as a searchbox; the clear control is a labeled <button> and moves focus back to the input after clearing.',
+    content: {
+      tone: 'Concise placeholder and labels',
+      notes:
+        'placeholder, label, and clearLabel default from the i18n catalog; keep placeholder a short noun phrase like "Search products"',
+    },
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Field and control styling must resolve to the listed --cascade-* tokens',
+      },
+      {
+        area: 'debounce and copy',
+        level: 'flexible',
+        note: 'debounceMs and the placeholder/label/clear copy are free to suit the context',
+      },
+    ],
+  },
 }

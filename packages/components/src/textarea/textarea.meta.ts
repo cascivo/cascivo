@@ -39,4 +39,48 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['form', 'text', 'multiline'],
+  intent: {
+    whenToUse: [
+      'Capturing multi-line free text such as messages, descriptions, or comments',
+      'Input where line breaks are meaningful and the content may wrap to several rows',
+      'Form fields that benefit from a visible hint or validation error beneath the control',
+    ],
+    whenNotToUse: [
+      'A single short value like a name or email — use Input',
+      'A constrained numeric value — use NumberInput',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Textarea label="Email" rows={1} />',
+        good: '<Input type="email" label="Email" />',
+        why: 'A one-line value belongs in Input; a textarea invites unwanted line breaks and submits via Enter differently',
+      },
+    ],
+    related: [
+      { name: 'Input', relationship: 'alternative', reason: 'Use for single-line values' },
+      {
+        name: 'Form',
+        relationship: 'contained-by',
+        reason: 'Typically grouped with other fields inside a form',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <textarea> with aria-multiline; hint and error text are associated via aria-describedby and errors use role="alert" with aria-invalid so assistive tech announces validation state.',
+    content: {
+      tone: 'Neutral placeholder hinting at expected content',
+      notes: 'Error copy should state what to fix, not just that something is wrong',
+    },
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Border/focus/error colors must resolve to --cascade-color-* / focus-ring tokens',
+      },
+      {
+        area: 'resize and rows',
+        level: 'flexible',
+        note: 'Consumer chooses initial rows and whether the field can resize',
+      },
+    ],
+  },
 }

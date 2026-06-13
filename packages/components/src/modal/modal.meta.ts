@@ -34,4 +34,64 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['overlay', 'dialog', 'popup'],
+  intent: {
+    whenToUse: [
+      'Presenting focused content or a task that must interrupt the current flow',
+      'Confirmations and forms that require the user to act before continuing',
+      'Cases needing a modal backdrop, focus trap, and Escape-to-close from the native <dialog>',
+    ],
+    whenNotToUse: [
+      'Anchored, non-modal content next to a trigger — use Popover',
+      'A side panel or drawer for secondary content — use Sheet',
+      'A destructive confirmation with a clear yes/no decision — use AlertDialog',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Rendering <Modal> mounted but driving visibility with CSS display',
+        good: 'Control visibility with the open prop',
+        why: 'The open prop drives showModal()/close() on the native dialog, which manages the top layer, backdrop, and focus trap; hiding with CSS breaks all three',
+      },
+    ],
+    related: [
+      {
+        name: 'AlertDialog',
+        relationship: 'alternative',
+        reason:
+          'Use AlertDialog for a focused confirm/cancel decision, especially destructive ones',
+      },
+      {
+        name: 'Sheet',
+        relationship: 'alternative',
+        reason: 'Use Sheet for an edge-anchored drawer rather than a centered dialog',
+      },
+      {
+        name: 'Popover',
+        relationship: 'alternative',
+        reason: 'Use Popover for lightweight, non-modal content anchored to a trigger',
+      },
+    ],
+    a11yRationale:
+      'Built on the native <dialog> element so showModal() provides a real focus trap, top-layer rendering, and inert background for free; role="dialog" plus aria-labelledby/aria-describedby tie the title and description to the dialog, and Escape closes via the platform.',
+    content: {
+      tone: 'Clear title naming the task; concise body',
+      notes: 'Title is a noun phrase; the close control label comes from the i18n catalog',
+    },
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascade-* tokens',
+      },
+      {
+        area: 'size',
+        level: 'flexible',
+        note: 'sm | md | lg, defaulting to md',
+      },
+      {
+        area: 'title / description / body',
+        level: 'flexible',
+        note: 'All optional; body accepts arbitrary children',
+      },
+    ],
+  },
 }

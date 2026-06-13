@@ -44,4 +44,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['form', 'input', 'addon', 'group', 'layout'],
+  intent: {
+    whenToUse: [
+      'Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field',
+      'Placing a leading or trailing inline icon/unit inside the field border via InputGroupAddon',
+      'Grouping adjacent buttons with collapsed shared borders via ButtonGroup',
+    ],
+    whenNotToUse: [
+      'A standalone field with no adornment — use Input directly',
+      'Conveying meaning that the user must read via an addon — decorative addons are aria-hidden',
+    ],
+    antiPatterns: [
+      {
+        bad: '<InputGroupAddon>Required</InputGroupAddon> to convey field status',
+        good: 'Use the Input error/hint props for meaningful text',
+        why: 'InputGroupAddon is aria-hidden and decorative, so screen readers never announce it',
+      },
+    ],
+    related: [
+      {
+        name: 'Input',
+        relationship: 'contains',
+        reason: 'InputGroup composes around an Input to add prefix/suffix addons',
+      },
+      {
+        name: 'Button',
+        relationship: 'contains',
+        reason: 'ButtonGroup arranges adjacent Buttons with merged borders',
+      },
+    ],
+    a11yRationale:
+      'Inline addons are marked aria-hidden because they are purely decorative units/icons, so the wrapped Input keeps its own accessible name; ButtonGroup uses role="group" to convey that its buttons form a related set.',
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Addon background, border, text, and radius must resolve to the listed --cascade-* tokens',
+      },
+      {
+        area: 'addon alignment',
+        level: 'flexible',
+        note: 'InputGroupAddon align is inline-start (leading) or inline-end (trailing)',
+      },
+      {
+        area: 'addon content',
+        level: 'flexible',
+        note: 'prefix/suffix and addon children accept arbitrary ReactNode',
+      },
+    ],
+  },
 }

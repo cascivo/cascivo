@@ -50,4 +50,52 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['clipboard', 'copy', 'button', 'snippet'],
+  intent: {
+    whenToUse: [
+      'Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links',
+      'Inline next to code snippets or read-only fields where copying is the primary affordance',
+    ],
+    whenNotToUse: [
+      'Triggering a general action — use Button',
+      'Copying content the user can already select and edit freely where a copy affordance adds nothing',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Wiring CopyButton to perform a non-clipboard action via onClick',
+        good: 'Use Button for arbitrary actions; CopyButton always writes value to the clipboard',
+        why: 'Its click handler is fixed to navigator.clipboard.writeText(value) plus copied feedback — overloading it breaks user expectation',
+      },
+    ],
+    related: [
+      {
+        name: 'Button',
+        relationship: 'alternative',
+        reason: 'Use for actions other than copying to clipboard',
+      },
+      {
+        name: 'Input',
+        relationship: 'pairs-with',
+        reason: 'Often placed alongside a read-only field whose value it copies',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <button> so Enter/Space, focus, and role come from the platform; the aria-label swaps between copy and copied labels to announce the state change to screen readers since the icon swap alone is silent, and the SVG icons are aria-hidden',
+    content: {
+      tone: 'Concise action/confirmation labels',
+      notes:
+        'Default copy/copied strings come from the i18n catalog; override per instance via labels (e.g. "Copy token" / "Token copied")',
+    },
+    flexibility: [
+      {
+        area: 'labels',
+        level: 'flexible',
+        note: 'copy/copied strings overridable via labels; default from i18n catalog',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Styling resolves to semantic --cascade-color-* tokens; copied state uses --cascade-color-success',
+      },
+    ],
+  },
 }

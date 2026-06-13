@@ -44,4 +44,57 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['overlay', 'menu', 'actions'],
+  intent: {
+    whenToUse: [
+      'Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)',
+      'Grouping related commands behind one affordance with optional icons and separators',
+    ],
+    whenNotToUse: [
+      'Selecting a persistent value for a form — use Select or Combobox',
+      'A global searchable command palette — use CommandMenu; right-click context actions — use ContextMenu',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using Dropdown to choose a form value and reading the selection as field state',
+        good: 'Use Select/Combobox which expose role="combobox" and a controlled value',
+        why: 'Dropdown items are role="menuitem" actions fired via onSelect — there is no selected-value semantics for assistive tech or forms',
+      },
+    ],
+    related: [
+      {
+        name: 'Select',
+        relationship: 'alternative',
+        reason: 'Use for choosing and persisting a single form value',
+      },
+      {
+        name: 'CommandMenu',
+        relationship: 'alternative',
+        reason: 'Use for a searchable global action palette',
+      },
+      {
+        name: 'Button',
+        relationship: 'pairs-with',
+        reason: 'The trigger is typically a Button passed via the trigger prop',
+      },
+    ],
+    a11yRationale:
+      'The menu is role="menu" with role="menuitem" buttons and roving tabindex; the trigger gets aria-haspopup="menu" and aria-expanded via cloneElement; arrow/Home/End/Enter/Escape are handled and focus returns to the trigger on select or close, and popover="auto" provides light-dismiss synced back to state via the toggle event',
+    flexibility: [
+      {
+        area: 'trigger element',
+        level: 'flexible',
+        note: 'Any ReactElement works as the trigger; ref and aria props are merged in',
+      },
+      {
+        area: 'controlled vs uncontrolled',
+        level: 'flexible',
+        note: 'Supports open + onOpenChange or fully internal state',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Menu styling resolves to semantic --cascade-color-* / --cascade-z-dropdown tokens',
+      },
+    ],
+  },
 }

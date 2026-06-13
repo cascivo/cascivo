@@ -34,4 +34,44 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['form', 'range', 'input'],
+  intent: {
+    whenToUse: [
+      'Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine',
+      'Settings like volume, brightness, or opacity where dragging gives instant feedback',
+      'When the bounds (min/max) matter more than entering an exact figure',
+    ],
+    whenNotToUse: [
+      'A precise numeric value must be typed — use NumberInput',
+      'Picking a discrete rating on a small scale where stars/icons read better — use RatingGroup',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Slider label="Price" min={0} max={1000000} />',
+        good: '<NumberInput label="Price" />',
+        why: 'A huge range makes a single value impossible to hit by dragging; type the exact number instead',
+      },
+    ],
+    related: [
+      {
+        name: 'NumberInput',
+        relationship: 'alternative',
+        reason: 'Use when an exact, typed numeric value is required',
+      },
+      {
+        name: 'RatingGroup',
+        relationship: 'alternative',
+        reason: 'Use for small discrete rating scales rather than a continuous range',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <input type="range"> so the slider role, value announcements, and full arrow/Home/End keyboard support come from the platform without custom ARIA.',
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Track and thumb colors must resolve to --cascade-color-* / radius / focus-ring tokens',
+      },
+      { area: 'min/max/step', level: 'flexible', note: 'Consumer-defined bounds and increment' },
+    ],
+  },
 }
