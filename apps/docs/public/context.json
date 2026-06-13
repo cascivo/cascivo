@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T09:42:46.392Z",
+  "generatedAt": "2026-06-13T09:55:51.997Z",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascade-ui/core",
