@@ -76,6 +76,50 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["progress", "loading", "circle", "feedback"]
+    "tags": ["progress", "loading", "circle", "feedback"],
+    "intent": {
+      "whenToUse": [
+        "Showing determinate progress compactly as a circular arc",
+        "Displaying a percentage in a small footprint (showValue)",
+        "Tracking completion against a custom maximum (max)"
+      ],
+      "whenNotToUse": [
+        "Indeterminate work with no known value — use Spinner",
+        "Full-width linear progress with a label and helper text — use ProgressBar",
+        "Multi-step flows — use ProgressIndicator"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using ProgressCircle for indeterminate loading",
+          "good": "<Spinner> for indeterminate states",
+          "why": "ProgressCircle requires a determinate value; it cannot express unknown progress"
+        }
+      ],
+      "related": [
+        {
+          "name": "ProgressBar",
+          "relationship": "alternative",
+          "reason": "Linear form with labels and indeterminate support"
+        },
+        {
+          "name": "Spinner",
+          "relationship": "alternative",
+          "reason": "Indeterminate alternative when value is unknown"
+        }
+      ],
+      "a11yRationale": "role=\"progressbar\" with value/max conveys completion to assistive tech; the label prop supplies an accessible name since the SVG arc alone carries no text",
+      "flexibility": [
+        {
+          "area": "size and showValue",
+          "level": "flexible",
+          "note": "showValue pairs best with md/lg sizes"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Arc and track colors must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

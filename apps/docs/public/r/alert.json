@@ -84,6 +84,53 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["notification", "message", "feedback"]
+    "tags": ["notification", "message", "feedback"],
+    "intent": {
+      "whenToUse": [
+        "Surfacing a persistent, contextual message inline within a view (warning, error, info, success)",
+        "Communicating status that should stay visible until read or resolved",
+        "Offering an inline recovery action tied to the message (action prop)"
+      ],
+      "whenNotToUse": [
+        "Transient confirmation that should auto-dismiss — use Toast",
+        "Blocking the user for a decision — use Modal or AlertDialog"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Auto-dismissing an Alert on a timer to mimic a notification",
+          "good": "<Toast> for ephemeral feedback",
+          "why": "Alerts persist by design; auto-hiding important inline context risks the user missing it"
+        }
+      ],
+      "related": [
+        {
+          "name": "Toast",
+          "relationship": "alternative",
+          "reason": "Toast auto-dismisses and floats; Alert persists inline in the layout"
+        },
+        {
+          "name": "AlertDialog",
+          "relationship": "alternative",
+          "reason": "Use AlertDialog when the message must block and demand a choice"
+        }
+      ],
+      "a11yRationale": "role=\"alert\" makes assistive tech announce the message when it appears; the dismiss control is a real button so it is reachable and labeled, and color is paired with an icon/title so meaning is not conveyed by hue alone",
+      "content": {
+        "tone": "Direct and specific — state what happened and what to do next",
+        "notes": "Title is a short summary; body explains. Avoid alarmist all-caps."
+      },
+      "flexibility": [
+        {
+          "area": "variant",
+          "level": "flexible",
+          "note": "Choose the severity variant that matches the message; default is neutral"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Severity colors must resolve to --cascade-color-info/success/warning/destructive"
+        }
+      ]
+    }
   }
 }

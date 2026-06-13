@@ -52,6 +52,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "masonry", "gallery"]
+    "tags": ["layout", "masonry", "gallery"],
+    "intent": {
+      "whenToUse": [
+        "Galleries of variable-height items packed into balanced columns",
+        "Pinterest-style image or card walls"
+      ],
+      "whenNotToUse": [
+        "Items that must align in rows — use Grid",
+        "Uniform-height cards — use AutoGrid"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "AutoGrid",
+          "relationship": "alternative",
+          "reason": "Use when items are uniform height and should align in rows"
+        },
+        {
+          "name": "MediaMasonry",
+          "relationship": "alternative",
+          "reason": "Use the section-level masonry for full-width media galleries"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
   }
 }

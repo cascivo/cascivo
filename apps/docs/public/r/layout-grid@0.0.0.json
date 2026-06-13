@@ -56,6 +56,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "grid", "columns"]
+    "tags": ["layout", "grid", "columns"],
+    "intent": {
+      "whenToUse": [
+        "Two-dimensional layouts with an explicit column count",
+        "Arranging cards or tiles that should align in rows and columns"
+      ],
+      "whenNotToUse": [
+        "Single-direction stacking — use Stack",
+        "Columns that auto-fit to available width — use AutoGrid"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "AutoGrid",
+          "relationship": "alternative",
+          "reason": "Use when columns should auto-fill without fixed counts"
+        },
+        {
+          "name": "Columns",
+          "relationship": "alternative",
+          "reason": "Use for equal-width text columns that collapse on narrow viewports"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
   }
 }

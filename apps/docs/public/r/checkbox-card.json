@@ -74,6 +74,56 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["checkbox", "card", "selectable", "form"]
+    "tags": ["checkbox", "card", "selectable", "form"],
+    "intent": {
+      "whenToUse": [
+        "Multi-select where each option needs a title and supporting description (feature toggles, add-ons)",
+        "Presenting selectable options as larger, scannable click targets rather than a dense checkbox list"
+      ],
+      "whenNotToUse": [
+        "A simple labelled boolean in a form — use Checkbox",
+        "Choosing exactly one option from a set — use RadioCard or Radio"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using CheckboxCard for mutually exclusive options",
+          "good": "Use RadioCard so only one can be selected",
+          "why": "Each CheckboxCard is an independent native checkbox — nothing enforces a single selection across them"
+        },
+        {
+          "bad": "Cramming a paragraph of marketing copy into description",
+          "why": "The description is a single supporting line; long content breaks the card layout and scannability"
+        }
+      ],
+      "related": [
+        {
+          "name": "Checkbox",
+          "relationship": "alternative",
+          "reason": "Use the plain checkbox when a title/description card is overkill"
+        },
+        {
+          "name": "RadioCard",
+          "relationship": "alternative",
+          "reason": "Use for single-select card groups"
+        }
+      ],
+      "a11yRationale": "Backed by a native <input type=\"checkbox\"> inside a <label>, so the entire card is clickable and role, checked state, Space activation, and label association come from the platform; the SVG glyph is aria-hidden as it is purely decorative",
+      "content": {
+        "tone": "Title is a concise noun phrase; description is one supporting line",
+        "notes": "Keep description to a single line of context (what it does, plan requirements)"
+      },
+      "flexibility": [
+        {
+          "area": "controlled vs uncontrolled",
+          "level": "flexible",
+          "note": "Supports both checked + onCheckedChange and defaultChecked"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Card styling resolves to --cascade-color-accent / --cascade-color-border / --cascade-radius-surface"
+        }
+      ]
+    }
   }
 }

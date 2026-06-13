@@ -74,6 +74,26 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "split", "resizable", "pane"]
+    "tags": ["layout", "split", "resizable", "pane"],
+    "intent": {
+      "whenToUse": [
+        "Two side-by-side panes the user can resize via pointer or keyboard",
+        "Master/detail, editor/preview, or list/content layouts"
+      ],
+      "whenNotToUse": [
+        "Static two-column content — use Columns",
+        "A full app frame with persistent navigation — use AppShell or SidebarApp"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Columns",
+          "relationship": "alternative",
+          "reason": "Use for static, non-resizable two-column content"
+        }
+      ],
+      "a11yRationale": "Exposes a keyboard-operable separator with role=\"separator\" and aria-valuenow for the split ratio.",
+      "flexibility": []
+    }
   }
 }

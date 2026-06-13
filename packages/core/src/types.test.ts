@@ -8,7 +8,11 @@ describe('ComponentMeta types', () => {
       whenNotToUse: ['Navigating to another page — use a link instead'],
       antiPatterns: [
         { bad: 'Using a button as a nav link', why: 'Breaks semantics and accessibility' },
-        { bad: 'Icon-only button without label', good: 'Add aria-label', why: 'Screen readers need text' },
+        {
+          bad: 'Icon-only button without label',
+          good: 'Add aria-label',
+          why: 'Screen readers need text',
+        },
       ],
       related: [
         { name: 'Link', relationship: 'alternative', reason: 'Use for navigation' },

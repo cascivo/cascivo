@@ -80,6 +80,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "features", "grid"]
+    "tags": ["section", "features", "grid"],
+    "intent": {
+      "whenToUse": [
+        "A feature section laying out items in an auto-fitting grid",
+        "Showcasing product capabilities with optional icons and descriptions"
+      ],
+      "whenNotToUse": [
+        "A single hero message — use Hero",
+        "A bare responsive grid without section framing — use AutoGrid"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "AutoGrid",
+          "relationship": "contains",
+          "reason": "Uses an auto-fit grid to lay out feature items"
+        },
+        {
+          "name": "Hero",
+          "relationship": "pairs-with",
+          "reason": "Often follows the hero on a landing page"
+        }
+      ],
+      "a11yRationale": "Renders a section with an optional heading grouping the feature items.",
+      "flexibility": []
+    }
   }
 }

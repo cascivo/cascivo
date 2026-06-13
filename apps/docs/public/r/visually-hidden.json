@@ -48,6 +48,48 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["accessibility", "screen-reader", "sr-only", "hidden"]
+    "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+    "intent": {
+      "whenToUse": [
+        "Giving an icon-only control an accessible name without showing text",
+        "Adding screen-reader-only context that would be redundant visually",
+        "Providing off-screen labels for tables, links, or form controls"
+      ],
+      "whenNotToUse": [
+        "Hiding content from everyone — use hidden or display:none",
+        "Temporarily hiding then revealing UI — use conditional rendering"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Wrapping decorative content in VisuallyHidden to \"clean up\" the layout",
+          "good": "aria-hidden on decorative elements; VisuallyHidden only for content screen readers need",
+          "why": "VisuallyHidden keeps content in the accessibility tree — using it to hide noise pollutes screen-reader output"
+        }
+      ],
+      "related": [
+        {
+          "name": "SkipNav",
+          "relationship": "alternative",
+          "reason": "SkipNav uses a similar hidden-until-focused technique for skip links"
+        }
+      ],
+      "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen — assistive tech reads it, sighted users do not see it",
+      "content": {
+        "tone": "Concise supplementary context for screen readers",
+        "notes": "Write what a screen-reader user needs that visuals already convey"
+      },
+      "flexibility": [
+        {
+          "area": "children",
+          "level": "flexible",
+          "note": "Any text/content meant for assistive tech"
+        },
+        {
+          "area": "visibility technique",
+          "level": "strict",
+          "note": "Must keep content in the a11y tree — never display:none"
+        }
+      ]
+    }
   }
 }

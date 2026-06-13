@@ -70,6 +70,48 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["breadcrumb", "navigation", "hierarchy"]
+    "tags": ["breadcrumb", "navigation", "hierarchy"],
+    "intent": {
+      "whenToUse": [
+        "Showing the user where the current page sits in a navigation hierarchy",
+        "Providing one-click navigation back to ancestor pages",
+        "Collapsing deep trails to keep the trail compact (maxVisible)"
+      ],
+      "whenNotToUse": [
+        "Paging through data records — use Pagination",
+        "Switching between sibling views — use Tabs"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using Breadcrumb to step through pages 1, 2, 3 of a dataset",
+          "good": "<Pagination> for paged data",
+          "why": "Breadcrumb models hierarchy depth, not sequential position in a list"
+        }
+      ],
+      "related": [
+        {
+          "name": "Pagination",
+          "relationship": "alternative",
+          "reason": "Pagination moves through data pages; Breadcrumb moves up a hierarchy"
+        }
+      ],
+      "a11yRationale": "Wrapped in <nav> with an aria-label and the current page marked aria-current=\"page\"; ancestor entries are real links so keyboard users can jump up the hierarchy",
+      "content": {
+        "tone": "Short labels matching page titles",
+        "notes": "The last item is the current page and is not a link"
+      },
+      "flexibility": [
+        {
+          "area": "maxVisible",
+          "level": "flexible",
+          "note": "Collapse long trails to fit available width"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Text colors and focus ring must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

@@ -73,6 +73,53 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["empty", "placeholder", "zero-state", "no-data"]
+    "tags": ["empty", "placeholder", "zero-state", "no-data"],
+    "intent": {
+      "whenToUse": [
+        "Filling a view that has no data with guidance and a primary next step",
+        "Explaining why a list/table is empty (no results, nothing created yet)",
+        "Offering an action that resolves the empty condition (action prop)"
+      ],
+      "whenNotToUse": [
+        "Content is still loading — use Skeleton or Spinner",
+        "An error occurred — use Alert to explain the failure"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Showing an EmptyState while data is still fetching",
+          "good": "A Skeleton during load, then EmptyState only if the result is empty",
+          "why": "Conflating loading with empty tells the user there is no data when there may be"
+        }
+      ],
+      "related": [
+        {
+          "name": "Skeleton",
+          "relationship": "alternative",
+          "reason": "Skeleton covers the loading phase before data resolves"
+        },
+        {
+          "name": "Alert",
+          "relationship": "alternative",
+          "reason": "Use Alert for error states rather than a generic empty state"
+        }
+      ],
+      "a11yRationale": "Presentational by role; the title carries the meaning as text and the action is a real focusable control, so keyboard and screen-reader users can act on the next step",
+      "content": {
+        "tone": "Encouraging and concrete — name the next action",
+        "notes": "Title states the situation; description tells the user what to do"
+      },
+      "flexibility": [
+        {
+          "area": "size and action",
+          "level": "flexible",
+          "note": "Action and icon are optional; size scales for full-page vs in-panel use"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Text and background colors must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

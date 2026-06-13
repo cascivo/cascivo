@@ -79,6 +79,49 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"]
+    "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+    "intent": {
+      "whenToUse": [
+        "Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)",
+        "Showing supplementary content triggered by a ShellHeader icon action",
+        "Light-dismiss content that should not block the rest of the app"
+      ],
+      "whenNotToUse": [
+        "Content that must block interaction until resolved — use Modal",
+        "A small contextual menu attached to a trigger — use Dropdown or Popover"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using HeaderPanel for a blocking confirmation",
+          "good": "<Modal> or <AlertDialog> for decisions that must block",
+          "why": "HeaderPanel is non-modal and light-dismissable; blocking flows need modal semantics"
+        }
+      ],
+      "related": [
+        {
+          "name": "ShellHeader",
+          "relationship": "pairs-with",
+          "reason": "Opened by a ShellHeader action whose active state mirrors the panel open state"
+        },
+        {
+          "name": "Switcher",
+          "relationship": "contains",
+          "reason": "A Switcher commonly lives inside a HeaderPanel"
+        }
+      ],
+      "a11yRationale": "role=\"region\" with the label prop names the panel as a landmark; Escape closes it and focus is managed so keyboard users can dismiss it without a mouse",
+      "flexibility": [
+        {
+          "area": "content",
+          "level": "flexible",
+          "note": "Children are arbitrary panel content"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Surface, shadow, and sizing must resolve to --cascade-* shell tokens"
+        }
+      ]
+    }
   }
 }

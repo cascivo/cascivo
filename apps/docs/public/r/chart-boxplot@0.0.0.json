@@ -79,6 +79,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"]
+    "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Comparing the distribution spread, median, and quartiles across groups",
+        "Surfacing outliers and skew in statistical data"
+      ],
+      "whenNotToUse": [
+        "Showing the full shape of a single distribution — use Histogram",
+        "Comparing single aggregate values — use BarChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Histogram",
+          "relationship": "alternative",
+          "reason": "Use to show the full frequency shape of one distribution"
+        },
+        {
+          "name": "BarChart",
+          "relationship": "alternative",
+          "reason": "Use when only aggregate values matter, not spread"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
   }
 }

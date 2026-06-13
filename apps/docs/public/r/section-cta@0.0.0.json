@@ -71,6 +71,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "cta", "marketing"]
+    "tags": ["section", "cta", "marketing"],
+    "intent": {
+      "whenToUse": [
+        "A call-to-action band with title, description, and centered actions",
+        "Prompting conversion between or after marketing sections"
+      ],
+      "whenNotToUse": [
+        "The primary page intro — use Hero",
+        "General content grouping — use Section"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Hero",
+          "relationship": "pairs-with",
+          "reason": "Hero opens the page; CTA reinforces conversion later"
+        },
+        {
+          "name": "Section",
+          "relationship": "alternative",
+          "reason": "Use the plain section for non-CTA content"
+        }
+      ],
+      "a11yRationale": "Renders a section with a heading and clearly labeled action controls.",
+      "flexibility": []
+    }
   }
 }

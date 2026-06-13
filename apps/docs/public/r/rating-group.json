@@ -85,6 +85,49 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "rating", "stars", "input", "feedback"]
+    "tags": ["form", "rating", "stars", "input", "feedback"],
+    "intent": {
+      "whenToUse": [
+        "Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)",
+        "Displaying an existing rating read-only as a compact star summary"
+      ],
+      "whenNotToUse": [
+        "Choosing along a continuous or large numeric range — use Slider",
+        "Entering an exact bounded number with steppers — use NumberInput",
+        "A non-rating single choice among labeled options — use Radio or SegmentedControl"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Slider min={1} max={5} step={1} /> labeled as a star rating",
+          "good": "<RatingGroup value={rating} onValueChange={setRating} />",
+          "why": "A slider communicates a continuous magnitude; RatingGroup uses radio semantics so each star is an exclusive discrete choice announced as \"N of M stars\""
+        }
+      ],
+      "related": [
+        {
+          "name": "Slider",
+          "relationship": "alternative",
+          "reason": "Use for continuous or larger numeric ranges"
+        },
+        {
+          "name": "NumberInput",
+          "relationship": "alternative",
+          "reason": "Use when an exact typed number is needed rather than a rating"
+        }
+      ],
+      "a11yRationale": "Each star is a <button role=\"radio\"> inside a role=\"radiogroup\" with aria-checked on the selected value and an aria-label like \"3 of 5 stars\"; when readOnly or disabled the stars drop out of the tab order so a non-interactive rating is not announced as actionable.",
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Star styling must resolve to the listed --cascade-* tokens"
+        },
+        {
+          "area": "scale and labels",
+          "level": "flexible",
+          "note": "max sets the scale and labels.rating customizes the per-star announcement"
+        }
+      ]
+    }
   }
 }

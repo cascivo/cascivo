@@ -137,6 +137,55 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["form", "number", "input", "spinbutton", "stepper"]
+    "tags": ["form", "number", "input", "spinbutton", "stepper"],
+    "intent": {
+      "whenToUse": [
+        "Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)",
+        "Numeric entry that needs clamping to min/max, fixed precision, or locale-aware display formatting (e.g. currency)",
+        "Inputs where keyboard ArrowUp/ArrowDown stepping speeds up adjustment"
+      ],
+      "whenNotToUse": [
+        "Free-form or non-numeric text — use Input",
+        "Choosing along a continuous range where the exact number matters less than the relative position — use Slider",
+        "Phone numbers, PINs, or codes that are digit strings rather than quantities — use Input or OtpInput"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Input type=\"number\" onChange={...} />",
+          "good": "<NumberInput min={0} max={99} step={1} onChange={...} />",
+          "why": "NumberInput adds stepper buttons, clamping, precision rounding, and Intl formatting that a raw number input does not, and reports a parsed number | null rather than a string"
+        }
+      ],
+      "related": [
+        {
+          "name": "Input",
+          "relationship": "alternative",
+          "reason": "Use for unbounded or non-numeric text entry"
+        },
+        {
+          "name": "Slider",
+          "relationship": "alternative",
+          "reason": "Use when approximate position on a range matters more than an exact typed number"
+        }
+      ],
+      "a11yRationale": "Exposes role=\"spinbutton\" with aria-valuenow/min/max so assistive tech announces the current value and bounds; stepper buttons are taken out of the tab order (tabIndex=-1) and labeled, keeping keyboard focus on the field while ArrowUp/ArrowDown drive stepping.",
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Visual props must resolve to the listed --cascade-* semantic tokens"
+        },
+        {
+          "area": "formatting and bounds",
+          "level": "flexible",
+          "note": "min, max, step, precision, and formatOptions are free to suit the value domain"
+        },
+        {
+          "area": "stepper labels",
+          "level": "flexible",
+          "note": "incrementLabel/decrementLabel override the i18n defaults"
+        }
+      ]
+    }
   }
 }

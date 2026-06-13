@@ -65,6 +65,44 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["typography", "list", "ul", "ol"]
+    "tags": ["typography", "list", "ul", "ol"],
+    "intent": {
+      "whenToUse": [
+        "Presenting a set of related items as a bulleted or numbered list",
+        "Conveying sequence with an ordered list (as=\"ol\")",
+        "Keeping list semantics while hiding visual markers (marker=\"none\")"
+      ],
+      "whenNotToUse": [
+        "Tabular data with multiple columns — use DataTable",
+        "Interactive navigation items — use SideNav or a menu"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "A stack of <Text> rows used as a visual list",
+          "good": "<List><ListItem>…</ListItem></List>",
+          "why": "Real list markup lets screen readers announce item count and position"
+        }
+      ],
+      "related": [
+        {
+          "name": "Text",
+          "relationship": "contains",
+          "reason": "ListItem content is typically body Text"
+        }
+      ],
+      "a11yRationale": "Renders native <ul>/<ol> with <li> children so assistive tech announces the list and its length; marker=\"none\" hides bullets visually without removing list semantics",
+      "flexibility": [
+        {
+          "area": "marker",
+          "level": "flexible",
+          "note": "disc/decimal/none chosen to match content and visual needs"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Spacing and text color must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

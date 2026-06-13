@@ -65,6 +65,54 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "choice", "group"]
+    "tags": ["form", "choice", "group"],
+    "intent": {
+      "whenToUse": [
+        "Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible",
+        "Form fields where the choices need plain text labels and a familiar radio affordance"
+      ],
+      "whenNotToUse": [
+        "Selecting one of many options where showing them all is impractical — use Select",
+        "Each option needs a title plus description or richer layout — use RadioCard",
+        "A compact inline switch between a few views or modes — use SegmentedControl"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Multiple <Checkbox> where only one may be selected",
+          "good": "<RadioGroup name=\"plan\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>",
+          "why": "Checkboxes imply multi-select; a radio group communicates and enforces single-choice semantics to assistive tech"
+        }
+      ],
+      "related": [
+        {
+          "name": "RadioCard",
+          "relationship": "alternative",
+          "reason": "Use when each option needs a title, description, or card layout"
+        },
+        {
+          "name": "SegmentedControl",
+          "relationship": "alternative",
+          "reason": "Use for a compact inline single choice among a few options"
+        },
+        {
+          "name": "Select",
+          "relationship": "alternative",
+          "reason": "Use when there are too many options to show inline"
+        }
+      ],
+      "a11yRationale": "Each Radio is a native <input type=\"radio\"> wrapped in a <label>, and RadioGroup applies role=\"radiogroup\" with a shared name so the browser provides roving arrow-key navigation, single-selection, and label association for free.",
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Control and label styling must resolve to the listed --cascade-* tokens"
+        },
+        {
+          "area": "option labels and orientation",
+          "level": "flexible",
+          "note": "Labels are free text and the group supports horizontal or vertical orientation"
+        }
+      ]
+    }
   }
 }

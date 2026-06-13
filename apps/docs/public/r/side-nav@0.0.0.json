@@ -125,6 +125,44 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["navigation", "sidebar", "app-shell", "collapsible"]
+    "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+    "intent": {
+      "whenToUse": [
+        "Persistent primary navigation along the side of an app shell",
+        "Grouping nav items one level deep with collapsible groups",
+        "Saving space with a collapsible icon rail (collapsed / expandOnHover)"
+      ],
+      "whenNotToUse": [
+        "Top-level horizontal navigation — use Header or ShellHeader nav",
+        "A transient contextual menu — use Dropdown"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Nesting nav groups more than one level deep",
+          "good": "Flatten to a single level of grouping, or split into sections",
+          "why": "Deep nesting in a sidebar is hard to scan and the component supports only one level by design"
+        }
+      ],
+      "related": [
+        {
+          "name": "ShellHeader",
+          "relationship": "pairs-with",
+          "reason": "The header hamburger toggles SideNav collapse"
+        }
+      ],
+      "a11yRationale": "role=\"navigation\" with an aria-label names the region; the collapse toggle has an explicit expand/collapse label, groups expose aria-expanded, and the collapsed rail provides tooltips/flyouts so icon-only items remain identifiable",
+      "flexibility": [
+        {
+          "area": "collapsed / expandOnHover",
+          "level": "flexible",
+          "note": "Rail behavior is configurable for density needs"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Sizing, surfaces, and motion must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

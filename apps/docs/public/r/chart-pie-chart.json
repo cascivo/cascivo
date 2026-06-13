@@ -90,6 +90,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "pie", "donut", "data-viz"]
+    "tags": ["chart", "pie", "donut", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing part-of-whole proportions with five or fewer slices",
+        "A single composition at one point in time"
+      ],
+      "whenNotToUse": [
+        "Comparing precise values or many categories — use BarChart",
+        "Showing change over time — use LineChart or AreaChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "BarChart",
+          "relationship": "alternative",
+          "reason": "Use when comparing more than five categories or precise values"
+        },
+        {
+          "name": "Treemap",
+          "relationship": "alternative",
+          "reason": "Use for part-to-whole with many or hierarchical segments"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
   }
 }

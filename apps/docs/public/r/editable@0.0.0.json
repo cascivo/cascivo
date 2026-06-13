@@ -82,6 +82,54 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "editable", "inline", "input", "text"]
+    "tags": ["form", "editable", "inline", "input", "text"],
+    "intent": {
+      "whenToUse": [
+        "Editing a single piece of text in place where the value is normally read-only — titles, names, labels",
+        "Keeping the page layout stable: the preview and the edit input occupy the same spot",
+        "Letting users opt into editing by clicking, without a separate edit mode or form"
+      ],
+      "whenNotToUse": [
+        "A field that is always meant to be edited — use Input inside a Form instead",
+        "Multi-line or rich text — this is a single-line input only",
+        "Collecting several related values at once — use a Form with grouped fields"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Editable value={email} onValueChange={save} /> as a primary form control",
+          "good": "<Input label=\"Email\" value={email} onChange={...} />",
+          "why": "Inline edit hides the affordance behind a click; required form fields should be visibly editable from the start"
+        }
+      ],
+      "related": [
+        {
+          "name": "Input",
+          "relationship": "alternative",
+          "reason": "Use Input when the field is always editable rather than click-to-reveal"
+        }
+      ],
+      "a11yRationale": "The preview renders as a real <button> so it is keyboard-focusable and announces as an actionable control; while editing, Enter confirms and Escape cancels, and focus is moved into the input and its text selected so keyboard users can immediately type.",
+      "content": {
+        "tone": "Placeholder describes the value, not the action",
+        "notes": "Sentence case; e.g. \"Enter title\" not \"Click to edit\""
+      },
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Visual styling must resolve to the listed --cascade-* surface/border/accent/text tokens"
+        },
+        {
+          "area": "placeholder copy",
+          "level": "flexible",
+          "note": "Free, within tone guidance"
+        },
+        {
+          "area": "submit-on-blur behavior",
+          "level": "flexible",
+          "note": "submitOnBlur toggles whether blurring confirms or cancels the edit"
+        }
+      ]
+    }
   }
 }

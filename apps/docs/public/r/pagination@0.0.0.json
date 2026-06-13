@@ -103,6 +103,49 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["pagination", "navigation", "table", "data", "pages"]
+    "tags": ["pagination", "navigation", "table", "data", "pages"],
+    "intent": {
+      "whenToUse": [
+        "Navigating between pages of a paged dataset",
+        "Letting the user change how many items appear per page (onPageSizeChange)",
+        "Pairing with a table or list that loads data in chunks"
+      ],
+      "whenNotToUse": [
+        "Navigating a content hierarchy — use Breadcrumb",
+        "Infinite scroll experiences where pages are not exposed"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using Pagination to navigate between unrelated app sections",
+          "good": "<Tabs> or nav links for section switching",
+          "why": "Pagination semantics imply sequential pages of one dataset, not arbitrary navigation"
+        }
+      ],
+      "related": [
+        {
+          "name": "DataTable",
+          "relationship": "pairs-with",
+          "reason": "DataTable embeds Pagination for its rows"
+        },
+        {
+          "name": "Breadcrumb",
+          "relationship": "alternative",
+          "reason": "Breadcrumb is for hierarchy, Pagination for sequential pages"
+        }
+      ],
+      "a11yRationale": "Wrapped in <nav> with an accessible label; page controls are real buttons with current-page state exposed, and all visible/assistive strings are overridable via labels for i18n",
+      "flexibility": [
+        {
+          "area": "page size options",
+          "level": "flexible",
+          "note": "pageSizeOptions and the size select are optional"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Surfaces, borders, and accent must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

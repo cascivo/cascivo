@@ -67,6 +67,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "sparkline", "inline", "trend", "data-viz"]
+    "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Embedding a compact micro-trend inline in text, tables, or KPI cards",
+        "Conveying direction at a glance where a full chart would be too large"
+      ],
+      "whenNotToUse": [
+        "Reading precise values or axes are needed — use LineChart",
+        "As a standalone primary chart with its own panel"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use as a full chart when axes and tooltips are needed"
+        },
+        {
+          "name": "Kpi",
+          "relationship": "contained-by",
+          "reason": "Commonly embedded inside a KPI card as a trend indicator"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a label prop for screen reader labeling.",
+      "flexibility": []
+    }
   }
 }
