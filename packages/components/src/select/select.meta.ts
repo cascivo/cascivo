@@ -29,10 +29,10 @@ export const meta: ComponentMeta = {
     '--cascade-focus-ring',
   ],
   accessibility: {
-    role: 'combobox',
+    // native <select> — keyboard behavior is browser-provided, not cascade-wired
+    role: 'listbox',
     wcag: 'AA',
-    keyboard: ['Tab', 'Space', 'ArrowUp', 'ArrowDown', 'Escape', 'Enter'],
-    apgPattern: 'combobox',
+    keyboard: ['ArrowUp', 'ArrowDown', 'Space'],
   },
   examples: [
     {

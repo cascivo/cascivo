@@ -6322,10 +6322,9 @@
           "--cascade-focus-ring"
         ],
         "accessibility": {
-          "role": "combobox",
+          "role": "listbox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown", "Escape", "Enter"],
-          "apgPattern": "combobox"
+          "keyboard": ["ArrowUp", "ArrowDown", "Space"]
         },
         "examples": [
           {
