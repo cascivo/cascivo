@@ -1,5 +1,5 @@
-import type { Contract } from '../utils/contract.js'
-import { normalizeValue } from '../utils/contract.js'
+import type { Contract } from '../utils/contract-pure.js'
+import { normalizeValue } from '../utils/contract-pure.js'
 
 export interface LiteralFinding {
   file: string

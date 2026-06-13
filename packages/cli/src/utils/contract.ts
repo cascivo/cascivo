@@ -2,72 +2,12 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-export interface PropInfo {
-  name: string
-  type: string
-  required: boolean
-}
-
-export interface ComponentInfo {
-  props: PropInfo[]
-  /** True if any prop has required: true */
-  hasRequiredProps: boolean
-  /** Props that have required: true */
-  requiredProps: string[]
-  /** True if the component declares user-facing chrome text (intent.content) */
-  hasContent: boolean
-}
-
-export interface Contract {
-  /** Map from normalized color/size value → token names */
-  tokensByValue: Map<string, string[]>
-  /** Map from component name (PascalCase) → component info */
-  components: Map<string, ComponentInfo>
-}
-
-interface TokenEntry {
-  name: string
-  resolvedDefault: string | null
-}
-
-interface CatalogFile {
-  tokens: TokenEntry[]
-}
-
-interface RegistryPropMeta {
-  name: string
-  type?: string
-  required?: boolean
-}
-
-interface RegistryComponentMeta {
-  name: string
-  props?: RegistryPropMeta[]
-}
-
-interface RegistryEntry {
-  meta?: RegistryComponentMeta
-}
-
-interface RegistryFile {
-  components: RegistryEntry[]
-}
-
-interface ContextComponentEntry {
-  name: string
-  intent?: { content?: unknown }
-}
-
-interface ContextFile {
-  components: ContextComponentEntry[]
-}
+export type { BuildContractInput, ComponentInfo, Contract, PropInfo } from './contract-pure.js'
+export { buildContract, normalizeValue } from './contract-pure.js'
+import type { Contract } from './contract-pure.js'
+import { buildContract } from './contract-pure.js'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-
-/** Normalize a color/size value for catalog comparison: lowercase, strip spaces. */
-export function normalizeValue(value: string): string {
-  return value.toLowerCase().replace(/\s+/g, '')
-}
 
 /** Walk up from a start directory looking for the apps/docs/public dir. */
 function findDocsPublic(startDir: string): string | null {
@@ -89,49 +29,6 @@ function findRegistry(startDir: string): string | null {
     dir = join(dir, '..')
   }
   return null
-}
-
-export interface BuildContractInput {
-  catalog: CatalogFile
-  registry: RegistryFile
-  context: ContextFile
-}
-
-/** Pure builder — assemble a Contract from already-parsed JSON. Testable without fs. */
-export function buildContract(input: BuildContractInput): Contract {
-  const tokensByValue = new Map<string, string[]>()
-  for (const token of input.catalog.tokens) {
-    if (token.resolvedDefault == null) continue
-    const key = normalizeValue(token.resolvedDefault)
-    const list = tokensByValue.get(key)
-    if (list) list.push(token.name)
-    else tokensByValue.set(key, [token.name])
-  }
-
-  const contentNames = new Set<string>()
-  for (const c of input.context.components) {
-    if (c.intent?.content) contentNames.add(c.name)
-  }
-
-  const components = new Map<string, ComponentInfo>()
-  for (const entry of input.registry.components) {
-    const meta = entry.meta
-    if (!meta?.name) continue
-    const props: PropInfo[] = (meta.props ?? []).map((p) => ({
-      name: p.name,
-      type: p.type ?? 'unknown',
-      required: p.required === true,
-    }))
-    const requiredProps = props.filter((p) => p.required).map((p) => p.name)
-    components.set(meta.name, {
-      props,
-      requiredProps,
-      hasRequiredProps: requiredProps.length > 0,
-      hasContent: contentNames.has(meta.name),
-    })
-  }
-
-  return { tokensByValue, components }
 }
 
 /**
@@ -161,9 +58,15 @@ export async function loadContract(options?: {
     throw new Error('context bundle not found (apps/docs/public/context.json)')
   }
 
-  const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as CatalogFile
-  const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as RegistryFile
-  const context = JSON.parse(readFileSync(contextPath, 'utf8')) as ContextFile
+  const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as Parameters<
+    typeof buildContract
+  >[0]['catalog']
+  const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as Parameters<
+    typeof buildContract
+  >[0]['registry']
+  const context = JSON.parse(readFileSync(contextPath, 'utf8')) as Parameters<
+    typeof buildContract
+  >[0]['context']
 
   return buildContract({ catalog, registry, context })
 }

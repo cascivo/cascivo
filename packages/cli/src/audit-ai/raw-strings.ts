@@ -1,4 +1,4 @@
-import type { Contract } from '../utils/contract.js'
+import type { Contract } from '../utils/contract-pure.js'
 import { findOpeningTags, importedCascadeComponents, lineOf } from './jsx-props.js'
 
 export interface RawStringFinding {

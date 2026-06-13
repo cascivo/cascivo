@@ -1,4 +1,4 @@
-import type { Contract } from '../utils/contract.js'
+import type { Contract } from '../utils/contract-pure.js'
 
 export interface PropFinding {
   file: string
