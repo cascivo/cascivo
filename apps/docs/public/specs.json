@@ -2,6 +2,12 @@
   "generatedAt": "2026-06-13",
   "specs": [
     {
+      "id": "chart-palette",
+      "title": "chart-palette",
+      "path": "/docs/specs/chart-palette.md",
+      "summary": "The `--cascade-chart-1..8` tokens are grounded in the **Okabe-Ito 8-color palette**, the de-facto standard for scientific figures requiring color vision deficiency (CVD) safety."
+    },
+    {
       "id": "spec-color-usage",
       "title": "Color Usage",
       "path": "/docs/specs/color-usage.md",

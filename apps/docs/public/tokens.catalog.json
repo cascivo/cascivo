@@ -1110,66 +1110,66 @@
     },
     {
       "name": "--cascade-chart-1",
-      "value": "oklch(0.65 0.2 250)",
+      "value": "oklch(0.62 0.13 70)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.65 0.2 250)",
+      "resolvedDefault": "oklch(0.62 0.13 70)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-2",
-      "value": "oklch(0.7 0.16 145)",
+      "value": "oklch(0.62 0.11 240)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.7 0.16 145)",
+      "resolvedDefault": "oklch(0.62 0.11 240)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-3",
-      "value": "oklch(0.72 0.15 22)",
+      "value": "oklch(0.6 0.13 135)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.72 0.15 22)",
+      "resolvedDefault": "oklch(0.6 0.13 135)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-4",
-      "value": "oklch(0.768 0.145 75)",
+      "value": "oklch(0.6 0.18 55)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.768 0.145 75)",
+      "resolvedDefault": "oklch(0.6 0.18 55)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-5",
-      "value": "oklch(0.65 0.19 300)",
+      "value": "oklch(0.5 0.13 270)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.65 0.19 300)",
+      "resolvedDefault": "oklch(0.5 0.13 270)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-6",
-      "value": "oklch(0.7 0.16 190)",
+      "value": "oklch(0.58 0.16 30)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.7 0.16 190)",
+      "resolvedDefault": "oklch(0.58 0.16 30)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-7",
-      "value": "oklch(0.65 0.2 330)",
+      "value": "oklch(0.62 0.12 350)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.65 0.2 330)",
+      "resolvedDefault": "oklch(0.62 0.12 350)",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascade-chart-8",
-      "value": "oklch(0.65 0.16 60)",
+      "value": "oklch(0.5 0.12 200)",
       "layer": "primitive",
       "group": "chart",
-      "resolvedDefault": "oklch(0.65 0.16 60)",
+      "resolvedDefault": "oklch(0.5 0.12 200)",
       "resolvesPerTheme": false
     },
     {

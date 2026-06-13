@@ -17,6 +17,11 @@
   "tokenCatalogUrl": "/tokens.catalog.json",
   "specs": [
     {
+      "id": "chart-palette",
+      "title": "chart-palette",
+      "path": "/docs/specs/chart-palette.md"
+    },
+    {
       "id": "spec-color-usage",
       "title": "Color Usage",
       "path": "/docs/specs/color-usage.md"
