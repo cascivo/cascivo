@@ -34,6 +34,12 @@ a {
   padding: var(--cascivo-space-6);
 }
 
+@media (max-width: 29.99rem) {
+  .page {
+    padding: var(--cascivo-space-3);
+  }
+}
+
 /* ── Theme panel ──────────────────────────────────────── */
 .theme-panel {
   display: flex;
@@ -70,8 +76,22 @@ a {
 /* ── Main / doc page ──────────────────────────────────── */
 
 .doc-page {
-  max-width: 760px;
+  max-width: min(100%, 760px);
   margin-inline: auto;
+  padding-inline: var(--cascivo-space-4);
+  container-type: inline-size;
+}
+
+@media (min-width: 48rem) {
+  .doc-page {
+    padding-inline: var(--cascivo-space-6);
+  }
+}
+
+@media (max-width: 29.99rem) {
+  .doc-page {
+    padding-inline: var(--cascivo-space-3);
+  }
 }
 
 .doc-head {
@@ -89,6 +109,7 @@ a {
 
 .doc-head h1 {
   font-size: var(--cascivo-text-3xl);
+  font-size: clamp(1.5rem, 3vw + 0.75rem, 2.25rem);
   font-weight: var(--cascivo-font-bold);
   letter-spacing: var(--cascivo-tracking-tight);
   margin: 0 0 var(--cascivo-space-3);
@@ -106,6 +127,7 @@ a {
 
 .doc-section > h2 {
   font-size: var(--cascivo-text-xl);
+  font-size: clamp(1.125rem, 2vw + 0.5rem, 1.75rem);
   font-weight: var(--cascivo-font-semibold);
   margin: 0 0 var(--cascivo-space-4);
   padding-block-end: var(--cascivo-space-2);
@@ -159,6 +181,18 @@ a {
 /* ── Tables ───────────────────────────────────────────── */
 .table-wrap {
   overflow-x: auto;
+  position: relative;
+}
+
+/* Scroll hint — gradient fade on the trailing edge */
+.table-wrap::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  inline-size: 2rem;
+  background: linear-gradient(to right, transparent, var(--cascivo-color-bg, white));
+  pointer-events: none;
 }
 
 .props-table {
@@ -214,6 +248,38 @@ a {
   gap: var(--cascivo-space-2);
 }
 
+/* Stacked card layout at narrow container widths */
+@container (max-width: 480px) {
+  .props-table {
+    display: grid;
+  }
+
+  .props-table thead {
+    display: none;
+  }
+
+  .props-table tbody,
+  .props-table tr {
+    display: grid;
+    width: 100%;
+  }
+
+  .props-table tr {
+    grid-template-columns: 1fr 1fr;
+    border-block-end: 1px solid var(--cascivo-color-border);
+    padding-block: var(--cascivo-space-2);
+  }
+
+  .props-table td {
+    padding: var(--cascivo-space-1) var(--cascivo-space-2);
+    border: none;
+  }
+
+  .props-table td:first-child {
+    font-weight: var(--cascivo-font-semibold);
+  }
+}
+
 /* ── Code blocks ──────────────────────────────────────── */
 .code-block {
   position: relative;
@@ -253,6 +319,14 @@ a {
 .code-plain {
   background-color: #24292e;
   color: #e1e4e8;
+}
+
+@media (max-width: 47.99rem) {
+  .code-shiki pre,
+  .code-plain {
+    font-size: var(--cascivo-text-xs);
+    padding: var(--cascivo-space-3);
+  }
 }
 
 /* ── Home grid ────────────────────────────────────────── */
@@ -298,4 +372,26 @@ a {
   font-weight: var(--cascivo-font-medium);
   color: var(--cascivo-color-text-subtle);
   margin-block-start: auto;
+}
+
+/* ── Playground split pane ────────────────────────────── */
+.playground-split {
+  display: flex;
+  flex: 1;
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 47.99rem) {
+  .playground-split {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+}
+
+/* ── Benchmarks tables ────────────────────────────────── */
+.bench-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-block: var(--cascivo-space-4);
 }

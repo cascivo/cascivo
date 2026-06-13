@@ -94,7 +94,7 @@ export function PlaygroundPage() {
       </div>
 
       {/* Split pane */}
-      <div style={{ display: 'flex', flex: 1, minBlockSize: 0, overflow: 'hidden' }}>
+      <div class="playground-split">
         {/* Left: editor */}
         <div
           style={{
