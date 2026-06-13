@@ -2,6 +2,10 @@ name: CI
 
 on:
   pull_request:
+    paths:
+      - "apps/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
   # push:
   #   branches: [main]
 
