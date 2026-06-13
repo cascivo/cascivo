@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/core",
+  "name": "@cascivo/core",
   "version": "0.0.0",
   "private": false,
   "description": "Micro-FSM and Preact Signals primitives powering every cascade component",

@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/react",
+  "name": "@cascivo/react",
   "version": "0.0.0",
   "private": false,
   "description": "Prebuilt cascade design system components — use without copying source",
@@ -25,11 +25,11 @@
     "test": "vp test"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^",
-    "@cascade-ui/i18n": "workspace:^"
+    "@cascivo/core": "workspace:^",
+    "@cascivo/i18n": "workspace:^"
   },
   "devDependencies": {
-    "@cascade-ui/components": "workspace:*",
+    "@cascivo/components": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",

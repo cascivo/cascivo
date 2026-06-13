@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/storage",
+  "name": "@cascivo/storage",
   "version": "0.0.0",
   "private": false,
   "description": "Persisted signals over localStorage/IndexedDB for cascade — SSR-safe",
@@ -19,7 +19,7 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^"
+    "@cascivo/core": "workspace:^"
   },
   "devDependencies": {
     "@preact/signals-react": "catalog:",

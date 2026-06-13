@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/registry",
+  "name": "@cascivo/registry",
   "version": "0.0.0",
   "private": false,
   "description": "Registry schema v2 types, validation, and static build for the cascade ecosystem",

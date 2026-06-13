@@ -22,7 +22,7 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@cascade-ui/registry": "workspace:^"
+    "@cascivo/registry": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "catalog:",

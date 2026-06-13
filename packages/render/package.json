@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/render",
+  "name": "@cascivo/render",
   "version": "0.0.0",
   "private": false,
   "description": "Runtime JSON → UI renderer for cascade",
@@ -19,9 +19,9 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^",
-    "@cascade-ui/i18n": "workspace:^",
-    "@cascade-ui/react": "workspace:^"
+    "@cascivo/core": "workspace:^",
+    "@cascivo/i18n": "workspace:^",
+    "@cascivo/react": "workspace:^"
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",

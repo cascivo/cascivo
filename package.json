@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/monorepo",
+  "name": "@cascivo/monorepo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -25,8 +25,8 @@
     "specs:generate": "node scripts/specs/generate.ts",
     "schema:generate": "node scripts/schema/generate.ts",
     "regen": "pnpm registry:generate && pnpm catalog:generate && pnpm specs:generate && pnpm context:generate && pnpm readme:generate && pnpm llms:generate",
-    "dev:docs": "vp run @cascade-ui/docs#dev",
-    "dev:landing": "vp run @cascade-ui/landing#dev",
+    "dev:docs": "vp run @cascivo/docs#dev",
+    "dev:landing": "vp run @cascivo/landing#dev",
     "ready": "vp check && vp run -r check && vp run -r test && vp run -r build",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",

@@ -11,10 +11,10 @@
     "build:matrix": "vp build --config vite.matrix.config.ts"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/i18n": "workspace:*",
-    "@cascade-ui/react": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/themes": "workspace:*",
     "@preact/signals-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

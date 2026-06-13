@@ -142,16 +142,16 @@ importers:
 
   apps/bench/app-cascade:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../../../packages/i18n
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../../../packages/react
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
       '@preact/signals-react':
@@ -267,34 +267,34 @@ importers:
 
   apps/docs:
     dependencies:
-      '@cascade-ui/ai':
+      '@cascivo/ai':
         specifier: workspace:*
         version: link:../../packages/ai
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/layouts':
+      '@cascivo/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:^
         version: link:../../packages/storage
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       preact:
@@ -325,22 +325,22 @@ importers:
 
   apps/examples/json-playground:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../../../packages/i18n
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../../../packages/react
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../../packages/render
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       react:
@@ -365,13 +365,13 @@ importers:
 
   apps/examples/react-next:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       next:
@@ -399,13 +399,13 @@ importers:
 
   apps/examples/react-vite:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
       react:
@@ -436,28 +436,28 @@ importers:
 
   apps/landing:
     dependencies:
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/render':
+      '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:*
         version: link:../../packages/storage
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -488,25 +488,25 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@cascade-ui/ai':
+      '@cascivo/ai':
         specifier: workspace:^
         version: link:../../packages/ai
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@cascade-ui/layouts':
+      '@cascivo/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
-      '@cascade-ui/themes':
+      '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
     devDependencies:
@@ -543,13 +543,13 @@ importers:
 
   packages/ai:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:^
         version: link:../tokens
       '@preact/signals-react':
@@ -580,10 +580,10 @@ importers:
 
   packages/charts:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
@@ -626,7 +626,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@cascade-ui/registry':
+      '@cascivo/registry':
         specifier: workspace:^
         version: link:../registry
     devDependencies:
@@ -642,10 +642,10 @@ importers:
 
   packages/components:
     devDependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
       '@testing-library/jest-dom':
@@ -720,7 +720,7 @@ importers:
 
   packages/i18n:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
@@ -766,22 +766,22 @@ importers:
 
   packages/layouts:
     devDependencies:
-      '@cascade-ui/charts':
+      '@cascivo/charts':
         specifier: workspace:*
         version: link:../charts
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:*
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
-      '@cascade-ui/icons':
+      '@cascivo/icons':
         specifier: workspace:*
         version: link:../icons
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:*
         version: link:../react
-      '@cascade-ui/storage':
+      '@cascivo/storage':
         specifier: workspace:*
         version: link:../storage
       '@testing-library/jest-dom':
@@ -836,17 +836,17 @@ importers:
 
   packages/react:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
         specifier: '>=2.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
-      '@cascade-ui/components':
+      '@cascivo/components':
         specifier: workspace:*
         version: link:../components
       '@testing-library/jest-dom':
@@ -894,13 +894,13 @@ importers:
 
   packages/render:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
-      '@cascade-ui/i18n':
+      '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
-      '@cascade-ui/react':
+      '@cascivo/react':
         specifier: workspace:^
         version: link:../react
       '@preact/signals-react':
@@ -934,7 +934,7 @@ importers:
 
   packages/storage:
     dependencies:
-      '@cascade-ui/core':
+      '@cascivo/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:
@@ -953,7 +953,7 @@ importers:
 
   packages/themes:
     devDependencies:
-      '@cascade-ui/tokens':
+      '@cascivo/tokens':
         specifier: workspace:*
         version: link:../tokens
       '@types/node':

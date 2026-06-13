@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/landing",
+  "name": "@cascivo/landing",
   "version": "0.0.0",
   "private": true,
   "description": "cascade landing page",
@@ -13,14 +13,14 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@cascade-ui/charts": "workspace:*",
-    "@cascade-ui/components": "workspace:*",
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/icons": "workspace:*",
-    "@cascade-ui/render": "workspace:*",
-    "@cascade-ui/storage": "workspace:*",
-    "@cascade-ui/themes": "workspace:*",
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/charts": "workspace:*",
+    "@cascivo/components": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/icons": "workspace:*",
+    "@cascivo/render": "workspace:*",
+    "@cascivo/storage": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

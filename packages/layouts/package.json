@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/layouts",
+  "name": "@cascivo/layouts",
   "version": "0.0.0",
   "private": true,
   "description": "Registry source — copy-paste app shells and page layouts (not published)",
@@ -30,12 +30,12 @@
     "test": "vp test"
   },
   "devDependencies": {
-    "@cascade-ui/charts": "workspace:*",
-    "@cascade-ui/core": "workspace:*",
-    "@cascade-ui/i18n": "workspace:*",
-    "@cascade-ui/icons": "workspace:*",
-    "@cascade-ui/react": "workspace:*",
-    "@cascade-ui/storage": "workspace:*",
+    "@cascivo/charts": "workspace:*",
+    "@cascivo/core": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@cascivo/icons": "workspace:*",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/storage": "workspace:*",
     "@testing-library/jest-dom": "^6",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "^14",

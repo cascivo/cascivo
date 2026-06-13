@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/i18n",
+  "name": "@cascivo/i18n",
   "version": "0.0.0",
   "private": false,
   "description": "Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade",
@@ -19,7 +19,7 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^"
+    "@cascivo/core": "workspace:^"
   },
   "devDependencies": {
     "@preact/signals-react": "catalog:",

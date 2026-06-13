@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/themes",
+  "name": "@cascivo/themes",
   "version": "0.0.0",
   "private": false,
   "description": "First-party cascade themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal",
@@ -23,12 +23,12 @@
     "test": "vp test"
   },
   "devDependencies": {
-    "@cascade-ui/tokens": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
-    "@cascade-ui/tokens": ">=0.0.0"
+    "@cascivo/tokens": ">=0.0.0"
   }
 }

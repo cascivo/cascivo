@@ -1,5 +1,5 @@
 {
-  "name": "@cascade-ui/ai",
+  "name": "@cascivo/ai",
   "version": "0.0.0",
   "private": false,
   "description": "AI-native components for cascade — StreamingText, AiLabel, Terminal, AiChat",
@@ -19,9 +19,9 @@
     "dev": "vp pack --watch"
   },
   "dependencies": {
-    "@cascade-ui/core": "workspace:^",
-    "@cascade-ui/i18n": "workspace:^",
-    "@cascade-ui/tokens": "workspace:^"
+    "@cascivo/core": "workspace:^",
+    "@cascivo/i18n": "workspace:^",
+    "@cascivo/tokens": "workspace:^"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
