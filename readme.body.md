@@ -8,6 +8,7 @@ The CSS-native, signal-driven, AI-first React design system.
 4. **Signal-driven** — custom micro-FSM + Preact Signals. No `useState`/`useContext` for interactivity. Zero unnecessary re-renders.
 5. **Beautiful by default** — three first-party themes (light, dark, warm) via `data-theme` on any container.
 6. **AI-first** — every component ships a machine-readable manifest; MCP server and Claude Code skills derive from it.
+7. **Context layer** — machine-readable intent (when-to-use, anti-patterns, selection edges), a closed-set token catalog, and `cascade audit --ai` — so agents select from closed sets and their output is checkable.
 
 ## Quick Start
 
@@ -15,6 +16,15 @@ The CSS-native, signal-driven, AI-first React design system.
 npx cascade init
 npx cascade add button
 ```
+
+## AI / Context Layer
+
+cascade ships the **WHAT** (manifests, tokens, MCP) and the **WHY** (context layer):
+
+- **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle
+- **`tokens.catalog.json`** — closed-set token catalog; every `--cascade-*` property with layer + resolved default
+- **`cascade audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code
+- **MCP tools**: `list_components`, `get_component`, `get_tokens`, `get_context`, `select_component`, `scaffold_view`
 
 ## Ecosystem
 

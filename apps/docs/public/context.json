@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T10:31:55.696Z",
+  "generatedAt": "2026-06-13T10:49:25.422Z",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascade-ui/core",
@@ -27,6 +27,11 @@
       "path": "/docs/specs/content-tone.md"
     },
     {
+      "id": "spec-context-impact-demo",
+      "title": "Before/After Context Impact Demo",
+      "path": "/docs/specs/context-impact-demo.md"
+    },
+    {
       "id": "spec-decision-hierarchy",
       "title": "Decision Hierarchy",
       "path": "/docs/specs/decision-hierarchy.md"
@@ -43,7 +48,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-06-13T10:31:55.388Z",
+    "generatedAt": "2026-06-13T10:49:25.105Z",
     "global": {
       "strict": [
         {
@@ -1033,7 +1038,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-06-13T10:31:55.388Z",
+    "generatedAt": "2026-06-13T10:49:25.105Z",
     "exceptions": [
       {
         "id": "EXC-001",

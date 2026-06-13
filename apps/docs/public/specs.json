@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T10:31:55.388Z",
+  "generatedAt": "2026-06-13T10:49:25.105Z",
   "specs": [
     {
       "id": "spec-color-usage",
@@ -12,6 +12,12 @@
       "title": "Content Tone",
       "path": "/docs/specs/content-tone.md",
       "summary": "cascade components with user-visible chrome text (labels, aria strings, empty states) follow these voice guidelines."
+    },
+    {
+      "id": "spec-context-impact-demo",
+      "title": "Before/After Context Impact Demo",
+      "path": "/docs/specs/context-impact-demo.md",
+      "summary": "Reproducible comparison: each prompt run twice."
     },
     {
       "id": "spec-decision-hierarchy",
