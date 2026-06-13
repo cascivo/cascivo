@@ -31,4 +31,43 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['container', 'layout', 'surface'],
+  intent: {
+    whenToUse: [
+      'Grouping related content into a visually distinct surface with border/shadow',
+      'Creating scannable units in a grid or list (dashboard tiles, item summaries)',
+      'Giving a content cluster elevation to separate it from the page background',
+    ],
+    whenNotToUse: [
+      'Pure semantic/structural grouping with no surface — use a <section>',
+      'Wrapping every element in a card — nesting surfaces flattens visual hierarchy',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Nesting Cards several levels deep for layout',
+        good: 'A single Card with internal spacing, or a plain <section>',
+        why: 'Stacked surfaces and shadows compete for attention and muddy the hierarchy',
+      },
+    ],
+    related: [
+      {
+        name: 'Separator',
+        relationship: 'pairs-with',
+        reason: 'Use a Separator to divide regions inside a card',
+      },
+    ],
+    a11yRationale:
+      'role="region" is appropriate only when the card is a meaningful landmark; otherwise treat it as presentational — the visual surface adds no semantics on its own',
+    flexibility: [
+      {
+        area: 'variant and padding',
+        level: 'flexible',
+        note: 'Choose elevation and density to fit the surrounding layout',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Surface, border, radius, and shadow must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

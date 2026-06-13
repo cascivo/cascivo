@@ -45,4 +45,54 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['form', 'dropdown', 'menu'],
+  intent: {
+    whenToUse: [
+      'Choosing exactly one value from a known, finite list inside a form',
+      'A compact single-value picker where the native OS dropdown UX is acceptable',
+      'You want zero-JS reliability and built-in mobile/keyboard handling from a real <select>',
+    ],
+    whenNotToUse: [
+      'Users need to filter/search a long list — use Combobox',
+      'Multiple values must be selectable — use MultiSelect',
+      'Triggering actions or commands rather than picking a form value — use Dropdown or Menu',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Select options={fiftyCountries} placeholder="Search country" />',
+        good: '<Combobox options={fiftyCountries} />',
+        why: 'A long unfiltered native list is hard to scan; Combobox adds type-ahead filtering',
+      },
+    ],
+    related: [
+      {
+        name: 'Combobox',
+        relationship: 'alternative',
+        reason: 'Use when the list is long and needs filtering/search',
+      },
+      {
+        name: 'MultiSelect',
+        relationship: 'alternative',
+        reason: 'Use when more than one value can be chosen',
+      },
+      {
+        name: 'Dropdown',
+        relationship: 'alternative',
+        reason: 'Use for action menus, not single-value form selection',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <select> so options, type-ahead, and arrow-key navigation come from the platform; error text is linked via aria-describedby and role="alert" with aria-invalid on the control.',
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Visual props must resolve to --cascade-color-* / radius / focus-ring tokens',
+      },
+      {
+        area: 'option labels',
+        level: 'flexible',
+        note: 'Free, supplied by the consumer via the options array',
+      },
+    ],
+  },
 }

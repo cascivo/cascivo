@@ -52,4 +52,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/charts'],
   tags: ['section', 'stats', 'kpi', 'charts'],
+  intent: {
+    whenToUse: [
+      'A horizontal KPI strip with optional deltas and inline sparkline trends',
+      'A marketing or dashboard band summarising headline numbers',
+    ],
+    whenNotToUse: [
+      'A grid of full stat cards — use StatsCards',
+      'A single metric — use a Kpi card',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'StatsCards',
+        relationship: 'alternative',
+        reason: 'Use the card grid block for richer per-stat framing',
+      },
+      {
+        name: 'Sparkline',
+        relationship: 'contains',
+        reason: 'Embeds inline sparkline trends per stat',
+      },
+    ],
+    a11yRationale: 'Has no visible heading; consumers must supply an aria-label for the band.',
+    flexibility: [],
+  },
 }

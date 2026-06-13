@@ -1,0 +1,4 @@
+.good {
+  color: var(--cascade-color-accent);
+  padding: var(--cascade-space-4);
+}

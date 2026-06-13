@@ -40,6 +40,66 @@
     },
     "examples": [],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["overlay", "dialog", "confirm", "destructive"]
+    "tags": ["overlay", "dialog", "confirm", "destructive"],
+    "intent": {
+      "whenToUse": [
+        "Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens",
+        "Interrupting a flow to force an explicit decision the user must acknowledge"
+      ],
+      "whenNotToUse": [
+        "Showing non-critical information or forms — use Modal, which supports light-dismiss and arbitrary content",
+        "Confirming a low-stakes action where an undoable Toast is friendlier and less interruptive"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using AlertDialog for a multi-field form or rich content",
+          "good": "Use Modal for content; reserve AlertDialog for a title + description + confirm/cancel decision",
+          "why": "AlertDialog only renders a title, description, and two action buttons, and is role=\"alertdialog\" with no light-dismiss — it is built to demand a yes/no answer, not host content"
+        },
+        {
+          "bad": "Adding a backdrop/Escape close to dismiss the dialog without choosing",
+          "why": "It uses popover=\"manual\" so it cannot be light-dismissed by design — closing must go through onConfirm/onCancel so the decision is always explicit"
+        }
+      ],
+      "related": [
+        {
+          "name": "Modal",
+          "relationship": "alternative",
+          "reason": "Use for general dialogs with content and light-dismiss; AlertDialog is the must-acknowledge confirm"
+        },
+        {
+          "name": "Toast",
+          "relationship": "alternative",
+          "reason": "Prefer an undoable Toast for reversible low-stakes actions instead of a blocking confirm"
+        },
+        {
+          "name": "Button",
+          "relationship": "pairs-with",
+          "reason": "A Button typically triggers the action that opens the AlertDialog"
+        }
+      ],
+      "a11yRationale": "Uses role=\"alertdialog\" with aria-modal and labelled/described-by wiring so assistive tech announces it as an interruptive decision; focus moves to the cancel button on open so the safe default is selected, and popover=\"manual\" prevents accidental dismissal that would skip the decision",
+      "content": {
+        "tone": "Direct and specific — name the exact consequence",
+        "notes": "Title states the action (\"Delete project?\"); description states what is lost and whether it is reversible; confirm label is the verb (\"Delete\"), not \"OK\""
+      },
+      "flexibility": [
+        {
+          "area": "dismiss behavior",
+          "level": "strict",
+          "note": "No light-dismiss — closing must go through onConfirm/onCancel"
+        },
+        {
+          "area": "action labels",
+          "level": "flexible",
+          "note": "confirm/cancel copy overridable via labels; defaults come from the i18n catalog"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive"
+        }
+      ]
+    }
   }
 }

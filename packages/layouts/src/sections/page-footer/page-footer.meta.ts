@@ -56,4 +56,24 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['section', 'footer', 'navigation'],
+  intent: {
+    whenToUse: [
+      'A site footer with grouped link columns and a brand/meta bottom row',
+      'Closing marketing or app pages with secondary navigation',
+    ],
+    whenNotToUse: [
+      'Primary top navigation — use AppShell or a header',
+      'A conversion prompt — use Cta',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'AutoGrid',
+        relationship: 'contains',
+        reason: 'Uses an auto-fit grid to lay out link groups',
+      },
+    ],
+    a11yRationale: 'Renders a footer element wrapping a labeled Footer navigation region.',
+    flexibility: [],
+  },
 }

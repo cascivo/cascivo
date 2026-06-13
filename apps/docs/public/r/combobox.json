@@ -123,6 +123,63 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["select", "combobox", "dropdown", "filter", "search"]
+    "tags": ["select", "combobox", "dropdown", "filter", "search"],
+    "intent": {
+      "whenToUse": [
+        "Single-select from a long list where type-to-filter makes finding an option faster",
+        "Form fields where the value is one of many known options (country, assignee, repository)"
+      ],
+      "whenNotToUse": [
+        "Short option lists (≈2–7) where filtering adds no value — use Select or SegmentedControl",
+        "Selecting multiple values — use MultiSelect",
+        "Triggering actions or commands — use Dropdown or CommandMenu"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using Combobox to fire actions like \"Delete\" or \"Export\"",
+          "good": "Use Dropdown for actions; Combobox is for picking a value",
+          "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onChange semantics — actions belong in a menu"
+        },
+        {
+          "bad": "Setting searchable={false} on a 200-item list",
+          "why": "Without filtering the list becomes an unusable scroll; either keep search on or switch to a different selection pattern"
+        }
+      ],
+      "related": [
+        {
+          "name": "Select",
+          "relationship": "alternative",
+          "reason": "Use for short lists that do not need type-to-filter"
+        },
+        {
+          "name": "MultiSelect",
+          "relationship": "alternative",
+          "reason": "Use when more than one value can be selected"
+        },
+        {
+          "name": "CommandMenu",
+          "relationship": "alternative",
+          "reason": "Use the Cmd+K palette for command/navigation search rather than value selection"
+        }
+      ],
+      "a11yRationale": "Trigger exposes role=\"combobox\" with aria-expanded, aria-controls, aria-haspopup=\"listbox\", and aria-activedescendant pointing at the active option so screen readers track focus through arrow navigation without moving DOM focus off the input; error state is wired via aria-invalid + aria-describedby and announced with role=\"alert\"",
+      "flexibility": [
+        {
+          "area": "searchable",
+          "level": "flexible",
+          "note": "Filtering can be toggled off for short lists via searchable={false}"
+        },
+        {
+          "area": "controlled vs uncontrolled",
+          "level": "flexible",
+          "note": "Supports value + onChange or defaultValue"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Listbox/field styling resolves to semantic --cascade-color-* / --cascade-radius-* tokens"
+        }
+      ]
+    }
   }
 }

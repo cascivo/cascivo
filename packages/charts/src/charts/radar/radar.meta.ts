@@ -63,4 +63,24 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'radar', 'spider', 'polar', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Comparing several entities across the same set of quantitative dimensions',
+      'Showing a multi-attribute profile or balance at a glance',
+    ],
+    whenNotToUse: [
+      'Precise value reading — polar axes distort comparison',
+      'More than a few series — overlapping polygons become unreadable',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'BarChart',
+        relationship: 'alternative',
+        reason: 'Use when precise per-dimension comparison matters',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

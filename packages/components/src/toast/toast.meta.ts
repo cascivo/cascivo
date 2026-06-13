@@ -39,4 +39,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['overlay', 'notification', 'feedback'],
+  intent: {
+    whenToUse: [
+      'Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")',
+      'Brief, transient feedback that should auto-dismiss without interrupting the task',
+      'Non-blocking notifications that can stack and disappear on their own',
+    ],
+    whenNotToUse: [
+      'A persistent, inline message tied to a specific region of the page — use Alert',
+      'Feedback that requires the user to acknowledge or decide before continuing — use Modal or AlertDialog',
+    ],
+    antiPatterns: [
+      {
+        bad: 'toast({ title: "Delete this account?", duration: 0 })',
+        good: '<AlertDialog title="Delete this account?" />',
+        why: 'Toasts auto-dismiss and are easy to miss; a destructive decision needs a blocking dialog the user must confirm',
+      },
+    ],
+    related: [
+      {
+        name: 'Alert',
+        relationship: 'alternative',
+        reason: 'Use for persistent inline status that stays until resolved',
+      },
+      {
+        name: 'Modal',
+        relationship: 'alternative',
+        reason: 'Use when the user must acknowledge before proceeding',
+      },
+    ],
+    a11yRationale:
+      'Toasts render into a labelled region; non-critical ones use role="status" with aria-live="polite", while destructive variants escalate to role="alert" with aria-live="assertive" so urgency is conveyed without stealing focus.',
+    content: {
+      tone: 'Short, past-tense outcome for the title; optional one-line detail in the description',
+      notes:
+        'Title should read on its own (e.g. "Saved"); avoid stuffing actions into a transient toast',
+    },
+    flexibility: [
+      {
+        area: 'variant',
+        level: 'strict',
+        note: 'Limited to default | success | warning | destructive — drives color and live-region urgency',
+      },
+      {
+        area: 'duration',
+        level: 'flexible',
+        note: 'Consumer can tune auto-dismiss timing (default 5000ms)',
+      },
+    ],
+  },
 }

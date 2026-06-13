@@ -46,4 +46,54 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['form', 'validation', 'signals', 'input'],
+  intent: {
+    whenToUse: [
+      'Collecting and submitting a set of related field values together',
+      'Running sync or async validation (including Standard Schema like zod/valibot/arktype) before invoking onValid',
+      'Tracking per-field touched state and errors via the signal-based store from useForm/createForm',
+    ],
+    whenNotToUse: [
+      'A single standalone value with no submission step — render a bare Input',
+      'Inline editing of one read-only value — use Editable',
+    ],
+    antiPatterns: [
+      {
+        bad: '<form onSubmit={...}> with hand-rolled useState per field',
+        good: 'const form = useForm({ initialValues, validate }); <Form form={form} onValid={...}>',
+        why: 'The store centralizes values, errors, touched, and submitting as signals; rolling your own reintroduces the re-render and validation-timing bugs the store solves',
+      },
+    ],
+    related: [
+      {
+        name: 'Input',
+        relationship: 'contains',
+        reason:
+          'Form wraps field controls like Input, wiring value/onChange/onBlur/error from form.field()',
+      },
+      {
+        name: 'FileUploader',
+        relationship: 'contains',
+        reason: 'File attachments can participate in a Form submission',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <form> with noValidate so validation messages come from the component (surfaced per field via Input error/role="alert") rather than inconsistent browser bubbles, while Enter-to-submit and the form role are preserved by the platform element.',
+    flexibility: [
+      {
+        area: 'validation strategy',
+        level: 'flexible',
+        note: 'Use schema, validate, or both; schema runs first and validate only if the schema passes',
+      },
+      {
+        area: 'field control composition',
+        level: 'flexible',
+        note: 'Any control can be wired via form.field(name); children are free-form',
+      },
+      {
+        area: 'submit semantics',
+        level: 'strict',
+        note: 'onValid only fires when validation produces no errors; submission is guarded by the submitting signal',
+      },
+    ],
+  },
 }

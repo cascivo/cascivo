@@ -13,6 +13,7 @@
       "react/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
       "preact/jsx-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
       "preact/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
+      "@cascade-ui/cli/audit-ai": ["../../packages/cli/src/audit-ai/index.ts"],
       "@cascade-ui/components/button": ["./src/shims/button.d.ts"],
       "@cascade-ui/components/input": ["./src/shims/input.d.ts"],
       "@cascade-ui/components/card": ["./src/shims/card.d.ts"],

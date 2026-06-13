@@ -26,4 +26,24 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['layout', 'spacer', 'spacing'],
+  intent: {
+    whenToUse: [
+      'Inserting a fixed vertical gap between blocks using spacing token steps',
+      'Adding deliberate breathing room where margins are awkward',
+    ],
+    whenNotToUse: [
+      'Spacing a series of siblings — use Stack with a gap instead',
+      'Arbitrary one-off spacing — prefer token-based gap props',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Stack',
+        relationship: 'alternative',
+        reason: 'Use gap on Stack to space multiple siblings consistently',
+      },
+    ],
+    a11yRationale: 'Empty presentational spacer with no semantic role; ignored by assistive tech.',
+    flexibility: [],
+  },
 }

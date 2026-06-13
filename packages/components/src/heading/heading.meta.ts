@@ -44,4 +44,51 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['typography', 'heading', 'title'],
+  intent: {
+    whenToUse: [
+      'Titling a page or section as part of the document outline',
+      'Keeping the semantic heading level correct while choosing the visual size independently',
+    ],
+    whenNotToUse: [
+      'Emphasizing inline or body text — use Text with a weight',
+      'Long-form rendered content — let Prose style its own headings',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Heading level={4} size="2xl"> chosen only to look big, skipping h2/h3',
+        good: 'Keep levels sequential; use size to control scale within the correct level',
+        why: 'Skipping heading levels breaks the document outline screen-reader users rely on to navigate',
+      },
+    ],
+    related: [
+      {
+        name: 'Text',
+        relationship: 'alternative',
+        reason: 'Text is for body copy; Heading is for outline structure',
+      },
+      {
+        name: 'Prose',
+        relationship: 'alternative',
+        reason: 'Prose styles headings inside authored long-form content',
+      },
+    ],
+    a11yRationale:
+      'Renders a real <h1>–<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level',
+    content: {
+      tone: 'Concise, descriptive titles in sentence case',
+      notes: 'Each page should have one h1',
+    },
+    flexibility: [
+      {
+        area: 'size',
+        level: 'flexible',
+        note: 'size may override the level-derived default for visual scale',
+      },
+      {
+        area: 'level sequence',
+        level: 'strict',
+        note: 'Levels must not skip — maintain a valid heading hierarchy',
+      },
+    ],
+  },
 }

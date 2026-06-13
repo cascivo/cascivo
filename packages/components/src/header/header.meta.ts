@@ -60,4 +60,43 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['navigation', 'app-shell', 'top-bar', 'banner'],
+  intent: {
+    whenToUse: [
+      'Providing a simple marketing or app top bar with brand, links, and actions',
+      'Anchoring primary navigation across pages of a site',
+      'Keeping the bar visible while scrolling (sticky)',
+    ],
+    whenNotToUse: [
+      'Dense console apps with dropdown nav, global icon actions, and a hamburger — use ShellHeader',
+      'Section headings within page content — use Heading',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Building complex multi-menu console chrome on top of Header',
+        good: '<ShellHeader> for console-grade navigation',
+        why: 'Header is intentionally simple; console patterns belong to ShellHeader which provides them natively',
+      },
+    ],
+    related: [
+      {
+        name: 'ShellHeader',
+        relationship: 'alternative',
+        reason: 'ShellHeader is the console-grade header with dropdowns and icon actions',
+      },
+    ],
+    a11yRationale:
+      'role="banner" marks the page header landmark; the active link is marked aria-current="page", and links/actions are real focusable controls so keyboard users can navigate the bar',
+    flexibility: [
+      {
+        area: 'links and actions',
+        level: 'flexible',
+        note: 'Brand, links, and actions slots are optional and composable',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Surface, border, and z-index must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

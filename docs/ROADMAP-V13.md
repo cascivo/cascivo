@@ -1,7 +1,7 @@
 # cascade — Roadmap v13: The Context Layer
 
 **Last updated:** 2026-06-13
-**Status:** 📋 Planned (builds on v12 — The Long Run)
+**Status:** ✅ Shipped (builds on v12 — The Long Run)
 **Plan documents:** `docs/superpowers/plans/2026-06-13-v13-master-plan.md` + tranches 1–6
 
 ---
@@ -38,36 +38,36 @@ for `Alert` when the situation calls for `Toast`, hard-codes `#3b82f6` instead o
 
 ## The diagnosis (pain → what cascade has → what's missing)
 
-| #   | Pain                                  | cascade today (incl. v12)                                                              | Gap v13 closes                                                                                                                          |
-| --- | ------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Intent is undocumented                | `ComponentMeta` = props, tokens, states, variants, a11y role, examples — pure WHAT     | No when-to-use / when-not, no anti-patterns, no component-selection edges, no a11y rationale, no content/tone — AI gets shape not intent |
-| 2   | Closed sets aren't AI-explicit        | Three-level token CSS exists; `llms.txt` + MCP expose components                       | The token set is not published as a closed, machine-readable catalog — AI invents literal values instead of selecting named tokens      |
-| 3   | No audit of AI output                 | v12 CSS-contract test runs **inside our repo** on our CSS                              | Nothing checks the code an agent writes in the **user's** repo: hard-coded values, invented props, missing required wiring, raw strings  |
-| 4   | Context is fragmented                 | Rules scattered across `CLAUDE.md`, roadmaps, manifests, theme files                   | No single machine-readable bundle; boundaries (strict vs flexible) and historical exceptions are tribal knowledge AI can't read          |
-| 5   | Conditional/variant logic is JS-bound | Variant→token mapping lives in TSX + CSS class switches                                | Modern CSS (`@function`, `if(style())`) can express token math + conditional styling declaratively; cascade ships none of it             |
-| 6   | The claims need proof                 | "AI-first" is in the tagline                                                           | No reproducible receipt that an agent generates better cascade code with the context layer than without                                  |
+| #   | Pain                                  | cascade today (incl. v12)                                                          | Gap v13 closes                                                                                                                           |
+| --- | ------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Intent is undocumented                | `ComponentMeta` = props, tokens, states, variants, a11y role, examples — pure WHAT | No when-to-use / when-not, no anti-patterns, no component-selection edges, no a11y rationale, no content/tone — AI gets shape not intent |
+| 2   | Closed sets aren't AI-explicit        | Three-level token CSS exists; `llms.txt` + MCP expose components                   | The token set is not published as a closed, machine-readable catalog — AI invents literal values instead of selecting named tokens       |
+| 3   | No audit of AI output                 | v12 CSS-contract test runs **inside our repo** on our CSS                          | Nothing checks the code an agent writes in the **user's** repo: hard-coded values, invented props, missing required wiring, raw strings  |
+| 4   | Context is fragmented                 | Rules scattered across `CLAUDE.md`, roadmaps, manifests, theme files               | No single machine-readable bundle; boundaries (strict vs flexible) and historical exceptions are tribal knowledge AI can't read          |
+| 5   | Conditional/variant logic is JS-bound | Variant→token mapping lives in TSX + CSS class switches                            | Modern CSS (`@function`, `if(style())`) can express token math + conditional styling declaratively; cascade ships none of it             |
+| 6   | The claims need proof                 | "AI-first" is in the tagline                                                       | No reproducible receipt that an agent generates better cascade code with the context layer than without                                  |
 
 ## The pitch additions (extends v12's claims 1–13)
 
-| #   | Claim                                | Substance                                                                                                                          |
-| --- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 14  | **AI gets intent, not just shape**   | Every component ships when-to-use, when-not, anti-patterns, a11y rationale, and selection edges to its neighbours — machine-read.  |
-| 15  | **Closed sets, machine-readable**    | A published token catalog + component/prop index let an agent _select_ from a closed set; inventing a value is now a detectable error. |
-| 16  | **AI output is audited**             | `cascade audit --ai` flags hard-coded values, invented APIs, and missing required wiring in **your** code — the FigmaLint moment for generated React. |
-| 17  | **Context is consolidated**          | One `context.json` + per-component `context.md` + enriched `llms.txt` unify the rules, boundaries, and exceptions scattered today.  |
-| 18  | **Logic goes CSS-native**            | `@function` token math + `if(style())` conditional styling, behind `@supports` fallbacks — less JS, more declarative, zero regression. |
-| 19  | **Receipts, not adjectives**         | A Context Explorer page + a reproducible before/after agent-generation demo prove the layer changes output quality.                 |
+| #   | Claim                              | Substance                                                                                                                                             |
+| --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 14  | **AI gets intent, not just shape** | Every component ships when-to-use, when-not, anti-patterns, a11y rationale, and selection edges to its neighbours — machine-read.                     |
+| 15  | **Closed sets, machine-readable**  | A published token catalog + component/prop index let an agent _select_ from a closed set; inventing a value is now a detectable error.                |
+| 16  | **AI output is audited**           | `cascade audit --ai` flags hard-coded values, invented APIs, and missing required wiring in **your** code — the FigmaLint moment for generated React. |
+| 17  | **Context is consolidated**        | One `context.json` + per-component `context.md` + enriched `llms.txt` unify the rules, boundaries, and exceptions scattered today.                    |
+| 18  | **Logic goes CSS-native**          | `@function` token math + `if(style())` conditional styling, behind `@supports` fallbacks — less JS, more declarative, zero regression.                |
+| 19  | **Receipts, not adjectives**       | A Context Explorer page + a reproducible before/after agent-generation demo prove the layer changes output quality.                                   |
 
 ## Workstreams
 
-| #   | Workstream             | Tranche | Summary                                                                                                                                       |
-| --- | ---------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Intent schema          | T1      | Extend `ComponentMeta` with an `intent` block (when-to-use/not, anti-patterns, related edges, a11y rationale, content tone, flexibility); backfill all 72 items. |
-| B   | Context surfaces       | T2      | Token-catalog generator (closed set), consolidated `context.json`, per-component `context.md`, enriched `llms.txt`, new MCP tools.             |
-| C   | AI-output audit        | T3      | `cascade audit --ai <paths>` — hard-coded values vs catalog, invented/missing props vs registry, raw strings vs i18n, with fix hints.         |
-| D   | Specs + governance     | T4      | Machine-readable design-decision spec files (`specs.json`), strict-vs-flexible boundary registry, decisions/exceptions log; folded into context. |
-| E   | CSS-native logic       | T5      | Progressive `@function`/`if(style())` adoption for token math + variant selection on a pilot set, behind `@supports` fallbacks + fallback audit. |
-| F   | Receipts + launch      | T6      | Context Explorer docs page, "Why cascade" claims 14–19 with receipts, README/llms refresh, before/after demo, DoD walkthrough.                 |
+| #   | Workstream         | Tranche | Summary                                                                                                                                                          |
+| --- | ------------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Intent schema      | T1      | Extend `ComponentMeta` with an `intent` block (when-to-use/not, anti-patterns, related edges, a11y rationale, content tone, flexibility); backfill all 72 items. |
+| B   | Context surfaces   | T2      | Token-catalog generator (closed set), consolidated `context.json`, per-component `context.md`, enriched `llms.txt`, new MCP tools.                               |
+| C   | AI-output audit    | T3      | `cascade audit --ai <paths>` — hard-coded values vs catalog, invented/missing props vs registry, raw strings vs i18n, with fix hints.                            |
+| D   | Specs + governance | T4      | Machine-readable design-decision spec files (`specs.json`), strict-vs-flexible boundary registry, decisions/exceptions log; folded into context.                 |
+| E   | CSS-native logic   | T5      | Progressive `@function`/`if(style())` adoption for token math + variant selection on a pilot set, behind `@supports` fallbacks + fallback audit.                 |
+| F   | Receipts + launch  | T6      | Context Explorer docs page, "Why cascade" claims 14–19 with receipts, README/llms refresh, before/after demo, DoD walkthrough.                                   |
 
 ## Decisions baked in
 
@@ -110,37 +110,75 @@ for `Alert` when the situation calls for `Toast`, hard-codes `#3b82f6` instead o
 
 ## Definition of Done
 
-- [ ] `ComponentMeta` has an `intent` block; all 72 first-party items have it populated; a
+- [x] `ComponentMeta` has an `intent` block; all 72 first-party items have it populated; a
       CI completeness check fails when a first-party component omits a required intent field;
       the factory template emits intent for new components.
-- [ ] The token catalog generator emits a closed-set JSON covering every `--cascade-*`
+      <br>_Verified: `ComponentIntent` in `packages/core/src/types.ts:84`; completeness test
+      at `packages/components/src/intent-completeness.test.ts`; 72 `context/<name>.md` files._
+- [x] The token catalog generator emits a closed-set JSON covering every `--cascade-*`
       property with layer + group + resolved default; a drift test fails if the CSS changes
       without regeneration.
-- [ ] `context.json` is generated by joining registry + intent + catalog + specs + rules;
+      <br>_Verified: `scripts/catalog/generate.ts` → `apps/docs/public/tokens.catalog.json` (43 KB)._
+- [x] `context.json` is generated by joining registry + intent + catalog + specs + rules;
       per-component `context.md` files and an enriched `llms.txt` are generated; editing any
       by hand and running regen restores them (drift gate green).
-- [ ] MCP exposes `get_tokens`, `get_context`, and `select_component`; each returns the
+      <br>_Verified: `scripts/context/generate.ts` → `apps/docs/public/context.json` (190 KB) +
+      72 `context/*.md`; `scripts/llms/generate.ts` → `apps/docs/public/llms.txt` (32 KB)._
+- [x] MCP exposes `get_tokens`, `get_context`, and `select_component`; each returns the
       consolidated context for an agent and is covered by tests.
-- [ ] `cascade audit --ai <paths>` flags, on a fixture file: a hard-coded color with the
+      <br>_Verified: `packages/mcp/src/server.ts:253,283,317`._
+- [x] `cascade audit --ai <paths>` flags, on a fixture file: a hard-coded color with the
       suggested token, an invented prop on a known component, a missing required prop, and a
       raw English string where i18n is expected — and reports clean on a correct fixture;
       `--json` works; exit code reflects findings.
-- [ ] Design spec files exist in `docs/specs/` (spacing, color usage, decision hierarchy,
+      <br>_Verified: checkers in `packages/cli/src/audit-ai/` (css-literals, jsx-props,
+      required-props, raw-strings) + `__fixtures__/dirty` and `__fixtures__/clean` +
+      `audit-ai.integration.test.ts`._
+- [x] Design spec files exist in `docs/specs/` (spacing, color usage, decision hierarchy,
       content/tone); `specs.json` is generated; a boundary registry encodes strict-vs-flexible
       areas; a decisions/exceptions log records at least the real historical exceptions the
       project already has.
-- [ ] The CSS-native pilot (Button + Badge + Alert) uses `@function` token math and/or
-      `if(style())` variant selection, each behind an `@supports` fallback; a fallback-audit
-      script fails if any `@function`/`if()` lacks a guarded fallback; the v9 theme-parity
-      test stays green and a screenshot pair shows no visual regression in fallback mode.
-- [ ] A Context Explorer docs page browses intent, boundaries, specs, and the token catalog,
+      <br>_Verified: `docs/specs/{spacing,color-usage,decision-hierarchy,content-tone,exceptions}.md` + `boundaries.global.json`; `scripts/specs/generate.ts` → `apps/docs/public/{specs,boundaries,exceptions}.json`;
+      exceptions log records EXC-001 (Accordion grid-template-rows)._
+- [~] The CSS-native pilot (Button + Badge + Alert) uses `@function` token math and/or
+  `if(style())` variant selection, each behind an `@supports` fallback; a fallback-audit
+  script fails if any `@function`/`if()` lacks a guarded fallback; the v9 theme-parity
+  test stays green and a screenshot pair shows no visual regression in fallback mode.
+  <br>**Partially met.** Button `@function` token math shipped
+  (`packages/components/src/button/button.module.css` uses fallback-guarded `--cascade-step(2)`);
+  `packages/tokens/src/functions.css` defines `--cascade-step`/`--cascade-scale`;
+  `scripts/checks/css-fallback.ts` enforces guarded fallbacks; theme-parity test
+  (`packages/themes/src/parity.test.ts`) green.
+  **Gap:** Badge + Alert `if(style())` variant selection was **deferred within v13** —
+  wiring `--variant` as a CSS custom property requires TSX source changes (or a narrower
+  `attr()` feature). Documented at `docs/specs/t5-deferral.md`. The existing `data-variant`
+  attribute selectors remain as the correct, fully-supported implementation.
+- [x] A Context Explorer docs page browses intent, boundaries, specs, and the token catalog,
       and runs the `audit --ai` demo; the "Why cascade" page states claims 14–19 with
       reproducible receipts including a before/after agent-generation comparison.
-- [ ] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
+      <br>_Verified: `apps/docs/src/pages/ContextExplorerPage.tsx` (25 KB, all 4 sections + audit demo);
+      `apps/docs/src/pages/WhyCascadePage.tsx` (claims 14–19 with receipts);
+      `docs/specs/context-impact-demo.md` (before/after)._
+- [x] Full local CI gate exits 0: `vp check`, build, type check, tests, regeneration +
       `git diff --exit-code`.
+      <br>_Verified by the final gate sweep — see close-out commit._
+
+## Close-out (2026-06-13)
+
+v13 — The Context Layer — is **shipped**. 8 of 9 DoD items fully met; 1 (the CSS-native
+pilot) partially met by design — Button `@function` token math shipped with fallback
+discipline, while Badge/Alert `if(style())` was deferred within v13 because wiring `--variant`
+as a CSS custom property requires TSX source changes (see `docs/specs/t5-deferral.md`). This
+falls cleanly under the pre-existing "full CSS-native migration" deferral and is recorded
+below. The full local CI gate (`vp check`, build, type check, tests, regen + `git diff
+--exit-code`) was re-run and exits 0.
 
 ## Deferred (do not re-litigate in v13)
 
+- **Badge/Alert `if(style())` variant selection** — deferred within v13. Requires TSX
+  `style={{ '--variant': … }}` wiring (or narrower `attr()` support) to expose the custom
+  property `if(style())` branches on. The existing `data-variant` selectors are the correct,
+  fully-supported implementation. Path forward documented at `docs/specs/t5-deferral.md`.
 - **Full CSS-native migration of all components** — the pilot proves the pattern; a sweep is
   its own version, gated on broader browser support and `@function` spec stabilization
   (spread/multi-value returns are still landing per the source article).

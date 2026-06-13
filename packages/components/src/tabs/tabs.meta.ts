@@ -32,4 +32,48 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['navigation', 'tabs', 'sections'],
+  intent: {
+    whenToUse: [
+      'Switching between peer panels of related content in the same context',
+      'Showing one section at a time when all sections are equally important',
+    ],
+    whenNotToUse: [
+      'Stacked sequential content the user reads top to bottom — use Accordion',
+      'Changing a setting or view parameter — use a SegmentedControl',
+      'Navigating between pages — use links',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using Tabs to toggle a single display option (e.g. grid/list view)',
+        good: '<SegmentedControl> for view/setting toggles',
+        why: 'Tabs imply switching content panels; toggling a parameter is a control, not navigation',
+      },
+    ],
+    related: [
+      {
+        name: 'Accordion',
+        relationship: 'alternative',
+        reason: 'Accordion stacks sequential sections; Tabs switch between peers',
+      },
+      {
+        name: 'SegmentedControl',
+        relationship: 'alternative',
+        reason: 'SegmentedControl changes a setting/parameter rather than swapping panels',
+      },
+    ],
+    a11yRationale:
+      'Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key navigation and Home/End, so the active tab and its panel are correctly associated for assistive tech',
+    flexibility: [
+      {
+        area: 'controlled vs uncontrolled',
+        level: 'flexible',
+        note: 'Use value or defaultValue depending on control needs',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Accent, borders, and focus ring must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

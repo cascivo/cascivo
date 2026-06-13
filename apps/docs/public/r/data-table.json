@@ -175,6 +175,49 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"]
+    "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+    "intent": {
+      "whenToUse": [
+        "Displaying tabular data with columns the user sorts, filters, or pages through",
+        "Selecting rows for batch actions across a dataset",
+        "Rendering large datasets that benefit from row containment and server-side sort/paging"
+      ],
+      "whenNotToUse": [
+        "A simple static list of items — use List",
+        "Layout grids of cards or media — use a Card grid, not a data table"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Using DataTable for two columns of label/value pairs",
+          "good": "A description list or a small Card with Stat/Text",
+          "why": "The full table machinery (sort, paging, selection) is overhead when there is no dataset to operate on"
+        }
+      ],
+      "related": [
+        {
+          "name": "Pagination",
+          "relationship": "contains",
+          "reason": "DataTable embeds pagination controls for paged data"
+        },
+        {
+          "name": "EmptyState",
+          "relationship": "pairs-with",
+          "reason": "Render an EmptyState via the emptyState prop when there are no rows"
+        }
+      ],
+      "a11yRationale": "Built on a native <table> with proper header semantics; sortable headers expose sort state, selection uses real checkboxes, and arrow-key navigation follows the grid pattern so keyboard users can traverse cells",
+      "flexibility": [
+        {
+          "area": "sortMode and density",
+          "level": "flexible",
+          "note": "Choose client/server sort and density to fit data size and layout"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "All surfaces, borders, and spacing must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

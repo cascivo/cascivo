@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-06-13",
+  "exceptions": [
+    {
+      "id": "EXC-001",
+      "what": "`accordion.module.css` transitions `grid-template-rows: 0fr → 1fr` to animate height.",
+      "breaksRule": "\"Never animate layout-affecting properties (height, max-height, etc.)\"",
+      "why": "The `grid-template-rows` trick is the only CSS-only method to animate `height: auto` without JavaScript. It is technically a layout property but uses subgrid containment to avoid reflow costs associated with `height` transitions. The animation audit script explicitly allowlists this component for this reason."
+    }
+  ]
+}

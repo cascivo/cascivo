@@ -34,4 +34,25 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['layout', 'section', 'page'],
+  intent: {
+    whenToUse: [
+      'Wrapping a page region with block padding and a centered inner width',
+      'The default container for stacking content within a page',
+    ],
+    whenNotToUse: [
+      'Just centering a single element — use Center',
+      'A marketing band with built-in CTA content — use Cta or Hero',
+    ],
+    antiPatterns: [],
+    related: [
+      { name: 'Center', relationship: 'contains', reason: 'Uses centered inner width internally' },
+      {
+        name: 'PageHeader',
+        relationship: 'pairs-with',
+        reason: 'Pair sections below a page header',
+      },
+    ],
+    a11yRationale: 'Renders a section element to group related content for screen readers.',
+    flexibility: [],
+  },
 }

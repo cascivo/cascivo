@@ -47,33 +47,33 @@ findings, all real in the repo today, drive it:
 
 ## The diagnosis (pain → what cascade has → what's missing)
 
-| #   | Pain                                  | cascade today                                                                  | Gap v14 closes                                                                                                          |
-| --- | ------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| 1   | Chart colors don't adapt to themes    | 8 oklch series tokens defined once; only grid/axis vary per theme              | No per-theme palettes; never CVD-checked or contrast-verified; clashes on dark/brutalist/terminal/pastel                |
-| 2   | Charts don't reveal their data        | 3 of 17 charts have ad-hoc, mouse-only tooltips; no shared primitive           | No unified, accessible (hover + keyboard) chart tooltip; 14 chart types show nothing on interaction                     |
-| 3   | Performance framing misleads          | One metric: incremental gzip over baseline; shadcn tabs = `0`, unexplained     | Single misleading lens; possible stub matrix entries; first-component runtime inflation; no standalone/amortized views  |
-| 4   | Accessibility is asserted, not earned | `wcag: 'AA'` (2.1) on every manifest; axe comparison; partial reduced-motion   | No WCAG 2.2, no APG conformance, no AT/screen-reader matrix, partial forced-colors/contrast, no legal-framework mapping |
+| #   | Pain                                  | cascade today                                                                | Gap v14 closes                                                                                                          |
+| --- | ------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| 1   | Chart colors don't adapt to themes    | 8 oklch series tokens defined once; only grid/axis vary per theme            | No per-theme palettes; never CVD-checked or contrast-verified; clashes on dark/brutalist/terminal/pastel                |
+| 2   | Charts don't reveal their data        | 3 of 17 charts have ad-hoc, mouse-only tooltips; no shared primitive         | No unified, accessible (hover + keyboard) chart tooltip; 14 chart types show nothing on interaction                     |
+| 3   | Performance framing misleads          | One metric: incremental gzip over baseline; shadcn tabs = `0`, unexplained   | Single misleading lens; possible stub matrix entries; first-component runtime inflation; no standalone/amortized views  |
+| 4   | Accessibility is asserted, not earned | `wcag: 'AA'` (2.1) on every manifest; axe comparison; partial reduced-motion | No WCAG 2.2, no APG conformance, no AT/screen-reader matrix, partial forced-colors/contrast, no legal-framework mapping |
 
 ## The pitch additions (extends v13's claims 1–19)
 
-| #   | Claim                                          | Substance                                                                                                                       |
-| --- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| 20  | **Charts adapt to every theme**                | Researched, CVD-safe per-theme palettes (Okabe-Ito-grounded), contrast-checked, verified by test across all ten themes.         |
-| 21  | **Every chart reveals its data**               | One accessible tooltip primitive — hover _and_ keyboard traversal of data points — across all 17 chart types.                   |
+| #   | Claim                                          | Substance                                                                                                                           |
+| --- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 20  | **Charts adapt to every theme**                | Researched, CVD-safe per-theme palettes (Okabe-Ito-grounded), contrast-checked, verified by test across all ten themes.             |
+| 21  | **Every chart reveals its data**               | One accessible tooltip primitive — hover _and_ keyboard traversal of data points — across all 17 chart types.                       |
 | 22  | **Performance numbers are honest, multi-lens** | Standalone, incremental, and amortized cost shown side by side; baseline fixed so the first import isn't inflated; zeros explained. |
-| 23  | **WCAG 2.2 AA + APG, proven per pattern**      | Components meet WCAG 2.2 AA (target size, focus-not-obscured, dragging) and map to their APG pattern with a conformance check.   |
-| 24  | **Tested by real AT, mapped to law**           | NVDA/JAWS/VoiceOver support matrix; EAA / EN 301 549 / Section 508 mapping; the axe coverage ceiling stated honestly.            |
+| 23  | **WCAG 2.2 AA + APG, proven per pattern**      | Components meet WCAG 2.2 AA (target size, focus-not-obscured, dragging) and map to their APG pattern with a conformance check.      |
+| 24  | **Tested by real AT, mapped to law**           | NVDA/JAWS/VoiceOver support matrix; EAA / EN 301 549 / Section 508 mapping; the axe coverage ceiling stated honestly.               |
 
 ## Workstreams
 
-| #   | Workstream            | Tranche | Summary                                                                                                                                          |
-| --- | --------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| A   | Chart color system    | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascade-chart-*` overrides for all 10 themes, contrast + CVD verification test.             |
-| B   | Chart tooltips        | T2      | Shared accessible chart-tooltip primitive (hover + keyboard), rollout to all 17 chart types, replace the ad-hoc line/heatmap/histogram tooltips. |
-| C   | Performance honesty   | T3      | Investigate + fix the bench (verify gzip, diagnose `tabs=0`, fix baseline runtime preload), multi-lens cost table, annotated zeros, page copy.    |
-| D   | WCAG 2.2 + APG        | T4      | Extend `AccessibilityMeta`; upgrade components to WCAG 2.2 AA; per-component APG pattern conformance; forced-colors/contrast/reduced-motion audit. |
-| E   | AT matrix + legal     | T5      | Screen-reader/AT support matrix + methodology, EAA/EN 301 549/508 mapping, axe-ceiling honesty, accessibility-statement page.                     |
-| F   | Receipts + launch     | T6      | Themed chart gallery + tooltip demo, multi-lens perf page, a11y conformance page; Why-cascade claims 20–24; README/llms refresh; DoD walkthrough. |
+| #   | Workstream          | Tranche | Summary                                                                                                                                            |
+| --- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Chart color system  | T1      | Palette research, CVD-safe 8-color base, per-theme `--cascade-chart-*` overrides for all 10 themes, contrast + CVD verification test.              |
+| B   | Chart tooltips      | T2      | Shared accessible chart-tooltip primitive (hover + keyboard), rollout to all 17 chart types, replace the ad-hoc line/heatmap/histogram tooltips.   |
+| C   | Performance honesty | T3      | Investigate + fix the bench (verify gzip, diagnose `tabs=0`, fix baseline runtime preload), multi-lens cost table, annotated zeros, page copy.     |
+| D   | WCAG 2.2 + APG      | T4      | Extend `AccessibilityMeta`; upgrade components to WCAG 2.2 AA; per-component APG pattern conformance; forced-colors/contrast/reduced-motion audit. |
+| E   | AT matrix + legal   | T5      | Screen-reader/AT support matrix + methodology, EAA/EN 301 549/508 mapping, axe-ceiling honesty, accessibility-statement page.                      |
+| F   | Receipts + launch   | T6      | Themed chart gallery + tooltip demo, multi-lens perf page, a11y conformance page; Why-cascade claims 20–24; README/llms refresh; DoD walkthrough.  |
 
 ## Decisions baked in
 

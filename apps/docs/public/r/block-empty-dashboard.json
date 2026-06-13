@@ -41,6 +41,26 @@
       }
     ],
     "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
-    "tags": ["block", "dashboard", "empty-state", "page"]
+    "tags": ["block", "dashboard", "empty-state", "page"],
+    "intent": {
+      "whenToUse": [
+        "A first-run or zero-data dashboard with an empty state and primary CTA",
+        "Guiding users to create their first item"
+      ],
+      "whenNotToUse": [
+        "Data already exists — use DashboardCharts or DashboardLayout",
+        "A generic empty state inside a component — use an inline EmptyState"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "DashboardCharts",
+          "relationship": "alternative",
+          "reason": "Use once the dashboard has data to display"
+        }
+      ],
+      "a11yRationale": "Provides a main landmark with a clear heading and actionable CTA.",
+      "flexibility": []
+    }
   }
 }

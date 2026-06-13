@@ -58,6 +58,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "auth", "login", "page"]
+    "tags": ["layout", "auth", "login", "page"],
+    "intent": {
+      "whenToUse": [
+        "Centered card layout for authentication pages — login, register, reset",
+        "Focused single-task pages with an optional logo and minimal chrome"
+      ],
+      "whenNotToUse": [
+        "General centered content — use Center",
+        "A full app frame after sign-in — use AppShell or SidebarApp"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "LoginPage",
+          "relationship": "contains",
+          "reason": "The login page block renders inside this layout"
+        },
+        {
+          "name": "Center",
+          "relationship": "alternative",
+          "reason": "Use for plain centering without the auth card framing"
+        }
+      ],
+      "a11yRationale": "Provides a main landmark wrapping the focused auth content.",
+      "flexibility": []
+    }
   }
 }

@@ -81,6 +81,48 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["stat", "kpi", "metric", "number"]
+    "tags": ["stat", "kpi", "metric", "number"],
+    "intent": {
+      "whenToUse": [
+        "Highlighting a single key metric with a clear label",
+        "Showing change over time with a delta and trend direction",
+        "Annotating a metric with methodology or time-range help text"
+      ],
+      "whenNotToUse": [
+        "Multiple comparable rows of data — use DataTable",
+        "A non-numeric status label — use Badge or Status"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "A grid of Stats used to fake a data table",
+          "good": "DataTable when the values are rows to compare and sort",
+          "why": "Stat optimizes for one headline number, not tabular comparison"
+        }
+      ],
+      "related": [
+        {
+          "name": "Card",
+          "relationship": "contained-by",
+          "reason": "Stats commonly sit inside a Card tile on dashboards"
+        }
+      ],
+      "a11yRationale": "Presentational by role; the label-value pairing is real text so the metric and its meaning are read in order, and trend direction is conveyed by text/glyph, not color alone",
+      "content": {
+        "tone": "Factual; label names the metric, help text gives context",
+        "notes": "Keep labels short; put caveats in helpText"
+      },
+      "flexibility": [
+        {
+          "area": "delta and trend",
+          "level": "flexible",
+          "note": "Optional — include only when change is meaningful"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Trend colors must resolve to --cascade-color-success/destructive"
+        }
+      ]
+    }
   }
 }

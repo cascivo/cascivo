@@ -68,6 +68,48 @@
       }
     ],
     "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["accessibility", "skip-link", "keyboard", "navigation"]
+    "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+    "intent": {
+      "whenToUse": [
+        "Letting keyboard users jump past repeated navigation to the main content",
+        "Meeting WCAG bypass-blocks by providing a skip link as the first focusable element",
+        "Targeting a custom main-content anchor (targetId / matching SkipNavTarget id)"
+      ],
+      "whenNotToUse": [
+        "General in-page navigation — use anchor links or a table of contents",
+        "Visible persistent navigation — this link is hidden until focused"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Placing SkipNavLink after the navigation in the DOM",
+          "good": "Make SkipNavLink the first focusable element on the page",
+          "why": "A skip link only works if the user reaches it before tabbing through the nav it bypasses"
+        }
+      ],
+      "related": [
+        {
+          "name": "ShellHeader",
+          "relationship": "alternative",
+          "reason": "ShellHeader has a built-in skip-to-content link for console shells"
+        }
+      ],
+      "a11yRationale": "Renders an anchor that is visually hidden until focused, then becomes visible so sighted keyboard users see where focus is; activating it moves focus to the matching target past the navigation",
+      "content": {
+        "tone": "Plain instruction (\"Skip to content\")",
+        "notes": "Label is i18n-driven and overridable per instance"
+      },
+      "flexibility": [
+        {
+          "area": "target id",
+          "level": "flexible",
+          "note": "targetId/id may be customized as long as they match"
+        },
+        {
+          "area": "first-focusable placement",
+          "level": "strict",
+          "note": "SkipNavLink must be the first focusable element to function"
+        }
+      ]
+    }
   }
 }

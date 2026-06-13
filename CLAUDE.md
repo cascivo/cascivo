@@ -137,7 +137,7 @@ pnpm exec vp run -r check
 pnpm test
 
 # 5. Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
-pnpm registry:generate && pnpm readme:generate && pnpm llms:generate
+pnpm regen
 pnpm exec vp check --fix
 git diff --exit-code
 ```
@@ -384,6 +384,28 @@ If a state can only be reached by the parent passing a prop, that state belongs 
 #### Visual states handled by CSS, not JS
 
 Hover, focus, active, and disabled visual states are handled by CSS (`:hover`, `:focus-visible`, `:active`, `:disabled`). Do not track these in a machine or signal. Use `data-state` attributes only for states that CSS pseudo-classes cannot express (e.g., `loading`, `error`).
+
+#### CSS `@function` and `if()` — progressive enhancement only
+
+CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefox or Safari yet. Every use in cascade components is progressive enhancement only.
+
+**Rules:**
+
+- Every declaration using a `@function` call or `if()` expression **must** have a static fallback for the same property immediately preceding it in the same rule block. The static value is the one non-supporting browsers use.
+- Functions must stay trivial: no recursion, single `result`, `calc()` for numeric deferral, defaults on all optional args.
+- No variable-spreading in `@function` (not yet supported by any browser).
+- The `fallback:check` script (`pnpm fallback:check`) enforces the static-fallback contract. It runs as part of the pre-commit check.
+
+**Pattern:**
+
+```css
+.component {
+  padding-block: 0.5rem; /* static fallback — all browsers */
+  padding-block: --cascade-step(2); /* progressive — Chrome 133+ */
+}
+```
+
+**Browser support context:** As of 2026-06, `@function` is Chrome-only (133+). Cascade uses it as a forward-looking pilot; it becomes the primary form once Safari/Firefox ship.
 
 #### Checklist before committing a component
 

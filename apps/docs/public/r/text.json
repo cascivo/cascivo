@@ -81,6 +81,48 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["typography", "text", "paragraph", "body"]
+    "tags": ["typography", "text", "paragraph", "body"],
+    "intent": {
+      "whenToUse": [
+        "Rendering body copy, paragraphs, and inline text in app UI",
+        "Applying size/weight/muted treatment to secondary or emphasized text",
+        "Inline emphasis inside flow content (as=\"span\")"
+      ],
+      "whenNotToUse": [
+        "Section or page titles — use Heading for the document outline",
+        "Long-form authored/markdown content — use Prose"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Text size=\"lg\" weight=\"semibold\"> used as a page title",
+          "good": "<Heading level={1}>",
+          "why": "Visually-large Text has no heading semantics, so it is missing from the document outline"
+        }
+      ],
+      "related": [
+        {
+          "name": "Heading",
+          "relationship": "alternative",
+          "reason": "Heading carries outline semantics; Text is plain body copy"
+        }
+      ],
+      "a11yRationale": "Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable",
+      "content": {
+        "tone": "Plain body voice; the component does not constrain copy",
+        "notes": "Use muted sparingly for genuinely secondary information"
+      },
+      "flexibility": [
+        {
+          "area": "as / size / weight",
+          "level": "flexible",
+          "note": "Choose element and treatment to fit context"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Font, leading, and color must resolve to --cascade-* tokens"
+        }
+      ]
+    }
   }
 }

@@ -73,6 +73,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "flex", "stack", "spacing"]
+    "tags": ["layout", "flex", "stack", "spacing"],
+    "intent": {
+      "whenToUse": [
+        "Arranging children vertically or horizontally with a consistent gap",
+        "The default primitive for spacing a small set of elements in one direction"
+      ],
+      "whenNotToUse": [
+        "Two-dimensional layouts — use Grid",
+        "Responsive auto-wrapping card collections — use AutoGrid"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Grid",
+          "relationship": "alternative",
+          "reason": "Use for two-dimensional row-and-column layouts"
+        },
+        {
+          "name": "Columns",
+          "relationship": "alternative",
+          "reason": "Use for equal-width multi-column content"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
   }
 }

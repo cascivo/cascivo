@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-06-13",
+  "specs": [
+    {
+      "id": "spec-color-usage",
+      "title": "Color Usage",
+      "path": "/docs/specs/color-usage.md",
+      "summary": "cascade uses a three-level token system for color. AI agents and component authors must use semantic tokens, never primitive color values."
+    },
+    {
+      "id": "spec-content-tone",
+      "title": "Content Tone",
+      "path": "/docs/specs/content-tone.md",
+      "summary": "cascade components with user-visible chrome text (labels, aria strings, empty states) follow these voice guidelines."
+    },
+    {
+      "id": "spec-context-impact-demo",
+      "title": "Before/After Context Impact Demo",
+      "path": "/docs/specs/context-impact-demo.md",
+      "summary": "Reproducible comparison: each prompt run twice."
+    },
+    {
+      "id": "spec-decision-hierarchy",
+      "title": "Decision Hierarchy",
+      "path": "/docs/specs/decision-hierarchy.md",
+      "summary": "When guidance conflicts, resolve it in this order:"
+    },
+    {
+      "id": "spec-spacing",
+      "title": "Spacing",
+      "path": "/docs/specs/spacing.md",
+      "summary": "cascade uses a fixed spacing scale defined as `--cascade-space-*` tokens. All spacing in components must reference these tokens rather than hard-coded pixel values."
+    },
+    {
+      "id": "t5-deferral",
+      "title": "t5-deferral",
+      "path": "/docs/specs/t5-deferral.md",
+      "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
+    }
+  ]
+}

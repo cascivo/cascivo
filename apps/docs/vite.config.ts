@@ -23,6 +23,8 @@ export default defineConfig({
       '@cascade-ui/render': path.resolve(root, 'packages/render/src/index.ts'),
       '@cascade-ui/icons': path.resolve(root, 'packages/icons/src/index.tsx'),
       '@cascade-ui/registry': path.resolve(root, 'packages/registry/src/index.ts'),
+      // Browser-safe audit-ai analyzers (no Node deps) — used by the Context Explorer.
+      '@cascade-ui/cli/audit-ai': path.resolve(root, 'packages/cli/src/audit-ai/index.ts'),
     },
   },
   server: {

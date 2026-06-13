@@ -44,4 +44,48 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['loading', 'placeholder', 'shimmer'],
+  intent: {
+    whenToUse: [
+      'Indicating loading by mirroring the shape of the content that will appear',
+      'Reducing layout shift while data for a known structure is fetching',
+      'Loading larger content regions where shape preview reassures the user',
+    ],
+    whenNotToUse: [
+      'Indeterminate work with no known content shape — use Spinner',
+      'A view that is empty rather than loading — use EmptyState',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Leaving Skeleton mounted after data has loaded',
+        good: 'Swap Skeleton for the real content once data resolves',
+        why: 'A persistent skeleton signals perpetual loading and traps assistive tech in a pending state',
+      },
+    ],
+    related: [
+      {
+        name: 'Spinner',
+        relationship: 'alternative',
+        reason: 'Spinner suits indeterminate work with no content shape to preview',
+      },
+      {
+        name: 'EmptyState',
+        relationship: 'alternative',
+        reason: 'Use EmptyState when the result is empty, not loading',
+      },
+    ],
+    a11yRationale:
+      'Presentational by role — the placeholder shapes carry no meaning; the surrounding region should expose busy/loading state so assistive tech is not left guessing',
+    flexibility: [
+      {
+        area: 'variant and dimensions',
+        level: 'flexible',
+        note: 'Shape, width, height, and line count match the pending content',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Background and radius must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

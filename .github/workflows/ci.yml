@@ -3,9 +3,9 @@ name: CI
 on:
   pull_request:
     paths:
-      - "apps/**"
-      - "packages/**"
-      - "pnpm-lock.yaml"
+      - 'apps/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
   # push:
   #   branches: [main]
 
@@ -67,16 +67,14 @@ jobs:
 
       - name: Regenerate generated artifacts
         run: |
-          pnpm run registry:generate
-          pnpm run readme:generate
-          pnpm run llms:generate
+          pnpm run regen
           pnpm exec vp check --fix
 
       - name: Fail if generated artifacts drifted
         run: |
           if ! git diff --exit-code || [ -n "$(git status --porcelain)" ]; then
             git status --porcelain
-            echo '::error::Generated artifacts are stale. Run `pnpm registry:generate && pnpm readme:generate && pnpm llms:generate && pnpm exec vp check --fix` and commit the result.'
+            echo '::error::Generated artifacts are stale. Run `pnpm regen && pnpm exec vp check --fix` and commit the result.'
             exit 1
           fi
 

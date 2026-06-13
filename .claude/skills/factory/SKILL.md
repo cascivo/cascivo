@@ -67,7 +67,24 @@ Create four files at `packages/components/src/<name>/`:
    override — add new keys to `packages/i18n/src/builtin.ts` (en + de) as needed.
 3. `<name>.meta.ts` — a `ComponentMeta` object (`import type` from
    `@cascade-ui/core`). Fill `props`, `tokens`, `accessibility`, `examples`,
-   `tags` honestly from what you built.
+   `tags` honestly from what you built. **Always include an `intent` block**;
+   scaffold it with the placeholder below — the completeness check will fail
+   until a human (or a later factory pass) authors the real content:
+
+   ```ts
+   intent: {
+     // TODO: fill intent before merging — the completeness check will fail until this is authored
+     whenToUse: ['TODO: describe when to use this component'],
+     whenNotToUse: ['TODO: describe when NOT to use (what to use instead)'],
+     antiPatterns: [],
+     related: [],
+     a11yRationale: 'TODO: explain why the a11y decisions (role, keyboard, aria) are what they are',
+     flexibility: [
+       { area: 'token names', level: 'strict', note: 'Visual props must resolve to --cascade-* tokens' },
+     ],
+   },
+   ```
+
 4. `<name>.test.tsx` — vitest + `@testing-library/react`, covering render,
    each variant/size data attribute, and any documented behavior.
 

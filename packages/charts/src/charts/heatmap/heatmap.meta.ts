@@ -43,4 +43,24 @@ const data = [
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'heatmap', 'matrix', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing magnitude across two categorical dimensions as a color-coded matrix',
+      'Spotting patterns, clusters, or hotspots in dense grid data',
+    ],
+    whenNotToUse: [
+      'Reading precise values — color encoding is approximate',
+      'A single-dimension comparison — use BarChart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Treemap',
+        relationship: 'alternative',
+        reason: 'Use for part-to-whole hierarchical magnitude rather than a grid',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

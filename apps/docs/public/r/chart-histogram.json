@@ -82,6 +82,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"]
+    "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing the frequency distribution of a single continuous variable",
+        "Revealing the shape, spread, and skew of binned numeric data"
+      ],
+      "whenNotToUse": [
+        "Comparing discrete labelled categories — use BarChart",
+        "Comparing distribution summaries across groups — use Boxplot"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "BarChart",
+          "relationship": "alternative",
+          "reason": "Use for discrete categorical values, not binned ranges"
+        },
+        {
+          "name": "Boxplot",
+          "relationship": "alternative",
+          "reason": "Use to compare distribution summaries across multiple groups"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
   }
 }

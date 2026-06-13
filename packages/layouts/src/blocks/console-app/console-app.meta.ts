@@ -28,4 +28,30 @@ export const meta: ComponentMeta = {
     'layout/page-header',
   ],
   tags: ['block', 'console', 'shell', 'navigation', 'carbon-parity'],
+  intent: {
+    whenToUse: [
+      'A Carbon-parity console shell with icon-rail nav, header panels, and aside',
+      'Admin or operations consoles needing dense, app-like navigation',
+    ],
+    whenNotToUse: [
+      'A simpler sidebar app — use SidebarApp',
+      'A bare shell to fully customise — use AppShell',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'SidebarApp',
+        relationship: 'alternative',
+        reason: 'Use for a lighter, less dense sidebar app frame',
+      },
+      {
+        name: 'AppShell',
+        relationship: 'alternative',
+        reason: 'Use the bare shell to compose custom console chrome',
+      },
+    ],
+    a11yRationale:
+      'Provides header, navigation, and complementary landmarks for screen reader orientation.',
+    flexibility: [],
+  },
 }

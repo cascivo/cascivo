@@ -18,6 +18,27 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - `validate_view` — validate a view config against the schema
 - `add_to_project` — install components into the user project
 
+## Context resources
+
+The context layer provides machine-readable WHY — intent, boundaries, and closed-set tokens.
+
+- Context bundle: https://cascade-ui.dev/context.json
+- Token catalog (closed set): https://cascade-ui.dev/tokens.catalog.json
+- Per-component context: https://cascade-ui.dev/context/<name>.md
+
+## How to select a component
+
+Use the MCP `select_component` tool with a natural-language need:
+  select_component({ need: "show a transient success message" })
+
+Or browse the `related` edges in each component's intent:
+  get_context({ name: "Toast" }) → returns intent.related edges to neighbours
+
+New MCP tools:
+- `get_tokens` — closed-set token catalog (filter by group/layer)
+- `get_context` — full context for one component (intent + boundaries + tokens)
+- `select_component` — deterministic ranking of components by need description
+
 ## Component authoring rules (for cascade:extend)
 
 - Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascade-ui/core`
@@ -152,5 +173,126 @@ Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 
 - [toggle](/llms/toggle.md) — On/off switch built as an accessible button
 - [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
 - [visually-hidden](/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
+
+## Component intent summaries
+
+- [Accordion](/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
+- [Alert](/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
+- [AlertDialog](/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
+- [Avatar](/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
+- [Badge](/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
+- [ConsoleApp](/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
+- [DashboardCharts](/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
+- [EmptyDashboard](/context/block/empty-dashboard.md) — Use when: A first-run or zero-data dashboard with an empty state and primary CTA
+- [LoginPage](/context/block/login-page.md) — Use when: A complete login page with email and password form
+- [NotificationCenter](/context/block/notification-center.md) — Use when: A list of notification alerts with a mark-all-read action
+- [PageWithBreadcrumb](/context/block/page-with-breadcrumb.md) — Use when: A centered content page with breadcrumb navigation and a page header
+- [SettingsFormPage](/context/block/settings-form-page.md) — Use when: A settings page with a profile form inside a two-column settings layout
+- [SidebarApp](/context/block/sidebar-app.md) — Use when: A ready-made app shell with opinionated collapsible sidebar and top header
+- [StatsCards](/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
+- [UsersTablePage](/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
+- [Blockquote](/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
+- [Breadcrumb](/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
+- [Button](/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
+- [Card](/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
+- [AreaChart](/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
+- [BarChart](/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
+- [Boxplot](/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
+- [BubbleChart](/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
+- [Bullet](/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
+- [ComboChart](/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
+- [Heatmap](/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
+- [Histogram](/context/chart/histogram.md) — Use when: Showing the frequency distribution of a single continuous variable
+- [Kpi](/context/chart/kpi.md) — Use when: Highlighting a single headline metric with an optional change delta
+- [LineChart](/context/chart/line-chart.md) — Use when: Showing trends and precise values over continuous time or a numeric range
+- [Meter](/context/chart/meter.md) — Use when: Showing a rated or gauged value within a known min/max range
+- [PieChart](/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
+- [Radar](/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
+- [ScatterChart](/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
+- [Sparkline](/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
+- [Treemap](/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
+- [Checkbox](/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
+- [CheckboxCard](/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
+- [Code](/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
+- [Combobox](/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
+- [CommandMenu](/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
+- [ContextMenu](/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
+- [CopyButton](/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
+- [DataTable](/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
+- [DatePicker](/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
+- [Dropdown](/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
+- [Editable](/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
+- [EmptyState](/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
+- [FileUploader](/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
+- [Form](/context/form.md) — Use when: Collecting and submitting a set of related field values together
+- [Header](/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
+- [HeaderPanel](/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)
+- [Heading](/context/heading.md) — Use when: Titling a page or section as part of the document outline
+- [HoverCard](/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
+- [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
+- [InputGroup](/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
+- [Kbd](/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
+- [AppShell](/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
+- [AuthLayout](/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
+- [AutoGrid](/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
+- [Center](/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
+- [Columns](/context/layout/columns.md) — Use when: Equal-width multi-column content that collapses to one column when narrow
+- [DashboardLayout](/context/layout/dashboard-layout.md) — Use when: A dashboard page with a stats strip, main content area, and optional aside
+- [Grid](/context/layout/grid.md) — Use when: Two-dimensional layouts with an explicit column count
+- [Masonry](/context/layout/masonry.md) — Use when: Galleries of variable-height items packed into balanced columns
+- [PageHeader](/context/layout/page-header.md) — Use when: A page-level header with title, description, breadcrumb, and action slots
+- [Section](/context/layout/section.md) — Use when: Wrapping a page region with block padding and a centered inner width
+- [SettingsLayout](/context/layout/settings-layout.md) — Use when: A two-column settings page with a fixed-width menu and fluid content
+- [Spacer](/context/layout/spacer.md) — Use when: Inserting a fixed vertical gap between blocks using spacing token steps
+- [SplitView](/context/layout/split-view.md) — Use when: Two side-by-side panes the user can resize via pointer or keyboard
+- [Stack](/context/layout/stack.md) — Use when: Arranging children vertically or horizontally with a consistent gap
+- [Link](/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
+- [List](/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
+- [Menu](/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
+- [Modal](/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
+- [MultiSelect](/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
+- [NumberInput](/context/number-input.md) — Use when: Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)
+- [OtpInput](/context/otp-input.md) — Use when: Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots
+- [OverflowMenu](/context/overflow-menu.md) — Use when: Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists
+- [Pagination](/context/pagination.md) — Use when: Navigating between pages of a paged dataset
+- [PasswordInput](/context/password-input.md) — Use when: Collecting a secret credential that should be masked by default with an opt-in reveal toggle
+- [Popover](/context/popover.md) — Use when: Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking
+- [ProgressBar](/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
+- [ProgressCircle](/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
+- [ProgressIndicator](/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
+- [Prose](/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [Radio](/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
+- [RadioCard](/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
+- [RatingGroup](/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
+- [Search](/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
+- [Cta](/context/section/cta.md) — Use when: A call-to-action band with title, description, and centered actions
+- [FeatureGrid](/context/section/feature-grid.md) — Use when: A feature section laying out items in an auto-fitting grid
+- [Hero](/context/section/hero.md) — Use when: The primary page intro with eyebrow, title, description, actions, and media
+- [MediaMasonry](/context/section/media-masonry.md) — Use when: A full-width media gallery section with masonry packing
+- [PageFooter](/context/section/page-footer.md) — Use when: A site footer with grouped link columns and a brand/meta bottom row
+- [StatsBand](/context/section/stats-band.md) — Use when: A horizontal KPI strip with optional deltas and inline sparkline trends
+- [SegmentedControl](/context/segmented-control.md) — Use when: A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges
+- [Select](/context/select.md) — Use when: Choosing exactly one value from a known, finite list inside a form
+- [Separator](/context/separator.md) — Use when: Dividing groups of content within a section or menu
+- [Sheet](/context/sheet.md) — Use when: Showing secondary content or a form in a panel that slides in from a screen edge
+- [ShellHeader](/context/shell-header.md) — Use when: Building console/admin app chrome with brand, dropdown nav, and global icon actions
+- [SideNav](/context/side-nav.md) — Use when: Persistent primary navigation along the side of an app shell
+- [Skeleton](/context/skeleton.md) — Use when: Indicating loading by mirroring the shape of the content that will appear
+- [SkipNav](/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
+- [Slider](/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
+- [Spinner](/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
+- [Stat](/context/stat.md) — Use when: Highlighting a single key metric with a clear label
+- [Status](/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
+- [Switcher](/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
+- [Tabs](/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
+- [Tag](/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
+- [TagsInput](/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
+- [Text](/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
+- [Textarea](/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
+- [TimePicker](/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
+- [Toast](/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
+- [Toggle](/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
+- [Tooltip](/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
+- [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
 _Generated: 2026-06-13 from registry v0.0.0_

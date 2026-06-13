@@ -52,6 +52,26 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "grid", "responsive"]
+    "tags": ["layout", "grid", "responsive"],
+    "intent": {
+      "whenToUse": [
+        "Responsive card or tile grids that auto-fit columns to available width",
+        "Avoiding media queries — tracks wrap based on a minimum track width"
+      ],
+      "whenNotToUse": [
+        "A fixed, known column count — use Grid",
+        "Single-direction stacking — use Stack"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Grid",
+          "relationship": "alternative",
+          "reason": "Use when an explicit column count is required"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
   }
 }

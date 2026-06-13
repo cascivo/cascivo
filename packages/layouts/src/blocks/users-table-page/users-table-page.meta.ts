@@ -16,4 +16,24 @@ export const meta: ComponentMeta = {
   examples: [{ title: 'Default', code: '<UsersTablePage />', description: 'Demo users table' }],
   dependencies: ['@cascade-ui/react', 'layout/page-header', 'layout/stack'],
   tags: ['block', 'users', 'table', 'page'],
+  intent: {
+    whenToUse: [
+      'A full user-management page with table, search, and invite action',
+      'Admin list views over a collection of records',
+    ],
+    whenNotToUse: [
+      'A read-only data display — use a plain Table',
+      'A dashboard overview — use DashboardCharts',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'PageHeader',
+        relationship: 'contains',
+        reason: 'Uses a page header with title and invite action',
+      },
+    ],
+    a11yRationale: 'Table uses proper row/column semantics and the search field is labeled.',
+    flexibility: [],
+  },
 }

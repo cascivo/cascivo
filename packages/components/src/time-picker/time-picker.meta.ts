@@ -46,4 +46,44 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['time', 'input', 'form'],
+  intent: {
+    whenToUse: [
+      'Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time',
+      'You want the native OS time entry UX with built-in formatting and validation',
+      'A time field that needs a label, hint, error, or min/max bounds',
+    ],
+    whenNotToUse: [
+      'Picking a calendar date — use DatePicker',
+      'A free-form or non-time text value — use Input',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Input placeholder="HH:mm" /> // hand-rolled time field',
+        good: '<TimePicker label="Start" />',
+        why: 'A plain Input cannot enforce time format or offer the native time UI; TimePicker gives parsing and locale handling for free',
+      },
+    ],
+    related: [
+      {
+        name: 'DatePicker',
+        relationship: 'alternative',
+        reason: 'Use when a calendar date is needed instead of a time',
+      },
+      { name: 'Input', relationship: 'alternative', reason: 'Use for non-time free-text values' },
+    ],
+    a11yRationale:
+      'Renders a native <input type="time"> so segmented HH/mm entry, format enforcement, and keyboard support come from the platform; error text is linked via aria-describedby with aria-invalid.',
+    flexibility: [
+      {
+        area: 'value format',
+        level: 'strict',
+        note: 'Value is a 24-hour HH:mm string driven by the native time input',
+      },
+      {
+        area: 'min/max/step',
+        level: 'flexible',
+        note: 'Consumer-defined bounds and step granularity',
+      },
+    ],
+  },
 }

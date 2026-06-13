@@ -31,4 +31,47 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['label', 'status', 'tag'],
+  intent: {
+    whenToUse: [
+      'Labeling an item with a short, static status or category (e.g. "New", "Beta")',
+      'Annotating an element with a count or state that is not interactive',
+    ],
+    whenNotToUse: [
+      'A removable or interactive chip (filters, selections) — use Tag',
+      'A standalone system state with a colored dot — use Status',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Badge onClick={removeFilter}>Active</Badge>',
+        good: '<Tag onDismiss={removeFilter}>Active</Tag>',
+        why: 'Badge is a non-interactive label; interactive/removable labels belong to Tag with proper button semantics',
+      },
+    ],
+    related: [
+      {
+        name: 'Tag',
+        relationship: 'alternative',
+        reason: 'Tag is the interactive, dismissible counterpart',
+      },
+      {
+        name: 'Status',
+        relationship: 'alternative',
+        reason: 'Status pairs a colored dot with a label for live system state',
+      },
+    ],
+    a11yRationale:
+      'role="status" lets assistive tech expose the label as state; meaning is reinforced by text, never by color alone',
+    flexibility: [
+      {
+        area: 'variant',
+        level: 'flexible',
+        note: 'Choose the variant that matches the semantic meaning',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge)',
+      },
+    ],
+  },
 }

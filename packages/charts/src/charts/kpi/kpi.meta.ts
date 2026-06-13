@@ -44,4 +44,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'kpi', 'metric', 'dashboard', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Highlighting a single headline metric with an optional change delta',
+      'Building dashboard summary tiles with an embedded sparkline trend',
+    ],
+    whenNotToUse: [
+      'Showing a value against a target or range — use Bullet or Meter',
+      'Comparing multiple values — use a chart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Sparkline',
+        relationship: 'contains',
+        reason: 'Embeds a micro-trend alongside the metric value',
+      },
+      {
+        name: 'Bullet',
+        relationship: 'alternative',
+        reason: 'Use when the metric must be shown against a target',
+      },
+    ],
+    a11yRationale: 'Renders with role="figure" and a labeled metric for screen reader context.',
+    flexibility: [],
+  },
 }

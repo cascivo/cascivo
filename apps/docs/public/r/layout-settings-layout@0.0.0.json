@@ -50,6 +50,31 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "settings", "page"]
+    "tags": ["layout", "settings", "page"],
+    "intent": {
+      "whenToUse": [
+        "A two-column settings page with a fixed-width menu and fluid content",
+        "Account, preferences, or admin pages with sectioned navigation"
+      ],
+      "whenNotToUse": [
+        "A general resizable two-pane layout — use SplitView",
+        "A full app frame — use AppShell or SidebarApp"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "SettingsFormPage",
+          "relationship": "contained-by",
+          "reason": "The settings form block composes this layout"
+        },
+        {
+          "name": "SplitView",
+          "relationship": "alternative",
+          "reason": "Use when the two panes should be user-resizable"
+        }
+      ],
+      "a11yRationale": "Provides a navigation region for the menu and a main region for content.",
+      "flexibility": []
+    }
   }
 }

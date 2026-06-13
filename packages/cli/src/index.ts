@@ -30,6 +30,7 @@ Commands:
   theme add <name>         Install a theme (light | dark | warm)
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
+  audit --ai <paths...>    Audit AI-generated code against the cascade contract
   registry build           Build a static registry from a cascade-registry.json file
 
 Run "cascade <command> --help" for details.`

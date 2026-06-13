@@ -15,4 +15,25 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/react', 'layout/page-header', 'layout/center'],
   tags: ['block', 'breadcrumb', 'page', 'navigation'],
+  intent: {
+    whenToUse: [
+      'A centered content page with breadcrumb navigation and a page header',
+      'Deep pages where users need hierarchical context',
+    ],
+    whenNotToUse: [
+      'Top-level pages with no hierarchy to express',
+      'You only need the header without breadcrumbs — use PageHeader',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'PageHeader',
+        relationship: 'contains',
+        reason: 'Uses a page header with a breadcrumb slot',
+      },
+    ],
+    a11yRationale:
+      'Breadcrumb renders as a labeled navigation region for screen reader orientation.',
+    flexibility: [],
+  },
 }

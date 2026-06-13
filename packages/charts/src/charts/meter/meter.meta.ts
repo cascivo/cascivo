@@ -34,4 +34,30 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'meter', 'gauge', 'progress', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing a rated or gauged value within a known min/max range',
+      'Surfacing threshold-based status (e.g. CPU, disk, score) as a bar or gauge',
+    ],
+    whenNotToUse: [
+      'Showing task completion progress — use a ProgressBar',
+      'Comparing a value against a target with range bands — use Bullet',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Bullet',
+        relationship: 'alternative',
+        reason: 'Use when a target marker and qualitative bands are needed',
+      },
+      {
+        name: 'Kpi',
+        relationship: 'alternative',
+        reason: 'Use for a headline metric without a bounded range',
+      },
+    ],
+    a11yRationale:
+      'Renders with role="meter" exposing min, max, and current value to assistive tech.',
+    flexibility: [],
+  },
 }

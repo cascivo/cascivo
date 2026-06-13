@@ -45,4 +45,47 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['link', 'anchor', 'navigation'],
+  intent: {
+    whenToUse: [
+      'Navigating to another page, view, or resource via a real href',
+      'Inline cross-references within prose (variant="inline")',
+      'Linking to an external destination with a clear new-tab indicator (external)',
+    ],
+    whenNotToUse: [
+      'Triggering an action or mutation with no destination — use Button',
+      'Submitting a form — use a submit Button',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Link onClick={doThing}> with no href',
+        good: '<Button onClick={doThing}>',
+        why: 'Links are for navigation; actions belong to buttons so keyboard and assistive tech behave correctly',
+      },
+    ],
+    related: [
+      {
+        name: 'Button',
+        relationship: 'alternative',
+        reason: 'Button is for actions; Link is for navigation',
+      },
+    ],
+    a11yRationale:
+      'Renders a native <a> so role, Enter activation, and focus come from the platform; external links add rel="noreferrer" and a visual indicator so users know a new tab will open',
+    content: {
+      tone: 'Descriptive link text that makes sense out of context',
+      notes: 'Avoid "click here"; the text should name the destination',
+    },
+    flexibility: [
+      {
+        area: 'variant',
+        level: 'flexible',
+        note: 'standalone vs inline depending on whether the link sits in prose',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Accent colors and focus ring must resolve to --cascade-* tokens',
+      },
+    ],
+  },
 }

@@ -54,6 +54,44 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["divider", "rule", "layout"]
+    "tags": ["divider", "rule", "layout"],
+    "intent": {
+      "whenToUse": [
+        "Dividing groups of content within a section or menu",
+        "Adding a vertical rule between inline items (orientation=\"vertical\")",
+        "Marking a meaningful thematic break (decorative=false)"
+      ],
+      "whenNotToUse": [
+        "Adding spacing only — use margin/padding, not a separator",
+        "Bordering a container — use the container border, not a separator"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Multiple separators stacked to create whitespace",
+          "good": "Use spacing tokens for gaps; one separator for a real break",
+          "why": "Separators imply a content division; using them for spacing misleads assistive tech"
+        }
+      ],
+      "related": [
+        {
+          "name": "Card",
+          "relationship": "contained-by",
+          "reason": "Often used to divide regions inside a Card"
+        }
+      ],
+      "a11yRationale": "role=\"separator\" when meaningful so screen readers announce the division; setting decorative hides it from the accessibility tree when it is purely visual",
+      "flexibility": [
+        {
+          "area": "decorative",
+          "level": "flexible",
+          "note": "Mark decorative when the break carries no meaning beyond visuals"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Color must resolve to --cascade-color-border"
+        }
+      ]
+    }
   }
 }

@@ -78,6 +78,26 @@
       }
     ],
     "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"]
+    "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Plotting three dimensions at once — x, y, and a size-encoded magnitude",
+        "Comparing entities where relative scale matters alongside position"
+      ],
+      "whenNotToUse": [
+        "Showing only a 2D correlation — use ScatterChart",
+        "Comparing many small magnitudes where size differences are unreadable"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "ScatterChart",
+          "relationship": "alternative",
+          "reason": "Use when there is no third size dimension to encode"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
   }
 }

@@ -72,6 +72,54 @@
       }
     ],
     "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "toggle", "group", "segmented", "input"]
+    "tags": ["form", "toggle", "group", "segmented", "input"],
+    "intent": {
+      "whenToUse": [
+        "A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges",
+        "Switching between alternatives where all options should stay visible in a tight horizontal space"
+      ],
+      "whenNotToUse": [
+        "Switching between full panels of page content — use Tabs",
+        "A single binary on/off state — use Toggle",
+        "More options than comfortably fit inline, or options needing descriptions — use Select or RadioCard"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Two <Button> elements toggling which is \"active\" via app state",
+          "good": "<SegmentedControl options={[{label:\"Day\",value:\"day\"},{label:\"Week\",value:\"week\"}]} value={range} onValueChange={setRange} />",
+          "why": "A pair of buttons does not convey exclusive selection; SegmentedControl uses radio semantics with aria-checked and arrow-key navigation so the single-choice state is announced"
+        }
+      ],
+      "related": [
+        {
+          "name": "Toggle",
+          "relationship": "alternative",
+          "reason": "Use for a single binary on/off state, not a multi-option choice"
+        },
+        {
+          "name": "Radio",
+          "relationship": "alternative",
+          "reason": "Use for a vertical or longer single-choice list with plain labels"
+        },
+        {
+          "name": "Select",
+          "relationship": "alternative",
+          "reason": "Use when there are too many options to show inline"
+        }
+      ],
+      "a11yRationale": "Wraps role=\"radio\" buttons in a role=\"group\" with aria-checked marking the selected segment, and ArrowLeft/ArrowRight move selection across enabled segments (skipping disabled ones) so keyboard users get standard single-choice navigation.",
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Segment styling must resolve to the listed --cascade-* tokens"
+        },
+        {
+          "area": "option labels",
+          "level": "flexible",
+          "note": "option label and value are free, and individual options may be disabled"
+        }
+      ]
+    }
   }
 }

@@ -72,4 +72,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n'],
   tags: ['date', 'calendar', 'picker', 'input', 'form'],
+  intent: {
+    whenToUse: [
+      'Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)',
+      'Date entry that benefits from min/max constraints and locale-aware formatting and week start',
+    ],
+    whenNotToUse: [
+      'Selecting a time of day — use TimePicker',
+      'Free-form or approximate dates where a plain Input is faster, or a date already known by typing',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Passing a localized display string as value',
+        good: 'value/defaultValue/min/max are ISO YYYY-MM-DD; display formatting is handled internally',
+        why: 'The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange',
+      },
+    ],
+    related: [
+      {
+        name: 'TimePicker',
+        relationship: 'pairs-with',
+        reason: 'Combine when both a date and a time are needed',
+      },
+      {
+        name: 'Input',
+        relationship: 'alternative',
+        reason: 'Use a plain input when a calendar grid is unnecessary',
+      },
+      {
+        name: 'Form',
+        relationship: 'contained-by',
+        reason: 'Typically a field within a form with label/hint/error',
+      },
+    ],
+    a11yRationale:
+      'The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the calendar is a role="dialog" containing a role="grid" with roving tabindex so arrow keys move a single focusable day, days expose aria-pressed for selection, aria-current="date" for today, and aria-disabled past min/max, and errors are wired via aria-invalid + aria-describedby with role="alert"',
+    flexibility: [
+      { area: 'value format', level: 'strict', note: 'All date props are ISO YYYY-MM-DD strings' },
+      {
+        area: 'locale formatting',
+        level: 'flexible',
+        note: 'Display, weekday labels, and week start derive from the current i18n locale via Intl',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Styling resolves to --cascade-date-picker-* component tokens',
+      },
+    ],
+  },
 }

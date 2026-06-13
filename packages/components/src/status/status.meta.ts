@@ -47,4 +47,52 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['status', 'indicator', 'dot', 'badge'],
+  intent: {
+    whenToUse: [
+      'Communicating the live state of a system or entity (operational, deploying, down)',
+      'Pairing a colored dot with a text label for an at-a-glance state',
+      'Drawing attention to an active/changing state with an optional pulse',
+    ],
+    whenNotToUse: [
+      'A static category or count label — use Badge',
+      'An identity thumbnail with presence — use Avatar with its status prop',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Status status="success" /> with no label',
+        good: '<Status status="success">Operational</Status>',
+        why: 'A bare colored dot conveys nothing to color-blind or screen-reader users; always pair with text',
+      },
+    ],
+    related: [
+      {
+        name: 'Badge',
+        relationship: 'alternative',
+        reason: 'Badge labels categories; Status reflects live state with a dot',
+      },
+      {
+        name: 'Avatar',
+        relationship: 'alternative',
+        reason: 'Avatar embeds presence status on an identity',
+      },
+    ],
+    a11yRationale:
+      'Meaning is carried by the text label, never by the dot color alone; the pulse animation is gated behind prefers-reduced-motion: no-preference so it never animates for users who opt out',
+    content: {
+      tone: 'Short state words (Operational, Degraded, Down)',
+      notes: 'Label the state, not the color',
+    },
+    flexibility: [
+      {
+        area: 'pulse',
+        level: 'flexible',
+        note: 'Enable pulse only for actively-changing states',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'State colors must resolve to --cascade-color-success/warning/error/info',
+      },
+    ],
+  },
 }

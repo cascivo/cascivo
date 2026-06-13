@@ -107,4 +107,29 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'line', 'time-series', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing trends and precise values over continuous time or a numeric range',
+      'Comparing the trajectory of multiple series on a shared scale',
+    ],
+    whenNotToUse: [
+      'Comparing discrete categories — use BarChart',
+      'Emphasising cumulative volume — use AreaChart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'AreaChart',
+        relationship: 'alternative',
+        reason: 'Use when filled cumulative volume matters more than precise values',
+      },
+      {
+        name: 'BarChart',
+        relationship: 'alternative',
+        reason: 'Use for discrete categorical comparison',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

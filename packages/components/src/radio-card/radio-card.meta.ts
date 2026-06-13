@@ -43,4 +43,53 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['radio', 'card', 'selectable', 'form'],
+  intent: {
+    whenToUse: [
+      'Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)',
+      'Selection UIs where a larger, more prominent click target improves clarity over a plain radio',
+    ],
+    whenNotToUse: [
+      'Plain text options with no description — use Radio for a lighter footprint',
+      'A compact inline switch between a few modes — use SegmentedControl',
+      'Too many options to render as cards — use Select',
+    ],
+    antiPatterns: [
+      {
+        bad: '<RadioCard ... /> rendered standalone without RadioCardGroup',
+        good: '<RadioCardGroup name="plan" label="Plan"><RadioCard value="pro" title="Pro" /></RadioCardGroup>',
+        why: 'RadioCard reads its name, selected value, and change handler from RadioCardGroup context; outside a group it has no shared name and cannot enforce single-selection',
+      },
+    ],
+    related: [
+      {
+        name: 'Radio',
+        relationship: 'alternative',
+        reason: 'Use for plain text options without descriptions',
+      },
+      {
+        name: 'CheckboxCard',
+        relationship: 'alternative',
+        reason: 'Use the card pattern when multiple selections are allowed',
+      },
+      {
+        name: 'SegmentedControl',
+        relationship: 'alternative',
+        reason: 'Use for a compact inline single choice',
+      },
+    ],
+    a11yRationale:
+      'Each card is a <label> wrapping a native <input type="radio"> and RadioCardGroup applies role="radiogroup" with an aria-label, so selection, arrow-key navigation, and label association come from the platform rather than custom click handling.',
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Card and indicator styling must resolve to the listed --cascade-* tokens',
+      },
+      {
+        area: 'title and description',
+        level: 'flexible',
+        note: 'title and description accept arbitrary ReactNode content',
+      },
+    ],
+  },
 }

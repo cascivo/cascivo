@@ -53,4 +53,29 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'combo', 'bar', 'line', 'dual-axis', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Overlaying two related metrics with different scales (e.g. volume bars + rate line)',
+      'Pairing categorical totals with a continuous trend on a dual y-axis',
+    ],
+    whenNotToUse: [
+      'Both metrics share a scale and type — use BarChart or LineChart',
+      'More than two series of differing types — clarity breaks down',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'BarChart',
+        relationship: 'alternative',
+        reason: 'Use when all series are categorical comparisons',
+      },
+      {
+        name: 'LineChart',
+        relationship: 'alternative',
+        reason: 'Use when all series are trends on one scale',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

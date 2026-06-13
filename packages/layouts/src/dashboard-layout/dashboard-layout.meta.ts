@@ -33,4 +33,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['layout', 'dashboard', 'page'],
+  intent: {
+    whenToUse: [
+      'A dashboard page with a stats strip, main content area, and optional aside',
+      'Composing KPI tiles and charts into a standard analytics layout',
+    ],
+    whenNotToUse: [
+      'A bare app frame without dashboard structure — use AppShell',
+      'A simple form or content page — use Section or SettingsLayout',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'AppShell',
+        relationship: 'alternative',
+        reason: 'Use the bare shell when you do not need dashboard structure',
+      },
+      {
+        name: 'StatsCards',
+        relationship: 'contains',
+        reason: 'KPI cards commonly fill the stats strip',
+      },
+    ],
+    a11yRationale: 'Provides landmark regions for main content and complementary aside.',
+    flexibility: [],
+  },
 }

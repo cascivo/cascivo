@@ -1,0 +1,26 @@
+/* packages/tokens/src/functions.css */
+/*
+ * CSS @function helpers — progressive enhancement only.
+ *
+ * Browser support: Chrome 133+ (2025). Firefox and Safari: not yet.
+ * Every consumer of these functions MUST provide a static fallback for the
+ * same property immediately before the @function call. The css-fallback
+ * audit script (scripts/checks/css-fallback.ts) enforces this contract.
+ *
+ * Authoring rules:
+ * - No recursion (banned by spec).
+ * - Single `result` per function.
+ * - Use calc() to defer numeric validation.
+ * - Defaults on all optional args.
+ * - No variable-spreading (not yet supported).
+ */
+
+@layer cascade.functions {
+  @function --cascade-step(--n <number>, --base: 0.25rem) {
+    result: calc(var(--base) * var(--n));
+  }
+
+  @function --cascade-scale(--n <number>, --ratio: 1.25, --base: 1rem) {
+    result: calc(var(--base) * var(--ratio) * var(--n));
+  }
+}

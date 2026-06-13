@@ -33,4 +33,30 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['layout', 'header', 'page'],
+  intent: {
+    whenToUse: [
+      'A page-level header with title, description, breadcrumb, and action slots',
+      'Establishing consistent page tops across an application',
+    ],
+    whenNotToUse: [
+      'A marketing hero with large media — use Hero',
+      'A full app top bar with navigation — use AppShell',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Hero',
+        relationship: 'alternative',
+        reason: 'Use the marketing hero for landing-page tops',
+      },
+      {
+        name: 'Section',
+        relationship: 'pairs-with',
+        reason: 'Place sections below the header to build out the page',
+      },
+    ],
+    a11yRationale:
+      'Renders a header region with a top-level heading for screen reader page structure.',
+    flexibility: [],
+  },
 }
