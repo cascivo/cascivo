@@ -4,6 +4,8 @@ import { useId, useRef, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
 import styles from './chart-frame.module.css'
 import { defaultFormat, type TooltipModel } from './data-point'
+import { ChartTooltip } from './chart-tooltip'
+import { nearest } from './nearest'
 
 export interface ChartFrameProps {
   title: string
@@ -57,11 +59,6 @@ export function ChartFrame({
     background: 'transparent',
   }
 
-  const tooltipOverlayStyle: React.CSSProperties = {
-    position: 'absolute',
-    pointerEvents: 'none',
-  }
-
   const containerStyle: React.CSSProperties | undefined =
     tooltip !== undefined ? { position: 'relative' } : undefined
 
@@ -105,13 +102,25 @@ export function ChartFrame({
             }}
           />
           {/* Tooltip overlay — shown when a point is focused */}
-          <div role="tooltip" style={tooltipOverlayStyle} hidden={focusedIndex.value === null} />
+          {focusedIndex.value !== null && tooltip.points[focusedIndex.value] !== undefined && (
+            <ChartTooltip point={tooltip.points[focusedIndex.value]!} model={tooltip} />
+          )}
           {/* Focusable layer covering the SVG for keyboard navigation */}
           <div
             role="application"
             aria-label="Chart data — use arrow keys to navigate points"
             tabIndex={0}
             style={focusableLayerStyle}
+            onPointerMove={(e) => {
+              if (!tooltip.points.length) return
+              const rect = e.currentTarget.getBoundingClientRect()
+              const relX = e.clientX - rect.left
+              const relY = e.clientY - rect.top
+              focusedIndex.value = nearest(tooltip.points, relX, relY, 'xy')
+            }}
+            onPointerLeave={() => {
+              focusedIndex.value = null
+            }}
             onKeyDown={(e) => {
               if (!tooltip.points.length) return
               const current = focusedIndex.value
