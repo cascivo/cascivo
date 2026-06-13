@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T10:18:36.041Z",
+  "generatedAt": "2026-06-13T10:31:55.388Z",
   "specs": [
     {
       "id": "spec-color-usage",
@@ -24,6 +24,12 @@
       "title": "Spacing",
       "path": "/docs/specs/spacing.md",
       "summary": "cascade uses a fixed spacing scale defined as `--cascade-space-*` tokens. All spacing in components must reference these tokens rather than hard-coded pixel values."
+    },
+    {
+      "id": "t5-deferral",
+      "title": "t5-deferral",
+      "path": "/docs/specs/t5-deferral.md",
+      "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
     }
   ]
 }

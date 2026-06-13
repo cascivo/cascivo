@@ -11,10 +11,10 @@ Pilot `if(style())` variant selection on Badge and Alert, replacing per-variant
 
 ```css
 .badge {
-  background: var(--cascade-badge-bg);                         /* static fallback */
-  background: if(                                              /* progressive */
-    style(--variant: success): var(--cascade-color-success-subtle);
-    else: var(--cascade-badge-bg)
+  background: var(--cascade-badge-bg); /* static fallback */
+  background: if(
+    /* progressive */ style(--variant: success): var(--cascade-color-success-subtle) ;
+      else: var(--cascade-badge-bg)
   );
 }
 ```

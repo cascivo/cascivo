@@ -57,7 +57,8 @@ describe('niceTicks', () => {
             if (step > 0) {
               const magnitude = 10 ** Math.floor(Math.log10(step))
               const mantissa = step / magnitude
-              expect([1, 2, 2.5, 5, 10].some((m) => Math.abs(mantissa - m) < 1e-6)).toBe(true)
+              // Use relative tolerance: float subtraction of large adjacent ticks loses ~5 ULPs
+              expect([1, 2, 2.5, 5, 10].some((m) => Math.abs(mantissa - m) / m < 1e-4)).toBe(true)
             }
           }
         },

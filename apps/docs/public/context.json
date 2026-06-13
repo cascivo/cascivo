@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T10:18:36.547Z",
+  "generatedAt": "2026-06-13T10:31:55.696Z",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascade-ui/core",
@@ -35,10 +35,15 @@
       "id": "spec-spacing",
       "title": "Spacing",
       "path": "/docs/specs/spacing.md"
+    },
+    {
+      "id": "t5-deferral",
+      "title": "t5-deferral",
+      "path": "/docs/specs/t5-deferral.md"
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-06-13T10:18:36.041Z",
+    "generatedAt": "2026-06-13T10:31:55.388Z",
     "global": {
       "strict": [
         {
@@ -1028,7 +1033,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-06-13T10:18:36.041Z",
+    "generatedAt": "2026-06-13T10:31:55.388Z",
     "exceptions": [
       {
         "id": "EXC-001",
