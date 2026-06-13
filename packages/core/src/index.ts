@@ -19,6 +19,12 @@ export type {
   PropMeta,
   AccessibilityMeta,
   ExampleMeta,
+  ComponentIntent,
+  IntentAntiPattern,
+  IntentRelated,
+  IntentFlexibility,
+  IntentContent,
+  IntentRelationship,
 } from './types.ts'
 export const VERSION = '0.0.0'
 export { ErrorBoundary } from './error-boundary.tsx'

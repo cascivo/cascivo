@@ -53,4 +53,40 @@ export interface ComponentMeta {
   examples: ExampleMeta[]
   dependencies: string[]
   tags: string[]
+  intent?: ComponentIntent
+}
+
+export interface IntentAntiPattern {
+  bad: string
+  good?: string
+  why: string
+}
+
+export type IntentRelationship = 'alternative' | 'pairs-with' | 'contains' | 'contained-by'
+
+export interface IntentRelated {
+  name: string
+  relationship: IntentRelationship
+  reason: string
+}
+
+export interface IntentFlexibility {
+  area: string
+  level: 'strict' | 'flexible'
+  note: string
+}
+
+export interface IntentContent {
+  tone: string
+  notes?: string
+}
+
+export interface ComponentIntent {
+  whenToUse: string[]
+  whenNotToUse: string[]
+  antiPatterns: IntentAntiPattern[]
+  related: IntentRelated[]
+  a11yRationale: string
+  content?: IntentContent
+  flexibility: IntentFlexibility[]
 }
