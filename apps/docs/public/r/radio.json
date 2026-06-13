@@ -12,14 +12,23 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["form", "choice", "group"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "form",
+    "choice",
+    "group"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Radio",
     "description": "Single choice from a set, grouped with RadioGroup",
     "category": "inputs",
-    "states": ["unchecked", "checked"],
+    "states": [
+      "unchecked",
+      "checked"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -56,7 +65,13 @@
     "accessibility": {
       "role": "radio",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"],
+      "keyboard": [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "Space"
+      ],
       "apgPattern": "radio",
       "reducedMotion": true,
       "forcedColors": true
@@ -67,8 +82,14 @@
         "code": "<RadioGroup name=\"plan\" defaultValue=\"pro\"><Radio value=\"pro\" label=\"Pro\" /><Radio value=\"team\" label=\"Team\" /></RadioGroup>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "choice", "group"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "form",
+      "choice",
+      "group"
+    ],
     "intent": {
       "whenToUse": [
         "Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible",

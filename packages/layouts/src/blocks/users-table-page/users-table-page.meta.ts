@@ -12,7 +12,7 @@ export const meta: ComponentMeta = {
     { name: 'onInvite', type: '() => void', required: false, description: 'Invite button handler' },
   ],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<UsersTablePage />', description: 'Demo users table' }],
   dependencies: ['@cascade-ui/react', 'layout/page-header', 'layout/stack'],
   tags: ['block', 'users', 'table', 'page'],

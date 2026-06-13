@@ -14,23 +14,23 @@ npx cascade add chart/area-chart
 
 ## Props
 
-| Prop          | Type                       | Required    | Default | Description                                                           |
-| ------------- | -------------------------- | ----------- | ------- | --------------------------------------------------------------------- | --- |
-| `series`      | `AreaChartSeries<Datum>[]` | yes         | —       | Array of data series                                                  |
-| `x`           | `(d: Datum) => number`     | yes         | —       | X-value accessor                                                      |
-| `y`           | `(d: Datum) => number`     | yes         | —       | Y-value accessor                                                      |
-| `title`       | `string`                   | yes         | —       | —                                                                     |
-| `description` | `string`                   | no          | —       | —                                                                     |
-| `stacked`     | `boolean`                  | no          | —       | Stack series areas                                                    |
-| `curve`       | `'linear'                  | 'monotone'` | no      | `monotone`                                                            | —   |
-| `width`       | `number`                   | no          | —       | —                                                                     |
-| `height`      | `number`                   | no          | `300`   | —                                                                     |
-| `xTicks`      | `number`                   | no          | `5`     | —                                                                     |
-| `yTicks`      | `number`                   | no          | `5`     | —                                                                     |
-| `legend`      | `boolean`                  | no          | —       | —                                                                     |
-| `tooltip`     | `boolean`                  | no          | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                   | no          | —       | —                                                                     |
-| `plain`       | `boolean`                  | no          | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `AreaChartSeries<Datum>[]` | yes | — | Array of data series |
+| `x` | `(d: Datum) => number` | yes | — | X-value accessor |
+| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `stacked` | `boolean` | no | — | Stack series areas |
+| `curve` | `'linear' | 'monotone'` | no | `monotone` | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `300` | — |
+| `xTicks` | `number` | no | `5` | — |
+| `yTicks` | `number` | no | `5` | — |
+| `legend` | `boolean` | no | — | — |
+| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -56,7 +56,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 - **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 

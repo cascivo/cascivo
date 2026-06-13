@@ -35,7 +35,7 @@ export const meta: ComponentMeta = {
     { name: 'wrap', type: 'boolean', required: false, description: 'Allow wrapping' },
   ],
   tokens: ['--cascade-space-*'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Vertical',

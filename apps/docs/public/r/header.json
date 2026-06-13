@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["navigation", "app-shell", "top-bar", "banner"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "navigation",
+    "app-shell",
+    "top-bar",
+    "banner"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Header",
     "description": "App top bar with brand, primary navigation links, and an actions slot",
     "category": "navigation",
-    "states": ["default"],
+    "states": [
+      "default"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -66,7 +76,9 @@
     "accessibility": {
       "role": "banner",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab"]
+      "keyboard": [
+        "Tab"
+      ]
     },
     "examples": [
       {
@@ -82,8 +94,16 @@
         "code": "<Header sticky brand=\"cascade\" links={links} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["navigation", "app-shell", "top-bar", "banner"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "navigation",
+      "app-shell",
+      "top-bar",
+      "banner"
+    ],
     "intent": {
       "whenToUse": [
         "Providing a simple marketing or app top bar with brand, links, and actions",

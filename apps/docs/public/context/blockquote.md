@@ -31,9 +31,9 @@ Renders a native <blockquote> with the attribution in <footer><cite>, so the quo
 
 ## Props
 
-| Name   | Type     | Required | Default   | Description |
-| ------ | -------- | -------- | --------- | ----------- |
-| `cite` | `string` | No       | undefined | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `cite` | `string` | No | undefined | — |
 
 ## Tokens
 
@@ -64,7 +64,7 @@ Attribution renders as <footer><cite>
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                   |
-| ----------- | -------- | ---------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | attribution | flexible | cite is optional; omit when the source is given in surrounding context |
-| token names | strict   | Border and text colors must resolve to --cascade-\* tokens             |
+| token names | strict | Border and text colors must resolve to --cascade-* tokens |

@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-chart-1', '--cascade-chart-2'],
   accessibility: {
     role: 'img',
-    wcag: 'AA',
+    wcag: '2.1-AA',
     keyboard: [
       'Tab (focus chart)',
       'ArrowLeft/ArrowRight (navigate points)',

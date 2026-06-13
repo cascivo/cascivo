@@ -12,14 +12,31 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["upload", "file", "drop", "drag", "input", "form"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "upload",
+    "file",
+    "drop",
+    "drag",
+    "input",
+    "form"
+  ],
   "category": "inputs",
   "meta": {
     "name": "FileUploader",
     "description": "Drag-and-drop file upload zone with file list and status indicators.",
     "category": "inputs",
-    "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
+    "states": [
+      "idle",
+      "dragover",
+      "uploading",
+      "complete",
+      "error",
+      "disabled"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -100,7 +117,10 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"]
+      "keyboard": [
+        "Enter",
+        "Space"
+      ]
     },
     "examples": [
       {
@@ -119,8 +139,18 @@
         "description": "Shows file list"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["upload", "file", "drop", "drag", "input", "form"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "upload",
+      "file",
+      "drop",
+      "drag",
+      "input",
+      "form"
+    ],
     "intent": {
       "whenToUse": [
         "Letting users attach one or more files via click-to-browse or drag-and-drop",

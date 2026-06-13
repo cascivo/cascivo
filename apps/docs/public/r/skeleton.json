@@ -12,15 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["loading", "placeholder", "shimmer"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "loading",
+    "placeholder",
+    "shimmer"
+  ],
   "category": "display",
   "meta": {
     "name": "Skeleton",
     "description": "Animated loading placeholder that mirrors the shape of pending content",
     "category": "display",
     "states": [],
-    "variants": ["text", "circle", "rect"],
+    "variants": [
+      "text",
+      "circle",
+      "rect"
+    ],
     "sizes": [],
     "props": [
       {
@@ -75,8 +85,14 @@
         "code": "<Skeleton variant=\"rect\" height=\"12rem\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["loading", "placeholder", "shimmer"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "loading",
+      "placeholder",
+      "shimmer"
+    ],
     "intent": {
       "whenToUse": [
         "Indicating loading by mirroring the shape of the content that will appear",

@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
     '--cascade-color-neutral-300',
     '--cascade-color-neutral-400',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic bullet chart',

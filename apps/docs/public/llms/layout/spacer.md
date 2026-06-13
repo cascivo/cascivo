@@ -14,9 +14,9 @@ npx cascade add layout/spacer
 
 ## Props
 
-| Prop   | Type | Required | Default | Description |
-| ------ | ---- | -------- | ------- | ----------- | --- | --- | --- | --- | --- | --- | --- | ------------------ |
-| `size` | `1   | 2        | 3       | 4           | 5   | 6   | 8   | 10  | 12` | no  | —   | Spacing token step |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `1|2|3|4|5|6|8|10|12` | no | — | Spacing token step |
 
 ## Examples
 
@@ -34,7 +34,7 @@ Adds vertical space between elements
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `none`
 
 ## Dependencies

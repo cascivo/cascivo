@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
     '--cascade-chart-7',
     '--cascade-chart-8',
   ],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic radar chart',

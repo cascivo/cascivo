@@ -45,8 +45,8 @@ The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="m
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                       |
-| ------------ | -------- | ------------------------------------------------------------------------------------------ |
-| token names  | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascade-\* tokens |
-| item content | flexible | MenuItem accepts arbitrary children; onSelect defines the action                           |
-| composition  | flexible | MenuItem and MenuSeparator can be mixed freely under the trigger                           |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens |
+| item content | flexible | MenuItem accepts arbitrary children; onSelect defines the action |
+| composition | flexible | MenuItem and MenuSeparator can be mixed freely under the trigger |

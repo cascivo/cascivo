@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "masonry", "gallery"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "masonry",
+    "gallery"
+  ],
   "category": "layout",
   "meta": {
     "name": "Masonry",
@@ -38,10 +44,12 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": [
+      "--cascade-space-*"
+    ],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -51,8 +59,14 @@
         "description": "Variable-height cards laid out in a masonry pattern; falls back to CSS columns"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "masonry", "gallery"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "masonry",
+      "gallery"
+    ],
     "intent": {
       "whenToUse": [
         "Galleries of variable-height items packed into balanced columns",

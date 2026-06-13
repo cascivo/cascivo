@@ -5,8 +5,16 @@
   "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "radar",
+    "spider",
+    "polar",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -81,7 +89,7 @@
     ],
     "accessibility": {
       "role": "img",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -90,8 +98,16 @@
         "code": "import { Radar } from '@cascade-ui/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "radar",
+      "spider",
+      "polar",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Comparing several entities across the same set of quantitative dimensions",

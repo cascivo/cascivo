@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: ['--cascade-space-4', '--cascade-space-6'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'With stats',

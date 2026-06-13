@@ -20,10 +20,10 @@ npx cascade add spinner
 
 ## Props
 
-| Prop    | Type     | Required | Default   | Description                                  |
-| ------- | -------- | -------- | --------- | -------------------------------------------- | ---- | --- |
-| `size`  | `'sm'    | 'md'     | 'lg'`     | no                                           | `md` | —   |
-| `label` | `string` | no       | `Loading` | Accessible label announced by screen readers |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `label` | `string` | no | `Loading` | Accessible label announced by screen readers |
 
 ## Examples
 

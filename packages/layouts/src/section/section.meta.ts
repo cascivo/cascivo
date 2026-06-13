@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: ['--cascade-space-*'],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Content section',

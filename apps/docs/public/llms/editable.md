@@ -20,14 +20,14 @@ npx cascade add editable
 
 ## Props
 
-| Prop            | Type                  | Required | Default | Description |
-| --------------- | --------------------- | -------- | ------- | ----------- |
-| `value`         | `string`              | yes      | —       | —           |
-| `onValueChange` | `(v: string) => void` | yes      | —       | —           |
-| `placeholder`   | `string`              | no       | —       | —           |
-| `disabled`      | `boolean`             | no       | `false` | —           |
-| `submitOnBlur`  | `boolean`             | no       | `true`  | —           |
-| `onCancel`      | `() => void`          | no       | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | yes | — | — |
+| `onValueChange` | `(v: string) => void` | yes | — | — |
+| `placeholder` | `string` | no | — | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `submitOnBlur` | `boolean` | no | `true` | — |
+| `onCancel` | `() => void` | no | — | — |
 
 ## Examples
 

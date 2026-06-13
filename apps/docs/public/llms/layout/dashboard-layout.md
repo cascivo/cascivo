@@ -14,11 +14,11 @@ npx cascade add layout/dashboard-layout
 
 ## Props
 
-| Prop    | Type        | Required | Default | Description                   |
-| ------- | ----------- | -------- | ------- | ----------------------------- |
-| `stats` | `ReactNode` | no       | —       | Stats/KPI row (auto-fit grid) |
-| `main`  | `ReactNode` | yes      | —       | Main content area             |
-| `aside` | `ReactNode` | no       | —       | Optional aside panel (20rem)  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `ReactNode` | no | — | Stats/KPI row (auto-fit grid) |
+| `main` | `ReactNode` | yes | — | Main content area |
+| `aside` | `ReactNode` | no | — | Optional aside panel (20rem) |
 
 ## Examples
 
@@ -37,7 +37,7 @@ Stats + main layout
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

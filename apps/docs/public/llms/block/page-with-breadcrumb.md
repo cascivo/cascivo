@@ -28,7 +28,7 @@ Page with breadcrumb
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

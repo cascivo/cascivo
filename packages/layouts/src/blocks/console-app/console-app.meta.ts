@@ -19,7 +19,7 @@ export const meta: ComponentMeta = {
     '--cascade-motion-enter',
     '--cascade-motion-exit',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: ['Escape', 'Tab'] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: ['Escape', 'Tab'] },
   examples: [{ title: 'Default', code: '<ConsoleApp />', description: 'Full console shell demo' }],
   dependencies: [
     '@cascade-ui/react',

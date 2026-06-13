@@ -12,16 +12,32 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["label", "status", "tag"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "label",
+    "status",
+    "tag"
+  ],
   "category": "display",
   "meta": {
     "name": "Badge",
     "description": "Small status label or category indicator",
     "category": "display",
     "states": [],
-    "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
-    "sizes": ["sm", "md"],
+    "variants": [
+      "default",
+      "secondary",
+      "success",
+      "warning",
+      "destructive",
+      "outline"
+    ],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "variant",
@@ -63,8 +79,14 @@
         "code": "<Badge variant=\"destructive\">Deprecated</Badge>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["label", "status", "tag"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "label",
+      "status",
+      "tag"
+    ],
     "intent": {
       "whenToUse": [
         "Labeling an item with a short, static status or category (e.g. \"New\", \"Beta\")",

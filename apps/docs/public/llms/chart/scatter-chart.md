@@ -14,20 +14,20 @@ npx cascade add chart/scatter-chart
 
 ## Props
 
-| Prop          | Type                   | Required                       | Default | Description                                                           |
-| ------------- | ---------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | ------------------------ |
-| `series`      | `ScatterChartSeries[]` | yes                            | —       | —                                                                     |
-| `title`       | `string`               | yes                            | —       | —                                                                     |
-| `description` | `string`               | no                             | —       | —                                                                     |
-| `r`           | `number                | ((d: ScatterDatum) => number)` | no      | `4`                                                                   | Point radius or accessor |
-| `width`       | `number`               | no                             | —       | —                                                                     |
-| `height`      | `number`               | no                             | `300`   | —                                                                     |
-| `xTicks`      | `number`               | no                             | `5`     | —                                                                     |
-| `yTicks`      | `number`               | no                             | `5`     | —                                                                     |
-| `legend`      | `boolean`              | no                             | —       | —                                                                     |
-| `tooltip`     | `boolean`              | no                             | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`               | no                             | —       | —                                                                     |
-| `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `ScatterChartSeries[]` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `r` | `number | ((d: ScatterDatum) => number)` | no | `4` | Point radius or accessor |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `300` | — |
+| `xTicks` | `number` | no | `5` | — |
+| `yTicks` | `number` | no | `5` | — |
+| `legend` | `boolean` | no | — | — |
+| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -53,7 +53,7 @@ const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 - **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 

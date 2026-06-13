@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "split", "resizable", "pane"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "split",
+    "resizable",
+    "pane"
+  ],
   "category": "layout",
   "meta": {
     "name": "SplitView",
@@ -60,11 +67,18 @@
         "description": "Label for the separator"
       }
     ],
-    "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+    "tokens": [
+      "--cascade-color-border",
+      "--cascade-color-accent",
+      "--cascade-duration-150"
+    ],
     "accessibility": {
       "role": "separator",
-      "wcag": "AA",
-      "keyboard": ["ArrowLeft", "ArrowRight"]
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "ArrowLeft",
+        "ArrowRight"
+      ]
     },
     "examples": [
       {
@@ -73,8 +87,15 @@
         "description": "Two-pane split with draggable divider"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "split", "resizable", "pane"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "split",
+      "resizable",
+      "pane"
+    ],
     "intent": {
       "whenToUse": [
         "Two side-by-side panes the user can resize via pointer or keyboard",

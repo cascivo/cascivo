@@ -8971,7 +8971,7 @@
         ],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9054,7 +9054,7 @@
         ],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9131,7 +9131,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9195,7 +9195,7 @@
         "tokens": ["--cascade-space-4"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9270,7 +9270,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9351,7 +9351,7 @@
         "tokens": ["--cascade-space-4", "--cascade-space-6"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9432,7 +9432,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9509,7 +9509,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9610,7 +9610,7 @@
         ],
         "accessibility": {
           "role": "banner",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9687,7 +9687,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9762,7 +9762,7 @@
         "tokens": ["--cascade-space-8"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9831,7 +9831,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -9925,7 +9925,7 @@
         "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
         "accessibility": {
           "role": "separator",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": ["ArrowLeft", "ArrowRight"]
         },
         "examples": [
@@ -10013,7 +10013,7 @@
         "tokens": ["--cascade-space-*"],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10093,7 +10093,7 @@
         ],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": ["Escape", "Tab"]
         },
         "examples": [
@@ -10159,7 +10159,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10227,7 +10227,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10290,7 +10290,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10359,7 +10359,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10415,7 +10415,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10478,7 +10478,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10534,7 +10534,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10602,7 +10602,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10676,7 +10676,7 @@
         "tokens": [],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -10826,7 +10826,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate points)",
@@ -10976,7 +10976,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11084,7 +11084,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11197,7 +11197,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate points)",
@@ -11314,7 +11314,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11431,7 +11431,7 @@
         "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate points)",
@@ -11535,7 +11535,7 @@
         "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11641,7 +11641,7 @@
         "tokens": ["--cascade-chart-1"],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11741,7 +11741,7 @@
         "tokens": ["--cascade-chart-1"],
         "accessibility": {
           "role": "figure",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -11904,7 +11904,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate points)",
@@ -12014,7 +12014,7 @@
         "tokens": ["--cascade-chart-1"],
         "accessibility": {
           "role": "meter",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12133,7 +12133,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12253,7 +12253,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12385,7 +12385,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate points)",
@@ -12486,7 +12486,7 @@
         "tokens": ["--cascade-chart-1"],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12593,7 +12593,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12689,7 +12689,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12794,7 +12794,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -12909,7 +12909,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -13022,7 +13022,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -13107,7 +13107,7 @@
         ],
         "accessibility": {
           "role": "contentinfo",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [
@@ -13187,7 +13187,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.1-AA",
           "keyboard": []
         },
         "examples": [

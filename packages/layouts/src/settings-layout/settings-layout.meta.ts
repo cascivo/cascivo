@@ -12,7 +12,7 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true, description: 'Settings content area' },
   ],
   tokens: ['--cascade-space-8'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',

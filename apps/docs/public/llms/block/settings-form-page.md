@@ -14,9 +14,9 @@ npx cascade add block/settings-form-page
 
 ## Props
 
-| Prop     | Type                               | Required | Default | Description                             |
-| -------- | ---------------------------------- | -------- | ------- | --------------------------------------- |
-| `onSave` | `(values: SettingsValues) => void` | no       | —       | Called with valid form values on submit |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onSave` | `(values: SettingsValues) => void` | no | — | Called with valid form values on submit |
 
 ## Examples
 
@@ -30,7 +30,7 @@ Settings form page
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

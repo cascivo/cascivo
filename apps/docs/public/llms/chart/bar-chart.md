@@ -19,22 +19,22 @@ npx cascade add chart/bar-chart
 
 ## Props
 
-| Prop          | Type                      | Required      | Default | Description                                                           |
-| ------------- | ------------------------- | ------------- | ------- | --------------------------------------------------------------------- | --- |
-| `series`      | `BarChartSeries<Datum>[]` | yes           | —       | —                                                                     |
-| `x`           | `(d: Datum) => string`    | yes           | —       | —                                                                     |
-| `y`           | `(d: Datum) => number`    | yes           | —       | —                                                                     |
-| `title`       | `string`                  | yes           | —       | —                                                                     |
-| `description` | `string`                  | no            | —       | —                                                                     |
-| `orientation` | `'vertical'               | 'horizontal'` | no      | `vertical`                                                            | —   |
-| `mode`        | `'grouped'                | 'stacked'`    | no      | `grouped`                                                             | —   |
-| `width`       | `number`                  | no            | —       | —                                                                     |
-| `height`      | `number`                  | no            | `300`   | —                                                                     |
-| `xTicks`      | `number`                  | no            | —       | —                                                                     |
-| `yTicks`      | `number`                  | no            | `5`     | —                                                                     |
-| `legend`      | `boolean`                 | no            | —       | —                                                                     |
-| `className`   | `string`                  | no            | —       | —                                                                     |
-| `plain`       | `boolean`                 | no            | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `BarChartSeries<Datum>[]` | yes | — | — |
+| `x` | `(d: Datum) => string` | yes | — | — |
+| `y` | `(d: Datum) => number` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `orientation` | `'vertical' | 'horizontal'` | no | `vertical` | — |
+| `mode` | `'grouped' | 'stacked'` | no | `grouped` | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `300` | — |
+| `xTicks` | `number` | no | — | — |
+| `yTicks` | `number` | no | `5` | — |
+| `legend` | `boolean` | no | — | — |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -60,7 +60,7 @@ const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies

@@ -12,16 +12,30 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["clipboard", "copy", "button", "snippet"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "clipboard",
+    "copy",
+    "button",
+    "snippet"
+  ],
   "category": "inputs",
   "meta": {
     "name": "CopyButton",
     "description": "Icon button that copies a value to the clipboard with copied feedback",
     "category": "inputs",
-    "states": ["idle", "copied"],
+    "states": [
+      "idle",
+      "copied"
+    ],
     "variants": [],
-    "sizes": ["sm", "md"],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "value",
@@ -57,7 +71,10 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"]
+      "keyboard": [
+        "Enter",
+        "Space"
+      ]
     },
     "examples": [
       {
@@ -74,8 +91,16 @@
         "description": "Override the built-in copy/copied strings per instance"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["clipboard", "copy", "button", "snippet"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "clipboard",
+      "copy",
+      "button",
+      "snippet"
+    ],
     "intent": {
       "whenToUse": [
         "Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links",

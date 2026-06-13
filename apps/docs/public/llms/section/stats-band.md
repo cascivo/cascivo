@@ -14,10 +14,10 @@ npx cascade add section/stats-band
 
 ## Props
 
-| Prop         | Type         | Required | Default         | Description                                                                                            |
-| ------------ | ------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| `stats`      | `StatItem[]` | yes      | —               | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
-| `aria-label` | `string`     | no       | `"Key metrics"` | Accessible label for the stats region                                                                  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
+| `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
 
 ## Examples
 
@@ -50,7 +50,7 @@ Four KPI cells — three with sparkline trends and signed deltas
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `region`
 
 ## Dependencies

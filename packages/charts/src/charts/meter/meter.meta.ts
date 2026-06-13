@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     { name: 'height', type: 'number', required: false },
   ],
   tokens: ['--cascade-chart-1'],
-  accessibility: { role: 'meter', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'meter', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic meter',

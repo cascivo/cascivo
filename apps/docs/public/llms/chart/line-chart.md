@@ -14,23 +14,23 @@ npx cascade add chart/line-chart
 
 ## Props
 
-| Prop            | Type                                                       | Required    | Default | Description                                                           |
-| --------------- | ---------------------------------------------------------- | ----------- | ------- | --------------------------------------------------------------------- | ------------------------ |
-| `series`        | `LineChartSeries<Datum>[]`                                 | yes         | —       | Array of data series                                                  |
-| `x`             | `(d: Datum) => number                                      | Date`       | yes     | —                                                                     | X-value accessor         |
-| `y`             | `(d: Datum) => number`                                     | yes         | —       | Y-value accessor                                                      |
-| `title`         | `string`                                                   | yes         | —       | Chart title (also used as aria-label)                                 |
-| `description`   | `string`                                                   | no          | —       | Subtitle shown below title                                            |
-| `curve`         | `'linear'                                                  | 'monotone'` | no      | `monotone`                                                            | Line interpolation curve |
-| `width`         | `number`                                                   | no          | —       | Fixed SVG width (defaults to container width)                         |
-| `height`        | `number`                                                   | no          | `300`   | SVG height in px                                                      |
-| `xTicks`        | `number`                                                   | no          | `5`     | Approximate number of X-axis ticks                                    |
-| `yTicks`        | `number`                                                   | no          | `5`     | Approximate number of Y-axis ticks                                    |
-| `legend`        | `boolean`                                                  | no          | —       | Show series legend                                                    |
-| `tooltip`       | `boolean`                                                  | no          | —       | Enable hover tooltip                                                  |
-| `formatTooltip` | `(datum: Datum, series: LineChartSeries<Datum>) => string` | no          | —       | Custom tooltip formatter                                              |
-| `className`     | `string`                                                   | no          | —       | —                                                                     |
-| `plain`         | `boolean`                                                  | no          | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `LineChartSeries<Datum>[]` | yes | — | Array of data series |
+| `x` | `(d: Datum) => number | Date` | yes | — | X-value accessor |
+| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
+| `title` | `string` | yes | — | Chart title (also used as aria-label) |
+| `description` | `string` | no | — | Subtitle shown below title |
+| `curve` | `'linear' | 'monotone'` | no | `monotone` | Line interpolation curve |
+| `width` | `number` | no | — | Fixed SVG width (defaults to container width) |
+| `height` | `number` | no | `300` | SVG height in px |
+| `xTicks` | `number` | no | `5` | Approximate number of X-axis ticks |
+| `yTicks` | `number` | no | `5` | Approximate number of Y-axis ticks |
+| `legend` | `boolean` | no | — | Show series legend |
+| `tooltip` | `boolean` | no | — | Enable hover tooltip |
+| `formatTooltip` | `(datum: Datum, series: LineChartSeries<Datum>) => string` | no | — | Custom tooltip formatter |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -56,7 +56,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 - **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 

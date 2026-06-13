@@ -38,7 +38,7 @@ export const meta: ComponentMeta = {
     '--cascade-color-accent',
     '--cascade-space-*',
   ],
-  accessibility: { role: 'contentinfo', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'contentinfo', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Site footer',

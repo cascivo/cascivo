@@ -12,14 +12,23 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["navigation", "collapse", "disclosure"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "navigation",
+    "collapse",
+    "disclosure"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Accordion",
     "description": "Vertically stacked, collapsible content sections",
     "category": "navigation",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -55,7 +64,10 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"],
+      "keyboard": [
+        "Enter",
+        "Space"
+      ],
       "apgPattern": "accordion",
       "reducedMotion": true,
       "forcedColors": true
@@ -66,8 +78,14 @@
         "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["navigation", "collapse", "disclosure"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "navigation",
+      "collapse",
+      "disclosure"
+    ],
     "intent": {
       "whenToUse": [
         "Progressively disclosing sections of related content the user reads top to bottom",

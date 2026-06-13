@@ -14,13 +14,13 @@ npx cascade add stat
 
 ## Props
 
-| Prop       | Type     | Required | Default | Description                                          |
-| ---------- | -------- | -------- | ------- | ---------------------------------------------------- | ---------------- | --- |
-| `label`    | `string` | yes      | —       | What the metric measures                             |
-| `value`    | `string  | number`  | yes     | —                                                    | The metric value |
-| `delta`    | `string` | no       | —       | Change indicator rendered next to the trend arrow    |
-| `trend`    | `'up'    | 'down'   | 'flat'` | no                                                   | `flat`           | —   |
-| `helpText` | `string` | no       | —       | Fine print below the value (methodology, time range) |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | yes | — | What the metric measures |
+| `value` | `string | number` | yes | — | The metric value |
+| `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
+| `trend` | `'up' | 'down' | 'flat'` | no | `flat` | — |
+| `helpText` | `string` | no | — | Fine print below the value (methodology, time range) |
 
 ## Examples
 

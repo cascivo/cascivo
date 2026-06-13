@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["overlay", "hover", "preview", "floating"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "overlay",
+    "hover",
+    "preview",
+    "floating"
+  ],
   "category": "overlay",
   "meta": {
     "name": "HoverCard",
     "description": "Hover-triggered popover with configurable open/close delay",
     "category": "overlay",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -34,11 +44,21 @@
     "accessibility": {
       "role": "complementary",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Escape"]
+      "keyboard": [
+        "Tab",
+        "Escape"
+      ]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["overlay", "hover", "preview", "floating"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "overlay",
+      "hover",
+      "preview",
+      "floating"
+    ],
     "intent": {
       "whenToUse": [
         "Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger",

@@ -12,14 +12,28 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["form", "otp", "code", "input", "verification"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "form",
+    "otp",
+    "code",
+    "input",
+    "verification"
+  ],
   "category": "inputs",
   "meta": {
     "name": "OtpInput",
     "description": "Segmented one-time code input",
     "category": "inputs",
-    "states": ["idle", "focused", "filled", "disabled"],
+    "states": [
+      "idle",
+      "focused",
+      "filled",
+      "disabled"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -63,7 +77,11 @@
     "accessibility": {
       "role": "group",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
+      "keyboard": [
+        "ArrowLeft",
+        "ArrowRight",
+        "Backspace"
+      ]
     },
     "examples": [
       {
@@ -75,8 +93,17 @@
         "code": "<OtpInput length={4} value=\"\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["form", "otp", "code", "input", "verification"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "form",
+      "otp",
+      "code",
+      "input",
+      "verification"
+    ],
     "intent": {
       "whenToUse": [
         "Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots",

@@ -12,16 +12,29 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["link", "anchor", "navigation"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "link",
+    "anchor",
+    "navigation"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Link",
     "description": "Styled anchor for navigation, standalone or inline within prose",
     "category": "navigation",
     "states": [],
-    "variants": ["standalone", "inline"],
-    "sizes": ["sm", "md", "lg"],
+    "variants": [
+      "standalone",
+      "inline"
+    ],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "variant",
@@ -57,7 +70,9 @@
     "accessibility": {
       "role": "link",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter"]
+      "keyboard": [
+        "Enter"
+      ]
     },
     "examples": [
       {
@@ -75,8 +90,14 @@
         "description": "Opens in a new tab with rel=\"noreferrer\" and a visual indicator."
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["link", "anchor", "navigation"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "link",
+      "anchor",
+      "navigation"
+    ],
     "intent": {
       "whenToUse": [
         "Navigating to another page, view, or resource via a real href",

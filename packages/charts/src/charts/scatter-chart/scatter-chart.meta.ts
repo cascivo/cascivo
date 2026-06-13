@@ -50,7 +50,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'img',
-    wcag: 'AA',
+    wcag: '2.1-AA',
     keyboard: [
       'Tab (focus chart)',
       'ArrowLeft/ArrowRight (navigate points)',

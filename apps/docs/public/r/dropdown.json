@@ -12,14 +12,23 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["overlay", "menu", "actions"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "overlay",
+    "menu",
+    "actions"
+  ],
   "category": "overlay",
   "meta": {
     "name": "Dropdown",
     "description": "Menu of actions revealed from a trigger",
     "category": "overlay",
-    "states": ["closed", "open"],
+    "states": [
+      "closed",
+      "open"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -65,7 +74,15 @@
     "accessibility": {
       "role": "menu",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Home",
+        "End",
+        "Enter",
+        "Space",
+        "Escape"
+      ],
       "apgPattern": "menu",
       "reducedMotion": true,
       "forcedColors": true
@@ -76,8 +93,14 @@
         "code": "<Dropdown trigger={<Button>Actions</Button>} items={[{ label: \"Edit\", value: \"edit\" }]} onSelect={handle} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["overlay", "menu", "actions"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "overlay",
+      "menu",
+      "actions"
+    ],
     "intent": {
       "whenToUse": [
         "Revealing a short menu of actions from a trigger button (row actions, \"More\" overflow, account menu)",

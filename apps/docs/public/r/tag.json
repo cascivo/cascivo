@@ -12,16 +12,33 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["chip", "label", "filter", "category"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "chip",
+    "label",
+    "filter",
+    "category"
+  ],
   "category": "display",
   "meta": {
     "name": "Tag",
     "description": "Compact chip for labeling, categorizing, or filtering content",
     "category": "display",
     "states": [],
-    "variants": ["default", "info", "success", "warning", "error"],
-    "sizes": ["sm", "md"],
+    "variants": [
+      "default",
+      "info",
+      "success",
+      "warning",
+      "error"
+    ],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "variant",
@@ -65,7 +82,10 @@
     "accessibility": {
       "role": "none",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"]
+      "keyboard": [
+        "Enter",
+        "Space"
+      ]
     },
     "examples": [
       {
@@ -82,8 +102,16 @@
         "description": "Renders a trailing remove button labeled by dismissLabel"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["chip", "label", "filter", "category"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "chip",
+      "label",
+      "filter",
+      "category"
+    ],
     "intent": {
       "whenToUse": [
         "Labeling, categorizing, or filtering content with a compact chip",

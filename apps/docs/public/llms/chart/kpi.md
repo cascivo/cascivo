@@ -14,15 +14,15 @@ npx cascade add chart/kpi
 
 ## Props
 
-| Prop         | Type        | Required | Default | Description                                   |
-| ------------ | ----------- | -------- | ------- | --------------------------------------------- | -------------------- |
-| `value`      | `string     | number`  | yes     | —                                             | Primary metric value |
-| `label`      | `string`    | yes      | —       | Metric label                                  |
-| `delta`      | `number`    | no       | —       | Change value (positive = up, negative = down) |
-| `deltaLabel` | `string`    | no       | —       | Delta context label (e.g. "vs last week")     |
-| `icon`       | `ReactNode` | no       | —       | —                                             |
-| `sparkline`  | `number[]`  | no       | —       | Trend data for embedded sparkline             |
-| `className`  | `string`    | no       | —       | —                                             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string | number` | yes | — | Primary metric value |
+| `label` | `string` | yes | — | Metric label |
+| `delta` | `number` | no | — | Change value (positive = up, negative = down) |
+| `deltaLabel` | `string` | no | — | Delta context label (e.g. "vs last week") |
+| `icon` | `ReactNode` | no | — | — |
+| `sparkline` | `number[]` | no | — | Trend data for embedded sparkline |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -30,7 +30,8 @@ npx cascade add chart/kpi
 
 ```tsx
 import { Kpi } from '@cascade-ui/charts'
-;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
+
+<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
 ## Design tokens
@@ -39,7 +40,7 @@ import { Kpi } from '@cascade-ui/charts'
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `figure`
 
 ## Dependencies

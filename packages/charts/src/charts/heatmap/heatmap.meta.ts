@@ -28,7 +28,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: ['--cascade-chart-1', '--cascade-color-neutral-100'],
-  accessibility: { role: 'img', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic heatmap',

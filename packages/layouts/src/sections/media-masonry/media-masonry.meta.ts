@@ -56,7 +56,7 @@ export const meta: ComponentMeta = {
     '--cascade-text-secondary',
     '--cascade-space-*',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Media gallery',

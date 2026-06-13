@@ -16,7 +16,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<EmptyDashboard />', description: 'Empty dashboard' }],
   dependencies: ['@cascade-ui/react', 'layout/dashboard-layout'],
   tags: ['block', 'dashboard', 'empty-state', 'page'],

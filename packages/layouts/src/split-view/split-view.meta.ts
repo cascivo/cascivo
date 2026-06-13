@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-duration-150'],
   accessibility: {
     role: 'separator',
-    wcag: 'AA',
+    wcag: '2.1-AA',
     keyboard: ['ArrowLeft', 'ArrowRight'],
   },
   examples: [

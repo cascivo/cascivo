@@ -40,18 +40,18 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 
 ## Props
 
-| Name            | Type                      | Required | Default                   | Description                                                           |
-| --------------- | ------------------------- | -------- | ------------------------- | --------------------------------------------------------------------- |
-| `open`          | `boolean`                 | Yes      | —                         | —                                                                     |
-| `onOpenChange`  | `(open: boolean) => void` | Yes      | —                         | —                                                                     |
-| `groups`        | `CommandGroup[]`          | Yes      | —                         | —                                                                     |
-| `placeholder`   | `string`                  | No       | Type a command or search… | —                                                                     |
-| `emptyLabel`    | `string`                  | No       | No results found          | —                                                                     |
-| `hotkey`        | `boolean`                 | No       | true                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                   |
-| `label`         | `string`                  | No       | Command menu              | —                                                                     |
-| `loading`       | `boolean`                 | No       | false                     | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | No       | —                         | Fires on every query keystroke — use to fetch async items             |
-| `className`     | `string`                  | No       | —                         | —                                                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | Yes | — | — |
+| `onOpenChange` | `(open: boolean) => void` | Yes | — | — |
+| `groups` | `CommandGroup[]` | Yes | — | — |
+| `placeholder` | `string` | No | Type a command or search… | — |
+| `emptyLabel` | `string` | No | No results found | — |
+| `hotkey` | `boolean` | No | true | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
+| `label` | `string` | No | Command menu | — |
+| `loading` | `boolean` | No | false | Shows a loading spinner in place of the empty state (for async items) |
+| `onQueryChange` | `(query: string) => void` | No | — | Fires on every query keystroke — use to fetch async items |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -89,8 +89,8 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                    |
-| ----------- | -------- | --------------------------------------------------------------------------------------- |
-| hotkey      | flexible | Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering      |
-| async items | flexible | onQueryChange + loading allow fetching items per keystroke                              |
-| token names | strict   | Palette styling resolves to semantic --cascade-color-\* / --cascade-radius-modal tokens |
+| Area | Level | Note |
+|------|-------|------|
+| hotkey | flexible | Global Cmd/Ctrl+K binding can be disabled via hotkey={false} for custom triggering |
+| async items | flexible | onQueryChange + loading allow fetching items per keystroke |
+| token names | strict | Palette styling resolves to semantic --cascade-color-* / --cascade-radius-modal tokens |

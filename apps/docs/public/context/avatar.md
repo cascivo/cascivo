@@ -32,13 +32,13 @@ role="img" with alt names the person; on image error it falls back to initials s
 
 ## Props
 
-| Name       | Type      | Required  | Default | Description                               |
-| ---------- | --------- | --------- | ------- | ----------------------------------------- | ----- | --- | --- | --- |
-| `src`      | `string`  | No        | —       | —                                         |
-| `alt`      | `string`  | No        | —       | —                                         |
-| `fallback` | `string`  | No        | —       | Initials shown when no image is available |
-| `size`     | `'xs'     | 'sm'      | 'md'    | 'lg'                                      | 'xl'` | No  | md  | —   |
-| `status`   | `'online' | 'offline' | 'busy'` | No                                        | —     | —   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `src` | `string` | No | — | — |
+| `alt` | `string` | No | — | — |
+| `fallback` | `string` | No | — | Initials shown when no image is available |
+| `size` | `'xs' | 'sm' | 'md' | 'lg' | 'xl'` | No | md | — |
+| `status` | `'online' | 'offline' | 'busy'` | No | — | — |
 
 ## Tokens
 
@@ -69,7 +69,7 @@ role="img" with alt names the person; on image error it falls back to initials s
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                    |
-| ----------- | -------- | ----------------------------------------------------------------------- |
-| size        | flexible | Pick the size that fits the surrounding density                         |
-| token names | strict   | Fallback and status colors must resolve to --cascade-\* semantic tokens |
+| Area | Level | Note |
+|------|-------|------|
+| size | flexible | Pick the size that fits the surrounding density |
+| token names | strict | Fallback and status colors must resolve to --cascade-* semantic tokens |

@@ -12,16 +12,34 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["action", "form", "interactive"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "action",
+    "form",
+    "interactive"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Button",
     "description": "Triggers an action or event",
     "category": "inputs",
-    "states": ["idle", "loading"],
-    "variants": ["primary", "secondary", "ghost", "destructive"],
-    "sizes": ["sm", "md", "lg"],
+    "states": [
+      "idle",
+      "loading"
+    ],
+    "variants": [
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive"
+    ],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "variant",
@@ -65,7 +83,10 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"],
+      "keyboard": [
+        "Enter",
+        "Space"
+      ],
       "apgPattern": "button",
       "reducedMotion": true,
       "forcedColors": true
@@ -84,8 +105,14 @@
         "code": "<Button variant=\"destructive\">Delete</Button>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["action", "form", "interactive"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "action",
+      "form",
+      "interactive"
+    ],
     "intent": {
       "whenToUse": [
         "Triggering an action or navigation the user initiates by click/press",

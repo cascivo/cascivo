@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
     '--cascade-surface-subtle',
     '--cascade-space-*',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'KPI band with trends',

@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: ['--cascade-space-*'],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Auto-filling grid',

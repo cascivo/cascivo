@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["breadcrumb", "navigation", "hierarchy"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "breadcrumb",
+    "navigation",
+    "hierarchy"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Breadcrumb",
@@ -56,7 +63,10 @@
     "accessibility": {
       "role": "navigation",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Enter"]
+      "keyboard": [
+        "Tab",
+        "Enter"
+      ]
     },
     "examples": [
       {
@@ -69,8 +79,15 @@
         "description": "Long trails collapse to the first item, an ellipsis, and the trailing items."
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["breadcrumb", "navigation", "hierarchy"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "breadcrumb",
+      "navigation",
+      "hierarchy"
+    ],
     "intent": {
       "whenToUse": [
         "Showing the user where the current page sits in a navigation hierarchy",

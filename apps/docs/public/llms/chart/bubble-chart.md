@@ -14,16 +14,16 @@ npx cascade add chart/bubble-chart
 
 ## Props
 
-| Prop          | Type                                                                 | Required | Default | Description                                                           |
-| ------------- | -------------------------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes      | —       | —                                                                     |
-| `title`       | `string`                                                             | yes      | —       | —                                                                     |
-| `description` | `string`                                                             | no       | —       | —                                                                     |
-| `width`       | `number`                                                             | no       | —       | —                                                                     |
-| `height`      | `number`                                                             | no       | `320`   | —                                                                     |
-| `tooltip`     | `boolean`                                                            | no       | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                                                             | no       | —       | —                                                                     |
-| `plain`       | `boolean`                                                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `width` | `number` | no | — | — |
+| `height` | `number` | no | `320` | — |
+| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
+| `className` | `string` | no | — | — |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -49,7 +49,7 @@ const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 - **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate points), Home/End (first/last point), Escape (clear focus)
 

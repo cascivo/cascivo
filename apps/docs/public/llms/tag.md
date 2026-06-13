@@ -27,12 +27,12 @@ npx cascade add tag
 
 ## Props
 
-| Prop           | Type         | Required | Default   | Description                                                     |
-| -------------- | ------------ | -------- | --------- | --------------------------------------------------------------- | -------- | --- | --------- | --- |
-| `variant`      | `'default'   | 'info'   | 'success' | 'warning'                                                       | 'error'` | no  | `default` | —   |
-| `size`         | `'sm'        | 'md'`    | no        | `md`                                                            | —        |
-| `onDismiss`    | `() => void` | no       | —         | When provided, renders a trailing remove button inside the chip |
-| `dismissLabel` | `string`     | no       | `Remove`  | —                                                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' | 'info' | 'success' | 'warning' | 'error'` | no | `default` | — |
+| `size` | `'sm' | 'md'` | no | `md` | — |
+| `onDismiss` | `() => void` | no | — | When provided, renders a trailing remove button inside the chip |
+| `dismissLabel` | `string` | no | `Remove` | — |
 
 ## Examples
 

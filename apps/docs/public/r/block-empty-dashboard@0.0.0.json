@@ -9,8 +9,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
     }
   ],
-  "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
-  "tags": ["block", "dashboard", "empty-state", "page"],
+  "dependencies": [
+    "@cascade-ui/react",
+    "layout/dashboard-layout"
+  ],
+  "tags": [
+    "block",
+    "dashboard",
+    "empty-state",
+    "page"
+  ],
   "category": "display",
   "meta": {
     "name": "EmptyDashboard",
@@ -30,7 +38,7 @@
     "tokens": [],
     "accessibility": {
       "role": "generic",
-      "wcag": "AA",
+      "wcag": "2.1-AA",
       "keyboard": []
     },
     "examples": [
@@ -40,8 +48,16 @@
         "description": "Empty dashboard"
       }
     ],
-    "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
-    "tags": ["block", "dashboard", "empty-state", "page"],
+    "dependencies": [
+      "@cascade-ui/react",
+      "layout/dashboard-layout"
+    ],
+    "tags": [
+      "block",
+      "dashboard",
+      "empty-state",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "A first-run or zero-data dashboard with an empty state and primary CTA",

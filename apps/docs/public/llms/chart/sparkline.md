@@ -14,14 +14,14 @@ npx cascade add chart/sparkline
 
 ## Props
 
-| Prop     | Type       | Required | Default | Description                 |
-| -------- | ---------- | -------- | ------- | --------------------------- |
-| `data`   | `number[]` | yes      | —       | Array of numeric values     |
-| `label`  | `string`   | yes      | —       | Accessible label            |
-| `width`  | `number`   | no       | `80`    | —                           |
-| `height` | `number`   | no       | `32`    | —                           |
-| `color`  | `string`   | no       | —       | Stroke color (CSS value)    |
-| `endDot` | `boolean`  | no       | —       | Show dot at last data point |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `number[]` | yes | — | Array of numeric values |
+| `label` | `string` | yes | — | Accessible label |
+| `width` | `number` | no | `80` | — |
+| `height` | `number` | no | `32` | — |
+| `color` | `string` | no | — | Stroke color (CSS value) |
+| `endDot` | `boolean` | no | — | Show dot at last data point |
 
 ## Examples
 
@@ -29,7 +29,8 @@ npx cascade add chart/sparkline
 
 ```tsx
 import { Sparkline } from '@cascade-ui/charts'
-;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
+
+<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
 ## Design tokens
@@ -38,7 +39,7 @@ import { Sparkline } from '@cascade-ui/charts'
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
 
 ## Dependencies

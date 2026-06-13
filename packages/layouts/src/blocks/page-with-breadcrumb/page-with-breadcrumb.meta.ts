@@ -9,7 +9,7 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     { title: 'Default', code: '<PageWithBreadcrumb />', description: 'Page with breadcrumb' },
   ],

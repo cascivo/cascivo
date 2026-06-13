@@ -14,10 +14,10 @@ npx cascade add block/users-table-page
 
 ## Props
 
-| Prop       | Type         | Required | Default | Description           |
-| ---------- | ------------ | -------- | ------- | --------------------- |
-| `users`    | `User[]`     | no       | —       | User data             |
-| `onInvite` | `() => void` | no       | —       | Invite button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `users` | `User[]` | no | — | User data |
+| `onInvite` | `() => void` | no | — | Invite button handler |
 
 ## Examples
 
@@ -31,7 +31,7 @@ Demo users table
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

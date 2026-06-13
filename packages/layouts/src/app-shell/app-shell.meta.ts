@@ -40,7 +40,7 @@ export const meta: ComponentMeta = {
     '--cascade-color-destructive-subtle',
     '--cascade-focus-ring',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',

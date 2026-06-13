@@ -14,9 +14,9 @@ npx cascade add block/stats-cards
 
 ## Props
 
-| Prop    | Type     | Required | Default | Description   |
-| ------- | -------- | -------- | ------- | ------------- |
-| `stats` | `Stat[]` | no       | —       | KPI stat data |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `Stat[]` | no | — | KPI stat data |
 
 ## Examples
 
@@ -30,7 +30,7 @@ Demo KPI stats
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

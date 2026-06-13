@@ -25,7 +25,7 @@ export const meta: ComponentMeta = {
     '--cascade-space-6',
     '--cascade-space-8',
   ],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Login',

@@ -9,7 +9,7 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [{ name: 'stats', type: 'Stat[]', required: false, description: 'KPI stat data' }],
   tokens: [],
-  accessibility: { role: 'generic', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<StatsCards />', description: 'Demo KPI stats' }],
   dependencies: ['@cascade-ui/react'],
   tags: ['block', 'stats', 'kpi', 'cards'],

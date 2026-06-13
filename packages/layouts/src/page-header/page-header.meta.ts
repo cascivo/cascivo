@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     '--cascade-color-text-muted',
     '--cascade-font-size-sm',
   ],
-  accessibility: { role: 'banner', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'banner', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic',

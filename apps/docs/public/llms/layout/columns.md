@@ -14,10 +14,10 @@ npx cascade add layout/columns
 
 ## Props
 
-| Prop    | Type | Required | Default | Description |
-| ------- | ---- | -------- | ------- | ----------- | --- | ----------------------- | --- | --- | --- | --- | --- | ------------------ |
-| `count` | `2   | 3        | 4`      | no          | —   | Number of equal columns |
-| `gap`   | `1   | 2        | 3       | 4           | 5   | 6                       | 8   | 10  | 12` | no  | —   | Spacing token step |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `count` | `2|3|4` | no | — | Number of equal columns |
+| `gap` | `1|2|3|4|5|6|8|10|12` | no | — | Spacing token step |
 
 ## Examples
 
@@ -26,11 +26,7 @@ npx cascade add layout/columns
 Three equal columns
 
 ```tsx
-<Columns count={3}>
-  <div>A</div>
-  <div>B</div>
-  <div>C</div>
-</Columns>
+<Columns count={3}><div>A</div><div>B</div><div>C</div></Columns>
 ```
 
 ## Design tokens
@@ -39,7 +35,7 @@ Three equal columns
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.1-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

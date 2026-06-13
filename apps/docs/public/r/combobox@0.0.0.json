@@ -12,16 +12,33 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["select", "combobox", "dropdown", "filter", "search"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "select",
+    "combobox",
+    "dropdown",
+    "filter",
+    "search"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Combobox",
     "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
     "category": "inputs",
-    "states": ["closed", "open", "error"],
+    "states": [
+      "closed",
+      "open",
+      "error"
+    ],
     "variants": [],
-    "sizes": ["sm", "md", "lg"],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "options",
@@ -114,7 +131,13 @@
     "accessibility": {
       "role": "combobox",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"]
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Enter",
+        "Escape",
+        "Tab"
+      ]
     },
     "examples": [
       {
@@ -122,8 +145,17 @@
         "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onChange={(value) => console.log(value)}\n/>"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["select", "combobox", "dropdown", "filter", "search"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "select",
+      "combobox",
+      "dropdown",
+      "filter",
+      "search"
+    ],
     "intent": {
       "whenToUse": [
         "Single-select from a long list where type-to-filter makes finding an option faster",

@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
     { name: 'className', type: 'string', required: false },
   ],
   tokens: ['--cascade-chart-1'],
-  accessibility: { role: 'figure', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'figure', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic KPI card',
