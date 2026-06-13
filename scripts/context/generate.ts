@@ -118,25 +118,43 @@ export interface ContextIndexEntry {
   contextUrl: string
 }
 
+export interface SpecRef {
+  id: string
+  title: string
+  path: string
+}
+
 export interface ContextIndex {
   generatedAt: string
   tagline: string
   authoringRules: string[]
   tokenCatalogUrl: string
-  boundaries: null
-  exceptions: null
+  specs: SpecRef[]
+  boundaries: unknown
+  exceptions: unknown
   components: ContextIndexEntry[]
 }
 
-export function buildContextIndex(registry: Registry, entries: RegistryEntry[]): ContextIndex {
+export interface ContextExtras {
+  specs?: SpecRef[]
+  boundaries?: unknown
+  exceptions?: unknown
+}
+
+export function buildContextIndex(
+  registry: Registry,
+  entries: RegistryEntry[],
+  extras: ContextExtras = {},
+): ContextIndex {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   return {
     generatedAt: new Date().toISOString(),
     tagline: 'The CSS-native, signal-driven, AI-first React design system',
     authoringRules: AUTHORING_RULES,
     tokenCatalogUrl: '/tokens.catalog.json',
-    boundaries: null,
-    exceptions: null,
+    specs: extras.specs ?? [],
+    boundaries: extras.boundaries ?? null,
+    exceptions: extras.exceptions ?? null,
     components: sorted.map((entry) => ({
       name: entry.meta?.name ?? entry.name,
       category: entry.category,
@@ -280,13 +298,38 @@ const REGISTRY_PATH = join(ROOT, 'registry.json')
 const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
 const CONTEXT_DIR = join(OUT_DIR, 'context')
 
+/** Read a generated JSON artifact; returns null if it doesn't exist yet. */
+function readJsonIfExists(path: string): Record<string, unknown> | null {
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'))
+  } catch {
+    return null
+  }
+}
+
 function main() {
   const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'))
   const entries = registry.components.filter((c) => c.type === 'component')
 
   mkdirSync(CONTEXT_DIR, { recursive: true })
 
-  const index = buildContextIndex(registry, entries)
+  const specsFile = readJsonIfExists(join(OUT_DIR, 'specs.json'))
+  const boundariesFile = readJsonIfExists(join(OUT_DIR, 'boundaries.json'))
+  const exceptionsFile = readJsonIfExists(join(OUT_DIR, 'exceptions.json'))
+
+  const specs = Array.isArray(specsFile?.specs)
+    ? (specsFile.specs as Array<{ id: string; title: string; path: string }>).map((s) => ({
+        id: s.id,
+        title: s.title,
+        path: s.path,
+      }))
+    : []
+
+  const index = buildContextIndex(registry, entries, {
+    specs,
+    boundaries: boundariesFile ?? null,
+    exceptions: exceptionsFile ?? null,
+  })
   writeFileSync(join(OUT_DIR, 'context.json'), JSON.stringify(index, null, 2) + '\n')
   console.log(`Wrote context.json with ${index.components.length} components`)
 

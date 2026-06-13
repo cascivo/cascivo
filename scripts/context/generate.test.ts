@@ -106,10 +106,24 @@ describe('buildContextIndex', () => {
     assert.match(index.generatedAt, /^\d{4}-\d{2}-\d{2}T/)
   })
 
-  it('has null boundaries and exceptions', () => {
+  it('defaults boundaries and exceptions to null and specs to []', () => {
     const index = buildContextIndex(FIXTURE_REGISTRY, [BUTTON])
     assert.equal(index.boundaries, null)
     assert.equal(index.exceptions, null)
+    assert.deepEqual(index.specs, [])
+  })
+
+  it('folds in specs, boundaries, and exceptions extras', () => {
+    const index = buildContextIndex(FIXTURE_REGISTRY, [BUTTON], {
+      specs: [{ id: 'spec-spacing', title: 'Spacing', path: '/docs/specs/spacing.md' }],
+      boundaries: { global: { strict: [], flexible: [] } },
+      exceptions: { exceptions: [{ id: 'EXC-001' }] },
+    })
+    assert.deepEqual(index.specs, [
+      { id: 'spec-spacing', title: 'Spacing', path: '/docs/specs/spacing.md' },
+    ])
+    assert.deepEqual(index.boundaries, { global: { strict: [], flexible: [] } })
+    assert.deepEqual(index.exceptions, { exceptions: [{ id: 'EXC-001' }] })
   })
 
   it('sets contextUrl as /context/<name>.md using registry entry name', () => {
