@@ -15,6 +15,7 @@
     "bench": "pnpm --filter bench-runner bench all",
     "audit:stories": "node scripts/quality/story-check.ts",
     "audit:signals": "bash scripts/checks/use-signals-gate.sh",
+    "fallback:check": "node scripts/checks/css-fallback.ts packages/components/src packages/tokens/src",
     "llms:generate": "node scripts/llms/generate.ts",
     "registry:generate": "node scripts/registry/generate.ts",
     "readme:generate": "node scripts/readme/generate.ts",
