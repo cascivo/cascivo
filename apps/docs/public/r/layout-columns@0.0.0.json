@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "grid", "columns"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "grid",
+    "columns"
+  ],
   "category": "layout",
   "meta": {
     "name": "Columns",
@@ -36,7 +42,9 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": [
+      "--cascade-space-*"
+    ],
     "accessibility": {
       "role": "generic",
       "wcag": "AA",
@@ -49,8 +57,14 @@
         "description": "Three equal columns"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "grid", "columns"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "grid",
+      "columns"
+    ],
     "intent": {
       "whenToUse": [
         "Equal-width multi-column content that collapses to one column when narrow",

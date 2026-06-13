@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "dashboard", "page"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "dashboard",
+    "page"
+  ],
   "category": "layout",
   "meta": {
     "name": "DashboardLayout",
@@ -42,7 +48,10 @@
         "description": "Optional aside panel (20rem)"
       }
     ],
-    "tokens": ["--cascade-space-4", "--cascade-space-6"],
+    "tokens": [
+      "--cascade-space-4",
+      "--cascade-space-6"
+    ],
     "accessibility": {
       "role": "generic",
       "wcag": "AA",
@@ -55,8 +64,14 @@
         "description": "Stats + main layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "dashboard", "page"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "dashboard",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "A dashboard page with a stats strip, main content area, and optional aside",

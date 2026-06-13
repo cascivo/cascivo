@@ -14,10 +14,10 @@ npx cascade add block/notification-center
 
 ## Props
 
-| Prop            | Type             | Required | Default | Description                   |
-| --------------- | ---------------- | -------- | ------- | ----------------------------- |
-| `notifications` | `Notification[]` | no       | —       | Notification items to display |
-| `onMarkAllRead` | `() => void`     | no       | —       | Mark all read button handler  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `notifications` | `Notification[]` | no | — | Notification items to display |
+| `onMarkAllRead` | `() => void` | no | — | Mark all read button handler |
 
 ## Examples
 

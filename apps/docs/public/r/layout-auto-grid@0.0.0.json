@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "grid", "responsive"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "grid",
+    "responsive"
+  ],
   "category": "layout",
   "meta": {
     "name": "AutoGrid",
@@ -38,7 +44,9 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": [
+      "--cascade-space-*"
+    ],
     "accessibility": {
       "role": "generic",
       "wcag": "AA",
@@ -51,8 +59,14 @@
         "description": "Items fill available space and wrap when narrower than 12rem"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "grid", "responsive"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "grid",
+      "responsive"
+    ],
     "intent": {
       "whenToUse": [
         "Responsive card or tile grids that auto-fit columns to available width",

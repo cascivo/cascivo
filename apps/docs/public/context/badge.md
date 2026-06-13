@@ -32,10 +32,10 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Props
 
-| Name      | Type       | Required    | Default   | Description |
-| --------- | ---------- | ----------- | --------- | ----------- | ------------- | ---------- | --- | ------- | --- |
-| `variant` | `'default' | 'secondary' | 'success' | 'warning'   | 'destructive' | 'outline'` | No  | default | —   |
-| `size`    | `'sm'      | 'md'`       | No        | md          | —             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'` | No | default | — |
+| `size` | `'sm' | 'md'` | No | md | — |
 
 ## Tokens
 
@@ -67,7 +67,7 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                           |
-| ----------- | -------- | ------------------------------------------------------------------------------ |
-| variant     | flexible | Choose the variant that matches the semantic meaning                           |
-| token names | strict   | Colors and radius must resolve to --cascade-\* tokens (--cascade-radius-badge) |
+| Area | Level | Note |
+|------|-------|------|
+| variant | flexible | Choose the variant that matches the semantic meaning |
+| token names | strict | Colors and radius must resolve to --cascade-* tokens (--cascade-radius-badge) |

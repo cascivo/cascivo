@@ -12,14 +12,23 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["overlay", "hint", "popover"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "overlay",
+    "hint",
+    "popover"
+  ],
   "category": "overlay",
   "meta": {
     "name": "Tooltip",
     "description": "Contextual label shown on hover or focus",
     "category": "overlay",
-    "states": ["hidden", "visible"],
+    "states": [
+      "hidden",
+      "visible"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -56,7 +65,10 @@
     "accessibility": {
       "role": "tooltip",
       "wcag": "AA",
-      "keyboard": ["Tab", "Escape"]
+      "keyboard": [
+        "Tab",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -64,8 +76,14 @@
         "code": "<Tooltip content=\"Copy to clipboard\"><Button>Copy</Button></Tooltip>"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["overlay", "hint", "popover"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "overlay",
+      "hint",
+      "popover"
+    ],
     "intent": {
       "whenToUse": [
         "Labeling an icon-only control or clarifying a terse element on hover or focus",

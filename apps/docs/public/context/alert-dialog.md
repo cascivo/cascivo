@@ -50,8 +50,8 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                                                                |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| dismiss behavior | strict   | No light-dismiss — closing must go through onConfirm/onCancel                                                       |
-| action labels    | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog                                     |
-| token names      | strict   | Visual styling resolves to semantic --cascade-color-\* tokens; destructive variant uses --cascade-color-destructive |
+| Area | Level | Note |
+|------|-------|------|
+| dismiss behavior | strict | No light-dismiss — closing must go through onConfirm/onCancel |
+| action labels | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog |
+| token names | strict | Visual styling resolves to semantic --cascade-color-* tokens; destructive variant uses --cascade-color-destructive |

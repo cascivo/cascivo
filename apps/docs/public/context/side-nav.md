@@ -32,18 +32,18 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 
 ## Props
 
-| Name                | Type                           | Required | Default             | Description                                                                                    |
-| ------------------- | ------------------------------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------- |
-| `items`             | `SideNavItem[]`                | Yes      | —                   | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
-| `collapsed`         | `boolean`                      | No       | —                   | Controlled collapsed state (rail mode)                                                         |
-| `defaultCollapsed`  | `boolean`                      | No       | false               | —                                                                                              |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | No       | —                   | —                                                                                              |
-| `ariaLabel`         | `string`                       | No       | Side navigation     | —                                                                                              |
-| `collapseLabel`     | `string`                       | No       | Collapse navigation | —                                                                                              |
-| `expandLabel`       | `string`                       | No       | Expand navigation   | —                                                                                              |
-| `expandOnHover`     | `boolean`                      | No       | false               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts               |
-| `footer`            | `ReactNode`                    | No       | —                   | Content rendered above the collapse toggle (e.g. version string, user info)                    |
-| `className`         | `string`                       | No       | —                   | —                                                                                              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `SideNavItem[]` | Yes | — | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
+| `collapsed` | `boolean` | No | — | Controlled collapsed state (rail mode) |
+| `defaultCollapsed` | `boolean` | No | false | — |
+| `onCollapsedChange` | `(collapsed: boolean) => void` | No | — | — |
+| `ariaLabel` | `string` | No | Side navigation | — |
+| `collapseLabel` | `string` | No | Collapse navigation | — |
+| `expandLabel` | `string` | No | Expand navigation | — |
+| `expandOnHover` | `boolean` | No | false | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
+| `footer` | `ReactNode` | No | — | Content rendered above the collapse toggle (e.g. version string, user info) |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -67,12 +67,7 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 ### Basic
 
 ```jsx
-<SideNav
-  items={[
-    { label: 'Home', href: '/', active: true },
-    { label: 'Reports', href: '/reports' },
-  ]}
-/>
+<SideNav items={[{ label: 'Home', href: '/', active: true }, { label: 'Reports', href: '/reports' }]} />
 ```
 
 ### With a group
@@ -99,7 +94,7 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                             |
-| ------------------------- | -------- | ---------------------------------------------------------------- |
-| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs                  |
-| token names               | strict   | Sizing, surfaces, and motion must resolve to --cascade-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs |
+| token names | strict | Sizing, surfaces, and motion must resolve to --cascade-* tokens |

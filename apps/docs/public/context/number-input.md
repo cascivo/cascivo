@@ -34,23 +34,23 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 ## Props
 
-| Name             | Type                       | Required       | Default   | Description                                                           |
-| ---------------- | -------------------------- | -------------- | --------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | --- |
-| `value`          | `number                    | null`          | No        | —                                                                     | —                                                                       |
-| `defaultValue`   | `number`                   | No             | —         | —                                                                     |
-| `onChange`       | `(value: number            | null) => void` | No        | —                                                                     | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
-| `min`            | `number`                   | No             | —         | —                                                                     |
-| `max`            | `number`                   | No             | —         | —                                                                     |
-| `step`           | `number`                   | No             | 1         | —                                                                     |
-| `precision`      | `number`                   | No             | —         | Decimal places applied on commit                                      |
-| `formatOptions`  | `Intl.NumberFormatOptions` | No             | —         | Display formatting applied on blur; raw editable string while focused |
-| `label`          | `string`                   | No             | —         | —                                                                     |
-| `hint`           | `string`                   | No             | —         | —                                                                     |
-| `error`          | `string`                   | No             | —         | —                                                                     |
-| `size`           | `'sm'                      | 'md'           | 'lg'`     | No                                                                    | md                                                                      | —   |
-| `disabled`       | `boolean`                  | No             | false     | —                                                                     |
-| `incrementLabel` | `string`                   | No             | Increment | —                                                                     |
-| `decrementLabel` | `string`                   | No             | Decrement | —                                                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number | null` | No | — | — |
+| `defaultValue` | `number` | No | — | — |
+| `onChange` | `(value: number | null) => void` | No | — | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `min` | `number` | No | — | — |
+| `max` | `number` | No | — | — |
+| `step` | `number` | No | 1 | — |
+| `precision` | `number` | No | — | Decimal places applied on commit |
+| `formatOptions` | `Intl.NumberFormatOptions` | No | — | Display formatting applied on blur; raw editable string while focused |
+| `label` | `string` | No | — | — |
+| `hint` | `string` | No | — | — |
+| `error` | `string` | No | — | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| `disabled` | `boolean` | No | false | — |
+| `incrementLabel` | `string` | No | Increment | — |
+| `decrementLabel` | `string` | No | Decrement | — |
 
 ## Tokens
 
@@ -74,7 +74,7 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 ### Currency
 
 ```jsx
-<NumberInput label="Price" precision={2} formatOptions={{ style: 'currency', currency: 'USD' }} />
+<NumberInput label="Price" precision={2} formatOptions={{ style: "currency", currency: "USD" }} />
 ```
 
 ### Stepped
@@ -85,8 +85,8 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 ## Boundaries
 
-| Area                  | Level    | Note                                                                           |
-| --------------------- | -------- | ------------------------------------------------------------------------------ |
-| token names           | strict   | Visual props must resolve to the listed --cascade-\* semantic tokens           |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Visual props must resolve to the listed --cascade-* semantic tokens |
 | formatting and bounds | flexible | min, max, step, precision, and formatOptions are free to suit the value domain |
-| stepper labels        | flexible | incrementLabel/decrementLabel override the i18n defaults                       |
+| stepper labels | flexible | incrementLabel/decrementLabel override the i18n defaults |

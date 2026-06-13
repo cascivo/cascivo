@@ -5,8 +5,16 @@
   "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "boxplot",
+    "box-whisker",
+    "statistics",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -78,8 +86,16 @@
         "code": "import { Boxplot } from '@cascade-ui/charts'\n\nconst series = [\n  { id: 'a', label: 'Group A', values: [1,2,3,4,5,6,7,8,9,10] },\n  { id: 'b', label: 'Group B', values: [3,5,6,7,8,8,9,9,10,15] },\n]\n<Boxplot series={series} title=\"Comparison\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "boxplot",
+      "box-whisker",
+      "statistics",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Comparing the distribution spread, median, and quartiles across groups",

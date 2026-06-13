@@ -12,15 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["section", "hero", "marketing"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "section",
+    "hero",
+    "marketing"
+  ],
   "category": "layout",
   "meta": {
     "name": "Hero",
     "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
     "category": "layout",
     "states": [],
-    "variants": ["centered", "split"],
+    "variants": [
+      "centered",
+      "split"
+    ],
     "sizes": [],
     "props": [
       {
@@ -94,8 +103,14 @@
         "description": "Two-column layout with copy on the left and media on the right"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "hero", "marketing"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "section",
+      "hero",
+      "marketing"
+    ],
     "intent": {
       "whenToUse": [
         "The primary page intro with eyebrow, title, description, actions, and media",

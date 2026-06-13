@@ -12,14 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["radio", "card", "selectable", "form"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "radio",
+    "card",
+    "selectable",
+    "form"
+  ],
   "category": "inputs",
   "meta": {
     "name": "RadioCard",
     "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
     "category": "inputs",
-    "states": ["default", "checked", "disabled"],
+    "states": [
+      "default",
+      "checked",
+      "disabled"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -57,7 +68,11 @@
     "accessibility": {
       "role": "radiogroup",
       "wcag": "AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Space"]
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Space"
+      ]
     },
     "examples": [
       {
@@ -66,8 +81,15 @@
         "description": "Single-select plan picker"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["radio", "card", "selectable", "form"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "radio",
+      "card",
+      "selectable",
+      "form"
+    ],
     "intent": {
       "whenToUse": [
         "Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)",

@@ -14,11 +14,11 @@ npx cascade add layout/grid
 
 ## Props
 
-| Prop   | Type     | Required | Default | Description                 |
-| ------ | -------- | -------- | ------- | --------------------------- | --- | --- | --- | --- | --- | --- | --- | ------------------ |
-| `cols` | `number` | no       | —       | Number of grid columns      |
-| `gap`  | `1       | 2        | 3       | 4                           | 5   | 6   | 8   | 10  | 12` | no  | —   | Spacing token step |
-| `span` | `number` | no       | —       | GridItem: column span count |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `cols` | `number` | no | — | Number of grid columns |
+| `gap` | `1|2|3|4|5|6|8|10|12` | no | — | Spacing token step |
+| `span` | `number` | no | — | GridItem: column span count |
 
 ## Examples
 
@@ -27,10 +27,7 @@ npx cascade add layout/grid
 3-column grid with spanning item
 
 ```tsx
-<Grid cols={3} gap={4}>
-  <GridItem span={1}>A</GridItem>
-  <GridItem span={2}>B</GridItem>
-</Grid>
+<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>
 ```
 
 ## Design tokens

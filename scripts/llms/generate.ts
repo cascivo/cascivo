@@ -49,6 +49,11 @@ interface ComponentMeta {
   tags?: string[]
 }
 
+interface ComponentIntent {
+  whenToUse?: string[]
+  whenNotToUse?: string[]
+}
+
 interface RegistryEntry {
   name: string
   type: string
@@ -58,7 +63,7 @@ interface RegistryEntry {
   files: string[]
   dependencies?: string[]
   tags?: string[]
-  meta?: ComponentMeta
+  meta?: ComponentMeta & { intent?: ComponentIntent }
 }
 
 interface Registry {
@@ -204,6 +209,29 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `validate_view` — validate a view config against the schema')
   lines.push('- `add_to_project` — install components into the user project')
   lines.push('')
+  lines.push('## Context resources')
+  lines.push('')
+  lines.push(
+    'The context layer provides machine-readable WHY — intent, boundaries, and closed-set tokens.',
+  )
+  lines.push('')
+  lines.push(`- Context bundle: ${BASE_URL}/context.json`)
+  lines.push(`- Token catalog (closed set): ${BASE_URL}/tokens.catalog.json`)
+  lines.push(`- Per-component context: ${BASE_URL}/context/<name>.md`)
+  lines.push('')
+  lines.push('## How to select a component')
+  lines.push('')
+  lines.push('Use the MCP `select_component` tool with a natural-language need:')
+  lines.push('  select_component({ need: "show a transient success message" })')
+  lines.push('')
+  lines.push("Or browse the `related` edges in each component's intent:")
+  lines.push('  get_context({ name: "Toast" }) → returns intent.related edges to neighbours')
+  lines.push('')
+  lines.push('New MCP tools:')
+  lines.push('- `get_tokens` — closed-set token catalog (filter by group/layer)')
+  lines.push('- `get_context` — full context for one component (intent + boundaries + tokens)')
+  lines.push('- `select_component` — deterministic ranking of components by need description')
+  lines.push('')
   lines.push('## Component authoring rules (for cascade:extend)')
   lines.push('')
   lines.push(
@@ -227,6 +255,19 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   for (const entry of sorted) {
     lines.push(`- [${entry.name}](/llms/${entry.name}.md) — ${entry.description}`)
+  }
+
+  lines.push('')
+  lines.push('## Component intent summaries')
+  lines.push('')
+
+  for (const entry of sorted) {
+    const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
+    if (firstWhenToUse) {
+      lines.push(
+        `- [${entry.meta?.name ?? entry.name}](/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
+      )
+    }
   }
 
   lines.push('')

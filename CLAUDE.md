@@ -137,7 +137,7 @@ pnpm exec vp run -r check
 pnpm test
 
 # 5. Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
-pnpm registry:generate && pnpm readme:generate && pnpm llms:generate
+pnpm regen
 pnpm exec vp check --fix
 git diff --exit-code
 ```

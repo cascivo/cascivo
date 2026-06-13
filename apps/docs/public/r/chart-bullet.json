@@ -5,8 +5,16 @@
   "description": "Bullet chart with background range bands, measure bar, and target tick.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "bullet",
+    "kpi",
+    "progress",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -87,8 +95,16 @@
         "code": "import { Bullet } from '@cascade-ui/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "bullet",
+      "kpi",
+      "progress",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Showing a single measure against a target with qualitative range bands",

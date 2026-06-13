@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["form", "range", "input"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "form",
+    "range",
+    "input"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Slider",
@@ -73,7 +79,14 @@
     "accessibility": {
       "role": "slider",
       "wcag": "AA",
-      "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+      "keyboard": [
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End"
+      ]
     },
     "examples": [
       {
@@ -85,8 +98,14 @@
         "code": "<Slider label=\"Rating\" min={0} max={5} step={1} />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["form", "range", "input"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "form",
+      "range",
+      "input"
+    ],
     "intent": {
       "whenToUse": [
         "Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine",

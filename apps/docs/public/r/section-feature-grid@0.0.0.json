@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["section", "features", "grid"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "section",
+    "features",
+    "grid"
+  ],
   "category": "layout",
   "meta": {
     "name": "FeatureGrid",
@@ -79,8 +85,14 @@
         "description": "Four-item text-only feature grid with section heading"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "features", "grid"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "section",
+      "features",
+      "grid"
+    ],
     "intent": {
       "whenToUse": [
         "A feature section laying out items in an auto-fitting grid",

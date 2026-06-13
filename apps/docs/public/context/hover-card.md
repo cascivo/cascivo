@@ -43,8 +43,8 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                                       |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------ |
-| token names      | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascade-\* tokens |
-| open/close delay | flexible | openDelay and closeDelay are tunable per instance (defaults 300/100ms)                     |
-| content          | flexible | HoverCardContent accepts arbitrary children                                                |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Surface, border, radius, shadow, and motion must resolve to the listed --cascade-* tokens |
+| open/close delay | flexible | openDelay and closeDelay are tunable per instance (defaults 300/100ms) |
+| content | flexible | HoverCardContent accepts arbitrary children |

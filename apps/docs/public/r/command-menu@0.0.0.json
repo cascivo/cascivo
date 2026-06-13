@@ -12,14 +12,27 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "overlay",
+    "command",
+    "palette",
+    "search",
+    "cmdk",
+    "keyboard"
+  ],
   "category": "overlay",
   "meta": {
     "name": "CommandMenu",
     "description": "Cmd+K command palette with fuzzy search over grouped commands",
     "category": "overlay",
-    "states": ["closed", "open"],
+    "states": [
+      "closed",
+      "open"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -98,7 +111,15 @@
     "accessibility": {
       "role": "combobox",
       "wcag": "AA",
-      "keyboard": ["Cmd/Ctrl+K", "ArrowDown", "ArrowUp", "Home", "End", "Enter", "Escape"]
+      "keyboard": [
+        "Cmd/Ctrl+K",
+        "ArrowDown",
+        "ArrowUp",
+        "Home",
+        "End",
+        "Enter",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -106,8 +127,18 @@
         "code": "<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "overlay",
+      "command",
+      "palette",
+      "search",
+      "cmdk",
+      "keyboard"
+    ],
     "intent": {
       "whenToUse": [
         "Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate",

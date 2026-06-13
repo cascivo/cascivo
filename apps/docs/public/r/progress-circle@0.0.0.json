@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["progress", "loading", "circle", "feedback"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "progress",
+    "loading",
+    "circle",
+    "feedback"
+  ],
   "category": "feedback",
   "meta": {
     "name": "ProgressCircle",
@@ -21,7 +28,11 @@
     "category": "feedback",
     "states": [],
     "variants": [],
-    "sizes": ["sm", "md", "lg"],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "value",
@@ -55,7 +66,11 @@
         "description": "Accessible name announced by screen readers"
       }
     ],
-    "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+    "tokens": [
+      "--cascade-color-border",
+      "--cascade-color-accent",
+      "--cascade-color-text"
+    ],
     "accessibility": {
       "role": "progressbar",
       "wcag": "AA",
@@ -75,8 +90,15 @@
         "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["progress", "loading", "circle", "feedback"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "progress",
+      "loading",
+      "circle",
+      "feedback"
+    ],
     "intent": {
       "whenToUse": [
         "Showing determinate progress compactly as a circular arc",

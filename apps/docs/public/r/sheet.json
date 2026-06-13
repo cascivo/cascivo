@@ -12,14 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["overlay", "drawer", "panel", "slide"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "overlay",
+    "drawer",
+    "panel",
+    "slide"
+  ],
   "category": "overlay",
   "meta": {
     "name": "Sheet",
     "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
     "category": "overlay",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -34,11 +45,23 @@
     "accessibility": {
       "role": "dialog",
       "wcag": "AA",
-      "keyboard": ["Escape", "Tab", "Shift+Tab"]
+      "keyboard": [
+        "Escape",
+        "Tab",
+        "Shift+Tab"
+      ]
     },
     "examples": [],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["overlay", "drawer", "panel", "slide"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "overlay",
+      "drawer",
+      "panel",
+      "slide"
+    ],
     "intent": {
       "whenToUse": [
         "Showing secondary content or a form in a panel that slides in from a screen edge",

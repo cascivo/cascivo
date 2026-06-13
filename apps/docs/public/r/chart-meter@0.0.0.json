@@ -5,8 +5,16 @@
   "description": "Progress meter in bar or gauge variant with threshold coloring.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "meter",
+    "gauge",
+    "progress",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -14,7 +22,10 @@
     "description": "Progress meter in bar or gauge variant with threshold coloring.",
     "category": "chart",
     "states": [],
-    "variants": ["bar", "gauge"],
+    "variants": [
+      "bar",
+      "gauge"
+    ],
     "sizes": [],
     "props": [
       {
@@ -63,7 +74,9 @@
         "required": false
       }
     ],
-    "tokens": ["--cascade-chart-1"],
+    "tokens": [
+      "--cascade-chart-1"
+    ],
     "accessibility": {
       "role": "meter",
       "wcag": "AA",
@@ -75,8 +88,16 @@
         "code": "import { Meter } from '@cascade-ui/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "meter",
+      "gauge",
+      "progress",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Showing a rated or gauged value within a known min/max range",

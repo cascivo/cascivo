@@ -32,11 +32,11 @@ role="list" structures the entries; each switch target is a real link with the a
 
 ## Props
 
-| Name        | Type              | Required | Default            | Description                                                                   |
-| ----------- | ----------------- | -------- | ------------------ | ----------------------------------------------------------------------------- |
-| `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label`     | `string`          | No       | Switch application | —                                                                             |
-| `className` | `string`          | No       | —                  | —                                                                             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `SwitcherEntry[]` | Yes | — | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
+| `label` | `string` | No | Switch application | — |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -66,7 +66,7 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 
 ## Boundaries
 
-| Area        | Level    | Note                                                          |
-| ----------- | -------- | ------------------------------------------------------------- |
-| dividers    | flexible | Dividers group entries as needed                              |
-| token names | strict   | Accent and surface colors must resolve to --cascade-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| dividers | flexible | Dividers group entries as needed |
+| token names | strict | Accent and surface colors must resolve to --cascade-* tokens |

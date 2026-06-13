@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "flex", "stack", "spacing"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "flex",
+    "stack",
+    "spacing"
+  ],
   "category": "layout",
   "meta": {
     "name": "Stack",
@@ -54,7 +61,9 @@
         "description": "Allow wrapping"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": [
+      "--cascade-space-*"
+    ],
     "accessibility": {
       "role": "generic",
       "wcag": "AA",
@@ -72,8 +81,15 @@
         "description": "Row layout"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "flex", "stack", "spacing"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "flex",
+      "stack",
+      "spacing"
+    ],
     "intent": {
       "whenToUse": [
         "Arranging children vertically or horizontally with a consistent gap",

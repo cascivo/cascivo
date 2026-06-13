@@ -12,14 +12,26 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-  "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n"
+  ],
+  "tags": [
+    "navigation",
+    "header",
+    "shell",
+    "console",
+    "menu",
+    "app-shell"
+  ],
   "category": "navigation",
   "meta": {
     "name": "ShellHeader",
     "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
     "category": "navigation",
-    "states": ["default"],
+    "states": [
+      "default"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -85,7 +97,14 @@
     "accessibility": {
       "role": "banner",
       "wcag": "AA",
-      "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+      "keyboard": [
+        "Tab",
+        "Enter",
+        "Space",
+        "ArrowDown",
+        "ArrowUp",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -94,8 +113,18 @@
         "description": "Brand with prefix, dropdown nav, global icon action"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-    "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n"
+    ],
+    "tags": [
+      "navigation",
+      "header",
+      "shell",
+      "console",
+      "menu",
+      "app-shell"
+    ],
     "intent": {
       "whenToUse": [
         "Building console/admin app chrome with brand, dropdown nav, and global icon actions",

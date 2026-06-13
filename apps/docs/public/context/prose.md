@@ -53,12 +53,7 @@ Adds no roles of its own — it styles descendant native elements, so the docume
 ### Authored content
 
 ```jsx
-<Prose>
-  <h2>Install</h2>
-  <p>
-    Run <code>npx cascade init</code>.
-  </p>
-</Prose>
+<Prose><h2>Install</h2><p>Run <code>npx cascade init</code>.</p></Prose>
 ```
 
 ### Rendered markdown
@@ -71,7 +66,7 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 
 ## Boundaries
 
-| Area        | Level    | Note                                                               |
-| ----------- | -------- | ------------------------------------------------------------------ |
-| source HTML | flexible | Accepts authored children or rendered markup                       |
-| token names | strict   | All typography and surface styling resolves to --cascade-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| source HTML | flexible | Accepts authored children or rendered markup |
+| token names | strict | All typography and surface styling resolves to --cascade-* tokens |

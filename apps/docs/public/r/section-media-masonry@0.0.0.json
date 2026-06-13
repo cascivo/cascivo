@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["section", "gallery", "masonry"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "section",
+    "gallery",
+    "masonry"
+  ],
   "category": "layout",
   "meta": {
     "name": "MediaMasonry",
@@ -82,8 +88,14 @@
         "description": "Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "gallery", "masonry"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "section",
+      "gallery",
+      "masonry"
+    ],
     "intent": {
       "whenToUse": [
         "A full-width media gallery section with masonry packing",

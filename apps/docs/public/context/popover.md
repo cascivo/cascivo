@@ -43,7 +43,7 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                      |
-| ----------- | -------- | ------------------------------------------------------------------------- |
-| token names | strict   | Panel styling must resolve to the listed --cascade-\* tokens              |
-| content     | flexible | Trigger and panel content are arbitrary children supplied by the consumer |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Panel styling must resolve to the listed --cascade-* tokens |
+| content | flexible | Trigger and panel content are arbitrary children supplied by the consumer |

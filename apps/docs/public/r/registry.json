@@ -16,14 +16,23 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/accordion/accordion.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["navigation", "collapse", "disclosure"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "navigation",
+        "collapse",
+        "disclosure"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Accordion",
         "description": "Vertically stacked, collapsible content sections",
         "category": "navigation",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -59,11 +68,20 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": [
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["navigation", "collapse", "disclosure"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "navigation",
+          "collapse",
+          "disclosure"
+        ],
         "intent": {
           "whenToUse": [
             "Progressively disclosing sections of related content the user reads top to bottom",
@@ -118,15 +136,28 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["notification", "message", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "notification",
+        "message",
+        "feedback"
+      ],
       "category": "display",
       "meta": {
         "name": "Alert",
         "description": "Highlights a short, important message inline",
         "category": "display",
         "states": [],
-        "variants": ["default", "info", "success", "warning", "destructive"],
+        "variants": [
+          "default",
+          "info",
+          "success",
+          "warning",
+          "destructive"
+        ],
         "sizes": [],
         "props": [
           {
@@ -176,8 +207,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["notification", "message", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "notification",
+          "message",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Surfacing a persistent, contextual message inline within a view (warning, error, info, success)",
@@ -241,15 +279,29 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert-dialog/alert-dialog.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "dialog", "confirm", "destructive"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "dialog",
+        "confirm",
+        "destructive"
+      ],
       "category": "overlay",
       "meta": {
         "name": "AlertDialog",
         "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
         "category": "overlay",
-        "states": ["open", "closed"],
-        "variants": ["default", "destructive"],
+        "states": [
+          "open",
+          "closed"
+        ],
+        "variants": [
+          "default",
+          "destructive"
+        ],
         "sizes": [],
         "props": [],
         "tokens": [
@@ -265,11 +317,24 @@
         "accessibility": {
           "role": "alertdialog",
           "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
+          "keyboard": [
+            "Tab",
+            "Shift+Tab",
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "dialog", "confirm", "destructive"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "dialog",
+          "confirm",
+          "destructive"
+        ],
         "intent": {
           "whenToUse": [
             "Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens",
@@ -346,16 +411,32 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/avatar/avatar.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["user", "profile", "image"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "user",
+        "profile",
+        "image"
+      ],
       "category": "display",
       "meta": {
         "name": "Avatar",
         "description": "Displays a user image with initials fallback",
         "category": "display",
-        "states": ["loading", "loaded", "error"],
+        "states": [
+          "loading",
+          "loaded",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["xs", "sm", "md", "lg", "xl"],
+        "sizes": [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl"
+        ],
         "props": [
           {
             "name": "src",
@@ -397,8 +478,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["user", "profile", "image"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "user",
+          "profile",
+          "image"
+        ],
         "intent": {
           "whenToUse": [
             "Representing a person or entity with a thumbnail image and initials fallback",
@@ -453,16 +540,32 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/badge/badge.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["label", "status", "tag"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "label",
+        "status",
+        "tag"
+      ],
       "category": "display",
       "meta": {
         "name": "Badge",
         "description": "Small status label or category indicator",
         "category": "display",
         "states": [],
-        "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
-        "sizes": ["sm", "md"],
+        "variants": [
+          "default",
+          "secondary",
+          "success",
+          "warning",
+          "destructive",
+          "outline"
+        ],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "variant",
@@ -490,8 +593,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["label", "status", "tag"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "label",
+          "status",
+          "tag"
+        ],
         "intent": {
           "whenToUse": [
             "Labeling an item with a short, static status or category (e.g. \"New\", \"Beta\")",
@@ -553,7 +662,13 @@
         "layout/app-shell",
         "layout/page-header"
       ],
-      "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+      "tags": [
+        "block",
+        "console",
+        "shell",
+        "navigation",
+        "carbon-parity"
+      ],
       "category": "display",
       "meta": {
         "name": "ConsoleApp",
@@ -576,7 +691,10 @@
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab"]
+          "keyboard": [
+            "Escape",
+            "Tab"
+          ]
         },
         "examples": [],
         "dependencies": [
@@ -585,7 +703,13 @@
           "layout/app-shell",
           "layout/page-header"
         ],
-        "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
+        "tags": [
+          "block",
+          "console",
+          "shell",
+          "navigation",
+          "carbon-parity"
+        ],
         "intent": {
           "whenToUse": [
             "A Carbon-parity console shell with icon-rail nav, header panels, and aside",
@@ -624,8 +748,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
-      "tags": ["block", "dashboard", "charts", "kpi"],
+      "dependencies": [
+        "@cascade-ui/charts",
+        "@cascade-ui/react"
+      ],
+      "tags": [
+        "block",
+        "dashboard",
+        "charts",
+        "kpi"
+      ],
       "category": "display",
       "meta": {
         "name": "DashboardCharts",
@@ -642,8 +774,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts", "@cascade-ui/react"],
-        "tags": ["block", "dashboard", "charts", "kpi"],
+        "dependencies": [
+          "@cascade-ui/charts",
+          "@cascade-ui/react"
+        ],
+        "tags": [
+          "block",
+          "dashboard",
+          "charts",
+          "kpi"
+        ],
         "intent": {
           "whenToUse": [
             "A prebuilt dashboard with KPI tiles, line, bar, and pie charts",
@@ -682,8 +822,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
-      "tags": ["block", "dashboard", "empty-state", "page"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/dashboard-layout"
+      ],
+      "tags": [
+        "block",
+        "dashboard",
+        "empty-state",
+        "page"
+      ],
       "category": "display",
       "meta": {
         "name": "EmptyDashboard",
@@ -707,8 +855,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/dashboard-layout"],
-        "tags": ["block", "dashboard", "empty-state", "page"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/dashboard-layout"
+        ],
+        "tags": [
+          "block",
+          "dashboard",
+          "empty-state",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A first-run or zero-data dashboard with an empty state and primary CTA",
@@ -742,8 +898,17 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/login-page/login-page.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
-      "tags": ["block", "login", "auth", "form", "page"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/auth-layout"
+      ],
+      "tags": [
+        "block",
+        "login",
+        "auth",
+        "form",
+        "page"
+      ],
       "category": "display",
       "meta": {
         "name": "LoginPage",
@@ -767,8 +932,17 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/auth-layout"],
-        "tags": ["block", "login", "auth", "form", "page"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/auth-layout"
+        ],
+        "tags": [
+          "block",
+          "login",
+          "auth",
+          "form",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A complete login page with email and password form",
@@ -802,8 +976,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/stack"],
-      "tags": ["block", "notifications", "alerts"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/stack"
+      ],
+      "tags": [
+        "block",
+        "notifications",
+        "alerts"
+      ],
       "category": "display",
       "meta": {
         "name": "NotificationCenter",
@@ -833,8 +1014,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/stack"],
-        "tags": ["block", "notifications", "alerts"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/stack"
+        ],
+        "tags": [
+          "block",
+          "notifications",
+          "alerts"
+        ],
         "intent": {
           "whenToUse": [
             "A list of notification alerts with a mark-all-read action",
@@ -868,8 +1056,17 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
-      "tags": ["block", "breadcrumb", "page", "navigation"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/page-header",
+        "layout/center"
+      ],
+      "tags": [
+        "block",
+        "breadcrumb",
+        "page",
+        "navigation"
+      ],
       "category": "display",
       "meta": {
         "name": "PageWithBreadcrumb",
@@ -886,8 +1083,17 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
-        "tags": ["block", "breadcrumb", "page", "navigation"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/page-header",
+          "layout/center"
+        ],
+        "tags": [
+          "block",
+          "breadcrumb",
+          "page",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "A centered content page with breadcrumb navigation and a page header",
@@ -921,8 +1127,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
-      "tags": ["block", "settings", "form", "page"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/settings-layout"
+      ],
+      "tags": [
+        "block",
+        "settings",
+        "form",
+        "page"
+      ],
       "category": "display",
       "meta": {
         "name": "SettingsFormPage",
@@ -946,8 +1160,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
-        "tags": ["block", "settings", "form", "page"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/settings-layout"
+        ],
+        "tags": [
+          "block",
+          "settings",
+          "form",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A settings page with a profile form inside a two-column settings layout",
@@ -981,8 +1203,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/app-shell"],
-      "tags": ["block", "sidebar", "navigation", "app-shell"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/app-shell"
+      ],
+      "tags": [
+        "block",
+        "sidebar",
+        "navigation",
+        "app-shell"
+      ],
       "category": "display",
       "meta": {
         "name": "SidebarApp",
@@ -999,8 +1229,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/app-shell"],
-        "tags": ["block", "sidebar", "navigation", "app-shell"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/app-shell"
+        ],
+        "tags": [
+          "block",
+          "sidebar",
+          "navigation",
+          "app-shell"
+        ],
         "intent": {
           "whenToUse": [
             "A ready-made app shell with opinionated collapsible sidebar and top header",
@@ -1039,8 +1277,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react"],
-      "tags": ["block", "stats", "kpi", "cards"],
+      "dependencies": [
+        "@cascade-ui/react"
+      ],
+      "tags": [
+        "block",
+        "stats",
+        "kpi",
+        "cards"
+      ],
       "category": "display",
       "meta": {
         "name": "StatsCards",
@@ -1064,8 +1309,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react"],
-        "tags": ["block", "stats", "kpi", "cards"],
+        "dependencies": [
+          "@cascade-ui/react"
+        ],
+        "tags": [
+          "block",
+          "stats",
+          "kpi",
+          "cards"
+        ],
         "intent": {
           "whenToUse": [
             "A grid of KPI stat cards with trend badges",
@@ -1104,8 +1356,17 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
         }
       ],
-      "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
-      "tags": ["block", "users", "table", "page"],
+      "dependencies": [
+        "@cascade-ui/react",
+        "layout/page-header",
+        "layout/stack"
+      ],
+      "tags": [
+        "block",
+        "users",
+        "table",
+        "page"
+      ],
       "category": "display",
       "meta": {
         "name": "UsersTablePage",
@@ -1135,8 +1396,17 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
-        "tags": ["block", "users", "table", "page"],
+        "dependencies": [
+          "@cascade-ui/react",
+          "layout/page-header",
+          "layout/stack"
+        ],
+        "tags": [
+          "block",
+          "users",
+          "table",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A full user-management page with table, search, and invite action",
@@ -1173,8 +1443,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "quote", "blockquote", "citation"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "quote",
+        "blockquote",
+        "citation"
+      ],
       "category": "display",
       "meta": {
         "name": "Blockquote",
@@ -1207,8 +1484,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "quote", "blockquote", "citation"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "quote",
+          "blockquote",
+          "citation"
+        ],
         "intent": {
           "whenToUse": [
             "Setting off a quoted passage from another source with visual emphasis",
@@ -1266,8 +1550,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/breadcrumb/breadcrumb.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["breadcrumb", "navigation", "hierarchy"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "breadcrumb",
+        "navigation",
+        "hierarchy"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Breadcrumb",
@@ -1310,11 +1601,21 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter"]
+          "keyboard": [
+            "Tab",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["breadcrumb", "navigation", "hierarchy"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "breadcrumb",
+          "navigation",
+          "hierarchy"
+        ],
         "intent": {
           "whenToUse": [
             "Showing the user where the current page sits in a navigation hierarchy",
@@ -1373,16 +1674,34 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/button/button.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["action", "form", "interactive"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "action",
+        "form",
+        "interactive"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Button",
         "description": "Triggers an action or event",
         "category": "inputs",
-        "states": ["idle", "loading"],
-        "variants": ["primary", "secondary", "ghost", "destructive"],
-        "sizes": ["sm", "md", "lg"],
+        "states": [
+          "idle",
+          "loading"
+        ],
+        "variants": [
+          "primary",
+          "secondary",
+          "ghost",
+          "destructive"
+        ],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "variant",
@@ -1426,11 +1745,20 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": [
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["action", "form", "interactive"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "action",
+          "form",
+          "interactive"
+        ],
         "intent": {
           "whenToUse": [
             "Triggering an action or navigation the user initiates by click/press",
@@ -1493,15 +1821,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["container", "layout", "surface"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "container",
+        "layout",
+        "surface"
+      ],
       "category": "display",
       "meta": {
         "name": "Card",
         "description": "Container for grouping related content",
         "category": "display",
         "states": [],
-        "variants": ["default", "outlined", "elevated"],
+        "variants": [
+          "default",
+          "outlined",
+          "elevated"
+        ],
         "sizes": [],
         "props": [
           {
@@ -1529,8 +1867,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["container", "layout", "surface"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "container",
+          "layout",
+          "surface"
+        ],
         "intent": {
           "whenToUse": [
             "Grouping related content into a visually distinct surface with border/shadow",
@@ -1578,8 +1922,14 @@
       "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "area", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "area",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -1687,8 +2037,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "area", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "area",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing cumulative volume or magnitude of a trend over continuous time",
@@ -1723,8 +2079,14 @@
       "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "bar", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "bar",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -1732,7 +2094,10 @@
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
         "category": "chart",
         "states": [],
-        "variants": ["grouped", "stacked"],
+        "variants": [
+          "grouped",
+          "stacked"
+        ],
         "sizes": [],
         "props": [
           {
@@ -1828,8 +2193,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "bar", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "bar",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Comparing discrete categorical values across groups",
@@ -1864,8 +2235,16 @@
       "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "boxplot",
+        "box-whisker",
+        "statistics",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -1932,8 +2311,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "boxplot",
+          "box-whisker",
+          "statistics",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Comparing the distribution spread, median, and quartiles across groups",
@@ -1968,8 +2355,16 @@
       "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "bubble",
+        "scatter",
+        "three-dimensional",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2035,8 +2430,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "bubble",
+          "scatter",
+          "three-dimensional",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Plotting three dimensions at once — x, y, and a size-encoded magnitude",
@@ -2066,8 +2469,16 @@
       "description": "Bullet chart with background range bands, measure bar, and target tick.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "bullet",
+        "kpi",
+        "progress",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2143,8 +2554,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "bullet",
+          "kpi",
+          "progress",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing a single measure against a target with qualitative range bands",
@@ -2179,8 +2598,17 @@
       "description": "Combination bar + line chart on shared or dual y-axes.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "combo",
+        "bar",
+        "line",
+        "dual-axis",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2243,15 +2671,27 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-chart-2"
+        ],
         "accessibility": {
           "role": "img",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "combo",
+          "bar",
+          "line",
+          "dual-axis",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Overlaying two related metrics with different scales (e.g. volume bars + rate line)",
@@ -2286,8 +2726,15 @@
       "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "heatmap", "matrix", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "heatmap",
+        "matrix",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2338,15 +2785,25 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1", "--cascade-color-neutral-100"],
+        "tokens": [
+          "--cascade-chart-1",
+          "--cascade-color-neutral-100"
+        ],
         "accessibility": {
           "role": "img",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "heatmap", "matrix", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "heatmap",
+          "matrix",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing magnitude across two categorical dimensions as a color-coded matrix",
@@ -2376,8 +2833,16 @@
       "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "histogram",
+        "distribution",
+        "frequency",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2440,15 +2905,25 @@
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": [
+          "--cascade-chart-1"
+        ],
         "accessibility": {
           "role": "img",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "histogram",
+          "distribution",
+          "frequency",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing the frequency distribution of a single continuous variable",
@@ -2483,8 +2958,16 @@
       "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "kpi",
+        "metric",
+        "dashboard",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2536,15 +3019,25 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": [
+          "--cascade-chart-1"
+        ],
         "accessibility": {
           "role": "figure",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "kpi",
+          "metric",
+          "dashboard",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Highlighting a single headline metric with an optional change delta",
@@ -2579,8 +3072,15 @@
       "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "line", "time-series", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "line",
+        "time-series",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2702,8 +3202,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "line", "time-series", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "line",
+          "time-series",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing trends and precise values over continuous time or a numeric range",
@@ -2738,8 +3245,16 @@
       "description": "Progress meter in bar or gauge variant with threshold coloring.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "meter",
+        "gauge",
+        "progress",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2747,7 +3262,10 @@
         "description": "Progress meter in bar or gauge variant with threshold coloring.",
         "category": "chart",
         "states": [],
-        "variants": ["bar", "gauge"],
+        "variants": [
+          "bar",
+          "gauge"
+        ],
         "sizes": [],
         "props": [
           {
@@ -2796,15 +3314,25 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": [
+          "--cascade-chart-1"
+        ],
         "accessibility": {
           "role": "meter",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "meter",
+          "gauge",
+          "progress",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing a rated or gauged value within a known min/max range",
@@ -2839,8 +3367,15 @@
       "description": "Pie or donut chart with hover segments and optional legend.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "pie", "donut", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "pie",
+        "donut",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -2848,7 +3383,10 @@
         "description": "Pie or donut chart with hover segments and optional legend.",
         "category": "chart",
         "states": [],
-        "variants": ["pie", "donut"],
+        "variants": [
+          "pie",
+          "donut"
+        ],
         "sizes": [],
         "props": [
           {
@@ -2918,8 +3456,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "pie", "donut", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "pie",
+          "donut",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing part-of-whole proportions with five or fewer slices",
@@ -2954,8 +3499,16 @@
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "radar",
+        "spider",
+        "polar",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -3034,8 +3587,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "radar", "spider", "polar", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "radar",
+          "spider",
+          "polar",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Comparing several entities across the same set of quantitative dimensions",
@@ -3065,8 +3626,15 @@
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "scatter", "plot", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "scatter",
+        "plot",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -3156,8 +3724,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "scatter", "plot", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "scatter",
+          "plot",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Revealing correlation or clustering between two numeric variables",
@@ -3192,8 +3767,16 @@
       "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "sparkline",
+        "inline",
+        "trend",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -3241,15 +3824,25 @@
             "description": "Show dot at last data point"
           }
         ],
-        "tokens": ["--cascade-chart-1"],
+        "tokens": [
+          "--cascade-chart-1"
+        ],
         "accessibility": {
           "role": "img",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "sparkline",
+          "inline",
+          "trend",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Embedding a compact micro-trend inline in text, tables, or KPI cards",
@@ -3284,8 +3877,16 @@
       "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
       "version": "0.0.0",
       "files": [],
-      "dependencies": ["@cascade-ui/charts"],
-      "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
+      "dependencies": [
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "chart",
+        "treemap",
+        "hierarchy",
+        "part-to-whole",
+        "data-viz"
+      ],
       "category": "chart",
       "install": "@cascade-ui/charts",
       "meta": {
@@ -3351,8 +3952,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/charts"],
-        "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
+        "dependencies": [
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "chart",
+          "treemap",
+          "hierarchy",
+          "part-to-whole",
+          "data-viz"
+        ],
         "intent": {
           "whenToUse": [
             "Showing part-to-whole proportions across many segments in a compact area",
@@ -3394,14 +4003,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox/checkbox.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "toggle", "boolean"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "toggle",
+        "boolean"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Checkbox",
         "description": "Binary toggle for forms, with indeterminate support",
         "category": "inputs",
-        "states": ["unchecked", "checked", "indeterminate"],
+        "states": [
+          "unchecked",
+          "checked",
+          "indeterminate"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -3444,11 +4063,19 @@
         "accessibility": {
           "role": "checkbox",
           "wcag": "AA",
-          "keyboard": ["Space"]
+          "keyboard": [
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "toggle", "boolean"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "toggle",
+          "boolean"
+        ],
         "intent": {
           "whenToUse": [
             "Selecting zero or more options from a list where each choice is independent",
@@ -3518,14 +4145,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["checkbox", "card", "selectable", "form"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "checkbox",
+        "card",
+        "selectable",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "CheckboxCard",
         "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
         "category": "inputs",
-        "states": ["default", "checked", "disabled"],
+        "states": [
+          "default",
+          "checked",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -3566,15 +4204,28 @@
             "description": "Disables the card"
           }
         ],
-        "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
+        "tokens": [
+          "--cascade-color-accent",
+          "--cascade-color-border",
+          "--cascade-radius-surface"
+        ],
         "accessibility": {
           "role": "checkbox",
           "wcag": "AA",
-          "keyboard": ["Space"]
+          "keyboard": [
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["checkbox", "card", "selectable", "form"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "checkbox",
+          "card",
+          "selectable",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "Multi-select where each option needs a title and supporting description (feature toggles, add-ons)",
@@ -3641,8 +4292,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "code", "inline", "mono"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "code",
+        "inline",
+        "mono"
+      ],
       "category": "display",
       "meta": {
         "name": "Code",
@@ -3650,7 +4308,10 @@
         "category": "display",
         "states": [],
         "variants": [],
-        "sizes": ["sm", "md"],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "size",
@@ -3674,8 +4335,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "code", "inline", "mono"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "code",
+          "inline",
+          "mono"
+        ],
         "intent": {
           "whenToUse": [
             "Marking up an inline identifier, command, path, or token within prose",
@@ -3734,16 +4402,33 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/combobox/combobox.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["select", "combobox", "dropdown", "filter", "search"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "select",
+        "combobox",
+        "dropdown",
+        "filter",
+        "search"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Combobox",
         "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
         "category": "inputs",
-        "states": ["closed", "open", "error"],
+        "states": [
+          "closed",
+          "open",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "options",
@@ -3836,11 +4521,26 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Enter",
+            "Escape",
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["select", "combobox", "dropdown", "filter", "search"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "select",
+          "combobox",
+          "dropdown",
+          "filter",
+          "search"
+        ],
         "intent": {
           "whenToUse": [
             "Single-select from a long list where type-to-filter makes finding an option faster",
@@ -3914,14 +4614,27 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/command-menu/command-menu.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "command",
+        "palette",
+        "search",
+        "cmdk",
+        "keyboard"
+      ],
       "category": "overlay",
       "meta": {
         "name": "CommandMenu",
         "description": "Cmd+K command palette with fuzzy search over grouped commands",
         "category": "overlay",
-        "states": ["closed", "open"],
+        "states": [
+          "closed",
+          "open"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -4000,11 +4713,29 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "AA",
-          "keyboard": ["Cmd/Ctrl+K", "ArrowDown", "ArrowUp", "Home", "End", "Enter", "Escape"]
+          "keyboard": [
+            "Cmd/Ctrl+K",
+            "ArrowDown",
+            "ArrowUp",
+            "Home",
+            "End",
+            "Enter",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "command",
+          "palette",
+          "search",
+          "cmdk",
+          "keyboard"
+        ],
         "intent": {
           "whenToUse": [
             "Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate",
@@ -4082,14 +4813,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/context-menu/context-menu.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "menu", "context", "right-click"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "menu",
+        "context",
+        "right-click"
+      ],
       "category": "overlay",
       "meta": {
         "name": "ContextMenu",
         "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
         "category": "overlay",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [],
@@ -4105,11 +4846,24 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Enter",
+            "Space",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "menu", "context", "right-click"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "menu",
+          "context",
+          "right-click"
+        ],
         "intent": {
           "whenToUse": [
             "Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)",
@@ -4168,16 +4922,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/copy-button/copy-button.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["clipboard", "copy", "button", "snippet"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "clipboard",
+        "copy",
+        "button",
+        "snippet"
+      ],
       "category": "inputs",
       "meta": {
         "name": "CopyButton",
         "description": "Icon button that copies a value to the clipboard with copied feedback",
         "category": "inputs",
-        "states": ["idle", "copied"],
+        "states": [
+          "idle",
+          "copied"
+        ],
         "variants": [],
-        "sizes": ["sm", "md"],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "value",
@@ -4213,11 +4981,22 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": [
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["clipboard", "copy", "button", "snippet"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "clipboard",
+          "copy",
+          "button",
+          "snippet"
+        ],
         "intent": {
           "whenToUse": [
             "Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links",
@@ -4280,16 +5059,35 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/data-table/data-table.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "table",
+        "data",
+        "grid",
+        "sort",
+        "filter",
+        "pagination",
+        "selection"
+      ],
       "category": "display",
       "meta": {
         "name": "DataTable",
         "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
         "category": "display",
-        "states": ["default", "loading", "empty"],
+        "states": [
+          "default",
+          "loading",
+          "empty"
+        ],
         "variants": [],
-        "sizes": ["compact", "normal", "relaxed"],
+        "sizes": [
+          "compact",
+          "normal",
+          "relaxed"
+        ],
         "props": [
           {
             "name": "columns",
@@ -4430,11 +5228,30 @@
         "accessibility": {
           "role": "table",
           "wcag": "AA",
-          "keyboard": ["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Space"]
+          "keyboard": [
+            "Tab",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "table",
+          "data",
+          "grid",
+          "sort",
+          "filter",
+          "pagination",
+          "selection"
+        ],
         "intent": {
           "whenToUse": [
             "Displaying tabular data with columns the user sorts, filters, or pages through",
@@ -4494,16 +5311,34 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/date-picker/date-picker.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["date", "calendar", "picker", "input", "form"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "date",
+        "calendar",
+        "picker",
+        "input",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "DatePicker",
         "description": "An accessible date-picker with a calendar popover.",
         "category": "inputs",
-        "states": ["default", "open", "error", "disabled"],
+        "states": [
+          "default",
+          "open",
+          "error",
+          "disabled"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -4599,8 +5434,17 @@
           ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["date", "calendar", "picker", "input", "form"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "date",
+          "calendar",
+          "picker",
+          "input",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)",
@@ -4669,14 +5513,23 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/dropdown/dropdown.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "menu", "actions"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "menu",
+        "actions"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Dropdown",
         "description": "Menu of actions revealed from a trigger",
         "category": "overlay",
-        "states": ["closed", "open"],
+        "states": [
+          "closed",
+          "open"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -4722,11 +5575,25 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Home",
+            "End",
+            "Enter",
+            "Space",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "menu", "actions"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "menu",
+          "actions"
+        ],
         "intent": {
           "whenToUse": [
             "Revealing a short menu of actions from a trigger button (row actions, \"More\" overflow, account menu)",
@@ -4795,14 +5662,26 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/editable/editable.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "editable", "inline", "input", "text"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "editable",
+        "inline",
+        "input",
+        "text"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Editable",
         "description": "Inline click-to-edit text field",
         "category": "inputs",
-        "states": ["preview", "editing", "disabled"],
+        "states": [
+          "preview",
+          "editing",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -4852,11 +5731,22 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Escape"]
+          "keyboard": [
+            "Enter",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "editable", "inline", "input", "text"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "editable",
+          "inline",
+          "input",
+          "text"
+        ],
         "intent": {
           "whenToUse": [
             "Editing a single piece of text in place where the value is normally read-only — titles, names, labels",
@@ -4921,8 +5811,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/empty-state/empty-state.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["empty", "placeholder", "zero-state", "no-data"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "empty",
+        "placeholder",
+        "zero-state",
+        "no-data"
+      ],
       "category": "display",
       "meta": {
         "name": "EmptyState",
@@ -4930,7 +5827,10 @@
         "category": "display",
         "states": [],
         "variants": [],
-        "sizes": ["md", "lg"],
+        "sizes": [
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "icon",
@@ -4972,8 +5872,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["empty", "placeholder", "zero-state", "no-data"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "empty",
+          "placeholder",
+          "zero-state",
+          "no-data"
+        ],
         "intent": {
           "whenToUse": [
             "Filling a view that has no data with guidance and a primary next step",
@@ -5037,14 +5944,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/file-uploader/file-uploader.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["upload", "file", "drop", "drag", "input", "form"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "upload",
+        "file",
+        "drop",
+        "drag",
+        "input",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "FileUploader",
         "description": "Drag-and-drop file upload zone with file list and status indicators.",
         "category": "inputs",
-        "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
+        "states": [
+          "idle",
+          "dragover",
+          "uploading",
+          "complete",
+          "error",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -5125,11 +6049,24 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": [
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["upload", "file", "drop", "drag", "input", "form"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "upload",
+          "file",
+          "drop",
+          "drag",
+          "input",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "Letting users attach one or more files via click-to-browse or drag-and-drop",
@@ -5203,14 +6140,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "validation", "signals", "input"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "validation",
+        "signals",
+        "input"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Form",
         "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
         "category": "inputs",
-        "states": ["idle", "submitting"],
+        "states": [
+          "idle",
+          "submitting"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -5235,15 +6182,27 @@
             "required": false
           }
         ],
-        "tokens": ["--cascade-space-4"],
+        "tokens": [
+          "--cascade-space-4"
+        ],
         "accessibility": {
           "role": "form",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter"]
+          "keyboard": [
+            "Tab",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "validation", "signals", "input"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "validation",
+          "signals",
+          "input"
+        ],
         "intent": {
           "whenToUse": [
             "Collecting and submitting a set of related field values together",
@@ -5308,14 +6267,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header/header.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["navigation", "app-shell", "top-bar", "banner"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "navigation",
+        "app-shell",
+        "top-bar",
+        "banner"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Header",
         "description": "App top bar with brand, primary navigation links, and an actions slot",
         "category": "navigation",
-        "states": ["default"],
+        "states": [
+          "default"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -5362,11 +6331,21 @@
         "accessibility": {
           "role": "banner",
           "wcag": "AA",
-          "keyboard": ["Tab"]
+          "keyboard": [
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["navigation", "app-shell", "top-bar", "banner"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "navigation",
+          "app-shell",
+          "top-bar",
+          "banner"
+        ],
         "intent": {
           "whenToUse": [
             "Providing a simple marketing or app top bar with brand, links, and actions",
@@ -5421,14 +6400,27 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/header-panel/header-panel.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "navigation",
+        "panel",
+        "shell",
+        "console",
+        "overlay",
+        "notifications"
+      ],
       "category": "navigation",
       "meta": {
         "name": "HeaderPanel",
         "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
         "category": "navigation",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -5478,11 +6470,24 @@
         "accessibility": {
           "role": "region",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab"]
+          "keyboard": [
+            "Escape",
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "navigation",
+          "panel",
+          "shell",
+          "console",
+          "overlay",
+          "notifications"
+        ],
         "intent": {
           "whenToUse": [
             "Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)",
@@ -5542,8 +6547,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/heading/heading.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "heading", "title"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "heading",
+        "title"
+      ],
       "category": "display",
       "meta": {
         "name": "Heading",
@@ -5551,7 +6562,13 @@
         "category": "display",
         "states": [],
         "variants": [],
-        "sizes": ["sm", "md", "lg", "xl", "2xl"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg",
+          "xl",
+          "2xl"
+        ],
         "props": [
           {
             "name": "level",
@@ -5584,8 +6601,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "heading", "title"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "heading",
+          "title"
+        ],
         "intent": {
           "whenToUse": [
             "Titling a page or section as part of the document outline",
@@ -5648,14 +6671,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/hover-card/hover-card.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "hover", "preview", "floating"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "hover",
+        "preview",
+        "floating"
+      ],
       "category": "overlay",
       "meta": {
         "name": "HoverCard",
         "description": "Hover-triggered popover with configurable open/close delay",
         "category": "overlay",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [],
@@ -5670,11 +6703,21 @@
         "accessibility": {
           "role": "complementary",
           "wcag": "AA",
-          "keyboard": ["Tab", "Escape"]
+          "keyboard": [
+            "Tab",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "hover", "preview", "floating"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "hover",
+          "preview",
+          "floating"
+        ],
         "intent": {
           "whenToUse": [
             "Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger",
@@ -5740,16 +6783,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input/input.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "text", "input"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "text",
+        "input"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Input",
         "description": "Text input field with optional label, hint, and error state",
         "category": "inputs",
-        "states": ["idle", "focused", "error"],
+        "states": [
+          "idle",
+          "focused",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "label",
@@ -5795,11 +6852,20 @@
         "accessibility": {
           "role": "textbox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab"]
+          "keyboard": [
+            "Tab",
+            "Shift+Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "text", "input"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "text",
+          "input"
+        ],
         "intent": {
           "whenToUse": [
             "Collecting a single line of free-form text from the user",
@@ -5874,8 +6940,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/input-group/input-group.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "input", "addon", "group", "layout"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "input",
+        "addon",
+        "group",
+        "layout"
+      ],
       "category": "inputs",
       "meta": {
         "name": "InputGroup",
@@ -5913,8 +6987,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "input", "addon", "group", "layout"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "input",
+          "addon",
+          "group",
+          "layout"
+        ],
         "intent": {
           "whenToUse": [
             "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",
@@ -5979,8 +7061,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/kbd/kbd.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["keyboard", "shortcut", "hotkey"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "keyboard",
+        "shortcut",
+        "hotkey"
+      ],
       "category": "display",
       "meta": {
         "name": "Kbd",
@@ -5988,7 +7076,10 @@
         "category": "display",
         "states": [],
         "variants": [],
-        "sizes": ["sm", "md"],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "size",
@@ -6010,8 +7101,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["keyboard", "shortcut", "hotkey"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "keyboard",
+          "shortcut",
+          "hotkey"
+        ],
         "intent": {
           "whenToUse": [
             "Showing a keyboard key or shortcut the user should press",
@@ -6065,14 +7162,28 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
-      "tags": ["layout", "shell", "sidebar", "navigation"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n",
+        "@cascade-ui/storage"
+      ],
+      "tags": [
+        "layout",
+        "shell",
+        "sidebar",
+        "navigation"
+      ],
       "category": "layout",
       "meta": {
         "name": "AppShell",
         "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
         "category": "layout",
-        "states": ["expanded", "collapsed", "loading", "error"],
+        "states": [
+          "expanded",
+          "collapsed",
+          "loading",
+          "error"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -6133,8 +7244,17 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
-        "tags": ["layout", "shell", "sidebar", "navigation"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n",
+          "@cascade-ui/storage"
+        ],
+        "tags": [
+          "layout",
+          "shell",
+          "sidebar",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "A full-page application frame with header, collapsible sidebar, and content",
@@ -6176,8 +7296,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "auth", "login", "page"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "auth",
+        "login",
+        "page"
+      ],
       "category": "layout",
       "meta": {
         "name": "AuthLayout",
@@ -6215,8 +7342,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "auth", "login", "page"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "auth",
+          "login",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "Centered card layout for authentication pages — login, register, reset",
@@ -6258,8 +7392,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auto-grid/auto-grid.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "grid", "responsive"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "grid",
+        "responsive"
+      ],
       "category": "layout",
       "meta": {
         "name": "AutoGrid",
@@ -6284,15 +7424,23 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "grid", "responsive"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "grid",
+          "responsive"
+        ],
         "intent": {
           "whenToUse": [
             "Responsive card or tile grids that auto-fit columns to available width",
@@ -6329,8 +7477,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/center/center.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "center", "wrapper"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "center",
+        "wrapper"
+      ],
       "category": "layout",
       "meta": {
         "name": "Center",
@@ -6347,15 +7501,23 @@
             "description": "CSS max-width value"
           }
         ],
-        "tokens": ["--cascade-space-4"],
+        "tokens": [
+          "--cascade-space-4"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "center", "wrapper"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "center",
+          "wrapper"
+        ],
         "intent": {
           "whenToUse": [
             "Horizontally centering content within a configurable max-width",
@@ -6397,8 +7559,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/columns/columns.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "grid", "columns"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "grid",
+        "columns"
+      ],
       "category": "layout",
       "meta": {
         "name": "Columns",
@@ -6421,15 +7589,23 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "grid", "columns"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "grid",
+          "columns"
+        ],
         "intent": {
           "whenToUse": [
             "Equal-width multi-column content that collapses to one column when narrow",
@@ -6471,8 +7647,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "dashboard", "page"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "dashboard",
+        "page"
+      ],
       "category": "layout",
       "meta": {
         "name": "DashboardLayout",
@@ -6501,15 +7683,24 @@
             "description": "Optional aside panel (20rem)"
           }
         ],
-        "tokens": ["--cascade-space-4", "--cascade-space-6"],
+        "tokens": [
+          "--cascade-space-4",
+          "--cascade-space-6"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "dashboard", "page"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "dashboard",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A dashboard page with a stats strip, main content area, and optional aside",
@@ -6551,8 +7742,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/grid/grid.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "grid", "columns"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "grid",
+        "columns"
+      ],
       "category": "layout",
       "meta": {
         "name": "Grid",
@@ -6581,15 +7778,23 @@
             "description": "GridItem: column span count"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "grid", "columns"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "grid",
+          "columns"
+        ],
         "intent": {
           "whenToUse": [
             "Two-dimensional layouts with an explicit column count",
@@ -6631,8 +7836,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/masonry/masonry.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "masonry", "gallery"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "masonry",
+        "gallery"
+      ],
       "category": "layout",
       "meta": {
         "name": "Masonry",
@@ -6657,15 +7868,23 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "masonry", "gallery"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "masonry",
+          "gallery"
+        ],
         "intent": {
           "whenToUse": [
             "Galleries of variable-height items packed into balanced columns",
@@ -6707,8 +7926,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/page-header/page-header.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "header", "page"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "header",
+        "page"
+      ],
       "category": "layout",
       "meta": {
         "name": "PageHeader",
@@ -6764,8 +7989,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "header", "page"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "header",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A page-level header with title, description, breadcrumb, and action slots",
@@ -6807,8 +8038,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "section", "page"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "section",
+        "page"
+      ],
       "category": "layout",
       "meta": {
         "name": "Section",
@@ -6833,15 +8070,23 @@
             "description": "Stack gap between children (spacing token step)"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "region",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "section", "page"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "section",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "Wrapping a page region with block padding and a centered inner width",
@@ -6883,8 +8128,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/settings-layout/settings-layout.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "settings", "page"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "settings",
+        "page"
+      ],
       "category": "layout",
       "meta": {
         "name": "SettingsLayout",
@@ -6907,15 +8158,23 @@
             "description": "Settings content area"
           }
         ],
-        "tokens": ["--cascade-space-8"],
+        "tokens": [
+          "--cascade-space-8"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "settings", "page"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "settings",
+          "page"
+        ],
         "intent": {
           "whenToUse": [
             "A two-column settings page with a fixed-width menu and fluid content",
@@ -6957,8 +8216,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "spacer", "spacing"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "spacer",
+        "spacing"
+      ],
       "category": "layout",
       "meta": {
         "name": "Spacer",
@@ -6975,15 +8240,23 @@
             "description": "Spacing token step"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "none",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "spacer", "spacing"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "spacer",
+          "spacing"
+        ],
         "intent": {
           "whenToUse": [
             "Inserting a fixed vertical gap between blocks using spacing token steps",
@@ -7020,8 +8293,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/split-view/split-view.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "split", "resizable", "pane"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "split",
+        "resizable",
+        "pane"
+      ],
       "category": "layout",
       "meta": {
         "name": "SplitView",
@@ -7068,15 +8348,29 @@
             "description": "Label for the separator"
           }
         ],
-        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-duration-150"],
+        "tokens": [
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-duration-150"
+        ],
         "accessibility": {
           "role": "separator",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight"]
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "split", "resizable", "pane"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "split",
+          "resizable",
+          "pane"
+        ],
         "intent": {
           "whenToUse": [
             "Two side-by-side panes the user can resize via pointer or keyboard",
@@ -7113,8 +8407,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/stack/stack.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["layout", "flex", "stack", "spacing"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "layout",
+        "flex",
+        "stack",
+        "spacing"
+      ],
       "category": "layout",
       "meta": {
         "name": "Stack",
@@ -7155,15 +8456,24 @@
             "description": "Allow wrapping"
           }
         ],
-        "tokens": ["--cascade-space-*"],
+        "tokens": [
+          "--cascade-space-*"
+        ],
         "accessibility": {
           "role": "generic",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["layout", "flex", "stack", "spacing"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "layout",
+          "flex",
+          "stack",
+          "spacing"
+        ],
         "intent": {
           "whenToUse": [
             "Arranging children vertically or horizontally with a consistent gap",
@@ -7205,16 +8515,29 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/link/link.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["link", "anchor", "navigation"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "link",
+        "anchor",
+        "navigation"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Link",
         "description": "Styled anchor for navigation, standalone or inline within prose",
         "category": "navigation",
         "states": [],
-        "variants": ["standalone", "inline"],
-        "sizes": ["sm", "md", "lg"],
+        "variants": [
+          "standalone",
+          "inline"
+        ],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "variant",
@@ -7250,11 +8573,19 @@
         "accessibility": {
           "role": "link",
           "wcag": "AA",
-          "keyboard": ["Enter"]
+          "keyboard": [
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["link", "anchor", "navigation"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "link",
+          "anchor",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "Navigating to another page, view, or resource via a real href",
@@ -7313,15 +8644,26 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "list", "ul", "ol"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "list",
+        "ul",
+        "ol"
+      ],
       "category": "display",
       "meta": {
         "name": "List",
         "description": "Styled unordered or ordered list with ListItem",
         "category": "display",
         "states": [],
-        "variants": ["disc", "decimal", "none"],
+        "variants": [
+          "disc",
+          "decimal",
+          "none"
+        ],
         "sizes": [],
         "props": [
           {
@@ -7351,8 +8693,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "list", "ul", "ol"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "list",
+          "ul",
+          "ol"
+        ],
         "intent": {
           "whenToUse": [
             "Presenting a set of related items as a bulleted or numbered list",
@@ -7407,14 +8756,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "menu", "dropdown", "floating"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "menu",
+        "dropdown",
+        "floating"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Menu",
         "description": "Dropdown menu with keyboard navigation, built on usePopover",
         "category": "overlay",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [],
@@ -7430,11 +8789,24 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Enter",
+            "Space",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "menu", "dropdown", "floating"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "menu",
+          "dropdown",
+          "floating"
+        ],
         "intent": {
           "whenToUse": [
             "Presenting a list of actions or commands triggered from a button",
@@ -7505,16 +8877,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "dialog", "popup"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "dialog",
+        "popup"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Modal",
         "description": "Accessible dialog overlay using native <dialog> element",
         "category": "overlay",
-        "states": ["closed", "open"],
+        "states": [
+          "closed",
+          "open"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "open",
@@ -7554,11 +8940,22 @@
         "accessibility": {
           "role": "dialog",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+          "keyboard": [
+            "Escape",
+            "Tab",
+            "Shift+Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "dialog", "popup"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "dialog",
+          "popup"
+        ],
         "intent": {
           "whenToUse": [
             "Presenting focused content or a task that must interrupt the current flow",
@@ -7633,14 +9030,26 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["form", "select", "multi", "input", "popover"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "form",
+        "select",
+        "multi",
+        "input",
+        "popover"
+      ],
       "category": "inputs",
       "meta": {
         "name": "MultiSelect",
         "description": "Searchable multi-value select with popover listbox",
         "category": "inputs",
-        "states": ["closed", "open"],
+        "states": [
+          "closed",
+          "open"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -7689,11 +9098,26 @@
         "accessibility": {
           "role": "listbox",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Space", "Enter", "Escape"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Space",
+            "Enter",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["form", "select", "multi", "input", "popover"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "form",
+          "select",
+          "multi",
+          "input",
+          "popover"
+        ],
         "intent": {
           "whenToUse": [
             "Selecting several values at once from a known list of options",
@@ -7768,16 +9192,33 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["form", "number", "input", "spinbutton", "stepper"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "form",
+        "number",
+        "input",
+        "spinbutton",
+        "stepper"
+      ],
       "category": "inputs",
       "meta": {
         "name": "NumberInput",
         "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
         "category": "inputs",
-        "states": ["idle", "focused", "error"],
+        "states": [
+          "idle",
+          "focused",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -7876,11 +9317,25 @@
         "accessibility": {
           "role": "spinbutton",
           "wcag": "AA",
-          "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Tab"]
+          "keyboard": [
+            "ArrowUp",
+            "ArrowDown",
+            "Enter",
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["form", "number", "input", "spinbutton", "stepper"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "form",
+          "number",
+          "input",
+          "spinbutton",
+          "stepper"
+        ],
         "intent": {
           "whenToUse": [
             "Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)",
@@ -7946,14 +9401,28 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/otp-input/otp-input.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["form", "otp", "code", "input", "verification"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "form",
+        "otp",
+        "code",
+        "input",
+        "verification"
+      ],
       "category": "inputs",
       "meta": {
         "name": "OtpInput",
         "description": "Segmented one-time code input",
         "category": "inputs",
-        "states": ["idle", "focused", "filled", "disabled"],
+        "states": [
+          "idle",
+          "focused",
+          "filled",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -7997,11 +9466,24 @@
         "accessibility": {
           "role": "group",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "Backspace"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["form", "otp", "code", "input", "verification"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "form",
+          "otp",
+          "code",
+          "input",
+          "verification"
+        ],
         "intent": {
           "whenToUse": [
             "Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots",
@@ -8062,16 +9544,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/overflow-menu/overflow-menu.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "menu", "actions", "kebab", "table"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "menu",
+        "actions",
+        "kebab",
+        "table"
+      ],
       "category": "overlay",
       "meta": {
         "name": "OverflowMenu",
         "description": "Kebab icon button revealing a menu of row-level actions",
         "category": "overlay",
-        "states": ["closed", "open"],
+        "states": [
+          "closed",
+          "open"
+        ],
         "variants": [],
-        "sizes": ["sm", "md"],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "items",
@@ -8125,11 +9622,28 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Home",
+            "End",
+            "Enter",
+            "Space",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "menu", "actions", "kebab", "table"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "menu",
+          "actions",
+          "kebab",
+          "table"
+        ],
         "intent": {
           "whenToUse": [
             "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",
@@ -8198,8 +9712,17 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["pagination", "navigation", "table", "data", "pages"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "pagination",
+        "navigation",
+        "table",
+        "data",
+        "pages"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Pagination",
@@ -8272,11 +9795,26 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter", "Space", "ArrowUp", "ArrowDown"]
+          "keyboard": [
+            "Tab",
+            "Enter",
+            "Space",
+            "ArrowUp",
+            "ArrowDown"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["pagination", "navigation", "table", "data", "pages"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "pagination",
+          "navigation",
+          "table",
+          "data",
+          "pages"
+        ],
         "intent": {
           "whenToUse": [
             "Navigating between pages of a paged dataset",
@@ -8336,16 +9874,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/password-input/password-input.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["form", "password", "input", "security"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "form",
+        "password",
+        "input",
+        "security"
+      ],
       "category": "inputs",
       "meta": {
         "name": "PasswordInput",
         "description": "Password input with reveal toggle and optional strength meter",
         "category": "inputs",
-        "states": ["idle", "revealed"],
+        "states": [
+          "idle",
+          "revealed"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "showStrengthMeter",
@@ -8399,11 +9952,22 @@
         "accessibility": {
           "role": "textbox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab"]
+          "keyboard": [
+            "Tab",
+            "Shift+Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["form", "password", "input", "security"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "form",
+          "password",
+          "input",
+          "security"
+        ],
         "intent": {
           "whenToUse": [
             "Collecting a secret credential that should be masked by default with an opt-in reveal toggle",
@@ -8466,14 +10030,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "floating", "anchor", "popover"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "floating",
+        "anchor",
+        "popover"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Popover",
         "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
         "category": "overlay",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [],
@@ -8488,11 +10062,20 @@
         "accessibility": {
           "role": "dialog",
           "wcag": "AA",
-          "keyboard": ["Escape"]
+          "keyboard": [
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "floating", "anchor", "popover"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "floating",
+          "anchor",
+          "popover"
+        ],
         "intent": {
           "whenToUse": [
             "Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking",
@@ -8557,16 +10140,33 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["progress", "loading", "status", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "progress",
+        "loading",
+        "status",
+        "feedback"
+      ],
       "category": "feedback",
       "meta": {
         "name": "ProgressBar",
         "description": "Shows determinate or indeterminate progress of a task",
         "category": "feedback",
-        "states": ["determinate", "indeterminate"],
-        "variants": ["active", "success", "error"],
-        "sizes": ["sm", "md"],
+        "states": [
+          "determinate",
+          "indeterminate"
+        ],
+        "variants": [
+          "active",
+          "success",
+          "error"
+        ],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "value",
@@ -8621,8 +10221,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["progress", "loading", "status", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "progress",
+          "loading",
+          "status",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Showing linear determinate progress of a task with a known percentage (value)",
@@ -8683,8 +10290,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-circle/progress-circle.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["progress", "loading", "circle", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "progress",
+        "loading",
+        "circle",
+        "feedback"
+      ],
       "category": "feedback",
       "meta": {
         "name": "ProgressCircle",
@@ -8692,7 +10306,11 @@
         "category": "feedback",
         "states": [],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -8726,15 +10344,26 @@
             "description": "Accessible name announced by screen readers"
           }
         ],
-        "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
+        "tokens": [
+          "--cascade-color-border",
+          "--cascade-color-accent",
+          "--cascade-color-text"
+        ],
         "accessibility": {
           "role": "progressbar",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["progress", "loading", "circle", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "progress",
+          "loading",
+          "circle",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Showing determinate progress compactly as a circular arc",
@@ -8795,15 +10424,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-indicator/progress-indicator.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "steps",
+        "wizard",
+        "stepper",
+        "progress",
+        "navigation"
+      ],
       "category": "navigation",
       "meta": {
         "name": "ProgressIndicator",
         "description": "Shows progress through the steps of a multi-step flow",
         "category": "navigation",
-        "states": ["complete", "current", "incomplete"],
-        "variants": ["horizontal", "vertical"],
+        "states": [
+          "complete",
+          "current",
+          "incomplete"
+        ],
+        "variants": [
+          "horizontal",
+          "vertical"
+        ],
         "sizes": [],
         "props": [
           {
@@ -8847,8 +10491,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "steps",
+          "wizard",
+          "stepper",
+          "progress",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "Showing progress through the discrete steps of a multi-step flow (wizard, checkout)",
@@ -8907,8 +10559,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/prose/prose.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "prose", "content", "markdown", "article"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "prose",
+        "content",
+        "markdown",
+        "article"
+      ],
       "category": "display",
       "meta": {
         "name": "Prose",
@@ -8941,8 +10601,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "prose", "content", "markdown", "article"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "prose",
+          "content",
+          "markdown",
+          "article"
+        ],
         "intent": {
           "whenToUse": [
             "Styling long-form authored content (articles, docs, CMS output)",
@@ -9001,14 +10669,23 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio/radio.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "choice", "group"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "choice",
+        "group"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Radio",
         "description": "Single choice from a set, grouped with RadioGroup",
         "category": "inputs",
-        "states": ["unchecked", "checked"],
+        "states": [
+          "unchecked",
+          "checked"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -9045,11 +10722,22 @@
         "accessibility": {
           "role": "radio",
           "wcag": "AA",
-          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+          "keyboard": [
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "choice", "group"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "choice",
+          "group"
+        ],
         "intent": {
           "whenToUse": [
             "Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible",
@@ -9114,14 +10802,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/radio-card/radio-card.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["radio", "card", "selectable", "form"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "radio",
+        "card",
+        "selectable",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "RadioCard",
         "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
         "category": "inputs",
-        "states": ["default", "checked", "disabled"],
+        "states": [
+          "default",
+          "checked",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -9159,11 +10858,22 @@
         "accessibility": {
           "role": "radiogroup",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Space"]
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["radio", "card", "selectable", "form"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "radio",
+          "card",
+          "selectable",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)",
@@ -9228,16 +10938,32 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/rating-group/rating-group.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "rating", "stars", "input", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "rating",
+        "stars",
+        "input",
+        "feedback"
+      ],
       "category": "inputs",
       "meta": {
         "name": "RatingGroup",
         "description": "Star rating input with accessible radio group pattern",
         "category": "inputs",
-        "states": ["idle", "disabled", "readOnly"],
+        "states": [
+          "idle",
+          "disabled",
+          "readOnly"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -9288,11 +11014,23 @@
         "accessibility": {
           "role": "radiogroup",
           "wcag": "AA",
-          "keyboard": ["Tab", "Space", "Enter"]
+          "keyboard": [
+            "Tab",
+            "Space",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "rating", "stars", "input", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "rating",
+          "stars",
+          "input",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)",
@@ -9352,16 +11090,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["search", "input", "filter", "form"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "search",
+        "input",
+        "filter",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Search",
         "description": "Search input with debounced search callback and clear button",
         "category": "inputs",
-        "states": ["empty", "filled"],
+        "states": [
+          "empty",
+          "filled"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -9445,11 +11198,21 @@
         "accessibility": {
           "role": "searchbox",
           "wcag": "AA",
-          "keyboard": ["Enter"]
+          "keyboard": [
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["search", "input", "filter", "form"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "search",
+          "input",
+          "filter",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "A query field that filters or searches content, with a built-in clear button and debounced onSearch",
@@ -9513,8 +11276,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/cta/cta.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["section", "cta", "marketing"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "section",
+        "cta",
+        "marketing"
+      ],
       "category": "layout",
       "meta": {
         "name": "Cta",
@@ -9565,8 +11334,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["section", "cta", "marketing"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "section",
+          "cta",
+          "marketing"
+        ],
         "intent": {
           "whenToUse": [
             "A call-to-action band with title, description, and centered actions",
@@ -9608,8 +11383,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["section", "features", "grid"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "section",
+        "features",
+        "grid"
+      ],
       "category": "layout",
       "meta": {
         "name": "FeatureGrid",
@@ -9669,8 +11450,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["section", "features", "grid"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "section",
+          "features",
+          "grid"
+        ],
         "intent": {
           "whenToUse": [
             "A feature section laying out items in an auto-fitting grid",
@@ -9712,15 +11499,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/hero/hero.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["section", "hero", "marketing"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "section",
+        "hero",
+        "marketing"
+      ],
       "category": "layout",
       "meta": {
         "name": "Hero",
         "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
         "category": "layout",
         "states": [],
-        "variants": ["centered", "split"],
+        "variants": [
+          "centered",
+          "split"
+        ],
         "sizes": [],
         "props": [
           {
@@ -9783,8 +11579,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["section", "hero", "marketing"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "section",
+          "hero",
+          "marketing"
+        ],
         "intent": {
           "whenToUse": [
             "The primary page intro with eyebrow, title, description, actions, and media",
@@ -9826,8 +11628,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["section", "gallery", "masonry"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "section",
+        "gallery",
+        "masonry"
+      ],
       "category": "layout",
       "meta": {
         "name": "MediaMasonry",
@@ -9890,8 +11698,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["section", "gallery", "masonry"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "section",
+          "gallery",
+          "masonry"
+        ],
         "intent": {
           "whenToUse": [
             "A full-width media gallery section with masonry packing",
@@ -9928,8 +11742,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["section", "footer", "navigation"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "section",
+        "footer",
+        "navigation"
+      ],
       "category": "layout",
       "meta": {
         "name": "PageFooter",
@@ -9974,8 +11794,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["section", "footer", "navigation"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "section",
+          "footer",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "A site footer with grouped link columns and a brand/meta bottom row",
@@ -10012,8 +11838,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
-      "tags": ["section", "stats", "kpi", "charts"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/charts"
+      ],
+      "tags": [
+        "section",
+        "stats",
+        "kpi",
+        "charts"
+      ],
       "category": "layout",
       "meta": {
         "name": "StatsBand",
@@ -10053,8 +11887,16 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/charts"],
-        "tags": ["section", "stats", "kpi", "charts"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/charts"
+        ],
+        "tags": [
+          "section",
+          "stats",
+          "kpi",
+          "charts"
+        ],
         "intent": {
           "whenToUse": [
             "A horizontal KPI strip with optional deltas and inline sparkline trends",
@@ -10096,16 +11938,32 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/segmented-control/segmented-control.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "toggle", "group", "segmented", "input"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "toggle",
+        "group",
+        "segmented",
+        "input"
+      ],
       "category": "inputs",
       "meta": {
         "name": "SegmentedControl",
         "description": "Mutually exclusive toggle group",
         "category": "inputs",
-        "states": ["idle", "selected", "disabled"],
+        "states": [
+          "idle",
+          "selected",
+          "disabled"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "options",
@@ -10147,11 +12005,22 @@
         "accessibility": {
           "role": "group",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight"]
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "toggle", "group", "segmented", "input"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "toggle",
+          "group",
+          "segmented",
+          "input"
+        ],
         "intent": {
           "whenToUse": [
             "A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges",
@@ -10216,16 +12085,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/select/select.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "dropdown", "menu"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "dropdown",
+        "menu"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Select",
         "description": "Native select menu styled to match the design system",
         "category": "inputs",
-        "states": ["idle", "focused", "error"],
+        "states": [
+          "idle",
+          "focused",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "label",
@@ -10276,11 +12159,22 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown"]
+          "keyboard": [
+            "Tab",
+            "Space",
+            "ArrowUp",
+            "ArrowDown"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "dropdown", "menu"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "dropdown",
+          "menu"
+        ],
         "intent": {
           "whenToUse": [
             "Choosing exactly one value from a known, finite list inside a form",
@@ -10346,8 +12240,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["divider", "rule", "layout"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "divider",
+        "rule",
+        "layout"
+      ],
       "category": "display",
       "meta": {
         "name": "Separator",
@@ -10371,15 +12271,23 @@
             "description": "When true, the separator is purely visual and hidden from assistive tech"
           }
         ],
-        "tokens": ["--cascade-color-border"],
+        "tokens": [
+          "--cascade-color-border"
+        ],
         "accessibility": {
           "role": "separator",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["divider", "rule", "layout"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "divider",
+          "rule",
+          "layout"
+        ],
         "intent": {
           "whenToUse": [
             "Dividing groups of content within a section or menu",
@@ -10434,14 +12342,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "drawer", "panel", "slide"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "drawer",
+        "panel",
+        "slide"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Sheet",
         "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
         "category": "overlay",
-        "states": ["open", "closed"],
+        "states": [
+          "open",
+          "closed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [],
@@ -10456,11 +12375,23 @@
         "accessibility": {
           "role": "dialog",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+          "keyboard": [
+            "Escape",
+            "Tab",
+            "Shift+Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "drawer", "panel", "slide"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "drawer",
+          "panel",
+          "slide"
+        ],
         "intent": {
           "whenToUse": [
             "Showing secondary content or a form in a panel that slides in from a screen edge",
@@ -10520,14 +12451,26 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/shell-header/shell-header.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "navigation",
+        "header",
+        "shell",
+        "console",
+        "menu",
+        "app-shell"
+      ],
       "category": "navigation",
       "meta": {
         "name": "ShellHeader",
         "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
         "category": "navigation",
-        "states": ["default"],
+        "states": [
+          "default"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -10593,11 +12536,28 @@
         "accessibility": {
           "role": "banner",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+          "keyboard": [
+            "Tab",
+            "Enter",
+            "Space",
+            "ArrowDown",
+            "ArrowUp",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "navigation",
+          "header",
+          "shell",
+          "console",
+          "menu",
+          "app-shell"
+        ],
         "intent": {
           "whenToUse": [
             "Building console/admin app chrome with brand, dropdown nav, and global icon actions",
@@ -10662,14 +12622,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/side-nav/side-nav.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "navigation",
+        "sidebar",
+        "app-shell",
+        "collapsible"
+      ],
       "category": "navigation",
       "meta": {
         "name": "SideNav",
         "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
         "category": "navigation",
-        "states": ["expanded", "collapsed"],
+        "states": [
+          "expanded",
+          "collapsed"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -10752,11 +12723,26 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+          "keyboard": [
+            "Tab",
+            "Enter",
+            "Space",
+            "ArrowDown",
+            "ArrowUp",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "navigation",
+          "sidebar",
+          "app-shell",
+          "collapsible"
+        ],
         "intent": {
           "whenToUse": [
             "Persistent primary navigation along the side of an app shell",
@@ -10811,15 +12797,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skeleton/skeleton.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["loading", "placeholder", "shimmer"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "loading",
+        "placeholder",
+        "shimmer"
+      ],
       "category": "display",
       "meta": {
         "name": "Skeleton",
         "description": "Animated loading placeholder that mirrors the shape of pending content",
         "category": "display",
         "states": [],
-        "variants": ["text", "circle", "rect"],
+        "variants": [
+          "text",
+          "circle",
+          "rect"
+        ],
         "sizes": [],
         "props": [
           {
@@ -10861,8 +12857,14 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["loading", "placeholder", "shimmer"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "loading",
+          "placeholder",
+          "shimmer"
+        ],
         "intent": {
           "whenToUse": [
             "Indicating loading by mirroring the shape of the content that will appear",
@@ -10922,8 +12924,16 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "accessibility",
+        "skip-link",
+        "keyboard",
+        "navigation"
+      ],
       "category": "navigation",
       "meta": {
         "name": "SkipNav",
@@ -10964,11 +12974,22 @@
         "accessibility": {
           "role": "link",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter"]
+          "keyboard": [
+            "Tab",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "accessibility",
+          "skip-link",
+          "keyboard",
+          "navigation"
+        ],
         "intent": {
           "whenToUse": [
             "Letting keyboard users jump past repeated navigation to the main content",
@@ -11027,8 +13048,14 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/slider/slider.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "range", "input"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "range",
+        "input"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Slider",
@@ -11088,11 +13115,24 @@
         "accessibility": {
           "role": "slider",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "range", "input"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "range",
+          "input"
+        ],
         "intent": {
           "whenToUse": [
             "Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine",
@@ -11152,8 +13192,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["loading", "progress", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "loading",
+        "progress",
+        "feedback"
+      ],
       "category": "feedback",
       "meta": {
         "name": "Spinner",
@@ -11161,7 +13208,11 @@
         "category": "feedback",
         "states": [],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "size",
@@ -11177,15 +13228,24 @@
             "description": "Accessible label announced by screen readers"
           }
         ],
-        "tokens": ["--cascade-radius-full"],
+        "tokens": [
+          "--cascade-radius-full"
+        ],
         "accessibility": {
           "role": "status",
           "wcag": "AA",
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["loading", "progress", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "loading",
+          "progress",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Indicating indeterminate work where duration and progress are unknown",
@@ -11245,8 +13305,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/stat/stat.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["stat", "kpi", "metric", "number"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "stat",
+        "kpi",
+        "metric",
+        "number"
+      ],
       "category": "display",
       "meta": {
         "name": "Stat",
@@ -11300,8 +13367,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["stat", "kpi", "metric", "number"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "stat",
+          "kpi",
+          "metric",
+          "number"
+        ],
         "intent": {
           "whenToUse": [
             "Highlighting a single key metric with a clear label",
@@ -11360,15 +13434,28 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/status/status.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["status", "indicator", "dot", "badge"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "status",
+        "indicator",
+        "dot",
+        "badge"
+      ],
       "category": "display",
       "meta": {
         "name": "Status",
         "description": "Colored dot with a label communicating the state of a system or entity",
         "category": "display",
         "states": [],
-        "variants": ["success", "warning", "error", "info", "neutral"],
+        "variants": [
+          "success",
+          "warning",
+          "error",
+          "info",
+          "neutral"
+        ],
         "sizes": [],
         "props": [
           {
@@ -11400,8 +13487,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["status", "indicator", "dot", "badge"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "status",
+          "indicator",
+          "dot",
+          "badge"
+        ],
         "intent": {
           "whenToUse": [
             "Communicating the live state of a system or entity (operational, deploying, down)",
@@ -11465,14 +13559,25 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "navigation",
+        "switcher",
+        "shell",
+        "console",
+        "app-switcher"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Switcher",
         "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
         "category": "navigation",
-        "states": ["default"],
+        "states": [
+          "default"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -11505,11 +13610,23 @@
         "accessibility": {
           "role": "list",
           "wcag": "AA",
-          "keyboard": ["Tab", "Enter"]
+          "keyboard": [
+            "Tab",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "navigation",
+          "switcher",
+          "shell",
+          "console",
+          "app-switcher"
+        ],
         "intent": {
           "whenToUse": [
             "Listing sibling apps/products the user can switch between",
@@ -11564,14 +13681,23 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["navigation", "tabs", "sections"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "navigation",
+        "tabs",
+        "sections"
+      ],
       "category": "navigation",
       "meta": {
         "name": "Tabs",
         "description": "Switch between related panels of content",
         "category": "navigation",
-        "states": ["active", "inactive"],
+        "states": [
+          "active",
+          "inactive"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -11601,11 +13727,22 @@
         "accessibility": {
           "role": "tablist",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["navigation", "tabs", "sections"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "navigation",
+          "tabs",
+          "sections"
+        ],
         "intent": {
           "whenToUse": [
             "Switching between peer panels of related content in the same context",
@@ -11665,16 +13802,33 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tag/tag.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["chip", "label", "filter", "category"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "chip",
+        "label",
+        "filter",
+        "category"
+      ],
       "category": "display",
       "meta": {
         "name": "Tag",
         "description": "Compact chip for labeling, categorizing, or filtering content",
         "category": "display",
         "states": [],
-        "variants": ["default", "info", "success", "warning", "error"],
-        "sizes": ["sm", "md"],
+        "variants": [
+          "default",
+          "info",
+          "success",
+          "warning",
+          "error"
+        ],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "variant",
@@ -11718,11 +13872,22 @@
         "accessibility": {
           "role": "none",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": [
+            "Enter",
+            "Space"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["chip", "label", "filter", "category"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "chip",
+          "label",
+          "filter",
+          "category"
+        ],
         "intent": {
           "whenToUse": [
             "Labeling, categorizing, or filtering content with a compact chip",
@@ -11786,14 +13951,27 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["form", "tags", "chips", "multi", "input"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "form",
+        "tags",
+        "chips",
+        "multi",
+        "input"
+      ],
       "category": "inputs",
       "meta": {
         "name": "TagsInput",
         "description": "Free-form multi-value chip input",
         "category": "inputs",
-        "states": ["idle", "focused", "disabled"],
+        "states": [
+          "idle",
+          "focused",
+          "disabled"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -11842,11 +14020,24 @@
         "accessibility": {
           "role": "textbox",
           "wcag": "AA",
-          "keyboard": ["Enter", ",", "Backspace"]
+          "keyboard": [
+            "Enter",
+            ",",
+            "Backspace"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["form", "tags", "chips", "multi", "input"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "form",
+          "tags",
+          "chips",
+          "multi",
+          "input"
+        ],
         "intent": {
           "whenToUse": [
             "Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)",
@@ -11910,16 +14101,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/text/text.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["typography", "text", "paragraph", "body"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "typography",
+        "text",
+        "paragraph",
+        "body"
+      ],
       "category": "display",
       "meta": {
         "name": "Text",
         "description": "Body text with size, weight, and muted variants",
         "category": "display",
         "states": [],
-        "variants": ["normal", "medium", "semibold"],
-        "sizes": ["sm", "md", "lg"],
+        "variants": [
+          "normal",
+          "medium",
+          "semibold"
+        ],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "as",
@@ -11964,8 +14170,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["typography", "text", "paragraph", "body"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "typography",
+          "text",
+          "paragraph",
+          "body"
+        ],
         "intent": {
           "whenToUse": [
             "Rendering body copy, paragraphs, and inline text in app UI",
@@ -12024,14 +14237,24 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["form", "text", "multiline"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "form",
+        "text",
+        "multiline"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Textarea",
         "description": "Multi-line text input with optional label, hint, and error state",
         "category": "inputs",
-        "states": ["idle", "focused", "error"],
+        "states": [
+          "idle",
+          "focused",
+          "error"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -12080,11 +14303,20 @@
         "accessibility": {
           "role": "textbox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab"]
+          "keyboard": [
+            "Tab",
+            "Shift+Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["form", "text", "multiline"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "form",
+          "text",
+          "multiline"
+        ],
         "intent": {
           "whenToUse": [
             "Capturing multi-line free text such as messages, descriptions, or comments",
@@ -12148,16 +14380,30 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/time-picker/time-picker.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["time", "input", "form"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "time",
+        "input",
+        "form"
+      ],
       "category": "inputs",
       "meta": {
         "name": "TimePicker",
         "description": "Native time input wrapper with label, hint, error, and size variants",
         "category": "inputs",
-        "states": ["idle", "focused", "error"],
+        "states": [
+          "idle",
+          "focused",
+          "error"
+        ],
         "variants": [],
-        "sizes": ["sm", "md", "lg"],
+        "sizes": [
+          "sm",
+          "md",
+          "lg"
+        ],
         "props": [
           {
             "name": "value",
@@ -12237,11 +14483,19 @@
         "accessibility": {
           "role": "textbox",
           "wcag": "AA",
-          "keyboard": ["Tab"]
+          "keyboard": [
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["time", "input", "form"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "time",
+          "input",
+          "form"
+        ],
         "intent": {
           "whenToUse": [
             "Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time",
@@ -12301,15 +14555,31 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toast/toast.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-      "tags": ["overlay", "notification", "feedback"],
+      "dependencies": [
+        "@cascade-ui/core",
+        "@cascade-ui/i18n"
+      ],
+      "tags": [
+        "overlay",
+        "notification",
+        "feedback"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Toast",
         "description": "Transient notification surfaced via the useToast hook",
         "category": "overlay",
-        "states": ["visible", "dismissing", "gone"],
-        "variants": ["default", "success", "warning", "destructive"],
+        "states": [
+          "visible",
+          "dismissing",
+          "gone"
+        ],
+        "variants": [
+          "default",
+          "success",
+          "warning",
+          "destructive"
+        ],
         "sizes": [],
         "props": [
           {
@@ -12346,11 +14616,20 @@
         "accessibility": {
           "role": "status",
           "wcag": "AA",
-          "keyboard": ["Tab"]
+          "keyboard": [
+            "Tab"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
-        "tags": ["overlay", "notification", "feedback"],
+        "dependencies": [
+          "@cascade-ui/core",
+          "@cascade-ui/i18n"
+        ],
+        "tags": [
+          "overlay",
+          "notification",
+          "feedback"
+        ],
         "intent": {
           "whenToUse": [
             "Confirming that a background or just-completed action succeeded or failed (e.g. \"Saved\")",
@@ -12414,16 +14693,28 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/toggle/toggle.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["switch", "form", "boolean"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "switch",
+        "form",
+        "boolean"
+      ],
       "category": "inputs",
       "meta": {
         "name": "Toggle",
         "description": "On/off switch built as an accessible button",
         "category": "inputs",
-        "states": ["off", "on"],
+        "states": [
+          "off",
+          "on"
+        ],
         "variants": [],
-        "sizes": ["sm", "md"],
+        "sizes": [
+          "sm",
+          "md"
+        ],
         "props": [
           {
             "name": "checked",
@@ -12469,11 +14760,20 @@
         "accessibility": {
           "role": "switch",
           "wcag": "AA",
-          "keyboard": ["Space", "Enter"]
+          "keyboard": [
+            "Space",
+            "Enter"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["switch", "form", "boolean"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "switch",
+          "form",
+          "boolean"
+        ],
         "intent": {
           "whenToUse": [
             "Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)",
@@ -12533,14 +14833,23 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tooltip/tooltip.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["overlay", "hint", "popover"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "overlay",
+        "hint",
+        "popover"
+      ],
       "category": "overlay",
       "meta": {
         "name": "Tooltip",
         "description": "Contextual label shown on hover or focus",
         "category": "overlay",
-        "states": ["hidden", "visible"],
+        "states": [
+          "hidden",
+          "visible"
+        ],
         "variants": [],
         "sizes": [],
         "props": [
@@ -12577,11 +14886,20 @@
         "accessibility": {
           "role": "tooltip",
           "wcag": "AA",
-          "keyboard": ["Tab", "Escape"]
+          "keyboard": [
+            "Tab",
+            "Escape"
+          ]
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["overlay", "hint", "popover"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "overlay",
+          "hint",
+          "popover"
+        ],
         "intent": {
           "whenToUse": [
             "Labeling an icon-only control or clarifying a terse element on hover or focus",
@@ -12651,8 +14969,15 @@
           "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/visually-hidden/visually-hidden.module.css"
         }
       ],
-      "dependencies": ["@cascade-ui/core"],
-      "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+      "dependencies": [
+        "@cascade-ui/core"
+      ],
+      "tags": [
+        "accessibility",
+        "screen-reader",
+        "sr-only",
+        "hidden"
+      ],
       "category": "display",
       "meta": {
         "name": "VisuallyHidden",
@@ -12676,8 +15001,15 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascade-ui/core"],
-        "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
+        "dependencies": [
+          "@cascade-ui/core"
+        ],
+        "tags": [
+          "accessibility",
+          "screen-reader",
+          "sr-only",
+          "hidden"
+        ],
         "intent": {
           "whenToUse": [
             "Giving an icon-only control an accessible name without showing text",

@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["section", "footer", "navigation"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "section",
+    "footer",
+    "navigation"
+  ],
   "category": "layout",
   "meta": {
     "name": "PageFooter",
@@ -64,8 +70,14 @@
         "description": "Three-column footer with brand and license meta"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["section", "footer", "navigation"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "section",
+      "footer",
+      "navigation"
+    ],
     "intent": {
       "whenToUse": [
         "A site footer with grouped link columns and a brand/meta bottom row",

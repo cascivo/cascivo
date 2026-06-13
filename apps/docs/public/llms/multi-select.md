@@ -19,28 +19,21 @@ npx cascade add multi-select
 
 ## Props
 
-| Prop            | Type                    | Required | Default | Description |
-| --------------- | ----------------------- | -------- | ------- | ----------- |
-| `options`       | `MultiSelectOption[]`   | yes      | —       | —           |
-| `value`         | `string[]`              | yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void` | yes      | —       | —           |
-| `placeholder`   | `string`                | no       | —       | —           |
-| `disabled`      | `boolean`               | no       | `false` | —           |
-| `labels`        | `MultiSelectLabels`     | no       | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `MultiSelectOption[]` | yes | — | — |
+| `value` | `string[]` | yes | — | — |
+| `onValueChange` | `(v: string[]) => void` | yes | — | — |
+| `placeholder` | `string` | no | — | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `labels` | `MultiSelectLabels` | no | — | — |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<MultiSelect
-  options={[
-    { label: 'One', value: '1' },
-    { label: 'Two', value: '2' },
-  ]}
-  value={[]}
-  onValueChange={() => {}}
-/>
+<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
 ```
 
 ## Design tokens

@@ -5,8 +5,16 @@
   "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "sparkline",
+    "inline",
+    "trend",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -54,7 +62,9 @@
         "description": "Show dot at last data point"
       }
     ],
-    "tokens": ["--cascade-chart-1"],
+    "tokens": [
+      "--cascade-chart-1"
+    ],
     "accessibility": {
       "role": "img",
       "wcag": "AA",
@@ -66,8 +76,16 @@
         "code": "import { Sparkline } from '@cascade-ui/charts'\n\n<Sparkline data={[10, 20, 15, 30, 25]} label=\"Trend\" endDot />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "sparkline",
+      "inline",
+      "trend",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Embedding a compact micro-trend inline in text, tables, or KPI cards",

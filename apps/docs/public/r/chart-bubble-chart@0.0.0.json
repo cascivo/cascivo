@@ -5,8 +5,16 @@
   "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascade-ui/charts"],
-  "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+  "dependencies": [
+    "@cascade-ui/charts"
+  ],
+  "tags": [
+    "chart",
+    "bubble",
+    "scatter",
+    "three-dimensional",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -77,8 +85,16 @@
         "code": "import { BubbleChart } from '@cascade-ui/charts'\n\nconst series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }]\n<BubbleChart series={series} title=\"Bubble\" />"
       }
     ],
-    "dependencies": ["@cascade-ui/charts"],
-    "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
+    "dependencies": [
+      "@cascade-ui/charts"
+    ],
+    "tags": [
+      "chart",
+      "bubble",
+      "scatter",
+      "three-dimensional",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Plotting three dimensions at once — x, y, and a size-encoded magnitude",

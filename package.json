@@ -21,6 +21,7 @@
     "catalog:generate": "node scripts/catalog/generate.ts",
     "context:generate": "node scripts/context/generate.ts",
     "schema:generate": "node scripts/schema/generate.ts",
+    "regen": "pnpm registry:generate && pnpm catalog:generate && pnpm context:generate && pnpm readme:generate && pnpm llms:generate",
     "dev:docs": "vp run @cascade-ui/docs#dev",
     "dev:landing": "vp run @cascade-ui/landing#dev",
     "ready": "vp check && vp run -r check && vp run -r test && vp run -r build",

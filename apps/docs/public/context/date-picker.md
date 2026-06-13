@@ -33,20 +33,20 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the ca
 
 ## Props
 
-| Name           | Type               | Required            | Default | Description                            |
-| -------------- | ------------------ | ------------------- | ------- | -------------------------------------- | --------------------------------- | ---------- |
-| `value`        | `string`           | No                  | —       | Controlled ISO date value (YYYY-MM-DD) |
-| `defaultValue` | `string`           | No                  | —       | Uncontrolled default value             |
-| `onChange`     | `(value: string    | undefined) => void` | No      | —                                      | Called on date selection or clear |
-| `min`          | `string`           | No                  | —       | Minimum ISO date                       |
-| `max`          | `string`           | No                  | —       | Maximum ISO date                       |
-| `clearable`    | `boolean`          | No                  | —       | Shows a clear button                   |
-| `label`        | `string`           | No                  | —       | Field label                            |
-| `hint`         | `string`           | No                  | —       | Hint text                              |
-| `error`        | `string`           | No                  | —       | Error message                          |
-| `size`         | `'sm'              | 'md'                | 'lg'`   | No                                     | —                                 | Field size |
-| `disabled`     | `boolean`          | No                  | —       | Disables the picker                    |
-| `labels`       | `DatePickerLabels` | No                  | —       | i18n label overrides                   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | No | — | Controlled ISO date value (YYYY-MM-DD) |
+| `defaultValue` | `string` | No | — | Uncontrolled default value |
+| `onChange` | `(value: string | undefined) => void` | No | — | Called on date selection or clear |
+| `min` | `string` | No | — | Minimum ISO date |
+| `max` | `string` | No | — | Maximum ISO date |
+| `clearable` | `boolean` | No | — | Shows a clear button |
+| `label` | `string` | No | — | Field label |
+| `hint` | `string` | No | — | Hint text |
+| `error` | `string` | No | — | Error message |
+| `size` | `'sm' | 'md' | 'lg'` | No | — | Field size |
+| `disabled` | `boolean` | No | — | Disables the picker |
+| `labels` | `DatePickerLabels` | No | — | i18n label overrides |
 
 ## Tokens
 
@@ -84,8 +84,8 @@ Date range constraint
 
 ## Boundaries
 
-| Area              | Level    | Note                                                                                 |
-| ----------------- | -------- | ------------------------------------------------------------------------------------ |
-| value format      | strict   | All date props are ISO YYYY-MM-DD strings                                            |
+| Area | Level | Note |
+|------|-------|------|
+| value format | strict | All date props are ISO YYYY-MM-DD strings |
 | locale formatting | flexible | Display, weekday labels, and week start derive from the current i18n locale via Intl |
-| token names       | strict   | Styling resolves to --cascade-date-picker-\* component tokens                        |
+| token names | strict | Styling resolves to --cascade-date-picker-* component tokens |

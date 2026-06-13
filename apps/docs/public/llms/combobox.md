@@ -26,21 +26,21 @@ npx cascade add combobox
 
 ## Props
 
-| Prop           | Type               | Required            | Default | Description |
-| -------------- | ------------------ | ------------------- | ------- | ----------- | ------ | --- |
-| `options`      | `ComboboxOption[]` | yes                 | —       | —           |
-| `value`        | `string`           | no                  | —       | —           |
-| `defaultValue` | `string`           | no                  | —       | —           |
-| `onChange`     | `(value: string    | undefined) => void` | no      | —           | —      |
-| `clearable`    | `boolean`          | no                  | `false` | —           |
-| `searchable`   | `boolean`          | no                  | `true`  | —           |
-| `label`        | `string`           | no                  | —       | —           |
-| `hint`         | `string`           | no                  | —       | —           |
-| `error`        | `string`           | no                  | —       | —           |
-| `size`         | `'sm'              | 'md'                | 'lg'`   | no          | `'md'` | —   |
-| `disabled`     | `boolean`          | no                  | `false` | —           |
-| `labels`       | `ComboboxLabels`   | no                  | —       | —           |
-| `className`    | `string`           | no                  | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `ComboboxOption[]` | yes | — | — |
+| `value` | `string` | no | — | — |
+| `defaultValue` | `string` | no | — | — |
+| `onChange` | `(value: string | undefined) => void` | no | — | — |
+| `clearable` | `boolean` | no | `false` | — |
+| `searchable` | `boolean` | no | `true` | — |
+| `label` | `string` | no | — | — |
+| `hint` | `string` | no | — | — |
+| `error` | `string` | no | — | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `'md'` | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `labels` | `ComboboxLabels` | no | — | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 

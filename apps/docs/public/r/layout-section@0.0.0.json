@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/section/section.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core"],
-  "tags": ["layout", "section", "page"],
+  "dependencies": [
+    "@cascade-ui/core"
+  ],
+  "tags": [
+    "layout",
+    "section",
+    "page"
+  ],
   "category": "layout",
   "meta": {
     "name": "Section",
@@ -38,7 +44,9 @@
         "description": "Stack gap between children (spacing token step)"
       }
     ],
-    "tokens": ["--cascade-space-*"],
+    "tokens": [
+      "--cascade-space-*"
+    ],
     "accessibility": {
       "role": "region",
       "wcag": "AA",
@@ -51,8 +59,14 @@
         "description": "Centered 72rem content column with 2rem block padding"
       }
     ],
-    "dependencies": ["@cascade-ui/core"],
-    "tags": ["layout", "section", "page"],
+    "dependencies": [
+      "@cascade-ui/core"
+    ],
+    "tags": [
+      "layout",
+      "section",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "Wrapping a page region with block padding and a centered inner width",

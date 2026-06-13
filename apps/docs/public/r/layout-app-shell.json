@@ -12,14 +12,28 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/app-shell/app-shell.module.css"
     }
   ],
-  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
-  "tags": ["layout", "shell", "sidebar", "navigation"],
+  "dependencies": [
+    "@cascade-ui/core",
+    "@cascade-ui/i18n",
+    "@cascade-ui/storage"
+  ],
+  "tags": [
+    "layout",
+    "shell",
+    "sidebar",
+    "navigation"
+  ],
   "category": "layout",
   "meta": {
     "name": "AppShell",
     "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
     "category": "layout",
-    "states": ["expanded", "collapsed", "loading", "error"],
+    "states": [
+      "expanded",
+      "collapsed",
+      "loading",
+      "error"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -86,8 +100,17 @@
         "description": "App shell with collapsible nav"
       }
     ],
-    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n", "@cascade-ui/storage"],
-    "tags": ["layout", "shell", "sidebar", "navigation"],
+    "dependencies": [
+      "@cascade-ui/core",
+      "@cascade-ui/i18n",
+      "@cascade-ui/storage"
+    ],
+    "tags": [
+      "layout",
+      "shell",
+      "sidebar",
+      "navigation"
+    ],
     "intent": {
       "whenToUse": [
         "A full-page application frame with header, collapsible sidebar, and content",
