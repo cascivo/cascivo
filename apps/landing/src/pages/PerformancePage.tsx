@@ -420,6 +420,10 @@ function MethodologySection() {
         <a href="https://github.com/urbanisierung/cascade-ui/blob/main/apps/bench/METHODOLOGY.md">
           METHODOLOGY.md
         </a>{' '}
+        · per-component matrix detail:{' '}
+        <a href="https://github.com/urbanisierung/cascade-ui/blob/main/docs/specs/perf-methodology.md">
+          docs/specs/perf-methodology.md
+        </a>{' '}
         · bench source:{' '}
         <a href="https://github.com/urbanisierung/cascade-ui/tree/main/apps/bench">apps/bench</a> ·
         reproduce with <code>pnpm bench</code>.
