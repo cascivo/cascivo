@@ -20,6 +20,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Proof',
     links: [
+      { label: 'Why cascivo', href: '/docs/why' },
       { label: 'Accessibility', href: '/accessibility' },
       { label: 'Performance', href: '/performance' },
       { label: 'Benchmarks', href: '/docs/benchmarks' },

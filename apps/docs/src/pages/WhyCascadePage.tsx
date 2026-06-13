@@ -126,6 +126,34 @@ const CLAIMS: Claim[] = [
       'Mobile-first docs: AppShell off-canvas nav, fluid type, responsive tables (stacked cards), code blocks sized for narrow screens, container-query sections. Full parity with the landing.',
     receipt: null,
   },
+  {
+    number: 28,
+    title: 'Complete story, accurate numbers',
+    substance:
+      'Every major shipped feature — charts, layouts, i18n, AI audit, RSC support — is visible on ' +
+      'the landing page. WCAG 2.2 AA, 10 themes, and correct CLI commands are stated accurately. ' +
+      'No stale claims, no missing receipts.',
+    receipt: null,
+  },
+  {
+    number: 29,
+    title: 'Charts built for every user and condition',
+    substance:
+      '17 chart types. CVD-safe palettes across all 10 themes — rooted in Okabe-Ito oklch and ' +
+      'verified under protanopia, deuteranopia, and tritanopia. Keyboard-navigable tooltips on ' +
+      'every chart type. Dogfooded in our own docs.',
+    receipt: { label: 'See the chart gallery', href: '/charts' },
+  },
+  {
+    number: 30,
+    title: 'AI audit closes the loop',
+    substance:
+      'cascivo audit --ai scans agent-generated code for hard-coded color values (with token ' +
+      'suggestions), invented props on known components, missing required props, and raw strings ' +
+      'where the i18n catalog expects a key. The agent builds with the manifest; the audit checks ' +
+      'what it produced.',
+    receipt: { label: 'Context Explorer — try audit --ai live', href: '/context' },
+  },
 ]
 
 export function WhyCascadePage() {
@@ -135,7 +163,7 @@ export function WhyCascadePage() {
         <div class="doc-eyebrow">Why cascivo</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–27 are v13–v15's additions to the cascivo pitch. Each
+          "AI-first" is easy to say. Claims 14–30 are v13–v16's additions to the cascivo pitch. Each
           one links its receipt — the artifact that proves it shipped.
         </p>
       </header>
