@@ -32,6 +32,7 @@ export const meta: ComponentMeta = {
     role: 'button',
     wcag: 'AA',
     keyboard: ['Enter', 'Space'],
+    apgPattern: 'button',
   },
   examples: [
     { title: 'Primary', code: '<Button>Click me</Button>' },

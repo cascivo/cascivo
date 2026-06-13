@@ -25,6 +25,7 @@ export const meta: ComponentMeta = {
     role: 'dialog',
     wcag: 'AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
+    apgPattern: 'dialog-modal',
   },
   examples: [
     {

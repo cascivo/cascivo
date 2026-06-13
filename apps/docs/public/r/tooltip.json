@@ -56,7 +56,8 @@
     "accessibility": {
       "role": "tooltip",
       "wcag": "AA",
-      "keyboard": ["Tab", "Escape"]
+      "keyboard": ["Tab", "Escape"],
+      "apgPattern": "tooltip"
     },
     "examples": [
       {

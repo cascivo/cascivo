@@ -50,7 +50,7 @@ npx cascade add radio
 
 - **WCAG level:** AA
 - **ARIA role:** `radio`
-- **Keyboard:** ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+- **Keyboard:** ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Space
 
 ## Dependencies
 

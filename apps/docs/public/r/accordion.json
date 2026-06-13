@@ -55,7 +55,8 @@
     "accessibility": {
       "role": "button",
       "wcag": "AA",
-      "keyboard": ["Enter", "Space"]
+      "keyboard": ["Enter", "Space"],
+      "apgPattern": "accordion"
     },
     "examples": [
       {

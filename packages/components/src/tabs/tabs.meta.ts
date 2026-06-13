@@ -23,6 +23,7 @@ export const meta: ComponentMeta = {
     role: 'tablist',
     wcag: 'AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End'],
+    apgPattern: 'tabs',
   },
   examples: [
     {

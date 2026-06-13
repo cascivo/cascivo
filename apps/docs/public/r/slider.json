@@ -73,7 +73,8 @@
     "accessibility": {
       "role": "slider",
       "wcag": "AA",
-      "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+      "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
+      "apgPattern": "slider"
     },
     "examples": [
       {

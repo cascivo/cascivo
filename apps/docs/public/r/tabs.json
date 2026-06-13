@@ -49,7 +49,8 @@
     "accessibility": {
       "role": "tablist",
       "wcag": "AA",
-      "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+      "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
+      "apgPattern": "tabs"
     },
     "examples": [
       {

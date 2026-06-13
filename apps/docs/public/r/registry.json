@@ -59,7 +59,8 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "accordion"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -1426,7 +1427,8 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "button"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -3493,7 +3495,8 @@
         "accessibility": {
           "role": "checkbox",
           "wcag": "AA",
-          "keyboard": ["Space"]
+          "keyboard": ["Space"],
+          "apgPattern": "checkbox"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -4771,7 +4774,8 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
+          "apgPattern": "menu"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -7603,7 +7607,8 @@
         "accessibility": {
           "role": "dialog",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+          "keyboard": ["Escape", "Tab", "Shift+Tab"],
+          "apgPattern": "dialog-modal"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -9094,7 +9099,8 @@
         "accessibility": {
           "role": "radio",
           "wcag": "AA",
-          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"],
+          "apgPattern": "radio"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -10325,7 +10331,8 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown"]
+          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown", "Escape", "Enter"],
+          "apgPattern": "combobox"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -11137,7 +11144,8 @@
         "accessibility": {
           "role": "slider",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
+          "apgPattern": "slider"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -11650,7 +11658,8 @@
         "accessibility": {
           "role": "tablist",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
+          "apgPattern": "tabs"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -12518,7 +12527,8 @@
         "accessibility": {
           "role": "switch",
           "wcag": "AA",
-          "keyboard": ["Space", "Enter"]
+          "keyboard": ["Space", "Enter"],
+          "apgPattern": "switch"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -12626,7 +12636,8 @@
         "accessibility": {
           "role": "tooltip",
           "wcag": "AA",
-          "keyboard": ["Tab", "Escape"]
+          "keyboard": ["Tab", "Escape"],
+          "apgPattern": "tooltip"
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],

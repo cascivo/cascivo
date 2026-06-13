@@ -26,6 +26,7 @@ export const meta: ComponentMeta = {
     role: 'switch',
     wcag: 'AA',
     keyboard: ['Space', 'Enter'],
+    apgPattern: 'switch',
   },
   examples: [
     { title: 'Uncontrolled', code: '<Toggle label="Notifications" defaultChecked />' },

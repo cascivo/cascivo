@@ -26,6 +26,7 @@ export const meta: ComponentMeta = {
     role: 'checkbox',
     wcag: 'AA',
     keyboard: ['Space'],
+    apgPattern: 'checkbox',
   },
   examples: [
     { title: 'With label', code: '<Checkbox label="Accept terms" />' },

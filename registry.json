@@ -54,7 +54,8 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "accordion"
         },
         "examples": [
           {
@@ -827,7 +828,8 @@
         "accessibility": {
           "role": "button",
           "wcag": "AA",
-          "keyboard": ["Enter", "Space"]
+          "keyboard": ["Enter", "Space"],
+          "apgPattern": "button"
         },
         "examples": [
           {
@@ -1044,7 +1046,8 @@
         "accessibility": {
           "role": "checkbox",
           "wcag": "AA",
-          "keyboard": ["Space"]
+          "keyboard": ["Space"],
+          "apgPattern": "checkbox"
         },
         "examples": [
           {
@@ -2355,7 +2358,8 @@
         "accessibility": {
           "role": "menu",
           "wcag": "AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
+          "apgPattern": "menu"
         },
         "examples": [
           {
@@ -4118,7 +4122,8 @@
         "accessibility": {
           "role": "dialog",
           "wcag": "AA",
-          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+          "keyboard": ["Escape", "Tab", "Shift+Tab"],
+          "apgPattern": "dialog-modal"
         },
         "examples": [
           {
@@ -5657,7 +5662,8 @@
         "accessibility": {
           "role": "radio",
           "wcag": "AA",
-          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+          "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"],
+          "apgPattern": "radio"
         },
         "examples": [
           {
@@ -6318,7 +6324,8 @@
         "accessibility": {
           "role": "combobox",
           "wcag": "AA",
-          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown"]
+          "keyboard": ["Tab", "Space", "ArrowUp", "ArrowDown", "Escape", "Enter"],
+          "apgPattern": "combobox"
         },
         "examples": [
           {
@@ -7161,7 +7168,8 @@
         "accessibility": {
           "role": "slider",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"]
+          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
+          "apgPattern": "slider"
         },
         "examples": [
           {
@@ -7700,7 +7708,8 @@
         "accessibility": {
           "role": "tablist",
           "wcag": "AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
+          "apgPattern": "tabs"
         },
         "examples": [
           {
@@ -8590,7 +8599,8 @@
         "accessibility": {
           "role": "switch",
           "wcag": "AA",
-          "keyboard": ["Space", "Enter"]
+          "keyboard": ["Space", "Enter"],
+          "apgPattern": "switch"
         },
         "examples": [
           {
@@ -8702,7 +8712,8 @@
         "accessibility": {
           "role": "tooltip",
           "wcag": "AA",
-          "keyboard": ["Tab", "Escape"]
+          "keyboard": ["Tab", "Escape"],
+          "apgPattern": "tooltip"
         },
         "examples": [
           {

@@ -34,6 +34,7 @@ export const meta: ComponentMeta = {
     role: 'tooltip',
     wcag: 'AA',
     keyboard: ['Tab', 'Escape'],
+    apgPattern: 'tooltip',
   },
   examples: [
     {

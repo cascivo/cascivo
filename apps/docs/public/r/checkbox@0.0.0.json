@@ -62,7 +62,8 @@
     "accessibility": {
       "role": "checkbox",
       "wcag": "AA",
-      "keyboard": ["Space"]
+      "keyboard": ["Space"],
+      "apgPattern": "checkbox"
     },
     "examples": [
       {

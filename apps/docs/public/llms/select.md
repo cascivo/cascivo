@@ -63,7 +63,7 @@ npx cascade add select
 
 - **WCAG level:** AA
 - **ARIA role:** `combobox`
-- **Keyboard:** Tab, Space, ArrowUp, ArrowDown
+- **Keyboard:** Tab, Space, ArrowUp, ArrowDown, Escape, Enter
 
 ## Dependencies
 

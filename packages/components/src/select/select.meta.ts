@@ -31,7 +31,8 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'combobox',
     wcag: 'AA',
-    keyboard: ['Tab', 'Space', 'ArrowUp', 'ArrowDown'],
+    keyboard: ['Tab', 'Space', 'ArrowUp', 'ArrowDown', 'Escape', 'Enter'],
+    apgPattern: 'combobox',
   },
   examples: [
     {

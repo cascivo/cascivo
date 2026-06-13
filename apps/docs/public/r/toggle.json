@@ -67,7 +67,8 @@
     "accessibility": {
       "role": "switch",
       "wcag": "AA",
-      "keyboard": ["Space", "Enter"]
+      "keyboard": ["Space", "Enter"],
+      "apgPattern": "switch"
     },
     "examples": [
       {

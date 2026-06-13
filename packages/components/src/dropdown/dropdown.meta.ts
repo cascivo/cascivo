@@ -35,6 +35,7 @@ export const meta: ComponentMeta = {
     role: 'menu',
     wcag: 'AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
+    apgPattern: 'menu',
   },
   examples: [
     {
