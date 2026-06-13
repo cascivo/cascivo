@@ -45,4 +45,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'bullet', 'kpi', 'progress', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing a single measure against a target with qualitative range bands',
+      'Compact dashboard KPIs where space for a full gauge is limited',
+    ],
+    whenNotToUse: [
+      'Displaying a metric without a target or comparative range — use Kpi',
+      'Showing a simple completion or rated value — use Meter',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Meter',
+        relationship: 'alternative',
+        reason: 'Use for a rated value within a range without a target marker',
+      },
+      {
+        name: 'Kpi',
+        relationship: 'alternative',
+        reason: 'Use for a single headline metric with a delta',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a label prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

@@ -57,4 +57,29 @@ const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'bar', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Comparing discrete categorical values across groups',
+      'Showing grouped or stacked multi-series data per category',
+    ],
+    whenNotToUse: [
+      'Showing trends over continuous time — use LineChart',
+      'Part-of-whole proportions — use PieChart for ≤5 categories',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'LineChart',
+        relationship: 'alternative',
+        reason: 'Use for trends over continuous time',
+      },
+      {
+        name: 'Histogram',
+        relationship: 'alternative',
+        reason: 'Use to show the distribution of a continuous variable',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

@@ -78,4 +78,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['section', 'hero', 'marketing'],
+  intent: {
+    whenToUse: [
+      'The primary page intro with eyebrow, title, description, actions, and media',
+      'Landing-page tops in centered or split layout',
+    ],
+    whenNotToUse: [
+      'An application page top — use PageHeader',
+      'A mid-page conversion prompt — use Cta',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'PageHeader',
+        relationship: 'alternative',
+        reason: 'Use for app pages rather than marketing landings',
+      },
+      {
+        name: 'Cta',
+        relationship: 'pairs-with',
+        reason: 'Reinforce the hero with a CTA band later on the page',
+      },
+    ],
+    a11yRationale: 'Renders a section with the page-level heading as its primary landmark.',
+    flexibility: [],
+  },
 }

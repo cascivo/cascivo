@@ -53,4 +53,29 @@ const data = [
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'treemap', 'hierarchy', 'part-to-whole', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing part-to-whole proportions across many segments in a compact area',
+      'Visualising hierarchical magnitude where slice size encodes value',
+    ],
+    whenNotToUse: [
+      'Few segments where a simple split reads better — use PieChart for ≤5',
+      'Precise value comparison — area encoding is approximate',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'PieChart',
+        relationship: 'alternative',
+        reason: 'Use for part-of-whole with five or fewer flat segments',
+      },
+      {
+        name: 'Heatmap',
+        relationship: 'alternative',
+        reason: 'Use for magnitude across a two-dimensional grid',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

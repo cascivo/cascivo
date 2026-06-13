@@ -67,4 +67,24 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['section', 'gallery', 'masonry'],
+  intent: {
+    whenToUse: [
+      'A full-width media gallery section with masonry packing',
+      'Showcasing images or media tiles of varying heights',
+    ],
+    whenNotToUse: [
+      'A bare masonry primitive without section framing — use Masonry',
+      'Uniform-height cards in rows — use AutoGrid',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Masonry',
+        relationship: 'contains',
+        reason: 'Uses the masonry primitive for tile packing',
+      },
+    ],
+    a11yRationale: 'Renders a section shell; tiles supply their own accessible content.',
+    flexibility: [],
+  },
 }

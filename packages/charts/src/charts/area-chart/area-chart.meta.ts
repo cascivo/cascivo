@@ -56,4 +56,29 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'area', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing cumulative volume or magnitude of a trend over continuous time',
+      'Emphasising the total of stacked multi-series values across a range',
+    ],
+    whenNotToUse: [
+      'Reading precise individual values — use LineChart',
+      'Comparing discrete categories — use BarChart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'LineChart',
+        relationship: 'alternative',
+        reason: 'Use when precise values matter more than filled volume',
+      },
+      {
+        name: 'BarChart',
+        relationship: 'alternative',
+        reason: 'Use for discrete categorical comparison',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

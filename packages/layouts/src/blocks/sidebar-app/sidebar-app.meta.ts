@@ -15,4 +15,29 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/react', 'layout/app-shell'],
   tags: ['block', 'sidebar', 'navigation', 'app-shell'],
+  intent: {
+    whenToUse: [
+      'A ready-made app shell with opinionated collapsible sidebar and top header',
+      'Standing up an authenticated app frame quickly',
+    ],
+    whenNotToUse: [
+      'You want a bare shell to compose your own nav — use AppShell',
+      'A dashboard-specific layout — use DashboardLayout',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'AppShell',
+        relationship: 'alternative',
+        reason: 'Use the bare layout primitive for custom navigation',
+      },
+      {
+        name: 'ConsoleApp',
+        relationship: 'alternative',
+        reason: 'Use the Carbon-parity console shell for icon-rail navigation',
+      },
+    ],
+    a11yRationale: 'Provides header and navigation landmarks for screen reader orientation.',
+    flexibility: [],
+  },
 }

@@ -28,4 +28,30 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core'],
   tags: ['layout', 'grid', 'columns'],
+  intent: {
+    whenToUse: [
+      'Equal-width multi-column content that collapses to one column when narrow',
+      'Side-by-side text or content blocks at a fixed column count',
+    ],
+    whenNotToUse: [
+      'Card grids that auto-fit to width — use AutoGrid',
+      'Single-direction stacking — use Stack',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Grid',
+        relationship: 'alternative',
+        reason: 'Use for general two-dimensional grid placement',
+      },
+      {
+        name: 'AutoGrid',
+        relationship: 'alternative',
+        reason: 'Use when column count should adapt to available width',
+      },
+    ],
+    a11yRationale:
+      'Pure layout primitive with no semantic role; does not affect the accessibility tree.',
+    flexibility: [],
+  },
 }

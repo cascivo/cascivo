@@ -54,4 +54,29 @@ const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
   ],
   dependencies: ['@cascade-ui/charts'],
   tags: ['chart', 'scatter', 'plot', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Revealing correlation or clustering between two numeric variables',
+      'Plotting many individual observations across a 2D space',
+    ],
+    whenNotToUse: [
+      'Encoding a third magnitude dimension — use BubbleChart',
+      'Showing a trend over ordered time — use LineChart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'BubbleChart',
+        relationship: 'alternative',
+        reason: 'Use when a third size dimension must be encoded',
+      },
+      {
+        name: 'LineChart',
+        relationship: 'alternative',
+        reason: 'Use when points form an ordered trend over time',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
 }

@@ -50,4 +50,30 @@ export const meta: ComponentMeta = {
   ],
   dependencies: ['@cascade-ui/core', '@cascade-ui/i18n', '@cascade-ui/storage'],
   tags: ['layout', 'shell', 'sidebar', 'navigation'],
+  intent: {
+    whenToUse: [
+      'A full-page application frame with header, collapsible sidebar, and content',
+      'You need a bare shell to compose your own navigation into',
+    ],
+    whenNotToUse: [
+      'You want opinionated, prewired sidebar navigation — use SidebarApp',
+      'A simple centered content page — use Section or Center',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'SidebarApp',
+        relationship: 'alternative',
+        reason: 'Use the opinionated block when you want prewired sidebar nav',
+      },
+      {
+        name: 'DashboardLayout',
+        relationship: 'alternative',
+        reason: 'Use for a stats-strip dashboard page rather than a bare shell',
+      },
+    ],
+    a11yRationale:
+      'Provides landmark structure with header and navigation regions for screen reader orientation.',
+    flexibility: [],
+  },
 }
