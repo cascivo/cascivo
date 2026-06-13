@@ -54,7 +54,7 @@ toast({ title: 'Saved', variant: 'success' })
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `status`
 - **Keyboard:** Tab
 

@@ -56,7 +56,7 @@ npx cascade add progress-circle
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
 
 ## Dependencies

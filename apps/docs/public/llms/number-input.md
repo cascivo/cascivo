@@ -77,7 +77,7 @@ npx cascade add number-input
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `spinbutton`
 - **Keyboard:** ArrowUp, ArrowDown, Enter, Tab
 

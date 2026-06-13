@@ -79,7 +79,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'table',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Space'],
   },
   examples: [

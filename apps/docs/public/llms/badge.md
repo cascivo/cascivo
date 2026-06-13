@@ -63,7 +63,7 @@ npx cascade add badge
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `status`
 
 ## Dependencies

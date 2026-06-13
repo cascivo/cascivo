@@ -58,9 +58,11 @@
         ],
         "accessibility": {
           "role": "button",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"],
-          "apgPattern": "accordion"
+          "apgPattern": "accordion",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -173,8 +175,10 @@
         ],
         "accessibility": {
           "role": "alert",
-          "wcag": "AA",
-          "keyboard": []
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -265,7 +269,7 @@
         ],
         "accessibility": {
           "role": "alertdialog",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
         },
         "examples": [],
@@ -394,7 +398,7 @@
         ],
         "accessibility": {
           "role": "img",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -487,8 +491,9 @@
         ],
         "accessibility": {
           "role": "status",
-          "wcag": "AA",
-          "keyboard": []
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -1204,7 +1209,7 @@
         ],
         "accessibility": {
           "role": "blockquote",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -1310,7 +1315,7 @@
         ],
         "accessibility": {
           "role": "navigation",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter"]
         },
         "examples": [],
@@ -1426,9 +1431,11 @@
         ],
         "accessibility": {
           "role": "button",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"],
-          "apgPattern": "button"
+          "apgPattern": "button",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -1527,7 +1534,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -3494,9 +3501,11 @@
         ],
         "accessibility": {
           "role": "checkbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Space"],
-          "apgPattern": "checkbox"
+          "apgPattern": "checkbox",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -3621,7 +3630,7 @@
         "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
         "accessibility": {
           "role": "checkbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Space"]
         },
         "examples": [],
@@ -3722,7 +3731,7 @@
         ],
         "accessibility": {
           "role": "code",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -3887,7 +3896,7 @@
         ],
         "accessibility": {
           "role": "combobox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Escape", "Tab"]
         },
         "examples": [],
@@ -4051,7 +4060,7 @@
         ],
         "accessibility": {
           "role": "combobox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Cmd/Ctrl+K", "ArrowDown", "ArrowUp", "Home", "End", "Enter", "Escape"]
         },
         "examples": [],
@@ -4156,7 +4165,7 @@
         ],
         "accessibility": {
           "role": "menu",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
         "examples": [],
@@ -4264,7 +4273,7 @@
         ],
         "accessibility": {
           "role": "button",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"]
         },
         "examples": [],
@@ -4481,7 +4490,7 @@
         ],
         "accessibility": {
           "role": "table",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Space"]
         },
         "examples": [],
@@ -4639,7 +4648,7 @@
         ],
         "accessibility": {
           "role": "combobox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": [
             "Enter",
             "Space",
@@ -4773,9 +4782,11 @@
         ],
         "accessibility": {
           "role": "menu",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
-          "apgPattern": "menu"
+          "apgPattern": "menu",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -4904,7 +4915,7 @@
         ],
         "accessibility": {
           "role": "button",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Escape"]
         },
         "examples": [],
@@ -5021,7 +5032,7 @@
         ],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -5177,7 +5188,7 @@
         ],
         "accessibility": {
           "role": "button",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"]
         },
         "examples": [],
@@ -5291,7 +5302,7 @@
         "tokens": ["--cascade-space-4"],
         "accessibility": {
           "role": "form",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter"]
         },
         "examples": [],
@@ -5414,7 +5425,7 @@
         ],
         "accessibility": {
           "role": "banner",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab"]
         },
         "examples": [],
@@ -5530,7 +5541,7 @@
         ],
         "accessibility": {
           "role": "region",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab"]
         },
         "examples": [],
@@ -5633,7 +5644,7 @@
         ],
         "accessibility": {
           "role": "heading",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -5722,7 +5733,7 @@
         ],
         "accessibility": {
           "role": "complementary",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Escape"]
         },
         "examples": [],
@@ -5847,8 +5858,10 @@
         ],
         "accessibility": {
           "role": "textbox",
-          "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab"]
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Shift+Tab"],
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -5962,7 +5975,7 @@
         ],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -6059,7 +6072,7 @@
         ],
         "accessibility": {
           "role": "kbd",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -7302,7 +7315,7 @@
         ],
         "accessibility": {
           "role": "link",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter"]
         },
         "examples": [],
@@ -7400,7 +7413,7 @@
         ],
         "accessibility": {
           "role": "list",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -7482,7 +7495,7 @@
         ],
         "accessibility": {
           "role": "menu",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
         "examples": [],
@@ -7606,9 +7619,11 @@
         ],
         "accessibility": {
           "role": "dialog",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab", "Shift+Tab"],
-          "apgPattern": "dialog-modal"
+          "apgPattern": "dialog-modal",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -7742,7 +7757,7 @@
         ],
         "accessibility": {
           "role": "listbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Space", "Enter", "Escape"]
         },
         "examples": [],
@@ -7929,7 +7944,7 @@
         ],
         "accessibility": {
           "role": "spinbutton",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Tab"]
         },
         "examples": [],
@@ -8050,7 +8065,7 @@
         ],
         "accessibility": {
           "role": "group",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowLeft", "ArrowRight", "Backspace"]
         },
         "examples": [],
@@ -8178,7 +8193,7 @@
         ],
         "accessibility": {
           "role": "menu",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
         },
         "examples": [],
@@ -8325,7 +8340,7 @@
         ],
         "accessibility": {
           "role": "navigation",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter", "Space", "ArrowUp", "ArrowDown"]
         },
         "examples": [],
@@ -8452,7 +8467,7 @@
         ],
         "accessibility": {
           "role": "textbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Shift+Tab"]
         },
         "examples": [],
@@ -8541,7 +8556,7 @@
         ],
         "accessibility": {
           "role": "dialog",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Escape"]
         },
         "examples": [],
@@ -8671,7 +8686,7 @@
         ],
         "accessibility": {
           "role": "progressbar",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -8783,7 +8798,7 @@
         "tokens": ["--cascade-color-border", "--cascade-color-accent", "--cascade-color-text"],
         "accessibility": {
           "role": "progressbar",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -8897,7 +8912,7 @@
         ],
         "accessibility": {
           "role": "list",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -8991,7 +9006,7 @@
         ],
         "accessibility": {
           "role": "generic",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -9098,9 +9113,11 @@
         ],
         "accessibility": {
           "role": "radio",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"],
-          "apgPattern": "radio"
+          "apgPattern": "radio",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -9213,7 +9230,7 @@
         ],
         "accessibility": {
           "role": "radiogroup",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Space"]
         },
         "examples": [],
@@ -9342,7 +9359,7 @@
         ],
         "accessibility": {
           "role": "radiogroup",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Space", "Enter"]
         },
         "examples": [],
@@ -9499,7 +9516,7 @@
         ],
         "accessibility": {
           "role": "searchbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter"]
         },
         "examples": [],
@@ -10201,7 +10218,7 @@
         ],
         "accessibility": {
           "role": "group",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowLeft", "ArrowRight"]
         },
         "examples": [],
@@ -10330,8 +10347,10 @@
         ],
         "accessibility": {
           "role": "listbox",
-          "wcag": "AA",
-          "keyboard": ["ArrowUp", "ArrowDown", "Space"]
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowUp", "ArrowDown", "Space"],
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -10429,7 +10448,7 @@
         "tokens": ["--cascade-color-border"],
         "accessibility": {
           "role": "separator",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -10510,7 +10529,7 @@
         ],
         "accessibility": {
           "role": "dialog",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab", "Shift+Tab"]
         },
         "examples": [],
@@ -10647,7 +10666,7 @@
         ],
         "accessibility": {
           "role": "banner",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
         },
         "examples": [],
@@ -10806,7 +10825,7 @@
         ],
         "accessibility": {
           "role": "navigation",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
         },
         "examples": [],
@@ -10912,7 +10931,7 @@
         ],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -11018,7 +11037,7 @@
         ],
         "accessibility": {
           "role": "link",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter"]
         },
         "examples": [],
@@ -11142,9 +11161,10 @@
         ],
         "accessibility": {
           "role": "slider",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
-          "apgPattern": "slider"
+          "apgPattern": "slider",
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -11236,8 +11256,9 @@
         "tokens": ["--cascade-radius-full"],
         "accessibility": {
           "role": "status",
-          "wcag": "AA",
-          "keyboard": []
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": false
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -11352,7 +11373,7 @@
         ],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -11452,7 +11473,7 @@
         ],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -11560,7 +11581,7 @@
         ],
         "accessibility": {
           "role": "list",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter"]
         },
         "examples": [],
@@ -11656,9 +11677,11 @@
         ],
         "accessibility": {
           "role": "tablist",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
-          "apgPattern": "tabs"
+          "apgPattern": "tabs",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -11774,7 +11797,7 @@
         ],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"]
         },
         "examples": [],
@@ -11898,7 +11921,7 @@
         ],
         "accessibility": {
           "role": "textbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Enter", ",", "Backspace"]
         },
         "examples": [],
@@ -12017,7 +12040,7 @@
         ],
         "accessibility": {
           "role": "paragraph",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],
@@ -12136,8 +12159,10 @@
         ],
         "accessibility": {
           "role": "textbox",
-          "wcag": "AA",
-          "keyboard": ["Tab", "Shift+Tab"]
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Shift+Tab"],
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -12293,7 +12318,7 @@
         ],
         "accessibility": {
           "role": "textbox",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab"]
         },
         "examples": [],
@@ -12402,8 +12427,10 @@
         ],
         "accessibility": {
           "role": "status",
-          "wcag": "AA",
-          "keyboard": ["Tab"]
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab"],
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
@@ -12525,9 +12552,11 @@
         ],
         "accessibility": {
           "role": "switch",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Space", "Enter"],
-          "apgPattern": "switch"
+          "apgPattern": "switch",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -12634,9 +12663,11 @@
         ],
         "accessibility": {
           "role": "tooltip",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": ["Tab", "Escape"],
-          "apgPattern": "tooltip"
+          "apgPattern": "tooltip",
+          "reducedMotion": true,
+          "forcedColors": true
         },
         "examples": [],
         "dependencies": ["@cascade-ui/core"],
@@ -12731,7 +12762,7 @@
         "tokens": [],
         "accessibility": {
           "role": "none",
-          "wcag": "AA",
+          "wcag": "2.2-AA",
           "keyboard": []
         },
         "examples": [],

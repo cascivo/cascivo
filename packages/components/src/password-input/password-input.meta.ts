@@ -28,7 +28,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'textbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Shift+Tab'],
   },
   examples: [

@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'menu',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
   },
   examples: [

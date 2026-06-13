@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
     '--cascade-radius-full',
     '--cascade-radius-component',
   ],
-  accessibility: { role: 'none', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'none', wcag: '2.2-AA', keyboard: [] },
   examples: [
     { title: 'Text', code: '<Skeleton lines={3} />' },
     { title: 'Avatar', code: '<Skeleton variant="circle" width="3rem" height="3rem" />' },

@@ -28,7 +28,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'status',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab'],
     reducedMotion: true,
     forcedColors: true,

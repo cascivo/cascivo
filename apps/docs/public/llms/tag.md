@@ -73,7 +73,7 @@ Renders a trailing remove button labeled by dismissLabel
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 - **Keyboard:** Enter, Space
 

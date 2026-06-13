@@ -54,7 +54,7 @@ npx cascade add textarea
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `textbox`
 - **Keyboard:** Tab, Shift+Tab
 

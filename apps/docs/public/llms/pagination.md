@@ -73,7 +73,7 @@ npx cascade add pagination
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter, Space, ArrowUp, ArrowDown
 

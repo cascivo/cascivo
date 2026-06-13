@@ -48,6 +48,12 @@
       "title": "t5-deferral",
       "path": "/docs/specs/t5-deferral.md",
       "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
+    },
+    {
+      "id": "wcag-2.2",
+      "title": "wcag-2.2",
+      "path": "/docs/specs/wcag-2.2.md",
+      "summary": "Three criteria added in WCAG 2.2 require explicit cascade handling. This document records the implementation approach and verification status for each."
     }
   ]
 }

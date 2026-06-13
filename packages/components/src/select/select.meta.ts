@@ -31,7 +31,7 @@ export const meta: ComponentMeta = {
   accessibility: {
     // native <select> — keyboard behavior is browser-provided, not cascade-wired
     role: 'listbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'Space'],
     reducedMotion: true,
     forcedColors: true,

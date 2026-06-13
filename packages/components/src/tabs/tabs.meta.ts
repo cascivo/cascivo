@@ -21,7 +21,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'tablist',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End'],
     apgPattern: 'tabs',
     reducedMotion: true,

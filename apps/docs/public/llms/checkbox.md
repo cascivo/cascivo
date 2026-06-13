@@ -53,7 +53,7 @@ npx cascade add checkbox
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `checkbox`
 - **Keyboard:** Space
 

@@ -45,7 +45,7 @@ npx cascade add tooltip
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `tooltip`
 - **Keyboard:** Tab, Escape
 

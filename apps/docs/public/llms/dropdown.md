@@ -50,7 +50,7 @@ npx cascade add dropdown
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
 - **Keyboard:** ArrowDown, ArrowUp, Home, End, Enter, Space, Escape
 

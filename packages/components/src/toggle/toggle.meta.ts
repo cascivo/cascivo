@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'switch',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space', 'Enter'],
     apgPattern: 'switch',
     reducedMotion: true,

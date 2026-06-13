@@ -27,7 +27,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'listbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Space', 'Enter', 'Escape'],
   },
   examples: [

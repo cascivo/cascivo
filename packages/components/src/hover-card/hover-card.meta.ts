@@ -18,7 +18,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'complementary',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Escape'],
   },
   examples: [],

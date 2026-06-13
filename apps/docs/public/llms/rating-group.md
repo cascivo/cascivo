@@ -59,7 +59,7 @@ npx cascade add rating-group
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radiogroup`
 - **Keyboard:** Tab, Space, Enter
 

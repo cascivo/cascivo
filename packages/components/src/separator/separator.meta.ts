@@ -25,7 +25,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-color-border'],
   accessibility: {
     role: 'separator',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [

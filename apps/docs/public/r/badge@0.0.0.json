@@ -45,8 +45,9 @@
     ],
     "accessibility": {
       "role": "status",
-      "wcag": "AA",
-      "keyboard": []
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "forcedColors": true
     },
     "examples": [
       {

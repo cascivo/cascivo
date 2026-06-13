@@ -47,7 +47,7 @@ npx cascade add card
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `region`
 
 ## Dependencies

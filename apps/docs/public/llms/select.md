@@ -61,7 +61,7 @@ npx cascade add select
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `listbox`
 - **Keyboard:** ArrowUp, ArrowDown, Space
 

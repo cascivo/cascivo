@@ -57,7 +57,7 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter
 

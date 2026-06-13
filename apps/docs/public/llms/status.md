@@ -63,7 +63,7 @@ The pulse animation respects prefers-reduced-motion
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `none`
 
 ## Dependencies

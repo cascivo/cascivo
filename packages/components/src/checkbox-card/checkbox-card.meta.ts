@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-color-accent', '--cascade-color-border', '--cascade-radius-surface'],
   accessibility: {
     role: 'checkbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space'],
   },
   examples: [

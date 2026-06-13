@@ -57,7 +57,7 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `generic`
 
 ## Dependencies

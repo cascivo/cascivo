@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'group',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'Backspace'],
   },
   examples: [

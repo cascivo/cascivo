@@ -27,7 +27,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'radiogroup',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Space'],
   },
   examples: [

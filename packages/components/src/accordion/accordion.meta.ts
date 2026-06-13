@@ -22,7 +22,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'button',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
     apgPattern: 'accordion',
     reducedMotion: true,

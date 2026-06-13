@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-space-4'],
   accessibility: {
     role: 'form',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter'],
   },
   examples: [

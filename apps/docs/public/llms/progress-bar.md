@@ -72,7 +72,7 @@ npx cascade add progress-bar
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
 
 ## Dependencies

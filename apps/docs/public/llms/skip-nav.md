@@ -54,7 +54,7 @@ SkipNavLink must be the first focusable element on the page
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `link`
 - **Keyboard:** Tab, Enter
 

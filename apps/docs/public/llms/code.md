@@ -59,7 +59,7 @@ Sits inline with surrounding text
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `code`
 
 ## Dependencies

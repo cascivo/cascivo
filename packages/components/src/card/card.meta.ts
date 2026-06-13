@@ -22,7 +22,7 @@ export const meta: ComponentMeta = {
     '--cascade-radius-card',
     '--cascade-shadow-md',
   ],
-  accessibility: { role: 'region', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'region', wcag: '2.2-AA', keyboard: [] },
   examples: [
     {
       title: 'Basic card',

@@ -48,7 +48,7 @@ npx cascade add tabs
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `tablist`
 - **Keyboard:** ArrowLeft, ArrowRight, Home, End
 

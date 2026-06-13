@@ -51,7 +51,7 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `region`
 - **Keyboard:** Escape, Tab
 

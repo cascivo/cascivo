@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'searchbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Enter'],
   },
   examples: [

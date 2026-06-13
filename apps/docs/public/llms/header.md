@@ -59,7 +59,7 @@ npx cascade add header
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `banner`
 - **Keyboard:** Tab
 

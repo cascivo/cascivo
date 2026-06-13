@@ -30,7 +30,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'alert',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
     reducedMotion: true,
     forcedColors: true,

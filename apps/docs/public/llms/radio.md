@@ -48,7 +48,7 @@ npx cascade add radio
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radio`
 - **Keyboard:** ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Space
 

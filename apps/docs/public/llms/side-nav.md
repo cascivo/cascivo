@@ -86,7 +86,7 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter, Space, ArrowDown, ArrowUp, Escape
 

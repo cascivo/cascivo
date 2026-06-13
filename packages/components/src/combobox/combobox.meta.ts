@@ -43,7 +43,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'combobox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Escape', 'Tab'],
   },
   examples: [

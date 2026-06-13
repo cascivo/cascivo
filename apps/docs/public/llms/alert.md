@@ -68,7 +68,7 @@ npx cascade add alert
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `alert`
 
 ## Dependencies

@@ -56,8 +56,10 @@
     ],
     "accessibility": {
       "role": "status",
-      "wcag": "AA",
-      "keyboard": ["Tab"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab"],
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

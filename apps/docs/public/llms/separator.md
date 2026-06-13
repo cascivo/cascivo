@@ -39,7 +39,7 @@ npx cascade add separator
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `separator`
 
 ## Dependencies

@@ -14,7 +14,28 @@ const COLUMNS: Column<A11yRow>[] = [
     header: 'Role',
     render: (r) => <code className="a11y-role">{r.role}</code>,
   },
-  { key: 'wcag', header: 'WCAG' },
+  {
+    key: 'wcag',
+    header: 'WCAG',
+    render: (r) =>
+      r.wcag
+        .replace('2.2-AA', 'WCAG 2.2 AA')
+        .replace('2.1-AA', 'WCAG 2.1 AA')
+        .replace(/^AA$/, 'WCAG AA'),
+  },
+  {
+    key: 'apgPattern',
+    header: 'APG Pattern',
+    render: (r) =>
+      r.apgPattern ? (
+        <code className="a11y-role">{r.apgPattern}</code>
+      ) : (
+        <>
+          <span aria-hidden="true">—</span>
+          <VisuallyHidden>no pattern</VisuallyHidden>
+        </>
+      ),
+  },
   {
     key: 'keyboard',
     header: 'Keyboard',

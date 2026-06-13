@@ -72,7 +72,7 @@ npx cascade add button
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 

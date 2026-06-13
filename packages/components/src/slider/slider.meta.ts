@@ -25,7 +25,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'slider',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'],
     apgPattern: 'slider',
     forcedColors: true,

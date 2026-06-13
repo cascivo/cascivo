@@ -50,7 +50,7 @@ Single-select plan picker
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `radiogroup`
 - **Keyboard:** ArrowDown, ArrowUp, Space
 

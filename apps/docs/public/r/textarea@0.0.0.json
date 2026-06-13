@@ -67,8 +67,10 @@
     ],
     "accessibility": {
       "role": "textbox",
-      "wcag": "AA",
-      "keyboard": ["Tab", "Shift+Tab"]
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Shift+Tab"],
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

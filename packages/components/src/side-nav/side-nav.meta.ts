@@ -60,7 +60,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'navigation',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter', 'Space', 'ArrowDown', 'ArrowUp', 'Escape'],
   },
   examples: [

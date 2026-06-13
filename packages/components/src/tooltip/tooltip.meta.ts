@@ -32,7 +32,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'tooltip',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Escape'],
     apgPattern: 'tooltip',
     reducedMotion: true,

@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
     '--cascade-color-destructive',
     '--cascade-radius-badge',
   ],
-  accessibility: { role: 'status', wcag: 'AA', keyboard: [], forcedColors: true },
+  accessibility: { role: 'status', wcag: '2.2-AA', keyboard: [], forcedColors: true },
   examples: [
     { title: 'Default', code: '<Badge>New</Badge>' },
     { title: 'Success', code: '<Badge variant="success">Active</Badge>' },

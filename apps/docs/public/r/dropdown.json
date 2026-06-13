@@ -64,9 +64,11 @@
     ],
     "accessibility": {
       "role": "menu",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"],
-      "apgPattern": "menu"
+      "apgPattern": "menu",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

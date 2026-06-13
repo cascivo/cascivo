@@ -66,7 +66,7 @@ Keep the document outline correct while controlling the visual scale
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `heading`
 
 ## Dependencies

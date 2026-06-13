@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'kbd',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [

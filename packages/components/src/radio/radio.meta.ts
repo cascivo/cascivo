@@ -23,7 +23,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'radio',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'],
     apgPattern: 'radio',
     reducedMotion: true,

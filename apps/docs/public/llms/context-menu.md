@@ -33,7 +33,7 @@ _No props._
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
 - **Keyboard:** ArrowDown, ArrowUp, Enter, Space, Escape
 

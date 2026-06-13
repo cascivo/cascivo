@@ -74,7 +74,7 @@ npx cascade add search
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `searchbox`
 - **Keyboard:** Enter
 

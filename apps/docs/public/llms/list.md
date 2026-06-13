@@ -66,7 +66,7 @@ Keeps list semantics without visual markers
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 
 ## Dependencies

@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-color-border', '--cascade-color-accent', '--cascade-color-text'],
   accessibility: {
     role: 'progressbar',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
   },
   examples: [

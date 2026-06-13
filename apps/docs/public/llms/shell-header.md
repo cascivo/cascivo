@@ -58,7 +58,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `banner`
 - **Keyboard:** Tab, Enter, Space, ArrowDown, ArrowUp, Escape
 

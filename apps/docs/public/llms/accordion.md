@@ -49,7 +49,7 @@ npx cascade add accordion
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 

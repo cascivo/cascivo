@@ -74,7 +74,7 @@ Use as="span" inside other flow content
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `paragraph`
 
 ## Dependencies

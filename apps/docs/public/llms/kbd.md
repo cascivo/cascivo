@@ -57,7 +57,7 @@ Compose multiple keys to show a shortcut
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `kbd`
 
 ## Dependencies

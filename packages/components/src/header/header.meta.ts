@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'banner',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab'],
   },
   examples: [

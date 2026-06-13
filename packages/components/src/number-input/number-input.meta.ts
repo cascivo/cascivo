@@ -51,7 +51,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'spinbutton',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'Enter', 'Tab'],
   },
   examples: [

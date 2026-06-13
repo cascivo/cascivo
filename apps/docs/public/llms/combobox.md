@@ -79,7 +79,7 @@ npx cascade add combobox
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
 - **Keyboard:** ArrowDown, ArrowUp, Enter, Escape, Tab
 

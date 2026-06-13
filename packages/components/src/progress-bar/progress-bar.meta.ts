@@ -41,7 +41,7 @@ export const meta: ComponentMeta = {
     '--cascade-radius-full',
     '--cascade-motion-enter',
   ],
-  accessibility: { role: 'progressbar', wcag: 'AA', keyboard: [] },
+  accessibility: { role: 'progressbar', wcag: '2.2-AA', keyboard: [] },
   examples: [
     { title: 'Determinate', code: '<ProgressBar value={60} label="Uploading" />' },
     { title: 'Indeterminate', code: '<ProgressBar label="Processing" />' },

@@ -62,7 +62,7 @@ npx cascade add segmented-control
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `group`
 - **Keyboard:** ArrowLeft, ArrowRight
 

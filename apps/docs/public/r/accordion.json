@@ -54,9 +54,11 @@
     ],
     "accessibility": {
       "role": "button",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space"],
-      "apgPattern": "accordion"
+      "apgPattern": "accordion",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

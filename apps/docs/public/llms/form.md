@@ -58,7 +58,7 @@ function Demo() {
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `form`
 - **Keyboard:** Tab, Enter
 

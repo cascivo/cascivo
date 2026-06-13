@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'alertdialog',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Tab', 'Shift+Tab', 'Enter', 'Space'],
   },
   examples: [],

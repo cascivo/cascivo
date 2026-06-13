@@ -57,7 +57,7 @@ npx cascade add toggle
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `switch`
 - **Keyboard:** Space, Enter
 

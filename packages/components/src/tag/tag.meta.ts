@@ -37,7 +37,7 @@ export const meta: ComponentMeta = {
     '--cascade-radius-badge',
     '--cascade-focus-ring',
   ],
-  accessibility: { role: 'none', wcag: 'AA', keyboard: ['Enter', 'Space'] },
+  accessibility: { role: 'none', wcag: '2.2-AA', keyboard: ['Enter', 'Space'] },
   examples: [
     { title: 'Default', code: '<Tag>Design</Tag>' },
     { title: 'Success', code: '<Tag variant="success">Approved</Tag>' },

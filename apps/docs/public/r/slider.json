@@ -72,9 +72,10 @@
     ],
     "accessibility": {
       "role": "slider",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
-      "apgPattern": "slider"
+      "apgPattern": "slider",
+      "forcedColors": true
     },
     "examples": [
       {

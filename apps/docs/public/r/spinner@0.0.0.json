@@ -40,8 +40,9 @@
     "tokens": ["--cascade-radius-full"],
     "accessibility": {
       "role": "status",
-      "wcag": "AA",
-      "keyboard": []
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": false
     },
     "examples": [
       {

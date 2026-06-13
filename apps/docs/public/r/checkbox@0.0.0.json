@@ -61,9 +61,11 @@
     ],
     "accessibility": {
       "role": "checkbox",
-      "wcag": "AA",
+      "wcag": "2.2-AA",
       "keyboard": ["Space"],
-      "apgPattern": "checkbox"
+      "apgPattern": "checkbox",
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

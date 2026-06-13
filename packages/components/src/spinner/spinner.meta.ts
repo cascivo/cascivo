@@ -20,7 +20,7 @@ export const meta: ComponentMeta = {
   tokens: ['--cascade-radius-full'],
   accessibility: {
     role: 'status',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: [],
     reducedMotion: false,
   },

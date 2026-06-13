@@ -67,7 +67,7 @@ npx cascade add progress-indicator
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 
 ## Dependencies

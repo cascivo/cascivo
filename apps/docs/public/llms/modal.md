@@ -53,7 +53,7 @@ npx cascade add modal
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `dialog`
 - **Keyboard:** Escape, Tab, Shift+Tab
 

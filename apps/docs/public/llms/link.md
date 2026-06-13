@@ -74,7 +74,7 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `link`
 - **Keyboard:** Enter
 

@@ -66,8 +66,10 @@
     ],
     "accessibility": {
       "role": "alert",
-      "wcag": "AA",
-      "keyboard": []
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": true,
+      "forcedColors": true
     },
     "examples": [
       {

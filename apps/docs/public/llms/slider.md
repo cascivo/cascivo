@@ -48,7 +48,7 @@ npx cascade add slider
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `slider`
 - **Keyboard:** ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Home, End
 

@@ -52,7 +52,7 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 
 ## Accessibility
 
-- **WCAG level:** AA
+- **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
 - **Keyboard:** Tab, Enter
 

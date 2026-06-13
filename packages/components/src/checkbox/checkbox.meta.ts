@@ -24,7 +24,7 @@ export const meta: ComponentMeta = {
   ],
   accessibility: {
     role: 'checkbox',
-    wcag: 'AA',
+    wcag: '2.2-AA',
     keyboard: ['Space'],
     apgPattern: 'checkbox',
     reducedMotion: true,

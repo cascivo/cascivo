@@ -55,6 +55,11 @@
       "id": "t5-deferral",
       "title": "t5-deferral",
       "path": "/docs/specs/t5-deferral.md"
+    },
+    {
+      "id": "wcag-2.2",
+      "title": "wcag-2.2",
+      "path": "/docs/specs/wcag-2.2.md"
     }
   ],
   "boundaries": {
