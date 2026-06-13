@@ -92,6 +92,14 @@
     --cascade-focus-ring: 0 0 0 var(--cascade-ring-width) var(--cascade-ring-color);
 
     /* ── Chart overrides ─────────────────────────────── */
+    --cascade-chart-1: oklch(0.83 0.09 70);
+    --cascade-chart-2: oklch(0.85 0.07 240);
+    --cascade-chart-3: oklch(0.8 0.08 165);
+    --cascade-chart-4: oklch(0.95 0.1 100);
+    --cascade-chart-5: oklch(0.72 0.08 250);
+    --cascade-chart-6: oklch(0.78 0.09 40);
+    --cascade-chart-7: oklch(0.8 0.07 350);
+    --cascade-chart-8: oklch(0.75 0.02 280);
     --cascade-chart-grid: oklch(0.92 0.02 330);
     --cascade-chart-axis: oklch(0.7 0.02 325);
   }
