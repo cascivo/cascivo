@@ -14,11 +14,11 @@ npx cascade add skip-nav
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `targetId` | `string` | no | `cascade-skip-target` | SkipNavLink: id of the SkipNavTarget to jump to |
-| `labels` | `{ label?: string }` | no | — | SkipNavLink: overrides the built-in i18n label per instance |
-| `id` | `string` | no | `cascade-skip-target` | SkipNavTarget: anchor id — must match the link targetId |
+| Prop       | Type                 | Required | Default               | Description                                                 |
+| ---------- | -------------------- | -------- | --------------------- | ----------------------------------------------------------- |
+| `targetId` | `string`             | no       | `cascade-skip-target` | SkipNavLink: id of the SkipNavTarget to jump to             |
+| `labels`   | `{ label?: string }` | no       | —                     | SkipNavLink: overrides the built-in i18n label per instance |
+| `id`       | `string`             | no       | `cascade-skip-target` | SkipNavTarget: anchor id — must match the link targetId     |
 
 ## Examples
 
@@ -27,13 +27,21 @@ npx cascade add skip-nav
 SkipNavLink must be the first focusable element on the page
 
 ```tsx
-<><SkipNavLink /><nav>…</nav><SkipNavTarget /><main>…</main></>
+<>
+  <SkipNavLink />
+  <nav>…</nav>
+  <SkipNavTarget />
+  <main>…</main>
+</>
 ```
 
 ### Custom target
 
 ```tsx
-<><SkipNavLink targetId="main-content" /><SkipNavTarget id="main-content" /></>
+<>
+  <SkipNavLink targetId="main-content" />
+  <SkipNavTarget id="main-content" />
+</>
 ```
 
 ## Design tokens

@@ -5,17 +5,8 @@
   "description": "Combination bar + line chart on shared or dual y-axes.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascade-ui/charts"
-  ],
-  "tags": [
-    "chart",
-    "combo",
-    "bar",
-    "line",
-    "dual-axis",
-    "data-viz"
-  ],
+  "dependencies": ["@cascade-ui/charts"],
+  "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -84,10 +75,7 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
-    "tokens": [
-      "--cascade-chart-1",
-      "--cascade-chart-2"
-    ],
+    "tokens": ["--cascade-chart-1", "--cascade-chart-2"],
     "accessibility": {
       "role": "img",
       "wcag": "2.1-AA",
@@ -104,17 +92,8 @@
         "code": "import { ComboChart } from '@cascade-ui/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/charts"
-    ],
-    "tags": [
-      "chart",
-      "combo",
-      "bar",
-      "line",
-      "dual-axis",
-      "data-viz"
-    ],
+    "dependencies": ["@cascade-ui/charts"],
+    "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
     "intent": {
       "whenToUse": [
         "Overlaying two related metrics with different scales (e.g. volume bars + rate line)",

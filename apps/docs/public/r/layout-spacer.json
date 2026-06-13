@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/spacer/spacer.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "layout",
-    "spacer",
-    "spacing"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "spacer", "spacing"],
   "category": "layout",
   "meta": {
     "name": "Spacer",
@@ -36,9 +30,7 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": [
-      "--cascade-space-*"
-    ],
+    "tokens": ["--cascade-space-*"],
     "accessibility": {
       "role": "none",
       "wcag": "2.1-AA",
@@ -51,14 +43,8 @@
         "description": "Adds vertical space between elements"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "layout",
-      "spacer",
-      "spacing"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "spacer", "spacing"],
     "intent": {
       "whenToUse": [
         "Inserting a fixed vertical gap between blocks using spacing token steps",

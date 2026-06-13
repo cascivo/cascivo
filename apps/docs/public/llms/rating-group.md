@@ -26,15 +26,15 @@ npx cascade add rating-group
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | yes | — | — |
-| `onValueChange` | `(v: number) => void` | no | — | — |
-| `max` | `number` | no | `5` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `readOnly` | `boolean` | no | `false` | — |
-| `labels` | `RatingGroupLabels` | no | — | — |
+| Prop            | Type                  | Required | Default | Description |
+| --------------- | --------------------- | -------- | ------- | ----------- | ---- | --- |
+| `value`         | `number`              | yes      | —       | —           |
+| `onValueChange` | `(v: number) => void` | no       | —       | —           |
+| `max`           | `number`              | no       | `5`     | —           |
+| `size`          | `'sm'                 | 'md'     | 'lg'`   | no          | `md` | —   |
+| `disabled`      | `boolean`             | no       | `false` | —           |
+| `readOnly`      | `boolean`             | no       | `false` | —           |
+| `labels`        | `RatingGroupLabels`   | no       | —       | —           |
 
 ## Examples
 

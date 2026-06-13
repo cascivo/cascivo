@@ -33,14 +33,14 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' | 'info' | 'success' | 'warning' | 'destructive'` | No | default | — |
-| `title` | `string` | No | — | — |
-| `icon` | `ReactNode` | No | — | — |
-| `dismissible` | `boolean` | No | false | — |
-| `onDismiss` | `() => void` | No | — | — |
-| `action` | `{ label: string; onClick: () => void }` | No | — | — |
+| Name          | Type                                     | Required | Default   | Description |
+| ------------- | ---------------------------------------- | -------- | --------- | ----------- | -------------- | --- | ------- | --- |
+| `variant`     | `'default'                               | 'info'   | 'success' | 'warning'   | 'destructive'` | No  | default | —   |
+| `title`       | `string`                                 | No       | —         | —           |
+| `icon`        | `ReactNode`                              | No       | —         | —           |
+| `dismissible` | `boolean`                                | No       | false     | —           |
+| `onDismiss`   | `() => void`                             | No       | —         | —           |
+| `action`      | `{ label: string; onClick: () => void }` | No       | —         | —           |
 
 ## Tokens
 
@@ -56,24 +56,30 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 ### Info
 
 ```jsx
-<Alert variant="info" title="Heads up">Your trial ends soon.</Alert>
+<Alert variant="info" title="Heads up">
+  Your trial ends soon.
+</Alert>
 ```
 
 ### Dismissible
 
 ```jsx
-<Alert variant="success" dismissible title="Saved">Changes saved.</Alert>
+<Alert variant="success" dismissible title="Saved">
+  Changes saved.
+</Alert>
 ```
 
 ### Actionable
 
 ```jsx
-<Alert variant="warning" title="Update available" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>
+<Alert variant="warning" title="Update available" action={{ label: 'Update now', onClick: update }}>
+  A new version is ready.
+</Alert>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant | flexible | Choose the severity variant that matches the message; default is neutral |
-| token names | strict | Severity colors must resolve to --cascade-color-info/success/warning/destructive |
+| Area        | Level    | Note                                                                             |
+| ----------- | -------- | -------------------------------------------------------------------------------- |
+| variant     | flexible | Choose the severity variant that matches the message; default is neutral         |
+| token names | strict   | Severity colors must resolve to --cascade-color-info/success/warning/destructive |

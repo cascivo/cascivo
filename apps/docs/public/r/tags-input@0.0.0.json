@@ -12,27 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tags-input/tags-input.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "form",
-    "tags",
-    "chips",
-    "multi",
-    "input"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["form", "tags", "chips", "multi", "input"],
   "category": "inputs",
   "meta": {
     "name": "TagsInput",
     "description": "Free-form multi-value chip input",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "disabled"
-    ],
+    "states": ["idle", "focused", "disabled"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -81,11 +68,7 @@
     "accessibility": {
       "role": "textbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Enter",
-        ",",
-        "Backspace"
-      ]
+      "keyboard": ["Enter", ",", "Backspace"]
     },
     "examples": [
       {
@@ -93,17 +76,8 @@
         "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag…\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "form",
-      "tags",
-      "chips",
-      "multi",
-      "input"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["form", "tags", "chips", "multi", "input"],
     "intent": {
       "whenToUse": [
         "Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)",

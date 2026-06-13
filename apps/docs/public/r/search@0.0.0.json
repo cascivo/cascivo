@@ -12,31 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/search/search.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "search",
-    "input",
-    "filter",
-    "form"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["search", "input", "filter", "form"],
   "category": "inputs",
   "meta": {
     "name": "Search",
     "description": "Search input with debounced search callback and clear button",
     "category": "inputs",
-    "states": [
-      "empty",
-      "filled"
-    ],
+    "states": ["empty", "filled"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -120,9 +105,7 @@
     "accessibility": {
       "role": "searchbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Enter"
-      ]
+      "keyboard": ["Enter"]
     },
     "examples": [
       {
@@ -138,16 +121,8 @@
         "code": "<Search size=\"lg\" placeholder=\"Search products…\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "search",
-      "input",
-      "filter",
-      "form"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["search", "input", "filter", "form"],
     "intent": {
       "whenToUse": [
         "A query field that filters or searches content, with a built-in clear button and debounced onSearch",

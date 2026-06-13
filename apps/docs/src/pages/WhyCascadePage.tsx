@@ -1,6 +1,6 @@
-// Claims 1–13 are established across v1–v12 of the roadmap. This page covers the v13
-// additions: claims 14–19 (The Context Layer). Each claim links its receipt — the
-// artifact that proves it is real and shipped, not just stated.
+// Claims 1–13 are established across v1–v12 of the roadmap. Claims 14–19 cover v13
+// (The Context Layer). Claims 20–24 cover v14 (Earned Quality). Each claim links its
+// receipt — the artifact that proves it is real and shipped, not just stated.
 
 const muted = { color: 'var(--cascade-color-text-subtle)' }
 
@@ -64,6 +64,47 @@ const CLAIMS: Claim[] = [
       'A before/after agent-generation demo on the Context Explorer page shows the measurable delta in audit-score when an agent uses the context layer versus the bare manifest. The Context Explorer itself is the live proof: intent, boundaries, specs, token catalog, and the audit checker are all browsable and verifiable in one place.',
     receipt: { label: 'Context Explorer — before/after demo', href: '/context' },
   },
+  {
+    number: 20,
+    title: 'Per-theme CVD-safe chart palettes',
+    substance:
+      'All 8 chart colors are distinguishable under protanopia, deuteranopia, and tritanopia across all 10 themes. Palettes are rooted in Okabe-Ito oklch coordinates, overridden per theme, and verified by a CI palette test that checks presence, contrast, and CVD simulation on every merge.',
+    receipt: {
+      label: 'Themed chart gallery in docs',
+      href: '/charts',
+    },
+  },
+  {
+    number: 21,
+    title: 'Accessible chart tooltips',
+    substance:
+      'Every chart tooltip supports keyboard traversal (Arrow keys move between data points) and screen-reader aria-live announcement. The behavior is implemented in ChartFrame and rolled out to all 17 chart types. A keyboard tooltip demo in docs lets you verify it interactively.',
+    receipt: { label: 'Keyboard tooltip demo', href: '/charts' },
+  },
+  {
+    number: 22,
+    title: 'Honest multi-lens performance data',
+    substance:
+      'The performance page presents standalone, incremental, and amortized cost views side by side, with explained zeros and per-architecture copy. No cherry-picked numbers — the methodology is documented and the runner is open source.',
+    receipt: {
+      label: 'Performance page',
+      href: '/performance',
+    },
+  },
+  {
+    number: 23,
+    title: 'WCAG 2.2 AA + APG-conformant',
+    substance:
+      '72 components are verified at WCAG 2.2-AA. CI enforces APG pattern checks — role, keyboard interaction, and required ARIA attributes — on every merge. No self-reported claims: the check is a test that fails the build.',
+    receipt: { label: 'Accessibility page', href: '/accessibility' },
+  },
+  {
+    number: 24,
+    title: 'AT-tested + legally mapped',
+    substance:
+      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) documents tested components, OS/AT combos, and any known gaps. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascade artifact that satisfies it. Both are browsable in the docs accessibility section.',
+    receipt: { label: 'Accessibility statement', href: '/accessibility' },
+  },
 ]
 
 export function WhyCascadePage() {
@@ -73,8 +114,8 @@ export function WhyCascadePage() {
         <div class="doc-eyebrow">Why cascade</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–19 are v13's additions to the cascade pitch. Each one
-          links its receipt — the artifact that proves it shipped.
+          "AI-first" is easy to say. Claims 14–24 are v13–v14's additions to the cascade pitch. Each
+          one links its receipt — the artifact that proves it shipped.
         </p>
       </header>
 
@@ -83,7 +124,9 @@ export function WhyCascadePage() {
           Claims 1–13 cover the core design-system properties established in v1–v12: owned
           components, CSS-native styling, signal-driven reactivity, three-level token architecture,
           WCAG 2.1 AA, open registry model, and long-run sustainability. v13 adds the context layer:
-          machine-readable intent, closed-set tokens, AI-output auditing, and CSS-native logic.
+          machine-readable intent, closed-set tokens, AI-output auditing, and CSS-native logic. v14
+          adds earned quality: CVD-safe chart palettes, accessible chart tooltips, honest multi-lens
+          performance data, WCAG 2.2 AA + APG conformance, and AT testing with legal mapping.
         </p>
       </section>
 

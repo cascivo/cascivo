@@ -19,18 +19,18 @@ npx cascade add command-menu
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | yes | — | — |
-| `onOpenChange` | `(open: boolean) => void` | yes | — | — |
-| `groups` | `CommandGroup[]` | yes | — | — |
-| `placeholder` | `string` | no | `Type a command or search…` | — |
-| `emptyLabel` | `string` | no | `No results found` | — |
-| `hotkey` | `boolean` | no | `true` | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
-| `label` | `string` | no | `Command menu` | — |
-| `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
-| `className` | `string` | no | — | — |
+| Prop            | Type                      | Required | Default                     | Description                                                           |
+| --------------- | ------------------------- | -------- | --------------------------- | --------------------------------------------------------------------- |
+| `open`          | `boolean`                 | yes      | —                           | —                                                                     |
+| `onOpenChange`  | `(open: boolean) => void` | yes      | —                           | —                                                                     |
+| `groups`        | `CommandGroup[]`          | yes      | —                           | —                                                                     |
+| `placeholder`   | `string`                  | no       | `Type a command or search…` | —                                                                     |
+| `emptyLabel`    | `string`                  | no       | `No results found`          | —                                                                     |
+| `hotkey`        | `boolean`                 | no       | `true`                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                   |
+| `label`         | `string`                  | no       | `Command menu`              | —                                                                     |
+| `loading`       | `boolean`                 | no       | `false`                     | Shows a loading spinner in place of the empty state (for async items) |
+| `onQueryChange` | `(query: string) => void` | no       | —                           | Fires on every query keystroke — use to fetch async items             |
+| `className`     | `string`                  | no       | —                           | —                                                                     |
 
 ## Examples
 

@@ -26,20 +26,20 @@ npx cascade add time-picker
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | no | — | Controlled value (HH:mm) |
-| `defaultValue` | `string` | no | — | — |
-| `onChange` | `(value: string) => void` | no | — | — |
-| `min` | `string` | no | — | — |
-| `max` | `string` | no | — | — |
-| `step` | `number` | no | — | — |
-| `label` | `string` | no | — | — |
-| `hint` | `string` | no | — | — |
-| `error` | `string` | no | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `'md'` | — |
-| `disabled` | `boolean` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop           | Type                      | Required | Default | Description              |
+| -------------- | ------------------------- | -------- | ------- | ------------------------ | ------ | --- |
+| `value`        | `string`                  | no       | —       | Controlled value (HH:mm) |
+| `defaultValue` | `string`                  | no       | —       | —                        |
+| `onChange`     | `(value: string) => void` | no       | —       | —                        |
+| `min`          | `string`                  | no       | —       | —                        |
+| `max`          | `string`                  | no       | —       | —                        |
+| `step`         | `number`                  | no       | —       | —                        |
+| `label`        | `string`                  | no       | —       | —                        |
+| `hint`         | `string`                  | no       | —       | —                        |
+| `error`        | `string`                  | no       | —       | —                        |
+| `size`         | `'sm'                     | 'md'     | 'lg'`   | no                       | `'md'` | —   |
+| `disabled`     | `boolean`                 | no       | —       | —                        |
+| `className`    | `string`                  | no       | —       | —                        |
 
 ## Examples
 

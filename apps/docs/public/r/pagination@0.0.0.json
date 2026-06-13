@@ -12,17 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/pagination/pagination.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "pagination",
-    "navigation",
-    "table",
-    "data",
-    "pages"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["pagination", "navigation", "table", "data", "pages"],
   "category": "navigation",
   "meta": {
     "name": "Pagination",
@@ -95,13 +86,7 @@
     "accessibility": {
       "role": "navigation",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Enter",
-        "Space",
-        "ArrowUp",
-        "ArrowDown"
-      ]
+      "keyboard": ["Tab", "Enter", "Space", "ArrowUp", "ArrowDown"]
     },
     "examples": [
       {
@@ -117,17 +102,8 @@
         "code": "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "pagination",
-      "navigation",
-      "table",
-      "data",
-      "pages"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["pagination", "navigation", "table", "data", "pages"],
     "intent": {
       "whenToUse": [
         "Navigating between pages of a paged dataset",

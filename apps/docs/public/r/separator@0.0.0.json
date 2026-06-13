@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/separator/separator.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "divider",
-    "rule",
-    "layout"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["divider", "rule", "layout"],
   "category": "display",
   "meta": {
     "name": "Separator",
@@ -43,9 +37,7 @@
         "description": "When true, the separator is purely visual and hidden from assistive tech"
       }
     ],
-    "tokens": [
-      "--cascade-color-border"
-    ],
+    "tokens": ["--cascade-color-border"],
     "accessibility": {
       "role": "separator",
       "wcag": "2.2-AA",
@@ -61,14 +53,8 @@
         "code": "<Separator orientation=\"vertical\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "divider",
-      "rule",
-      "layout"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["divider", "rule", "layout"],
     "intent": {
       "whenToUse": [
         "Dividing groups of content within a section or menu",

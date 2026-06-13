@@ -12,26 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/multi-select/multi-select.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "form",
-    "select",
-    "multi",
-    "input",
-    "popover"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["form", "select", "multi", "input", "popover"],
   "category": "inputs",
   "meta": {
     "name": "MultiSelect",
     "description": "Searchable multi-value select with popover listbox",
     "category": "inputs",
-    "states": [
-      "closed",
-      "open"
-    ],
+    "states": ["closed", "open"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -80,13 +68,7 @@
     "accessibility": {
       "role": "listbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowDown",
-        "ArrowUp",
-        "Space",
-        "Enter",
-        "Escape"
-      ]
+      "keyboard": ["ArrowDown", "ArrowUp", "Space", "Enter", "Escape"]
     },
     "examples": [
       {
@@ -94,17 +76,8 @@
         "code": "<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "form",
-      "select",
-      "multi",
-      "input",
-      "popover"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["form", "select", "multi", "input", "popover"],
     "intent": {
       "whenToUse": [
         "Selecting several values at once from a known list of options",

@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/blockquote/blockquote.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "typography",
-    "quote",
-    "blockquote",
-    "citation"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["typography", "quote", "blockquote", "citation"],
   "category": "display",
   "meta": {
     "name": "Blockquote",
@@ -63,15 +56,8 @@
         "description": "Attribution renders as <footer><cite>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "typography",
-      "quote",
-      "blockquote",
-      "citation"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["typography", "quote", "blockquote", "citation"],
     "intent": {
       "whenToUse": [
         "Setting off a quoted passage from another source with visual emphasis",

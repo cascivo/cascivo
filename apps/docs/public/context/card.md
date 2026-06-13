@@ -32,10 +32,10 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' | 'outlined' | 'elevated'` | No | default | — |
-| `padding` | `'none' | 'sm' | 'md' | 'lg'` | No | md | — |
+| Name      | Type       | Required   | Default     | Description |
+| --------- | ---------- | ---------- | ----------- | ----------- | ------- | --- | --- |
+| `variant` | `'default' | 'outlined' | 'elevated'` | No          | default | —   |
+| `padding` | `'none'    | 'sm'       | 'md'        | 'lg'`       | No      | md  | —   |
 
 ## Tokens
 
@@ -50,14 +50,16 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ```jsx
 <Card>
-  <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant and padding | flexible | Choose elevation and density to fit the surrounding layout |
-| token names | strict | Surface, border, radius, and shadow must resolve to --cascade-* tokens |
+| Area                | Level    | Note                                                                    |
+| ------------------- | -------- | ----------------------------------------------------------------------- |
+| variant and padding | flexible | Choose elevation and density to fit the surrounding layout              |
+| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascade-\* tokens |

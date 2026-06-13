@@ -12,23 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/tabs/tabs.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "navigation",
-    "tabs",
-    "sections"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["navigation", "tabs", "sections"],
   "category": "navigation",
   "meta": {
     "name": "Tabs",
     "description": "Switch between related panels of content",
     "category": "navigation",
-    "states": [
-      "active",
-      "inactive"
-    ],
+    "states": ["active", "inactive"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -58,12 +49,7 @@
     "accessibility": {
       "role": "tablist",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowLeft",
-        "ArrowRight",
-        "Home",
-        "End"
-      ],
+      "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
       "apgPattern": "tabs",
       "reducedMotion": true,
       "forcedColors": true
@@ -74,14 +60,8 @@
         "code": "<Tabs defaultValue=\"account\"><TabsList><TabsTrigger value=\"account\">Account</TabsTrigger></TabsList><TabsContent value=\"account\">…</TabsContent></Tabs>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "navigation",
-      "tabs",
-      "sections"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["navigation", "tabs", "sections"],
     "intent": {
       "whenToUse": [
         "Switching between peer panels of related content in the same context",

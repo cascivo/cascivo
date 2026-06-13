@@ -32,13 +32,13 @@ npx cascade add button
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'primary' | 'secondary' | 'ghost' | 'destructive'` | no | `primary` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `loading` | `boolean` | no | `false` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | — |
+| Prop       | Type                                         | Required    | Default | Description    |
+| ---------- | -------------------------------------------- | ----------- | ------- | -------------- | ---- | --------- | --- |
+| `variant`  | `'primary'                                   | 'secondary' | 'ghost' | 'destructive'` | no   | `primary` | —   |
+| `size`     | `'sm'                                        | 'md'        | 'lg'`   | no             | `md` | —         |
+| `loading`  | `boolean`                                    | no          | `false` | —              |
+| `disabled` | `boolean`                                    | no          | `false` | —              |
+| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | no          | —       | —              |
 
 ## Examples
 

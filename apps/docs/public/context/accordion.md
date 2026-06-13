@@ -32,12 +32,12 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `type` | `'single' | 'multiple'` | No | single | — |
-| `defaultValue` | `string | string[]` | No | — | — |
-| `value` | `string | string[]` | No | — | — |
-| `onValueChange` | `(value: string | string[]) => void` | No | — | — |
+| Name            | Type            | Required           | Default | Description |
+| --------------- | --------------- | ------------------ | ------- | ----------- | --- |
+| `type`          | `'single'       | 'multiple'`        | No      | single      | —   |
+| `defaultValue`  | `string         | string[]`          | No      | —           | —   |
+| `value`         | `string         | string[]`          | No      | —           | —   |
+| `onValueChange` | `(value: string | string[]) => void` | No      | —           | —   |
 
 ## Tokens
 
@@ -52,12 +52,17 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 ### Single
 
 ```jsx
-<Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>
+<Accordion type="single" defaultValue="a">
+  <AccordionItem value="a">
+    <AccordionTrigger>Section</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive |
-| token names | strict | Borders, surfaces, and radii must resolve to --cascade-* semantic tokens |
+| Area               | Level    | Note                                                                      |
+| ------------------ | -------- | ------------------------------------------------------------------------- |
+| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive       |
+| token names        | strict   | Borders, surfaces, and radii must resolve to --cascade-\* semantic tokens |

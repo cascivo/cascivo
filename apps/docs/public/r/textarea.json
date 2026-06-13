@@ -12,24 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/textarea/textarea.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "form",
-    "text",
-    "multiline"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["form", "text", "multiline"],
   "category": "inputs",
   "meta": {
     "name": "Textarea",
     "description": "Multi-line text input with optional label, hint, and error state",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "error"
-    ],
+    "states": ["idle", "focused", "error"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -78,10 +68,7 @@
     "accessibility": {
       "role": "textbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Shift+Tab"
-      ],
+      "keyboard": ["Tab", "Shift+Tab"],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -95,14 +82,8 @@
         "code": "<Textarea label=\"Bio\" error=\"Bio is required\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "form",
-      "text",
-      "multiline"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["form", "text", "multiline"],
     "intent": {
       "whenToUse": [
         "Capturing multi-line free text such as messages, descriptions, or comments",

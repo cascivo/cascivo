@@ -24,22 +24,28 @@ npx cascade add overflow-menu
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | — |
-| `onSelect` | `(value: string) => void` | no | — | — |
-| `placement` | `'bottom-start' | 'bottom-end'` | no | `bottom-end` | — |
-| `ariaLabel` | `string` | no | `More actions` | — |
-| `size` | `'sm' | 'md'` | no | `md` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `className` | `string` | no | — | — |
+| Prop        | Type                                                                                              | Required      | Default        | Description  |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | -------------- | ------------ | --- |
+| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes           | —              | —            |
+| `onSelect`  | `(value: string) => void`                                                                         | no            | —              | —            |
+| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | no             | `bottom-end` | —   |
+| `ariaLabel` | `string`                                                                                          | no            | `More actions` | —            |
+| `size`      | `'sm'                                                                                             | 'md'`         | no             | `md`         | —   |
+| `disabled`  | `boolean`                                                                                         | no            | `false`        | —            |
+| `className` | `string`                                                                                          | no            | —              | —            |
 
 ## Examples
 
 ### Row actions
 
 ```tsx
-<OverflowMenu items={[{ label: "Edit", value: "edit" }, { label: "Delete", value: "delete", destructive: true }]} onSelect={handle} />
+<OverflowMenu
+  items={[
+    { label: 'Edit', value: 'edit' },
+    { label: 'Delete', value: 'delete', destructive: true },
+  ]}
+  onSelect={handle}
+/>
 ```
 
 ### Small, start-aligned

@@ -12,30 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/modal/modal.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "overlay",
-    "dialog",
-    "popup"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["overlay", "dialog", "popup"],
   "category": "overlay",
   "meta": {
     "name": "Modal",
     "description": "Accessible dialog overlay using native <dialog> element",
     "category": "overlay",
-    "states": [
-      "closed",
-      "open"
-    ],
+    "states": ["closed", "open"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "open",
@@ -75,11 +61,7 @@
     "accessibility": {
       "role": "dialog",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Escape",
-        "Tab",
-        "Shift+Tab"
-      ],
+      "keyboard": ["Escape", "Tab", "Shift+Tab"],
       "apgPattern": "dialog-modal",
       "reducedMotion": true,
       "forcedColors": true
@@ -90,15 +72,8 @@
         "code": "<Modal open={isOpen} onClose={() => setIsOpen(false)} title=\"Confirm action\">\n  <p>Are you sure?</p>\n</Modal>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "overlay",
-      "dialog",
-      "popup"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["overlay", "dialog", "popup"],
     "intent": {
       "whenToUse": [
         "Presenting focused content or a task that must interrupt the current flow",

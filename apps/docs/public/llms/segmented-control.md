@@ -26,20 +26,28 @@ npx cascade add segmented-control
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `SegmentedControlOption[]` | yes | — | — |
-| `value` | `string` | yes | — | — |
-| `onValueChange` | `(v: string) => void` | yes | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `disabled` | `boolean` | no | `false` | — |
+| Prop            | Type                       | Required | Default | Description |
+| --------------- | -------------------------- | -------- | ------- | ----------- | ---- | --- |
+| `options`       | `SegmentedControlOption[]` | yes      | —       | —           |
+| `value`         | `string`                   | yes      | —       | —           |
+| `onValueChange` | `(v: string) => void`      | yes      | —       | —           |
+| `size`          | `'sm'                      | 'md'     | 'lg'`   | no          | `md` | —   |
+| `disabled`      | `boolean`                  | no       | `false` | —           |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ]}
+  value="day"
+  onValueChange={() => {}}
+/>
 ```
 
 ## Design tokens

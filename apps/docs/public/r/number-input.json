@@ -12,33 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/number-input/number-input.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "form",
-    "number",
-    "input",
-    "spinbutton",
-    "stepper"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["form", "number", "input", "spinbutton", "stepper"],
   "category": "inputs",
   "meta": {
     "name": "NumberInput",
     "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "error"
-    ],
+    "states": ["idle", "focused", "error"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -137,12 +120,7 @@
     "accessibility": {
       "role": "spinbutton",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowUp",
-        "ArrowDown",
-        "Enter",
-        "Tab"
-      ]
+      "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Tab"]
     },
     "examples": [
       {
@@ -158,17 +136,8 @@
         "code": "<NumberInput label=\"Opacity\" min={0} max={1} step={0.1} />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "form",
-      "number",
-      "input",
-      "spinbutton",
-      "stepper"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["form", "number", "input", "spinbutton", "stepper"],
     "intent": {
       "whenToUse": [
         "Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)",

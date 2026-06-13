@@ -15,13 +15,7 @@
     "layout/app-shell",
     "layout/page-header"
   ],
-  "tags": [
-    "block",
-    "console",
-    "shell",
-    "navigation",
-    "carbon-parity"
-  ],
+  "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
   "category": "display",
   "meta": {
     "name": "ConsoleApp",
@@ -44,10 +38,7 @@
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
-      "keyboard": [
-        "Escape",
-        "Tab"
-      ]
+      "keyboard": ["Escape", "Tab"]
     },
     "examples": [
       {
@@ -62,13 +53,7 @@
       "layout/app-shell",
       "layout/page-header"
     ],
-    "tags": [
-      "block",
-      "console",
-      "shell",
-      "navigation",
-      "carbon-parity"
-    ],
+    "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
     "intent": {
       "whenToUse": [
         "A Carbon-parity console shell with icon-rail nav, header panels, and aside",

@@ -9,15 +9,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/react",
-    "layout/stack"
-  ],
-  "tags": [
-    "block",
-    "notifications",
-    "alerts"
-  ],
+  "dependencies": ["@cascade-ui/react", "layout/stack"],
+  "tags": ["block", "notifications", "alerts"],
   "category": "display",
   "meta": {
     "name": "NotificationCenter",
@@ -53,15 +46,8 @@
         "description": "Notification center"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/react",
-      "layout/stack"
-    ],
-    "tags": [
-      "block",
-      "notifications",
-      "alerts"
-    ],
+    "dependencies": ["@cascade-ui/react", "layout/stack"],
+    "tags": ["block", "notifications", "alerts"],
     "intent": {
       "whenToUse": [
         "A list of notification alerts with a mark-all-read action",

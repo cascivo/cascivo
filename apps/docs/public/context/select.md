@@ -35,15 +35,15 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | — |
-| `hint` | `string` | No | — | — |
-| `error` | `string` | No | — | — |
-| `placeholder` | `string` | No | — | — |
-| `options` | `{ value: string; label: string; disabled?: boolean }[]` | Yes | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `disabled` | `boolean` | No | false | — |
+| Name          | Type                                                     | Required | Default | Description |
+| ------------- | -------------------------------------------------------- | -------- | ------- | ----------- | --- | --- |
+| `label`       | `string`                                                 | No       | —       | —           |
+| `hint`        | `string`                                                 | No       | —       | —           |
+| `error`       | `string`                                                 | No       | —       | —           |
+| `placeholder` | `string`                                                 | No       | —       | —           |
+| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | Yes      | —       | —           |
+| `size`        | `'sm'                                                    | 'md'     | 'lg'`   | No          | md  | —   |
+| `disabled`    | `boolean`                                                | No       | false   | —           |
 
 ## Tokens
 
@@ -59,7 +59,7 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 ### Basic
 
 ```jsx
-<Select label="Role" options={[{ value: "admin", label: "Admin" }]} />
+<Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
 ```
 
 ### With placeholder
@@ -70,7 +70,7 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Visual props must resolve to --cascade-color-* / radius / focus-ring tokens |
-| option labels | flexible | Free, supplied by the consumer via the options array |
+| Area          | Level    | Note                                                                         |
+| ------------- | -------- | ---------------------------------------------------------------------------- |
+| token names   | strict   | Visual props must resolve to --cascade-color-\* / radius / focus-ring tokens |
+| option labels | flexible | Free, supplied by the consumer via the options array                         |

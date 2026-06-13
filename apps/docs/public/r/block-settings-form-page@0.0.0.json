@@ -9,16 +9,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/react",
-    "layout/settings-layout"
-  ],
-  "tags": [
-    "block",
-    "settings",
-    "form",
-    "page"
-  ],
+  "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+  "tags": ["block", "settings", "form", "page"],
   "category": "display",
   "meta": {
     "name": "SettingsFormPage",
@@ -48,16 +40,8 @@
         "description": "Settings form page"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/react",
-      "layout/settings-layout"
-    ],
-    "tags": [
-      "block",
-      "settings",
-      "form",
-      "page"
-    ],
+    "dependencies": ["@cascade-ui/react", "layout/settings-layout"],
+    "tags": ["block", "settings", "form", "page"],
     "intent": {
       "whenToUse": [
         "A settings page with a profile form inside a two-column settings layout",

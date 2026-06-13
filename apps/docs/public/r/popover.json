@@ -12,24 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/popover/popover.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "overlay",
-    "floating",
-    "anchor",
-    "popover"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["overlay", "floating", "anchor", "popover"],
   "category": "overlay",
   "meta": {
     "name": "Popover",
     "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
     "category": "overlay",
-    "states": [
-      "open",
-      "closed"
-    ],
+    "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -44,20 +34,11 @@
     "accessibility": {
       "role": "dialog",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Escape"
-      ]
+      "keyboard": ["Escape"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "overlay",
-      "floating",
-      "anchor",
-      "popover"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["overlay", "floating", "anchor", "popover"],
     "intent": {
       "whenToUse": [
         "Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking",

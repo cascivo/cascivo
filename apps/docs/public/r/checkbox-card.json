@@ -12,25 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/checkbox-card/checkbox-card.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "checkbox",
-    "card",
-    "selectable",
-    "form"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["checkbox", "card", "selectable", "form"],
   "category": "inputs",
   "meta": {
     "name": "CheckboxCard",
     "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
     "category": "inputs",
-    "states": [
-      "default",
-      "checked",
-      "disabled"
-    ],
+    "states": ["default", "checked", "disabled"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -71,17 +60,11 @@
         "description": "Disables the card"
       }
     ],
-    "tokens": [
-      "--cascade-color-accent",
-      "--cascade-color-border",
-      "--cascade-radius-surface"
-    ],
+    "tokens": ["--cascade-color-accent", "--cascade-color-border", "--cascade-radius-surface"],
     "accessibility": {
       "role": "checkbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Space"
-      ]
+      "keyboard": ["Space"]
     },
     "examples": [
       {
@@ -90,15 +73,8 @@
         "description": "Multi-select feature toggles"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "checkbox",
-      "card",
-      "selectable",
-      "form"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["checkbox", "card", "selectable", "form"],
     "intent": {
       "whenToUse": [
         "Multi-select where each option needs a title and supporting description (feature toggles, add-ons)",

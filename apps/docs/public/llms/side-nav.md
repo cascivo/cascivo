@@ -19,25 +19,30 @@ npx cascade add side-nav
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `SideNavItem[]` | yes | — | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
-| `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
-| `defaultCollapsed` | `boolean` | no | `false` | — |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | no | — | — |
-| `ariaLabel` | `string` | no | `Side navigation` | — |
-| `collapseLabel` | `string` | no | `Collapse navigation` | — |
-| `expandLabel` | `string` | no | `Expand navigation` | — |
-| `expandOnHover` | `boolean` | no | `false` | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
-| `footer` | `ReactNode` | no | — | Content rendered above the collapse toggle (e.g. version string, user info) |
-| `className` | `string` | no | — | — |
+| Prop                | Type                           | Required | Default               | Description                                                                                    |
+| ------------------- | ------------------------------ | -------- | --------------------- | ---------------------------------------------------------------------------------------------- |
+| `items`             | `SideNavItem[]`                | yes      | —                     | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
+| `collapsed`         | `boolean`                      | no       | —                     | Controlled collapsed state (rail mode)                                                         |
+| `defaultCollapsed`  | `boolean`                      | no       | `false`               | —                                                                                              |
+| `onCollapsedChange` | `(collapsed: boolean) => void` | no       | —                     | —                                                                                              |
+| `ariaLabel`         | `string`                       | no       | `Side navigation`     | —                                                                                              |
+| `collapseLabel`     | `string`                       | no       | `Collapse navigation` | —                                                                                              |
+| `expandLabel`       | `string`                       | no       | `Expand navigation`   | —                                                                                              |
+| `expandOnHover`     | `boolean`                      | no       | `false`               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts               |
+| `footer`            | `ReactNode`                    | no       | —                     | Content rendered above the collapse toggle (e.g. version string, user info)                    |
+| `className`         | `string`                       | no       | —                     | —                                                                                              |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<SideNav items={[{ label: 'Home', href: '/', active: true }, { label: 'Reports', href: '/reports' }]} />
+<SideNav
+  items={[
+    { label: 'Home', href: '/', active: true },
+    { label: 'Reports', href: '/reports' },
+  ]}
+/>
 ```
 
 ### With a group

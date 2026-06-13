@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/auth-layout/auth-layout.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "layout",
-    "auth",
-    "login",
-    "page"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "auth", "login", "page"],
   "category": "layout",
   "meta": {
     "name": "AuthLayout",
@@ -64,15 +57,8 @@
         "description": "Centered auth card with logo"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "layout",
-      "auth",
-      "login",
-      "page"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "auth", "login", "page"],
     "intent": {
       "whenToUse": [
         "Centered card layout for authentication pages — login, register, reset",

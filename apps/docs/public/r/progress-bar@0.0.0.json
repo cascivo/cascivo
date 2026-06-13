@@ -12,33 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/progress-bar/progress-bar.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "progress",
-    "loading",
-    "status",
-    "feedback"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["progress", "loading", "status", "feedback"],
   "category": "feedback",
   "meta": {
     "name": "ProgressBar",
     "description": "Shows determinate or indeterminate progress of a task",
     "category": "feedback",
-    "states": [
-      "determinate",
-      "indeterminate"
-    ],
-    "variants": [
-      "active",
-      "success",
-      "error"
-    ],
-    "sizes": [
-      "sm",
-      "md"
-    ],
+    "states": ["determinate", "indeterminate"],
+    "variants": ["active", "success", "error"],
+    "sizes": ["sm", "md"],
     "props": [
       {
         "name": "value",
@@ -106,15 +89,8 @@
         "code": "<ProgressBar value={100} status=\"success\" label=\"Upload complete\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "progress",
-      "loading",
-      "status",
-      "feedback"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["progress", "loading", "status", "feedback"],
     "intent": {
       "whenToUse": [
         "Showing linear determinate progress of a task with a known percentage (value)",

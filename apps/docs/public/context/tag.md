@@ -33,12 +33,12 @@ When dismissible, the remove control is a real button with a label (dismissLabel
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' | 'info' | 'success' | 'warning' | 'error'` | No | default | — |
-| `size` | `'sm' | 'md'` | No | md | — |
-| `onDismiss` | `() => void` | No | — | When provided, renders a trailing remove button inside the chip |
-| `dismissLabel` | `string` | No | Remove | — |
+| Name           | Type         | Required | Default   | Description                                                     |
+| -------------- | ------------ | -------- | --------- | --------------------------------------------------------------- | -------- | --- | ------- | --- |
+| `variant`      | `'default'   | 'info'   | 'success' | 'warning'                                                       | 'error'` | No  | default | —   |
+| `size`         | `'sm'        | 'md'`    | No        | md                                                              | —        |
+| `onDismiss`    | `() => void` | No       | —         | When provided, renders a trailing remove button inside the chip |
+| `dismissLabel` | `string`     | No       | Remove    | —                                                               |
 
 ## Tokens
 
@@ -79,7 +79,7 @@ Renders a trailing remove button labeled by dismissLabel
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant and dismissibility | flexible | onDismiss is optional; variant matches semantic meaning |
-| token names | strict | Variant colors must resolve to --cascade-color-*-subtle tokens |
+| Area                       | Level    | Note                                                            |
+| -------------------------- | -------- | --------------------------------------------------------------- |
+| variant and dismissibility | flexible | onDismiss is optional; variant matches semantic meaning         |
+| token names                | strict   | Variant colors must resolve to --cascade-color-\*-subtle tokens |

@@ -12,28 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/alert/alert.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "notification",
-    "message",
-    "feedback"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["notification", "message", "feedback"],
   "category": "display",
   "meta": {
     "name": "Alert",
     "description": "Highlights a short, important message inline",
     "category": "display",
     "states": [],
-    "variants": [
-      "default",
-      "info",
-      "success",
-      "warning",
-      "destructive"
-    ],
+    "variants": ["default", "info", "success", "warning", "destructive"],
     "sizes": [],
     "props": [
       {
@@ -98,15 +85,8 @@
         "code": "<Alert variant=\"warning\" title=\"Update available\" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "notification",
-      "message",
-      "feedback"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["notification", "message", "feedback"],
     "intent": {
       "whenToUse": [
         "Surfacing a persistent, contextual message inline within a view (warning, error, info, success)",

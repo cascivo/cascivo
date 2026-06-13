@@ -12,16 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/skip-nav/skip-nav.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "accessibility",
-    "skip-link",
-    "keyboard",
-    "navigation"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
   "category": "navigation",
   "meta": {
     "name": "SkipNav",
@@ -62,10 +54,7 @@
     "accessibility": {
       "role": "link",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Enter"
-      ]
+      "keyboard": ["Tab", "Enter"]
     },
     "examples": [
       {
@@ -78,16 +67,8 @@
         "code": "<><SkipNavLink targetId=\"main-content\" /><SkipNavTarget id=\"main-content\" /></>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "accessibility",
-      "skip-link",
-      "keyboard",
-      "navigation"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
     "intent": {
       "whenToUse": [
         "Letting keyboard users jump past repeated navigation to the main content",

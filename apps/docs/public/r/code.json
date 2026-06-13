@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/code/code.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core"
-  ],
-  "tags": [
-    "typography",
-    "code",
-    "inline",
-    "mono"
-  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["typography", "code", "inline", "mono"],
   "category": "display",
   "meta": {
     "name": "Code",
@@ -28,10 +21,7 @@
     "category": "display",
     "states": [],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md"
-    ],
+    "sizes": ["sm", "md"],
     "props": [
       {
         "name": "size",
@@ -69,15 +59,8 @@
         "code": "<Code size=\"sm\">--cascade-color-accent</Code>"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core"
-    ],
-    "tags": [
-      "typography",
-      "code",
-      "inline",
-      "mono"
-    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["typography", "code", "inline", "mono"],
     "intent": {
       "whenToUse": [
         "Marking up an inline identifier, command, path, or token within prose",

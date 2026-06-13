@@ -26,29 +26,29 @@ npx cascade add data-table
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `columns` | `Column<Row>[]` | yes | — | — |
-| `rows` | `Row[]` | yes | — | — |
-| `getRowId` | `(row: Row) => string` | no | — | — |
-| `sort` | `SortState` | no | — | — |
-| `defaultSort` | `SortState` | no | — | — |
-| `sortMode` | `'client' | 'server'` | no | `'client'` | — |
-| `onSortChange` | `(sort: SortState | undefined) => void` | no | — | — |
-| `searchable` | `boolean` | no | `false` | — |
-| `pagination` | `{ pageSize: number; pageSizeOptions?: number[] }` | no | — | — |
-| `selection` | `{ mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no | — | — |
-| `batchActions` | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no | — | — |
-| `renderExpandedRow` | `(row: Row) => ReactNode` | no | — | — |
-| `density` | `'compact' | 'normal' | 'relaxed'` | no | `'normal'` | — |
-| `zebra` | `boolean` | no | `false` | — |
-| `stickyHeader` | `boolean` | no | `false` | — |
-| `loading` | `boolean` | no | `false` | — |
-| `emptyState` | `ReactNode` | no | — | — |
-| `title` | `string` | no | — | — |
-| `description` | `string` | no | — | — |
-| `labels` | `DataTableLabels` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop                | Type                                                            | Required                                                            | Default    | Description |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | ---------- | ----------- | ---------- | --- |
+| `columns`           | `Column<Row>[]`                                                 | yes                                                                 | —          | —           |
+| `rows`              | `Row[]`                                                         | yes                                                                 | —          | —           |
+| `getRowId`          | `(row: Row) => string`                                          | no                                                                  | —          | —           |
+| `sort`              | `SortState`                                                     | no                                                                  | —          | —           |
+| `defaultSort`       | `SortState`                                                     | no                                                                  | —          | —           |
+| `sortMode`          | `'client'                                                       | 'server'`                                                           | no         | `'client'`  | —          |
+| `onSortChange`      | `(sort: SortState                                               | undefined) => void`                                                 | no         | —           | —          |
+| `searchable`        | `boolean`                                                       | no                                                                  | `false`    | —           |
+| `pagination`        | `{ pageSize: number; pageSizeOptions?: number[] }`              | no                                                                  | —          | —           |
+| `selection`         | `{ mode: 'single'                                               | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no         | —           | —          |
+| `batchActions`      | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no                                                                  | —          | —           |
+| `renderExpandedRow` | `(row: Row) => ReactNode`                                       | no                                                                  | —          | —           |
+| `density`           | `'compact'                                                      | 'normal'                                                            | 'relaxed'` | no          | `'normal'` | —   |
+| `zebra`             | `boolean`                                                       | no                                                                  | `false`    | —           |
+| `stickyHeader`      | `boolean`                                                       | no                                                                  | `false`    | —           |
+| `loading`           | `boolean`                                                       | no                                                                  | `false`    | —           |
+| `emptyState`        | `ReactNode`                                                     | no                                                                  | —          | —           |
+| `title`             | `string`                                                        | no                                                                  | —          | —           |
+| `description`       | `string`                                                        | no                                                                  | —          | —           |
+| `labels`            | `DataTableLabels`                                               | no                                                                  | —          | —           |
+| `className`         | `string`                                                        | no                                                                  | —          | —           |
 
 ## Examples
 

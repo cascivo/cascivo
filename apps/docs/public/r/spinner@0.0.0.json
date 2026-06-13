@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/spinner/spinner.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "loading",
-    "progress",
-    "feedback"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["loading", "progress", "feedback"],
   "category": "feedback",
   "meta": {
     "name": "Spinner",
@@ -28,11 +21,7 @@
     "category": "feedback",
     "states": [],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "size",
@@ -48,9 +37,7 @@
         "description": "Accessible label announced by screen readers"
       }
     ],
-    "tokens": [
-      "--cascade-radius-full"
-    ],
+    "tokens": ["--cascade-radius-full"],
     "accessibility": {
       "role": "status",
       "wcag": "2.2-AA",
@@ -67,15 +54,8 @@
         "code": "<Spinner size=\"lg\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "loading",
-      "progress",
-      "feedback"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["loading", "progress", "feedback"],
     "intent": {
       "whenToUse": [
         "Indicating indeterminate work where duration and progress are unknown",

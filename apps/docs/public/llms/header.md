@@ -18,13 +18,13 @@ npx cascade add header
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `brand` | `React.ReactNode` | no | — | Product name or logo area, typically wraps a link |
-| `links` | `{ label: string; href: string; active?: boolean }[]` | no | — | Primary navigation links; active link gets aria-current="page" |
-| `actions` | `React.ReactNode` | no | — | Right-aligned slot for buttons or an avatar |
-| `sticky` | `boolean` | no | `false` | — |
-| `className` | `string` | no | — | — |
+| Prop        | Type                                                  | Required | Default | Description                                                    |
+| ----------- | ----------------------------------------------------- | -------- | ------- | -------------------------------------------------------------- |
+| `brand`     | `React.ReactNode`                                     | no       | —       | Product name or logo area, typically wraps a link              |
+| `links`     | `{ label: string; href: string; active?: boolean }[]` | no       | —       | Primary navigation links; active link gets aria-current="page" |
+| `actions`   | `React.ReactNode`                                     | no       | —       | Right-aligned slot for buttons or an avatar                    |
+| `sticky`    | `boolean`                                             | no       | `false` | —                                                              |
+| `className` | `string`                                              | no       | —       | —                                                              |
 
 ## Examples
 

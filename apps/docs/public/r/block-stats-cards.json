@@ -9,15 +9,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/react"
-  ],
-  "tags": [
-    "block",
-    "stats",
-    "kpi",
-    "cards"
-  ],
+  "dependencies": ["@cascade-ui/react"],
+  "tags": ["block", "stats", "kpi", "cards"],
   "category": "display",
   "meta": {
     "name": "StatsCards",
@@ -47,15 +40,8 @@
         "description": "Demo KPI stats"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/react"
-    ],
-    "tags": [
-      "block",
-      "stats",
-      "kpi",
-      "cards"
-    ],
+    "dependencies": ["@cascade-ui/react"],
+    "tags": ["block", "stats", "kpi", "cards"],
     "intent": {
       "whenToUse": [
         "A grid of KPI stat cards with trend badges",

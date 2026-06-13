@@ -5,14 +5,8 @@
   "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascade-ui/charts"
-  ],
-  "tags": [
-    "chart",
-    "area",
-    "data-viz"
-  ],
+  "dependencies": ["@cascade-ui/charts"],
+  "tags": ["chart", "area", "data-viz"],
   "category": "chart",
   "install": "@cascade-ui/charts",
   "meta": {
@@ -136,14 +130,8 @@
         "code": "import { AreaChart } from '@cascade-ui/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/charts"
-    ],
-    "tags": [
-      "chart",
-      "area",
-      "data-viz"
-    ],
+    "dependencies": ["@cascade-ui/charts"],
+    "tags": ["chart", "area", "data-viz"],
     "intent": {
       "whenToUse": [
         "Showing cumulative volume or magnitude of a trend over continuous time",

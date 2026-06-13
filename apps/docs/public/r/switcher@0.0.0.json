@@ -12,25 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/switcher/switcher.module.css"
     }
   ],
-  "dependencies": [
-    "@cascade-ui/core",
-    "@cascade-ui/i18n"
-  ],
-  "tags": [
-    "navigation",
-    "switcher",
-    "shell",
-    "console",
-    "app-switcher"
-  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
   "category": "navigation",
   "meta": {
     "name": "Switcher",
     "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
     "category": "navigation",
-    "states": [
-      "default"
-    ],
+    "states": ["default"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -63,10 +52,7 @@
     "accessibility": {
       "role": "list",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Enter"
-      ]
+      "keyboard": ["Tab", "Enter"]
     },
     "examples": [
       {
@@ -75,17 +61,8 @@
         "description": "Place inside a HeaderPanel opened by a Grid action in ShellHeader"
       }
     ],
-    "dependencies": [
-      "@cascade-ui/core",
-      "@cascade-ui/i18n"
-    ],
-    "tags": [
-      "navigation",
-      "switcher",
-      "shell",
-      "console",
-      "app-switcher"
-    ],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
     "intent": {
       "whenToUse": [
         "Listing sibling apps/products the user can switch between",

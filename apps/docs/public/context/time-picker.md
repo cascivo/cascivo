@@ -33,20 +33,20 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | No | — | Controlled value (HH:mm) |
-| `defaultValue` | `string` | No | — | — |
-| `onChange` | `(value: string) => void` | No | — | — |
-| `min` | `string` | No | — | — |
-| `max` | `string` | No | — | — |
-| `step` | `number` | No | — | — |
-| `label` | `string` | No | — | — |
-| `hint` | `string` | No | — | — |
-| `error` | `string` | No | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | 'md' | — |
-| `disabled` | `boolean` | No | — | — |
-| `className` | `string` | No | — | — |
+| Name           | Type                      | Required | Default | Description              |
+| -------------- | ------------------------- | -------- | ------- | ------------------------ | ---- | --- |
+| `value`        | `string`                  | No       | —       | Controlled value (HH:mm) |
+| `defaultValue` | `string`                  | No       | —       | —                        |
+| `onChange`     | `(value: string) => void` | No       | —       | —                        |
+| `min`          | `string`                  | No       | —       | —                        |
+| `max`          | `string`                  | No       | —       | —                        |
+| `step`         | `number`                  | No       | —       | —                        |
+| `label`        | `string`                  | No       | —       | —                        |
+| `hint`         | `string`                  | No       | —       | —                        |
+| `error`        | `string`                  | No       | —       | —                        |
+| `size`         | `'sm'                     | 'md'     | 'lg'`   | No                       | 'md' | —   |
+| `disabled`     | `boolean`                 | No       | —       | —                        |
+| `className`    | `string`                  | No       | —       | —                        |
 
 ## Tokens
 
@@ -71,7 +71,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| value format | strict | Value is a 24-hour HH:mm string driven by the native time input |
-| min/max/step | flexible | Consumer-defined bounds and step granularity |
+| Area         | Level    | Note                                                            |
+| ------------ | -------- | --------------------------------------------------------------- |
+| value format | strict   | Value is a 24-hour HH:mm string driven by the native time input |
+| min/max/step | flexible | Consumer-defined bounds and step granularity                    |
