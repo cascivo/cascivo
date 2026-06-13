@@ -101,6 +101,29 @@ export function ChartFrame({
               border: 0,
             }}
           />
+          {/* Focus ring indicator — shown at the focused data point */}
+          {focusedIndex.value !== null &&
+            tooltip.points[focusedIndex.value] !== undefined &&
+            (() => {
+              const fp = tooltip.points[focusedIndex.value!]!
+              return (
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    left: fp.cx - 4,
+                    top: fp.cy - 4,
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    border: '2px solid var(--cascade-focus-ring, var(--cascade-color-accent))',
+                    background: 'var(--cascade-color-background, white)',
+                    pointerEvents: 'none',
+                    zIndex: 10,
+                  }}
+                />
+              )
+            })()}
           {/* Tooltip overlay — shown when a point is focused */}
           {focusedIndex.value !== null && tooltip.points[focusedIndex.value] !== undefined && (
             <ChartTooltip point={tooltip.points[focusedIndex.value]!} model={tooltip} />
@@ -132,6 +155,12 @@ export function ChartFrame({
                 e.preventDefault()
                 focusedIndex.value =
                   current === null ? tooltip.points.length - 1 : Math.max(current - 1, 0)
+              } else if (e.key === 'Home') {
+                e.preventDefault()
+                focusedIndex.value = 0
+              } else if (e.key === 'End') {
+                e.preventDefault()
+                focusedIndex.value = tooltip.points.length - 1
               } else if (e.key === 'Escape') {
                 focusedIndex.value = null
               }
