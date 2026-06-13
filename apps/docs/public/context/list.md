@@ -32,10 +32,10 @@ Renders native <ul>/<ol> with <li> children so assistive tech announces the list
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `as` | `'ul' | 'ol'` | No | ul | — |
-| `marker` | `'disc' | 'decimal' | 'none'` | No | derived from as (ul→disc, ol→decimal) | — |
+| Name     | Type    | Required  | Default | Description |
+| -------- | ------- | --------- | ------- | ----------- | ------------------------------------- | --- |
+| `as`     | `'ul'   | 'ol'`     | No      | ul          | —                                     |
+| `marker` | `'disc' | 'decimal' | 'none'` | No          | derived from as (ul→disc, ol→decimal) | —   |
 
 ## Tokens
 
@@ -51,13 +51,19 @@ Renders native <ul>/<ol> with <li> children so assistive tech announces the list
 ### Unordered
 
 ```jsx
-<List><ListItem>Tokens</ListItem><ListItem>Themes</ListItem></List>
+<List>
+  <ListItem>Tokens</ListItem>
+  <ListItem>Themes</ListItem>
+</List>
 ```
 
 ### Ordered
 
 ```jsx
-<List as="ol"><ListItem>Init</ListItem><ListItem>Add</ListItem></List>
+<List as="ol">
+  <ListItem>Init</ListItem>
+  <ListItem>Add</ListItem>
+</List>
 ```
 
 ### Unmarked
@@ -65,12 +71,14 @@ Renders native <ul>/<ol> with <li> children so assistive tech announces the list
 Keeps list semantics without visual markers
 
 ```jsx
-<List marker="none"><ListItem>Clean row</ListItem></List>
+<List marker="none">
+  <ListItem>Clean row</ListItem>
+</List>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| marker | flexible | disc/decimal/none chosen to match content and visual needs |
-| token names | strict | Spacing and text color must resolve to --cascivo-* tokens |
+| Area        | Level    | Note                                                       |
+| ----------- | -------- | ---------------------------------------------------------- |
+| marker      | flexible | disc/decimal/none chosen to match content and visual needs |
+| token names | strict   | Spacing and text color must resolve to --cascivo-\* tokens |

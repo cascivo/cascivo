@@ -33,12 +33,12 @@ Toasts render into a labelled region; non-critical ones use role="status" with a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `string` | Yes | — | — |
-| `description` | `string` | No | — | — |
-| `variant` | `'default' | 'success' | 'warning' | 'destructive'` | No | default | — |
-| `duration` | `number` | No | 5000 | — |
+| Name          | Type       | Required  | Default   | Description    |
+| ------------- | ---------- | --------- | --------- | -------------- | --- | ------- | --- |
+| `title`       | `string`   | Yes       | —         | —              |
+| `description` | `string`   | No        | —         | —              |
+| `variant`     | `'default' | 'success' | 'warning' | 'destructive'` | No  | default | —   |
+| `duration`    | `number`   | No        | 5000      | —              |
 
 ## Tokens
 
@@ -55,12 +55,12 @@ Toasts render into a labelled region; non-critical ones use role="status" with a
 
 ```jsx
 const { toast } = useToast()
-toast({ title: "Saved", variant: "success" })
+toast({ title: 'Saved', variant: 'success' })
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant | strict | Limited to default | success | warning | destructive — drives color and live-region urgency |
+| Area     | Level    | Note                                                   |
+| -------- | -------- | ------------------------------------------------------ | ------- | ------- | -------------------------------------------------- |
+| variant  | strict   | Limited to default                                     | success | warning | destructive — drives color and live-region urgency |
 | duration | flexible | Consumer can tune auto-dismiss timing (default 5000ms) |

@@ -42,7 +42,7 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| menu contents | flexible | Accepts arbitrary ContextMenuItem children after the trigger child |
-| anchor position | strict | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |
+| Area            | Level    | Note                                                                                           |
+| --------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| menu contents   | flexible | Accepts arbitrary ContextMenuItem children after the trigger child                             |
+| anchor position | strict   | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |

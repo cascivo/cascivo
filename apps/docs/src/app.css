@@ -395,3 +395,46 @@ a {
   -webkit-overflow-scrolling: touch;
   margin-block: var(--cascivo-space-4);
 }
+
+/* ── Brand page ───────────────────────────────────────── */
+.brand-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--cascivo-space-4);
+  margin-block: var(--cascivo-space-4);
+}
+
+.brand-logo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-6);
+  border-radius: var(--cascivo-radius-surface);
+  border: 1px solid var(--cascivo-color-border);
+}
+
+.brand-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--cascivo-space-3);
+  margin-block: var(--cascivo-space-4);
+}
+
+.swatch {
+  padding: var(--cascivo-space-4);
+  border-radius: var(--cascivo-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+}
+
+.swatch-name {
+  font-weight: var(--cascivo-font-semibold);
+  font-size: var(--cascivo-text-sm);
+}
+
+.swatch code {
+  font-size: var(--cascivo-text-xs);
+  opacity: 0.8;
+}

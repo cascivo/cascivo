@@ -5,15 +5,8 @@
   "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "chart",
-    "line",
-    "time-series",
-    "data-viz"
-  ],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "line", "time-series", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -145,15 +138,8 @@
         "code": "import { LineChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "chart",
-      "line",
-      "time-series",
-      "data-viz"
-    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "line", "time-series", "data-viz"],
     "intent": {
       "whenToUse": [
         "Showing trends and precise values over continuous time or a numeric range",

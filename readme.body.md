@@ -10,6 +10,7 @@ The CSS-native, signal-driven, AI-first React design system.
 6. **AI-first** — every component ships a machine-readable manifest; MCP server and Claude Code skills derive from it.
 7. **Context layer** — machine-readable intent (when-to-use, anti-patterns, selection edges), a closed-set token catalog, and `cascivo audit --ai` — so agents select from closed sets and their output is checkable.
 8. **Earned quality** — CVD-safe chart palettes (Okabe-Ito oklch, all 10 themes, CI-verified); keyboard-accessible chart tooltips (aria-live, all 17 chart types); honest multi-lens performance data (standalone / incremental / amortized); WCAG 2.2 AA + APG-conformant (CI-enforced, 72 components); AT support matrix (NVDA / JAWS / VoiceOver) + EAA / EN 301 549 / Section 508 legal mapping.
+9. **Coherent brand + mobile-first front door** — one name (`cascivo`) across every package (`@cascivo/*`), token (`--cascivo-*`), CLI, registry, and domain (`cascivo.com`); derivation documented; logo + brand palette shipped. Landing and docs rebuilt mobile-first: fluid type, off-canvas nav, container queries, zero overflow at 320–414px.
 
 ## Quick Start
 

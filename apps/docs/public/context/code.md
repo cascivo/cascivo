@@ -32,9 +32,9 @@ Renders a native <code> element so assistive tech can expose the content as code
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `size` | `'sm' | 'md'` | No | md | — |
+| Name   | Type  | Required | Default | Description |
+| ------ | ----- | -------- | ------- | ----------- | --- |
+| `size` | `'sm' | 'md'`    | No      | md          | —   |
 
 ## Tokens
 
@@ -59,7 +59,9 @@ Renders a native <code> element so assistive tech can expose the content as code
 Sits inline with surrounding text
 
 ```jsx
-<Text>Run <Code>vp check</Code> before committing.</Text>
+<Text>
+  Run <Code>vp check</Code> before committing.
+</Text>
 ```
 
 ### Small
@@ -70,7 +72,7 @@ Sits inline with surrounding text
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| size | flexible | sm fits dense UI; md matches body text |
-| token names | strict | Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens |
+| Area        | Level    | Note                                                                         |
+| ----------- | -------- | ---------------------------------------------------------------------------- |
+| size        | flexible | sm fits dense UI; md matches body text                                       |
+| token names | strict   | Font and surface must resolve to --cascivo-font-mono and --cascivo-\* tokens |

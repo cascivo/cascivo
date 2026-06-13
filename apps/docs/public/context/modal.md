@@ -35,13 +35,13 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | No | false | — |
-| `onClose` | `() => void` | No | — | — |
-| `title` | `string` | No | — | — |
-| `description` | `string` | No | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| Name          | Type         | Required | Default | Description |
+| ------------- | ------------ | -------- | ------- | ----------- | --- | --- |
+| `open`        | `boolean`    | No       | false   | —           |
+| `onClose`     | `() => void` | No       | —       | —           |
+| `title`       | `string`     | No       | —       | —           |
+| `description` | `string`     | No       | —       | —           |
+| `size`        | `'sm'        | 'md'     | 'lg'`   | No          | md  | —   |
 
 ## Tokens
 
@@ -63,8 +63,8 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens |
-| size | flexible | sm | md | lg, defaulting to md |
-| title / description / body | flexible | All optional; body accepts arbitrary children |
+| Area                       | Level    | Note                                                                                                   |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ | --- | -------------------- |
+| token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-\* tokens |
+| size                       | flexible | sm                                                                                                     | md  | lg, defaulting to md |
+| title / description / body | flexible | All optional; body accepts arbitrary children                                                          |

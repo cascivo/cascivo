@@ -42,7 +42,7 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| side | strict | Limited to start | end | top | bottom — drives the slide direction and animation |
+| Area         | Level    | Note                                           |
+| ------------ | -------- | ---------------------------------------------- | --- | --- | ------------------------------------------------- |
+| side         | strict   | Limited to start                               | end | top | bottom — drives the slide direction and animation |
 | body content | flexible | Any children; consumer owns the panel contents |

@@ -15,7 +15,7 @@ interface Claim {
   number: number
   title: string
   substance: string
-  receipt: { label: string; href: string }
+  receipt: { label: string; href: string } | null
 }
 
 const CLAIMS: Claim[] = [
@@ -105,6 +105,27 @@ const CLAIMS: Claim[] = [
       'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) documents tested components, OS/AT combos, and any known gaps. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
     receipt: { label: 'Accessibility statement', href: '/accessibility' },
   },
+  {
+    number: 25,
+    title: 'One coherent brand — cascivo',
+    substance:
+      'Single name across every package (@cascivo/*), token (--cascivo-*), CLI (cascivo), registry URL, and domain (cascivo.com). Derivation documented; logo + brand color system shipped.',
+    receipt: { label: 'Brand page', href: '/brand' },
+  },
+  {
+    number: 26,
+    title: 'The landing is flawless on a phone',
+    substance:
+      'Mobile-first rebuild, zero horizontal overflow at 320/375/390/414px. Off-canvas nav with focus trap. Fluid type via clamp(). Heavy demos (RelayConsole, charts, SignalsDemo) get deliberate mobile treatments, not blind shrinks.',
+    receipt: null,
+  },
+  {
+    number: 27,
+    title: 'The docs match it',
+    substance:
+      'Mobile-first docs: AppShell off-canvas nav, fluid type, responsive tables (stacked cards), code blocks sized for narrow screens, container-query sections. Full parity with the landing.',
+    receipt: null,
+  },
 ]
 
 export function WhyCascadePage() {
@@ -114,7 +135,7 @@ export function WhyCascadePage() {
         <div class="doc-eyebrow">Why cascivo</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–24 are v13–v14's additions to the cascivo pitch. Each
+          "AI-first" is easy to say. Claims 14–27 are v13–v15's additions to the cascivo pitch. Each
           one links its receipt — the artifact that proves it shipped.
         </p>
       </header>
@@ -126,7 +147,8 @@ export function WhyCascadePage() {
           WCAG 2.1 AA, open registry model, and long-run sustainability. v13 adds the context layer:
           machine-readable intent, closed-set tokens, AI-output auditing, and CSS-native logic. v14
           adds earned quality: CVD-safe chart palettes, accessible chart tooltips, honest multi-lens
-          performance data, WCAG 2.2 AA + APG conformance, and AT testing with legal mapping.
+          performance data, WCAG 2.2 AA + APG conformance, and AT testing with legal mapping. v15
+          adds brand + mobile: one coherent cascivo identity and a flawless mobile front door.
         </p>
       </section>
 
@@ -154,16 +176,20 @@ export function WhyCascadePage() {
                 </span>
                 <h2 style={{ margin: 0, fontSize: 'var(--cascivo-text-lg)' }}>{claim.title}</h2>
               </div>
-              <p style={{ margin: '0 0 var(--cascivo-space-3)' }}>{claim.substance}</p>
-              <a
-                href={claim.receipt.href}
-                style={{
-                  fontSize: 'var(--cascivo-text-sm)',
-                  color: 'var(--cascivo-color-accent)',
-                }}
-              >
-                Receipt: {claim.receipt.label}
-              </a>
+              <p style={{ margin: claim.receipt ? '0 0 var(--cascivo-space-3)' : '0' }}>
+                {claim.substance}
+              </p>
+              {claim.receipt && (
+                <a
+                  href={claim.receipt.href}
+                  style={{
+                    fontSize: 'var(--cascivo-text-sm)',
+                    color: 'var(--cascivo-color-accent)',
+                  }}
+                >
+                  Receipt: {claim.receipt.label}
+                </a>
+              )}
             </div>
           ))}
         </div>

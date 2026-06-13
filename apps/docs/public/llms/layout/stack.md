@@ -14,13 +14,13 @@ npx cascivo add layout/stack
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `direction` | `'vertical' | 'horizontal'` | no | — | Flex direction |
-| `gap` | `1|2|3|4|5|6|8|10|12` | no | — | Spacing token step |
-| `align` | `'start'|'center'|'end'|'stretch'` | no | — | align-items |
-| `justify` | `'start'|'center'|'end'|'between'` | no | — | justify-content |
-| `wrap` | `boolean` | no | — | Allow wrapping |
+| Prop        | Type        | Required      | Default | Description    |
+| ----------- | ----------- | ------------- | ------- | -------------- | -------------- | --- | --------------- | --- | --- | --- | --- | ------------------ |
+| `direction` | `'vertical' | 'horizontal'` | no      | —              | Flex direction |
+| `gap`       | `1          | 2             | 3       | 4              | 5              | 6   | 8               | 10  | 12` | no  | —   | Spacing token step |
+| `align`     | `'start'    | 'center'      | 'end'   | 'stretch'`     | no             | —   | align-items     |
+| `justify`   | `'start'    | 'center'      | 'end'   | 'between'`     | no             | —   | justify-content |
+| `wrap`      | `boolean`   | no            | —       | Allow wrapping |
 
 ## Examples
 
@@ -29,7 +29,10 @@ npx cascivo add layout/stack
 Default vertical stack
 
 ```tsx
-<Stack gap={4}><div>A</div><div>B</div></Stack>
+<Stack gap={4}>
+  <div>A</div>
+  <div>B</div>
+</Stack>
 ```
 
 ### Horizontal
@@ -37,7 +40,10 @@ Default vertical stack
 Row layout
 
 ```tsx
-<Stack direction="horizontal" gap={2}><div>A</div><div>B</div></Stack>
+<Stack direction="horizontal" gap={2}>
+  <div>A</div>
+  <div>B</div>
+</Stack>
 ```
 
 ## Design tokens

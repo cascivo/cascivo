@@ -25,15 +25,15 @@ npx cascivo add password-input
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `showStrengthMeter` | `boolean` | no | `false` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `labels` | `PasswordInputLabels` | no | — | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `placeholder` | `string` | no | — | — |
-| `value` | `string` | no | — | — |
-| `onChange` | `(e: React.ChangeEvent<HTMLInputElement>) => void` | no | — | — |
+| Prop                | Type                                               | Required | Default | Description |
+| ------------------- | -------------------------------------------------- | -------- | ------- | ----------- | ---- | --- |
+| `showStrengthMeter` | `boolean`                                          | no       | `false` | —           |
+| `size`              | `'sm'                                              | 'md'     | 'lg'`   | no          | `md` | —   |
+| `labels`            | `PasswordInputLabels`                              | no       | —       | —           |
+| `disabled`          | `boolean`                                          | no       | `false` | —           |
+| `placeholder`       | `string`                                           | no       | —       | —           |
+| `value`             | `string`                                           | no       | —       | —           |
+| `onChange`          | `(e: React.ChangeEvent<HTMLInputElement>) => void` | no       | —       | —           |
 
 ## Examples
 

@@ -12,30 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/select/select.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "form",
-    "dropdown",
-    "menu"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["form", "dropdown", "menu"],
   "category": "inputs",
   "meta": {
     "name": "Select",
     "description": "Native select menu styled to match the design system",
     "category": "inputs",
-    "states": [
-      "idle",
-      "focused",
-      "error"
-    ],
+    "states": ["idle", "focused", "error"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "label",
@@ -86,11 +72,7 @@
     "accessibility": {
       "role": "listbox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowUp",
-        "ArrowDown",
-        "Space"
-      ],
+      "keyboard": ["ArrowUp", "ArrowDown", "Space"],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -104,14 +86,8 @@
         "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "form",
-      "dropdown",
-      "menu"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["form", "dropdown", "menu"],
     "intent": {
       "whenToUse": [
         "Choosing exactly one value from a known, finite list inside a form",

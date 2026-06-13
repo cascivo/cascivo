@@ -40,13 +40,13 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | — |
-| `checked` | `boolean` | No | — | — |
-| `indeterminate` | `boolean` | No | false | — |
-| `disabled` | `boolean` | No | false | — |
-| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | No | — | — |
+| Name            | Type                                         | Required | Default | Description |
+| --------------- | -------------------------------------------- | -------- | ------- | ----------- |
+| `label`         | `string`                                     | No       | —       | —           |
+| `checked`       | `boolean`                                    | No       | —       | —           |
+| `indeterminate` | `boolean`                                    | No       | false   | —           |
+| `disabled`      | `boolean`                                    | No       | false   | —           |
+| `onChange`      | `React.ChangeEventHandler<HTMLInputElement>` | No       | —       | —           |
 
 ## Tokens
 
@@ -73,7 +73,7 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area               | Level    | Note                                                                                    |
+| ------------------ | -------- | --------------------------------------------------------------------------------------- |
 | native input props | flexible | Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through |
-| token names | strict | Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens |
+| token names        | strict   | Control styling resolves to semantic --cascivo-color-\* / --cascivo-radius-sm tokens    |

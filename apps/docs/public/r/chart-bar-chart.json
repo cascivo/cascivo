@@ -5,14 +5,8 @@
   "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "chart",
-    "bar",
-    "data-viz"
-  ],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "bar", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -20,10 +14,7 @@
     "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
     "category": "chart",
     "states": [],
-    "variants": [
-      "grouped",
-      "stacked"
-    ],
+    "variants": ["grouped", "stacked"],
     "sizes": [],
     "props": [
       {
@@ -124,14 +115,8 @@
         "code": "import { BarChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "chart",
-      "bar",
-      "data-viz"
-    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "bar", "data-viz"],
     "intent": {
       "whenToUse": [
         "Comparing discrete categorical values across groups",

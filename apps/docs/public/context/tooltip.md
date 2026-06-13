@@ -35,12 +35,12 @@ The floating element uses role="tooltip" and is linked to the trigger via aria-d
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `content` | `ReactNode` | Yes | — | — |
-| `placement` | `'top' | 'right' | 'bottom' | 'left'` | No | top | — |
-| `children` | `ReactElement` | Yes | — | — |
-| `delay` | `number` | No | 200 | Milliseconds to wait before showing |
+| Name        | Type           | Required | Default  | Description                         |
+| ----------- | -------------- | -------- | -------- | ----------------------------------- | --- | --- | --- |
+| `content`   | `ReactNode`    | Yes      | —        | —                                   |
+| `placement` | `'top'         | 'right'  | 'bottom' | 'left'`                             | No  | top | —   |
+| `children`  | `ReactElement` | Yes      | —        | —                                   |
+| `delay`     | `number`       | No       | 200      | Milliseconds to wait before showing |
 
 ## Tokens
 
@@ -54,12 +54,14 @@ The floating element uses role="tooltip" and is linked to the trigger via aria-d
 ### Basic
 
 ```jsx
-<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>
+<Tooltip content="Copy to clipboard">
+  <Button>Copy</Button>
+</Tooltip>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| placement | strict | Limited to top | right | bottom | left, positioned via CSS anchor |
-| delay | flexible | Consumer can tune the show delay (default 200ms) |
+| Area      | Level    | Note                                             |
+| --------- | -------- | ------------------------------------------------ | ----- | ------ | ------------------------------- |
+| placement | strict   | Limited to top                                   | right | bottom | left, positioned via CSS anchor |
+| delay     | flexible | Consumer can tune the show delay (default 200ms) |

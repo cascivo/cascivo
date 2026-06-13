@@ -12,15 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stat/stat.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "stat",
-    "kpi",
-    "metric",
-    "number"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["stat", "kpi", "metric", "number"],
   "category": "display",
   "meta": {
     "name": "Stat",
@@ -87,15 +80,8 @@
         "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "stat",
-      "kpi",
-      "metric",
-      "number"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["stat", "kpi", "metric", "number"],
     "intent": {
       "whenToUse": [
         "Highlighting a single key metric with a clear label",

@@ -12,16 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "section",
-    "stats",
-    "kpi",
-    "charts"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/charts"],
+  "tags": ["section", "stats", "kpi", "charts"],
   "category": "layout",
   "meta": {
     "name": "StatsBand",
@@ -67,16 +59,8 @@
         "description": "Four KPI cells — three with sparkline trends and signed deltas"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "section",
-      "stats",
-      "kpi",
-      "charts"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/charts"],
+    "tags": ["section", "stats", "kpi", "charts"],
     "intent": {
       "whenToUse": [
         "A horizontal KPI strip with optional deltas and inline sparkline trends",

@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/section/section.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "section",
-    "page"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "section", "page"],
   "category": "layout",
   "meta": {
     "name": "Section",
@@ -44,9 +38,7 @@
         "description": "Stack gap between children (spacing token step)"
       }
     ],
-    "tokens": [
-      "--cascivo-space-*"
-    ],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "region",
       "wcag": "2.1-AA",
@@ -59,14 +51,8 @@
         "description": "Centered 72rem content column with 2rem block padding"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "section",
-      "page"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "section", "page"],
     "intent": {
       "whenToUse": [
         "Wrapping a page region with block padding and a centered inner width",

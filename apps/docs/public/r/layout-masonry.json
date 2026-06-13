@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "masonry",
-    "gallery"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "masonry", "gallery"],
   "category": "layout",
   "meta": {
     "name": "Masonry",
@@ -44,9 +38,7 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": [
-      "--cascivo-space-*"
-    ],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
@@ -59,14 +51,8 @@
         "description": "Variable-height cards laid out in a masonry pattern; falls back to CSS columns"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "masonry",
-      "gallery"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "masonry", "gallery"],
     "intent": {
       "whenToUse": [
         "Galleries of variable-height items packed into balanced columns",

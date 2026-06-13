@@ -5,16 +5,8 @@
   "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "chart",
-    "kpi",
-    "metric",
-    "dashboard",
-    "data-viz"
-  ],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -66,9 +58,7 @@
         "required": false
       }
     ],
-    "tokens": [
-      "--cascivo-chart-1"
-    ],
+    "tokens": ["--cascivo-chart-1"],
     "accessibility": {
       "role": "figure",
       "wcag": "2.1-AA",
@@ -80,16 +70,8 @@
         "code": "import { Kpi } from '@cascivo/charts'\n\n<Kpi value=\"$12,400\" label=\"Monthly revenue\" delta={8.2} deltaLabel=\"vs last month\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "chart",
-      "kpi",
-      "metric",
-      "dashboard",
-      "data-viz"
-    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
     "intent": {
       "whenToUse": [
         "Highlighting a single headline metric with an optional change delta",

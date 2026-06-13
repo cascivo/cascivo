@@ -14,12 +14,12 @@ npx cascivo add section/cta
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `ReactNode` | yes | — | Primary heading of the CTA band |
-| `description` | `ReactNode` | no | — | Supporting text below the title |
-| `actions` | `ReactNode` | no | — | Buttons or links centered below the description |
-| `headingLevel` | `1 | 2 | 3` | no | `2` | HTML heading level for document outline control |
+| Prop           | Type        | Required | Default | Description                                     |
+| -------------- | ----------- | -------- | ------- | ----------------------------------------------- | --- | ----------------------------------------------- |
+| `title`        | `ReactNode` | yes      | —       | Primary heading of the CTA band                 |
+| `description`  | `ReactNode` | no       | —       | Supporting text below the title                 |
+| `actions`      | `ReactNode` | no       | —       | Buttons or links centered below the description |
+| `headingLevel` | `1          | 2        | 3`      | no                                              | `2` | HTML heading level for document outline control |
 
 ## Examples
 
@@ -28,7 +28,16 @@ npx cascivo add section/cta
 Quiet bordered band with centered heading, description, and action buttons
 
 ```tsx
-<Cta title="Ready to ship?" description="Add Cascade to your project in minutes." actions={<><Button>Get started</Button><Button variant="ghost">View on GitHub</Button></>} />
+<Cta
+  title="Ready to ship?"
+  description="Add Cascade to your project in minutes."
+  actions={
+    <>
+      <Button>Get started</Button>
+      <Button variant="ghost">View on GitHub</Button>
+    </>
+  }
+/>
 ```
 
 ## Design tokens

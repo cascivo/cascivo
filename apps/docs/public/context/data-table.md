@@ -33,29 +33,29 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `columns` | `Column<Row>[]` | Yes | — | — |
-| `rows` | `Row[]` | Yes | — | — |
-| `getRowId` | `(row: Row) => string` | No | — | — |
-| `sort` | `SortState` | No | — | — |
-| `defaultSort` | `SortState` | No | — | — |
-| `sortMode` | `'client' | 'server'` | No | 'client' | — |
-| `onSortChange` | `(sort: SortState | undefined) => void` | No | — | — |
-| `searchable` | `boolean` | No | false | — |
-| `pagination` | `{ pageSize: number; pageSizeOptions?: number[] }` | No | — | — |
-| `selection` | `{ mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | No | — | — |
-| `batchActions` | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | No | — | — |
-| `renderExpandedRow` | `(row: Row) => ReactNode` | No | — | — |
-| `density` | `'compact' | 'normal' | 'relaxed'` | No | 'normal' | — |
-| `zebra` | `boolean` | No | false | — |
-| `stickyHeader` | `boolean` | No | false | — |
-| `loading` | `boolean` | No | false | — |
-| `emptyState` | `ReactNode` | No | — | — |
-| `title` | `string` | No | — | — |
-| `description` | `string` | No | — | — |
-| `labels` | `DataTableLabels` | No | — | — |
-| `className` | `string` | No | — | — |
+| Name                | Type                                                            | Required                                                            | Default    | Description |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | ---------- | ----------- | -------- | --- |
+| `columns`           | `Column<Row>[]`                                                 | Yes                                                                 | —          | —           |
+| `rows`              | `Row[]`                                                         | Yes                                                                 | —          | —           |
+| `getRowId`          | `(row: Row) => string`                                          | No                                                                  | —          | —           |
+| `sort`              | `SortState`                                                     | No                                                                  | —          | —           |
+| `defaultSort`       | `SortState`                                                     | No                                                                  | —          | —           |
+| `sortMode`          | `'client'                                                       | 'server'`                                                           | No         | 'client'    | —        |
+| `onSortChange`      | `(sort: SortState                                               | undefined) => void`                                                 | No         | —           | —        |
+| `searchable`        | `boolean`                                                       | No                                                                  | false      | —           |
+| `pagination`        | `{ pageSize: number; pageSizeOptions?: number[] }`              | No                                                                  | —          | —           |
+| `selection`         | `{ mode: 'single'                                               | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | No         | —           | —        |
+| `batchActions`      | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | No                                                                  | —          | —           |
+| `renderExpandedRow` | `(row: Row) => ReactNode`                                       | No                                                                  | —          | —           |
+| `density`           | `'compact'                                                      | 'normal'                                                            | 'relaxed'` | No          | 'normal' | —   |
+| `zebra`             | `boolean`                                                       | No                                                                  | false      | —           |
+| `stickyHeader`      | `boolean`                                                       | No                                                                  | false      | —           |
+| `loading`           | `boolean`                                                       | No                                                                  | false      | —           |
+| `emptyState`        | `ReactNode`                                                     | No                                                                  | —          | —           |
+| `title`             | `string`                                                        | No                                                                  | —          | —           |
+| `description`       | `string`                                                        | No                                                                  | —          | —           |
+| `labels`            | `DataTableLabels`                                               | No                                                                  | —          | —           |
+| `className`         | `string`                                                        | No                                                                  | —          | —           |
 
 ## Tokens
 
@@ -118,7 +118,7 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| sortMode and density | flexible | Choose client/server sort and density to fit data size and layout |
-| token names | strict | All surfaces, borders, and spacing must resolve to --cascivo-* tokens |
+| Area                 | Level    | Note                                                                   |
+| -------------------- | -------- | ---------------------------------------------------------------------- |
+| sortMode and density | flexible | Choose client/server sort and density to fit data size and layout      |
+| token names          | strict   | All surfaces, borders, and spacing must resolve to --cascivo-\* tokens |

@@ -34,12 +34,12 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | — |
-| `value` | `string` | Yes | — | — |
-| `disabled` | `boolean` | No | false | — |
-| `name` | `string` | No | — | — |
+| Name       | Type      | Required | Default | Description |
+| ---------- | --------- | -------- | ------- | ----------- |
+| `label`    | `string`  | No       | —       | —           |
+| `value`    | `string`  | Yes      | —       | —           |
+| `disabled` | `boolean` | No       | false   | —           |
+| `name`     | `string`  | No       | —       | —           |
 
 ## Tokens
 
@@ -55,12 +55,15 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 ### Group
 
 ```jsx
-<RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>
+<RadioGroup name="plan" defaultValue="pro">
+  <Radio value="pro" label="Pro" />
+  <Radio value="team" label="Team" />
+</RadioGroup>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Control and label styling must resolve to the listed --cascivo-* tokens |
+| Area                          | Level    | Note                                                                           |
+| ----------------------------- | -------- | ------------------------------------------------------------------------------ |
+| token names                   | strict   | Control and label styling must resolve to the listed --cascivo-\* tokens       |
 | option labels and orientation | flexible | Labels are free text and the group supports horizontal or vertical orientation |

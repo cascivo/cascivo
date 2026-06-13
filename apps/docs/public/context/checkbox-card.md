@@ -38,14 +38,14 @@ Backed by a native <input type="checkbox"> inside a <label>, so the entire card 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `ReactNode` | Yes | — | Card title |
-| `description` | `ReactNode` | No | — | Optional description |
-| `checked` | `boolean` | No | — | Controlled checked state |
-| `defaultChecked` | `boolean` | No | — | Uncontrolled default |
-| `onCheckedChange` | `(checked: boolean) => void` | No | — | Change callback |
-| `disabled` | `boolean` | No | — | Disables the card |
+| Name              | Type                         | Required | Default | Description              |
+| ----------------- | ---------------------------- | -------- | ------- | ------------------------ |
+| `title`           | `ReactNode`                  | Yes      | —       | Card title               |
+| `description`     | `ReactNode`                  | No       | —       | Optional description     |
+| `checked`         | `boolean`                    | No       | —       | Controlled checked state |
+| `defaultChecked`  | `boolean`                    | No       | —       | Uncontrolled default     |
+| `onCheckedChange` | `(checked: boolean) => void` | No       | —       | Change callback          |
+| `disabled`        | `boolean`                    | No       | —       | Disables the card        |
 
 ## Tokens
 
@@ -61,7 +61,11 @@ Multi-select feature toggles
 
 ```jsx
 <div style={{ display: 'grid', gap: 12 }}>
-  <CheckboxCard title="Automated backups" description="Daily snapshots, 30-day retention" defaultChecked />
+  <CheckboxCard
+    title="Automated backups"
+    description="Daily snapshots, 30-day retention"
+    defaultChecked
+  />
   <CheckboxCard title="Monitoring" description="Metrics + alerting" />
   <CheckboxCard title="Audit log" description="Requires Team plan" disabled />
 </div>
@@ -69,7 +73,7 @@ Multi-select feature toggles
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| controlled vs uncontrolled | flexible | Supports both checked + onCheckedChange and defaultChecked |
-| token names | strict | Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface |
+| Area                       | Level    | Note                                                                                                |
+| -------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| controlled vs uncontrolled | flexible | Supports both checked + onCheckedChange and defaultChecked                                          |
+| token names                | strict   | Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface |

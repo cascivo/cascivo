@@ -18,11 +18,11 @@ npx cascivo add switcher
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `SwitcherEntry[]` | yes | — | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label` | `string` | no | `Switch application` | — |
-| `className` | `string` | no | — | — |
+| Prop        | Type              | Required | Default              | Description                                                                   |
+| ----------- | ----------------- | -------- | -------------------- | ----------------------------------------------------------------------------- |
+| `items`     | `SwitcherEntry[]` | yes      | —                    | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
+| `label`     | `string`          | no       | `Switch application` | —                                                                             |
+| `className` | `string`          | no       | —                    | —                                                                             |
 
 ## Examples
 

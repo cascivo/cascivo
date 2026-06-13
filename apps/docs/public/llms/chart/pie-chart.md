@@ -19,17 +19,17 @@ npx cascivo add chart/pie-chart
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `PieChartDatum[]` | yes | — | Array of { label, value } datums |
-| `title` | `string` | yes | — | — |
-| `description` | `string` | no | — | — |
-| `donut` | `boolean` | no | — | Render as donut chart |
-| `width` | `number` | no | — | — |
-| `height` | `number` | no | `300` | — |
-| `legend` | `boolean` | no | — | — |
-| `className` | `string` | no | — | — |
-| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop          | Type              | Required | Default | Description                                                           |
+| ------------- | ----------------- | -------- | ------- | --------------------------------------------------------------------- |
+| `data`        | `PieChartDatum[]` | yes      | —       | Array of { label, value } datums                                      |
+| `title`       | `string`          | yes      | —       | —                                                                     |
+| `description` | `string`          | no       | —       | —                                                                     |
+| `donut`       | `boolean`         | no       | —       | Render as donut chart                                                 |
+| `width`       | `number`          | no       | —       | —                                                                     |
+| `height`      | `number`          | no       | `300`   | —                                                                     |
+| `legend`      | `boolean`         | no       | —       | —                                                                     |
+| `className`   | `string`          | no       | —       | —                                                                     |
+| `plain`       | `boolean`         | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -37,8 +37,13 @@ npx cascivo add chart/pie-chart
 
 ```tsx
 import { PieChart } from '@cascivo/charts'
-
-<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />
+;<PieChart
+  data={[
+    { label: 'A', value: 60 },
+    { label: 'B', value: 40 },
+  ]}
+  title="Market share"
+/>
 ```
 
 ## Design tokens

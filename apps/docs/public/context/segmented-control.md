@@ -34,13 +34,13 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `SegmentedControlOption[]` | Yes | — | — |
-| `value` | `string` | Yes | — | — |
-| `onValueChange` | `(v: string) => void` | Yes | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `disabled` | `boolean` | No | false | — |
+| Name            | Type                       | Required | Default | Description |
+| --------------- | -------------------------- | -------- | ------- | ----------- | --- | --- |
+| `options`       | `SegmentedControlOption[]` | Yes      | —       | —           |
+| `value`         | `string`                   | Yes      | —       | —           |
+| `onValueChange` | `(v: string) => void`      | Yes      | —       | —           |
+| `size`          | `'sm'                      | 'md'     | 'lg'`   | No          | md  | —   |
+| `disabled`      | `boolean`                  | No       | false   | —           |
 
 ## Tokens
 
@@ -57,12 +57,20 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 ### Basic
 
 ```jsx
-<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ]}
+  value="day"
+  onValueChange={() => {}}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Segment styling must resolve to the listed --cascivo-* tokens |
+| Area          | Level    | Note                                                                    |
+| ------------- | -------- | ----------------------------------------------------------------------- |
+| token names   | strict   | Segment styling must resolve to the listed --cascivo-\* tokens          |
 | option labels | flexible | option label and value are free, and individual options may be disabled |

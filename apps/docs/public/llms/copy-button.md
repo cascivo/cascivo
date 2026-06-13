@@ -24,11 +24,11 @@ npx cascivo add copy-button
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | yes | — | The text written to the clipboard on click |
-| `size` | `'sm' | 'md'` | no | `md` | — |
-| `labels` | `{ copy?: string; copied?: string }` | no | — | Overrides the built-in i18n labels per instance |
+| Prop     | Type                                 | Required | Default | Description                                     |
+| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------- | --- |
+| `value`  | `string`                             | yes      | —       | The text written to the clipboard on click      |
+| `size`   | `'sm'                                | 'md'`    | no      | `md`                                            | —   |
+| `labels` | `{ copy?: string; copied?: string }` | no       | —       | Overrides the built-in i18n labels per instance |
 
 ## Examples
 

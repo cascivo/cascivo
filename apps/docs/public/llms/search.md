@@ -25,20 +25,20 @@ npx cascivo add search
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | no | — | — |
-| `defaultValue` | `string` | no | `''` | — |
-| `onChange` | `(value: string) => void` | no | — | — |
-| `onSearch` | `(value: string) => void` | no | — | — |
-| `debounceMs` | `number` | no | `300` | — |
-| `placeholder` | `string` | no | `Search` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `label` | `string` | no | `Search` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `clearLabel` | `string` | no | `Clear search` | — |
-| `id` | `string` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop           | Type                      | Required | Default        | Description |
+| -------------- | ------------------------- | -------- | -------------- | ----------- | ---- | --- |
+| `value`        | `string`                  | no       | —              | —           |
+| `defaultValue` | `string`                  | no       | `''`           | —           |
+| `onChange`     | `(value: string) => void` | no       | —              | —           |
+| `onSearch`     | `(value: string) => void` | no       | —              | —           |
+| `debounceMs`   | `number`                  | no       | `300`          | —           |
+| `placeholder`  | `string`                  | no       | `Search`       | —           |
+| `size`         | `'sm'                     | 'md'     | 'lg'`          | no          | `md` | —   |
+| `label`        | `string`                  | no       | `Search`       | —           |
+| `disabled`     | `boolean`                 | no       | `false`        | —           |
+| `clearLabel`   | `string`                  | no       | `Clear search` | —           |
+| `id`           | `string`                  | no       | —              | —           |
+| `className`    | `string`                  | no       | —              | —           |
 
 ## Examples
 

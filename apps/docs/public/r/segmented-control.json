@@ -12,32 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "form",
-    "toggle",
-    "group",
-    "segmented",
-    "input"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["form", "toggle", "group", "segmented", "input"],
   "category": "inputs",
   "meta": {
     "name": "SegmentedControl",
     "description": "Mutually exclusive toggle group",
     "category": "inputs",
-    "states": [
-      "idle",
-      "selected",
-      "disabled"
-    ],
+    "states": ["idle", "selected", "disabled"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "options",
@@ -79,10 +63,7 @@
     "accessibility": {
       "role": "group",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowLeft",
-        "ArrowRight"
-      ]
+      "keyboard": ["ArrowLeft", "ArrowRight"]
     },
     "examples": [
       {
@@ -90,16 +71,8 @@
         "code": "<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value=\"day\" onValueChange={() => {}} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "form",
-      "toggle",
-      "group",
-      "segmented",
-      "input"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["form", "toggle", "group", "segmented", "input"],
     "intent": {
       "whenToUse": [
         "A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges",

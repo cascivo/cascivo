@@ -5,16 +5,8 @@
   "description": "Bullet chart with background range bands, measure bar, and target tick.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "chart",
-    "bullet",
-    "kpi",
-    "progress",
-    "data-viz"
-  ],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -95,16 +87,8 @@
         "code": "import { Bullet } from '@cascivo/charts'\n\n<Bullet value={72} target={80} ranges={[40, 70, 100]} label=\"Revenue %\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "chart",
-      "bullet",
-      "kpi",
-      "progress",
-      "data-viz"
-    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
     "intent": {
       "whenToUse": [
         "Showing a single measure against a target with qualitative range bands",

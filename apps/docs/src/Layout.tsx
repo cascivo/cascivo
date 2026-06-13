@@ -57,6 +57,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
     { label: 'Context Explorer', href: '/context', icon: <Eye size={16} /> },
     { label: 'Why cascivo', href: '/why', icon: <Check size={16} /> },
+    { label: 'Brand', href: '/brand', icon: <Eye size={16} /> },
     { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
     { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },
     { label: 'Directory', href: '/directory', icon: <Grid size={16} /> },

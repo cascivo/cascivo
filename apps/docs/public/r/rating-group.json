@@ -12,32 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/rating-group/rating-group.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "form",
-    "rating",
-    "stars",
-    "input",
-    "feedback"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["form", "rating", "stars", "input", "feedback"],
   "category": "inputs",
   "meta": {
     "name": "RatingGroup",
     "description": "Star rating input with accessible radio group pattern",
     "category": "inputs",
-    "states": [
-      "idle",
-      "disabled",
-      "readOnly"
-    ],
+    "states": ["idle", "disabled", "readOnly"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -88,11 +72,7 @@
     "accessibility": {
       "role": "radiogroup",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Space",
-        "Enter"
-      ]
+      "keyboard": ["Tab", "Space", "Enter"]
     },
     "examples": [
       {
@@ -104,16 +84,8 @@
         "code": "<RatingGroup value={4} readOnly />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "form",
-      "rating",
-      "stars",
-      "input",
-      "feedback"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["form", "rating", "stars", "input", "feedback"],
     "intent": {
       "whenToUse": [
         "Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)",

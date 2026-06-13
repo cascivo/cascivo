@@ -19,19 +19,24 @@ npx cascivo add accordion
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `type` | `'single' | 'multiple'` | no | `single` | — |
-| `defaultValue` | `string | string[]` | no | — | — |
-| `value` | `string | string[]` | no | — | — |
-| `onValueChange` | `(value: string | string[]) => void` | no | — | — |
+| Prop            | Type            | Required           | Default | Description |
+| --------------- | --------------- | ------------------ | ------- | ----------- | --- |
+| `type`          | `'single'       | 'multiple'`        | no      | `single`    | —   |
+| `defaultValue`  | `string         | string[]`          | no      | —           | —   |
+| `value`         | `string         | string[]`          | no      | —           | —   |
+| `onValueChange` | `(value: string | string[]) => void` | no      | —           | —   |
 
 ## Examples
 
 ### Single
 
 ```tsx
-<Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>
+<Accordion type="single" defaultValue="a">
+  <AccordionItem value="a">
+    <AccordionTrigger>Section</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 ## Design tokens

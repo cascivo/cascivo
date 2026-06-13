@@ -20,13 +20,13 @@ npx cascivo add checkbox
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | — |
-| `checked` | `boolean` | no | — | — |
-| `indeterminate` | `boolean` | no | `false` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | no | — | — |
+| Prop            | Type                                         | Required | Default | Description |
+| --------------- | -------------------------------------------- | -------- | ------- | ----------- |
+| `label`         | `string`                                     | no       | —       | —           |
+| `checked`       | `boolean`                                    | no       | —       | —           |
+| `indeterminate` | `boolean`                                    | no       | `false` | —           |
+| `disabled`      | `boolean`                                    | no       | `false` | —           |
+| `onChange`      | `React.ChangeEventHandler<HTMLInputElement>` | no       | —       | —           |
 
 ## Examples
 

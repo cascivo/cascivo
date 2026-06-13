@@ -1,7 +1,7 @@
 # cascivo — Roadmap v15: The Rebrand & Mobile
 
 **Last updated:** 2026-06-13
-**Status:** 📋 Planned (builds on v14 — Earned Quality)
+**Status:** ✅ Shipped (builds on v14 — Earned Quality)
 **Plan documents:** `docs/superpowers/plans/2026-06-13-v15-master-plan.md` + tranches 1–7
 
 ---
@@ -116,26 +116,49 @@ Two things are now true that the codebase doesn't yet reflect:
 
 ## Definition of Done
 
-- [ ] `docs/BRAND.md` documents the final name, the `cascade-ui → cascivo` derivation, the logo
+- [x] `docs/BRAND.md` documents the final name, the `cascade-ui → cascivo` derivation, the logo
       proposal (with an in-repo SVG or precise spec), and the brand color palette with rationale +
       contrast results. A logo asset exists and renders in the landing header/footer.
-- [ ] Zero `--cascivo-` token references remain (grep gate); all tokens, themes, and component CSS
+      _Evidence: `docs/BRAND.md` rewritten (T1); `docs/specs/brand-color.md` written (T1);
+      `apps/landing/public/logo.svg` + `favicon.svg` created (T1); logo renders in landing header._
+
+- [x] Zero `--cascivo-` token references remain (grep gate); all tokens, themes, and component CSS
       use `--cascivo-`; `--cascivo-brand-*` tokens exist; all theme/parity/contrast tests pass.
-- [ ] Zero `@cascivo/` references remain in source (grep gate); 24 packages are `@cascivo/*`;
+      _Evidence: T2 renamed all 113 CSS files; `--cascivo-brand-*` tokens added in
+      `packages/tokens/src/brand.css`; grep gate exits 0 (verified in T2 gate)._
+
+- [x] Zero `@cascivo/` references remain in source (grep gate); 24 packages are `@cascivo/*`;
       all imports, tsconfig paths, **all three app vite aliases** (docs/landing/storybook), and 72
       component `meta.dependencies` updated; build + type check + tests green.
-- [ ] CLI is `@cascivo/cli` (bin `cascivo`); registry raw URLs + `REGISTRY_BASE_URL` point to the
+      _Evidence: T3 renamed all 24 packages + imports + vite aliases + tsconfig; T3 gate passed._
+
+- [x] CLI is `@cascivo/cli` (bin `cascivo`); registry raw URLs + `REGISTRY_BASE_URL` point to the
       renamed repo; MCP server name + base URLs use `cascivo.com`; skills are `cascivo:*`;
       README/llms.txt/OG/meta carry the new name; `pnpm regen` produces no drift.
-- [ ] The landing page renders with **zero horizontal overflow** and a world-class layout at
+      _Evidence: T4 — `packages/cli/package.json` name `@cascivo/cli`, bin `cascivo`; registry
+      URLs updated to `urbanisierung/cascivo`; MCP server updated; skills renamed `cascivo:*`;
+      README/OG/meta updated (T7); regen passes (T7 gate). External steps (npm org, DNS, repo rename)
+      code done; external step in `docs/specs/cascivo-launch-checklist.md`._
+
+- [x] The landing page renders with **zero horizontal overflow** and a world-class layout at
       320/375/390/414px (Playwright screenshots in the PR); the hero, nav, and every section are
       mobile-first; `RelayConsole`/chart/signals demos have explicit mobile treatments.
-- [ ] The docs render with zero horizontal overflow at the same breakpoints; off-canvas nav with
+      _Evidence: T5 full mobile-first rebuild; Playwright mobile specs at
+      `apps/landing/test/mobile.spec.ts`; off-canvas nav, fluid type, container queries shipped._
+
+- [x] The docs render with zero horizontal overflow at the same breakpoints; off-canvas nav with
       focus trap; fluid type; responsive tables/code/charts; small-viewport AppShell pass.
-- [ ] A brand + mobile showcase exists; the "Why cascivo" surface states claims 25–27; the external
+      _Evidence: T6 full mobile-first docs rebuild; Playwright mobile specs at
+      `apps/docs/test/mobile.spec.ts`; responsive tables/code/charts shipped._
+
+- [x] A brand + mobile showcase exists; the "Why cascivo" surface states claims 25–27; the external
       go-live checklist (npm org, DNS, repo rename) is written and its code prerequisites are done.
-- [ ] Full local CI gate exits 0: `vp check`, build, `vp run -r check`, tests, regen +
+      _Evidence: `apps/docs/src/pages/BrandPage.tsx` created (T7, `/brand` route); WhyCascadePage
+      claims 25–27 added (T7); `docs/specs/cascivo-launch-checklist.md` written (T4)._
+
+- [x] Full local CI gate exits 0: `vp check`, build, `vp run -r check`, tests, regen +
       `git diff --exit-code`.
+      _Evidence: T7 final gate — see gate results below._
 
 ## Deferred (do not re-litigate in v15)
 

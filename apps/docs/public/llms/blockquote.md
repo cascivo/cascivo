@@ -14,9 +14,9 @@ npx cascivo add blockquote
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `cite` | `string` | no | `undefined` | — |
+| Prop   | Type     | Required | Default     | Description |
+| ------ | -------- | -------- | ----------- | ----------- |
+| `cite` | `string` | no       | `undefined` | —           |
 
 ## Examples
 

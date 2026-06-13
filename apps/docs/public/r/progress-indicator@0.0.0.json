@@ -12,30 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "steps",
-    "wizard",
-    "stepper",
-    "progress",
-    "navigation"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
   "category": "navigation",
   "meta": {
     "name": "ProgressIndicator",
     "description": "Shows progress through the steps of a multi-step flow",
     "category": "navigation",
-    "states": [
-      "complete",
-      "current",
-      "incomplete"
-    ],
-    "variants": [
-      "horizontal",
-      "vertical"
-    ],
+    "states": ["complete", "current", "incomplete"],
+    "variants": ["horizontal", "vertical"],
     "sizes": [],
     "props": [
       {
@@ -88,16 +73,8 @@
         "code": "<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "steps",
-      "wizard",
-      "stepper",
-      "progress",
-      "navigation"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
     "intent": {
       "whenToUse": [
         "Showing progress through the discrete steps of a multi-step flow (wizard, checkout)",
