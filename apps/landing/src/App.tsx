@@ -10,6 +10,7 @@ import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
 import { ChartShowcase } from './sections/ChartShowcase'
+import { Ecosystem } from './sections/Ecosystem'
 import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
@@ -31,6 +32,7 @@ function HomePage() {
       <AgentLayer />
       <ThemeDemo />
       <ChartShowcase />
+      <Ecosystem />
       <QuickStart />
       <CtaBand />
       <Footer />
