@@ -87,6 +87,29 @@ describe('distinguishable — amber vs lime, a known protan confusion pair', () 
   })
 })
 
+describe('distinguishable — deutan confusion pair: olive-green vs dark amber', () => {
+  // #5A6E0A (olive-green) vs #7D3C0A (dark amber/brown):
+  // Both colors sit on the deutan M-cone confusion axis — they have similar
+  // luminance but differ in red-green ratio.  Under deuteranopia the simulated
+  // distance falls below the 0.1 threshold (≈ 0.090), so they are NOT
+  // distinguishable.  Under protanopia (≈ 0.111) and tritanopia (≈ 0.168) they
+  // remain distinguishable, making this a purely deutan confusion pair.
+  const oliveGreen = hex(0x5a, 0x6e, 0x0a) // #5A6E0A
+  const darkAmber = hex(0x7d, 0x3c, 0x0a) // #7D3C0A
+
+  it('NOT distinguishable under deutan (confusion pair)', () => {
+    assert.strictEqual(distinguishable(oliveGreen, darkAmber, 'deutan'), false)
+  })
+
+  it('distinguishable under protan', () => {
+    assert.ok(distinguishable(oliveGreen, darkAmber, 'protan'))
+  })
+
+  it('distinguishable under tritan', () => {
+    assert.ok(distinguishable(oliveGreen, darkAmber, 'tritan'))
+  })
+})
+
 describe('distinguishable — identical colors', () => {
   it('same color is never distinguishable', () => {
     const gray: RGB = [0.5, 0.5, 0.5]
