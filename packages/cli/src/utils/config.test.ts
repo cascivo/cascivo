@@ -72,6 +72,14 @@ describe('installCommand', () => {
   })
 })
 
+describe('resolveConfig back-compat (no registries key)', () => {
+  it('pre-v11 configs without registries key stay valid', () => {
+    const config = resolveConfig({ outputDir: 'app/ui' })
+    expect(config.registries).toBeUndefined()
+    expect(config.registry).toBe(DEFAULT_CONFIG.registry)
+  })
+})
+
 describe('loadConfig', () => {
   let dir: string
   beforeEach(async () => {

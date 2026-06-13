@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "name": "block/page-with-breadcrumb",
+  "type": "block",
+  "description": "A centered content page with a breadcrumb navigation and page header.",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
+    }
+  ],
+  "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+  "tags": ["block", "breadcrumb", "page", "navigation"],
+  "category": "display",
+  "meta": {
+    "name": "PageWithBreadcrumb",
+    "description": "A centered content page with a breadcrumb navigation and page header.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<PageWithBreadcrumb />",
+        "description": "Page with breadcrumb"
+      }
+    ],
+    "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/center"],
+    "tags": ["block", "breadcrumb", "page", "navigation"]
+  }
+}

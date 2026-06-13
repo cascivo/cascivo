@@ -12,6 +12,7 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import type { ComponentMeta } from '@cascade-ui/core'
+import { buildRegistry, parseLegacyRegistry } from '../../packages/registry/src/index.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -179,6 +180,27 @@ async function main(): Promise<void> {
   await writeFile(REGISTRY_PATH, `${JSON.stringify(registry, null, 2)}\n`, 'utf8')
   formatRegistry()
   console.log(`Wrote ${components.length} entries to registry.json (base: ${BASE_URL})`)
+
+  // Emit per-item static files under apps/docs/public/r/
+  const docsPublicR = join(REPO_ROOT, 'apps', 'docs', 'public', 'r')
+  const index = parseLegacyRegistry(registry)
+  await buildRegistry(index, docsPublicR)
+
+  // Copy JSON Schemas to docs public
+  const schemaDir = join(REPO_ROOT, 'apps', 'docs', 'public', 'schema')
+  const { mkdir, copyFile } = await import('node:fs/promises')
+  await mkdir(schemaDir, { recursive: true })
+  const schemaFiles = ['registry.v2.json', 'registry-item.v2.json', 'registries.v1.json']
+  for (const f of schemaFiles) {
+    await copyFile(join(REPO_ROOT, 'packages', 'registry', 'schema', f), join(schemaDir, f))
+  }
+  console.log(`Wrote per-item files to ${docsPublicR} and schemas to ${schemaDir}`)
+
+  // Copy directory/registries.json to docs public
+  const directorySrc = join(REPO_ROOT, 'directory', 'registries.json')
+  if (existsSync(directorySrc)) {
+    await copyFile(directorySrc, join(docsPublicR, 'registries.json'))
+  }
 }
 
 await main()

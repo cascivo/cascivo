@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 2,
+  "name": "menu",
+  "type": "component",
+  "description": "Dropdown menu with keyboard navigation, built on usePopover",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/menu/menu.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["overlay", "menu", "dropdown", "floating"],
+  "category": "overlay",
+  "meta": {
+    "name": "Menu",
+    "description": "Dropdown menu with keyboard navigation, built on usePopover",
+    "category": "overlay",
+    "states": ["open", "closed"],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-md",
+      "--cascade-shadow-md",
+      "--cascade-motion-enter",
+      "--cascade-motion-exit",
+      "--cascade-color-bg-subtle"
+    ],
+    "accessibility": {
+      "role": "menu",
+      "wcag": "AA",
+      "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+    },
+    "examples": [],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["overlay", "menu", "dropdown", "floating"]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 2,
+  "name": "fixture-registry",
+  "homepage": "https://example.com",
+  "items": [
+    {
+      "schemaVersion": 2,
+      "name": "callout",
+      "type": "component",
+      "description": "A callout block for highlighting important content",
+      "version": "1.0.0",
+      "files": [{ "url": "https://example.com/callout.tsx" }],
+      "dependencies": ["@cascade-ui/core"],
+      "tags": ["display", "callout"]
+    },
+    {
+      "schemaVersion": 2,
+      "name": "step-list",
+      "type": "component",
+      "description": "A numbered step list",
+      "version": "0.1.0",
+      "files": [{ "url": "https://example.com/step-list.tsx" }],
+      "dependencies": [],
+      "tags": ["display"]
+    }
+  ]
+}

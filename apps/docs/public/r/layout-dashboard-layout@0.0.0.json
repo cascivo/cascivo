@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "name": "layout/dashboard-layout",
+  "type": "layout",
+  "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["layout", "dashboard", "page"],
+  "category": "layout",
+  "meta": {
+    "name": "DashboardLayout",
+    "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+    "category": "layout",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "stats",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Stats/KPI row (auto-fit grid)"
+      },
+      {
+        "name": "main",
+        "type": "ReactNode",
+        "required": true,
+        "description": "Main content area"
+      },
+      {
+        "name": "aside",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Optional aside panel (20rem)"
+      }
+    ],
+    "tokens": ["--cascade-space-4", "--cascade-space-6"],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "With stats",
+        "code": "<DashboardLayout stats={<div>KPIs</div>} main={<div>Content</div>} />",
+        "description": "Stats + main layout"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["layout", "dashboard", "page"]
+  }
+}

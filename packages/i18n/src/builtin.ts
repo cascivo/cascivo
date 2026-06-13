@@ -153,6 +153,10 @@ export const builtin = {
   skipNav: defineMessages('cascade.skipNav', {
     label: 'Skip to content',
   }),
+  form: defineMessages('cascade.form', {
+    required: 'Required',
+    invalid: 'Invalid value',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -301,4 +305,8 @@ defineCatalog(builtin.copyButton, 'de', {
 })
 defineCatalog(builtin.skipNav, 'de', {
   label: 'Zum Inhalt springen',
+})
+defineCatalog(builtin.form, 'de', {
+  required: 'Pflichtfeld',
+  invalid: 'Ungültiger Wert',
 })

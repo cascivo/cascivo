@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "name": "block/sidebar-app",
+  "type": "block",
+  "description": "Full app shell with collapsible side navigation and top header.",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
+    }
+  ],
+  "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+  "tags": ["block", "sidebar", "navigation", "app-shell"],
+  "category": "display",
+  "meta": {
+    "name": "SidebarApp",
+    "description": "Full app shell with collapsible side navigation and top header.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<SidebarApp />",
+        "description": "App with sidebar navigation"
+      }
+    ],
+    "dependencies": ["@cascade-ui/react", "layout/app-shell"],
+    "tags": ["block", "sidebar", "navigation", "app-shell"]
+  }
+}

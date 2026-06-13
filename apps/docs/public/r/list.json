@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "name": "list",
+  "type": "component",
+  "description": "Styled unordered or ordered list with ListItem",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/list/list.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["typography", "list", "ul", "ol"],
+  "category": "display",
+  "meta": {
+    "name": "List",
+    "description": "Styled unordered or ordered list with ListItem",
+    "category": "display",
+    "states": [],
+    "variants": ["disc", "decimal", "none"],
+    "sizes": [],
+    "props": [
+      {
+        "name": "as",
+        "type": "'ul' | 'ol'",
+        "required": false,
+        "default": "ul"
+      },
+      {
+        "name": "marker",
+        "type": "'disc' | 'decimal' | 'none'",
+        "required": false,
+        "default": "derived from as (ul→disc, ol→decimal)"
+      }
+    ],
+    "tokens": [
+      "--cascade-font-sans",
+      "--cascade-leading-normal",
+      "--cascade-color-text",
+      "--cascade-text-base",
+      "--cascade-space-1",
+      "--cascade-space-6"
+    ],
+    "accessibility": {
+      "role": "list",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Unordered",
+        "code": "<List><ListItem>Tokens</ListItem><ListItem>Themes</ListItem></List>"
+      },
+      {
+        "title": "Ordered",
+        "code": "<List as=\"ol\"><ListItem>Init</ListItem><ListItem>Add</ListItem></List>"
+      },
+      {
+        "title": "Unmarked",
+        "code": "<List marker=\"none\"><ListItem>Clean row</ListItem></List>",
+        "description": "Keeps list semantics without visual markers"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["typography", "list", "ul", "ol"]
+  }
+}

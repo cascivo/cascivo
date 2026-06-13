@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "name": "card",
+  "type": "component",
+  "description": "Container for grouping related content",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/card/card.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["container", "layout", "surface"],
+  "category": "display",
+  "meta": {
+    "name": "Card",
+    "description": "Container for grouping related content",
+    "category": "display",
+    "states": [],
+    "variants": ["default", "outlined", "elevated"],
+    "sizes": [],
+    "props": [
+      {
+        "name": "variant",
+        "type": "'default' | 'outlined' | 'elevated'",
+        "required": false,
+        "default": "default"
+      },
+      {
+        "name": "padding",
+        "type": "'none' | 'sm' | 'md' | 'lg'",
+        "required": false,
+        "default": "md"
+      }
+    ],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-card",
+      "--cascade-shadow-md"
+    ],
+    "accessibility": {
+      "role": "region",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Basic card",
+        "code": "<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["container", "layout", "surface"]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "name": "sheet",
+  "type": "component",
+  "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/sheet/sheet.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+  "tags": ["overlay", "drawer", "panel", "slide"],
+  "category": "overlay",
+  "meta": {
+    "name": "Sheet",
+    "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+    "category": "overlay",
+    "states": ["open", "closed"],
+    "variants": [],
+    "sizes": [],
+    "props": [],
+    "tokens": [
+      "--cascade-color-surface",
+      "--cascade-color-border",
+      "--cascade-radius-lg",
+      "--cascade-shadow-xl",
+      "--cascade-motion-enter",
+      "--cascade-motion-exit"
+    ],
+    "accessibility": {
+      "role": "dialog",
+      "wcag": "AA",
+      "keyboard": ["Escape", "Tab", "Shift+Tab"]
+    },
+    "examples": [],
+    "dependencies": ["@cascade-ui/core", "@cascade-ui/i18n"],
+    "tags": ["overlay", "drawer", "panel", "slide"]
+  }
+}

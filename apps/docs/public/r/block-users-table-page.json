@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "name": "block/users-table-page",
+  "type": "block",
+  "description": "Full users management page with table, search, and invite action.",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
+    }
+  ],
+  "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+  "tags": ["block", "users", "table", "page"],
+  "category": "display",
+  "meta": {
+    "name": "UsersTablePage",
+    "description": "Full users management page with table, search, and invite action.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "users",
+        "type": "User[]",
+        "required": false,
+        "description": "User data"
+      },
+      {
+        "name": "onInvite",
+        "type": "() => void",
+        "required": false,
+        "description": "Invite button handler"
+      }
+    ],
+    "tokens": [],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Default",
+        "code": "<UsersTablePage />",
+        "description": "Demo users table"
+      }
+    ],
+    "dependencies": ["@cascade-ui/react", "layout/page-header", "layout/stack"],
+    "tags": ["block", "users", "table", "page"]
+  }
+}

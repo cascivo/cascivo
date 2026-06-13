@@ -55,6 +55,7 @@ export function Dropdown({
   const [state, send] = useMachine(machine)
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const activeIndex = useSignal(-1)
 
@@ -90,14 +91,24 @@ export function Dropdown({
     }
   })
 
-  // Dismiss on outside pointer interaction.
+  // Open/close the popover and sync light-dismiss (toggle event) back to state.
   useSignalEffect(() => {
-    if (!openSignal.value) return
-    const handlePointer = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    if (openSignal.value) {
+      menuRef.current?.showPopover()
+    } else {
+      menuRef.current?.hidePopover()
     }
-    document.addEventListener('pointerdown', handlePointer)
-    return () => document.removeEventListener('pointerdown', handlePointer)
+  })
+
+  useSignalEffect(() => {
+    const menu = menuRef.current
+    if (!menu) return
+    const handleToggle = (event: Event) => {
+      const toggle = event as ToggleEvent
+      if (toggle.newState === 'closed') setOpen(false)
+    }
+    menu.addEventListener('toggle', handleToggle)
+    return () => menu.removeEventListener('toggle', handleToggle)
   })
 
   const selectAt = (index: number) => {
@@ -164,6 +175,8 @@ export function Dropdown({
     <div ref={rootRef} className={styles['root']}>
       {renderedTrigger}
       <div
+        ref={menuRef}
+        popover="auto"
         role="menu"
         data-placement={placement}
         data-state={isOpen ? 'open' : 'closed'}

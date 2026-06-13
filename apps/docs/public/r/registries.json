@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "registries": [
+    {
+      "namespace": "@cascade",
+      "name": "cascade (first-party)",
+      "description": "The official cascade component registry — components, layouts, blocks, charts, and sections.",
+      "homepage": "https://cascade-ui.dev",
+      "registryUrl": "https://cascade-ui.dev/r/{name}.json",
+      "tags": ["official"],
+      "verified": true
+    }
+  ]
+}

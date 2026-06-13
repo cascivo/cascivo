@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "name": "form",
+  "type": "component",
+  "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascade-ui/main/packages/components/src/form/form.module.css"
+    }
+  ],
+  "dependencies": ["@cascade-ui/core"],
+  "tags": ["form", "validation", "signals", "input"],
+  "category": "inputs",
+  "meta": {
+    "name": "Form",
+    "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+    "category": "inputs",
+    "states": ["idle", "submitting"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "form",
+        "type": "FormStore<T>",
+        "required": true
+      },
+      {
+        "name": "onValid",
+        "type": "(values: T) => void | Promise<void>",
+        "required": true
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "tokens": ["--cascade-space-4"],
+    "accessibility": {
+      "role": "form",
+      "wcag": "AA",
+      "keyboard": ["Tab", "Enter"]
+    },
+    "examples": [
+      {
+        "title": "Basic form with validation",
+        "code": "function Demo() {\n  const form = useForm({\n    initialValues: { email: '' },\n    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },\n  })\n  const email = form.field('email')\n  return (\n    <Form form={form} onValid={console.log}>\n      <Input\n        label=\"Email\"\n        value={email.value}\n        onChange={(e) => email.onChange(e.currentTarget.value)}\n        onBlur={email.onBlur}\n        error={email.error}\n      />\n      <Button type=\"submit\">Save</Button>\n    </Form>\n  )\n}"
+      }
+    ],
+    "dependencies": ["@cascade-ui/core"],
+    "tags": ["form", "validation", "signals", "input"]
+  }
+}

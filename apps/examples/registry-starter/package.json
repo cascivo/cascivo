@@ -1,0 +1,10 @@
+{
+  "name": "@cascade-ui/registry-starter",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Starter template for publishing a third-party cascade component registry",
+  "type": "module",
+  "scripts": {
+    "build": "cascade registry build --in cascade-registry.json --out public/r"
+  }
+}

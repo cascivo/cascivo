@@ -4,6 +4,7 @@ import {
   cloneElement,
   useId,
   useRef,
+  type CSSProperties,
   type FocusEvent,
   type HTMLAttributes,
   type MouseEvent,
@@ -31,7 +32,9 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
   useSignals()
   const [state, send] = useMachine(machine)
   const tooltipId = useId()
+  const anchorId = useRef(`t${Math.random().toString(36).slice(2)}`)
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const floatingRef = useRef<HTMLSpanElement>(null)
 
   const isVisible = state.value === 'visible'
 
@@ -46,10 +49,20 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
 
   useSignalEffect(() => () => clearTimeout(timer.current))
 
+  useSignalEffect(() => {
+    if (state.value === 'visible') {
+      floatingRef.current?.showPopover()
+    } else {
+      floatingRef.current?.hidePopover()
+    }
+  })
+
   const trigger = children as ReactElement<HTMLAttributes<HTMLElement>>
   const triggerProps = trigger.props
 
   const merged: HTMLAttributes<HTMLElement> = {
+    id: anchorId.current,
+    style: { anchorName: `--tooltip-${anchorId.current}` } as CSSProperties,
     onMouseEnter: (event: MouseEvent<HTMLElement>) => {
       triggerProps.onMouseEnter?.(event)
       show()
@@ -73,10 +86,13 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
     <span className={styles['root']}>
       {cloneElement(trigger, merged)}
       <span
+        ref={floatingRef}
+        popover="manual"
         role="tooltip"
         id={tooltipId}
         data-placement={placement}
         data-state={isVisible ? 'visible' : 'hidden'}
+        data-anchor={`--tooltip-${anchorId.current}`}
         className={styles['tooltip']}
       >
         {content}

@@ -95,6 +95,8 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",
-    "vite-plus": "catalog:"
+    "valibot": "catalog:",
+    "vite-plus": "catalog:",
+    "zod": "catalog:"
   }
 }
