@@ -25,7 +25,7 @@ async function main() {
   const catalog = {
     generatedFrom: ['packages/tokens/src/index.css', 'packages/themes/src/light.css'],
     resolutionTheme: 'light',
-    generatedAt: new Date().toISOString(),
+    generatedAt: new Date().toISOString().slice(0, 10),
     count: tokens.length,
     tokens,
   }

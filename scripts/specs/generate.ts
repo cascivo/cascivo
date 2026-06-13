@@ -198,7 +198,7 @@ const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
 
 function main() {
   mkdirSync(OUT_DIR, { recursive: true })
-  const generatedAt = new Date().toISOString()
+  const generatedAt = new Date().toISOString().slice(0, 10)
 
   // specs.json
   const specFiles = readdirSync(SPECS_DIR)
