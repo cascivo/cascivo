@@ -79,3 +79,25 @@
     }
   }
 }
+
+@media (forced-colors: active) {
+  .slider::-webkit-slider-thumb {
+    border: 2px solid ButtonText;
+    background-color: ButtonText;
+  }
+
+  .slider:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .slider::-moz-range-thumb {
+    border: 2px solid ButtonText;
+    background-color: ButtonText;
+  }
+
+  .slider:focus-visible::-moz-range-thumb {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

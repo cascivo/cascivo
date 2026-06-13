@@ -32,6 +32,8 @@ export const meta: ComponentMeta = {
     role: 'textbox',
     wcag: 'AA',
     keyboard: ['Tab', 'Shift+Tab'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'With label', code: '<Textarea label="Message" placeholder="Type here…" />' },

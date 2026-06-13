@@ -25,6 +25,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Enter', 'Space'],
     apgPattern: 'accordion',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

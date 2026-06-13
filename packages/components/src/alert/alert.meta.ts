@@ -32,6 +32,8 @@ export const meta: ComponentMeta = {
     role: 'alert',
     wcag: 'AA',
     keyboard: [],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'Info', code: '<Alert variant="info" title="Heads up">Your trial ends soon.</Alert>' },

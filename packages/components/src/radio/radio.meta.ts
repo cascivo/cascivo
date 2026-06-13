@@ -26,6 +26,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'],
     apgPattern: 'radio',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

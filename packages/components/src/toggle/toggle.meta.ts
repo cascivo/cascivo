@@ -27,6 +27,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Space', 'Enter'],
     apgPattern: 'switch',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'Uncontrolled', code: '<Toggle label="Notifications" defaultChecked />' },

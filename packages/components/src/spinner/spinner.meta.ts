@@ -22,6 +22,7 @@ export const meta: ComponentMeta = {
     role: 'status',
     wcag: 'AA',
     keyboard: [],
+    reducedMotion: false,
   },
   examples: [
     { title: 'Default', code: '<Spinner />' },

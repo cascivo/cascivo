@@ -83,3 +83,20 @@
     line-height: var(--cascade-leading-snug);
   }
 }
+
+@media (forced-colors: active) {
+  .control {
+    border: 1px solid ButtonText;
+    background-color: Field;
+  }
+
+  .input:checked + .control {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .input:focus-visible + .control {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

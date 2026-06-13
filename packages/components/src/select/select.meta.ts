@@ -33,6 +33,8 @@ export const meta: ComponentMeta = {
     role: 'listbox',
     wcag: 'AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'Space'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

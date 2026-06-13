@@ -70,3 +70,18 @@
     }
   }
 }
+
+@media (forced-colors: active) {
+  .list {
+    border-block-end: 1px solid ButtonText;
+  }
+
+  .trigger[data-state='active'] {
+    border-block-end: 2px solid Highlight;
+  }
+
+  .trigger:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

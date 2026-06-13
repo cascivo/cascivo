@@ -82,3 +82,16 @@
     line-height: var(--cascade-leading-snug);
   }
 }
+
+@media (forced-colors: active) {
+  .textarea {
+    border: 1px solid FieldText;
+    color: FieldText;
+    background-color: Field;
+  }
+
+  .textarea:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

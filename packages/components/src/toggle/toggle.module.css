@@ -69,3 +69,19 @@
     line-height: var(--cascade-leading-snug);
   }
 }
+
+@media (forced-colors: active) {
+  .track {
+    border: 1px solid ButtonText;
+  }
+
+  .toggle[data-state='on'] .track {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .toggle:focus-visible .track {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

@@ -88,3 +88,16 @@
     line-height: var(--cascade-leading-snug);
   }
 }
+
+@media (forced-colors: active) {
+  .input {
+    border: 1px solid FieldText;
+    color: FieldText;
+    background-color: Field;
+  }
+
+  .input:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

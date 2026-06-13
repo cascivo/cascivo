@@ -33,6 +33,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Enter', 'Space'],
     apgPattern: 'button',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'Primary', code: '<Button>Click me</Button>' },

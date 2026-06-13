@@ -26,6 +26,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
     apgPattern: 'dialog-modal',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

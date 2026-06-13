@@ -27,6 +27,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Space'],
     apgPattern: 'checkbox',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     { title: 'With label', code: '<Checkbox label="Accept terms" />' },

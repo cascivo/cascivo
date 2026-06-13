@@ -103,3 +103,16 @@
     line-height: var(--cascade-leading-snug);
   }
 }
+
+@media (forced-colors: active) {
+  .select {
+    border: 1px solid FieldText;
+    color: FieldText;
+    background-color: Field;
+  }
+
+  .select:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

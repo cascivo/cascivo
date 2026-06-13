@@ -35,6 +35,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['Tab', 'Escape'],
     apgPattern: 'tooltip',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

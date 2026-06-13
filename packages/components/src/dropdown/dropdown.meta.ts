@@ -36,6 +36,8 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
     apgPattern: 'menu',
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

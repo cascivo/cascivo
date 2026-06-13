@@ -109,3 +109,11 @@
     }
   }
 }
+
+@media (forced-colors: active) {
+  .tooltip {
+    border: 1px solid CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+}

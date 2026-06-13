@@ -30,6 +30,8 @@ export const meta: ComponentMeta = {
     role: 'status',
     wcag: 'AA',
     keyboard: ['Tab'],
+    reducedMotion: true,
+    forcedColors: true,
   },
   examples: [
     {

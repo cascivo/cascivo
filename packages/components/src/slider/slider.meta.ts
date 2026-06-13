@@ -28,6 +28,7 @@ export const meta: ComponentMeta = {
     wcag: 'AA',
     keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'],
     apgPattern: 'slider',
+    forcedColors: true,
   },
   examples: [
     { title: 'Basic', code: '<Slider label="Volume" defaultValue={50} />' },
