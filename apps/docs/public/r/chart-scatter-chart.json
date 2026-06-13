@@ -5,8 +5,15 @@
   "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascivo/charts"],
-  "tags": ["chart", "scatter", "plot", "data-viz"],
+  "dependencies": [
+    "@cascivo/charts"
+  ],
+  "tags": [
+    "chart",
+    "scatter",
+    "plot",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -112,8 +119,15 @@
         "code": "import { ScatterChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]\n<ScatterChart series={series} title=\"Scatter\" />"
       }
     ],
-    "dependencies": ["@cascivo/charts"],
-    "tags": ["chart", "scatter", "plot", "data-viz"],
+    "dependencies": [
+      "@cascivo/charts"
+    ],
+    "tags": [
+      "chart",
+      "scatter",
+      "plot",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Revealing correlation or clustering between two numeric variables",

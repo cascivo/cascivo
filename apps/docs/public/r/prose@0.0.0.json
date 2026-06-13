@@ -12,8 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/prose/prose.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["typography", "prose", "content", "markdown", "article"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "typography",
+    "prose",
+    "content",
+    "markdown",
+    "article"
+  ],
   "category": "display",
   "meta": {
     "name": "Prose",
@@ -56,8 +64,16 @@
         "description": "The use case: HTML you do not control (CMS, markdown pipelines)"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["typography", "prose", "content", "markdown", "article"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "typography",
+      "prose",
+      "content",
+      "markdown",
+      "article"
+    ],
     "intent": {
       "whenToUse": [
         "Styling long-form authored content (articles, docs, CMS output)",

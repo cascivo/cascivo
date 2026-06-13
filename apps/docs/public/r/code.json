@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code/code.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["typography", "code", "inline", "mono"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "typography",
+    "code",
+    "inline",
+    "mono"
+  ],
   "category": "display",
   "meta": {
     "name": "Code",
@@ -21,7 +28,10 @@
     "category": "display",
     "states": [],
     "variants": [],
-    "sizes": ["sm", "md"],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "size",
@@ -59,8 +69,15 @@
         "code": "<Code size=\"sm\">--cascivo-color-accent</Code>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["typography", "code", "inline", "mono"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "typography",
+      "code",
+      "inline",
+      "mono"
+    ],
     "intent": {
       "whenToUse": [
         "Marking up an inline identifier, command, path, or token within prose",

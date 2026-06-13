@@ -32,12 +32,12 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 
 ## Props
 
-| Name     | Type      | Required | Default     | Description |
-| -------- | --------- | -------- | ----------- | ----------- | ------ | --- |
-| `as`     | `'p'      | 'span'   | 'div'`      | No          | p      | —   |
-| `size`   | `'sm'     | 'md'     | 'lg'`       | No          | md     | —   |
-| `weight` | `'normal' | 'medium' | 'semibold'` | No          | normal | —   |
-| `muted`  | `boolean` | No       | false       | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `as` | `'p' | 'span' | 'div'` | No | p | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| `weight` | `'normal' | 'medium' | 'semibold'` | No | normal | — |
+| `muted` | `boolean` | No | false | — |
 
 ## Tokens
 
@@ -63,9 +63,7 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 ### Muted helper
 
 ```jsx
-<Text size="sm" muted>
-  Secondary information
-</Text>
+<Text size="sm" muted>Secondary information</Text>
 ```
 
 ### Inline span
@@ -73,14 +71,12 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 Use as="span" inside other flow content
 
 ```jsx
-<Text as="span" weight="semibold">
-  emphasis
-</Text>
+<Text as="span" weight="semibold">emphasis</Text>
 ```
 
 ## Boundaries
 
-| Area               | Level    | Note                                                         |
-| ------------------ | -------- | ------------------------------------------------------------ |
-| as / size / weight | flexible | Choose element and treatment to fit context                  |
-| token names        | strict   | Font, leading, and color must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| as / size / weight | flexible | Choose element and treatment to fit context |
+| token names | strict | Font, leading, and color must resolve to --cascivo-* tokens |

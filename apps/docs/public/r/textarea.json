@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/textarea/textarea.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "text", "multiline"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "text",
+    "multiline"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Textarea",
     "description": "Multi-line text input with optional label, hint, and error state",
     "category": "inputs",
-    "states": ["idle", "focused", "error"],
+    "states": [
+      "idle",
+      "focused",
+      "error"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -68,7 +78,10 @@
     "accessibility": {
       "role": "textbox",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Shift+Tab"],
+      "keyboard": [
+        "Tab",
+        "Shift+Tab"
+      ],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -82,8 +95,14 @@
         "code": "<Textarea label=\"Bio\" error=\"Bio is required\" />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "text", "multiline"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "text",
+      "multiline"
+    ],
     "intent": {
       "whenToUse": [
         "Capturing multi-line free text such as messages, descriptions, or comments",

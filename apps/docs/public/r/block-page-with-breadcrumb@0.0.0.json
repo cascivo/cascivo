@@ -9,8 +9,17 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
-  "tags": ["block", "breadcrumb", "page", "navigation"],
+  "dependencies": [
+    "@cascivo/react",
+    "layout/page-header",
+    "layout/center"
+  ],
+  "tags": [
+    "block",
+    "breadcrumb",
+    "page",
+    "navigation"
+  ],
   "category": "display",
   "meta": {
     "name": "PageWithBreadcrumb",
@@ -33,8 +42,17 @@
         "description": "Page with breadcrumb"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
-    "tags": ["block", "breadcrumb", "page", "navigation"],
+    "dependencies": [
+      "@cascivo/react",
+      "layout/page-header",
+      "layout/center"
+    ],
+    "tags": [
+      "block",
+      "breadcrumb",
+      "page",
+      "navigation"
+    ],
     "intent": {
       "whenToUse": [
         "A centered content page with breadcrumb navigation and a page header",

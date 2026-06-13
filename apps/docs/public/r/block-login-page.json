@@ -9,8 +9,17 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/auth-layout"],
-  "tags": ["block", "login", "auth", "form", "page"],
+  "dependencies": [
+    "@cascivo/react",
+    "layout/auth-layout"
+  ],
+  "tags": [
+    "block",
+    "login",
+    "auth",
+    "form",
+    "page"
+  ],
   "category": "display",
   "meta": {
     "name": "LoginPage",
@@ -40,8 +49,17 @@
         "description": "Login page"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/auth-layout"],
-    "tags": ["block", "login", "auth", "form", "page"],
+    "dependencies": [
+      "@cascivo/react",
+      "layout/auth-layout"
+    ],
+    "tags": [
+      "block",
+      "login",
+      "auth",
+      "form",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "A complete login page with email and password form",

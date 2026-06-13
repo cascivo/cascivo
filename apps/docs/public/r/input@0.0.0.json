@@ -12,16 +12,30 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input/input.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "text", "input"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "text",
+    "input"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Input",
     "description": "Text input field with optional label, hint, and error state",
     "category": "inputs",
-    "states": ["idle", "focused", "error"],
+    "states": [
+      "idle",
+      "focused",
+      "error"
+    ],
     "variants": [],
-    "sizes": ["sm", "md", "lg"],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "label",
@@ -67,7 +81,10 @@
     "accessibility": {
       "role": "textbox",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Shift+Tab"],
+      "keyboard": [
+        "Tab",
+        "Shift+Tab"
+      ],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -81,8 +98,14 @@
         "code": "<Input label=\"Email\" error=\"Invalid email address\" />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "text", "input"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "text",
+      "input"
+    ],
     "intent": {
       "whenToUse": [
         "Collecting a single line of free-form text from the user",

@@ -19,25 +19,21 @@ npx cascivo add dropdown
 
 ## Props
 
-| Prop           | Type                                                                                            | Required      | Default | Description    |
-| -------------- | ----------------------------------------------------------------------------------------------- | ------------- | ------- | -------------- | --- |
-| `trigger`      | `ReactElement`                                                                                  | yes           | —       | —              |
-| `items`        | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | yes           | —       | —              |
-| `onSelect`     | `(value: string) => void`                                                                       | no            | —       | —              |
-| `placement`    | `'bottom-start'                                                                                 | 'bottom-end'` | no      | `bottom-start` | —   |
-| `open`         | `boolean`                                                                                       | no            | —       | —              |
-| `onOpenChange` | `(open: boolean) => void`                                                                       | no            | —       | —              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `trigger` | `ReactElement` | yes | — | — |
+| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | yes | — | — |
+| `onSelect` | `(value: string) => void` | no | — | — |
+| `placement` | `'bottom-start' | 'bottom-end'` | no | `bottom-start` | — |
+| `open` | `boolean` | no | — | — |
+| `onOpenChange` | `(open: boolean) => void` | no | — | — |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Dropdown
-  trigger={<Button>Actions</Button>}
-  items={[{ label: 'Edit', value: 'edit' }]}
-  onSelect={handle}
-/>
+<Dropdown trigger={<Button>Actions</Button>} items={[{ label: "Edit", value: "edit" }]} onSelect={handle} />
 ```
 
 ## Design tokens

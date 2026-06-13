@@ -19,12 +19,12 @@ npx cascivo add form
 
 ## Props
 
-| Prop        | Type                 | Required       | Default | Description |
-| ----------- | -------------------- | -------------- | ------- | ----------- | --- |
-| `form`      | `FormStore<T>`       | yes            | —       | —           |
-| `onValid`   | `(values: T) => void | Promise<void>` | yes     | —           | —   |
-| `children`  | `ReactNode`          | yes            | —       | —           |
-| `className` | `string`             | no             | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `form` | `FormStore<T>` | yes | — | — |
+| `onValid` | `(values: T) => void | Promise<void>` | yes | — | — |
+| `children` | `ReactNode` | yes | — | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -34,7 +34,7 @@ npx cascivo add form
 function Demo() {
   const form = useForm({
     initialValues: { email: '' },
-    validate: (v) => (v.email.includes('@') ? {} : { email: 'Invalid email' }),
+    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },
   })
   const email = form.field('email')
   return (

@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/cta/cta.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["section", "cta", "marketing"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "section",
+    "cta",
+    "marketing"
+  ],
   "category": "layout",
   "meta": {
     "name": "Cta",
@@ -70,8 +76,14 @@
         "description": "Quiet bordered band with centered heading, description, and action buttons"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["section", "cta", "marketing"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "section",
+      "cta",
+      "marketing"
+    ],
     "intent": {
       "whenToUse": [
         "A call-to-action band with title, description, and centered actions",

@@ -32,12 +32,12 @@ Wrapped in <nav> with an aria-label and the current page marked aria-current="pa
 
 ## Props
 
-| Name         | Type                                 | Required | Default    | Description                                                                                   |
-| ------------ | ------------------------------------ | -------- | ---------- | --------------------------------------------------------------------------------------------- |
-| `items`      | `{ label: string; href?: string }[]` | Yes      | —          | —                                                                                             |
-| `maxVisible` | `number`                             | No       | —          | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
-| `className`  | `string`                             | No       | —          | —                                                                                             |
-| `ariaLabel`  | `string`                             | No       | Breadcrumb | —                                                                                             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ label: string; href?: string }[]` | Yes | — | — |
+| `maxVisible` | `number` | No | — | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
+| `className` | `string` | No | — | — |
+| `ariaLabel` | `string` | No | Breadcrumb | — |
 
 ## Tokens
 
@@ -52,9 +52,7 @@ Wrapped in <nav> with an aria-label and the current page marked aria-current="pa
 ### Basic
 
 ```jsx
-<Breadcrumb
-  items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]}
-/>
+<Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]} />
 ```
 
 ### Collapsed
@@ -62,20 +60,12 @@ Wrapped in <nav> with an aria-label and the current page marked aria-current="pa
 Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ```jsx
-<Breadcrumb
-  maxVisible={3}
-  items={[
-    { label: 'Home', href: '/' },
-    { label: 'Docs', href: '/docs' },
-    { label: 'Components', href: '/docs/components' },
-    { label: 'Breadcrumb' },
-  ]}
-/>
+<Breadcrumb maxVisible={3} items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]} />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                           |
-| ----------- | -------- | -------------------------------------------------------------- |
-| maxVisible  | flexible | Collapse long trails to fit available width                    |
-| token names | strict   | Text colors and focus ring must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| maxVisible | flexible | Collapse long trails to fit available width |
+| token names | strict | Text colors and focus ring must resolve to --cascivo-* tokens |

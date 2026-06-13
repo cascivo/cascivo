@@ -21,13 +21,13 @@ npx cascivo add otp-input
 
 ## Props
 
-| Prop            | Type                  | Required        | Default | Description |
-| --------------- | --------------------- | --------------- | ------- | ----------- | --- |
-| `length`        | `number`              | no              | `6`     | —           |
-| `value`         | `string`              | yes             | —       | —           |
-| `onValueChange` | `(v: string) => void` | yes             | —       | —           |
-| `disabled`      | `boolean`             | no              | `false` | —           |
-| `type`          | `'numeric'            | 'alphanumeric'` | no      | `numeric`   | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `length` | `number` | no | `6` | — |
+| `value` | `string` | yes | — | — |
+| `onValueChange` | `(v: string) => void` | yes | — | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `type` | `'numeric' | 'alphanumeric'` | no | `numeric` | — |
 
 ## Examples
 

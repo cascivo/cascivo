@@ -20,14 +20,14 @@ npx cascivo add tags-input
 
 ## Props
 
-| Prop            | Type                       | Required | Default | Description |
-| --------------- | -------------------------- | -------- | ------- | ----------- |
-| `value`         | `string[]`                 | yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void`    | yes      | —       | —           |
-| `placeholder`   | `string`                   | no       | —       | —           |
-| `validate`      | `(tag: string) => boolean` | no       | —       | —           |
-| `max`           | `number`                   | no       | —       | —           |
-| `disabled`      | `boolean`                  | no       | `false` | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string[]` | yes | — | — |
+| `onValueChange` | `(v: string[]) => void` | yes | — | — |
+| `placeholder` | `string` | no | — | — |
+| `validate` | `(tag: string) => boolean` | no | — | — |
+| `max` | `number` | no | — | — |
+| `disabled` | `boolean` | no | `false` | — |
 
 ## Examples
 

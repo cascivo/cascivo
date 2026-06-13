@@ -34,13 +34,13 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 ## Props
 
-| Name            | Type                  | Required        | Default | Description |
-| --------------- | --------------------- | --------------- | ------- | ----------- | --- |
-| `length`        | `number`              | No              | 6       | —           |
-| `value`         | `string`              | Yes             | —       | —           |
-| `onValueChange` | `(v: string) => void` | Yes             | —       | —           |
-| `disabled`      | `boolean`             | No              | false   | —           |
-| `type`          | `'numeric'            | 'alphanumeric'` | No      | numeric     | —   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `length` | `number` | No | 6 | — |
+| `value` | `string` | Yes | — | — |
+| `onValueChange` | `(v: string) => void` | Yes | — | — |
+| `disabled` | `boolean` | No | false | — |
+| `type` | `'numeric' | 'alphanumeric'` | No | numeric | — |
 
 ## Tokens
 
@@ -67,7 +67,7 @@ Wraps the slots in role="group" with a localized aria-label and labels each slot
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                          |
-| --------------- | -------- | ----------------------------------------------------------------------------- |
-| token names     | strict   | Slot styling must resolve to the listed --cascivo-\* tokens                   |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Slot styling must resolve to the listed --cascivo-* tokens |
 | length and type | flexible | length and numeric/alphanumeric type are free to match the issued code format |

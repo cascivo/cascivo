@@ -25,13 +25,13 @@ npx cascivo add modal
 
 ## Props
 
-| Prop          | Type         | Required | Default | Description |
-| ------------- | ------------ | -------- | ------- | ----------- | ---- | --- |
-| `open`        | `boolean`    | no       | `false` | —           |
-| `onClose`     | `() => void` | no       | —       | —           |
-| `title`       | `string`     | no       | —       | —           |
-| `description` | `string`     | no       | —       | —           |
-| `size`        | `'sm'        | 'md'     | 'lg'`   | no          | `md` | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | no | `false` | — |
+| `onClose` | `() => void` | no | — | — |
+| `title` | `string` | no | — | — |
+| `description` | `string` | no | — | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
 
 ## Examples
 

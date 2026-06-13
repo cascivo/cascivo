@@ -19,9 +19,9 @@ npx cascivo add kbd
 
 ## Props
 
-| Prop   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | --- |
-| `size` | `'sm' | 'md'`    | no      | `md`        | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' | 'md'` | no | `md` | — |
 
 ## Examples
 
@@ -36,9 +36,7 @@ npx cascivo add kbd
 Compose multiple keys to show a shortcut
 
 ```tsx
-<span>
-  <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
-</span>
+<span><Kbd>⌘</Kbd> + <Kbd>K</Kbd></span>
 ```
 
 ### Small

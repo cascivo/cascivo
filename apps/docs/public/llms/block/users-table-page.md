@@ -14,10 +14,10 @@ npx cascivo add block/users-table-page
 
 ## Props
 
-| Prop       | Type         | Required | Default | Description           |
-| ---------- | ------------ | -------- | ------- | --------------------- |
-| `users`    | `User[]`     | no       | —       | User data             |
-| `onInvite` | `() => void` | no       | —       | Invite button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `users` | `User[]` | no | — | User data |
+| `onInvite` | `() => void` | no | — | Invite button handler |
 
 ## Examples
 

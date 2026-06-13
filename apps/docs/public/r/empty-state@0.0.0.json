@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["empty", "placeholder", "zero-state", "no-data"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "empty",
+    "placeholder",
+    "zero-state",
+    "no-data"
+  ],
   "category": "display",
   "meta": {
     "name": "EmptyState",
@@ -21,7 +28,10 @@
     "category": "display",
     "states": [],
     "variants": [],
-    "sizes": ["md", "lg"],
+    "sizes": [
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "icon",
@@ -72,8 +82,15 @@
         "code": "<EmptyState icon=\"📄\" title=\"No documents yet\" description=\"Create your first document to get started.\" action={<Button>New document</Button>} />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["empty", "placeholder", "zero-state", "no-data"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "empty",
+      "placeholder",
+      "zero-state",
+      "no-data"
+    ],
     "intent": {
       "whenToUse": [
         "Filling a view that has no data with guidance and a primary next step",

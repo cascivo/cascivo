@@ -9,8 +9,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
     }
   ],
-  "dependencies": ["@cascivo/charts", "@cascivo/react"],
-  "tags": ["block", "dashboard", "charts", "kpi"],
+  "dependencies": [
+    "@cascivo/charts",
+    "@cascivo/react"
+  ],
+  "tags": [
+    "block",
+    "dashboard",
+    "charts",
+    "kpi"
+  ],
   "category": "display",
   "meta": {
     "name": "DashboardCharts",
@@ -33,8 +41,16 @@
         "description": "Charts dashboard demo"
       }
     ],
-    "dependencies": ["@cascivo/charts", "@cascivo/react"],
-    "tags": ["block", "dashboard", "charts", "kpi"],
+    "dependencies": [
+      "@cascivo/charts",
+      "@cascivo/react"
+    ],
+    "tags": [
+      "block",
+      "dashboard",
+      "charts",
+      "kpi"
+    ],
     "intent": {
       "whenToUse": [
         "A prebuilt dashboard with KPI tiles, line, bar, and pie charts",

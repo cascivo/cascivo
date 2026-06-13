@@ -5,8 +5,15 @@
   "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascivo/charts"],
-  "tags": ["chart", "heatmap", "matrix", "data-viz"],
+  "dependencies": [
+    "@cascivo/charts"
+  ],
+  "tags": [
+    "chart",
+    "heatmap",
+    "matrix",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -57,7 +64,10 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
-    "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
+    "tokens": [
+      "--cascivo-chart-1",
+      "--cascivo-color-neutral-100"
+    ],
     "accessibility": {
       "role": "img",
       "wcag": "2.1-AA",
@@ -69,8 +79,15 @@
         "code": "import { Heatmap } from '@cascivo/charts'\n\nconst data = [\n  {x:'Mon',y:'AM',value:10},{x:'Mon',y:'PM',value:20},\n  {x:'Tue',y:'AM',value:15},{x:'Tue',y:'PM',value:5},\n]\n<Heatmap data={data} title=\"Activity\" />"
       }
     ],
-    "dependencies": ["@cascivo/charts"],
-    "tags": ["chart", "heatmap", "matrix", "data-viz"],
+    "dependencies": [
+      "@cascivo/charts"
+    ],
+    "tags": [
+      "chart",
+      "heatmap",
+      "matrix",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Showing magnitude across two categorical dimensions as a color-coded matrix",

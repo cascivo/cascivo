@@ -67,6 +67,11 @@
       "path": "/docs/specs/legal-mapping.md"
     },
     {
+      "id": "mobile-audit-docs",
+      "title": "mobile-audit-docs",
+      "path": "/docs/specs/mobile-audit-docs.md"
+    },
+    {
       "id": "mobile-audit-landing",
       "title": "mobile-audit-landing",
       "path": "/docs/specs/mobile-audit-landing.md"

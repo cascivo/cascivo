@@ -26,12 +26,12 @@ npx cascivo add text
 
 ## Props
 
-| Prop     | Type      | Required | Default     | Description |
-| -------- | --------- | -------- | ----------- | ----------- | -------- | --- |
-| `as`     | `'p'      | 'span'   | 'div'`      | no          | `p`      | —   |
-| `size`   | `'sm'     | 'md'     | 'lg'`       | no          | `md`     | —   |
-| `weight` | `'normal' | 'medium' | 'semibold'` | no          | `normal` | —   |
-| `muted`  | `boolean` | no       | `false`     | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `as` | `'p' | 'span' | 'div'` | no | `p` | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `weight` | `'normal' | 'medium' | 'semibold'` | no | `normal` | — |
+| `muted` | `boolean` | no | `false` | — |
 
 ## Examples
 
@@ -44,9 +44,7 @@ npx cascivo add text
 ### Muted helper
 
 ```tsx
-<Text size="sm" muted>
-  Secondary information
-</Text>
+<Text size="sm" muted>Secondary information</Text>
 ```
 
 ### Inline span
@@ -54,9 +52,7 @@ npx cascivo add text
 Use as="span" inside other flow content
 
 ```tsx
-<Text as="span" weight="semibold">
-  emphasis
-</Text>
+<Text as="span" weight="semibold">emphasis</Text>
 ```
 
 ## Design tokens

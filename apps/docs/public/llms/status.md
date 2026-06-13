@@ -22,10 +22,10 @@ npx cascivo add status
 
 ## Props
 
-| Prop     | Type       | Required  | Default | Description                                                         |
-| -------- | ---------- | --------- | ------- | ------------------------------------------------------------------- | ---------- | --- | --------- | --- |
-| `status` | `'success' | 'warning' | 'error' | 'info'                                                              | 'neutral'` | no  | `neutral` | —   |
-| `pulse`  | `boolean`  | no        | `false` | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `status` | `'success' | 'warning' | 'error' | 'info' | 'neutral'` | no | `neutral` | — |
+| `pulse` | `boolean` | no | `false` | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
 
 ## Examples
 
@@ -46,9 +46,7 @@ npx cascivo add status
 The pulse animation respects prefers-reduced-motion
 
 ```tsx
-<Status status="info" pulse>
-  Deploying
-</Status>
+<Status status="info" pulse>Deploying</Status>
 ```
 
 ## Design tokens

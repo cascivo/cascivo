@@ -12,16 +12,34 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["date", "calendar", "picker", "input", "form"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "date",
+    "calendar",
+    "picker",
+    "input",
+    "form"
+  ],
   "category": "inputs",
   "meta": {
     "name": "DatePicker",
     "description": "An accessible date-picker with a calendar popover.",
     "category": "inputs",
-    "states": ["default", "open", "error", "disabled"],
+    "states": [
+      "default",
+      "open",
+      "error",
+      "disabled"
+    ],
     "variants": [],
-    "sizes": ["sm", "md", "lg"],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "value",
@@ -106,7 +124,15 @@
     "accessibility": {
       "role": "combobox",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space", "Escape", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+      "keyboard": [
+        "Enter",
+        "Space",
+        "Escape",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight"
+      ]
     },
     "examples": [
       {
@@ -125,8 +151,17 @@
         "description": "Date range constraint"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["date", "calendar", "picker", "input", "form"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "date",
+      "calendar",
+      "picker",
+      "input",
+      "form"
+    ],
     "intent": {
       "whenToUse": [
         "Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)",

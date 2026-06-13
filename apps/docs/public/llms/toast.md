@@ -27,12 +27,12 @@ npx cascivo add toast
 
 ## Props
 
-| Prop          | Type       | Required  | Default   | Description    |
-| ------------- | ---------- | --------- | --------- | -------------- | --- | --------- | --- |
-| `title`       | `string`   | yes       | —         | —              |
-| `description` | `string`   | no        | —         | —              |
-| `variant`     | `'default' | 'success' | 'warning' | 'destructive'` | no  | `default` | —   |
-| `duration`    | `number`   | no        | `5000`    | —              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `string` | yes | — | — |
+| `description` | `string` | no | — | — |
+| `variant` | `'default' | 'success' | 'warning' | 'destructive'` | no | `default` | — |
+| `duration` | `number` | no | `5000` | — |
 
 ## Examples
 
@@ -40,7 +40,7 @@ npx cascivo add toast
 
 ```tsx
 const { toast } = useToast()
-toast({ title: 'Saved', variant: 'success' })
+toast({ title: "Saved", variant: "success" })
 ```
 
 ## Design tokens

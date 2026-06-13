@@ -32,11 +32,11 @@ Renders an anchor that is visually hidden until focused, then becomes visible so
 
 ## Props
 
-| Name       | Type                 | Required | Default             | Description                                                 |
-| ---------- | -------------------- | -------- | ------------------- | ----------------------------------------------------------- |
-| `targetId` | `string`             | No       | cascade-skip-target | SkipNavLink: id of the SkipNavTarget to jump to             |
-| `labels`   | `{ label?: string }` | No       | —                   | SkipNavLink: overrides the built-in i18n label per instance |
-| `id`       | `string`             | No       | cascade-skip-target | SkipNavTarget: anchor id — must match the link targetId     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `targetId` | `string` | No | cascade-skip-target | SkipNavLink: id of the SkipNavTarget to jump to |
+| `labels` | `{ label?: string }` | No | — | SkipNavLink: overrides the built-in i18n label per instance |
+| `id` | `string` | No | cascade-skip-target | SkipNavTarget: anchor id — must match the link targetId |
 
 ## Tokens
 
@@ -53,26 +53,18 @@ Renders an anchor that is visually hidden until focused, then becomes visible so
 SkipNavLink must be the first focusable element on the page
 
 ```jsx
-<>
-  <SkipNavLink />
-  <nav>…</nav>
-  <SkipNavTarget />
-  <main>…</main>
-</>
+<><SkipNavLink /><nav>…</nav><SkipNavTarget /><main>…</main></>
 ```
 
 ### Custom target
 
 ```jsx
-<>
-  <SkipNavLink targetId="main-content" />
-  <SkipNavTarget id="main-content" />
-</>
+<><SkipNavLink targetId="main-content" /><SkipNavTarget id="main-content" /></>
 ```
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                        |
-| ------------------------- | -------- | ----------------------------------------------------------- |
-| target id                 | flexible | targetId/id may be customized as long as they match         |
-| first-focusable placement | strict   | SkipNavLink must be the first focusable element to function |
+| Area | Level | Note |
+|------|-------|------|
+| target id | flexible | targetId/id may be customized as long as they match |
+| first-focusable placement | strict | SkipNavLink must be the first focusable element to function |

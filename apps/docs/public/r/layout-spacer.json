@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["layout", "spacer", "spacing"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "layout",
+    "spacer",
+    "spacing"
+  ],
   "category": "layout",
   "meta": {
     "name": "Spacer",
@@ -30,7 +36,9 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": ["--cascivo-space-*"],
+    "tokens": [
+      "--cascivo-space-*"
+    ],
     "accessibility": {
       "role": "none",
       "wcag": "2.1-AA",
@@ -43,8 +51,14 @@
         "description": "Adds vertical space between elements"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["layout", "spacer", "spacing"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "layout",
+      "spacer",
+      "spacing"
+    ],
     "intent": {
       "whenToUse": [
         "Inserting a fixed vertical gap between blocks using spacing token steps",

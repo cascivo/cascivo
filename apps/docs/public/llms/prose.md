@@ -21,12 +21,7 @@ _No props._
 ### Authored content
 
 ```tsx
-<Prose>
-  <h2>Install</h2>
-  <p>
-    Run <code>npx cascivo init</code>.
-  </p>
-</Prose>
+<Prose><h2>Install</h2><p>Run <code>npx cascivo init</code>.</p></Prose>
 ```
 
 ### Rendered markdown

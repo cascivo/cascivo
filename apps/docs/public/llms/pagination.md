@@ -14,16 +14,16 @@ npx cascivo add pagination
 
 ## Props
 
-| Prop               | Type                     | Required | Default             | Description                                                     |
-| ------------------ | ------------------------ | -------- | ------------------- | --------------------------------------------------------------- |
-| `page`             | `number`                 | yes      | —                   | Current page (1-based)                                          |
-| `pageSize`         | `number`                 | yes      | —                   | Items per page                                                  |
-| `totalItems`       | `number`                 | yes      | —                   | Total number of items                                           |
-| `onPageChange`     | `(page: number) => void` | yes      | —                   | —                                                               |
-| `onPageSizeChange` | `(size: number) => void` | no       | —                   | —                                                               |
-| `pageSizeOptions`  | `number[]`               | no       | `[10, 25, 50, 100]` | Options for the page size select                                |
-| `labels`           | `PaginationLabels`       | no       | —                   | Overridable English strings for all visible and accessible text |
-| `className`        | `string`                 | no       | —                   | —                                                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `page` | `number` | yes | — | Current page (1-based) |
+| `pageSize` | `number` | yes | — | Items per page |
+| `totalItems` | `number` | yes | — | Total number of items |
+| `onPageChange` | `(page: number) => void` | yes | — | — |
+| `onPageSizeChange` | `(size: number) => void` | no | — | — |
+| `pageSizeOptions` | `number[]` | no | `[10, 25, 50, 100]` | Options for the page size select |
+| `labels` | `PaginationLabels` | no | — | Overridable English strings for all visible and accessible text |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -36,25 +36,13 @@ npx cascivo add pagination
 ### With page size select
 
 ```tsx
-<Pagination
-  page={page}
-  pageSize={size}
-  totalItems={103}
-  onPageChange={setPage}
-  onPageSizeChange={setSize}
-/>
+<Pagination page={page} pageSize={size} totalItems={103} onPageChange={setPage} onPageSizeChange={setSize} />
 ```
 
 ### Custom labels
 
 ```tsx
-<Pagination
-  page={1}
-  pageSize={10}
-  totalItems={42}
-  onPageChange={setPage}
-  labels={{ previous: 'Zurück', next: 'Weiter' }}
-/>
+<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />
 ```
 
 ## Design tokens

@@ -12,14 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "navigation",
+    "sidebar",
+    "app-shell",
+    "collapsible"
+  ],
   "category": "navigation",
   "meta": {
     "name": "SideNav",
     "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
     "category": "navigation",
-    "states": ["expanded", "collapsed"],
+    "states": [
+      "expanded",
+      "collapsed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -102,7 +113,14 @@
     "accessibility": {
       "role": "navigation",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+      "keyboard": [
+        "Tab",
+        "Enter",
+        "Space",
+        "ArrowDown",
+        "ArrowUp",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -124,8 +142,16 @@
         "description": "Rail widens as CSS overlay on hover without reflowing adjacent content"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "navigation",
+      "sidebar",
+      "app-shell",
+      "collapsible"
+    ],
     "intent": {
       "whenToUse": [
         "Persistent primary navigation along the side of an app shell",
