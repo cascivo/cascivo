@@ -99,58 +99,58 @@ Tree view. **Deferred:** AI label/slug (niche), Fluid (input variant, not a comp
 
 **Tier-1 (T5) — foundational/shared, primitives-light or primitive-exercising:**
 
-| Component       | Source         | Backlog today | Primitive deps                         |
-| --------------- | -------------- | ------------- | -------------------------------------- |
-| Label           | shadcn         | _new_         | `useId`                                |
-| Field           | shadcn         | _new_         | `useId` (label/desc/error wiring)      |
-| Button Group    | shadcn+Carbon  | _new_         | `RovingFocus` (optional), `Slot`       |
-| Icon Button     | Carbon         | pending       | `Slot`                                 |
-| Toggle Group    | shadcn         | _new_         | `RovingFocus`, `useControllableSignal` |
-| Inline Loading  | Carbon         | _new_         | `Presence` (status transitions)        |
-| Notification    | Carbon         | pending       | `Presence`, `DismissableLayer`         |
-| Scroll Area     | shadcn         | pending       | `useResizeObserver`-style sizing       |
-| Collapsible     | shadcn         | pending       | `useControllableSignal`, `Presence`    |
-| Aspect Ratio    | shadcn         | _new_         | none (CSS `aspect-ratio`)              |
+| Component      | Source        | Backlog today | Primitive deps                         |
+| -------------- | ------------- | ------------- | -------------------------------------- |
+| Label          | shadcn        | _new_         | `useId`                                |
+| Field          | shadcn        | _new_         | `useId` (label/desc/error wiring)      |
+| Button Group   | shadcn+Carbon | _new_         | `RovingFocus` (optional), `Slot`       |
+| Icon Button    | Carbon        | pending       | `Slot`                                 |
+| Toggle Group   | shadcn        | _new_         | `RovingFocus`, `useControllableSignal` |
+| Inline Loading | Carbon        | _new_         | `Presence` (status transitions)        |
+| Notification   | Carbon        | pending       | `Presence`, `DismissableLayer`         |
+| Scroll Area    | shadcn        | pending       | `useResizeObserver`-style sizing       |
+| Collapsible    | shadcn        | pending       | `useControllableSignal`, `Presence`    |
+| Aspect Ratio   | shadcn        | _new_         | none (CSS `aspect-ratio`)              |
 
 **Tier-2 (T6) — structural/one-system, heavier primitive deps:**
 
-| Component         | Source        | Backlog today | Primitive deps                                  |
-| ----------------- | ------------- | ------------- | ----------------------------------------------- |
-| Navigation Menu   | shadcn        | _new_         | `DismissableLayer`, anchor positioning, `RovingFocus` |
-| Menubar           | shadcn        | _new_         | `RovingFocus`, `DismissableLayer`, anchor pos.  |
-| Menu Button       | Carbon        | _new_         | `DismissableLayer`, anchor positioning          |
-| Toggletip         | Carbon        | _new_         | `DismissableLayer`, anchor positioning          |
-| Resizable/Splitter | shadcn        | pending (`splitter`) | `useControllableSignal`, pointer handling |
-| Drawer            | shadcn        | _new_         | `Presence`, `DismissableLayer`, `useScrollLock` |
-| Tree View         | Carbon        | pending       | `RovingFocus`, `useControllableSignal`          |
-| Tile              | Carbon        | pending       | `Slot`, `useControllableSignal`                 |
-| Structured List   | Carbon        | pending       | `RovingFocus` (selectable variant)              |
-| Contained List    | Carbon        | _new_         | none / `Slot`                                   |
-| Carousel          | shadcn        | pending       | `RovingFocus`, `useMediaQuery`                  |
-| Calendar          | shadcn        | pending       | `RovingFocus`, `useControllableSignal`          |
-| Date Range Picker | (both)        | pending       | Calendar + `Popover`                            |
-| Color Picker      | (extended)    | pending       | `useControllableSignal`, pointer handling       |
-| Timeline          | (extended)    | pending       | none                                            |
-| Data List         | (extended)    | pending       | none                                            |
-| Native Select     | shadcn        | _new_         | none (native `<select>` styling)                |
-| Item              | shadcn        | _new_         | `Slot`                                          |
-| Code Snippet      | Carbon        | pending (`code-block`) | `useClipboard`                         |
+| Component          | Source     | Backlog today          | Primitive deps                                        |
+| ------------------ | ---------- | ---------------------- | ----------------------------------------------------- |
+| Navigation Menu    | shadcn     | _new_                  | `DismissableLayer`, anchor positioning, `RovingFocus` |
+| Menubar            | shadcn     | _new_                  | `RovingFocus`, `DismissableLayer`, anchor pos.        |
+| Menu Button        | Carbon     | _new_                  | `DismissableLayer`, anchor positioning                |
+| Toggletip          | Carbon     | _new_                  | `DismissableLayer`, anchor positioning                |
+| Resizable/Splitter | shadcn     | pending (`splitter`)   | `useControllableSignal`, pointer handling             |
+| Drawer             | shadcn     | _new_                  | `Presence`, `DismissableLayer`, `useScrollLock`       |
+| Tree View          | Carbon     | pending                | `RovingFocus`, `useControllableSignal`                |
+| Tile               | Carbon     | pending                | `Slot`, `useControllableSignal`                       |
+| Structured List    | Carbon     | pending                | `RovingFocus` (selectable variant)                    |
+| Contained List     | Carbon     | _new_                  | none / `Slot`                                         |
+| Carousel           | shadcn     | pending                | `RovingFocus`, `useMediaQuery`                        |
+| Calendar           | shadcn     | pending                | `RovingFocus`, `useControllableSignal`                |
+| Date Range Picker  | (both)     | pending                | Calendar + `Popover`                                  |
+| Color Picker       | (extended) | pending                | `useControllableSignal`, pointer handling             |
+| Timeline           | (extended) | pending                | none                                                  |
+| Data List          | (extended) | pending                | none                                                  |
+| Native Select      | shadcn     | _new_                  | none (native `<select>` styling)                      |
+| Item               | shadcn     | _new_                  | `Slot`                                                |
+| Code Snippet       | Carbon     | pending (`code-block`) | `useClipboard`                                        |
 
 ### Missing utility/helper tools (the v18 primitives, ranked)
 
-| Primitive               | Why useful                                                                  | Used by                                            | Priority |
-| ----------------------- | -------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
-| `Slot` / `asChild`      | Composition without wrapper elements; shadcn's whole model                  | Button, Icon Button, Item, Tile, Field, Label      | HIGH     |
-| `useControllableSignal` | Controlled/uncontrolled prop→signal sync (`CLAUDE.md` documents by hand)    | every stateful component                            | HIGH     |
-| `DismissableLayer`      | Outside-click + Escape dismissal, one tested impl                           | Popover, Dropdown, Menu, Tooltip, Sheet, Drawer    | HIGH     |
-| `RovingFocus`           | Arrow-key roving tabindex                                                   | Menu, Tabs, Toggle Group, Tree View, Carousel      | HIGH     |
-| `Presence`              | Mount/exit with animation, signal-driven                                    | Modal, Sheet, Drawer, Popover, Collapsible         | MEDIUM   |
-| `useMediaQuery`         | Responsive primitive (Drawer-vs-Dialog, mobile nav)                         | Drawer, Carousel, responsive layouts               | MEDIUM   |
-| `useScrollLock`         | Body scroll lock for overlays                                              | Modal, Sheet, Drawer                                | MEDIUM   |
-| anchor-positioning helper | Position floating els (CSS anchor + JS fallback)                          | Popover, Tooltip, Dropdown, Menu, Navigation Menu  | MEDIUM   |
-| `useId`                 | SSR-safe stable ids for aria wiring                                         | Label, Field, every labelled input                  | LOW      |
-| `useClipboard`          | Copy helper (de-dupes copy-button's inline logic)                          | Code Snippet, Copy Button                           | LOW      |
-| `useResizeObserver`     | Element-size signal                                                        | Scroll Area, Resizable, Overflow Menu               | LOW      |
+| Primitive                 | Why useful                                                               | Used by                                           | Priority |
+| ------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------- | -------- |
+| `Slot` / `asChild`        | Composition without wrapper elements; shadcn's whole model               | Button, Icon Button, Item, Tile, Field, Label     | HIGH     |
+| `useControllableSignal`   | Controlled/uncontrolled prop→signal sync (`CLAUDE.md` documents by hand) | every stateful component                          | HIGH     |
+| `DismissableLayer`        | Outside-click + Escape dismissal, one tested impl                        | Popover, Dropdown, Menu, Tooltip, Sheet, Drawer   | HIGH     |
+| `RovingFocus`             | Arrow-key roving tabindex                                                | Menu, Tabs, Toggle Group, Tree View, Carousel     | HIGH     |
+| `Presence`                | Mount/exit with animation, signal-driven                                 | Modal, Sheet, Drawer, Popover, Collapsible        | MEDIUM   |
+| `useMediaQuery`           | Responsive primitive (Drawer-vs-Dialog, mobile nav)                      | Drawer, Carousel, responsive layouts              | MEDIUM   |
+| `useScrollLock`           | Body scroll lock for overlays                                            | Modal, Sheet, Drawer                              | MEDIUM   |
+| anchor-positioning helper | Position floating els (CSS anchor + JS fallback)                         | Popover, Tooltip, Dropdown, Menu, Navigation Menu | MEDIUM   |
+| `useId`                   | SSR-safe stable ids for aria wiring                                      | Label, Field, every labelled input                | LOW      |
+| `useClipboard`            | Copy helper (de-dupes copy-button's inline logic)                        | Code Snippet, Copy Button                         | LOW      |
+| `useResizeObserver`       | Element-size signal                                                      | Scroll Area, Resizable, Overflow Menu             | LOW      |
 
 ### Generation + drift pipeline (the pattern to mirror)
 
@@ -199,15 +199,15 @@ Tree view. **Deferred:** AI label/slug (niche), Fluid (input variant, not a comp
 
 ## Tranche map
 
-| T#  | Focus                          | Files changed                                                                                                   | Risk   |
-| --- | ------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------ |
-| T1  | Parity audit + backlog queue   | New `docs/specs/parity-matrix.md`, `scripts/parity/generate.ts`, `apps/docs/public/parity.json`; `factory-backlog.json`; `package.json` regen wiring | Medium |
-| T2  | `Slot` / `asChild`             | New `packages/core/src/slot.tsx` + test; `packages/core/src/index.ts`                                          | Medium |
-| T3  | State & DOM utilities          | New `packages/core/src/{controllable,media-query,scroll-lock,use-id,clipboard}.ts(x)` + tests; `index.ts`      | Medium |
-| T4  | Interaction primitives         | New `packages/core/src/{dismissable-layer,roving-focus,presence,anchor}.tsx` + tests; `index.ts`               | High   |
-| T5  | Tier-1 parity components       | Factory → `packages/components/src/<name>/` (×10) + `packages/react/src/index.ts`; registry regen              | High   |
-| T6  | Tier-2 parity components       | Factory → `packages/components/src/<name>/` (Tier-2) + `packages/react/src/index.ts`; registry regen           | High   |
-| T7  | Coverage page + claims + DoD   | New coverage page in `apps/docs` (or `apps/landing`); `WhyCascadePage.tsx` (34–36); README/llms regen; `ROADMAP-V18.md` | Medium |
+| T#  | Focus                        | Files changed                                                                                                                                        | Risk   |
+| --- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| T1  | Parity audit + backlog queue | New `docs/specs/parity-matrix.md`, `scripts/parity/generate.ts`, `apps/docs/public/parity.json`; `factory-backlog.json`; `package.json` regen wiring | Medium |
+| T2  | `Slot` / `asChild`           | New `packages/core/src/slot.tsx` + test; `packages/core/src/index.ts`                                                                                | Medium |
+| T3  | State & DOM utilities        | New `packages/core/src/{controllable,media-query,scroll-lock,use-id,clipboard}.ts(x)` + tests; `index.ts`                                            | Medium |
+| T4  | Interaction primitives       | New `packages/core/src/{dismissable-layer,roving-focus,presence,anchor}.tsx` + tests; `index.ts`                                                     | High   |
+| T5  | Tier-1 parity components     | Factory → `packages/components/src/<name>/` (×10) + `packages/react/src/index.ts`; registry regen                                                    | High   |
+| T6  | Tier-2 parity components     | Factory → `packages/components/src/<name>/` (Tier-2) + `packages/react/src/index.ts`; registry regen                                                 | High   |
+| T7  | Coverage page + claims + DoD | New coverage page in `apps/docs` (or `apps/landing`); `WhyCascadePage.tsx` (34–36); README/llms regen; `ROADMAP-V18.md`                              | Medium |
 
 **Risk notes:**
 
@@ -226,4 +226,4 @@ Tree view. **Deferred:** AI label/slug (niche), Fluid (input variant, not a comp
   don't pass stay marked as gaps in the matrix — never mark unbuilt work as covered.
 - **T7 (Medium):** The coverage page reads `parity.json`; if T6 didn't finish every component, the page
   honestly shows remaining gaps. That's acceptable — the matrix is the truth, the page reflects it.
-</content>
+  </content>
