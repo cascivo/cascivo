@@ -1,7 +1,7 @@
 import { Badge } from '@cascivo/components/badge'
-import { Button } from '@cascivo/components/button'
 import registry from '../../../../registry.json'
 import { CopyCommand } from './CopyCommand'
+import { LinkButton } from './LinkButton'
 
 const componentCount = (registry as { components: unknown[] }).components.length
 
@@ -37,21 +37,10 @@ export function Hero() {
         ))}
       </ul>
       <div className="hero-ctas">
-        <Button
-          onClick={() => {
-            window.location.href = '/docs'
-          }}
-        >
-          Start building
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            window.location.href = 'https://github.com/urbanisierung/cascivo'
-          }}
-        >
+        <LinkButton href="/docs">Start building</LinkButton>
+        <LinkButton href="https://github.com/urbanisierung/cascivo" variant="secondary">
           GitHub
-        </Button>
+        </LinkButton>
       </div>
       <CopyCommand command="npx @cascivo/cli add button" />
     </section>

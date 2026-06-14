@@ -8,18 +8,49 @@
       name="description"
       content="cascivo is the CSS-native, signal-driven, AI-first React design system. Beautiful by default. AI-native. WCAG 2.2 AA."
     />
+    <link rel="canonical" href="https://cascivo.com/" />
+    <meta name="robots" content="index, follow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- theme-color verified to equal computed --cascivo-brand-primary (oklch(0.55 0.15 240) = rgb(0,121,191)). -->
     <meta name="theme-color" content="#0079bf" />
     <meta property="og:title" content="cascivo" />
     <meta
       property="og:description"
-      content="CSS-native. Signal-driven. AI-first. 97+ owned-code React components with five themes and an MCP server."
+      content="CSS-native. Signal-driven. AI-first. %CASCIVO_COMPONENT_COUNT%+ owned-code React components with %CASCIVO_THEME_COUNT% themes and an MCP server."
     />
-    <meta property="og:url" content="https://cascivo.com" />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:url" content="https://cascivo.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://cascivo.com/og.png" />
+    <meta
+      property="og:image:alt"
+      content="cascivo — the CSS-native, signal-driven, AI-first React design system"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:title" content="cascivo" />
+    <meta
+      name="twitter:description"
+      content="CSS-native. Signal-driven. AI-first. %CASCIVO_COMPONENT_COUNT%+ owned-code React components with %CASCIVO_THEME_COUNT% themes and an MCP server."
+    />
+    <meta name="twitter:image" content="https://cascivo.com/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "cascivo",
+        "description": "The CSS-native, signal-driven, AI-first React design system. Owned-code components, signal reactivity, a closed three-tier token system, ten themes, WCAG 2.2 AA, and a machine-readable AI layer.",
+        "url": "https://cascivo.com/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "license": "https://opensource.org/licenses/MIT",
+        "sameAs": ["https://github.com/urbanisierung/cascivo"]
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

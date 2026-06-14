@@ -1,5 +1,5 @@
-import { Button } from '@cascivo/components/button'
 import { CopyCommand } from '../../sections/CopyCommand'
+import { LinkButton } from '../../sections/LinkButton'
 import { GUIDES_CTA } from './data'
 
 export function GuidesCta() {
@@ -8,21 +8,10 @@ export function GuidesCta() {
       <h2>{GUIDES_CTA.title}</h2>
       <p>{GUIDES_CTA.sub}</p>
       <div className="cta-band-actions">
-        <Button
-          onClick={() => {
-            window.location.href = GUIDES_CTA.primary.href
-          }}
-        >
-          {GUIDES_CTA.primary.label}
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            window.location.href = GUIDES_CTA.secondary.href
-          }}
-        >
+        <LinkButton href={GUIDES_CTA.primary.href}>{GUIDES_CTA.primary.label}</LinkButton>
+        <LinkButton href={GUIDES_CTA.secondary.href} variant="secondary">
           {GUIDES_CTA.secondary.label}
-        </Button>
+        </LinkButton>
         <CopyCommand command={GUIDES_CTA.install} />
       </div>
     </section>

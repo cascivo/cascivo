@@ -1,5 +1,5 @@
-import { Button } from '@cascivo/components/button'
 import { CopyCommand } from './CopyCommand'
+import { LinkButton } from './LinkButton'
 
 export function CtaBand() {
   return (
@@ -7,13 +7,7 @@ export function CtaBand() {
       <h2>Own your UI.</h2>
       <p>Copy the code. Keep the platform. Bring your agent.</p>
       <div className="cta-band-actions">
-        <Button
-          onClick={() => {
-            window.location.href = '/docs'
-          }}
-        >
-          Start building
-        </Button>
+        <LinkButton href="/docs">Start building</LinkButton>
         <CopyCommand command="npx @cascivo/cli init" />
       </div>
     </section>

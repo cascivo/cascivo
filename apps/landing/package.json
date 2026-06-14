@@ -9,8 +9,10 @@
     "build": "vp build",
     "preview": "vp preview",
     "check": "tsc --noEmit",
-    "test": "echo 'landing: no unit tests'",
-    "test:e2e": "playwright test"
+    "test": "node --experimental-strip-types --test test/counts.test.ts",
+    "test:e2e": "playwright test",
+    "og:generate": "vp preview --port 4180 --strictPort & sleep 3 && node scripts/gen-og.mjs; kill %1",
+    "icons:generate": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
     "@cascivo/charts": "workspace:*",

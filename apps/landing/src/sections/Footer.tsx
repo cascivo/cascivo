@@ -2,11 +2,18 @@ import { Separator } from '@cascivo/components/separator'
 
 const REPO = 'https://github.com/urbanisierung/cascivo'
 
+// Internal targets resolve to OTHER apps/assets on the deployed cascivo.com
+// domain (not the landing SPA): /docs + /storybook (separate CF Pages apps),
+// /why + /docs/benchmarks (docs app), /llms.txt + /registry.json (served at
+// site root by the deploy). If a target ever 404s, that's a deploy-config
+// follow-up, not a landing change.
 interface NavLink {
   label: string
   href: string
   mono?: true
 }
+
+const isExternal = (href: string) => /^https?:\/\//.test(href)
 
 const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
@@ -50,7 +57,13 @@ export function Footer() {
               <ul className="footer-column-links">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className={link.mono ? 'footer-link-mono' : undefined}>
+                    <a
+                      href={link.href}
+                      className={link.mono ? 'footer-link-mono' : undefined}
+                      {...(isExternal(link.href)
+                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                        : {})}
+                    >
                       {link.label}
                     </a>
                   </li>

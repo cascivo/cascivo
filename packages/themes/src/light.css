@@ -32,9 +32,11 @@
     --cascivo-color-text-on-destructive: oklch(1 0 0);
 
     /* ── Accent (links, focus, info, active tint) ───────── */
-    --cascivo-color-accent: oklch(0.623 0.214 250);
+    /* L lowered 0.623→0.52 so accent-as-link-text clears WCAG 2.2 AA 4.5:1 on
+       white (was 3.55:1). Hover darkened to stay below the new base. */
+    --cascivo-color-accent: oklch(0.52 0.2 250);
     --cascivo-color-accent-foreground: oklch(1 0 0);
-    --cascivo-color-accent-hover: oklch(0.546 0.224 250);
+    --cascivo-color-accent-hover: oklch(0.45 0.2 250);
     --cascivo-color-accent-active: var(--cascivo-blue-800);
     --cascivo-color-accent-subtle: var(--cascivo-blue-50);
     --cascivo-color-accent-muted: var(--cascivo-blue-100);

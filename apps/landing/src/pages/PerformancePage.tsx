@@ -3,6 +3,7 @@ import { useSignal, useSignals } from '@cascivo/core'
 import { BarChart } from '@cascivo/charts'
 import { DataTable, type Column } from '@cascivo/components/data-table'
 import { Stat } from '@cascivo/components/stat'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import {
@@ -29,16 +30,19 @@ import {
 export function PerformancePage() {
   return (
     <>
+      <SkipNavLink />
       <Header />
-      <main>
-        <PerfHero />
-        <BundleSection />
-        <MatrixSection />
-        <LatencySection />
-        <RendersSection />
-        <LighthouseSection />
-        <MethodologySection />
-      </main>
+      <SkipNavTarget>
+        <main>
+          <PerfHero />
+          <BundleSection />
+          <MatrixSection />
+          <LatencySection />
+          <RendersSection />
+          <LighthouseSection />
+          <MethodologySection />
+        </main>
+      </SkipNavTarget>
       <Footer />
     </>
   )

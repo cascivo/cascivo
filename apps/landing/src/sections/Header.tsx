@@ -1,4 +1,5 @@
 'use client'
+import { useRef } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader } from '@cascivo/components/shell-header'
 import { THEMES, setTheme, theme } from '../theme'
@@ -29,6 +30,8 @@ const NAV_LINKS = [
 export function Header() {
   useSignals()
   const isNavOpen = useSignal(false)
+  const drawerRef = useRef<HTMLElement>(null)
+  const toggleRef = useRef<HTMLElement | null>(null)
 
   // Body scroll lock
   useSignalEffect(() => {
@@ -51,12 +54,48 @@ export function Header() {
     return () => document.removeEventListener('keydown', handler)
   })
 
+  // Focus trap: while open, keep Tab/Shift-Tab inside the drawer; on close,
+  // restore focus to whatever opened it (captured in onMenuClick — the
+  // hamburger toggle). DOM side effect → useSignalEffect, never useEffect.
+  useSignalEffect(() => {
+    const drawer = drawerRef.current
+    if (!isNavOpen.value || !drawer) return
+    const focusables = () =>
+      Array.from(drawer.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))
+    focusables()[0]?.focus()
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      const items = focusables()
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last?.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first?.focus()
+      }
+    }
+    drawer.addEventListener('keydown', onKey)
+    return () => {
+      drawer.removeEventListener('keydown', onKey)
+      toggleRef.current?.focus()
+    }
+  })
+
   return (
     <>
       <ShellHeader
         brand={{ name: 'cascivo', href: '/' }}
         nav={NAV_LINKS}
+        // The landing supplies its own SkipNavLink/SkipNavTarget on every page;
+        // disable ShellHeader's built-in skip link so its default #cascade-main
+        // target (which the landing doesn't render) can't dangle.
+        skipToContentHref={false}
         onMenuClick={() => {
+          // Capture the toggle so focus can return to it on close.
+          if (!isNavOpen.value) toggleRef.current = document.activeElement as HTMLElement | null
           isNavOpen.value = !isNavOpen.value
         }}
         menuExpanded={isNavOpen.value}
@@ -92,6 +131,7 @@ export function Header() {
 
       {/* Off-canvas drawer */}
       <nav
+        ref={drawerRef}
         id="mobile-nav-drawer"
         className={`mobile-nav-drawer${isNavOpen.value ? ' mobile-nav-drawer--open' : ''}`}
         aria-label="Main navigation"
