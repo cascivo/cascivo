@@ -1,0 +1,62 @@
+@layer cascade.component {
+  .buttonGroup {
+    display: inline-flex;
+    --_radius: var(--cascivo-button-radius, var(--cascivo-radius-control));
+
+    &[data-orientation='horizontal'] {
+      flex-direction: row;
+    }
+
+    &[data-orientation='vertical'] {
+      flex-direction: column;
+    }
+
+    /* Collapse the seams between joined children. The children keep their own
+       border-radius on the outer edges only; inner corners are squared off. */
+    & > * {
+      border-radius: 0;
+    }
+
+    /* Horizontal: round the inline (leading/trailing) corners, collapse seams. */
+    &[data-orientation='horizontal'] {
+      & > :first-child {
+        border-start-start-radius: var(--_radius);
+        border-end-start-radius: var(--_radius);
+      }
+
+      & > :last-child {
+        border-start-end-radius: var(--_radius);
+        border-end-end-radius: var(--_radius);
+      }
+
+      & > :not(:first-child) {
+        margin-inline-start: -1px;
+      }
+    }
+
+    /* Vertical: round the block (top/bottom) corners, collapse seams. */
+    &[data-orientation='vertical'] {
+      & > :first-child {
+        border-start-start-radius: var(--_radius);
+        border-start-end-radius: var(--_radius);
+      }
+
+      & > :last-child {
+        border-end-start-radius: var(--_radius);
+        border-end-end-radius: var(--_radius);
+      }
+
+      & > :not(:first-child) {
+        margin-block-start: -1px;
+      }
+    }
+
+    /* Keep the focused/hovered child above its neighbors so its full border shows. */
+    & > :hover,
+    & > :focus-visible,
+    & > :focus-within {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

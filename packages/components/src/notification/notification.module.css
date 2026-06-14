@@ -1,0 +1,158 @@
+@layer cascade.component {
+  .notification {
+    display: flex;
+    gap: var(--cascivo-space-3);
+    padding: var(--cascivo-space-4);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+    background-color: var(--cascivo-color-surface);
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-text);
+    opacity: 1;
+    transition: opacity var(--cascivo-motion-enter);
+
+    /* Enter: fade in from the styles the browser applies on first render */
+    @starting-style {
+      opacity: 0;
+    }
+
+    /* Exit: Presence sets data-state="closed" before unmounting */
+    &[data-state='closed'] {
+      opacity: 0;
+      transition: opacity var(--cascivo-motion-exit);
+    }
+
+    &[data-variant='info'] {
+      border-color: color-mix(in oklch, var(--cascivo-color-info) 35%, var(--cascivo-color-border));
+      background: color-mix(in oklch, var(--cascivo-color-info) 5%, var(--cascivo-color-bg));
+    }
+
+    &[data-variant='success'] {
+      border-color: color-mix(
+        in oklch,
+        var(--cascivo-color-success) 35%,
+        var(--cascivo-color-border)
+      );
+      background: color-mix(in oklch, var(--cascivo-color-success) 5%, var(--cascivo-color-bg));
+    }
+
+    &[data-variant='warning'] {
+      border-color: color-mix(
+        in oklch,
+        var(--cascivo-color-warning) 35%,
+        var(--cascivo-color-border)
+      );
+      background: color-mix(in oklch, var(--cascivo-color-warning) 5%, var(--cascivo-color-bg));
+    }
+
+    &[data-variant='error'] {
+      border-color: color-mix(
+        in oklch,
+        var(--cascivo-color-destructive) 35%,
+        var(--cascivo-color-border)
+      );
+      background: color-mix(in oklch, var(--cascivo-color-destructive) 5%, var(--cascivo-color-bg));
+    }
+  }
+
+  .icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    line-height: 1;
+    margin-block-start: 0.125rem;
+
+    .notification[data-variant='info'] & {
+      color: var(--cascivo-color-info);
+    }
+    .notification[data-variant='success'] & {
+      color: var(--cascivo-color-success);
+    }
+    .notification[data-variant='warning'] & {
+      color: var(--cascivo-color-warning);
+    }
+    .notification[data-variant='error'] & {
+      color: var(--cascivo-color-destructive);
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .title {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    line-height: var(--cascivo-leading-snug);
+  }
+
+  .description {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+    line-height: var(--cascivo-leading-normal);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascivo-space-2);
+    margin-block-start: var(--cascivo-space-2);
+  }
+
+  .dismiss {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+    transition:
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover {
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .notification {
+    border: 1px solid CanvasText;
+  }
+
+  .notification[data-variant='info'],
+  .notification[data-variant='success'],
+  .notification[data-variant='warning'],
+  .notification[data-variant='error'] {
+    border-width: 2px;
+  }
+
+  .dismiss:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .notification {
+    border-width: 2px;
+  }
+}

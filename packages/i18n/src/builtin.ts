@@ -157,6 +157,49 @@ export const builtin = {
     required: 'Required',
     invalid: 'Invalid value',
   }),
+  label: defineMessages('cascade.label', {
+    required: 'Required',
+  }),
+  inlineLoading: defineMessages('cascade.inlineLoading', {
+    active: 'Loading',
+    finished: 'Loaded',
+    error: 'Error',
+  }),
+  notification: defineMessages('cascade.notification', {
+    dismiss: 'Dismiss',
+  }),
+  treeView: defineMessages('cascade.treeView', {
+    loading: 'Loading…',
+    expand: 'Expand',
+    collapse: 'Collapse',
+  }),
+  carousel: defineMessages('cascade.carousel', {
+    region: 'Carousel',
+    previous: 'Previous slide',
+    next: 'Next slide',
+    slide: '{n} of {total}',
+    goTo: 'Go to slide {n}',
+  }),
+  calendar: defineMessages('cascade.calendar', {
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    today: 'Today',
+  }),
+  colorPicker: defineMessages('cascade.colorPicker', {
+    hue: 'Hue',
+    alpha: 'Alpha',
+    colorArea: 'Saturation and lightness',
+    eyedropper: 'Pick a color from the screen',
+  }),
+  drawer: defineMessages('cascade.drawer', {
+    close: 'Close',
+  }),
+  menuButton: defineMessages('cascade.menuButton', {
+    open: 'Open menu',
+  }),
+  resizable: defineMessages('cascade.resizable', {
+    handle: 'Resize panels',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -309,4 +352,47 @@ defineCatalog(builtin.skipNav, 'de', {
 defineCatalog(builtin.form, 'de', {
   required: 'Pflichtfeld',
   invalid: 'Ungültiger Wert',
+})
+defineCatalog(builtin.label, 'de', {
+  required: 'Erforderlich',
+})
+defineCatalog(builtin.inlineLoading, 'de', {
+  active: 'Wird geladen',
+  finished: 'Geladen',
+  error: 'Fehler',
+})
+defineCatalog(builtin.notification, 'de', {
+  dismiss: 'Schließen',
+})
+defineCatalog(builtin.treeView, 'de', {
+  loading: 'Wird geladen…',
+  expand: 'Aufklappen',
+  collapse: 'Zuklappen',
+})
+defineCatalog(builtin.carousel, 'de', {
+  region: 'Karussell',
+  previous: 'Vorherige Folie',
+  next: 'Nächste Folie',
+  slide: '{n} von {total}',
+  goTo: 'Zu Folie {n}',
+})
+defineCatalog(builtin.calendar, 'de', {
+  previousMonth: 'Vorheriger Monat',
+  nextMonth: 'Nächster Monat',
+  today: 'Heute',
+})
+defineCatalog(builtin.colorPicker, 'de', {
+  hue: 'Farbton',
+  alpha: 'Alpha',
+  colorArea: 'Sättigung und Helligkeit',
+  eyedropper: 'Farbe vom Bildschirm wählen',
+})
+defineCatalog(builtin.drawer, 'de', {
+  close: 'Schließen',
+})
+defineCatalog(builtin.menuButton, 'de', {
+  open: 'Menü öffnen',
+})
+defineCatalog(builtin.resizable, 'de', {
+  handle: 'Bereiche anpassen',
 })

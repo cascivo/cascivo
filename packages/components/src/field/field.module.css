@@ -1,0 +1,31 @@
+@layer cascade.component {
+  .field {
+    display: grid;
+    gap: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+
+    &[data-disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  .description {
+    margin: 0;
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .error {
+    margin: 0;
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-destructive);
+  }
+}
+
+@media (forced-colors: active) {
+  .error {
+    color: ButtonText;
+  }
+}

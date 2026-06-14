@@ -88,6 +88,18 @@
         "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
       }
     ],
+    "AspectRatio": [
+      {
+        "area": "ratio",
+        "level": "flexible",
+        "note": "Any positive number; common values are 16/9, 4/3, 1, 3/2"
+      },
+      {
+        "area": "child sizing",
+        "level": "strict",
+        "note": "The single child is stretched to fill; provide one media element"
+      }
+    ],
     "Avatar": [
       {
         "area": "size",
@@ -148,6 +160,18 @@
         "note": "Free, within tone guidance"
       }
     ],
+    "ButtonGroup": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+      },
+      {
+        "area": "children",
+        "level": "flexible",
+        "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+      }
+    ],
     "Card": [
       {
         "area": "variant and padding",
@@ -194,6 +218,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
+      }
+    ],
+    "Collapsible": [
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled or uncontrolled via open / defaultOpen"
+      },
+      {
+        "area": "trigger markup",
+        "level": "strict",
+        "note": "Always rendered as a native button for keyboard and a11y correctness"
       }
     ],
     "Combobox": [
@@ -329,6 +365,18 @@
         "note": "Text and background colors must resolve to --cascivo-* tokens"
       }
     ],
+    "Field": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+      },
+      {
+        "area": "control element",
+        "level": "flexible",
+        "note": "Any single element accepting id/aria-* props can be the child control"
+      }
+    ],
     "FileUploader": [
       {
         "area": "token names",
@@ -416,6 +464,30 @@
         "note": "HoverCardContent accepts arbitrary children"
       }
     ],
+    "IconButton": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls"
+      },
+      {
+        "area": "icon choice",
+        "level": "flexible",
+        "note": "Any single icon node; consumer owns the icon set"
+      }
+    ],
+    "InlineLoading": [
+      {
+        "area": "label",
+        "level": "flexible",
+        "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+      },
+      {
+        "area": "status semantics",
+        "level": "strict",
+        "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+      }
+    ],
     "Input": [
       {
         "area": "token names",
@@ -460,6 +532,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Surface and border must resolve to --cascivo-* tokens"
+      }
+    ],
+    "Label": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+      },
+      {
+        "area": "label copy",
+        "level": "flexible",
+        "note": "Free, within tone guidance"
       }
     ],
     "Link": [
@@ -535,6 +619,23 @@
         "area": "options",
         "level": "flexible",
         "note": "Caller supplies the option list and may mark individual options disabled"
+      }
+    ],
+    "Notification": [
+      {
+        "area": "icon",
+        "level": "flexible",
+        "note": "A variant-appropriate icon is supplied by default; override with the icon prop"
+      },
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Any ReactNode (typically Buttons) can fill the actions slot"
+      },
+      {
+        "area": "role mapping",
+        "level": "strict",
+        "note": "warning/error must use role=\"alert\"; info/success use role=\"status\""
       }
     ],
     "NumberInput": [
@@ -696,6 +797,18 @@
         "area": "scale and labels",
         "level": "flexible",
         "note": "max sets the scale and labels.rating customizes the per-star announcement"
+      }
+    ],
+    "ScrollArea": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "vertical, horizontal, or both depending on content"
+      },
+      {
+        "area": "scroll behaviour",
+        "level": "strict",
+        "note": "Relies on native overflow scrolling — never replace with JS scrolling"
       }
     ],
     "Search": [
@@ -960,6 +1073,18 @@
         "area": "label copy",
         "level": "flexible",
         "note": "Optional label describing the setting being toggled"
+      }
+    ],
+    "ToggleGroup": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Item height must resolve to --cascivo-control-height-* to align with other controls"
+      },
+      {
+        "area": "item content",
+        "level": "flexible",
+        "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
       }
     ],
     "Tooltip": [

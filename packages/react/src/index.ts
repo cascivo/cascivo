@@ -60,7 +60,13 @@ export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'
 export * from '../../components/src/otp-input/otp-input'
 export * from '../../components/src/segmented-control/segmented-control'
-export * from '../../components/src/input-group/input-group'
+// input-group also exports a small ButtonGroup helper; the dedicated button-group component (below)
+// owns that name in @cascivo/react, so re-export input-group's public surface selectively.
+export { InputGroup, InputGroupAddon } from '../../components/src/input-group/input-group'
+export type {
+  InputGroupProps,
+  InputGroupAddonProps,
+} from '../../components/src/input-group/input-group'
 export * from '../../components/src/rating-group/rating-group'
 export * from '../../components/src/editable/editable'
 export * from '../../components/src/radio-card/radio-card'
@@ -80,3 +86,14 @@ export * from '../../components/src/code/code'
 export * from '../../components/src/blockquote/blockquote'
 export * from '../../components/src/list/list'
 export * from '../../components/src/prose/prose'
+// v18 Tier-1 parity components
+export * from '../../components/src/label/label'
+export * from '../../components/src/field/field'
+export * from '../../components/src/icon-button/icon-button'
+export * from '../../components/src/button-group/button-group'
+export * from '../../components/src/toggle-group/toggle-group'
+export * from '../../components/src/inline-loading/inline-loading'
+export * from '../../components/src/notification/notification'
+export * from '../../components/src/scroll-area/scroll-area'
+export * from '../../components/src/collapsible/collapsible'
+export * from '../../components/src/aspect-ratio/aspect-ratio'

@@ -91,6 +91,7 @@
             "AlertDialog",
             "AppShell",
             "AreaChart",
+            "AspectRatio",
             "AuthLayout",
             "AutoGrid",
             "Avatar",
@@ -102,11 +103,13 @@
             "BubbleChart",
             "Bullet",
             "Button",
+            "ButtonGroup",
             "Card",
             "Center",
             "Checkbox",
             "CheckboxCard",
             "Code",
+            "Collapsible",
             "Columns",
             "ComboChart",
             "Combobox",
@@ -124,6 +127,7 @@
             "EmptyDashboard",
             "EmptyState",
             "FeatureGrid",
+            "Field",
             "FileUploader",
             "Form",
             "Grid",
@@ -134,10 +138,13 @@
             "Hero",
             "Histogram",
             "HoverCard",
+            "IconButton",
+            "InlineLoading",
             "Input",
             "InputGroup",
             "Kbd",
             "Kpi",
+            "Label",
             "LineChart",
             "Link",
             "List",
@@ -148,6 +155,7 @@
             "Meter",
             "Modal",
             "MultiSelect",
+            "Notification",
             "NotificationCenter",
             "NumberInput",
             "OtpInput",
@@ -168,6 +176,7 @@
             "RadioCard",
             "RatingGroup",
             "ScatterChart",
+            "ScrollArea",
             "Search",
             "Section",
             "SegmentedControl",
@@ -200,6 +209,7 @@
             "TimePicker",
             "Toast",
             "Toggle",
+            "ToggleGroup",
             "Tooltip",
             "Treemap",
             "UsersTablePage",
@@ -315,6 +325,32 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AspectRatio"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "ratio": {
+                    "type": "number"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                }
               }
             }
           }
@@ -470,6 +506,45 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ButtonGroup"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "roving": {
+                    "type": "boolean"
+                  },
+                  "loop": {
+                    "type": "boolean"
+                  },
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Card"
               }
             },
@@ -580,6 +655,43 @@
                     "enum": ["sm", "md"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Collapsible"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "trigger": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["trigger"]
               }
             }
           }
@@ -949,6 +1061,51 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Field"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "error": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactElement"]
+                  }
+                },
+                "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "FileUploader"
               }
             },
@@ -1120,6 +1277,71 @@
           "if": {
             "properties": {
               "component": {
+                "const": "IconButton"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["ghost", "outline", "filled"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "asChild": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["label"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "InlineLoading"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["inactive", "active", "finished", "error"]
+                  },
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Input"
               }
             },
@@ -1205,6 +1427,42 @@
                     "enum": ["sm", "md"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Label"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "htmlFor": {
+                    "type": "string"
+                  },
+                  "asChild": {
+                    "type": "boolean"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
@@ -1345,6 +1603,49 @@
                   }
                 },
                 "required": ["options", "value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Notification"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["info", "success", "warning", "error"]
+                  },
+                  "dismissible": {
+                    "type": "boolean"
+                  },
+                  "actions": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "icon": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["title"]
               }
             }
           }
@@ -1796,6 +2097,39 @@
                   }
                 },
                 "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ScrollArea"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "height": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "string"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["vertical", "horizontal", "both"]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                }
               }
             }
           }
@@ -2539,6 +2873,41 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ToggleGroup"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["single", "multiple"]
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["type", "items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Tooltip"
               }
             },
@@ -3209,6 +3578,9 @@
                   "legend": {
                     "type": "boolean"
                   },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
                   "className": {
                     "type": "string"
                   },
@@ -3340,6 +3712,9 @@
                   "height": {
                     "type": "number"
                   },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
                   "className": {
                     "type": "string"
                   },
@@ -3424,6 +3799,9 @@
                   },
                   "height": {
                     "type": "number"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
                   },
                   "className": {
                     "type": "string"
@@ -3777,6 +4155,9 @@
                     "type": "number"
                   },
                   "legend": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
                     "type": "boolean"
                   },
                   "className": {

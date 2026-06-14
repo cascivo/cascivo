@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 2,
+  "name": "field",
+  "type": "component",
+  "description": "Form-field wrapper composing label, control, description, and error",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/field/field.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/field/field.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["form", "layout", "validation", "accessibility"],
+  "category": "inputs",
+  "meta": {
+    "name": "Field",
+    "description": "Form-field wrapper composing label, control, description, and error",
+    "category": "inputs",
+    "states": ["default", "disabled", "invalid"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "label",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "error",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "children",
+        "type": "ReactElement",
+        "required": true
+      }
+    ],
+    "tokens": [
+      "--cascivo-space-2",
+      "--cascivo-font-sans",
+      "--cascivo-text-sm",
+      "--cascivo-leading-snug",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-destructive"
+    ],
+    "accessibility": {
+      "role": "group",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<Field label=\"Email\"><Input type=\"email\" /></Field>"
+      },
+      {
+        "title": "With description",
+        "code": "<Field label=\"Email\" description=\"We never share it.\"><Input /></Field>"
+      },
+      {
+        "title": "With error",
+        "code": "<Field label=\"Email\" error=\"Email is required\" required><Input /></Field>",
+        "description": "Sets aria-invalid on the control and announces the error via role=\"alert\"."
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["form", "layout", "validation", "accessibility"],
+    "intent": {
+      "whenToUse": [
+        "Pairing a single control with its label, helper text, and validation message",
+        "Wiring aria-describedby / aria-invalid automatically instead of by hand"
+      ],
+      "whenNotToUse": [
+        "A standalone control that needs no label, description, or error",
+        "Grouping multiple related controls — use a <fieldset> with a <legend>"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Field label=\"Email\"><Input /><Input /></Field>",
+          "good": "<Field label=\"Email\"><Input /></Field>",
+          "why": "Field clones exactly one child control to inject its id and aria wiring; multiple children break the association"
+        },
+        {
+          "bad": "<div><label>Email</label><input aria-invalid /><span>Error</span></div>",
+          "good": "<Field label=\"Email\" error=\"Error\"><Input /></Field>",
+          "why": "Hand-wired markup easily drifts: missing ids, no role=\"alert\", mismatched aria-describedby — Field keeps them in sync"
+        }
+      ],
+      "related": [
+        {
+          "name": "Label",
+          "relationship": "contains",
+          "reason": "Field renders a Label and links it to the control via htmlFor"
+        },
+        {
+          "name": "Input",
+          "relationship": "contains",
+          "reason": "The control passed as children receives the generated id and aria attributes"
+        }
+      ],
+      "a11yRationale": "Generates stable ids with useId and links them through htmlFor and aria-describedby; the error carries role=\"alert\" so it is announced on appearance, and aria-invalid marks the control invalid for assistive tech",
+      "content": {
+        "tone": "Label is a noun phrase; error is a short corrective sentence",
+        "notes": "Descriptions are concise helper text; errors state what is wrong and how to fix it"
+      },
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "control element",
+          "level": "flexible",
+          "note": "Any single element accepting id/aria-* props can be the child control"
+        }
+      ]
+    }
+  }
+}

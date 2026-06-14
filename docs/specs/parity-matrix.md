@@ -41,18 +41,18 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Accordion       | covered       | accordion       |                                                                             |
 | Alert           | covered       | alert           |                                                                             |
 | Alert Dialog    | covered       | alert-dialog    |                                                                             |
-| Aspect Ratio    | gap           | aspect-ratio    | Queued (v18-t5)                                                             |
+| Aspect Ratio    | covered       | aspect-ratio    | Queued (v18-t5)                                                             |
 | Avatar          | covered       | avatar          |                                                                             |
 | Badge           | covered       | badge           |                                                                             |
 | Breadcrumb      | covered       | breadcrumb      |                                                                             |
 | Button          | covered       | button          |                                                                             |
-| Button Group    | gap           | button-group    | Queued (v18-t5)                                                             |
+| Button Group    | covered       | button-group    | Queued (v18-t5)                                                             |
 | Calendar        | gap           | calendar        | Queued (v18-t6)                                                             |
 | Card            | covered       | card            |                                                                             |
 | Carousel        | gap           | carousel        | Queued (v18-t6)                                                             |
 | Chart           | covered       | chart           | 16 charts via @cascivo/charts                                               |
 | Checkbox        | covered       | checkbox        |                                                                             |
-| Collapsible     | gap           | collapsible     | Queued (v18-t5)                                                             |
+| Collapsible     | covered       | collapsible     | Queued (v18-t5)                                                             |
 | Combobox        | covered       | combobox        |                                                                             |
 | Command         | covered       | command-menu    |                                                                             |
 | Context Menu    | covered       | context-menu    |                                                                             |
@@ -63,14 +63,14 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Drawer          | partial       | sheet           | sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6)     |
 | Dropdown Menu   | covered       | dropdown        |                                                                             |
 | Empty           | covered       | empty-state     |                                                                             |
-| Field           | gap           | field           | Queued (v18-t5)                                                             |
+| Field           | covered       | field           | Queued (v18-t5)                                                             |
 | Hover Card      | covered       | hover-card      |                                                                             |
 | Input           | covered       | input           |                                                                             |
 | Input Group     | covered       | input-group     |                                                                             |
 | Input OTP       | covered       | otp-input       |                                                                             |
 | Item            | gap           | item            | Queued (v18-t6)                                                             |
 | Kbd             | covered       | kbd             |                                                                             |
-| Label           | gap           | label           | Queued (v18-t5)                                                             |
+| Label           | covered       | label           | Queued (v18-t5)                                                             |
 | Menubar         | gap           | menubar         | Queued (v18-t6)                                                             |
 | Native Select   | gap           | native-select   | cascivo select is a custom listbox, not the native control. Queued (v18-t6) |
 | Navigation Menu | gap           | navigation-menu | Queued (v18-t6)                                                             |
@@ -79,7 +79,7 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Progress        | covered       | progress-bar    | progress-bar + progress-circle                                              |
 | Radio Group     | covered       | radio           |                                                                             |
 | Resizable       | gap           | resizable       | Queued (v18-t6, a.k.a. splitter)                                            |
-| Scroll Area     | gap           | scroll-area     | Queued (v18-t5)                                                             |
+| Scroll Area     | covered       | scroll-area     | Queued (v18-t5)                                                             |
 | Select          | covered       | select          |                                                                             |
 | Separator       | covered       | separator       |                                                                             |
 | Sheet           | covered       | sheet           |                                                                             |
@@ -94,7 +94,7 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Textarea        | covered       | textarea        |                                                                             |
 | Toast           | covered       | toast           |                                                                             |
 | Toggle          | covered       | toggle          |                                                                             |
-| Toggle Group    | gap           | toggle-group    | Queued (v18-t5)                                                             |
+| Toggle Group    | covered       | toggle-group    | Queued (v18-t5)                                                             |
 | Tooltip         | covered       | tooltip         |                                                                             |
 | Typography      | covered       | prose           | prose + text + heading                                                      |
 
@@ -110,7 +110,7 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | AI label/slug      | deferred |                    | Niche; tied to Carbon AI-assist visual language. Out of scope.                  |
 | Breadcrumb         | covered  | breadcrumb         |                                                                                 |
 | Button             | covered  | button             |                                                                                 |
-| Button set         | gap      | button-group       | = Button Group. Queued (v18-t5)                                                 |
+| Button set         | covered  | button-group       | = Button Group. Queued (v18-t5)                                                 |
 | Checkbox           | covered  | checkbox           |                                                                                 |
 | Code snippet       | gap      | code-snippet       | Queued (v18-t6)                                                                 |
 | Combo box          | covered  | combobox           |                                                                                 |
@@ -122,8 +122,8 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | File uploader      | covered  | file-uploader      |                                                                                 |
 | Form               | covered  | form               |                                                                                 |
 | Fluid              | deferred |                    | Styling variant of existing inputs, not a component.                            |
-| Icon button        | gap      | icon-button        | Queued (v18-t5)                                                                 |
-| Inline loading     | gap      | inline-loading     | Queued (v18-t5)                                                                 |
+| Icon button        | covered  | icon-button        | Queued (v18-t5)                                                                 |
+| Inline loading     | covered  | inline-loading     | Queued (v18-t5)                                                                 |
 | Link               | covered  | link               |                                                                                 |
 | List               | covered  | list               |                                                                                 |
 | Loading            | covered  | spinner            |                                                                                 |
@@ -131,7 +131,7 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Menu buttons       | gap      | menu-button        | Queued (v18-t6)                                                                 |
 | Modal              | covered  | modal              |                                                                                 |
 | Multiselect        | covered  | multi-select       |                                                                                 |
-| Notification       | partial  | toast              | toast covers the toast variant; inline/actionable queued (notification, v18-t5) |
+| Notification       | covered  | toast              | toast covers the toast variant; inline/actionable queued (notification, v18-t5) |
 | Number input       | covered  | number-input       |                                                                                 |
 | Overflow menu      | covered  | overflow-menu      |                                                                                 |
 | Pagination         | covered  | pagination         |                                                                                 |

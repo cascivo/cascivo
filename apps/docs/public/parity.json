@@ -3,9 +3,9 @@
   "competitors": {
     "shadcn": {
       "total": 59,
-      "covered": 43,
+      "covered": 50,
       "partial": 1,
-      "gap": 14,
+      "gap": 7,
       "byConvention": 1,
       "deferred": 0,
       "rows": [
@@ -29,7 +29,7 @@
         },
         {
           "competitor": "Aspect Ratio",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "aspect-ratio",
           "note": "Queued (v18-t5)"
         },
@@ -59,7 +59,7 @@
         },
         {
           "competitor": "Button Group",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "button-group",
           "note": "Queued (v18-t5)"
         },
@@ -95,7 +95,7 @@
         },
         {
           "competitor": "Collapsible",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "collapsible",
           "note": "Queued (v18-t5)"
         },
@@ -161,7 +161,7 @@
         },
         {
           "competitor": "Field",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "field",
           "note": "Queued (v18-t5)"
         },
@@ -203,7 +203,7 @@
         },
         {
           "competitor": "Label",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "label",
           "note": "Queued (v18-t5)"
         },
@@ -257,7 +257,7 @@
         },
         {
           "competitor": "Scroll Area",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "scroll-area",
           "note": "Queued (v18-t5)"
         },
@@ -347,7 +347,7 @@
         },
         {
           "competitor": "Toggle Group",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "toggle-group",
           "note": "Queued (v18-t5)"
         },
@@ -367,9 +367,9 @@
     },
     "carbon": {
       "total": 47,
-      "covered": 34,
-      "partial": 1,
-      "gap": 10,
+      "covered": 38,
+      "partial": 0,
+      "gap": 7,
       "byConvention": 0,
       "deferred": 2,
       "rows": [
@@ -399,7 +399,7 @@
         },
         {
           "competitor": "Button set",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "button-group",
           "note": "= Button Group. Queued (v18-t5)"
         },
@@ -471,13 +471,13 @@
         },
         {
           "competitor": "Icon button",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "icon-button",
           "note": "Queued (v18-t5)"
         },
         {
           "competitor": "Inline loading",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "inline-loading",
           "note": "Queued (v18-t5)"
         },
@@ -525,7 +525,7 @@
         },
         {
           "competitor": "Notification",
-          "status": "partial",
+          "status": "covered",
           "cascivo": "toast",
           "note": "toast covers the toast variant; inline/actionable queued (notification, v18-t5)"
         },

@@ -76,7 +76,17 @@
     "./code": "./src/code/code.tsx",
     "./blockquote": "./src/blockquote/blockquote.tsx",
     "./list": "./src/list/list.tsx",
-    "./prose": "./src/prose/prose.tsx"
+    "./prose": "./src/prose/prose.tsx",
+    "./label": "./src/label/label.tsx",
+    "./field": "./src/field/field.tsx",
+    "./icon-button": "./src/icon-button/icon-button.tsx",
+    "./button-group": "./src/button-group/button-group.tsx",
+    "./toggle-group": "./src/toggle-group/toggle-group.tsx",
+    "./inline-loading": "./src/inline-loading/inline-loading.tsx",
+    "./notification": "./src/notification/notification.tsx",
+    "./scroll-area": "./src/scroll-area/scroll-area.tsx",
+    "./collapsible": "./src/collapsible/collapsible.tsx",
+    "./aspect-ratio": "./src/aspect-ratio/aspect-ratio.tsx"
   },
   "scripts": {
     "build": "echo 'components: copy-paste only, no build'",

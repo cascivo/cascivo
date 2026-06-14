@@ -1,0 +1,82 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'AspectRatio',
+  description: 'Constrains content to a fixed width-to-height ratio',
+  category: 'layout',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'ratio',
+      type: 'number',
+      required: false,
+      default: '16 / 9',
+      description: 'Width-to-height ratio applied via the CSS aspect-ratio property',
+    },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Content to fill the ratio box (typically an image, video, or iframe)',
+    },
+  ],
+  tokens: ['--cascivo-aspect-ratio'],
+  accessibility: {
+    role: 'none',
+    wcag: '2.2-AA',
+    keyboard: [],
+  },
+  examples: [
+    {
+      title: 'Image at 16:9',
+      code: '<AspectRatio ratio={16 / 9}>\n  <img src="/cover.jpg" alt="Cover" />\n</AspectRatio>',
+    },
+    {
+      title: 'Square',
+      code: '<AspectRatio ratio={1}>\n  <img src="/avatar.jpg" alt="Avatar" />\n</AspectRatio>',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['layout', 'ratio', 'image', 'video', 'responsive'],
+  intent: {
+    whenToUse: [
+      'Reserving a stable box for media that loads asynchronously, avoiding layout shift',
+      'Embedding responsive iframes (video, maps) at a known proportion',
+      'Keeping thumbnails or covers uniform across a grid',
+    ],
+    whenNotToUse: [
+      'Content whose height should grow with text — let it size naturally',
+      'A single fixed-pixel image where width and height are already known',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Wrapping text content that must expand to fit its lines',
+        good: 'Reserve AspectRatio for media; let prose flow at its intrinsic height',
+        why: 'A fixed ratio clips or distorts content that needs variable height',
+      },
+    ],
+    related: [
+      {
+        name: 'Card',
+        relationship: 'contained-by',
+        reason: 'Commonly holds a cover image inside a Card media region',
+      },
+    ],
+    a11yRationale:
+      'Purely presentational wrapper with no role; the inner media element carries its own semantics and alt text',
+    flexibility: [
+      {
+        area: 'ratio',
+        level: 'flexible',
+        note: 'Any positive number; common values are 16/9, 4/3, 1, 3/2',
+      },
+      {
+        area: 'child sizing',
+        level: 'strict',
+        note: 'The single child is stretched to fill; provide one media element',
+      },
+    ],
+  },
+}

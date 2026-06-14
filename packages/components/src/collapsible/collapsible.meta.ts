@@ -1,0 +1,120 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Collapsible',
+  description: 'A single disclosure region toggled open and closed by its trigger',
+  category: 'display',
+  states: ['open', 'closed'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state',
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Initial open state for uncontrolled use',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Called whenever the open state should change',
+    },
+    {
+      name: 'trigger',
+      type: 'ReactNode',
+      required: true,
+      description: 'Content rendered inside the built-in trigger button',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Disables the trigger button',
+    },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Content of the collapsible region',
+    },
+  ],
+  tokens: [
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-control',
+    '--cascivo-focus-ring',
+    '--cascivo-space-3',
+    '--cascivo-duration-200',
+    '--cascivo-ease-out',
+  ],
+  accessibility: {
+    role: 'region',
+    wcag: '2.2-AA',
+    keyboard: ['Enter', 'Space'],
+    apgPattern: 'disclosure',
+    forcedColors: true,
+    reducedMotion: true,
+  },
+  examples: [
+    {
+      title: 'Uncontrolled',
+      code: '<Collapsible trigger="Show details">\n  <p>Hidden content revealed on toggle.</p>\n</Collapsible>',
+    },
+    {
+      title: 'Open by default',
+      code: '<Collapsible defaultOpen trigger="Details">\n  <p>Visible initially.</p>\n</Collapsible>',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['disclosure', 'collapse', 'expand', 'toggle', 'show-hide'],
+  intent: {
+    whenToUse: [
+      'Hiding a single secondary block until the user asks for it',
+      'Progressive disclosure of details, advanced options, or supplementary text',
+      'Toggling one region whose state you may want to control externally',
+    ],
+    whenNotToUse: [
+      'Several mutually related sections — use Accordion instead',
+      'Transient overlays anchored to a trigger — use Dropdown or Popover',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Stacking many Collapsibles to emulate an accordion',
+        good: 'Use Accordion when sections are a related set',
+        why: 'Accordion manages single/multiple-open semantics and shared keyboard navigation',
+      },
+    ],
+    related: [
+      {
+        name: 'Accordion',
+        relationship: 'alternative',
+        reason: 'Multi-region disclosure; Collapsible is the single-region case',
+      },
+    ],
+    a11yRationale:
+      'The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target',
+    flexibility: [
+      {
+        area: 'open state',
+        level: 'flexible',
+        note: 'Controlled or uncontrolled via open / defaultOpen',
+      },
+      {
+        area: 'trigger markup',
+        level: 'strict',
+        note: 'Always rendered as a native button for keyboard and a11y correctness',
+      },
+    ],
+  },
+}

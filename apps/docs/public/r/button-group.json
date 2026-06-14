@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "name": "button-group",
+  "type": "component",
+  "description": "Visually joins a set of related buttons into a single segmented control",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button-group/button-group.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/button-group/button-group.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["action", "segmented", "toolbar", "layout"],
+  "category": "inputs",
+  "meta": {
+    "name": "ButtonGroup",
+    "description": "Visually joins a set of related buttons into a single segmented control",
+    "category": "inputs",
+    "states": ["idle"],
+    "variants": [],
+    "sizes": ["sm", "md", "lg"],
+    "props": [
+      {
+        "name": "orientation",
+        "type": "'horizontal' | 'vertical'",
+        "required": false,
+        "default": "horizontal"
+      },
+      {
+        "name": "size",
+        "type": "'sm' | 'md' | 'lg'",
+        "required": false,
+        "default": "md"
+      },
+      {
+        "name": "roving",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "loop",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "aria-labelledby",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "tokens": ["--cascivo-button-radius", "--cascivo-radius-control"],
+    "accessibility": {
+      "role": "group",
+      "wcag": "2.2-AA",
+      "keyboard": ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "Home", "End"],
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Joined actions",
+        "code": "<ButtonGroup aria-label=\"Text alignment\"><Button>Left</Button><Button>Center</Button><Button>Right</Button></ButtonGroup>"
+      },
+      {
+        "title": "Vertical with roving focus",
+        "code": "<ButtonGroup orientation=\"vertical\" roving aria-label=\"View\"><Button>List</Button><Button>Grid</Button></ButtonGroup>"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["action", "segmented", "toolbar", "layout"],
+    "intent": {
+      "whenToUse": [
+        "Presenting several related, independent actions that read as one control (e.g. an editor toolbar)",
+        "Visually grouping buttons that share context without implying mutual exclusivity"
+      ],
+      "whenNotToUse": [
+        "The buttons represent a single selected value among options — use ToggleGroup",
+        "The actions are unrelated and should read as separate buttons — lay them out with spacing instead"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<ButtonGroup><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+          "good": "<ButtonGroup aria-label=\"Formatting\"><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+          "why": "A group with no accessible name is announced as an unlabeled region; supply aria-label or aria-labelledby"
+        }
+      ],
+      "related": [
+        {
+          "name": "ToggleGroup",
+          "relationship": "alternative",
+          "reason": "Use when the buttons select a value rather than fire independent actions"
+        },
+        {
+          "name": "Button",
+          "relationship": "contains",
+          "reason": "A button group is a layout container for buttons"
+        }
+      ],
+      "a11yRationale": "Exposes role=\"group\" so assistive tech treats the buttons as one labeled set; optional roving focus lets arrow keys traverse the buttons as a single tab stop, matching toolbar expectations",
+      "content": {
+        "tone": "Imperative verb-first labels on each child button",
+        "notes": "Keep child labels parallel in form and length so the segmented control reads evenly"
+      },
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+        },
+        {
+          "area": "children",
+          "level": "flexible",
+          "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+        }
+      ]
+    }
+  }
+}

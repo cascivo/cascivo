@@ -4,11 +4,11 @@ import { useSignal, type Signal } from './signals.ts'
 
 export interface UseControllableSignalOptions<T> {
   /** Controlled value. When provided, the component is controlled for its whole life. */
-  value?: T
+  value?: T | undefined
   /** Initial value for uncontrolled use. */
-  defaultValue?: T
+  defaultValue?: T | undefined
   /** Called on every write, in both controlled and uncontrolled modes. */
-  onChange?: (value: T) => void
+  onChange?: ((value: T) => void) | undefined
 }
 
 /**

@@ -77,6 +77,11 @@
       "path": "/docs/specs/mobile-audit-landing.md"
     },
     {
+      "id": "parity-matrix",
+      "title": "parity-matrix",
+      "path": "/docs/specs/parity-matrix.md"
+    },
+    {
       "id": "perf-methodology",
       "title": "perf-methodology",
       "path": "/docs/specs/perf-methodology.md"
@@ -187,6 +192,18 @@
           "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
         }
       ],
+      "AspectRatio": [
+        {
+          "area": "ratio",
+          "level": "flexible",
+          "note": "Any positive number; common values are 16/9, 4/3, 1, 3/2"
+        },
+        {
+          "area": "child sizing",
+          "level": "strict",
+          "note": "The single child is stretched to fill; provide one media element"
+        }
+      ],
       "Avatar": [
         {
           "area": "size",
@@ -247,6 +264,18 @@
           "note": "Free, within tone guidance"
         }
       ],
+      "ButtonGroup": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+        },
+        {
+          "area": "children",
+          "level": "flexible",
+          "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+        }
+      ],
       "Card": [
         {
           "area": "variant and padding",
@@ -293,6 +322,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
+        }
+      ],
+      "Collapsible": [
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled or uncontrolled via open / defaultOpen"
+        },
+        {
+          "area": "trigger markup",
+          "level": "strict",
+          "note": "Always rendered as a native button for keyboard and a11y correctness"
         }
       ],
       "Combobox": [
@@ -428,6 +469,18 @@
           "note": "Text and background colors must resolve to --cascivo-* tokens"
         }
       ],
+      "Field": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "control element",
+          "level": "flexible",
+          "note": "Any single element accepting id/aria-* props can be the child control"
+        }
+      ],
       "FileUploader": [
         {
           "area": "token names",
@@ -515,6 +568,30 @@
           "note": "HoverCardContent accepts arbitrary children"
         }
       ],
+      "IconButton": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls"
+        },
+        {
+          "area": "icon choice",
+          "level": "flexible",
+          "note": "Any single icon node; consumer owns the icon set"
+        }
+      ],
+      "InlineLoading": [
+        {
+          "area": "label",
+          "level": "flexible",
+          "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+        },
+        {
+          "area": "status semantics",
+          "level": "strict",
+          "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+        }
+      ],
       "Input": [
         {
           "area": "token names",
@@ -559,6 +636,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Surface and border must resolve to --cascivo-* tokens"
+        }
+      ],
+      "Label": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "label copy",
+          "level": "flexible",
+          "note": "Free, within tone guidance"
         }
       ],
       "Link": [
@@ -634,6 +723,23 @@
           "area": "options",
           "level": "flexible",
           "note": "Caller supplies the option list and may mark individual options disabled"
+        }
+      ],
+      "Notification": [
+        {
+          "area": "icon",
+          "level": "flexible",
+          "note": "A variant-appropriate icon is supplied by default; override with the icon prop"
+        },
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Any ReactNode (typically Buttons) can fill the actions slot"
+        },
+        {
+          "area": "role mapping",
+          "level": "strict",
+          "note": "warning/error must use role=\"alert\"; info/success use role=\"status\""
         }
       ],
       "NumberInput": [
@@ -795,6 +901,18 @@
           "area": "scale and labels",
           "level": "flexible",
           "note": "max sets the scale and labels.rating customizes the per-star announcement"
+        }
+      ],
+      "ScrollArea": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "vertical, horizontal, or both depending on content"
+        },
+        {
+          "area": "scroll behaviour",
+          "level": "strict",
+          "note": "Relies on native overflow scrolling — never replace with JS scrolling"
         }
       ],
       "Search": [
@@ -1061,6 +1179,18 @@
           "note": "Optional label describing the setting being toggled"
         }
       ],
+      "ToggleGroup": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Item height must resolve to --cascivo-control-height-* to align with other controls"
+        },
+        {
+          "area": "item content",
+          "level": "flexible",
+          "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
+        }
+      ],
       "Tooltip": [
         {
           "area": "placement",
@@ -1261,6 +1391,50 @@
         ]
       },
       "contextUrl": "/context/alert-dialog.md"
+    },
+    {
+      "name": "AspectRatio",
+      "category": "layout",
+      "description": "Constrains content to a fixed width-to-height ratio",
+      "intent": {
+        "whenToUse": [
+          "Reserving a stable box for media that loads asynchronously, avoiding layout shift",
+          "Embedding responsive iframes (video, maps) at a known proportion",
+          "Keeping thumbnails or covers uniform across a grid"
+        ],
+        "whenNotToUse": [
+          "Content whose height should grow with text — let it size naturally",
+          "A single fixed-pixel image where width and height are already known"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping text content that must expand to fit its lines",
+            "good": "Reserve AspectRatio for media; let prose flow at its intrinsic height",
+            "why": "A fixed ratio clips or distorts content that needs variable height"
+          }
+        ],
+        "related": [
+          {
+            "name": "Card",
+            "relationship": "contained-by",
+            "reason": "Commonly holds a cover image inside a Card media region"
+          }
+        ],
+        "a11yRationale": "Purely presentational wrapper with no role; the inner media element carries its own semantics and alt text",
+        "flexibility": [
+          {
+            "area": "ratio",
+            "level": "flexible",
+            "note": "Any positive number; common values are 16/9, 4/3, 1, 3/2"
+          },
+          {
+            "area": "child sizing",
+            "level": "strict",
+            "note": "The single child is stretched to fill; provide one media element"
+          }
+        ]
+      },
+      "contextUrl": "/context/aspect-ratio.md"
     },
     {
       "name": "Avatar",
@@ -1502,6 +1676,58 @@
       "contextUrl": "/context/button.md"
     },
     {
+      "name": "ButtonGroup",
+      "category": "inputs",
+      "description": "Visually joins a set of related buttons into a single segmented control",
+      "intent": {
+        "whenToUse": [
+          "Presenting several related, independent actions that read as one control (e.g. an editor toolbar)",
+          "Visually grouping buttons that share context without implying mutual exclusivity"
+        ],
+        "whenNotToUse": [
+          "The buttons represent a single selected value among options — use ToggleGroup",
+          "The actions are unrelated and should read as separate buttons — lay them out with spacing instead"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ButtonGroup><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+            "good": "<ButtonGroup aria-label=\"Formatting\"><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+            "why": "A group with no accessible name is announced as an unlabeled region; supply aria-label or aria-labelledby"
+          }
+        ],
+        "related": [
+          {
+            "name": "ToggleGroup",
+            "relationship": "alternative",
+            "reason": "Use when the buttons select a value rather than fire independent actions"
+          },
+          {
+            "name": "Button",
+            "relationship": "contains",
+            "reason": "A button group is a layout container for buttons"
+          }
+        ],
+        "a11yRationale": "Exposes role=\"group\" so assistive tech treats the buttons as one labeled set; optional roving focus lets arrow keys traverse the buttons as a single tab stop, matching toolbar expectations",
+        "content": {
+          "tone": "Imperative verb-first labels on each child button",
+          "notes": "Keep child labels parallel in form and length so the segmented control reads evenly"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+          },
+          {
+            "area": "children",
+            "level": "flexible",
+            "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+          }
+        ]
+      },
+      "contextUrl": "/context/button-group.md"
+    },
+    {
       "name": "Card",
       "category": "display",
       "description": "Container for grouping related content",
@@ -1707,6 +1933,50 @@
         ]
       },
       "contextUrl": "/context/code.md"
+    },
+    {
+      "name": "Collapsible",
+      "category": "display",
+      "description": "A single disclosure region toggled open and closed by its trigger",
+      "intent": {
+        "whenToUse": [
+          "Hiding a single secondary block until the user asks for it",
+          "Progressive disclosure of details, advanced options, or supplementary text",
+          "Toggling one region whose state you may want to control externally"
+        ],
+        "whenNotToUse": [
+          "Several mutually related sections — use Accordion instead",
+          "Transient overlays anchored to a trigger — use Dropdown or Popover"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Stacking many Collapsibles to emulate an accordion",
+            "good": "Use Accordion when sections are a related set",
+            "why": "Accordion manages single/multiple-open semantics and shared keyboard navigation"
+          }
+        ],
+        "related": [
+          {
+            "name": "Accordion",
+            "relationship": "alternative",
+            "reason": "Multi-region disclosure; Collapsible is the single-region case"
+          }
+        ],
+        "a11yRationale": "The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target",
+        "flexibility": [
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled or uncontrolled via open / defaultOpen"
+          },
+          {
+            "area": "trigger markup",
+            "level": "strict",
+            "note": "Always rendered as a native button for keyboard and a11y correctness"
+          }
+        ]
+      },
+      "contextUrl": "/context/collapsible.md"
     },
     {
       "name": "Combobox",
@@ -2211,6 +2481,63 @@
       "contextUrl": "/context/empty-state.md"
     },
     {
+      "name": "Field",
+      "category": "inputs",
+      "description": "Form-field wrapper composing label, control, description, and error",
+      "intent": {
+        "whenToUse": [
+          "Pairing a single control with its label, helper text, and validation message",
+          "Wiring aria-describedby / aria-invalid automatically instead of by hand"
+        ],
+        "whenNotToUse": [
+          "A standalone control that needs no label, description, or error",
+          "Grouping multiple related controls — use a <fieldset> with a <legend>"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Field label=\"Email\"><Input /><Input /></Field>",
+            "good": "<Field label=\"Email\"><Input /></Field>",
+            "why": "Field clones exactly one child control to inject its id and aria wiring; multiple children break the association"
+          },
+          {
+            "bad": "<div><label>Email</label><input aria-invalid /><span>Error</span></div>",
+            "good": "<Field label=\"Email\" error=\"Error\"><Input /></Field>",
+            "why": "Hand-wired markup easily drifts: missing ids, no role=\"alert\", mismatched aria-describedby — Field keeps them in sync"
+          }
+        ],
+        "related": [
+          {
+            "name": "Label",
+            "relationship": "contains",
+            "reason": "Field renders a Label and links it to the control via htmlFor"
+          },
+          {
+            "name": "Input",
+            "relationship": "contains",
+            "reason": "The control passed as children receives the generated id and aria attributes"
+          }
+        ],
+        "a11yRationale": "Generates stable ids with useId and links them through htmlFor and aria-describedby; the error carries role=\"alert\" so it is announced on appearance, and aria-invalid marks the control invalid for assistive tech",
+        "content": {
+          "tone": "Label is a noun phrase; error is a short corrective sentence",
+          "notes": "Descriptions are concise helper text; errors state what is wrong and how to fix it"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+          },
+          {
+            "area": "control element",
+            "level": "flexible",
+            "note": "Any single element accepting id/aria-* props can be the child control"
+          }
+        ]
+      },
+      "contextUrl": "/context/field.md"
+    },
+    {
       "name": "FileUploader",
       "category": "inputs",
       "description": "Drag-and-drop file upload zone with file list and status indicators.",
@@ -2528,6 +2855,112 @@
       "contextUrl": "/context/hover-card.md"
     },
     {
+      "name": "IconButton",
+      "category": "inputs",
+      "description": "Square, icon-only button with a required accessible label",
+      "intent": {
+        "whenToUse": [
+          "A compact, recognizable action where an icon alone communicates intent (close, edit, more)",
+          "Dense toolbars or table rows where a text label would not fit"
+        ],
+        "whenNotToUse": [
+          "The action is not universally recognizable by its icon — use a Button with a text label",
+          "Navigating between pages — use an anchor (optionally via asChild)"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<IconButton label=\"\"><TrashIcon /></IconButton>",
+            "good": "<IconButton label=\"Delete item\"><TrashIcon /></IconButton>",
+            "why": "An icon-only control has no visible text, so the label prop is the only accessible name screen readers can announce"
+          }
+        ],
+        "related": [
+          {
+            "name": "Button",
+            "relationship": "alternative",
+            "reason": "Use a Button when the action needs a visible text label"
+          },
+          {
+            "name": "ButtonGroup",
+            "relationship": "contained-by",
+            "reason": "Icon buttons are commonly joined into a toolbar via ButtonGroup"
+          }
+        ],
+        "a11yRationale": "Renders a native <button> with a mandatory aria-label so the icon-only control always exposes an accessible name; focus, role, and Enter/Space activation come from the platform",
+        "content": {
+          "tone": "Imperative verb describing the action",
+          "notes": "The label is announced to screen readers; be specific (e.g. \"Delete item\", not \"Delete\")"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls"
+          },
+          {
+            "area": "icon choice",
+            "level": "flexible",
+            "note": "Any single icon node; consumer owns the icon set"
+          }
+        ]
+      },
+      "contextUrl": "/context/icon-button.md"
+    },
+    {
+      "name": "InlineLoading",
+      "category": "feedback",
+      "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
+      "intent": {
+        "whenToUse": [
+          "Showing the progress of a single inline action — a Save button that becomes \"Saving… / Saved / Failed\"",
+          "Communicating async status next to a control without occupying its own block or modal",
+          "Reflecting a terminal success or error state that should be announced to assistive tech"
+        ],
+        "whenNotToUse": [
+          "Page- or section-level loading where layout space is reserved — use Skeleton or Spinner",
+          "Persistent, multi-line messages with recovery actions — use Alert or Notification",
+          "Determinate progress with a known percentage — use a progress bar"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Spinner /> with separate manually-managed success and error markup",
+            "good": "<InlineLoading status={status} /> driving icon and color from one status prop",
+            "why": "A single status keeps the icon, color, and announced label in sync and prevents mismatched states"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "contains",
+            "reason": "InlineLoading renders a Spinner for its active state and adds finished/error icons plus a label"
+          },
+          {
+            "name": "Alert",
+            "relationship": "alternative",
+            "reason": "Use Alert for persistent messages that need a title, body, and actions rather than a terse status"
+          }
+        ],
+        "a11yRationale": "role=\"status\" with aria-live=\"polite\" announces the label when the status changes; the icon is decorative (aria-hidden) so meaning is carried by the text and color is never the sole signal",
+        "content": {
+          "tone": "Terse and present-tense — \"Saving\", \"Saved\", \"Save failed\"",
+          "notes": "Keep labels to a few words; the inactive status renders no label by default"
+        },
+        "flexibility": [
+          {
+            "area": "label",
+            "level": "flexible",
+            "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+          },
+          {
+            "area": "status semantics",
+            "level": "strict",
+            "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+          }
+        ]
+      },
+      "contextUrl": "/context/inline-loading.md"
+    },
+    {
       "name": "Input",
       "category": "inputs",
       "description": "Text input field with optional label, hint, and error state",
@@ -2687,6 +3120,63 @@
         ]
       },
       "contextUrl": "/context/kbd.md"
+    },
+    {
+      "name": "Label",
+      "category": "inputs",
+      "description": "Accessible caption for a form control",
+      "intent": {
+        "whenToUse": [
+          "Naming a single form control (input, select, checkbox) so clicking the text focuses it",
+          "Marking a field as required with a visible and screen-reader-announced indicator"
+        ],
+        "whenNotToUse": [
+          "Labeling a group of controls — use a <fieldset>/<legend> instead",
+          "Static body copy that is not associated with a control — use a plain text element"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Label>Email</Label><input id=\"email\" />",
+            "good": "<Label htmlFor=\"email\">Email</Label><input id=\"email\" />",
+            "why": "Without htmlFor the label is not programmatically associated, so click-to-focus and screen-reader naming break"
+          },
+          {
+            "bad": "<Label required>Email <span>*</span></Label>",
+            "good": "<Label required>Email</Label>",
+            "why": "The required marker is rendered for you with an accessible text alternative; a hand-added asterisk is silent to screen readers"
+          }
+        ],
+        "related": [
+          {
+            "name": "Field",
+            "relationship": "contained-by",
+            "reason": "Field composes Label with a control, description, and error and wires the ids automatically"
+          },
+          {
+            "name": "Input",
+            "relationship": "pairs-with",
+            "reason": "A label names the input it points at via htmlFor"
+          }
+        ],
+        "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
+        "content": {
+          "tone": "Short noun phrase naming the field",
+          "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+          },
+          {
+            "area": "label copy",
+            "level": "flexible",
+            "note": "Free, within tone guidance"
+          }
+        ]
+      },
+      "contextUrl": "/context/label.md"
     },
     {
       "name": "Link",
@@ -2967,6 +3457,65 @@
         ]
       },
       "contextUrl": "/context/multi-select.md"
+    },
+    {
+      "name": "Notification",
+      "category": "feedback",
+      "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
+      "intent": {
+        "whenToUse": [
+          "Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)",
+          "Pairing a status message with one or more recovery actions via the actions slot",
+          "Communicating outcomes that should persist until the user reads or acts on them"
+        ],
+        "whenNotToUse": [
+          "Transient, auto-dismissing feedback that floats above the layout — use Toast",
+          "A terse single-line action status next to a control — use InlineLoading",
+          "Blocking the user for a required decision — use Modal or AlertDialog"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Stacking Notifications in a fixed corner viewport on a timer to fake toasts",
+            "good": "<Toast> for ephemeral, floating, auto-dismissing feedback",
+            "why": "Notification is an in-flow banner; faking toast behavior duplicates Toast and breaks layout expectations"
+          }
+        ],
+        "related": [
+          {
+            "name": "Toast",
+            "relationship": "alternative",
+            "reason": "Toast floats and auto-dismisses; Notification stays inline in the document flow"
+          },
+          {
+            "name": "Alert",
+            "relationship": "alternative",
+            "reason": "Alert is a lighter inline message; Notification leans into a leading variant icon and an actions slot"
+          }
+        ],
+        "a11yRationale": "role=\"alert\" for warning and error so assistive tech announces them assertively, role=\"status\" for info and success; the variant icon is decorative (aria-hidden) and color is always paired with the icon and title, and the dismiss control is a labeled button",
+        "content": {
+          "tone": "Clear and outcome-focused — state what happened and the next step",
+          "notes": "Title summarizes; description adds detail. Put recovery controls in the actions slot, not the title."
+        },
+        "flexibility": [
+          {
+            "area": "icon",
+            "level": "flexible",
+            "note": "A variant-appropriate icon is supplied by default; override with the icon prop"
+          },
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Any ReactNode (typically Buttons) can fill the actions slot"
+          },
+          {
+            "area": "role mapping",
+            "level": "strict",
+            "note": "warning/error must use role=\"alert\"; info/success use role=\"status\""
+          }
+        ]
+      },
+      "contextUrl": "/context/notification.md"
     },
     {
       "name": "NumberInput",
@@ -3638,6 +4187,50 @@
         ]
       },
       "contextUrl": "/context/rating-group.md"
+    },
+    {
+      "name": "ScrollArea",
+      "category": "layout",
+      "description": "A scroll container with styled, slim scrollbars and overflow shadows",
+      "intent": {
+        "whenToUse": [
+          "Constraining a region to a fixed height/width with overflow scrolling",
+          "Giving long lists, tables, or code blocks consistent slim scrollbars across browsers",
+          "Signalling more content with subtle top/bottom scroll shadows"
+        ],
+        "whenNotToUse": [
+          "Whole-page scrolling — let the document scroll naturally",
+          "Content that should determine its own height — do not cap it"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Nesting many ScrollAreas so the user faces competing scrollbars",
+            "good": "Scroll one region; let the rest size to content",
+            "why": "Nested scroll regions trap focus and confuse pointer and keyboard scrolling"
+          }
+        ],
+        "related": [
+          {
+            "name": "Separator",
+            "relationship": "pairs-with",
+            "reason": "Often divides items inside a scrolled list"
+          }
+        ],
+        "a11yRationale": "Native overflow keeps the container keyboard-scrollable and focusable per browser defaults; styling never removes the scroll affordance, only restyles it",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "vertical, horizontal, or both depending on content"
+          },
+          {
+            "area": "scroll behaviour",
+            "level": "strict",
+            "note": "Relies on native overflow scrolling — never replace with JS scrolling"
+          }
+        ]
+      },
+      "contextUrl": "/context/scroll-area.md"
     },
     {
       "name": "Search",
@@ -4738,6 +5331,58 @@
         ]
       },
       "contextUrl": "/context/toggle.md"
+    },
+    {
+      "name": "ToggleGroup",
+      "category": "inputs",
+      "description": "A set of toggle buttons for single or multiple selection",
+      "intent": {
+        "whenToUse": [
+          "Choosing one value from a small, mutually exclusive set that should stay visible (type=\"single\")",
+          "Toggling several independent options in a compact segmented control (type=\"multiple\")"
+        ],
+        "whenNotToUse": [
+          "The options are independent actions, not a selection — use ButtonGroup",
+          "There are many options or they need labels and descriptions — use Radio or Checkbox groups"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ToggleGroup type=\"single\" items={items} onValueChange={save} />",
+            "good": "<ToggleGroup type=\"single\" value={align} onValueChange={setAlign} items={items} />",
+            "why": "Single-select used as a controlled value should be driven by value/onValueChange so the source of truth lives with the parent"
+          }
+        ],
+        "related": [
+          {
+            "name": "ButtonGroup",
+            "relationship": "alternative",
+            "reason": "Use when the buttons fire independent actions rather than select a value"
+          },
+          {
+            "name": "Toggle",
+            "relationship": "alternative",
+            "reason": "Use a single Toggle for one standalone binary option"
+          }
+        ],
+        "a11yRationale": "Single mode renders role=\"radiogroup\" with role=\"radio\" + aria-checked items; multiple mode uses a plain group of buttons with aria-pressed. Roving tabindex makes the set one tab stop and arrow keys move between items, matching the APG radiogroup/toolbar patterns",
+        "content": {
+          "tone": "Short noun or icon per option",
+          "notes": "Keep item labels parallel and concise; provide a label or icon meaningful out of context"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Item height must resolve to --cascivo-control-height-* to align with other controls"
+          },
+          {
+            "area": "item content",
+            "level": "flexible",
+            "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
+          }
+        ]
+      },
+      "contextUrl": "/context/toggle-group.md"
     },
     {
       "name": "Tooltip",
