@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mulberry32 } from './seeded-random'
+import { mulberry32, seededRandom } from './seeded-random'
 
 describe('mulberry32', () => {
   it('produces values in [0, 1)', () => {
@@ -25,5 +25,12 @@ describe('mulberry32', () => {
     const av = Array.from({ length: 10 }, () => a())
     const bv = Array.from({ length: 10 }, () => b())
     expect(av).not.toEqual(bv)
+  })
+})
+
+describe('seededRandom', () => {
+  it('pick() throws on empty array', () => {
+    const rng = seededRandom(1)
+    expect(() => rng.pick([])).toThrow('seededRandom.pick: empty array')
   })
 })

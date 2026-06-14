@@ -25,7 +25,10 @@ export function seededRandom(seed: number): SeededRandom {
   return {
     next: () => rng(),
     int: (min, max) => Math.floor(rng() * (max - min + 1)) + min,
-    pick: <T>(arr: T[]) => arr[Math.floor(rng() * arr.length)] as T,
+    pick: <T>(arr: T[]): T => {
+      if (arr.length === 0) throw new Error('seededRandom.pick: empty array')
+      return arr[Math.floor(rng() * arr.length)] as T
+    },
     bool: (p = 0.5) => rng() < p,
   }
 }
