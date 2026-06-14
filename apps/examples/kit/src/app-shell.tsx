@@ -12,6 +12,7 @@ const msg = defineMessages('kit.appShell', {
   toggleTheme: 'Toggle theme',
   searchPlaceholder: 'Search…',
   searchLabel: 'Command menu',
+  mockBanner: 'Mock demo — no real data',
 })
 
 export type AppShellTheme = 'dark' | 'light'
@@ -30,6 +31,7 @@ export interface AppShellProps {
   brand?: ReactNode
   actions?: ReactNode
   children: ReactNode
+  mockBanner?: boolean
 }
 
 export function AppShell({
@@ -38,6 +40,7 @@ export function AppShell({
   brand,
   actions,
   children,
+  mockBanner = false,
 }: AppShellProps) {
   useSignals()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -62,6 +65,7 @@ export function AppShell({
 
   return (
     <div ref={containerRef} className={styles['shell']} data-theme={theme.value}>
+      {mockBanner && <div className={styles['mockBanner']}>{t(msg.mockBanner)}</div>}
       <Header brand={brand} actions={actions ?? themeButton} sticky />
       <div className={styles['body']}>
         <SideNav items={navItems} />
