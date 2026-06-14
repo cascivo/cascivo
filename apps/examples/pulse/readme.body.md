@@ -18,3 +18,9 @@ pnpm exec vp dev
 # From monorepo root
 pnpm exec vp run @cascivo/example-pulse#dev
 ```
+
+## Live demo
+
+Deployed at **https://cascivo.com/demos/pulse/** — assembled into the cascivo landing site (same
+origin) by `scripts/assemble-demos.mjs`. Built with Vite `base: './'`, so the same build runs both
+standalone (`vp preview`, served at `/`) and under `/demos/pulse/`.

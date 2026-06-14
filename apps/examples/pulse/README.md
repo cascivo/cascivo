@@ -23,6 +23,12 @@ pnpm exec vp dev
 pnpm exec vp run @cascivo/example-pulse#dev
 ```
 
+## Live demo
+
+Deployed at **https://cascivo.com/demos/pulse/** — assembled into the cascivo landing site (same
+origin) by `scripts/assemble-demos.mjs`. Built with Vite `base: './'`, so the same build runs both
+standalone (`vp preview`, served at `/`) and under `/demos/pulse/`.
+
 ---
 
 [Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
