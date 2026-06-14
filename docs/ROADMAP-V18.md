@@ -1,7 +1,7 @@
 # cascivo — Roadmap v18: Parity & Primitives
 
 **Last updated:** 2026-06-14
-**Status:** 📝 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-14-v18-master-plan.md` + tranches 1–7
 
 ---
@@ -114,29 +114,53 @@ Group` exercise `RovingFocus`). Tier-2 (T6) = richer/structural or single-system
 
 ## Definition of Done
 
-- [ ] `docs/specs/parity-matrix.md` formally maps cascivo's catalog against shadcn/ui (58 components)
-      and Carbon's roster — each competitor entry marked covered / partial / gap with the cascivo
-      component (or note) — and a generator emits `parity.json`; a drift test fails if the matrix changes
-      without regen. _Evidence: T1._
-- [ ] `factory-backlog.json` contains a real, prioritized spec for every gap in the matrix; pre-existing
-      `pending` entries are reconciled (no duplicates), and the only genuinely-new entries are added.
-      _Evidence: T1._
-- [ ] `@cascivo/core` exports `Slot` + an `asChild` mechanism that merges props and refs onto a single
-      child element; covered by tests (prop merge, ref compose, event chaining). _Evidence: T2._
-- [ ] `@cascivo/core` exports `useControllableSignal`, `useMediaQuery`, `useScrollLock`, `useId`,
+- [x] `docs/specs/parity-matrix.md` formally maps cascivo's catalog against shadcn/ui (59 rows) and
+      Carbon's roster (47 rows) — each competitor entry marked covered / partial / gap / by-convention /
+      deferred with the cascivo component (or note) — and `scripts/parity/generate.ts` emits `parity.json`;
+      it fails loudly if a covered row names an unbuilt component, and the matrix is drift-gated by
+      `git diff --exit-code` after regen. _Evidence: T1._
+- [x] `factory-backlog.json` contains a real, prioritized, primitive-aware spec for every gap in the
+      matrix; the 14 relevant `pending` entries were reconciled (no duplicates; `splitter`→`resizable`)
+      and 13 genuinely-new entries added. _Evidence: T1._
+- [x] `@cascivo/core` exports `Slot` + an `asChild` mechanism that merges props and refs onto a single
+      child element; covered by tests (prop merge, ref compose, event chaining, failure paths). _Evidence: T2._
+- [x] `@cascivo/core` exports `useControllableSignal`, `useMediaQuery`, `useScrollLock`, `useId`,
       `useClipboard`; each tested; none use `useState`/`useEffect`. _Evidence: T3._
-- [ ] `@cascivo/core` exports `DismissableLayer`, `RovingFocus`/`useRovingFocus`, `Presence`, and an
+- [x] `@cascivo/core` exports `DismissableLayer`, `RovingFocus`/`useRovingFocus`, `Presence`, and an
       anchor-positioning helper; each tested; DOM side effects use `useSignalEffect`. _Evidence: T4._
-- [ ] Tier-1 parity components (≥10: Label, Field, Button Group, Icon Button, Toggle Group, Inline
-      Loading, Notification, Scroll Area, Collapsible, Aspect Ratio) are generated via the factory on the
-      new primitives, pass the component checklist, and are exported from `@cascivo/react`. _Evidence: T5._
-- [ ] Tier-2 parity components are generated via the factory and exported from `@cascivo/react`; any not
-      completed remain accurately marked as gaps in the matrix (no overstatement). _Evidence: T6._
-- [ ] A coverage page (docs or landing) renders cascivo vs shadcn vs Carbon from `parity.json`; "Why
-      cascivo" claims 34–36 live on `/why` with receipts linking to it. _Evidence: T7._
-- [ ] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen → diff),
+- [x] Tier-1 parity components (10: Label, Field, Button Group, Icon Button, Toggle Group, Inline
+      Loading, Notification, Scroll Area, Collapsible, Aspect Ratio) are generated on the new primitives,
+      pass the component checklist, and are exported from `@cascivo/react`. _Evidence: T5._
+- [x] Tier-2 parity components (19: Navigation Menu, Menubar, Menu Button, Toggletip, Resizable, Drawer,
+      Tree View, Tile, Structured List, Contained List, Carousel, Calendar, Date Range Picker, Color
+      Picker, Timeline, Data List, Native Select, Item, Code Snippet) are generated and exported from
+      `@cascivo/react`. _Evidence: T6._
+- [x] A coverage page (`/parity` in `apps/docs`) renders cascivo vs shadcn vs Carbon from `parity.json`;
+      "Why cascivo" claims 34–36 live on `/why` with receipts linking to it. _Evidence: T7._
+- [x] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen → diff),
       including the new parity-matrix drift check. _Evidence: T7._
-- [ ] `ROADMAP-V18.md` DoD boxes all checked; status → ✅ Shipped. _Evidence: T7._
+- [x] `ROADMAP-V18.md` DoD boxes all checked; status → ✅ Shipped. _Evidence: T7._
+
+## Close-out (2026-06-14)
+
+v18 shipped in full. Summary:
+
+- **Primitives (T2–T4):** `@cascivo/core` now ships the composition substrate — `Slot`/`asChild`,
+  `useControllableSignal`, `useMediaQuery`, `useScrollLock`, `useId`, `useClipboard`, `DismissableLayer`,
+  `useRovingFocus`, `Presence`, and `useAnchorPosition` — all signal-driven, zero
+  `useState`/`useEffect`/`useContext`, each tested (57 core tests pass).
+- **Components (T5–T6):** all 29 queued parity components shipped (10 Tier-1 + 19 Tier-2), built on the
+  primitives, exported from `@cascivo/react`. Registry grew 118 → 147. None deferred. The backlog marks
+  them `review`.
+- **Receipts (T1, T7):** `parity.json` is generated + drift-gated; the `/parity` coverage page renders
+  derived numbers — **shadcn/ui 58/59 covered** (the 59th, `Direction`, is by-convention RTL) and **IBM
+  Carbon 45/47 covered** (the 2 remaining — AI label/slug and Fluid — are explicitly deferred below).
+  Claims 34–36 are live on `/why` linking to `/parity`.
+- **Gate:** full CLAUDE.md gate green — `vp check`, `pnpm build`, `vp run -r check`, `pnpm test`, and
+  `pnpm regen` + `git diff --exit-code` (parity drift included) all exit 0.
+
+No parity components remain unbuilt. The only non-covered competitor entries are the by-convention and
+deferred items enumerated below — never overstated on the coverage page (it renders from `parity.json`).
 
 ## Deferred (do not re-litigate in v18)
 

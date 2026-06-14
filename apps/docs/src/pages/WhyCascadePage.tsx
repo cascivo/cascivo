@@ -181,6 +181,41 @@ const CLAIMS: Claim[] = [
       'Chrome-leading CSS pilots, alpha tooling, React/Preact-only, modern browsers. Candor, not adjectives.',
     receipt: { label: 'Use cases & honest boundaries', href: '/guides#use-cases' },
   },
+  {
+    number: 34,
+    title: 'Primitives, not just components',
+    substance:
+      '@cascivo/core ships the composition substrate shadcn gets from Radix — Slot/asChild, ' +
+      'useControllableSignal, DismissableLayer, RovingFocus, Presence, anchor positioning — all ' +
+      'signal-driven with zero useState/useEffect/useContext. Components are built on the primitives, ' +
+      'not around their absence.',
+    receipt: {
+      label: '@cascivo/core primitives',
+      href: 'https://github.com/urbanisierung/cascivo/tree/main/packages/core/src',
+    },
+  },
+  {
+    number: 35,
+    title: 'Measured parity, not implied',
+    substance:
+      'A generated matrix scores cascivo against shadcn/ui (59) and IBM Carbon (47) component by ' +
+      'component. The coverage page renders from parity.json, whose numbers are derived and ' +
+      'cross-checked against the real @cascivo/react exports — it cannot overstate. Where there is a ' +
+      'gap, there is a dated, queued spec.',
+    receipt: { label: 'Parity coverage page', href: '/parity' },
+  },
+  {
+    number: 36,
+    title: 'The catalog keeps closing the gap',
+    substance:
+      'Every parity gap is a real factory-backlog.json entry; the dark factory builds them on the v18 ' +
+      'primitives. v18 shipped 29 of them — the Tier-1 a11y substrate (Label, Field, Button Group, ' +
+      'Toggle Group, Icon Button, Inline Loading, Notification, Scroll Area, Collapsible, Aspect Ratio) ' +
+      'and the Tier-2 structural set (Navigation Menu, Menubar, Menu Button, Toggletip, Resizable, ' +
+      'Drawer, Tree View, Tile, Structured List, Contained List, Carousel, Calendar, Date Range Picker, ' +
+      'Color Picker, Timeline, Data List, Native Select, Item, Code Snippet).',
+    receipt: { label: 'See the coverage page', href: '/parity' },
+  },
 ]
 
 export function WhyCascadePage() {
@@ -190,7 +225,7 @@ export function WhyCascadePage() {
         <div class="doc-eyebrow">Why cascivo</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–33 are v13–v17's additions to the cascivo pitch. Each
+          "AI-first" is easy to say. Claims 14–36 are v13–v18's additions to the cascivo pitch. Each
           one links its receipt — the artifact that proves it shipped.
         </p>
       </header>
