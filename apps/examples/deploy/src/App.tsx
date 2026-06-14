@@ -3,7 +3,7 @@ import { useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { persistedSignal } from '@cascivo/storage'
 import { deployMsg } from './i18n'
-import { loadData } from './data/fixtures'
+import { loadData, loadError } from './data/fixtures'
 import { MetricsBar } from './sections/MetricsBar'
 import { PipelineList } from './sections/PipelineList'
 import { EnvironmentGrid } from './sections/EnvironmentGrid'
@@ -40,6 +40,18 @@ export default function App() {
           {theme.value}
         </button>
       </header>
+      {loadError.value && (
+        <div
+          role="alert"
+          style={{
+            padding: '0.5rem 1rem',
+            background: 'var(--cascivo-color-destructive-subtle)',
+            color: 'var(--cascivo-color-error)',
+          }}
+        >
+          {loadError.value}
+        </div>
+      )}
       <main className={styles['main']}>
         <section className={styles['section']}>
           <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionMetrics)}</h2>

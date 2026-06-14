@@ -1,16 +1,20 @@
-import { describe, it, expect } from 'vitest'
-import { pipelines, environments, metrics } from '../src/data/fixtures'
+import { describe, it, expect, beforeAll } from 'vitest'
+import { pipelines, environments, metrics, loadData } from '../src/data/fixtures'
 
 describe('fixtures', () => {
+  beforeAll(async () => {
+    await loadData()
+  })
+
   it('returns pipelines', () => {
-    expect(pipelines.length).toBeGreaterThan(0)
+    expect(pipelines.value.length).toBeGreaterThan(0)
   })
 
   it('returns environments', () => {
-    expect(environments.length).toBeGreaterThan(0)
+    expect(environments.value.length).toBeGreaterThan(0)
   })
 
   it('returns metrics', () => {
-    expect(metrics.deployFrequency).toBeGreaterThan(0)
+    expect(metrics.value?.deployFrequency).toBeGreaterThan(0)
   })
 })
