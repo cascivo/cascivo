@@ -17,16 +17,19 @@ export const BREAKPOINT_ALLOWLIST: AllowlistEntry[] = [
   {
     file: 'packages/components/src/pagination/pagination.module.css',
     value: '28rem',
-    reason: 'pre-v20 pagination range-label collapse — sits between sm(30rem) and md(40rem); migrate to 30rem in T7',
+    reason:
+      'pre-v20 pagination range-label collapse — sits between sm(30rem) and md(40rem); migrate to 30rem in T7',
   },
   {
     file: 'packages/layouts/src/dashboard-layout/dashboard-layout.module.css',
     value: '56rem',
-    reason: 'pre-v20 dashboard two-column breakpoint — sits between md(40rem) and lg(64rem); migrate to 64rem in T7',
+    reason:
+      'pre-v20 dashboard two-column breakpoint — sits between md(40rem) and lg(64rem); migrate to 64rem in T7',
   },
   {
     file: 'packages/layouts/src/sections/hero/hero.module.css',
     value: '48rem',
-    reason: 'pre-v20 hero split-variant breakpoint — sits between md(40rem) and lg(64rem); migrate to 64rem in T7',
+    reason:
+      'pre-v20 hero split-variant breakpoint — sits between md(40rem) and lg(64rem); migrate to 64rem in T7',
   },
 ]

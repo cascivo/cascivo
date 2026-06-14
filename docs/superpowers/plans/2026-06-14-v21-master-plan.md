@@ -124,14 +124,14 @@ persistence, `@cascivo/i18n` for strings, `@cascivo/charts` for visualisations. 
 
 ## Tranche map
 
-| T#  | Focus                                | Files / dirs (primary)                                                                                                                | Risk     |
-| --- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| T1  | Kit + **Cascade Deploy** (reference) | `apps/examples/kit/**` (`@cascivo/example-kit`), `apps/examples/deploy/**`, `pnpm-workspace.yaml` (already globs), per-app `vite.config.ts` | **High** |
-| T2  | **Cascade Pay** (charts-heavy)       | `apps/examples/pay/**` (vite config + aliases, `api/`, `data/`, `App.tsx`, sections), Playwright spec                                  | Medium   |
-| T3  | **Cascade Flow** (process)           | `apps/examples/flow/**` incl. a hand-built SVG `FlowDiagram`, `api/`, sim-driven token, Playwright spec                               | **High** |
-| T4  | **Cascade Track** (keyboard tracker) | `apps/examples/track/**` incl. CommandMenu wiring + storage-persisted issues board/list, Playwright spec                              | Medium   |
-| T5  | **Cascade Pulse** (observability)    | `apps/examples/pulse/**` incl. live `createSimulation` metrics/logs/alerts + heavy chart composition, Playwright spec                 | Medium   |
-| T6  | Gallery + CI + coverage + gate       | examples index/gallery, docs/landing link, `.github/workflows/cf-pages.yml` (+ `ci.yml` paths), coverage test, per-app README, gate, `ROADMAP-V21.md` | Medium |
+| T#  | Focus                                | Files / dirs (primary)                                                                                                                                | Risk     |
+| --- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| T1  | Kit + **Cascade Deploy** (reference) | `apps/examples/kit/**` (`@cascivo/example-kit`), `apps/examples/deploy/**`, `pnpm-workspace.yaml` (already globs), per-app `vite.config.ts`           | **High** |
+| T2  | **Cascade Pay** (charts-heavy)       | `apps/examples/pay/**` (vite config + aliases, `api/`, `data/`, `App.tsx`, sections), Playwright spec                                                 | Medium   |
+| T3  | **Cascade Flow** (process)           | `apps/examples/flow/**` incl. a hand-built SVG `FlowDiagram`, `api/`, sim-driven token, Playwright spec                                               | **High** |
+| T4  | **Cascade Track** (keyboard tracker) | `apps/examples/track/**` incl. CommandMenu wiring + storage-persisted issues board/list, Playwright spec                                              | Medium   |
+| T5  | **Cascade Pulse** (observability)    | `apps/examples/pulse/**` incl. live `createSimulation` metrics/logs/alerts + heavy chart composition, Playwright spec                                 | Medium   |
+| T6  | Gallery + CI + coverage + gate       | examples index/gallery, docs/landing link, `.github/workflows/cf-pages.yml` (+ `ci.yml` paths), coverage test, per-app README, gate, `ROADMAP-V21.md` | Medium   |
 
 **Risk notes:**
 

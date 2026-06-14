@@ -342,12 +342,12 @@ in arbitrary containers.
 
 **Canonical scale** (the only allowed width literals in `@media`/`@container` — `breakpoint:check` enforces this):
 
-| Name | Value | px (16px root) | Used for |
-| ---- | ----- | -------------- | -------- |
-| `sm` | `30rem` | 480 | narrow/small phone |
-| `md` | `40rem` | 640 | tablet/wide phone |
-| `lg` | `64rem` | 1024 | desktop (AppShell drawer breakpoint) |
-| `xl` | `80rem` | 1280 | wide desktop |
+| Name | Value   | px (16px root) | Used for                             |
+| ---- | ------- | -------------- | ------------------------------------ |
+| `sm` | `30rem` | 480            | narrow/small phone                   |
+| `md` | `40rem` | 640            | tablet/wide phone                    |
+| `lg` | `64rem` | 1024           | desktop (AppShell drawer breakpoint) |
+| `xl` | `80rem` | 1280           | wide desktop                         |
 
 `@media`/`@container` **cannot read CSS custom properties** — copy the rem value directly. The
 `--cascivo-screen-*` custom properties exist as documentation and JS/`calc` use only.

@@ -10,7 +10,10 @@ export const MOBILE_WIDTHS = [320, 360, 390, 414] as const
  * Assert zero horizontal overflow at the given viewport widths.
  * Sets viewport size, waits for layout, checks scrollWidth <= innerWidth.
  */
-export async function assertNoOverflow(page: Page, widths: readonly number[] = MOBILE_WIDTHS): Promise<void> {
+export async function assertNoOverflow(
+  page: Page,
+  widths: readonly number[] = MOBILE_WIDTHS,
+): Promise<void> {
   for (const width of widths) {
     await page.setViewportSize({ width, height: 812 })
     // wait for layout settle
@@ -21,7 +24,9 @@ export async function assertNoOverflow(page: Page, widths: readonly number[] = M
       overflow: document.documentElement.scrollWidth > window.innerWidth,
     }))
     if (overflows.overflow) {
-      throw new Error(`Horizontal overflow at ${width}px: scrollWidth=${overflows.scrollWidth} > innerWidth=${overflows.innerWidth}`)
+      throw new Error(
+        `Horizontal overflow at ${width}px: scrollWidth=${overflows.scrollWidth} > innerWidth=${overflows.innerWidth}`,
+      )
     }
   }
 }
@@ -46,7 +51,9 @@ export async function assertTapTargets(page: Page, selector: string, minPx = 44)
     const effective = Math.min(box.width, box.height)
     if (effective < MIN_PX) {
       const text = await el.textContent().catch(() => '?')
-      failures.push(`  ${selector} "${(text ?? '').trim().slice(0, 30)}": ${effective.toFixed(1)}px < ${MIN_PX}px`)
+      failures.push(
+        `  ${selector} "${(text ?? '').trim().slice(0, 30)}": ${effective.toFixed(1)}px < ${MIN_PX}px`,
+      )
     }
   }
   if (failures.length > 0) {

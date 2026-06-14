@@ -1,5 +1,6 @@
 import { signal, type Signal } from '@cascivo/core'
 import { persistedSignal } from '@cascivo/storage'
+import { minWidth } from '@cascivo/tokens/screens'
 
 export interface ShellState {
   /** Desktop: side nav collapsed to the icon rail. Persisted. */
@@ -32,7 +33,7 @@ export interface CreateShellStateOptions {
   persistKey?: string | false
 }
 
-const DESKTOP = '(min-width: 64rem)'
+const DESKTOP = minWidth('lg') // '(min-width: 64rem)' — canonical lg breakpoint
 
 function isDesktop(): boolean {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return true

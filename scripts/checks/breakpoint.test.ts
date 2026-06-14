@@ -53,7 +53,8 @@ function scanCssForOffScaleWidths(cssSource: string, filename: string): Violatio
   const violations: Violation[] = []
   const lines = cssSource.split('\n')
   // Match @media or @container lines containing width conditions
-  const widthCondRe = /(?:min-width|max-width|width|min-inline-size|max-inline-size|inline-size)\s*:\s*([\d.]+(?:rem|px|em))/g
+  const widthCondRe =
+    /(?:min-width|max-width|width|min-inline-size|max-inline-size|inline-size)\s*:\s*([\d.]+(?:rem|px|em))/g
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i] ?? ''
@@ -61,7 +62,10 @@ function scanCssForOffScaleWidths(cssSource: string, filename: string): Violatio
     // Only check lines inside @media or @container rules
     if (!trimmed.startsWith('@media') && !trimmed.startsWith('@container')) continue
     // Skip non-width media conditions
-    if (/prefers|forced|pointer|hover|aspect|color|resolution|orientation|print|screen/.test(trimmed)) continue
+    if (
+      /prefers|forced|pointer|hover|aspect|color|resolution|orientation|print|screen/.test(trimmed)
+    )
+      continue
 
     let match: RegExpExecArray | null
     widthCondRe.lastIndex = 0
@@ -79,9 +83,7 @@ describe('breakpoint:check — no off-scale width literals', () => {
   const packagesDir = join(REPO_ROOT, 'packages')
   const cssFiles = collectCssFiles(packagesDir)
 
-  const allowlistKeys = new Set(
-    BREAKPOINT_ALLOWLIST.map((e) => `${e.file}:${e.value}`)
-  )
+  const allowlistKeys = new Set(BREAKPOINT_ALLOWLIST.map((e) => `${e.file}:${e.value}`))
 
   it('all @media/@container width conditions use canonical scale values', () => {
     const realViolations: Violation[] = []
@@ -100,7 +102,10 @@ describe('breakpoint:check — no off-scale width literals', () => {
 
     if (realViolations.length > 0) {
       const msg = realViolations
-        .map((v) => `  ${v.file}:${v.line}  off-scale: ${v.value}  (use 30rem/40rem/64rem/80rem)  [${v.context.slice(0, 80)}]`)
+        .map(
+          (v) =>
+            `  ${v.file}:${v.line}  off-scale: ${v.value}  (use 30rem/40rem/64rem/80rem)  [${v.context.slice(0, 80)}]`,
+        )
         .join('\n')
       assert.fail(`Off-scale breakpoint literals found (not in allowlist):\n${msg}`)
     }
@@ -109,19 +114,25 @@ describe('breakpoint:check — no off-scale width literals', () => {
   it('allowlist has no stale entries (all allowlisted values still exist in files)', () => {
     // This test warns if an allowlist entry no longer exists in any CSS file
     // (meaning it was already migrated but the entry wasn't removed).
-    const allCssContent = cssFiles
-      .map((f) => ({ rel: relative(REPO_ROOT, f), content: readFileSync(f, 'utf8') }))
+    const allCssContent = cssFiles.map((f) => ({
+      rel: relative(REPO_ROOT, f),
+      content: readFileSync(f, 'utf8'),
+    }))
 
     const staleEntries: string[] = []
     for (const entry of BREAKPOINT_ALLOWLIST) {
       const fileContent = allCssContent.find((c) => c.rel === entry.file)
       if (!fileContent || !fileContent.content.includes(entry.value)) {
-        staleEntries.push(`${entry.file}: '${entry.value}' no longer exists — remove this allowlist entry`)
+        staleEntries.push(
+          `${entry.file}: '${entry.value}' no longer exists — remove this allowlist entry`,
+        )
       }
     }
 
     if (staleEntries.length > 0) {
-      assert.fail(`Stale breakpoint-allowlist entries (migrate done, entry not cleaned up):\n${staleEntries.map(s => '  ' + s).join('\n')}`)
+      assert.fail(
+        `Stale breakpoint-allowlist entries (migrate done, entry not cleaned up):\n${staleEntries.map((s) => '  ' + s).join('\n')}`,
+      )
     }
   })
 })
