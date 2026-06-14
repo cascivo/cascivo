@@ -64,9 +64,8 @@ export function MigrationGuide() {
         <div className="migrate-deltas">
           {bundle ? (
             <p className="migrate-delta">
-              <strong>Bundle:</strong> the same component set ships at{' '}
-              {fmtKb(bundle.cascade)} gzipped in {LIB_LABELS.cascade} vs {fmtKb(bundle.shadcn)} in{' '}
-              {LIB_LABELS.shadcn}.{' '}
+              <strong>Bundle:</strong> the same component set ships at {fmtKb(bundle.cascade)}{' '}
+              gzipped in {LIB_LABELS.cascade} vs {fmtKb(bundle.shadcn)} in {LIB_LABELS.shadcn}.{' '}
               <a href="/performance">See the full performance breakdown →</a>
             </p>
           ) : (
@@ -78,13 +77,13 @@ export function MigrationGuide() {
           {AXE ? (
             <p className="migrate-delta">
               <strong>Accessibility:</strong> {AXE.cascade.violations} axe violations in{' '}
-              {LIB_LABELS.cascade} vs {AXE.shadcn.violations} in {LIB_LABELS.shadcn} on the same run.{' '}
-              <a href="/accessibility">See the axe comparison →</a>
+              {LIB_LABELS.cascade} vs {AXE.shadcn.violations} in {LIB_LABELS.shadcn} on the same
+              run. <a href="/accessibility">See the axe comparison →</a>
             </p>
           ) : (
             <p className="migrate-delta">
-              <strong>Accessibility:</strong> every component is verified at WCAG 2.2 AA and CI fails
-              on a single axe violation. <a href="/accessibility">See the axe comparison →</a>
+              <strong>Accessibility:</strong> every component is verified at WCAG 2.2 AA and CI
+              fails on a single axe violation. <a href="/accessibility">See the axe comparison →</a>
             </p>
           )}
         </div>

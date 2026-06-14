@@ -295,4 +295,4 @@ New MCP tools:
 - [Tooltip](/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
 - [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-13 from registry v0.0.0_
+_Generated: 2026-06-14 from registry v0.0.0_
