@@ -34,7 +34,7 @@ const COLUMNS: Column<Incident>[] = [
     key: 'timestamp',
     header: t(msg.colTimestamp),
     render: (row) =>
-      new Date(row.timestamp).toLocaleString('en-US', {
+      new Date(row.timestamp).toLocaleString(undefined, {
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
@@ -44,7 +44,7 @@ const COLUMNS: Column<Incident>[] = [
   {
     key: 'status',
     header: t(msg.colStatus),
-    render: () => <Badge variant="destructive">Open</Badge>,
+    render: () => <Badge variant="destructive">{t(msg.statusOpen)}</Badge>,
   },
 ]
 
@@ -73,7 +73,7 @@ export function Incidents() {
   return (
     <div style={{ padding: 'var(--cascivo-space-6)' }}>
       <DataTable<Incident>
-        title="Incidents"
+        title={t(msg.titleIncidents)}
         columns={COLUMNS}
         rows={incidentsSignal.value}
         getRowId={(row) => row.id}

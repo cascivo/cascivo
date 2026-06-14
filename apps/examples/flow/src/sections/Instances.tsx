@@ -23,16 +23,16 @@ const STATUS_BADGE: Record<InstanceStatus, 'default' | 'success' | 'warning' | '
 }
 
 const FILTERS: Array<{ value: Filter; label: string }> = [
-  { value: 'all', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'incident', label: 'Incident' },
+  { value: 'all', label: t(msg.filterAll) },
+  { value: 'active', label: t(msg.filterActive) },
+  { value: 'completed', label: t(msg.filterCompleted) },
+  { value: 'incident', label: t(msg.filterIncident) },
 ]
 
 const COLUMNS: Column<ProcessInstance>[] = [
   {
     key: 'id',
-    header: 'ID',
+    header: t(msg.colId),
     render: (row) => (
       <span style={{ fontFamily: 'var(--cascivo-font-mono)', fontSize: 'var(--cascivo-text-xs)' }}>
         {row.id}

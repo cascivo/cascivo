@@ -97,7 +97,7 @@ export function Tasklist() {
   return (
     <div className={styles['wrapper']}>
       {loadingSignal.value ? (
-        <p className={styles['empty']}>Loading…</p>
+        <p className={styles['empty']}>{t(msg.loading)}</p>
       ) : tasks.length === 0 ? (
         <p className={styles['empty']}>{t(msg.emptyTasks)}</p>
       ) : (

@@ -216,7 +216,7 @@ export function FlowDiagram({ currentNodeId }: FlowDiagramProps) {
         </button>
         {activeId ? (
           <span className={styles['activeLabel']}>
-            Current step:{' '}
+            {t(msg.currentStep)}{' '}
             <strong>{PROCESS_NODES.find((n) => n.id === activeId)?.label ?? activeId}</strong>
           </span>
         ) : null}

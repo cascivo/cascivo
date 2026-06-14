@@ -40,4 +40,9 @@ export const msg = defineMessages('flow', {
   unassigned: 'Unassigned',
   playLabel: 'Play simulation',
   pauseLabel: 'Pause simulation',
+  loading: 'Loading…',
+  emptyHistory: 'No history recorded.',
+  statusOpen: 'Open',
+  titleIncidents: 'Incidents',
+  currentStep: 'Current step:',
 })

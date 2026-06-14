@@ -51,7 +51,7 @@ export function InstanceDetail({ instanceId }: InstanceDetailProps) {
   })
 
   if (loadingSignal.value) {
-    return <p className={styles['loading']}>Loading…</p>
+    return <p className={styles['loading']}>{t(msg.loading)}</p>
   }
 
   const instance = instanceSignal.value
@@ -60,7 +60,7 @@ export function InstanceDetail({ instanceId }: InstanceDetailProps) {
   const timelineItems: TimelineItem[] = instance.history.map((h, i) => ({
     id: `${h.nodeId}-${i}`,
     title: h.nodeId,
-    time: new Date(h.timestamp).toLocaleTimeString('en-US', {
+    time: new Date(h.timestamp).toLocaleTimeString(undefined, {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -106,7 +106,7 @@ export function InstanceDetail({ instanceId }: InstanceDetailProps) {
             {timelineItems.length > 0 ? (
               <Timeline items={timelineItems} />
             ) : (
-              <p className={styles['emptyText']}>No history recorded.</p>
+              <p className={styles['emptyText']}>{t(msg.emptyHistory)}</p>
             )}
           </TabsContent>
 
@@ -122,7 +122,7 @@ export function InstanceDetail({ instanceId }: InstanceDetailProps) {
                     <span className={styles['incidentMsg']}>{inc.message}</span>
                     <span className={styles['incidentMeta']}>
                       Step: {inc.nodeId} &middot;{' '}
-                      {new Date(inc.timestamp).toLocaleString('en-US', {
+                      {new Date(inc.timestamp).toLocaleString(undefined, {
                         month: 'short',
                         day: 'numeric',
                         hour: '2-digit',
