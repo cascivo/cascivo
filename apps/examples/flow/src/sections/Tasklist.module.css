@@ -1,0 +1,93 @@
+.wrapper {
+  padding: var(--cascivo-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.taskCard {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--cascivo-color-surface-raised);
+  flex-wrap: wrap;
+}
+
+.taskInfo {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+}
+
+.taskName {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 500;
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground);
+}
+
+.taskMeta {
+  font-size: var(--cascivo-text-xs);
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.taskActions {
+  display: flex;
+  gap: var(--cascivo-space-2);
+  flex-wrap: wrap;
+}
+
+.empty {
+  color: var(--cascivo-color-foreground-muted);
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  padding: var(--cascivo-space-4);
+}
+
+.drawerBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  padding-block-start: var(--cascivo-space-4);
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground);
+}
+
+.noteInput {
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface);
+  color: var(--cascivo-color-foreground);
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  inline-size: 100%;
+  min-block-size: 2.75rem;
+  resize: vertical;
+}
+
+.noteInput:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}

@@ -1,0 +1,70 @@
+.wrapper {
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--cascivo-color-surface);
+  overflow: hidden;
+}
+
+.header {
+  padding: var(--cascivo-space-4);
+  border-block-end: 1px solid var(--cascivo-color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+}
+
+.title {
+  font-size: var(--cascivo-text-base);
+  font-weight: 600;
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground);
+  margin: 0;
+}
+
+.body {
+  padding: var(--cascivo-space-4);
+}
+
+.loading {
+  color: var(--cascivo-color-foreground-muted);
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  padding: var(--cascivo-space-4);
+}
+
+.incidentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.incidentItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-1);
+  padding: var(--cascivo-space-3);
+  border: 1px solid var(--cascivo-color-border-destructive, var(--cascivo-color-border));
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface-raised);
+}
+
+.incidentMsg {
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground);
+}
+
+.incidentMeta {
+  font-size: var(--cascivo-text-xs);
+  font-family: var(--cascivo-font-sans);
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.emptyText {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-foreground-muted);
+  font-family: var(--cascivo-font-sans);
+}
