@@ -18,8 +18,10 @@ import { OgCard } from './sections/OgCard'
 import { AccessibilityPage } from './pages/AccessibilityPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { GuidesPage } from './pages/GuidesPage'
+import { NotFound } from './pages/NotFound'
 import { initReveal } from './reveal'
-import { applyRouteSeo } from './seo'
+import { applyNotFoundSeo, applyRouteSeo } from './seo'
+import { ROUTE_HEAD } from './route-head'
 
 function HomePage() {
   return (
@@ -44,16 +46,16 @@ function HomePage() {
 
 type Route = { Page: ComponentType; title: string }
 
-const HOME: Route = {
-  Page: HomePage,
-  title: 'cascivo — the CSS-native, signal-driven, AI-first React design system',
-}
-
+// Titles come from ROUTE_HEAD (single source of truth shared with the build-time
+// prerender). `/og` is a render target with its own title, not in ROUTE_HEAD.
 const ROUTES: Record<string, Route> = {
-  '/': HOME,
-  '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascivo' },
-  '/performance': { Page: PerformancePage, title: 'Performance — cascivo' },
-  '/guides': { Page: GuidesPage, title: 'Guides — cascivo' },
+  '/': { Page: HomePage, title: ROUTE_HEAD['/']?.title ?? 'cascivo' },
+  '/accessibility': {
+    Page: AccessibilityPage,
+    title: ROUTE_HEAD['/accessibility']?.title ?? 'cascivo',
+  },
+  '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
+  '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
 }
 
@@ -62,7 +64,12 @@ export function App() {
 
   const pathname =
     typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/'
-  const route = ROUTES[pathname] ?? HOME
+  const route = ROUTES[pathname]
+
+  if (!route) {
+    applyNotFoundSeo()
+    return <NotFound />
+  }
 
   applyRouteSeo(pathname, route.title)
 

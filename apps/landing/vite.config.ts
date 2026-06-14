@@ -1,12 +1,11 @@
-import { copyFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { type Plugin, defineConfig } from 'vite-plus'
+import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/route-head'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../..')
-
-const DEEP_LINK_ROUTES = ['accessibility', 'performance', 'guides']
 
 /** Single source of truth for the headline counts injected into static HTML. */
 export function componentCount(): number {
@@ -36,16 +35,76 @@ function injectCounts(): Plugin {
   }
 }
 
-function deepLinkCopies(): Plugin {
+/**
+ * Per-route head prerender (roadmap v19 T3).
+ *
+ * APPROACH B (head-only static) shipped, not full-body prerender (A). Rationale:
+ * the landing deploy job (`.github/workflows/cf-pages.yml` deploy-landing) runs
+ * `vp run @cascivo/landing#build` WITHOUT `npx playwright install`, so headless
+ * Chromium is not available at deploy time — a build-time browser prerender
+ * would break the deploy. This step is browserless and deterministic: it copies
+ * the built shell into `dist/<route>/index.html` and rewrites the head tags
+ * (title, description, canonical, og:*, twitter:*) from src/route-head.ts, so
+ * crawlers / AI answer-engines / social cards get correct per-route previews
+ * with JS disabled. The body remains the SPA shell (hydrated client-side).
+ */
+function rewriteHead(
+  html: string,
+  opts: { title: string; description: string; canonical: string; ogTitle: string; robots: string },
+): string {
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+  const metaContent = (h: string, attrPair: string, value: string) =>
+    h.replace(
+      new RegExp(
+        `(<meta\\s+${attrPair.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+content=")[\\s\\S]*?(")`,
+      ),
+      `$1${esc(value)}$2`,
+    )
+  let out = html
+  out = out.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(opts.title)}</title>`)
+  out = metaContent(out, 'name="description"', opts.description)
+  out = metaContent(out, 'name="robots"', opts.robots)
+  out = out.replace(/(<link\s+rel="canonical"\s+href=")[^"]*(")/, `$1${esc(opts.canonical)}$2`)
+  out = metaContent(out, 'property="og:title"', opts.ogTitle)
+  out = metaContent(out, 'property="og:description"', opts.description)
+  out = metaContent(out, 'property="og:url"', opts.canonical)
+  out = metaContent(out, 'name="twitter:title"', opts.ogTitle)
+  out = metaContent(out, 'name="twitter:description"', opts.description)
+  return out
+}
+
+function prerenderHeads(): Plugin {
   return {
-    name: 'cascade:deep-link-copies',
+    name: 'cascade:prerender-heads',
     apply: 'build',
     closeBundle() {
       const dist = resolve(__dirname, 'dist')
-      for (const route of DEEP_LINK_ROUTES) {
+      const shell = readFileSync(resolve(dist, 'index.html'), 'utf8')
+
+      for (const route of PRERENDER_ROUTES) {
+        const head = ROUTE_HEAD[`/${route}`]
+        if (!head) continue
+        const html = rewriteHead(shell, {
+          title: head.title,
+          description: head.description,
+          canonical: canonicalFor(`/${route}`),
+          ogTitle: head.ogTitle ?? head.title,
+          robots: 'index, follow',
+        })
         mkdirSync(resolve(dist, route), { recursive: true })
-        copyFileSync(resolve(dist, 'index.html'), resolve(dist, route, 'index.html'))
+        writeFileSync(resolve(dist, route, 'index.html'), html)
       }
+
+      // Static-host fallback for unknown deep links → real NotFound (noindex).
+      // The SPA boots, reads the (unknown) pathname, and renders <NotFound />.
+      const notFound = rewriteHead(shell, {
+        title: 'Not found — cascivo',
+        description: ROUTE_HEAD['/']?.description ?? '',
+        canonical: canonicalFor('/'),
+        ogTitle: 'cascivo',
+        robots: 'noindex, follow',
+      })
+      writeFileSync(resolve(dist, '404.html'), notFound)
     },
   }
 }
@@ -83,7 +142,7 @@ function benchData(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [injectCounts(), deepLinkCopies(), benchData()],
+  plugins: [injectCounts(), prerenderHeads(), benchData()],
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
   resolve: {
