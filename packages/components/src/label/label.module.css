@@ -1,0 +1,41 @@
+@layer cascade.component {
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-text);
+
+    &[data-disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .marker {
+    color: var(--cascivo-color-destructive);
+    line-height: var(--cascivo-leading-none);
+  }
+
+  .srOnly {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media (forced-colors: active) {
+  .label[data-disabled] {
+    color: GrayText;
+  }
+}

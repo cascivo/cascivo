@@ -1,0 +1,117 @@
+@layer cascade.component {
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    inline-size: 100%;
+  }
+
+  .viewport {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .track {
+    display: flex;
+    inline-size: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-radius: var(--cascivo-radius-md);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    inline-size: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .nav {
+    position: absolute;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-full);
+    box-shadow: var(--cascivo-shadow-sm);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .prev {
+    inset-inline-start: var(--cascivo-space-2);
+  }
+
+  .next {
+    inset-inline-end: var(--cascivo-space-2);
+  }
+
+  .dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-2);
+  }
+
+  .dot {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-border-strong);
+    cursor: pointer;
+    transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &[data-active] {
+      background-color: var(--cascivo-color-accent);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+}
+
+@media (forced-colors: active) {
+  .nav:focus-visible,
+  .dot:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .dot[data-active] {
+    background-color: Highlight;
+  }
+}

@@ -38,3 +38,31 @@ export { VisuallyHidden } from './visually-hidden.tsx'
 export type { VisuallyHiddenProps } from './visually-hidden.tsx'
 export { FocusScope } from './focus-scope.tsx'
 export type { FocusScopeProps } from './focus-scope.tsx'
+export { Slot } from './slot.tsx'
+export type { SlotProps } from './slot.tsx'
+export { useControllableSignal } from './controllable.ts'
+export type { UseControllableSignalOptions } from './controllable.ts'
+export { useMediaQuery } from './media-query.ts'
+export { useScrollLock } from './scroll-lock.ts'
+export { useId } from './use-id.ts'
+export { useClipboard } from './clipboard.ts'
+export type { UseClipboardOptions, UseClipboardReturn } from './clipboard.ts'
+export { DismissableLayer } from './dismissable-layer.tsx'
+export type { DismissableLayerProps } from './dismissable-layer.tsx'
+export { useRovingFocus } from './roving-focus.ts'
+export type {
+  UseRovingFocusOptions,
+  UseRovingFocusReturn,
+  RovingItemProps,
+  RovingOrientation,
+} from './roving-focus.ts'
+export { Presence } from './presence.tsx'
+export type { PresenceProps } from './presence.tsx'
+export { useAnchorPosition, computePosition } from './anchor.tsx'
+export type {
+  UseAnchorPositionOptions,
+  UseAnchorPositionReturn,
+  AnchorPlacement,
+  AnchorSide,
+  AnchorAlign,
+} from './anchor.tsx'

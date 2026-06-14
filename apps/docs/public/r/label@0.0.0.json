@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 2,
+  "name": "label",
+  "type": "component",
+  "description": "Accessible caption for a form control",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/label/label.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/label/label.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["form", "caption", "accessibility"],
+  "category": "inputs",
+  "meta": {
+    "name": "Label",
+    "description": "Accessible caption for a form control",
+    "category": "inputs",
+    "states": ["default", "disabled"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "htmlFor",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "asChild",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": true
+      },
+      {
+        "name": "labels",
+        "type": "{ required?: string }",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-space-1",
+      "--cascivo-font-sans",
+      "--cascivo-text-sm",
+      "--cascivo-font-medium",
+      "--cascivo-leading-snug",
+      "--cascivo-leading-none",
+      "--cascivo-color-text",
+      "--cascivo-color-destructive"
+    ],
+    "accessibility": {
+      "role": "label",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<Label htmlFor=\"email\">Email</Label>"
+      },
+      {
+        "title": "Required",
+        "code": "<Label htmlFor=\"email\" required>Email</Label>"
+      },
+      {
+        "title": "asChild",
+        "code": "<Label asChild htmlFor=\"email\"><span>Email</span></Label>",
+        "description": "Render the label semantics onto a custom element via Slot."
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["form", "caption", "accessibility"],
+    "intent": {
+      "whenToUse": [
+        "Naming a single form control (input, select, checkbox) so clicking the text focuses it",
+        "Marking a field as required with a visible and screen-reader-announced indicator"
+      ],
+      "whenNotToUse": [
+        "Labeling a group of controls — use a <fieldset>/<legend> instead",
+        "Static body copy that is not associated with a control — use a plain text element"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Label>Email</Label><input id=\"email\" />",
+          "good": "<Label htmlFor=\"email\">Email</Label><input id=\"email\" />",
+          "why": "Without htmlFor the label is not programmatically associated, so click-to-focus and screen-reader naming break"
+        },
+        {
+          "bad": "<Label required>Email <span>*</span></Label>",
+          "good": "<Label required>Email</Label>",
+          "why": "The required marker is rendered for you with an accessible text alternative; a hand-added asterisk is silent to screen readers"
+        }
+      ],
+      "related": [
+        {
+          "name": "Field",
+          "relationship": "contained-by",
+          "reason": "Field composes Label with a control, description, and error and wires the ids automatically"
+        },
+        {
+          "name": "Input",
+          "relationship": "pairs-with",
+          "reason": "A label names the input it points at via htmlFor"
+        }
+      ],
+      "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
+      "content": {
+        "tone": "Short noun phrase naming the field",
+        "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
+      },
+      "flexibility": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "label copy",
+          "level": "flexible",
+          "note": "Free, within tone guidance"
+        }
+      ]
+    }
+  }
+}

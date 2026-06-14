@@ -77,6 +77,11 @@
       "path": "/docs/specs/mobile-audit-landing.md"
     },
     {
+      "id": "parity-matrix",
+      "title": "parity-matrix",
+      "path": "/docs/specs/parity-matrix.md"
+    },
+    {
       "id": "perf-methodology",
       "title": "perf-methodology",
       "path": "/docs/specs/perf-methodology.md"
@@ -187,6 +192,18 @@
           "note": "Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive"
         }
       ],
+      "AspectRatio": [
+        {
+          "area": "ratio",
+          "level": "flexible",
+          "note": "Any positive number; common values are 16/9, 4/3, 1, 3/2"
+        },
+        {
+          "area": "child sizing",
+          "level": "strict",
+          "note": "The single child is stretched to fill; provide one media element"
+        }
+      ],
       "Avatar": [
         {
           "area": "size",
@@ -247,6 +264,35 @@
           "note": "Free, within tone guidance"
         }
       ],
+      "ButtonGroup": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+        },
+        {
+          "area": "children",
+          "level": "flexible",
+          "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+        }
+      ],
+      "Calendar": [
+        {
+          "area": "date type",
+          "level": "strict",
+          "note": "All date props are native Date objects compared in UTC"
+        },
+        {
+          "area": "locale",
+          "level": "flexible",
+          "note": "Weekday labels, month label, and first-day-of-week derive from the locale via Intl (with Monday fallback)"
+        },
+        {
+          "area": "view control",
+          "level": "flexible",
+          "note": "month/year/onViewChange/hideNav let a parent drive navigation (used by DateRangePicker)"
+        }
+      ],
       "Card": [
         {
           "area": "variant and padding",
@@ -257,6 +303,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
+        }
+      ],
+      "Carousel": [
+        {
+          "area": "transition",
+          "level": "strict",
+          "note": "Paging uses native CSS scroll-snap, not transform math — no custom easing config"
+        },
+        {
+          "area": "slide content",
+          "level": "flexible",
+          "note": "Any ReactNode may be a slide; pass via children or the slides array"
         }
       ],
       "Checkbox": [
@@ -295,6 +353,42 @@
           "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
         }
       ],
+      "CodeSnippet": [
+        {
+          "area": "variant",
+          "level": "strict",
+          "note": "inline | single | multi — controls the wrapping element and layout"
+        },
+        {
+          "area": "copy button",
+          "level": "flexible",
+          "note": "Shown by default for single/multi; togglable via showCopyButton"
+        }
+      ],
+      "Collapsible": [
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled or uncontrolled via open / defaultOpen"
+        },
+        {
+          "area": "trigger markup",
+          "level": "strict",
+          "note": "Always rendered as a native button for keyboard and a11y correctness"
+        }
+      ],
+      "ColorPicker": [
+        {
+          "area": "color model",
+          "level": "flexible",
+          "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Surfaces, borders and focus ring must resolve to --cascivo-* tokens"
+        }
+      ],
       "Combobox": [
         {
           "area": "searchable",
@@ -329,6 +423,18 @@
           "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
         }
       ],
+      "ContainedList": [
+        {
+          "area": "kind",
+          "level": "flexible",
+          "note": "on-page sits inline; disclosed adds a header band for menus and popovers"
+        },
+        {
+          "area": "list semantics",
+          "level": "strict",
+          "note": "Rows are always ul/li; do not replace with generic divs"
+        }
+      ],
       "ContextMenu": [
         {
           "area": "menu contents",
@@ -351,6 +457,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
+        }
+      ],
+      "DataList": [
+        {
+          "area": "orientation and size",
+          "level": "flexible",
+          "note": "horizontal for wide panels, vertical for narrow columns; size tunes density"
+        },
+        {
+          "area": "dl semantics",
+          "level": "strict",
+          "note": "Always renders dl/dt/dd; do not substitute generic elements"
         }
       ],
       "DataTable": [
@@ -380,6 +498,40 @@
           "area": "token names",
           "level": "strict",
           "note": "Styling resolves to --cascivo-date-picker-* component tokens"
+        }
+      ],
+      "DateRangePicker": [
+        {
+          "area": "range type",
+          "level": "strict",
+          "note": "value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC"
+        },
+        {
+          "area": "presets",
+          "level": "flexible",
+          "note": "Optional preset ranges render as quick-select buttons in a side column"
+        },
+        {
+          "area": "locale",
+          "level": "flexible",
+          "note": "Display, weekday labels, and week start derive from the locale via Intl"
+        }
+      ],
+      "Drawer": [
+        {
+          "area": "side",
+          "level": "strict",
+          "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+        },
+        {
+          "area": "body content",
+          "level": "flexible",
+          "note": "Any children; the consumer owns the panel contents"
         }
       ],
       "Dropdown": [
@@ -426,6 +578,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Text and background colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "Field": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "control element",
+          "level": "flexible",
+          "note": "Any single element accepting id/aria-* props can be the child control"
         }
       ],
       "FileUploader": [
@@ -515,6 +679,30 @@
           "note": "HoverCardContent accepts arbitrary children"
         }
       ],
+      "IconButton": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls"
+        },
+        {
+          "area": "icon choice",
+          "level": "flexible",
+          "note": "Any single icon node; consumer owns the icon set"
+        }
+      ],
+      "InlineLoading": [
+        {
+          "area": "label",
+          "level": "flexible",
+          "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+        },
+        {
+          "area": "status semantics",
+          "level": "strict",
+          "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+        }
+      ],
       "Input": [
         {
           "area": "token names",
@@ -549,6 +737,18 @@
           "note": "prefix/suffix and addon children accept arbitrary ReactNode"
         }
       ],
+      "Item": [
+        {
+          "area": "variant and size",
+          "level": "flexible",
+          "note": "Tune density and emphasis to match the surrounding list"
+        },
+        {
+          "area": "compound parts",
+          "level": "flexible",
+          "note": "Media, content, title, description, and actions are optional and composable"
+        }
+      ],
       "Kbd": [
         {
           "area": "size",
@@ -559,6 +759,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Surface and border must resolve to --cascivo-* tokens"
+        }
+      ],
+      "Label": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+        },
+        {
+          "area": "label copy",
+          "level": "flexible",
+          "note": "Free, within tone guidance"
         }
       ],
       "Link": [
@@ -602,6 +814,35 @@
           "note": "MenuItem and MenuSeparator can be mixed freely under the trigger"
         }
       ],
+      "MenuButton": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Trigger and menu styling must resolve to the listed --cascivo-* tokens"
+        },
+        {
+          "area": "item content",
+          "level": "flexible",
+          "note": "Each item label accepts arbitrary ReactNode; onSelect defines the action"
+        },
+        {
+          "area": "trigger appearance",
+          "level": "flexible",
+          "note": "variant and size choose among the standard button looks and dimensions"
+        }
+      ],
+      "Menubar": [
+        {
+          "area": "menu content",
+          "level": "strict",
+          "note": "Menus are described by data (menus prop) so roles and keyboard wiring stay correct"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
+        }
+      ],
       "Modal": [
         {
           "area": "token names",
@@ -634,6 +875,47 @@
           "area": "options",
           "level": "flexible",
           "note": "Caller supplies the option list and may mark individual options disabled"
+        }
+      ],
+      "NativeSelect": [
+        {
+          "area": "options",
+          "level": "flexible",
+          "note": "Pass an options array or raw <option> children"
+        },
+        {
+          "area": "value",
+          "level": "flexible",
+          "note": "Controlled (value/onChange) or uncontrolled (defaultValue)"
+        }
+      ],
+      "NavigationMenu": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "horizontal (default) or vertical roving navigation"
+        },
+        {
+          "area": "panel content",
+          "level": "flexible",
+          "note": "content is arbitrary ReactNode; links without content render as plain anchors"
+        }
+      ],
+      "Notification": [
+        {
+          "area": "icon",
+          "level": "flexible",
+          "note": "A variant-appropriate icon is supplied by default; override with the icon prop"
+        },
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Any ReactNode (typically Buttons) can fill the actions slot"
+        },
+        {
+          "area": "role mapping",
+          "level": "strict",
+          "note": "warning/error must use role=\"alert\"; info/success use role=\"status\""
         }
       ],
       "NumberInput": [
@@ -797,6 +1079,30 @@
           "note": "max sets the scale and labels.rating customizes the per-star announcement"
         }
       ],
+      "Resizable": [
+        {
+          "area": "sizing",
+          "level": "strict",
+          "note": "Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex"
+        },
+        {
+          "area": "min/max ratio",
+          "level": "flexible",
+          "note": "Consumer-defined clamp range"
+        }
+      ],
+      "ScrollArea": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "vertical, horizontal, or both depending on content"
+        },
+        {
+          "area": "scroll behaviour",
+          "level": "strict",
+          "note": "Relies on native overflow scrolling — never replace with JS scrolling"
+        }
+      ],
       "Search": [
         {
           "area": "token names",
@@ -953,6 +1259,18 @@
           "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
         }
       ],
+      "StructuredList": [
+        {
+          "area": "selectable",
+          "level": "flexible",
+          "note": "Toggle selectable based on whether the list is interactive or purely presentational"
+        },
+        {
+          "area": "roles",
+          "level": "strict",
+          "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+        }
+      ],
       "Switcher": [
         {
           "area": "dividers",
@@ -1025,6 +1343,23 @@
           "note": "Consumer chooses initial rows and whether the field can resize"
         }
       ],
+      "Tile": [
+        {
+          "area": "selectable",
+          "level": "strict",
+          "note": "single (radio, select-only) | multi (checkbox, toggle)"
+        },
+        {
+          "area": "selected state",
+          "level": "flexible",
+          "note": "Controlled (selected/onSelect) or uncontrolled (defaultSelected)"
+        },
+        {
+          "area": "element",
+          "level": "flexible",
+          "note": "asChild renders onto a custom element via Slot"
+        }
+      ],
       "TimePicker": [
         {
           "area": "value format",
@@ -1035,6 +1370,18 @@
           "area": "min/max/step",
           "level": "flexible",
           "note": "Consumer-defined bounds and step granularity"
+        }
+      ],
+      "Timeline": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "vertical for feeds, horizontal for compact progress strips"
+        },
+        {
+          "area": "status semantics",
+          "level": "strict",
+          "note": "Use a single current item; status drives marker colour via data-status"
         }
       ],
       "Toast": [
@@ -1061,6 +1408,35 @@
           "note": "Optional label describing the setting being toggled"
         }
       ],
+      "ToggleGroup": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Item height must resolve to --cascivo-control-height-* to align with other controls"
+        },
+        {
+          "area": "item content",
+          "level": "flexible",
+          "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
+        }
+      ],
+      "Toggletip": [
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Trigger and bubble styling must resolve to the listed --cascivo-* tokens"
+        },
+        {
+          "area": "content",
+          "level": "flexible",
+          "note": "trigger and children accept arbitrary ReactNode supplied by the consumer"
+        },
+        {
+          "area": "open state ownership",
+          "level": "flexible",
+          "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+        }
+      ],
       "Tooltip": [
         {
           "area": "placement",
@@ -1071,6 +1447,23 @@
           "area": "delay",
           "level": "flexible",
           "note": "Consumer can tune the show delay (default 200ms)"
+        }
+      ],
+      "TreeView": [
+        {
+          "area": "selectionMode",
+          "level": "flexible",
+          "note": "single vs multi is the consumer’s choice based on the interaction"
+        },
+        {
+          "area": "keyboard model",
+          "level": "strict",
+          "note": "Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped"
+        },
+        {
+          "area": "indent token",
+          "level": "flexible",
+          "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
         }
       ],
       "VisuallyHidden": [
@@ -1261,6 +1654,50 @@
         ]
       },
       "contextUrl": "/context/alert-dialog.md"
+    },
+    {
+      "name": "AspectRatio",
+      "category": "layout",
+      "description": "Constrains content to a fixed width-to-height ratio",
+      "intent": {
+        "whenToUse": [
+          "Reserving a stable box for media that loads asynchronously, avoiding layout shift",
+          "Embedding responsive iframes (video, maps) at a known proportion",
+          "Keeping thumbnails or covers uniform across a grid"
+        ],
+        "whenNotToUse": [
+          "Content whose height should grow with text — let it size naturally",
+          "A single fixed-pixel image where width and height are already known"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping text content that must expand to fit its lines",
+            "good": "Reserve AspectRatio for media; let prose flow at its intrinsic height",
+            "why": "A fixed ratio clips or distorts content that needs variable height"
+          }
+        ],
+        "related": [
+          {
+            "name": "Card",
+            "relationship": "contained-by",
+            "reason": "Commonly holds a cover image inside a Card media region"
+          }
+        ],
+        "a11yRationale": "Purely presentational wrapper with no role; the inner media element carries its own semantics and alt text",
+        "flexibility": [
+          {
+            "area": "ratio",
+            "level": "flexible",
+            "note": "Any positive number; common values are 16/9, 4/3, 1, 3/2"
+          },
+          {
+            "area": "child sizing",
+            "level": "strict",
+            "note": "The single child is stretched to fill; provide one media element"
+          }
+        ]
+      },
+      "contextUrl": "/context/aspect-ratio.md"
     },
     {
       "name": "Avatar",
@@ -1502,6 +1939,111 @@
       "contextUrl": "/context/button.md"
     },
     {
+      "name": "ButtonGroup",
+      "category": "inputs",
+      "description": "Visually joins a set of related buttons into a single segmented control",
+      "intent": {
+        "whenToUse": [
+          "Presenting several related, independent actions that read as one control (e.g. an editor toolbar)",
+          "Visually grouping buttons that share context without implying mutual exclusivity"
+        ],
+        "whenNotToUse": [
+          "The buttons represent a single selected value among options — use ToggleGroup",
+          "The actions are unrelated and should read as separate buttons — lay them out with spacing instead"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ButtonGroup><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+            "good": "<ButtonGroup aria-label=\"Formatting\"><Button>Bold</Button><Button>Italic</Button></ButtonGroup>",
+            "why": "A group with no accessible name is announced as an unlabeled region; supply aria-label or aria-labelledby"
+          }
+        ],
+        "related": [
+          {
+            "name": "ToggleGroup",
+            "relationship": "alternative",
+            "reason": "Use when the buttons select a value rather than fire independent actions"
+          },
+          {
+            "name": "Button",
+            "relationship": "contains",
+            "reason": "A button group is a layout container for buttons"
+          }
+        ],
+        "a11yRationale": "Exposes role=\"group\" so assistive tech treats the buttons as one labeled set; optional roving focus lets arrow keys traverse the buttons as a single tab stop, matching toolbar expectations",
+        "content": {
+          "tone": "Imperative verb-first labels on each child button",
+          "notes": "Keep child labels parallel in form and length so the segmented control reads evenly"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons"
+          },
+          {
+            "area": "children",
+            "level": "flexible",
+            "note": "Any focusable controls (Button, IconButton, links) may be grouped"
+          }
+        ]
+      },
+      "contextUrl": "/context/button-group.md"
+    },
+    {
+      "name": "Calendar",
+      "category": "inputs",
+      "description": "An accessible standalone month-grid date picker.",
+      "intent": {
+        "whenToUse": [
+          "Showing an always-visible month grid for picking a single date (inline, not a popover)",
+          "As the building block inside a date-picker or date-range-picker popover"
+        ],
+        "whenNotToUse": [
+          "A compact form field where an inline grid wastes space — use DatePicker (trigger + popover)",
+          "Selecting a contiguous date range — use DateRangePicker, which composes two calendars"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Comparing dates with local-time getters (getHours/getDate) after constructing them with new Date(y, m, d)",
+            "good": "All arithmetic and comparisons use UTC getters/Date.UTC so DST and timezone offsets never shift a day",
+            "why": "Local-time construction can land a midnight date on the previous day in negative-offset zones, breaking selection and range math"
+          }
+        ],
+        "related": [
+          {
+            "name": "DatePicker",
+            "relationship": "alternative",
+            "reason": "Use the popover-based picker when an inline grid is too heavy for the layout"
+          },
+          {
+            "name": "DateRangePicker",
+            "relationship": "contained-by",
+            "reason": "The range picker renders two Calendar instances side-by-side"
+          }
+        ],
+        "a11yRationale": "Renders an APG-compliant role=\"grid\" table with role=\"row\"/role=\"gridcell\"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current=\"date\", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection",
+        "flexibility": [
+          {
+            "area": "date type",
+            "level": "strict",
+            "note": "All date props are native Date objects compared in UTC"
+          },
+          {
+            "area": "locale",
+            "level": "flexible",
+            "note": "Weekday labels, month label, and first-day-of-week derive from the locale via Intl (with Monday fallback)"
+          },
+          {
+            "area": "view control",
+            "level": "flexible",
+            "note": "month/year/onViewChange/hideNav let a parent drive navigation (used by DateRangePicker)"
+          }
+        ]
+      },
+      "contextUrl": "/context/calendar.md"
+    },
+    {
       "name": "Card",
       "category": "display",
       "description": "Container for grouping related content",
@@ -1544,6 +2086,50 @@
         ]
       },
       "contextUrl": "/context/card.md"
+    },
+    {
+      "name": "Carousel",
+      "category": "display",
+      "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
+      "intent": {
+        "whenToUse": [
+          "Presenting a sequence of media or cards the user pages through one at a time",
+          "Image galleries, onboarding decks, or featured-content rotators",
+          "When horizontal swiping/scrolling is a natural interaction on touch devices"
+        ],
+        "whenNotToUse": [
+          "Content users must compare side-by-side — show a grid instead",
+          "Critical information that must always be visible — carousels hide most of their content"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Auto-rotating carousel for primary navigation or key calls-to-action",
+            "good": "A static list or grid where every item is visible",
+            "why": "Auto-rotation and hidden slides reduce discoverability and accessibility of important content"
+          }
+        ],
+        "related": [
+          {
+            "name": "Tabs",
+            "relationship": "alternative",
+            "reason": "Use tabs when sections are distinct and should be directly addressable"
+          }
+        ],
+        "a11yRationale": "The container is a labelled region with aria-roledescription=\"carousel\"; each slide is a labelled group (\"n of total\"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.",
+        "flexibility": [
+          {
+            "area": "transition",
+            "level": "strict",
+            "note": "Paging uses native CSS scroll-snap, not transform math — no custom easing config"
+          },
+          {
+            "area": "slide content",
+            "level": "flexible",
+            "note": "Any ReactNode may be a slide; pass via children or the slides array"
+          }
+        ]
+      },
+      "contextUrl": "/context/carousel.md"
     },
     {
       "name": "Checkbox",
@@ -1709,6 +2295,143 @@
       "contextUrl": "/context/code.md"
     },
     {
+      "name": "CodeSnippet",
+      "category": "display",
+      "description": "Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting",
+      "intent": {
+        "whenToUse": [
+          "Showing a command, token, or path the user is expected to copy",
+          "Displaying a short read-only code block in docs or UI",
+          "Inline code references inside flowing text (inline variant)"
+        ],
+        "whenNotToUse": [
+          "An editable code input — use a textarea or code editor",
+          "Long files needing syntax highlighting and folding — use a dedicated viewer"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<CodeSnippet variant=\"inline\" code={\"line1\\nline2\"} />",
+            "good": "<CodeSnippet variant=\"multi\" code={\"line1\\nline2\"} />",
+            "why": "The inline variant is a single in-text chip; multi-line content belongs in the multi variant"
+          }
+        ],
+        "related": [
+          {
+            "name": "CopyButton",
+            "relationship": "pairs-with",
+            "reason": "CodeSnippet embeds the same clipboard behavior for its copy affordance"
+          }
+        ],
+        "a11yRationale": "Code is rendered in semantic <code>/<pre>. The copy button is a real button with an aria-label that flips between the copy and copied messages so the action and its result are announced. Line numbers are aria-hidden so they are not read as content.",
+        "flexibility": [
+          {
+            "area": "variant",
+            "level": "strict",
+            "note": "inline | single | multi — controls the wrapping element and layout"
+          },
+          {
+            "area": "copy button",
+            "level": "flexible",
+            "note": "Shown by default for single/multi; togglable via showCopyButton"
+          }
+        ]
+      },
+      "contextUrl": "/context/code-snippet.md"
+    },
+    {
+      "name": "Collapsible",
+      "category": "display",
+      "description": "A single disclosure region toggled open and closed by its trigger",
+      "intent": {
+        "whenToUse": [
+          "Hiding a single secondary block until the user asks for it",
+          "Progressive disclosure of details, advanced options, or supplementary text",
+          "Toggling one region whose state you may want to control externally"
+        ],
+        "whenNotToUse": [
+          "Several mutually related sections — use Accordion instead",
+          "Transient overlays anchored to a trigger — use Dropdown or Popover"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Stacking many Collapsibles to emulate an accordion",
+            "good": "Use Accordion when sections are a related set",
+            "why": "Accordion manages single/multiple-open semantics and shared keyboard navigation"
+          }
+        ],
+        "related": [
+          {
+            "name": "Accordion",
+            "relationship": "alternative",
+            "reason": "Multi-region disclosure; Collapsible is the single-region case"
+          }
+        ],
+        "a11yRationale": "The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target",
+        "flexibility": [
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled or uncontrolled via open / defaultOpen"
+          },
+          {
+            "area": "trigger markup",
+            "level": "strict",
+            "note": "Always rendered as a native button for keyboard and a11y correctness"
+          }
+        ]
+      },
+      "contextUrl": "/context/collapsible.md"
+    },
+    {
+      "name": "ColorPicker",
+      "category": "inputs",
+      "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
+      "intent": {
+        "whenToUse": [
+          "Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control",
+          "Brand or theme customization UIs where an exact color value (hex) is captured",
+          "Forms that need an optional alpha channel alongside the color"
+        ],
+        "whenNotToUse": [
+          "Choosing from a small fixed palette only — use a swatch RadioGroup instead",
+          "A single accent toggle where a few preset chips suffice"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ColorPicker /> with no presets for a brand palette of 4 fixed colors",
+            "good": "<RadioGroup> of color swatches",
+            "why": "A free-form picker invites off-brand values when only a fixed set is allowed"
+          }
+        ],
+        "related": [
+          {
+            "name": "Slider",
+            "relationship": "contains",
+            "reason": "Hue and alpha channels are range sliders"
+          },
+          {
+            "name": "Input",
+            "relationship": "pairs-with",
+            "reason": "The hex text field lets users paste an exact value"
+          }
+        ],
+        "a11yRationale": "The saturation/lightness area is a focusable role=\"slider\" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.",
+        "flexibility": [
+          {
+            "area": "color model",
+            "level": "flexible",
+            "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
+          },
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Surfaces, borders and focus ring must resolve to --cascivo-* tokens"
+          }
+        ]
+      },
+      "contextUrl": "/context/color-picker.md"
+    },
+    {
       "name": "Combobox",
       "category": "inputs",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
@@ -1839,6 +2562,55 @@
       "contextUrl": "/context/command-menu.md"
     },
     {
+      "name": "ContainedList",
+      "category": "display",
+      "description": "Labelled list of rows inside a bordered container",
+      "intent": {
+        "whenToUse": [
+          "Grouping a short set of related rows under a visible heading in a bordered surface",
+          "Presenting selectable or navigable rows (settings groups, member lists)",
+          "Separating a labelled cluster of items from surrounding page content"
+        ],
+        "whenNotToUse": [
+          "A long, virtualised data set — use a Table or DataList instead",
+          "Plain bulleted prose where the container border adds no meaning — use List"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Putting interactive controls on a plain ContainedListItem div",
+            "good": "Use ContainedListItem asChild with a <button> or <a> so the row is keyboard-focusable",
+            "why": "A non-interactive div gives no focus or role semantics to assistive tech"
+          }
+        ],
+        "related": [
+          {
+            "name": "List",
+            "relationship": "alternative",
+            "reason": "List is for unbordered prose lists; ContainedList adds a labelled surface"
+          },
+          {
+            "name": "ContainedListItem",
+            "relationship": "contains",
+            "reason": "Each row is a ContainedListItem"
+          }
+        ],
+        "a11yRationale": "The container heading labels the ul/li structure; interactive rows must slot a real button or link via asChild so role and focus are native, not faked on a div",
+        "flexibility": [
+          {
+            "area": "kind",
+            "level": "flexible",
+            "note": "on-page sits inline; disclosed adds a header band for menus and popovers"
+          },
+          {
+            "area": "list semantics",
+            "level": "strict",
+            "note": "Rows are always ul/li; do not replace with generic divs"
+          }
+        ]
+      },
+      "contextUrl": "/context/contained-list.md"
+    },
+    {
       "name": "ContextMenu",
       "category": "overlay",
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
@@ -1937,6 +2709,50 @@
         ]
       },
       "contextUrl": "/context/copy-button.md"
+    },
+    {
+      "name": "DataList",
+      "category": "display",
+      "description": "Key-value pairs rendered as a description list",
+      "intent": {
+        "whenToUse": [
+          "Displaying read-only key-value metadata (profile fields, record summaries)",
+          "Presenting structured attributes where each value maps to a single label",
+          "Compact detail panels next to or below a primary subject"
+        ],
+        "whenNotToUse": [
+          "Editable fields — use form Inputs, not a DataList",
+          "Tabular data with many rows and columns — use a Table"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Faking a description list with stacked divs and manual labels",
+            "good": "Use the native dl/dt/dd structure DataList emits",
+            "why": "dl/dt/dd conveys the term-to-description relationship to assistive tech for free"
+          }
+        ],
+        "related": [
+          {
+            "name": "ContainedList",
+            "relationship": "alternative",
+            "reason": "ContainedList shows single-value rows; DataList shows labelled pairs"
+          }
+        ],
+        "a11yRationale": "Rendered as semantic dl with dt/dd pairs so the label-to-value association is native; no extra ARIA role is added",
+        "flexibility": [
+          {
+            "area": "orientation and size",
+            "level": "flexible",
+            "note": "horizontal for wide panels, vertical for narrow columns; size tunes density"
+          },
+          {
+            "area": "dl semantics",
+            "level": "strict",
+            "note": "Always renders dl/dt/dd; do not substitute generic elements"
+          }
+        ]
+      },
+      "contextUrl": "/context/data-list.md"
     },
     {
       "name": "DataTable",
@@ -2044,6 +2860,114 @@
         ]
       },
       "contextUrl": "/context/date-picker.md"
+    },
+    {
+      "name": "DateRangePicker",
+      "category": "inputs",
+      "description": "A dual-calendar picker for selecting a contiguous date range.",
+      "intent": {
+        "whenToUse": [
+          "Selecting a contiguous start–end date range (reporting windows, bookings, filters)",
+          "When two months visible at once and hover-preview of the in-between span aid selection"
+        ],
+        "whenNotToUse": [
+          "Picking a single date — use DatePicker or Calendar",
+          "Selecting many non-contiguous dates — a range picker only models one continuous span"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Emitting the range in click order, so onValueChange can fire with end before start",
+            "good": "The two clicked dates are sorted before emitting, so start is always <= end",
+            "why": "Consumers expect range.start <= range.end; an unsorted range breaks downstream comparisons and queries"
+          }
+        ],
+        "related": [
+          {
+            "name": "Calendar",
+            "relationship": "contains",
+            "reason": "Renders two Calendar instances side-by-side with synced navigation"
+          },
+          {
+            "name": "DatePicker",
+            "relationship": "alternative",
+            "reason": "Use the single-date picker when only one date is needed"
+          }
+        ],
+        "a11yRationale": "The trigger is role=\"combobox\" with aria-haspopup=\"dialog\"/aria-expanded; the popover is a role=\"dialog\" containing two Calendar grids, each an APG role=\"grid\" with roving tabindex; selection is two clicks (first sets the pending start, second emits the sorted range; clicking the same day twice clears), and the hover/keyboard preview marks in-between cells with data-in-range; Escape and outside-click close the panel",
+        "flexibility": [
+          {
+            "area": "range type",
+            "level": "strict",
+            "note": "value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC"
+          },
+          {
+            "area": "presets",
+            "level": "flexible",
+            "note": "Optional preset ranges render as quick-select buttons in a side column"
+          },
+          {
+            "area": "locale",
+            "level": "flexible",
+            "note": "Display, weekday labels, and week start derive from the locale via Intl"
+          }
+        ]
+      },
+      "contextUrl": "/context/date-range-picker.md"
+    },
+    {
+      "name": "Drawer",
+      "category": "overlay",
+      "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
+      "intent": {
+        "whenToUse": [
+          "A side or edge panel for navigation, filters, or detail views that needs full-height space",
+          "A modal surface that slides in and locks the page behind it while open",
+          "A controllable open/close panel where the parent owns the state via open/onOpenChange"
+        ],
+        "whenNotToUse": [
+          "A short yes/no confirmation — use AlertDialog",
+          "Small content anchored to a trigger element — use Popover",
+          "A gesture-driven, swipe-to-dismiss sheet — use Sheet"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Drawer title=\"Delete item?\">Are you sure?</Drawer>",
+            "good": "<AlertDialog title=\"Delete item?\" />",
+            "why": "A full edge panel with focus trap and scroll lock is overkill for a yes/no decision"
+          }
+        ],
+        "related": [
+          {
+            "name": "Sheet",
+            "relationship": "alternative",
+            "reason": "Use Sheet when swipe/gesture dismissal is wanted; Drawer is a plain dialog panel"
+          },
+          {
+            "name": "Modal",
+            "relationship": "alternative",
+            "reason": "Use a centered modal rather than an edge panel for focused decisions"
+          }
+        ],
+        "a11yRationale": "Renders role=\"dialog\" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal.",
+        "flexibility": [
+          {
+            "area": "side",
+            "level": "strict",
+            "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          },
+          {
+            "area": "body content",
+            "level": "flexible",
+            "note": "Any children; the consumer owns the panel contents"
+          }
+        ]
+      },
+      "contextUrl": "/context/drawer.md"
     },
     {
       "name": "Dropdown",
@@ -2209,6 +3133,63 @@
         ]
       },
       "contextUrl": "/context/empty-state.md"
+    },
+    {
+      "name": "Field",
+      "category": "inputs",
+      "description": "Form-field wrapper composing label, control, description, and error",
+      "intent": {
+        "whenToUse": [
+          "Pairing a single control with its label, helper text, and validation message",
+          "Wiring aria-describedby / aria-invalid automatically instead of by hand"
+        ],
+        "whenNotToUse": [
+          "A standalone control that needs no label, description, or error",
+          "Grouping multiple related controls — use a <fieldset> with a <legend>"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Field label=\"Email\"><Input /><Input /></Field>",
+            "good": "<Field label=\"Email\"><Input /></Field>",
+            "why": "Field clones exactly one child control to inject its id and aria wiring; multiple children break the association"
+          },
+          {
+            "bad": "<div><label>Email</label><input aria-invalid /><span>Error</span></div>",
+            "good": "<Field label=\"Email\" error=\"Error\"><Input /></Field>",
+            "why": "Hand-wired markup easily drifts: missing ids, no role=\"alert\", mismatched aria-describedby — Field keeps them in sync"
+          }
+        ],
+        "related": [
+          {
+            "name": "Label",
+            "relationship": "contains",
+            "reason": "Field renders a Label and links it to the control via htmlFor"
+          },
+          {
+            "name": "Input",
+            "relationship": "contains",
+            "reason": "The control passed as children receives the generated id and aria attributes"
+          }
+        ],
+        "a11yRationale": "Generates stable ids with useId and links them through htmlFor and aria-describedby; the error carries role=\"alert\" so it is announced on appearance, and aria-invalid marks the control invalid for assistive tech",
+        "content": {
+          "tone": "Label is a noun phrase; error is a short corrective sentence",
+          "notes": "Descriptions are concise helper text; errors state what is wrong and how to fix it"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Spacing and color must resolve to --cascivo-* semantic tokens"
+          },
+          {
+            "area": "control element",
+            "level": "flexible",
+            "note": "Any single element accepting id/aria-* props can be the child control"
+          }
+        ]
+      },
+      "contextUrl": "/context/field.md"
     },
     {
       "name": "FileUploader",
@@ -2528,6 +3509,112 @@
       "contextUrl": "/context/hover-card.md"
     },
     {
+      "name": "IconButton",
+      "category": "inputs",
+      "description": "Square, icon-only button with a required accessible label",
+      "intent": {
+        "whenToUse": [
+          "A compact, recognizable action where an icon alone communicates intent (close, edit, more)",
+          "Dense toolbars or table rows where a text label would not fit"
+        ],
+        "whenNotToUse": [
+          "The action is not universally recognizable by its icon — use a Button with a text label",
+          "Navigating between pages — use an anchor (optionally via asChild)"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<IconButton label=\"\"><TrashIcon /></IconButton>",
+            "good": "<IconButton label=\"Delete item\"><TrashIcon /></IconButton>",
+            "why": "An icon-only control has no visible text, so the label prop is the only accessible name screen readers can announce"
+          }
+        ],
+        "related": [
+          {
+            "name": "Button",
+            "relationship": "alternative",
+            "reason": "Use a Button when the action needs a visible text label"
+          },
+          {
+            "name": "ButtonGroup",
+            "relationship": "contained-by",
+            "reason": "Icon buttons are commonly joined into a toolbar via ButtonGroup"
+          }
+        ],
+        "a11yRationale": "Renders a native <button> with a mandatory aria-label so the icon-only control always exposes an accessible name; focus, role, and Enter/Space activation come from the platform",
+        "content": {
+          "tone": "Imperative verb describing the action",
+          "notes": "The label is announced to screen readers; be specific (e.g. \"Delete item\", not \"Delete\")"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls"
+          },
+          {
+            "area": "icon choice",
+            "level": "flexible",
+            "note": "Any single icon node; consumer owns the icon set"
+          }
+        ]
+      },
+      "contextUrl": "/context/icon-button.md"
+    },
+    {
+      "name": "InlineLoading",
+      "category": "feedback",
+      "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
+      "intent": {
+        "whenToUse": [
+          "Showing the progress of a single inline action — a Save button that becomes \"Saving… / Saved / Failed\"",
+          "Communicating async status next to a control without occupying its own block or modal",
+          "Reflecting a terminal success or error state that should be announced to assistive tech"
+        ],
+        "whenNotToUse": [
+          "Page- or section-level loading where layout space is reserved — use Skeleton or Spinner",
+          "Persistent, multi-line messages with recovery actions — use Alert or Notification",
+          "Determinate progress with a known percentage — use a progress bar"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Spinner /> with separate manually-managed success and error markup",
+            "good": "<InlineLoading status={status} /> driving icon and color from one status prop",
+            "why": "A single status keeps the icon, color, and announced label in sync and prevents mismatched states"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "contains",
+            "reason": "InlineLoading renders a Spinner for its active state and adds finished/error icons plus a label"
+          },
+          {
+            "name": "Alert",
+            "relationship": "alternative",
+            "reason": "Use Alert for persistent messages that need a title, body, and actions rather than a terse status"
+          }
+        ],
+        "a11yRationale": "role=\"status\" with aria-live=\"polite\" announces the label when the status changes; the icon is decorative (aria-hidden) so meaning is carried by the text and color is never the sole signal",
+        "content": {
+          "tone": "Terse and present-tense — \"Saving\", \"Saved\", \"Save failed\"",
+          "notes": "Keep labels to a few words; the inactive status renders no label by default"
+        },
+        "flexibility": [
+          {
+            "area": "label",
+            "level": "flexible",
+            "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+          },
+          {
+            "area": "status semantics",
+            "level": "strict",
+            "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+          }
+        ]
+      },
+      "contextUrl": "/context/inline-loading.md"
+    },
+    {
       "name": "Input",
       "category": "inputs",
       "description": "Text input field with optional label, hint, and error state",
@@ -2646,6 +3733,55 @@
       "contextUrl": "/context/input-group.md"
     },
     {
+      "name": "Item",
+      "category": "display",
+      "description": "Generic content row primitive with media, content, and action regions",
+      "intent": {
+        "whenToUse": [
+          "Composing a single content row with leading media, a text block, and trailing actions",
+          "Building list, menu, or card rows from a consistent layout primitive",
+          "Slotting a row onto a real anchor or button via asChild for navigation or selection"
+        ],
+        "whenNotToUse": [
+          "A full surface with elevation and padding regions — use Card",
+          "Key-value metadata pairs — use DataList"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping an Item div in an anchor to make the whole row clickable",
+            "good": "Use Item asChild with the anchor as the single child so semantics and focus are native",
+            "why": "asChild merges row styling onto the real interactive element instead of nesting a non-semantic div"
+          }
+        ],
+        "related": [
+          {
+            "name": "Card",
+            "relationship": "alternative",
+            "reason": "Card is a padded surface; Item is a lightweight horizontal row"
+          },
+          {
+            "name": "ContainedListItem",
+            "relationship": "alternative",
+            "reason": "ContainedListItem is bound to a contained list; Item is a free-standing row"
+          }
+        ],
+        "a11yRationale": "Item is presentational by default; the slotted element determines the role and focus behaviour, so wrap it asChild around a button or link when the row is interactive",
+        "flexibility": [
+          {
+            "area": "variant and size",
+            "level": "flexible",
+            "note": "Tune density and emphasis to match the surrounding list"
+          },
+          {
+            "area": "compound parts",
+            "level": "flexible",
+            "note": "Media, content, title, description, and actions are optional and composable"
+          }
+        ]
+      },
+      "contextUrl": "/context/item.md"
+    },
+    {
       "name": "Kbd",
       "category": "display",
       "description": "Displays a keyboard key or shortcut",
@@ -2687,6 +3823,63 @@
         ]
       },
       "contextUrl": "/context/kbd.md"
+    },
+    {
+      "name": "Label",
+      "category": "inputs",
+      "description": "Accessible caption for a form control",
+      "intent": {
+        "whenToUse": [
+          "Naming a single form control (input, select, checkbox) so clicking the text focuses it",
+          "Marking a field as required with a visible and screen-reader-announced indicator"
+        ],
+        "whenNotToUse": [
+          "Labeling a group of controls — use a <fieldset>/<legend> instead",
+          "Static body copy that is not associated with a control — use a plain text element"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Label>Email</Label><input id=\"email\" />",
+            "good": "<Label htmlFor=\"email\">Email</Label><input id=\"email\" />",
+            "why": "Without htmlFor the label is not programmatically associated, so click-to-focus and screen-reader naming break"
+          },
+          {
+            "bad": "<Label required>Email <span>*</span></Label>",
+            "good": "<Label required>Email</Label>",
+            "why": "The required marker is rendered for you with an accessible text alternative; a hand-added asterisk is silent to screen readers"
+          }
+        ],
+        "related": [
+          {
+            "name": "Field",
+            "relationship": "contained-by",
+            "reason": "Field composes Label with a control, description, and error and wires the ids automatically"
+          },
+          {
+            "name": "Input",
+            "relationship": "pairs-with",
+            "reason": "A label names the input it points at via htmlFor"
+          }
+        ],
+        "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
+        "content": {
+          "tone": "Short noun phrase naming the field",
+          "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Colors and type must resolve to --cascivo-* semantic tokens"
+          },
+          {
+            "area": "label copy",
+            "level": "flexible",
+            "note": "Free, within tone guidance"
+          }
+        ]
+      },
+      "contextUrl": "/context/label.md"
     },
     {
       "name": "Link",
@@ -2841,6 +4034,126 @@
       "contextUrl": "/context/menu.md"
     },
     {
+      "name": "MenuButton",
+      "category": "navigation",
+      "description": "A button that opens an anchored action menu of one-shot commands",
+      "intent": {
+        "whenToUse": [
+          "Exposing a small set of one-shot actions behind a single labeled button",
+          "Toolbar or header overflow actions where each item runs a command on activation",
+          "Action lists that need ArrowUp/ArrowDown roving focus and Enter/Space activation"
+        ],
+        "whenNotToUse": [
+          "Choosing and persisting a value from options — use Select",
+          "Right-click contextual actions on a target element — use ContextMenu",
+          "A single action with no list — use a plain Button",
+          "Rich interactive content (forms, pickers) rather than a list of commands — use Popover"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Rendering checkbox or radio state inside MenuButton items and treating selection as a chosen value",
+            "good": "Use Select or MultiSelect for value selection; MenuButton items are one-shot actions that close the menu on activation",
+            "why": "role=\"menuitem\" items do not model a selected value and dismiss the menu when activated, so they cannot represent persistent choices"
+          },
+          {
+            "bad": "Leaving the trigger label empty with no visible text and no labels.open override",
+            "good": "Provide visible label text, or pass labels.open / rely on the built-in i18n accessible name",
+            "why": "A trigger with no accessible name is unusable for screen-reader and voice-control users"
+          }
+        ],
+        "related": [
+          {
+            "name": "Menu",
+            "relationship": "alternative",
+            "reason": "Use Menu for fully composable trigger + item children; MenuButton is the prop-driven convenience form"
+          },
+          {
+            "name": "ContextMenu",
+            "relationship": "alternative",
+            "reason": "Use ContextMenu when actions are triggered by right-click on a target rather than a button"
+          },
+          {
+            "name": "Select",
+            "relationship": "alternative",
+            "reason": "Use Select when the user is picking a value instead of firing an action"
+          },
+          {
+            "name": "Button",
+            "relationship": "contains",
+            "reason": "The trigger is a styled button that opens the menu"
+          }
+        ],
+        "a11yRationale": "The trigger is a real <button> exposing aria-haspopup=\"menu\", aria-expanded reflecting open state, and aria-controls pointing at the role=\"menu\" panel. ArrowDown/Enter/Space open the menu and move focus to the first enabled item, ArrowUp opens and focuses the last item, ArrowUp/ArrowDown rove focus between items with wrap-around, disabled items are aria-disabled and skipped by roving focus, Escape closes and restores focus to the trigger, and Tab closes without trapping focus. DismissableLayer provides outside-pointer and Escape dismissal, and high-contrast plus reduced-motion preferences are honored in CSS.",
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Trigger and menu styling must resolve to the listed --cascivo-* tokens"
+          },
+          {
+            "area": "item content",
+            "level": "flexible",
+            "note": "Each item label accepts arbitrary ReactNode; onSelect defines the action"
+          },
+          {
+            "area": "trigger appearance",
+            "level": "flexible",
+            "note": "variant and size choose among the standard button looks and dimensions"
+          }
+        ]
+      },
+      "contextUrl": "/context/menu-button.md"
+    },
+    {
+      "name": "Menubar",
+      "category": "navigation",
+      "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
+      "intent": {
+        "whenToUse": [
+          "A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions",
+          "Desktop-like apps that expose grouped commands across a horizontal bar"
+        ],
+        "whenNotToUse": [
+          "Site or section navigation between pages or destinations — use NavigationMenu",
+          "A single trigger that opens one menu of actions — use a Menu/Dropdown",
+          "Switching between peer content panels — use Tabs"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Using Menubar entries as page links",
+            "good": "<NavigationMenu> for navigating between destinations",
+            "why": "menubar implies commands/actions within the current view, not navigation to other pages"
+          }
+        ],
+        "related": [
+          {
+            "name": "NavigationMenu",
+            "relationship": "alternative",
+            "reason": "NavigationMenu navigates between destinations; Menubar invokes commands"
+          },
+          {
+            "name": "Menu",
+            "relationship": "contains",
+            "reason": "Each Menubar entry behaves like a single Menu anchored under its trigger"
+          }
+        ],
+        "a11yRationale": "Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem triggers (Left/Right/Home/End) where ArrowDown opens the menu and focuses its first item, Up/Down move within the menu, and Escape closes and restores focus to the trigger",
+        "flexibility": [
+          {
+            "area": "menu content",
+            "level": "strict",
+            "note": "Menus are described by data (menus prop) so roles and keyboard wiring stay correct"
+          },
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
+          }
+        ]
+      },
+      "contextUrl": "/context/menubar.md"
+    },
+    {
       "name": "Modal",
       "category": "overlay",
       "description": "Accessible dialog overlay using native <dialog> element",
@@ -2967,6 +4280,163 @@
         ]
       },
       "contextUrl": "/context/multi-select.md"
+    },
+    {
+      "name": "NativeSelect",
+      "category": "inputs",
+      "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
+      "intent": {
+        "whenToUse": [
+          "A standard single-choice dropdown where native behavior and form integration matter most",
+          "Mobile-first forms that should use the platform picker UI",
+          "Pairing with a Field/Label inside a regular HTML form"
+        ],
+        "whenNotToUse": [
+          "Multi-select, search/typeahead, or rich option rendering — use the custom Select/Combobox",
+          "A handful of mutually exclusive options where radios read better"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<NativeSelect options={oneHundredOptionsWithIcons} />",
+            "good": "<Combobox options={...} />",
+            "why": "Native <option> cannot render icons or be searched; use a custom listbox for rich options"
+          }
+        ],
+        "related": [
+          {
+            "name": "Select",
+            "relationship": "alternative",
+            "reason": "Custom-rendered listbox for richer options at the cost of native form/keyboard behavior"
+          },
+          {
+            "name": "RadioCard",
+            "relationship": "alternative",
+            "reason": "Better for a small fixed set of mutually exclusive choices shown inline"
+          }
+        ],
+        "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.",
+        "flexibility": [
+          {
+            "area": "options",
+            "level": "flexible",
+            "note": "Pass an options array or raw <option> children"
+          },
+          {
+            "area": "value",
+            "level": "flexible",
+            "note": "Controlled (value/onChange) or uncontrolled (defaultValue)"
+          }
+        ]
+      },
+      "contextUrl": "/context/native-select.md"
+    },
+    {
+      "name": "NavigationMenu",
+      "category": "navigation",
+      "description": "Site navigation bar with links and dropdown flyout panels",
+      "intent": {
+        "whenToUse": [
+          "Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links",
+          "A header nav bar that mixes direct links with rich dropdown panels"
+        ],
+        "whenNotToUse": [
+          "Application commands and actions grouped under File/Edit/View — use Menubar",
+          "A single trigger opening a list of actions — use a Menu/Dropdown",
+          "Switching between peer content panels in place — use Tabs"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Putting action commands (Save, Delete) inside NavigationMenu flyouts",
+            "good": "<Menubar> or <Menu> for commands; NavigationMenu is for destinations",
+            "why": "navigation landmark implies moving between destinations, not invoking actions"
+          }
+        ],
+        "related": [
+          {
+            "name": "Menubar",
+            "relationship": "alternative",
+            "reason": "Menubar invokes application commands; NavigationMenu navigates to destinations"
+          },
+          {
+            "name": "Tabs",
+            "relationship": "alternative",
+            "reason": "Tabs swap in-page panels; NavigationMenu links to other destinations"
+          }
+        ],
+        "a11yRationale": "Wrapped in a navigation landmark with a roving-tabindex row of links and disclosure triggers; triggers expose aria-expanded/aria-controls onto a flyout panel, and outside-pointer or Escape dismisses the open panel and restores trigger focus",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "horizontal (default) or vertical roving navigation"
+          },
+          {
+            "area": "panel content",
+            "level": "flexible",
+            "note": "content is arbitrary ReactNode; links without content render as plain anchors"
+          }
+        ]
+      },
+      "contextUrl": "/context/navigation-menu.md"
+    },
+    {
+      "name": "Notification",
+      "category": "feedback",
+      "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
+      "intent": {
+        "whenToUse": [
+          "Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)",
+          "Pairing a status message with one or more recovery actions via the actions slot",
+          "Communicating outcomes that should persist until the user reads or acts on them"
+        ],
+        "whenNotToUse": [
+          "Transient, auto-dismissing feedback that floats above the layout — use Toast",
+          "A terse single-line action status next to a control — use InlineLoading",
+          "Blocking the user for a required decision — use Modal or AlertDialog"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Stacking Notifications in a fixed corner viewport on a timer to fake toasts",
+            "good": "<Toast> for ephemeral, floating, auto-dismissing feedback",
+            "why": "Notification is an in-flow banner; faking toast behavior duplicates Toast and breaks layout expectations"
+          }
+        ],
+        "related": [
+          {
+            "name": "Toast",
+            "relationship": "alternative",
+            "reason": "Toast floats and auto-dismisses; Notification stays inline in the document flow"
+          },
+          {
+            "name": "Alert",
+            "relationship": "alternative",
+            "reason": "Alert is a lighter inline message; Notification leans into a leading variant icon and an actions slot"
+          }
+        ],
+        "a11yRationale": "role=\"alert\" for warning and error so assistive tech announces them assertively, role=\"status\" for info and success; the variant icon is decorative (aria-hidden) and color is always paired with the icon and title, and the dismiss control is a labeled button",
+        "content": {
+          "tone": "Clear and outcome-focused — state what happened and the next step",
+          "notes": "Title summarizes; description adds detail. Put recovery controls in the actions slot, not the title."
+        },
+        "flexibility": [
+          {
+            "area": "icon",
+            "level": "flexible",
+            "note": "A variant-appropriate icon is supplied by default; override with the icon prop"
+          },
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Any ReactNode (typically Buttons) can fill the actions slot"
+          },
+          {
+            "area": "role mapping",
+            "level": "strict",
+            "note": "warning/error must use role=\"alert\"; info/success use role=\"status\""
+          }
+        ]
+      },
+      "contextUrl": "/context/notification.md"
     },
     {
       "name": "NumberInput",
@@ -3640,6 +5110,94 @@
       "contextUrl": "/context/rating-group.md"
     },
     {
+      "name": "Resizable",
+      "category": "layout",
+      "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
+      "intent": {
+        "whenToUse": [
+          "Letting users reallocate space between two adjacent regions, e.g. an editor and a preview",
+          "Side panels or inspectors whose width the user should control",
+          "Master/detail layouts where one pane may need more room than the default"
+        ],
+        "whenNotToUse": [
+          "Fixed layouts where the split should never change — use plain flex/grid",
+          "More than two siblings need independent resizing — compose nested splitters instead"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Resizable> wrapping three panes",
+            "good": "Nest two Resizable splitters so each divider controls exactly one boundary",
+            "why": "A single separator can only mediate one boundary between two panes"
+          }
+        ],
+        "related": [
+          {
+            "name": "Slider",
+            "relationship": "alternative",
+            "reason": "Use a slider when picking a value, not when allocating layout space"
+          }
+        ],
+        "a11yRationale": "The divider is a focusable role=\"separator\" with aria-orientation and aria-valuenow/min/max reflecting the percentage split; arrow keys nudge the ratio and Home/End snap to the configured bounds, matching the APG window-splitter pattern.",
+        "flexibility": [
+          {
+            "area": "sizing",
+            "level": "strict",
+            "note": "Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex"
+          },
+          {
+            "area": "min/max ratio",
+            "level": "flexible",
+            "note": "Consumer-defined clamp range"
+          }
+        ]
+      },
+      "contextUrl": "/context/resizable.md"
+    },
+    {
+      "name": "ScrollArea",
+      "category": "layout",
+      "description": "A scroll container with styled, slim scrollbars and overflow shadows",
+      "intent": {
+        "whenToUse": [
+          "Constraining a region to a fixed height/width with overflow scrolling",
+          "Giving long lists, tables, or code blocks consistent slim scrollbars across browsers",
+          "Signalling more content with subtle top/bottom scroll shadows"
+        ],
+        "whenNotToUse": [
+          "Whole-page scrolling — let the document scroll naturally",
+          "Content that should determine its own height — do not cap it"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Nesting many ScrollAreas so the user faces competing scrollbars",
+            "good": "Scroll one region; let the rest size to content",
+            "why": "Nested scroll regions trap focus and confuse pointer and keyboard scrolling"
+          }
+        ],
+        "related": [
+          {
+            "name": "Separator",
+            "relationship": "pairs-with",
+            "reason": "Often divides items inside a scrolled list"
+          }
+        ],
+        "a11yRationale": "Native overflow keeps the container keyboard-scrollable and focusable per browser defaults; styling never removes the scroll affordance, only restyles it",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "vertical, horizontal, or both depending on content"
+          },
+          {
+            "area": "scroll behaviour",
+            "level": "strict",
+            "note": "Relies on native overflow scrolling — never replace with JS scrolling"
+          }
+        ]
+      },
+      "contextUrl": "/context/scroll-area.md"
+    },
+    {
       "name": "Search",
       "category": "inputs",
       "description": "Search input with debounced search callback and clear button",
@@ -4289,6 +5847,55 @@
       "contextUrl": "/context/status.md"
     },
     {
+      "name": "StructuredList",
+      "category": "display",
+      "description": "Tabular row list for scannable data, optionally single-selectable",
+      "intent": {
+        "whenToUse": [
+          "Presenting a set of related records in aligned columns the user scans top to bottom",
+          "Letting the user pick exactly one row from a short, readable list (selectable)",
+          "Carbon-style structured content where a full data table is heavier than needed"
+        ],
+        "whenNotToUse": [
+          "Sorting, filtering, pagination, or multi-select over many rows — use DataTable",
+          "Free-form vertical content without column alignment — use List"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "selectable with multiple rows marked selected",
+            "good": "A single selected id (value/defaultValue) — selection is single-choice",
+            "why": "The selectable variant is a radiogroup; multiple selected rows break the radio semantics"
+          }
+        ],
+        "related": [
+          {
+            "name": "DataTable",
+            "relationship": "alternative",
+            "reason": "DataTable adds sorting, filtering, and pagination; StructuredList stays static and lightweight"
+          },
+          {
+            "name": "List",
+            "relationship": "alternative",
+            "reason": "List is single-column vertical content; StructuredList aligns multiple cells per row"
+          }
+        ],
+        "a11yRationale": "Static lists use table/row/cell roles so columns are announced; selectable lists become a radiogroup of role=radio rows with roving tabindex, so arrow keys move focus and Enter/Space check a row exactly like native radios",
+        "flexibility": [
+          {
+            "area": "selectable",
+            "level": "flexible",
+            "note": "Toggle selectable based on whether the list is interactive or purely presentational"
+          },
+          {
+            "area": "roles",
+            "level": "strict",
+            "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+          }
+        ]
+      },
+      "contextUrl": "/context/structured-list.md"
+    },
+    {
       "name": "Switcher",
       "category": "navigation",
       "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
@@ -4589,6 +6196,60 @@
       "contextUrl": "/context/textarea.md"
     },
     {
+      "name": "Tile",
+      "category": "inputs",
+      "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
+      "intent": {
+        "whenToUse": [
+          "A visually rich, clickable choice card in a single- or multi-select group",
+          "Plan/option pickers where each option needs an icon and supporting content",
+          "A larger touch target than a plain radio or checkbox"
+        ],
+        "whenNotToUse": [
+          "A simple inline boolean — use Checkbox or Toggle",
+          "A dense list of text-only options — use RadioGroup or a Select"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Tile value=\"on\">Enable</Tile> // used as a standalone on/off control",
+            "good": "<Tile value=\"on\" selectable=\"multi\">Enable</Tile> // multi allows deselect",
+            "why": "Single (radio) tiles cannot be unselected by clicking; use multi for toggleable behavior"
+          }
+        ],
+        "related": [
+          {
+            "name": "RadioCard",
+            "relationship": "alternative",
+            "reason": "RadioCard wraps a native input in a group; Tile is a standalone ARIA radio/checkbox"
+          },
+          {
+            "name": "CheckboxCard",
+            "relationship": "alternative",
+            "reason": "Use CheckboxCard when native checkbox form semantics are required"
+          }
+        ],
+        "a11yRationale": "Exposes role=\"radio\" (single) or role=\"checkbox\" (multi) with aria-checked reflecting selection, is focusable, and toggles on Space/Enter. aria-disabled and a -1 tabindex remove disabled tiles from interaction.",
+        "flexibility": [
+          {
+            "area": "selectable",
+            "level": "strict",
+            "note": "single (radio, select-only) | multi (checkbox, toggle)"
+          },
+          {
+            "area": "selected state",
+            "level": "flexible",
+            "note": "Controlled (selected/onSelect) or uncontrolled (defaultSelected)"
+          },
+          {
+            "area": "element",
+            "level": "flexible",
+            "note": "asChild renders onto a custom element via Slot"
+          }
+        ]
+      },
+      "contextUrl": "/context/tile.md"
+    },
+    {
       "name": "TimePicker",
       "category": "inputs",
       "description": "Native time input wrapper with label, hint, error, and size variants",
@@ -4636,6 +6297,50 @@
         ]
       },
       "contextUrl": "/context/time-picker.md"
+    },
+    {
+      "name": "Timeline",
+      "category": "display",
+      "description": "Ordered sequence of events with status markers and a connector line",
+      "intent": {
+        "whenToUse": [
+          "Showing an ordered sequence of events over time (activity feeds, order tracking)",
+          "Communicating progress through discrete stages with complete/current/upcoming status",
+          "Presenting a chronological history where order is meaningful"
+        ],
+        "whenNotToUse": [
+          "Interactive multi-step navigation the user controls — use Tabs or a Stepper",
+          "Unordered lists where sequence carries no meaning — use List"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Marking several items as status=\"current\" at once",
+            "good": "Exactly one current item so aria-current=\"step\" points to a single position",
+            "why": "Multiple current markers make the active position ambiguous for assistive tech"
+          }
+        ],
+        "related": [
+          {
+            "name": "List",
+            "relationship": "alternative",
+            "reason": "List is for unordered prose; Timeline conveys ordered, time-stamped events"
+          }
+        ],
+        "a11yRationale": "Rendered as an ordered list (ol/li) to convey sequence; the active item carries aria-current=\"step\" and decorative markers are aria-hidden so screen readers read only the text",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "vertical for feeds, horizontal for compact progress strips"
+          },
+          {
+            "area": "status semantics",
+            "level": "strict",
+            "note": "Use a single current item; status drives marker colour via data-status"
+          }
+        ]
+      },
+      "contextUrl": "/context/timeline.md"
     },
     {
       "name": "Toast",
@@ -4740,6 +6445,124 @@
       "contextUrl": "/context/toggle.md"
     },
     {
+      "name": "ToggleGroup",
+      "category": "inputs",
+      "description": "A set of toggle buttons for single or multiple selection",
+      "intent": {
+        "whenToUse": [
+          "Choosing one value from a small, mutually exclusive set that should stay visible (type=\"single\")",
+          "Toggling several independent options in a compact segmented control (type=\"multiple\")"
+        ],
+        "whenNotToUse": [
+          "The options are independent actions, not a selection — use ButtonGroup",
+          "There are many options or they need labels and descriptions — use Radio or Checkbox groups"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ToggleGroup type=\"single\" items={items} onValueChange={save} />",
+            "good": "<ToggleGroup type=\"single\" value={align} onValueChange={setAlign} items={items} />",
+            "why": "Single-select used as a controlled value should be driven by value/onValueChange so the source of truth lives with the parent"
+          }
+        ],
+        "related": [
+          {
+            "name": "ButtonGroup",
+            "relationship": "alternative",
+            "reason": "Use when the buttons fire independent actions rather than select a value"
+          },
+          {
+            "name": "Toggle",
+            "relationship": "alternative",
+            "reason": "Use a single Toggle for one standalone binary option"
+          }
+        ],
+        "a11yRationale": "Single mode renders role=\"radiogroup\" with role=\"radio\" + aria-checked items; multiple mode uses a plain group of buttons with aria-pressed. Roving tabindex makes the set one tab stop and arrow keys move between items, matching the APG radiogroup/toolbar patterns",
+        "content": {
+          "tone": "Short noun or icon per option",
+          "notes": "Keep item labels parallel and concise; provide a label or icon meaningful out of context"
+        },
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Item height must resolve to --cascivo-control-height-* to align with other controls"
+          },
+          {
+            "area": "item content",
+            "level": "flexible",
+            "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
+          }
+        ]
+      },
+      "contextUrl": "/context/toggle-group.md"
+    },
+    {
+      "name": "Toggletip",
+      "category": "overlay",
+      "description": "A click-triggered info popover for supplementary, selectable content",
+      "intent": {
+        "whenToUse": [
+          "Revealing brief supplementary information on demand when the user clicks an info affordance",
+          "Content that must be selectable or contain a link, where a hover Tooltip would be unreachable",
+          "Touch-friendly hint surfaces where hover is unavailable"
+        ],
+        "whenNotToUse": [
+          "A passive label that should appear on hover/focus without a click — use Tooltip",
+          "A blocking, focus-trapping dialog for a task — use Modal",
+          "Rich forms or pickers anchored to a trigger — use Popover",
+          "A list of one-shot actions behind a button — use MenuButton"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Using a hover Tooltip to hold a link or text the user needs to read or copy",
+            "good": "Use a Toggletip so the content stays open on click and remains reachable and selectable",
+            "why": "Hover tooltips disappear on pointer-out and are not keyboard- or touch-reachable for interaction, so interactive or copyable content needs a click-toggled bubble"
+          },
+          {
+            "bad": "Giving the trigger an icon with no text and no labels.label override",
+            "good": "Provide labels.label or rely on the built-in i18n accessible name",
+            "why": "An icon-only button with no accessible name cannot be operated by screen-reader or voice users"
+          }
+        ],
+        "related": [
+          {
+            "name": "Tooltip",
+            "relationship": "alternative",
+            "reason": "Use Tooltip for non-interactive hints shown on hover/focus rather than click"
+          },
+          {
+            "name": "Popover",
+            "relationship": "alternative",
+            "reason": "Use Popover for richer interactive content like forms or pickers"
+          },
+          {
+            "name": "MenuButton",
+            "relationship": "alternative",
+            "reason": "Use MenuButton when the trigger should reveal a list of actions"
+          }
+        ],
+        "a11yRationale": "The trigger is a real <button> with aria-expanded reflecting open state and aria-controls pointing at the bubble; an icon-only trigger gets an accessible name from labels.label or the built-in i18n catalog. The bubble is role=\"status\" so its content is announced when it opens, and unlike a hover tooltip the content remains visible and reachable for selection and links. DismissableLayer provides Escape and outside-pointer dismissal, and high-contrast and reduced-motion preferences are honored in CSS.",
+        "flexibility": [
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Trigger and bubble styling must resolve to the listed --cascivo-* tokens"
+          },
+          {
+            "area": "content",
+            "level": "flexible",
+            "note": "trigger and children accept arbitrary ReactNode supplied by the consumer"
+          },
+          {
+            "area": "open state ownership",
+            "level": "flexible",
+            "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+          }
+        ]
+      },
+      "contextUrl": "/context/toggletip.md"
+    },
+    {
       "name": "Tooltip",
       "category": "overlay",
       "description": "Contextual label shown on hover or focus",
@@ -4797,6 +6620,60 @@
         ]
       },
       "contextUrl": "/context/tooltip.md"
+    },
+    {
+      "name": "TreeView",
+      "category": "display",
+      "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
+      "intent": {
+        "whenToUse": [
+          "Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)",
+          "Letting the user pick one or several nodes from a hierarchy",
+          "Navigating deep structures where indentation communicates depth"
+        ],
+        "whenNotToUse": [
+          "A flat, non-nested list of choices — use List or StructuredList",
+          "A small set of mutually exclusive sections of prose — use Accordion"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "A single-level TreeView with no children on any node",
+            "good": "A List or StructuredList",
+            "why": "A tree with no hierarchy adds twisties and ARIA tree semantics for content that is flat"
+          }
+        ],
+        "related": [
+          {
+            "name": "Accordion",
+            "relationship": "alternative",
+            "reason": "Accordion stacks a few sequential disclosure sections; TreeView models arbitrary-depth hierarchy"
+          },
+          {
+            "name": "StructuredList",
+            "relationship": "alternative",
+            "reason": "StructuredList is flat tabular rows; TreeView is nested with expand/collapse"
+          }
+        ],
+        "a11yRationale": "Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)",
+        "flexibility": [
+          {
+            "area": "selectionMode",
+            "level": "flexible",
+            "note": "single vs multi is the consumer’s choice based on the interaction"
+          },
+          {
+            "area": "keyboard model",
+            "level": "strict",
+            "note": "Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped"
+          },
+          {
+            "area": "indent token",
+            "level": "flexible",
+            "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+          }
+        ]
+      },
+      "contextUrl": "/context/tree-view.md"
     },
     {
       "name": "VisuallyHidden",

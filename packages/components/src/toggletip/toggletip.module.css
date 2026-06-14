@@ -1,0 +1,74 @@
+@layer cascade.component {
+  .root {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--cascivo-space-1);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-control);
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+
+  .bubble {
+    z-index: var(--cascivo-z-tooltip);
+    inline-size: max-content;
+    max-inline-size: 18rem;
+    margin: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-md);
+
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--cascivo-motion-enter),
+      translate var(--cascivo-motion-enter);
+
+    @starting-style {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--cascivo-space-1));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .trigger:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .bubble {
+    border: 1px solid CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
+  }
+}

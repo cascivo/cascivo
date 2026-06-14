@@ -1,0 +1,110 @@
+@layer cascade.component {
+  .root {
+    position: relative;
+
+    &[data-variant='inline'] {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--cascivo-space-1);
+    }
+  }
+
+  .inlineCode {
+    font-family: var(--cascivo-font-mono);
+    font-size: 0.875em;
+    color: var(--cascivo-color-text);
+    background: var(--cascivo-color-bg-subtle);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+    padding-inline: var(--cascivo-space-1);
+    padding-block: 0.125em;
+  }
+
+  .pre {
+    margin: 0;
+    padding: var(--cascivo-space-4);
+    padding-inline-end: var(--cascivo-space-10);
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-relaxed);
+    color: var(--cascivo-color-text);
+    background: var(--cascivo-color-bg-subtle);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+    overflow-x: auto;
+
+    .root[data-variant='single'] & {
+      white-space: pre;
+    }
+    .root[data-variant='multi'] & {
+      white-space: pre;
+    }
+  }
+
+  .code {
+    font: inherit;
+    color: inherit;
+  }
+
+  .line {
+    display: flex;
+    gap: var(--cascivo-space-4);
+  }
+
+  .lineNumber {
+    flex: none;
+    inline-size: 2ch;
+    text-align: end;
+    color: var(--cascivo-color-text-subtle);
+    user-select: none;
+  }
+
+  .lineText {
+    white-space: pre;
+  }
+
+  .copy {
+    position: absolute;
+    inset-block-start: var(--cascivo-space-2);
+    inset-inline-end: var(--cascivo-space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    padding: 0;
+    color: var(--cascivo-color-text-muted);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+    transition:
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover {
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &[data-state='copied'] {
+      color: var(--cascivo-color-success, var(--cascivo-color-accent));
+    }
+
+    .root[data-variant='inline'] & {
+      position: static;
+      inline-size: 1.25rem;
+      block-size: 1.25rem;
+    }
+  }
+
+  .icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+}

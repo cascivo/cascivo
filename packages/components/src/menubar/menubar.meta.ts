@@ -1,0 +1,84 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Menubar',
+  description: 'Horizontal application menu bar with keyboard-navigable dropdown menus',
+  category: 'navigation',
+  states: ['closed', 'open'],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'menus', type: 'MenubarMenu[]', required: true },
+    { name: 'aria-label', type: 'string', required: true },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text',
+    '--cascivo-color-border',
+    '--cascivo-focus-ring',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+  ],
+  accessibility: {
+    role: 'menubar',
+    wcag: '2.2-AA',
+    keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Escape'],
+    apgPattern: 'menubar',
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['navigation', 'menubar', 'menu', 'application'],
+  intent: {
+    whenToUse: [
+      'A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions',
+      'Desktop-like apps that expose grouped commands across a horizontal bar',
+    ],
+    whenNotToUse: [
+      'Site or section navigation between pages or destinations — use NavigationMenu',
+      'A single trigger that opens one menu of actions — use a Menu/Dropdown',
+      'Switching between peer content panels — use Tabs',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using Menubar entries as page links',
+        good: '<NavigationMenu> for navigating between destinations',
+        why: 'menubar implies commands/actions within the current view, not navigation to other pages',
+      },
+    ],
+    related: [
+      {
+        name: 'NavigationMenu',
+        relationship: 'alternative',
+        reason: 'NavigationMenu navigates between destinations; Menubar invokes commands',
+      },
+      {
+        name: 'Menu',
+        relationship: 'contains',
+        reason: 'Each Menubar entry behaves like a single Menu anchored under its trigger',
+      },
+    ],
+    a11yRationale:
+      'Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem triggers (Left/Right/Home/End) where ArrowDown opens the menu and focuses its first item, Up/Down move within the menu, and Escape closes and restores focus to the trigger',
+    flexibility: [
+      {
+        area: 'menu content',
+        level: 'strict',
+        note: 'Menus are described by data (menus prop) so roles and keyboard wiring stay correct',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Surface, borders, and focus ring must resolve to --cascivo-* tokens',
+      },
+    ],
+  },
+}

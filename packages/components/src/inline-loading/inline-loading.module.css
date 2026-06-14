@@ -1,0 +1,56 @@
+@layer cascade.component {
+  .inline-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-none);
+    color: var(--cascivo-color-text);
+
+    &[data-status='finished'] {
+      color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
+    }
+
+    &[data-status='error'] {
+      color: var(--cascivo-color-destructive);
+    }
+  }
+
+  .indicator {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .spinner {
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    opacity: 1;
+
+    /* Enter: fade the swapped-in result icon from the browser's first render */
+    @starting-style {
+      opacity: 0;
+    }
+
+    transition: opacity var(--cascivo-motion-enter);
+  }
+
+  .label {
+    color: inherit;
+  }
+}
+
+@media (forced-colors: active) {
+  .inline-loading[data-status='finished'],
+  .inline-loading[data-status='error'] {
+    color: CanvasText;
+  }
+}

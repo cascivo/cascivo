@@ -1,0 +1,85 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Carousel',
+  description: 'Scroll-snap slide deck with previous/next controls and dot indicators',
+  category: 'display',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'children', type: 'ReactNode', required: false, description: 'Slides as children' },
+    { name: 'slides', type: 'ReactNode[]', required: false, description: 'Slides as an array' },
+    { name: 'index', type: 'number', required: false, description: 'Controlled active index' },
+    { name: 'defaultIndex', type: 'number', required: false, default: '0' },
+    { name: 'onIndexChange', type: '(index: number) => void', required: false },
+    { name: 'loop', type: 'boolean', required: false, default: 'false' },
+  ],
+  tokens: [
+    '--cascivo-color-accent',
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-radius-md',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
+  ],
+  accessibility: {
+    role: 'group',
+    wcag: '2.2-AA',
+    keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End'],
+    forcedColors: true,
+    reducedMotion: true,
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<Carousel>\n  <img src="/1.jpg" alt="" />\n  <img src="/2.jpg" alt="" />\n</Carousel>',
+    },
+    {
+      title: 'Looping with array',
+      code: '<Carousel loop slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['slider', 'gallery', 'slideshow', 'deck', 'scroll-snap'],
+  intent: {
+    whenToUse: [
+      'Presenting a sequence of media or cards the user pages through one at a time',
+      'Image galleries, onboarding decks, or featured-content rotators',
+      'When horizontal swiping/scrolling is a natural interaction on touch devices',
+    ],
+    whenNotToUse: [
+      'Content users must compare side-by-side — show a grid instead',
+      'Critical information that must always be visible — carousels hide most of their content',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Auto-rotating carousel for primary navigation or key calls-to-action',
+        good: 'A static list or grid where every item is visible',
+        why: 'Auto-rotation and hidden slides reduce discoverability and accessibility of important content',
+      },
+    ],
+    related: [
+      {
+        name: 'Tabs',
+        relationship: 'alternative',
+        reason: 'Use tabs when sections are distinct and should be directly addressable',
+      },
+    ],
+    a11yRationale:
+      'The container is a labelled region with aria-roledescription="carousel"; each slide is a labelled group ("n of total"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.',
+    flexibility: [
+      {
+        area: 'transition',
+        level: 'strict',
+        note: 'Paging uses native CSS scroll-snap, not transform math — no custom easing config',
+      },
+      {
+        area: 'slide content',
+        level: 'flexible',
+        note: 'Any ReactNode may be a slide; pass via children or the slides array',
+      },
+    ],
+  },
+}

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 2,
+  "name": "inline-loading",
+  "type": "component",
+  "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/inline-loading/inline-loading.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/inline-loading/inline-loading.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["loading", "status", "progress", "feedback", "spinner"],
+  "category": "feedback",
+  "meta": {
+    "name": "InlineLoading",
+    "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
+    "category": "feedback",
+    "states": ["inactive", "active", "finished", "error"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "status",
+        "type": "'inactive' | 'active' | 'finished' | 'error'",
+        "required": true
+      },
+      {
+        "name": "label",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "labels",
+        "type": "{ active?: string; finished?: string; error?: string }",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-color-success",
+      "--cascivo-color-destructive",
+      "--cascivo-motion-enter"
+    ],
+    "accessibility": {
+      "role": "status",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": true,
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Active",
+        "code": "<InlineLoading status=\"active\" />"
+      },
+      {
+        "title": "Finished",
+        "code": "<InlineLoading status=\"finished\" label=\"Saved\" />"
+      },
+      {
+        "title": "Error",
+        "code": "<InlineLoading status=\"error\" label=\"Save failed\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["loading", "status", "progress", "feedback", "spinner"],
+    "intent": {
+      "whenToUse": [
+        "Showing the progress of a single inline action — a Save button that becomes \"Saving… / Saved / Failed\"",
+        "Communicating async status next to a control without occupying its own block or modal",
+        "Reflecting a terminal success or error state that should be announced to assistive tech"
+      ],
+      "whenNotToUse": [
+        "Page- or section-level loading where layout space is reserved — use Skeleton or Spinner",
+        "Persistent, multi-line messages with recovery actions — use Alert or Notification",
+        "Determinate progress with a known percentage — use a progress bar"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Spinner /> with separate manually-managed success and error markup",
+          "good": "<InlineLoading status={status} /> driving icon and color from one status prop",
+          "why": "A single status keeps the icon, color, and announced label in sync and prevents mismatched states"
+        }
+      ],
+      "related": [
+        {
+          "name": "Spinner",
+          "relationship": "contains",
+          "reason": "InlineLoading renders a Spinner for its active state and adds finished/error icons plus a label"
+        },
+        {
+          "name": "Alert",
+          "relationship": "alternative",
+          "reason": "Use Alert for persistent messages that need a title, body, and actions rather than a terse status"
+        }
+      ],
+      "a11yRationale": "role=\"status\" with aria-live=\"polite\" announces the label when the status changes; the icon is decorative (aria-hidden) so meaning is carried by the text and color is never the sole signal",
+      "content": {
+        "tone": "Terse and present-tense — \"Saving\", \"Saved\", \"Save failed\"",
+        "notes": "Keep labels to a few words; the inactive status renders no label by default"
+      },
+      "flexibility": [
+        {
+          "area": "label",
+          "level": "flexible",
+          "note": "Defaults come from the i18n catalog per status; override with label or the per-status labels map"
+        },
+        {
+          "area": "status semantics",
+          "level": "strict",
+          "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,105 @@
+@layer cascade.component {
+  .list {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .headerRow {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-4);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .headerCell {
+    flex: 1;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-4);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text-subtle);
+    text-align: start;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-4);
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+
+  .body .row:first-child {
+    border-block-start: none;
+  }
+
+  .cell {
+    flex: 1;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-4);
+    text-align: start;
+  }
+
+  /* Selectable variant */
+  .selectable .row {
+    cursor: pointer;
+    transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover {
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &[data-selected] {
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+  }
+
+  /* The leading indicator column for selectable rows is fixed-width. */
+  .selectable .row > .cell:first-child,
+  .selectable .headerRow > .headerCell:first-child {
+    flex: 0 0 auto;
+    inline-size: 2.5rem;
+  }
+
+  .indicator {
+    display: inline-block;
+    inline-size: 1rem;
+    block-size: 1rem;
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-full, 9999px);
+
+    .row[data-selected] & {
+      border-color: var(--cascivo-color-primary);
+      border-width: 0.3125rem;
+      background-color: var(--cascivo-color-surface);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .selectable .row:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .indicator {
+    border-color: ButtonText;
+  }
+
+  .row[data-selected] .indicator {
+    border-color: Highlight;
+  }
+}

@@ -1,0 +1,85 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Resizable',
+  description:
+    'Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space',
+  category: 'layout',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'children', type: 'ReactNode', required: true, description: 'Exactly two panes' },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+    },
+    { name: 'defaultRatio', type: 'number', required: false, default: '0.5' },
+    { name: 'ratio', type: 'number', required: false, description: 'Controlled ratio (0–1)' },
+    { name: 'minRatio', type: 'number', required: false, default: '0.1' },
+    { name: 'maxRatio', type: 'number', required: false, default: '0.9' },
+    { name: 'onRatioChange', type: '(ratio: number) => void', required: false },
+  ],
+  tokens: [
+    '--cascivo-color-border',
+    '--cascivo-color-border-strong',
+    '--cascivo-radius-full',
+    '--cascivo-focus-ring',
+  ],
+  accessibility: {
+    role: 'separator',
+    wcag: '2.2-AA',
+    keyboard: ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'],
+    apgPattern: 'windowsplitter',
+    forcedColors: true,
+  },
+  examples: [
+    {
+      title: 'Horizontal split',
+      code: '<Resizable>\n  <Editor />\n  <Preview />\n</Resizable>',
+    },
+    {
+      title: 'Vertical with bounds',
+      code: '<Resizable orientation="vertical" defaultRatio={0.3} minRatio={0.2} maxRatio={0.8}>\n  <Toolbar />\n  <Canvas />\n</Resizable>',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['splitter', 'panes', 'layout', 'resize', 'divider'],
+  intent: {
+    whenToUse: [
+      'Letting users reallocate space between two adjacent regions, e.g. an editor and a preview',
+      'Side panels or inspectors whose width the user should control',
+      'Master/detail layouts where one pane may need more room than the default',
+    ],
+    whenNotToUse: [
+      'Fixed layouts where the split should never change — use plain flex/grid',
+      'More than two siblings need independent resizing — compose nested splitters instead',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Resizable> wrapping three panes',
+        good: 'Nest two Resizable splitters so each divider controls exactly one boundary',
+        why: 'A single separator can only mediate one boundary between two panes',
+      },
+    ],
+    related: [
+      {
+        name: 'Slider',
+        relationship: 'alternative',
+        reason: 'Use a slider when picking a value, not when allocating layout space',
+      },
+    ],
+    a11yRationale:
+      'The divider is a focusable role="separator" with aria-orientation and aria-valuenow/min/max reflecting the percentage split; arrow keys nudge the ratio and Home/End snap to the configured bounds, matching the APG window-splitter pattern.',
+    flexibility: [
+      {
+        area: 'sizing',
+        level: 'strict',
+        note: 'Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex',
+      },
+      { area: 'min/max ratio', level: 'flexible', note: 'Consumer-defined clamp range' },
+    ],
+  },
+}

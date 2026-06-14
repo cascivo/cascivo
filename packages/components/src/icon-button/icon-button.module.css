@@ -1,0 +1,96 @@
+@layer cascade.component {
+  .iconButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    padding: 0;
+    font-family: var(--cascivo-font-sans);
+    line-height: var(--cascivo-leading-none);
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--cascivo-button-radius, var(--cascivo-radius-control));
+    background-color: transparent;
+    color: var(--cascivo-color-text);
+    transition:
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Sizes — square, driven by control-height tokens */
+    &[data-size='sm'] {
+      block-size: var(--cascivo-control-height-sm);
+      inline-size: var(--cascivo-control-height-sm);
+      font-size: var(--cascivo-text-sm);
+    }
+
+    &[data-size='md'] {
+      block-size: var(--cascivo-control-height-md);
+      inline-size: var(--cascivo-control-height-md);
+      font-size: var(--cascivo-text-base);
+    }
+
+    &[data-size='lg'] {
+      block-size: var(--cascivo-control-height-lg);
+      inline-size: var(--cascivo-control-height-lg);
+      font-size: var(--cascivo-text-lg);
+    }
+
+    /* Variants */
+    &[data-variant='ghost'] {
+      &:hover:not(:disabled) {
+        background-color: var(--cascivo-color-bg-subtle);
+      }
+    }
+
+    &[data-variant='outline'] {
+      border-color: var(--cascivo-color-border);
+      background-color: var(--cascivo-color-surface);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascivo-color-bg-subtle);
+      }
+    }
+
+    &[data-variant='filled'] {
+      background-color: var(--cascivo-color-primary);
+      color: var(--cascivo-color-primary-fg);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cascivo-color-primary-hover);
+      }
+
+      &:active:not(:disabled) {
+        background-color: var(--cascivo-color-primary-active);
+      }
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .iconButton {
+    border: 1px solid ButtonText;
+  }
+
+  .iconButton:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .iconButton:disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+}

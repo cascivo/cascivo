@@ -1,0 +1,131 @@
+@layer cascade.component {
+  .list {
+    --_marker-size: 0.875rem;
+    --_track: var(--cascivo-color-border);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-text);
+    display: flex;
+  }
+
+  .list[data-orientation='vertical'] {
+    flex-direction: column;
+  }
+
+  .list[data-orientation='horizontal'] {
+    flex-direction: row;
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    gap: var(--cascivo-space-3);
+  }
+
+  .list[data-orientation='vertical'] .item {
+    flex-direction: row;
+    padding-block-end: var(--cascivo-space-5);
+  }
+
+  .list[data-orientation='horizontal'] .item {
+    flex-direction: column;
+    flex: 1;
+    padding-inline-end: var(--cascivo-space-5);
+  }
+
+  /* Connector line between markers */
+  .list[data-orientation='vertical'] .item::before {
+    content: '';
+    position: absolute;
+    inset-block-start: var(--_marker-size);
+    inset-inline-start: calc(var(--_marker-size) / 2);
+    inline-size: 1px;
+    block-size: calc(100% - var(--_marker-size));
+    background-color: var(--_track);
+  }
+
+  .list[data-orientation='horizontal'] .item::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--_marker-size);
+    inset-block-start: calc(var(--_marker-size) / 2);
+    block-size: 1px;
+    inline-size: calc(100% - var(--_marker-size));
+    background-color: var(--_track);
+  }
+
+  .item:last-child::before {
+    display: none;
+  }
+
+  .marker {
+    flex: none;
+    inline-size: var(--_marker-size);
+    block-size: var(--_marker-size);
+    border-radius: var(--cascivo-radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--cascivo-text-xs);
+    line-height: 1;
+    border: 2px solid var(--cascivo-color-border);
+    background-color: var(--cascivo-color-surface);
+    box-sizing: border-box;
+  }
+
+  .item[data-status='complete'] .marker {
+    border-color: var(--cascivo-color-success);
+    background-color: var(--cascivo-color-success);
+    color: var(--cascivo-color-success-foreground);
+  }
+
+  .item[data-status='current'] .marker {
+    border-color: var(--cascivo-color-primary);
+    background-color: var(--cascivo-color-primary);
+    color: var(--cascivo-color-primary-fg);
+  }
+
+  .item[data-status='upcoming'] .marker {
+    border-color: var(--cascivo-color-border-strong);
+    background-color: var(--cascivo-color-surface);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    padding-block-start: calc((var(--_marker-size) - 1rem) / 2);
+  }
+
+  .title {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    line-height: var(--cascivo-leading-tight);
+    color: var(--cascivo-color-text);
+  }
+
+  .time {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .description {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+    line-height: var(--cascivo-leading-normal);
+  }
+}
+
+@media (forced-colors: active) {
+  .marker {
+    border: 2px solid CanvasText;
+  }
+
+  .item[data-status='current'] .marker {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+}

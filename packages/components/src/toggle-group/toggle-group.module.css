@@ -1,0 +1,90 @@
+@layer cascade.component {
+  .toggleGroup {
+    display: inline-flex;
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-1);
+    border-radius: var(--cascivo-radius-control);
+    background-color: var(--cascivo-color-bg-subtle);
+
+    &[data-orientation='horizontal'] {
+      flex-direction: row;
+    }
+
+    &[data-orientation='vertical'] {
+      flex-direction: column;
+    }
+
+    &[data-size='sm'] {
+      --_item-h: var(--cascivo-control-height-sm);
+      --_item-font: var(--cascivo-text-sm);
+    }
+
+    &[data-size='md'] {
+      --_item-h: var(--cascivo-control-height-md);
+      --_item-font: var(--cascivo-text-sm);
+    }
+
+    &[data-size='lg'] {
+      --_item-h: var(--cascivo-control-height-lg);
+      --_item-font: var(--cascivo-text-base);
+    }
+  }
+
+  .item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-2);
+    block-size: var(--_item-h, var(--cascivo-control-height-md));
+    padding-inline: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--_item-font, var(--cascivo-text-sm));
+    font-weight: var(--cascivo-font-medium);
+    line-height: var(--cascivo-leading-none);
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--cascivo-radius-item, var(--cascivo-radius-control));
+    background-color: transparent;
+    color: var(--cascivo-color-text);
+    transition:
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover:not(:disabled) {
+      background-color: var(--cascivo-color-surface);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &[data-state='on'] {
+      background-color: var(--cascivo-color-surface);
+      color: var(--cascivo-color-text);
+      box-shadow: var(--cascivo-shadow-sm);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .item[data-state='on'] {
+    border-color: Highlight;
+  }
+
+  .item:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .item:disabled {
+    color: GrayText;
+  }
+}

@@ -1,0 +1,159 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Toggletip',
+  description: 'A click-triggered info popover for supplementary, selectable content',
+  category: 'overlay',
+  states: ['open', 'closed'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'trigger',
+      type: 'ReactNode',
+      required: true,
+      description: 'Trigger content, rendered inside a button (e.g. an info icon)',
+    },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: true,
+      description: 'The popover content — interactive and selectable',
+    },
+    {
+      name: 'placement',
+      type: "'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
+      required: false,
+      default: "'top'",
+      description: 'Side and alignment of the bubble relative to the trigger',
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Initial open state when uncontrolled',
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state',
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Called whenever the open state should change',
+    },
+    {
+      name: 'labels',
+      type: '{ label?: string }',
+      required: false,
+      description: 'Override the trigger accessible name',
+    },
+  ],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-color-text',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-radius-control',
+    '--cascivo-radius-overlay',
+    '--cascivo-shadow-md',
+    '--cascivo-focus-ring',
+    '--cascivo-motion-enter',
+    '--cascivo-z-tooltip',
+  ],
+  accessibility: {
+    role: 'status',
+    wcag: '2.2-AA',
+    keyboard: ['Enter', 'Space', 'Escape'],
+    forcedColors: true,
+    reducedMotion: true,
+  },
+  examples: [
+    {
+      title: 'Info toggletip',
+      description: 'An info button that reveals supplementary text on click',
+      code: `<Toggletip trigger={<InfoIcon />}>
+  Your password must contain at least 12 characters.
+</Toggletip>`,
+    },
+    {
+      title: 'Controlled',
+      description: 'Drive the open state from the parent',
+      code: `<Toggletip
+  trigger={<InfoIcon />}
+  open={open}
+  onOpenChange={setOpen}
+  placement="bottom-start"
+>
+  <a href="/docs">Learn more</a>
+</Toggletip>`,
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['overlay', 'toggletip', 'info', 'popover', 'floating'],
+  intent: {
+    whenToUse: [
+      'Revealing brief supplementary information on demand when the user clicks an info affordance',
+      'Content that must be selectable or contain a link, where a hover Tooltip would be unreachable',
+      'Touch-friendly hint surfaces where hover is unavailable',
+    ],
+    whenNotToUse: [
+      'A passive label that should appear on hover/focus without a click — use Tooltip',
+      'A blocking, focus-trapping dialog for a task — use Modal',
+      'Rich forms or pickers anchored to a trigger — use Popover',
+      'A list of one-shot actions behind a button — use MenuButton',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using a hover Tooltip to hold a link or text the user needs to read or copy',
+        good: 'Use a Toggletip so the content stays open on click and remains reachable and selectable',
+        why: 'Hover tooltips disappear on pointer-out and are not keyboard- or touch-reachable for interaction, so interactive or copyable content needs a click-toggled bubble',
+      },
+      {
+        bad: 'Giving the trigger an icon with no text and no labels.label override',
+        good: 'Provide labels.label or rely on the built-in i18n accessible name',
+        why: 'An icon-only button with no accessible name cannot be operated by screen-reader or voice users',
+      },
+    ],
+    related: [
+      {
+        name: 'Tooltip',
+        relationship: 'alternative',
+        reason: 'Use Tooltip for non-interactive hints shown on hover/focus rather than click',
+      },
+      {
+        name: 'Popover',
+        relationship: 'alternative',
+        reason: 'Use Popover for richer interactive content like forms or pickers',
+      },
+      {
+        name: 'MenuButton',
+        relationship: 'alternative',
+        reason: 'Use MenuButton when the trigger should reveal a list of actions',
+      },
+    ],
+    a11yRationale:
+      'The trigger is a real <button> with aria-expanded reflecting open state and aria-controls pointing at the bubble; an icon-only trigger gets an accessible name from labels.label or the built-in i18n catalog. The bubble is role="status" so its content is announced when it opens, and unlike a hover tooltip the content remains visible and reachable for selection and links. DismissableLayer provides Escape and outside-pointer dismissal, and high-contrast and reduced-motion preferences are honored in CSS.',
+    flexibility: [
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Trigger and bubble styling must resolve to the listed --cascivo-* tokens',
+      },
+      {
+        area: 'content',
+        level: 'flexible',
+        note: 'trigger and children accept arbitrary ReactNode supplied by the consumer',
+      },
+      {
+        area: 'open state ownership',
+        level: 'flexible',
+        note: 'Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed',
+      },
+    ],
+  },
+}

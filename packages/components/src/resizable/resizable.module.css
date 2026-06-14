@@ -1,0 +1,85 @@
+@layer cascade.component {
+  .resizable {
+    display: flex;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: hidden;
+
+    &[data-orientation='horizontal'] {
+      flex-direction: row;
+    }
+
+    &[data-orientation='vertical'] {
+      flex-direction: column;
+    }
+  }
+
+  .pane {
+    overflow: auto;
+    min-inline-size: 0;
+    min-block-size: 0;
+
+    &:first-child {
+      flex: var(--cascivo-resizable-ratio, 0.5);
+    }
+
+    &:last-child {
+      flex: calc(1 - var(--cascivo-resizable-ratio, 0.5));
+    }
+  }
+
+  .handle {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cascivo-color-border);
+    touch-action: none;
+
+    &:hover {
+      background-color: var(--cascivo-color-border-strong);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+
+  .grip {
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-border-strong);
+  }
+
+  .resizable[data-orientation='horizontal'] .handle {
+    inline-size: 0.5rem;
+    cursor: col-resize;
+  }
+
+  .resizable[data-orientation='horizontal'] .grip {
+    inline-size: 0.125rem;
+    block-size: 2rem;
+  }
+
+  .resizable[data-orientation='vertical'] .handle {
+    block-size: 0.5rem;
+    cursor: row-resize;
+  }
+
+  .resizable[data-orientation='vertical'] .grip {
+    block-size: 0.125rem;
+    inline-size: 2rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .handle {
+    border: 1px solid ButtonText;
+  }
+
+  .handle:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

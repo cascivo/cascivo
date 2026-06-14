@@ -1,0 +1,149 @@
+@layer cascade.component {
+  .calendar {
+    --cascivo-calendar-bg: var(--cascivo-color-surface);
+    --cascivo-calendar-radius: var(--cascivo-radius-overlay);
+    --cascivo-calendar-cell-size: 2.25rem;
+    --cascivo-calendar-day-selected-bg: var(--cascivo-color-accent);
+    --cascivo-calendar-day-selected-fg: var(
+      --cascivo-color-accent-foreground,
+      var(--cascivo-color-text-on-accent)
+    );
+    --cascivo-calendar-day-today-color: var(--cascivo-color-accent);
+    --cascivo-calendar-range-bg: color-mix(in srgb, var(--cascivo-color-accent) 16%, transparent);
+
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    padding: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-sans);
+    background-color: var(--cascivo-calendar-bg);
+    border-radius: var(--cascivo-calendar-radius);
+
+    &[data-size='sm'] {
+      --cascivo-calendar-cell-size: 1.875rem;
+    }
+    &[data-size='md'] {
+      --cascivo-calendar-cell-size: 2.25rem;
+    }
+    &[data-size='lg'] {
+      --cascivo-calendar-cell-size: 2.75rem;
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: var(--cascivo-space-1);
+  }
+
+  .monthLabel {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
+  }
+
+  .navButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-base);
+    outline: none;
+
+    &:hover {
+      background-color: var(--cascivo-color-bg-subtle);
+      color: var(--cascivo-color-text);
+    }
+    &:focus-visible {
+      box-shadow: var(--cascivo-focus-ring);
+    }
+  }
+
+  .navSpacer {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+
+  .grid {
+    border-collapse: collapse;
+    inline-size: 100%;
+  }
+
+  .weekday {
+    padding-block: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-text-muted);
+    text-align: center;
+    inline-size: var(--cascivo-calendar-cell-size);
+  }
+
+  .cell {
+    padding: 0;
+    text-align: center;
+
+    /* Range preview band — paints behind the day button. */
+    &[data-in-range],
+    &:has([data-in-range]) {
+      background-color: var(--cascivo-calendar-range-bg);
+    }
+  }
+
+  .empty {
+    inline-size: var(--cascivo-calendar-cell-size);
+    block-size: var(--cascivo-calendar-cell-size);
+  }
+
+  .day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--cascivo-calendar-cell-size);
+    block-size: var(--cascivo-calendar-cell-size);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    background: none;
+    border: none;
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+    outline: none;
+
+    &:hover:not([aria-disabled]) {
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+    &:focus-visible {
+      box-shadow: var(--cascivo-focus-ring);
+    }
+    &[data-today] {
+      font-weight: var(--cascivo-font-semibold);
+      color: var(--cascivo-calendar-day-today-color);
+    }
+    &[data-in-range] {
+      background-color: var(--cascivo-calendar-range-bg);
+    }
+    &[data-selected],
+    &[data-range-start],
+    &[data-range-end] {
+      background-color: var(--cascivo-calendar-day-selected-bg);
+      color: var(--cascivo-calendar-day-selected-fg);
+    }
+    &[aria-disabled] {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .day[data-selected] {
+    outline: 2px solid Highlight;
+  }
+}

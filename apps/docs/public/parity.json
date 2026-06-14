@@ -1,0 +1,661 @@
+{
+  "generatedAt": "2026-06-14",
+  "competitors": {
+    "shadcn": {
+      "total": 59,
+      "covered": 58,
+      "partial": 0,
+      "gap": 0,
+      "byConvention": 1,
+      "deferred": 0,
+      "rows": [
+        {
+          "competitor": "Accordion",
+          "status": "covered",
+          "cascivo": "accordion",
+          "note": ""
+        },
+        {
+          "competitor": "Alert",
+          "status": "covered",
+          "cascivo": "alert",
+          "note": ""
+        },
+        {
+          "competitor": "Alert Dialog",
+          "status": "covered",
+          "cascivo": "alert-dialog",
+          "note": ""
+        },
+        {
+          "competitor": "Aspect Ratio",
+          "status": "covered",
+          "cascivo": "aspect-ratio",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Avatar",
+          "status": "covered",
+          "cascivo": "avatar",
+          "note": ""
+        },
+        {
+          "competitor": "Badge",
+          "status": "covered",
+          "cascivo": "badge",
+          "note": ""
+        },
+        {
+          "competitor": "Breadcrumb",
+          "status": "covered",
+          "cascivo": "breadcrumb",
+          "note": ""
+        },
+        {
+          "competitor": "Button",
+          "status": "covered",
+          "cascivo": "button",
+          "note": ""
+        },
+        {
+          "competitor": "Button Group",
+          "status": "covered",
+          "cascivo": "button-group",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Calendar",
+          "status": "covered",
+          "cascivo": "calendar",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Card",
+          "status": "covered",
+          "cascivo": "card",
+          "note": ""
+        },
+        {
+          "competitor": "Carousel",
+          "status": "covered",
+          "cascivo": "carousel",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Chart",
+          "status": "covered",
+          "cascivo": "chart",
+          "note": "16 charts via @cascivo/charts"
+        },
+        {
+          "competitor": "Checkbox",
+          "status": "covered",
+          "cascivo": "checkbox",
+          "note": ""
+        },
+        {
+          "competitor": "Collapsible",
+          "status": "covered",
+          "cascivo": "collapsible",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Combobox",
+          "status": "covered",
+          "cascivo": "combobox",
+          "note": ""
+        },
+        {
+          "competitor": "Command",
+          "status": "covered",
+          "cascivo": "command-menu",
+          "note": ""
+        },
+        {
+          "competitor": "Context Menu",
+          "status": "covered",
+          "cascivo": "context-menu",
+          "note": ""
+        },
+        {
+          "competitor": "Data Table",
+          "status": "covered",
+          "cascivo": "data-table",
+          "note": ""
+        },
+        {
+          "competitor": "Date Picker",
+          "status": "covered",
+          "cascivo": "date-picker",
+          "note": ""
+        },
+        {
+          "competitor": "Dialog",
+          "status": "covered",
+          "cascivo": "modal",
+          "note": ""
+        },
+        {
+          "competitor": "Direction",
+          "status": "by-convention",
+          "cascivo": "",
+          "note": "RTL via CSS logical properties throughout; no JS provider"
+        },
+        {
+          "competitor": "Drawer",
+          "status": "covered",
+          "cascivo": "sheet",
+          "note": "sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6)"
+        },
+        {
+          "competitor": "Dropdown Menu",
+          "status": "covered",
+          "cascivo": "dropdown",
+          "note": ""
+        },
+        {
+          "competitor": "Empty",
+          "status": "covered",
+          "cascivo": "empty-state",
+          "note": ""
+        },
+        {
+          "competitor": "Field",
+          "status": "covered",
+          "cascivo": "field",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Hover Card",
+          "status": "covered",
+          "cascivo": "hover-card",
+          "note": ""
+        },
+        {
+          "competitor": "Input",
+          "status": "covered",
+          "cascivo": "input",
+          "note": ""
+        },
+        {
+          "competitor": "Input Group",
+          "status": "covered",
+          "cascivo": "input-group",
+          "note": ""
+        },
+        {
+          "competitor": "Input OTP",
+          "status": "covered",
+          "cascivo": "otp-input",
+          "note": ""
+        },
+        {
+          "competitor": "Item",
+          "status": "covered",
+          "cascivo": "item",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Kbd",
+          "status": "covered",
+          "cascivo": "kbd",
+          "note": ""
+        },
+        {
+          "competitor": "Label",
+          "status": "covered",
+          "cascivo": "label",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Menubar",
+          "status": "covered",
+          "cascivo": "menubar",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Native Select",
+          "status": "covered",
+          "cascivo": "native-select",
+          "note": "cascivo select is a custom listbox, not the native control. Queued (v18-t6)"
+        },
+        {
+          "competitor": "Navigation Menu",
+          "status": "covered",
+          "cascivo": "navigation-menu",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Pagination",
+          "status": "covered",
+          "cascivo": "pagination",
+          "note": ""
+        },
+        {
+          "competitor": "Popover",
+          "status": "covered",
+          "cascivo": "popover",
+          "note": ""
+        },
+        {
+          "competitor": "Progress",
+          "status": "covered",
+          "cascivo": "progress-bar",
+          "note": "progress-bar + progress-circle"
+        },
+        {
+          "competitor": "Radio Group",
+          "status": "covered",
+          "cascivo": "radio",
+          "note": ""
+        },
+        {
+          "competitor": "Resizable",
+          "status": "covered",
+          "cascivo": "resizable",
+          "note": "Queued (v18-t6, a.k.a. splitter)"
+        },
+        {
+          "competitor": "Scroll Area",
+          "status": "covered",
+          "cascivo": "scroll-area",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Select",
+          "status": "covered",
+          "cascivo": "select",
+          "note": ""
+        },
+        {
+          "competitor": "Separator",
+          "status": "covered",
+          "cascivo": "separator",
+          "note": ""
+        },
+        {
+          "competitor": "Sheet",
+          "status": "covered",
+          "cascivo": "sheet",
+          "note": ""
+        },
+        {
+          "competitor": "Sidebar",
+          "status": "covered",
+          "cascivo": "side-nav",
+          "note": ""
+        },
+        {
+          "competitor": "Skeleton",
+          "status": "covered",
+          "cascivo": "skeleton",
+          "note": ""
+        },
+        {
+          "competitor": "Slider",
+          "status": "covered",
+          "cascivo": "slider",
+          "note": ""
+        },
+        {
+          "competitor": "Sonner",
+          "status": "covered",
+          "cascivo": "toast",
+          "note": ""
+        },
+        {
+          "competitor": "Spinner",
+          "status": "covered",
+          "cascivo": "spinner",
+          "note": ""
+        },
+        {
+          "competitor": "Switch",
+          "status": "covered",
+          "cascivo": "toggle",
+          "note": ""
+        },
+        {
+          "competitor": "Table",
+          "status": "covered",
+          "cascivo": "data-table",
+          "note": ""
+        },
+        {
+          "competitor": "Tabs",
+          "status": "covered",
+          "cascivo": "tabs",
+          "note": ""
+        },
+        {
+          "competitor": "Textarea",
+          "status": "covered",
+          "cascivo": "textarea",
+          "note": ""
+        },
+        {
+          "competitor": "Toast",
+          "status": "covered",
+          "cascivo": "toast",
+          "note": ""
+        },
+        {
+          "competitor": "Toggle",
+          "status": "covered",
+          "cascivo": "toggle",
+          "note": ""
+        },
+        {
+          "competitor": "Toggle Group",
+          "status": "covered",
+          "cascivo": "toggle-group",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Tooltip",
+          "status": "covered",
+          "cascivo": "tooltip",
+          "note": ""
+        },
+        {
+          "competitor": "Typography",
+          "status": "covered",
+          "cascivo": "prose",
+          "note": "prose + text + heading"
+        }
+      ]
+    },
+    "carbon": {
+      "total": 47,
+      "covered": 45,
+      "partial": 0,
+      "gap": 0,
+      "byConvention": 0,
+      "deferred": 2,
+      "rows": [
+        {
+          "competitor": "Accordion",
+          "status": "covered",
+          "cascivo": "accordion",
+          "note": ""
+        },
+        {
+          "competitor": "AI label/slug",
+          "status": "deferred",
+          "cascivo": "",
+          "note": "Niche; tied to Carbon AI-assist visual language. Out of scope."
+        },
+        {
+          "competitor": "Breadcrumb",
+          "status": "covered",
+          "cascivo": "breadcrumb",
+          "note": ""
+        },
+        {
+          "competitor": "Button",
+          "status": "covered",
+          "cascivo": "button",
+          "note": ""
+        },
+        {
+          "competitor": "Button set",
+          "status": "covered",
+          "cascivo": "button-group",
+          "note": "= Button Group. Queued (v18-t5)"
+        },
+        {
+          "competitor": "Checkbox",
+          "status": "covered",
+          "cascivo": "checkbox",
+          "note": ""
+        },
+        {
+          "competitor": "Code snippet",
+          "status": "covered",
+          "cascivo": "code-snippet",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Combo box",
+          "status": "covered",
+          "cascivo": "combobox",
+          "note": ""
+        },
+        {
+          "competitor": "Contained list",
+          "status": "covered",
+          "cascivo": "contained-list",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Content switcher",
+          "status": "covered",
+          "cascivo": "switcher",
+          "note": "switcher + segmented-control"
+        },
+        {
+          "competitor": "Data table",
+          "status": "covered",
+          "cascivo": "data-table",
+          "note": ""
+        },
+        {
+          "competitor": "Date picker",
+          "status": "covered",
+          "cascivo": "date-picker",
+          "note": ""
+        },
+        {
+          "competitor": "Dropdown",
+          "status": "covered",
+          "cascivo": "dropdown",
+          "note": ""
+        },
+        {
+          "competitor": "File uploader",
+          "status": "covered",
+          "cascivo": "file-uploader",
+          "note": ""
+        },
+        {
+          "competitor": "Form",
+          "status": "covered",
+          "cascivo": "form",
+          "note": ""
+        },
+        {
+          "competitor": "Fluid",
+          "status": "deferred",
+          "cascivo": "",
+          "note": "Styling variant of existing inputs, not a component."
+        },
+        {
+          "competitor": "Icon button",
+          "status": "covered",
+          "cascivo": "icon-button",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Inline loading",
+          "status": "covered",
+          "cascivo": "inline-loading",
+          "note": "Queued (v18-t5)"
+        },
+        {
+          "competitor": "Link",
+          "status": "covered",
+          "cascivo": "link",
+          "note": ""
+        },
+        {
+          "competitor": "List",
+          "status": "covered",
+          "cascivo": "list",
+          "note": ""
+        },
+        {
+          "competitor": "Loading",
+          "status": "covered",
+          "cascivo": "spinner",
+          "note": ""
+        },
+        {
+          "competitor": "Menu",
+          "status": "covered",
+          "cascivo": "menu",
+          "note": ""
+        },
+        {
+          "competitor": "Menu buttons",
+          "status": "covered",
+          "cascivo": "menu-button",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Modal",
+          "status": "covered",
+          "cascivo": "modal",
+          "note": ""
+        },
+        {
+          "competitor": "Multiselect",
+          "status": "covered",
+          "cascivo": "multi-select",
+          "note": ""
+        },
+        {
+          "competitor": "Notification",
+          "status": "covered",
+          "cascivo": "toast",
+          "note": "toast covers the toast variant; inline/actionable queued (notification, v18-t5)"
+        },
+        {
+          "competitor": "Number input",
+          "status": "covered",
+          "cascivo": "number-input",
+          "note": ""
+        },
+        {
+          "competitor": "Overflow menu",
+          "status": "covered",
+          "cascivo": "overflow-menu",
+          "note": ""
+        },
+        {
+          "competitor": "Pagination",
+          "status": "covered",
+          "cascivo": "pagination",
+          "note": ""
+        },
+        {
+          "competitor": "Popover",
+          "status": "covered",
+          "cascivo": "popover",
+          "note": ""
+        },
+        {
+          "competitor": "Progress bar",
+          "status": "covered",
+          "cascivo": "progress-bar",
+          "note": ""
+        },
+        {
+          "competitor": "Progress indicator",
+          "status": "covered",
+          "cascivo": "progress-indicator",
+          "note": ""
+        },
+        {
+          "competitor": "Radio button",
+          "status": "covered",
+          "cascivo": "radio",
+          "note": ""
+        },
+        {
+          "competitor": "Search",
+          "status": "covered",
+          "cascivo": "search",
+          "note": ""
+        },
+        {
+          "competitor": "Select",
+          "status": "covered",
+          "cascivo": "select",
+          "note": ""
+        },
+        {
+          "competitor": "Slider",
+          "status": "covered",
+          "cascivo": "slider",
+          "note": ""
+        },
+        {
+          "competitor": "Structured list",
+          "status": "covered",
+          "cascivo": "structured-list",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Tabs",
+          "status": "covered",
+          "cascivo": "tabs",
+          "note": ""
+        },
+        {
+          "competitor": "Tag",
+          "status": "covered",
+          "cascivo": "tag",
+          "note": ""
+        },
+        {
+          "competitor": "Text input",
+          "status": "covered",
+          "cascivo": "input",
+          "note": ""
+        },
+        {
+          "competitor": "Textarea",
+          "status": "covered",
+          "cascivo": "textarea",
+          "note": ""
+        },
+        {
+          "competitor": "Tile",
+          "status": "covered",
+          "cascivo": "tile",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "Toggle",
+          "status": "covered",
+          "cascivo": "toggle",
+          "note": ""
+        },
+        {
+          "competitor": "Toggletip",
+          "status": "covered",
+          "cascivo": "toggletip",
+          "note": "Distinct from hover tooltip. Queued (v18-t6)"
+        },
+        {
+          "competitor": "Tooltip",
+          "status": "covered",
+          "cascivo": "tooltip",
+          "note": ""
+        },
+        {
+          "competitor": "Tree view",
+          "status": "covered",
+          "cascivo": "tree-view",
+          "note": "Queued (v18-t6)"
+        },
+        {
+          "competitor": "UI shell",
+          "status": "covered",
+          "cascivo": "shell-header",
+          "note": "shell-header + side-nav + header-panel"
+        }
+      ]
+    }
+  }
+}
