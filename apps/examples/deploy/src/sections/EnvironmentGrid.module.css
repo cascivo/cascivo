@@ -1,0 +1,109 @@
+@layer cascade.example {
+  .root {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cascivo-space-4);
+  }
+
+  @container (min-width: 30rem) {
+    .root {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (min-width: 64rem) {
+    .root {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    padding: var(--cascivo-space-4);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-card);
+
+    &[data-health='degraded'] {
+      border-color: var(--cascivo-color-warning, #d97706);
+    }
+
+    &[data-health='down'] {
+      border-color: var(--cascivo-color-destructive);
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--cascivo-space-2);
+  }
+
+  .name {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
+  }
+
+  .tier {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    background: var(--cascivo-color-bg-subtle);
+    border-radius: var(--cascivo-radius-badge);
+    border: 1px solid var(--cascivo-color-border);
+    flex-shrink: 0;
+  }
+
+  .healthDot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--cascivo-color-text-subtle);
+
+    &[data-health='healthy'] {
+      background: var(--cascivo-color-success);
+    }
+
+    &[data-health='degraded'] {
+      background: var(--cascivo-color-warning, #d97706);
+    }
+
+    &[data-health='down'] {
+      background: var(--cascivo-color-destructive);
+    }
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .health {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+
+    &[data-health='healthy'] {
+      color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
+    }
+
+    &[data-health='degraded'] {
+      color: var(--cascivo-color-warning, #d97706);
+    }
+
+    &[data-health='down'] {
+      color: var(--cascivo-color-destructive);
+    }
+  }
+}

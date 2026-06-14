@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@cascivo/core": ["../../../packages/core/src/index.ts"],
+      "@cascivo/i18n": ["../../../packages/i18n/src/index.ts"],
+      "@cascivo/storage": ["../../../packages/storage/src/index.ts"]
+    }
+  },
+  "include": [
+    "src",
+    "../../../packages/components/src/css-modules.d.ts",
+    "../../../packages/react/src/css-modules.d.ts"
+  ]
+}
