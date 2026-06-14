@@ -165,9 +165,11 @@
     --cascivo-color-active-bg: oklch(0.145 0.005 264 / 6%);
 
     /* ── Density Controls ────────────────────────────── */
-    --cascivo-control-height-sm: 1.75rem;
-    --cascivo-control-height-md: 2.25rem;
-    --cascivo-control-height-lg: 2.75rem;
+    /* Button is the height reference — all interactive controls derive from these.  */
+    /* Coarse pointer: use --cascivo-target-min-coarse (2.75rem/44px) via min-block-size. */
+    --cascivo-control-height-sm: 2rem; /* 32px — Button sm */
+    --cascivo-control-height-md: 2.5rem; /* 40px — Button md */
+    --cascivo-control-height-lg: 3rem; /* 48px — Button lg */
 
     /* ── Semantic Borders ────────────────────────────── */
     --cascivo-border-subtle: oklch(0.928 0.006 264);
@@ -233,15 +235,15 @@
     /* do NOT invent off-scale widths. @media/@container CANNOT read these custom properties — */
     /* copy the numeric value. Canonical scale: sm=30rem md=40rem lg=64rem xl=80rem            */
     /* Lint: scripts/checks/breakpoint.test.ts — added in v20-t2.                              */
-    --cascivo-screen-sm: 30rem;   /* 480px — small phone/narrow viewport                      */
-    --cascivo-screen-md: 40rem;   /* 640px — tablet/wide phone (load-bearing: columns/grid/header) */
-    --cascivo-screen-lg: 64rem;   /* 1024px — desktop (load-bearing: app-shell drawer)         */
-    --cascivo-screen-xl: 80rem;   /* 1280px — wide desktop                                    */
+    --cascivo-screen-sm: 30rem; /* 480px — small phone/narrow viewport                      */
+    --cascivo-screen-md: 40rem; /* 640px — tablet/wide phone (load-bearing: columns/grid/header) */
+    --cascivo-screen-lg: 64rem; /* 1024px — desktop (load-bearing: app-shell drawer)         */
+    --cascivo-screen-xl: 80rem; /* 1280px — wide desktop                                    */
 
     /* ── Fluid Typography ────────────────────────────── */
     /* Additive fluid variants — fixed tokens are preserved as the static fallback.            */
     /* clamp(min, vw-slope, max) where max = current fixed value so desktop ceiling is frozen. */
-    --cascivo-text-2xl-fluid: clamp(1.25rem, 1rem + 1.25vw, 1.5rem);   /* 20→24px */
+    --cascivo-text-2xl-fluid: clamp(1.25rem, 1rem + 1.25vw, 1.5rem); /* 20→24px */
     --cascivo-text-3xl-fluid: clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem); /* 24→30px */
 
     /* ── Coarse-pointer touch target ─────────────────── */

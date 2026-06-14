@@ -29,13 +29,13 @@
 
     /* Sizes */
     &[data-size='sm'] {
-      height: 2rem;
+      height: var(--cascivo-control-height-sm);
       padding-inline: var(--cascivo-space-3);
       font-size: var(--cascivo-text-sm);
     }
 
     &[data-size='md'] {
-      height: 2.5rem;
+      height: var(--cascivo-control-height-md);
       padding-inline: var(--cascivo-space-4);
       padding-block: 0.5rem; /* static fallback — non-supporting browsers */
       padding-block: --cascivo-step(2); /* progressive enhancement — Chrome 133+ */
@@ -43,9 +43,19 @@
     }
 
     &[data-size='lg'] {
-      height: 3rem;
+      height: var(--cascivo-control-height-lg);
       padding-inline: var(--cascivo-space-6);
       font-size: var(--cascivo-text-base);
+    }
+
+    /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */
+    @media (pointer: coarse) {
+      &[data-size='sm'] {
+        min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      }
+      &[data-size='md'] {
+        min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      }
     }
 
     /* Variants */

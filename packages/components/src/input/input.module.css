@@ -5,19 +5,19 @@
     gap: var(--cascivo-space-1);
 
     &[data-size='sm'] {
-      --_input-height: 2rem;
+      --_input-height: var(--cascivo-control-height-sm);
       --_input-font: var(--cascivo-text-sm);
       --_input-px: var(--cascivo-space-3);
     }
 
     &[data-size='md'] {
-      --_input-height: 2.5rem;
+      --_input-height: var(--cascivo-control-height-md);
       --_input-font: var(--cascivo-text-sm);
       --_input-px: var(--cascivo-space-4);
     }
 
     &[data-size='lg'] {
-      --_input-height: 3rem;
+      --_input-height: var(--cascivo-control-height-lg);
       --_input-font: var(--cascivo-text-base);
       --_input-px: var(--cascivo-space-4);
     }
@@ -86,6 +86,14 @@
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-snug);
+  }
+
+  /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */
+  @media (pointer: coarse) {
+    .wrapper[data-size='sm'] .input,
+    .wrapper[data-size='md'] .input {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
   }
 }
 

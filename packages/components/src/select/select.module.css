@@ -5,17 +5,17 @@
     gap: var(--cascivo-space-1);
 
     &[data-size='sm'] {
-      --_select-height: 2rem;
+      --_select-height: var(--cascivo-control-height-sm);
       --_select-font: var(--cascivo-text-sm);
       --_select-px: var(--cascivo-space-3);
     }
     &[data-size='md'] {
-      --_select-height: 2.5rem;
+      --_select-height: var(--cascivo-control-height-md);
       --_select-font: var(--cascivo-text-sm);
       --_select-px: var(--cascivo-space-4);
     }
     &[data-size='lg'] {
-      --_select-height: 3rem;
+      --_select-height: var(--cascivo-control-height-lg);
       --_select-font: var(--cascivo-text-base);
       --_select-px: var(--cascivo-space-4);
     }
@@ -101,6 +101,14 @@
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-snug);
+  }
+
+  /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */
+  @media (pointer: coarse) {
+    .wrapper[data-size='sm'] .select,
+    .wrapper[data-size='md'] .select {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
   }
 }
 
