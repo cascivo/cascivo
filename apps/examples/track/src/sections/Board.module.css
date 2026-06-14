@@ -1,0 +1,138 @@
+@layer cascade.component {
+  .root {
+    display: flex;
+    gap: var(--cascivo-space-4);
+    padding: var(--cascivo-space-4);
+    overflow-x: auto;
+    block-size: 100%;
+    min-block-size: 0;
+    align-items: flex-start;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    min-inline-size: 17rem;
+    max-inline-size: 17rem;
+    flex-shrink: 0;
+  }
+
+  .columnHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    border-radius: var(--cascivo-radius-surface);
+    background: var(--cascivo-color-surface-raised);
+  }
+
+  .columnTitle {
+    font-size: var(--cascivo-text-sm);
+    font-weight: 600;
+    color: var(--cascivo-color-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .columnCount {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+    background: var(--cascivo-color-surface-overlay);
+    border-radius: var(--cascivo-radius-full);
+    padding-block: 0.125rem;
+    padding-inline: var(--cascivo-space-2);
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    flex: 1;
+  }
+
+  .empty {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    text-align: center;
+    padding: var(--cascivo-space-6);
+    border: 1px dashed var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+  }
+
+  .card {
+    background: var(--cascivo-color-surface-raised);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+    padding: var(--cascivo-space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    cursor: pointer;
+    transition: box-shadow 120ms ease;
+  }
+
+  .card:hover {
+    box-shadow: var(--cascivo-shadow-sm);
+  }
+
+  .cardTitle {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .cardMeta {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    flex-wrap: wrap;
+  }
+
+  .cardLabels {
+    display: flex;
+    gap: var(--cascivo-space-1);
+    flex-wrap: wrap;
+  }
+
+  .labelDot {
+    display: inline-block;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--cascivo-radius-full);
+  }
+
+  .assigneeInitials {
+    font-size: var(--cascivo-text-xs);
+    font-weight: 600;
+    color: var(--cascivo-color-foreground-inverse);
+    background: var(--cascivo-color-accent);
+    border-radius: var(--cascivo-radius-full);
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: auto;
+    flex-shrink: 0;
+  }
+
+  .menuButton {
+    background: none;
+    border: none;
+    padding: var(--cascivo-space-1);
+    cursor: pointer;
+    color: var(--cascivo-color-foreground-muted);
+    border-radius: var(--cascivo-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menuButton:hover {
+    background: var(--cascivo-color-surface-overlay);
+    color: var(--cascivo-color-foreground);
+  }
+}
