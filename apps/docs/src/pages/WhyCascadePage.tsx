@@ -154,6 +154,15 @@ const CLAIMS: Claim[] = [
       'what it produced.',
     receipt: { label: 'Context Explorer — try audit --ai live', href: '/context' },
   },
+  {
+    number: 31,
+    title: 'A real migration path, not a wall',
+    substance:
+      'A step-by-step guide for switching from shadcn/ui: what transfers for free (the copy-own ' +
+      'model, accessible primitives, your app structure) and what changes (signals, three-tier ' +
+      'tokens, data-theme), with honest bundle and accessibility deltas read from live bench data.',
+    receipt: { label: 'Coming from shadcn? See the guide', href: '/guides#migrate' },
+  },
 ]
 
 export function WhyCascadePage() {
