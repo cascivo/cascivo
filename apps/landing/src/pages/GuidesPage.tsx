@@ -6,6 +6,8 @@ import { MigrationGuide } from './guides/MigrationGuide'
 import { BrandCustomization } from './guides/BrandCustomization'
 import { UseCaseScenarios } from './guides/UseCaseScenarios'
 import { WhenNotToUse } from './guides/WhenNotToUse'
+import { GuidesFaq } from './guides/GuidesFaq'
+import { GuidesCta } from './guides/GuidesCta'
 
 export function GuidesPage() {
   return (
@@ -19,6 +21,8 @@ export function GuidesPage() {
           <BrandCustomization />
           <UseCaseScenarios />
           <WhenNotToUse />
+          <GuidesFaq />
+          <GuidesCta />
         </main>
       </SkipNavTarget>
       <Footer />

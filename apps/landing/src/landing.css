@@ -2288,3 +2288,26 @@ kbd {
   font-weight: var(--cascivo-font-medium);
   color: var(--cascivo-color-accent);
 }
+
+/* ── Guides: FAQ ──────────────────────────────────────── */
+.guides-faq {
+  max-width: 48rem;
+}
+
+.faq-answer {
+  margin: 0;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.faq-next {
+  display: inline-block;
+  margin-block-start: var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+}
+
+/* ── Guides: CTA ──────────────────────────────────────── */
+.guides-section + .cta-band {
+  margin-block-start: var(--cascivo-space-4);
+}

@@ -206,6 +206,78 @@ export const SCENARIOS: Scenario[] = [
   },
 ]
 
+export interface FaqEntry {
+  id: string
+  q: string
+  a: string
+  next: { label: string; href: string }
+}
+
+export const FAQ: FaqEntry[] = [
+  {
+    id: 'license',
+    q: 'Is cascivo free? What’s the license?',
+    a: 'Yes — cascivo is open source under the MIT license. Use it in commercial and private projects with no fee and no attribution requirement.',
+    next: { label: 'See the source on GitHub', href: 'https://github.com/urbanisierung/cascivo' },
+  },
+  {
+    id: 'all-or-one',
+    q: 'Do I have to adopt all of it, or can I add one component?',
+    a: 'Add exactly what you need. Components are copied into your repo one at a time — there is no runtime, no provider, and nothing to buy into. Start with a single button if you like.',
+    next: { label: 'Three-step quickstart', href: '/docs' },
+  },
+  {
+    id: 'nextjs-rsc',
+    q: 'Can I use it with Next.js and React Server Components?',
+    a: 'Yes. Components are RSC-compatible and mark themselves "use client" only where they need interactivity. There is a Next.js App Router example you can copy from.',
+    next: {
+      label: 'See the example apps',
+      href: 'https://github.com/urbanisierung/cascivo/tree/main/apps/examples',
+    },
+  },
+  {
+    id: 'tailwind',
+    q: 'Do I need Tailwind?',
+    a: 'No. Styling is modern platform CSS — @layer, custom properties, and container queries — driven by a three-tier token system. No utility classes, no build-time CSS framework.',
+    next: { label: 'How theming works', href: '/guides#customize' },
+  },
+  {
+    id: 'vs-shadcn',
+    q: 'How is this different from shadcn/ui?',
+    a: 'It shares the best idea — you own copied source — and adds signal reactivity, a closed token system, ten themes, built-in WCAG 2.2 AA, and a machine-readable AI layer. The migration guide maps exactly what transfers and what changes.',
+    next: { label: 'Coming from shadcn?', href: '/guides#migrate' },
+  },
+  {
+    id: 'agent-correct',
+    q: 'Will my AI agent generate correct cascivo code?',
+    a: 'That is the point of the context layer. Every component ships a machine-readable manifest, an MCP server exposes them to agents, and audit --ai flags hardcoded values, invented props, and missing i18n in the output.',
+    next: { label: 'See the context layer', href: '/context' },
+  },
+  {
+    id: 'extend',
+    q: 'How do I change a component’s behavior, not just its color?',
+    a: 'Because you own the source, you edit it directly. The cascivo-extend skill walks the safe way to add behavior to a component you copied without breaking its accessibility contract.',
+    next: {
+      label: 'The extend skill',
+      href: 'https://github.com/urbanisierung/cascivo/tree/main/skills/cascivo-extend',
+    },
+  },
+  {
+    id: 'browsers',
+    q: 'What browsers are supported?',
+    a: 'The last two versions of Chrome, Firefox, and Safari — cascivo relies on :has() and @container. Some CSS-native logic is a Chrome-leading pilot with static fallbacks everywhere else, so nothing breaks.',
+    next: { label: 'See the honest boundaries', href: '/guides#when-not' },
+  },
+]
+
+export const GUIDES_CTA = {
+  title: 'Pick your next move.',
+  sub: 'You have the path, the brand controls, the fit, and the answers. Now ship.',
+  primary: { label: 'Browse components', href: '/docs' },
+  secondary: { label: 'Read the why', href: '/why' },
+  install: 'npx @cascivo/cli init',
+} as const
+
 export interface Boundary {
   limit: string
   framing: string
