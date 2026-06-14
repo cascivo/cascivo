@@ -1,7 +1,7 @@
 # cascivo — Roadmap v21: The Showcase Dashboards
 
 **Last updated:** 2026-06-14
-**Status:** 📋 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-14-v21-master-plan.md` + tranches 1–6
 
 ---
@@ -119,24 +119,24 @@ aliases to `packages/*/src`, themes imported as CSS, signals + `useSignals()`).
 
 ## Definition of Done
 
-- [ ] `@cascivo/example-kit` exists and exports `createMockApi`, `createSimulation`, `seededRandom`,
+- [x] `@cascivo/example-kit` exists and exports `createMockApi`, `createSimulation`, `seededRandom`,
       `<AppShell>`; it builds and is consumed by all five apps. _Verify: T1._
-- [ ] Five apps exist under `apps/examples/` — `deploy`, `pay`, `flow`, `track`, `pulse` — each a
+- [x] Five apps exist under `apps/examples/` — `deploy`, `pay`, `flow`, `track`, `pulse` — each a
       runnable `vp dev`/`vp build` Vite app with source aliases to `packages/*/src`. _Verify: T1–T5._
-- [ ] Each app is **functional**: data loads via the mock-API (with visible loading/empty/error states),
+- [x] Each app is **functional**: data loads via the mock-API (with visible loading/empty/error states),
       at least one mutation persists across reload via `@cascivo/storage`, and at least one "live"
       surface updates via `createSimulation`. _Verify: T1–T5 exit criteria._
-- [ ] No backend, no server process, no network calls; each app runs offline from `vp preview`. _Verify: T6._
-- [ ] The union of the five apps demos every `@cascivo/react` top-tier component and every
+- [x] No backend, no server process, no network calls; each app runs offline from `vp preview`. _Verify: T6._
+- [x] The union of the five apps demos every `@cascivo/react` top-tier component and every
       `@cascivo/charts` chart; a coverage check asserts no top-tier gap. _Verify: T6._
-- [ ] An examples gallery/index lists all five with a one-line "feels like" and a live link; linked from
+- [x] An examples gallery/index lists all five with a one-line "feels like" and a live link; linked from
       docs and/or landing. _Verify: T6._
-- [ ] Each app has a Playwright smoke + axe spec (light + dark) and a README stating it's a mock demo.
+- [x] Each app has a Playwright smoke + axe spec (light + dark) and a README stating it's a mock demo.
       _Verify: T6._
-- [ ] Each app builds in CI via `vp run @cascivo/<app>#build` and deploys through a `cf-pages.yml` job
+- [x] Each app builds in CI via `vp run @cascivo/<app>#build` and deploys through a `cf-pages.yml` job
       (paths-filtered). _Verify: T6._
-- [ ] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T6._
-- [ ] `ROADMAP-V21.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T6._
+- [x] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T6._
+- [x] `ROADMAP-V21.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T6._
 
 ## Non-goals (explicitly out of scope)
 

@@ -1,7 +1,7 @@
 'use client'
 import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { Skeleton } from '@cascivo/react'
+import { ProgressBar, Skeleton } from '@cascivo/react'
 import type { DeployStatus, Pipeline } from '@cascivo/example-kit'
 import { deployMsg } from '../i18n'
 import { loading, pipelines } from '../data/fixtures'
@@ -23,6 +23,12 @@ function statusLabel(s: DeployStatus): string {
 }
 
 function PipelineRow({ pipeline }: { pipeline: Pipeline }) {
+  const completedStages = pipeline.stages.filter(
+    (s) => s.status === 'success' || s.status === 'failed',
+  ).length
+  const progress =
+    pipeline.stages.length > 0 ? Math.round((completedStages / pipeline.stages.length) * 100) : 0
+
   return (
     <div className={styles['row']}>
       <div className={styles['info']}>
@@ -35,6 +41,9 @@ function PipelineRow({ pipeline }: { pipeline: Pipeline }) {
             {t(deployMsg.labelCommit)}: <code>{pipeline.commit}</code>
           </span>
         </div>
+        {pipeline.status === 'running' && (
+          <ProgressBar value={progress} label={t(deployMsg.statusRunning)} size="sm" />
+        )}
         <div className={styles['stages']} aria-label={t(deployMsg.labelStages)}>
           {pipeline.stages.map((stage) => (
             <span key={stage.id} data-status={stage.status} className={styles['stage']}>

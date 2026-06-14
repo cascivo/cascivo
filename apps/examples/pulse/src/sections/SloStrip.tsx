@@ -2,7 +2,7 @@
 import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { ProgressCircle } from '@cascivo/react'
-import { Meter } from '@cascivo/charts'
+import { Bullet, Meter } from '@cascivo/charts'
 import { latencyHistory, hostMetrics } from '../sim/metrics'
 import { msg } from '../i18n'
 
@@ -94,6 +94,38 @@ export function SloStrip() {
           }}
         >
           {(avgErrorRate * 100).toFixed(2)}% / 1% target
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--cascivo-space-2)' }}>
+        <span
+          style={{
+            fontSize: 'var(--cascivo-text-xs)',
+            fontWeight: 600,
+            color: 'var(--cascivo-color-foreground-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}
+        >
+          Uptime SLO
+        </span>
+        {/* Bullet: actual uptime vs. target (99.9%) — ranges represent poor/ok/good bands */}
+        <Bullet
+          value={99.7 + (1 - avgErrorRate) * 0.2}
+          target={99.9}
+          ranges={[99.5, 99.8, 100]}
+          min={99}
+          max={100}
+          label="Uptime %"
+          width={200}
+        />
+        <span
+          style={{
+            fontSize: 'var(--cascivo-text-xs)',
+            color: 'var(--cascivo-color-foreground-muted)',
+          }}
+        >
+          Target: 99.9%
         </span>
       </div>
 
