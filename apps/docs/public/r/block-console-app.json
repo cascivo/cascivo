@@ -7,6 +7,9 @@
   "files": [
     {
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
     }
   ],
   "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],

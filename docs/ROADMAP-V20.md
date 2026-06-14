@@ -1,7 +1,7 @@
 # cascivo — Roadmap v20: Responsive by DNA (mobile-first by default)
 
 **Last updated:** 2026-06-14
-**Status:** 📋 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-14-v20-master-plan.md` + tranches 1–7
 
 ---
@@ -114,28 +114,28 @@ This is a foundation-and-defaults pass, not a redesign or a feature release.
 
 ## Definition of Done
 
-- [ ] A canonical `--cascivo-screen-{sm,md,lg,xl}` scale ships in `@cascivo/tokens` with matching JS
+- [x] A canonical `--cascivo-screen-{sm,md,lg,xl}` scale ships in `@cascivo/tokens` with matching JS
       constants; `shell-state.ts` and the mobile harness consume the constants, not literals. _Verify: T1._
-- [ ] clamp()-based fluid type tokens (and optional fluid space) ship with the fixed tokens preserved as
+- [x] clamp()-based fluid type tokens (and optional fluid space) ship with the fixed tokens preserved as
       the static fallback; no desktop computed value regresses. _Verify: T1._
-- [ ] `breakpoint:check` fails on any `@media`/`@container` width literal not on the canonical scale
+- [x] `breakpoint:check` fails on any `@media`/`@container` width literal not on the canonical scale
       (allowlist for sanctioned exceptions); it runs in the pre-commit/CI check set. _Verify: T2._
-- [ ] A reusable mobile-overflow + touch-target Playwright sweep exists and runs against an enrolled set
+- [x] A reusable mobile-overflow + touch-target Playwright sweep exists and runs against an enrolled set
       that grows each tranche; zero horizontal overflow at 320/360/390/414 across enrolled surfaces. _Verify: T2–T6._
-- [ ] Interactive controls consume `--cascivo-control-height-*` and reach ≥44px under
+- [x] Interactive controls consume `--cascivo-control-height-*` and reach ≥44px under
       `@media (pointer: coarse)`; `target-size.test.ts` still passes. _Verify: T3._
-- [ ] Modal renders as a bottom-sheet/fullscreen below `md`; Dropdown/Select never overflow a 320px
+- [x] Modal renders as a bottom-sheet/fullscreen below `md`; Dropdown/Select never overflow a 320px
       viewport; Tabs scroll horizontally without overflow. _Verify: T4._
-- [ ] `AppShell` uses the canonical `lg` breakpoint (no raw `64rem`); blocks adapt via container queries;
+- [x] `AppShell` uses the canonical `lg` breakpoint (no raw `64rem`); blocks adapt via container queries;
       complementary content relocates instead of `display:none`. _Verify: T5._
-- [ ] `ConsoleApp` is fully usable at 320px: the table stacks into cards, the aside is reachable via a
+- [x] `ConsoleApp` is fully usable at 320px: the table stacks into cards, the aside is reachable via a
       disclosure/drawer, nothing overflows, all controls are ≥44px; a dedicated mobile e2e passes. _Verify: T6._
-- [ ] Storybook exposes xs/sm/md/lg viewport presets and defaults to a mobile-first frame with a desktop
+- [x] Storybook exposes xs/sm/md/lg viewport presets and defaults to a mobile-first frame with a desktop
       toggle. _Verify: T7._
-- [ ] `CLAUDE.md` gains a "Responsive by default" authoring rule; a docs page documents the breakpoint
+- [x] `CLAUDE.md` gains a "Responsive by default" authoring rule; a docs page documents the breakpoint
       scale + patterns. _Verify: T7._
-- [ ] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T7._
-- [ ] `ROADMAP-V20.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T7._
+- [x] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T7._
+- [x] `ROADMAP-V20.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T7._
 
 ## Deferred (do not re-litigate in v20)
 
