@@ -39,11 +39,11 @@ Two architectural choices were settled up front (see "Decisions baked in"):
 
 ## URL scheme (collision-free by design)
 
-| Path                  | Served by                          | Kind            | Example                       |
-| --------------------- | ---------------------------------- | --------------- | ----------------------------- |
-| `/examples`           | Landing SPA (prerendered)          | Marketing hub   | index of all five demos       |
-| `/examples/<name>`    | Landing SPA (prerendered)          | Marketing detail| `/examples/deploy`            |
-| `/demos/<name>/`      | Assembled static app (real files)  | The live demo   | `/demos/deploy/`              |
+| Path               | Served by                         | Kind             | Example                 |
+| ------------------ | --------------------------------- | ---------------- | ----------------------- |
+| `/examples`        | Landing SPA (prerendered)         | Marketing hub    | index of all five demos |
+| `/examples/<name>` | Landing SPA (prerendered)         | Marketing detail | `/examples/deploy`      |
+| `/demos/<name>/`   | Assembled static app (real files) | The live demo    | `/demos/deploy/`        |
 
 The live apps deliberately mount under **`/demos/`**, not `/examples/`, because a landing SPA route
 `/examples/deploy` and a real directory `/examples/deploy/index.html` would collide on Cloudflare
@@ -71,12 +71,12 @@ app needs to know the path it's mounted at.
 
 ## Workstreams
 
-| #   | Workstream                | Tranche | Summary                                                                                               |
-| --- | ------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
-| A   | Mount-portability + build | T1      | `base: './'` on all five demos; an assembly script that builds + copies each into `landing/dist/demos/<name>/`; storage-key collision audit; local end-to-end preview. |
-| B   | Examples hub route        | T2      | Landing `/examples` hub page (index of five, thumbnails, coverage chips); wire homepage `ExamplesGallery` cards to it; nav + footer + sitemap. |
-| C   | Per-example detail pages  | T3      | `/examples/<name>` ×5: hero, screenshots, "what it proves", coverage, "Open live demo" CTA → `/demos/<name>/`, mock disclaimer; prerender heads + sitemap. |
-| D   | Screenshot assets         | T4      | Deterministic Playwright capture (light + dark, desktop + mobile) for each demo, committed as static assets consumed by the hub + detail pages. |
+| #   | Workstream                | Tranche | Summary                                                                                                                                                                                                    |
+| --- | ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Mount-portability + build | T1      | `base: './'` on all five demos; an assembly script that builds + copies each into `landing/dist/demos/<name>/`; storage-key collision audit; local end-to-end preview.                                     |
+| B   | Examples hub route        | T2      | Landing `/examples` hub page (index of five, thumbnails, coverage chips); wire homepage `ExamplesGallery` cards to it; nav + footer + sitemap.                                                             |
+| C   | Per-example detail pages  | T3      | `/examples/<name>` ×5: hero, screenshots, "what it proves", coverage, "Open live demo" CTA → `/demos/<name>/`, mock disclaimer; prerender heads + sitemap.                                                 |
+| D   | Screenshot assets         | T4      | Deterministic Playwright capture (light + dark, desktop + mobile) for each demo, committed as static assets consumed by the hub + detail pages.                                                            |
 | E   | CI consolidation + gate   | T5      | Fold the five `deploy-*` CF jobs into `deploy-landing` (build → assemble → deploy); widen the `landing` paths-filter; remove redundant per-demo jobs/vars; update READMEs; full CLAUDE.md gate; close DoD. |
 
 ## Decisions baked in
@@ -128,14 +128,14 @@ app needs to know the path it's mounted at.
 
 ## Non-goals (explicitly out of scope)
 
-| Claim                         | Substance                                                                                                  |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **No Cloudflare routing**     | The demos are assembled into the landing dist; no apex path-routing/Worker config is added or required.    |
-| **No iframes**                | Detail pages link out to the live demo; they do not embed it in an iframe.                                 |
-| **No separate demo domains**  | The five per-demo CF Pages projects are retired; everything lives under `cascivo.com`.                     |
-| **No new components / deps**  | v22 wires up and markets the v21 apps; it adds no `@cascivo/*` components and no runtime dependencies.      |
-| **No backend**                | Unchanged from v21 — mock-API + storage + sim engine only.                                                 |
-| **No demo feature work**      | v22 does not change demo functionality; bug-fix-only touches to the demos are allowed where integration demands. |
+| Claim                        | Substance                                                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **No Cloudflare routing**    | The demos are assembled into the landing dist; no apex path-routing/Worker config is added or required.          |
+| **No iframes**               | Detail pages link out to the live demo; they do not embed it in an iframe.                                       |
+| **No separate demo domains** | The five per-demo CF Pages projects are retired; everything lives under `cascivo.com`.                           |
+| **No new components / deps** | v22 wires up and markets the v21 apps; it adds no `@cascivo/*` components and no runtime dependencies.           |
+| **No backend**               | Unchanged from v21 — mock-API + storage + sim engine only.                                                       |
+| **No demo feature work**     | v22 does not change demo functionality; bug-fix-only touches to the demos are allowed where integration demands. |
 
 ## Deferred (do not re-litigate in v22)
 

@@ -49,7 +49,7 @@ Mobile-first, token-based CSS. `@cascivo/i18n` for strings. Playwright for scree
   note. This is the dead link v22 fixes.
 - **SEO / prerender pipeline:** `src/route-head.ts` holds `ROUTE_HEAD` (per-route title/description/
   ogTitle), `PRERENDER_ROUTES` (`['accessibility','performance','guides']`), `SITE_URL =
-  https://cascivo.com`, and `canonicalFor()`. `src/seo.ts` applies heads at runtime. `vite.config.ts`'s
+https://cascivo.com`, and `canonicalFor()`. `src/seo.ts` applies heads at runtime. `vite.config.ts`'s
   `prerenderHeads()` plugin (a `closeBundle` step) copies the built shell into `dist/<route>/index.html`
   with rewritten head tags, and writes `dist/404.html` (SPA fallback, `noindex`). `public/sitemap.xml`
   is a static file. **CF Pages serves real files first, falling back to `404.html`** — so a new real
@@ -65,8 +65,8 @@ Mobile-first, token-based CSS. `@cascivo/i18n` for strings. Playwright for scree
   storybook, playground, **deploy, pay, flow, track, pulse** (the five to fold in). The `landing` filter
   currently watches `apps/landing/**`, `packages/tokens/**`, `packages/themes/**`, `pnpm-lock.yaml`.
 - **Header/Footer cross-app links:** `Header.tsx` `NAV_LINKS` includes `{ label: 'Examples', href:
-  '/#examples' }` (homepage anchor today). `Footer.tsx` includes `{ label: 'Examples', href:
-  '/#examples' }`. Both become `/examples` in T2.
+'/#examples' }` (homepage anchor today). `Footer.tsx` includes `{ label: 'Examples', href:
+'/#examples' }`. Both become `/examples` in T2.
 - **Screenshot precedent:** `apps/landing/scripts/gen-og.mjs` + the `og:generate` script
   (`vp preview --port 4180 & … node scripts/gen-og.mjs`) is the existing pattern for build-time browser
   capture. Per-app Playwright specs + axe live in each demo (v21 T6).
@@ -90,13 +90,13 @@ step — only `dist/demos/<name>/`.
 
 ## Tranche map
 
-| Tranche | Title                                            | Outcome                                                                                  |
-| ------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| T1      | Mount-portability + assembly pipeline            | `base:'./'` ×5, `scripts/assemble-demos.mjs`, storage-key audit, local end-to-end preview |
-| T2      | `/examples` hub route + wire the gallery         | Hub page, header/footer/sitemap, homepage `ExamplesGallery` cards link to detail pages    |
-| T3      | `/examples/<name>` detail pages ×5               | Reusable detail template + per-demo data, prerendered heads, "Open live demo" CTAs        |
-| T4      | Deterministic screenshot assets                  | Capture script (light/dark/mobile), committed static images consumed by T2/T3 surfaces    |
-| T5      | CI consolidation + READMEs + full gate + close   | Fold demo deploys into landing, widen filter, drop redundant jobs/vars, gate, DoD         |
+| Tranche | Title                                          | Outcome                                                                                   |
+| ------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| T1      | Mount-portability + assembly pipeline          | `base:'./'` ×5, `scripts/assemble-demos.mjs`, storage-key audit, local end-to-end preview |
+| T2      | `/examples` hub route + wire the gallery       | Hub page, header/footer/sitemap, homepage `ExamplesGallery` cards link to detail pages    |
+| T3      | `/examples/<name>` detail pages ×5             | Reusable detail template + per-demo data, prerendered heads, "Open live demo" CTAs        |
+| T4      | Deterministic screenshot assets                | Capture script (light/dark/mobile), committed static images consumed by T2/T3 surfaces    |
+| T5      | CI consolidation + READMEs + full gate + close | Fold demo deploys into landing, widen filter, drop redundant jobs/vars, gate, DoD         |
 
 ## Global constraints (apply to every tranche)
 

@@ -38,6 +38,9 @@ jobs:
       - name: Signals subscription gate
         run: pnpm run audit:signals
 
+      - name: Demo storage-key collision check
+        run: pnpm run demos:storage:check
+
       - name: Build (vp run -r build)
         run: pnpm run build
 
