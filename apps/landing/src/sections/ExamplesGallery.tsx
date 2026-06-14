@@ -55,7 +55,13 @@ export function ExamplesGallery() {
               <span className="examples-feels-like">feels like {ex.feelsLike}</span>
             </div>
             <p className="examples-desc">{ex.description}</p>
-            <p className="examples-slice">{ex.slice}</p>
+            <ul className="examples-chips" aria-label="Featured components">
+              {ex.slice.split(', ').map((chip) => (
+                <li key={chip} className="examples-chip">
+                  {chip}
+                </li>
+              ))}
+            </ul>
             <div className="examples-card-footer">
               <a className="examples-link" href={ex.href} aria-disabled="true">
                 View demo &rarr;
