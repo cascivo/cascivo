@@ -89,6 +89,10 @@ export function Header() {
       <ShellHeader
         brand={{ name: 'cascivo', href: '/' }}
         nav={NAV_LINKS}
+        // The landing supplies its own SkipNavLink/SkipNavTarget on every page;
+        // disable ShellHeader's built-in skip link so its default #cascade-main
+        // target (which the landing doesn't render) can't dangle.
+        skipToContentHref={false}
         onMenuClick={() => {
           // Capture the toggle so focus can return to it on close.
           if (!isNavOpen.value) toggleRef.current = document.activeElement as HTMLElement | null

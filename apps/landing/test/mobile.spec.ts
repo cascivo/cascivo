@@ -51,17 +51,19 @@ for (const width of WIDTHS) {
   })
 }
 
-for (const width of WIDTHS) {
-  test(`guides page: zero horizontal overflow at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 812 })
-    await page.goto('/guides')
+for (const route of ['/guides', '/accessibility', '/performance'] as const) {
+  for (const width of WIDTHS) {
+    test(`${route} page: zero horizontal overflow at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 812 })
+      await page.goto(route)
 
-    const overflow = await page.evaluate(
-      () => (document.scrollingElement?.scrollWidth ?? 0) > window.innerWidth,
-    )
+      const overflow = await page.evaluate(
+        () => (document.scrollingElement?.scrollWidth ?? 0) > window.innerWidth,
+      )
 
-    expect(overflow).toBe(false)
-  })
+      expect(overflow).toBe(false)
+    })
+  }
 }
 
 test('mobile nav: opens and closes via hamburger', async ({ page }) => {
