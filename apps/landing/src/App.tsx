@@ -9,6 +9,7 @@ import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
+import { ExamplesGallery } from './sections/ExamplesGallery'
 import { Ecosystem } from './sections/Ecosystem'
 import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
@@ -64,6 +65,7 @@ function HomePage() {
           <Suspense fallback={<SectionFallback tall />}>
             <ChartShowcase />
           </Suspense>
+          <ExamplesGallery />
           <Ecosystem />
           <QuickStart />
           <CtaBand />

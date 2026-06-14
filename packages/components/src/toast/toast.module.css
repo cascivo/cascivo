@@ -21,6 +21,7 @@
     align-items: flex-start;
     gap: var(--cascivo-space-3);
     padding: var(--cascivo-space-4);
+    max-inline-size: calc(min(28rem, 100vw) - var(--cascivo-space-4, 1rem));
     background-color: var(--cascivo-color-surface-overlay);
     border: 1px solid var(--cascivo-color-border);
     border-radius: var(--cascivo-radius-overlay);

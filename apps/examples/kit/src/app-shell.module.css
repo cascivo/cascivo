@@ -1,0 +1,30 @@
+@layer cascade.component {
+  .shell {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+    background: var(--cascivo-color-bg);
+    color: var(--cascivo-color-text);
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    min-block-size: 0;
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--cascivo-space-6);
+  }
+
+  .mockBanner {
+    background: var(--cascivo-color-warning-subtle);
+    color: var(--cascivo-color-warning-foreground);
+    text-align: center;
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-4);
+    font-size: var(--cascivo-font-size-sm);
+  }
+}

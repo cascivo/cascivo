@@ -2,6 +2,10 @@ export function initReveal(): () => void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return () => {}
   }
+  // threshold: 0 + rootMargin shrinks the effective viewport by 60px at the bottom,
+  // so sections reveal when ~60px is visible — viewport-relative, not element-size-relative.
+  // threshold: 0.15 breaks for very tall elements (e.g. the 5500px a11y matrix table)
+  // because 15% of 5500px > iPhone viewport height, so the callback never fires.
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -11,7 +15,7 @@ export function initReveal(): () => void {
         }
       }
     },
-    { threshold: 0.15 },
+    { threshold: 0, rootMargin: '0px 0px -60px 0px' },
   )
   for (const el of document.querySelectorAll('[data-reveal]')) observer.observe(el)
   return () => observer.disconnect()

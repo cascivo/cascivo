@@ -36,6 +36,7 @@
     "@cascivo/icons": "workspace:*",
     "@cascivo/react": "workspace:*",
     "@cascivo/storage": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
     "@testing-library/jest-dom": "^6",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "^14",

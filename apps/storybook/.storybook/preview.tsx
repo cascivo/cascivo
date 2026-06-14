@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Decorator, Preview, Renderer } from '@storybook/react-vite'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
+import { SCREEN } from '../../../packages/tokens/src/screens.ts'
 import '@cascivo/themes/light'
 import '@cascivo/themes/dark'
 import '@cascivo/themes/warm'
@@ -22,6 +23,9 @@ const withFrame: Decorator = (Story, context) => {
 }
 
 const preview: Preview = {
+  initialGlobals: {
+    viewport: { value: 'sm' },
+  },
   decorators: [
     withThemeByDataAttribute<Renderer>({
       themes: {
@@ -44,6 +48,26 @@ const preview: Preview = {
   ],
   parameters: {
     layout: 'centered',
+    viewport: {
+      options: {
+        xs: {
+          name: 'XS (320px)',
+          styles: { width: '320px', height: '812px' },
+        },
+        sm: {
+          name: `SM (${SCREEN.sm.px}px)`,
+          styles: { width: `${SCREEN.sm.px}px`, height: '812px' },
+        },
+        md: {
+          name: `MD (${SCREEN.md.px}px)`,
+          styles: { width: `${SCREEN.md.px}px`, height: '1024px' },
+        },
+        lg: {
+          name: `LG (${SCREEN.lg.px}px)`,
+          styles: { width: `${SCREEN.lg.px}px`, height: '768px' },
+        },
+      },
+    },
   },
 }
 

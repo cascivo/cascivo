@@ -60,6 +60,7 @@
     display: none;
   }
 
+  /* Canonical lg breakpoint (64rem = SCREEN.lg). Below this: mobile drawer mode. */
   @media (max-width: 64rem) {
     .shell {
       grid-template:
@@ -69,7 +70,33 @@
     }
 
     .aside {
-      display: none;
+      /* On mobile, aside slides in as an overlay — stays in a11y tree, keyboard-reachable when toggled */
+      position: fixed;
+      inset-block: 0;
+      inset-inline-end: 0;
+      z-index: var(--cascivo-z-overlay, 200);
+      background: var(--cascivo-color-surface);
+      inline-size: var(--cascivo-shell-aside-inline-size, 18rem);
+      translate: 100% 0;
+      transition: translate var(--cascivo-motion-exit, 200ms ease);
+      box-shadow: var(--cascivo-shadow-overlay);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    :dir(rtl) .aside {
+      inset-inline-end: auto;
+      inset-inline-start: 0;
+      translate: -100% 0;
+    }
+
+    .aside[data-state='open'] {
+      translate: 0 0;
+      transition: translate var(--cascivo-motion-enter, 200ms ease);
+    }
+
+    :dir(rtl) .aside[data-state='open'] {
+      translate: 0 0;
     }
 
     .toggle {

@@ -25,6 +25,9 @@ playwright-report/
 # Editor
 .DS_Store
 
+# Claude Code worktrees and local state
+.claude/worktrees/
+
 # Brainstorm sessions (already ignored, confirm it's here)
 .superpowers/
 cascade.lock

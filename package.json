@@ -17,6 +17,8 @@
     "audit:signals": "bash scripts/checks/use-signals-gate.sh",
     "fallback:check": "node scripts/checks/css-fallback.ts packages/components/src packages/tokens/src",
     "apg:check": "node --experimental-strip-types --test scripts/checks/apg.test.ts",
+    "screens:check": "node --experimental-strip-types --test packages/tokens/src/screens.test.ts",
+    "breakpoint:check": "node --experimental-strip-types --test scripts/checks/breakpoint.test.ts",
     "llms:generate": "node scripts/llms/generate.ts",
     "registry:generate": "node scripts/registry/generate.ts",
     "readme:generate": "node scripts/readme/generate.ts",

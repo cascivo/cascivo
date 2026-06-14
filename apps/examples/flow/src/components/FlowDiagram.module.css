@@ -1,0 +1,128 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+}
+
+.scrollable {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svg {
+  display: block;
+  min-inline-size: 830px;
+}
+
+/* Node shapes */
+.nodeTask {
+  fill: var(--cascivo-color-surface-raised);
+  stroke: var(--cascivo-color-border);
+  stroke-width: 1.5;
+}
+
+.nodeGateway {
+  fill: var(--cascivo-color-surface-raised);
+  stroke: var(--cascivo-color-border);
+  stroke-width: 1.5;
+}
+
+.nodeStart {
+  fill: var(--cascivo-color-accent);
+  stroke: var(--cascivo-color-accent);
+  stroke-width: 1.5;
+}
+
+.nodeEnd {
+  fill: var(--cascivo-color-foreground);
+  stroke: var(--cascivo-color-foreground);
+  stroke-width: 1.5;
+}
+
+/* Active node highlight */
+.nodeActive {
+  stroke: var(--cascivo-color-accent);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--cascivo-color-accent) 60%, transparent));
+}
+
+/* Labels */
+.labelNode {
+  font-size: 11px;
+  font-family: var(--cascivo-font-sans);
+  fill: var(--cascivo-color-foreground);
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.labelNodeStart,
+.labelNodeEnd {
+  fill: var(--cascivo-color-surface);
+}
+
+.labelEdge {
+  font-size: 10px;
+  font-family: var(--cascivo-font-sans);
+  fill: var(--cascivo-color-foreground-muted);
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Edges */
+.edge {
+  stroke: var(--cascivo-color-border);
+  stroke-width: 1.5;
+  fill: none;
+  marker-end: url(#arrowhead);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-block-start: var(--cascivo-space-1);
+}
+
+.playBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-1);
+  padding-block: var(--cascivo-space-1);
+  padding-inline: var(--cascivo-space-3);
+  background: var(--cascivo-color-surface-raised);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  color: var(--cascivo-color-foreground);
+  font-size: var(--cascivo-text-sm);
+  font-family: var(--cascivo-font-sans);
+  cursor: pointer;
+  line-height: 1.5;
+  min-block-size: 2.75rem;
+}
+
+@media (pointer: coarse) {
+  .playBtn {
+    min-block-size: 2.75rem;
+  }
+}
+
+.playBtn:hover {
+  background: var(--cascivo-color-surface-hover);
+}
+
+.playBtn:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.activeLabel {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-foreground-muted);
+  font-family: var(--cascivo-font-sans);
+}

@@ -32,6 +32,14 @@ const PACKAGES = [
     href: `${GITHUB_BASE}/icons`,
     linkLabel: 'View on GitHub',
   },
+  {
+    name: '@cascivo/storage',
+    value:
+      'Persisted signals over localStorage and IndexedDB — SSR-safe, no boilerplate. The backbone of cascivo example apps.',
+    install: 'pnpm add @cascivo/storage',
+    href: `${GITHUB_BASE}/storage`,
+    linkLabel: 'View on GitHub',
+  },
 ]
 
 export function Ecosystem() {

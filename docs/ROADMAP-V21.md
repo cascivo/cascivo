@@ -1,7 +1,7 @@
 # cascivo — Roadmap v21: The Showcase Dashboards
 
 **Last updated:** 2026-06-14
-**Status:** 📋 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-14-v21-master-plan.md` + tranches 1–6
 
 ---
@@ -32,13 +32,13 @@ Each app has an original, non-infringing name (it re-creates the _interaction pa
 a one-line "feels like", and the slice of the library it stresses. The set is chosen so that **together**
 they cover every component tier and every chart — a gap in coverage is a gap an adopter would hit.
 
-| # | App (codename)   | Feels like | Domain (mock)                       | Primary library coverage                                                                                              |
-| - | ---------------- | ---------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1 | **Cascade Deploy** | Vercel     | Projects, deployments, build logs   | App shell (ShellHeader/SideNav), DataTable, Status/Badge, Stat+Sparkline, Tabs, CodeSnippet/Terminal, Drawer, CommandMenu, ProgressBar, Toast |
-| 2 | **Cascade Pay**    | Stripe     | Payments, revenue, customers        | `@cascivo/charts` (AreaChart, BarChart, KPI), DataTable, DateRangePicker, Combobox, Pagination, Stat, optimistic refund + Toast |
-| 3 | **Cascade Flow**   | Camunda    | Process instances, tasks, incidents | A simplified flow diagram (SVG), Timeline, TreeView, DataTable, Form (claim/complete task), Status, Tabs, EmptyState |
-| 4 | **Cascade Track**  | Linear     | Issues, board, backlog              | CommandMenu (Cmd+K) + Kbd, board ↔ list (SegmentedControl), Drawer+Form, MultiSelect, Combobox, ContextMenu, `@cascivo/storage` persistence |
-| 5 | **Cascade Pulse**  | Datadog    | Metrics, alerts, logs               | `@cascivo/charts` (LineChart, Heatmap, Sparkline, Meter, Bullet, ProgressCircle), live simulation, time-range selector, log stream, alert list |
+| #   | App (codename)     | Feels like | Domain (mock)                       | Primary library coverage                                                                                                                       |
+| --- | ------------------ | ---------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Cascade Deploy** | Vercel     | Projects, deployments, build logs   | App shell (ShellHeader/SideNav), DataTable, Status/Badge, Stat+Sparkline, Tabs, CodeSnippet/Terminal, Drawer, CommandMenu, ProgressBar, Toast  |
+| 2   | **Cascade Pay**    | Stripe     | Payments, revenue, customers        | `@cascivo/charts` (AreaChart, BarChart, KPI), DataTable, DateRangePicker, Combobox, Pagination, Stat, optimistic refund + Toast                |
+| 3   | **Cascade Flow**   | Camunda    | Process instances, tasks, incidents | A simplified flow diagram (SVG), Timeline, TreeView, DataTable, Form (claim/complete task), Status, Tabs, EmptyState                           |
+| 4   | **Cascade Track**  | Linear     | Issues, board, backlog              | CommandMenu (Cmd+K) + Kbd, board ↔ list (SegmentedControl), Drawer+Form, MultiSelect, Combobox, ContextMenu, `@cascivo/storage` persistence    |
+| 5   | **Cascade Pulse**  | Datadog    | Metrics, alerts, logs               | `@cascivo/charts` (LineChart, Heatmap, Sparkline, Meter, Bullet, ProgressCircle), live simulation, time-range selector, log stream, alert list |
 
 > The codenames are deliberate: "Cascade <verb>" signals these are cascivo's own demos, not clones of a
 > trademarked product. No logos, no copy, no proprietary data — only the recognisable _layout grammar_.
@@ -75,21 +75,21 @@ code — a clear case for a shared kit (5 uses, not speculative). v21 introduces
 - **`@cascivo/example-kit`** (`apps/examples/kit/`) — the family's common spine, exporting:
   `createMockApi` (latency + error injection), `createSimulation` (pausable interval-driven signal
   mutations), `seededRandom` (deterministic fixtures), and an `<AppShell>` layout (ShellHeader + SideNav
-  + theme switcher + CommandMenu mount) so all five apps read as one cohesive product family.
+  - theme switcher + CommandMenu mount) so all five apps read as one cohesive product family.
 
 Everything else stays per-app and self-contained, mirroring `json-playground` (Vite + `vp`, source
 aliases to `packages/*/src`, themes imported as CSS, signals + `useSignals()`).
 
 ## Workstreams
 
-| # | Workstream                  | Tranche | Summary                                                                                                  |
-| - | --------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| A | Foundation + reference app  | T1      | `@cascivo/example-kit`; **Cascade Deploy** as the reference implementation that sets every pattern.       |
-| B | Charts-heavy dashboard      | T2      | **Cascade Pay** — revenue/payments, stressing `@cascivo/charts` + DataTable + date/range filtering.      |
-| C | Process-orchestration       | T3      | **Cascade Flow** — instances/tasks/incidents, a simplified flow diagram, Timeline/TreeView, task forms.  |
-| D | Keyboard-first tracker      | T4      | **Cascade Track** — issues board/list, Cmd+K command menu, storage-persisted mutations.                 |
-| E | Real-time observability     | T5      | **Cascade Pulse** — metrics/alerts/logs, live simulation, time-range, heavy chart composition.          |
-| F | Gallery + CI + gate         | T6      | Examples index/gallery, per-app READMEs, CI build + CF Pages deploy for all five, full gate, close.      |
+| #   | Workstream                 | Tranche | Summary                                                                                                 |
+| --- | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| A   | Foundation + reference app | T1      | `@cascivo/example-kit`; **Cascade Deploy** as the reference implementation that sets every pattern.     |
+| B   | Charts-heavy dashboard     | T2      | **Cascade Pay** — revenue/payments, stressing `@cascivo/charts` + DataTable + date/range filtering.     |
+| C   | Process-orchestration      | T3      | **Cascade Flow** — instances/tasks/incidents, a simplified flow diagram, Timeline/TreeView, task forms. |
+| D   | Keyboard-first tracker     | T4      | **Cascade Track** — issues board/list, Cmd+K command menu, storage-persisted mutations.                 |
+| E   | Real-time observability    | T5      | **Cascade Pulse** — metrics/alerts/logs, live simulation, time-range, heavy chart composition.          |
+| F   | Gallery + CI + gate        | T6      | Examples index/gallery, per-app READMEs, CI build + CF Pages deploy for all five, full gate, close.     |
 
 ## Decisions baked in
 
@@ -119,34 +119,34 @@ aliases to `packages/*/src`, themes imported as CSS, signals + `useSignals()`).
 
 ## Definition of Done
 
-- [ ] `@cascivo/example-kit` exists and exports `createMockApi`, `createSimulation`, `seededRandom`,
+- [x] `@cascivo/example-kit` exists and exports `createMockApi`, `createSimulation`, `seededRandom`,
       `<AppShell>`; it builds and is consumed by all five apps. _Verify: T1._
-- [ ] Five apps exist under `apps/examples/` — `deploy`, `pay`, `flow`, `track`, `pulse` — each a
+- [x] Five apps exist under `apps/examples/` — `deploy`, `pay`, `flow`, `track`, `pulse` — each a
       runnable `vp dev`/`vp build` Vite app with source aliases to `packages/*/src`. _Verify: T1–T5._
-- [ ] Each app is **functional**: data loads via the mock-API (with visible loading/empty/error states),
+- [x] Each app is **functional**: data loads via the mock-API (with visible loading/empty/error states),
       at least one mutation persists across reload via `@cascivo/storage`, and at least one "live"
       surface updates via `createSimulation`. _Verify: T1–T5 exit criteria._
-- [ ] No backend, no server process, no network calls; each app runs offline from `vp preview`. _Verify: T6._
-- [ ] The union of the five apps demos every `@cascivo/react` top-tier component and every
+- [x] No backend, no server process, no network calls; each app runs offline from `vp preview`. _Verify: T6._
+- [x] The union of the five apps demos every `@cascivo/react` top-tier component and every
       `@cascivo/charts` chart; a coverage check asserts no top-tier gap. _Verify: T6._
-- [ ] An examples gallery/index lists all five with a one-line "feels like" and a live link; linked from
+- [x] An examples gallery/index lists all five with a one-line "feels like" and a live link; linked from
       docs and/or landing. _Verify: T6._
-- [ ] Each app has a Playwright smoke + axe spec (light + dark) and a README stating it's a mock demo.
+- [x] Each app has a Playwright smoke + axe spec (light + dark) and a README stating it's a mock demo.
       _Verify: T6._
-- [ ] Each app builds in CI via `vp run @cascivo/<app>#build` and deploys through a `cf-pages.yml` job
+- [x] Each app builds in CI via `vp run @cascivo/<app>#build` and deploys through a `cf-pages.yml` job
       (paths-filtered). _Verify: T6._
-- [ ] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T6._
-- [ ] `ROADMAP-V21.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T6._
+- [x] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T6._
+- [x] `ROADMAP-V21.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T6._
 
 ## Non-goals (explicitly out of scope)
 
-| Claim                              | Substance                                                                                                 |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **No backend / no server**         | Mock-API + storage + sim engine only. A real server is a separate, network-policy-reviewed roadmap.       |
-| **No real integrations**           | No real Vercel/Stripe/Camunda/Linear/Datadog APIs, no auth, no payments, no SDKs. All data is seeded mock. |
-| **No new components**              | v21 _consumes_ the library; it adds no `@cascivo/*` components. New components go through the dark factory. |
-| **No BPMN engine**                 | Cascade Flow's diagram is a hand-built SVG visual with a simulated token, not a real BPMN parser/runtime.  |
-| **No drag-and-drop library**       | Board moves use menus/keyboard/buttons; a full DnD kit is out of scope (revisit if an evaluator asks).     |
+| Claim                        | Substance                                                                                                   |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **No backend / no server**   | Mock-API + storage + sim engine only. A real server is a separate, network-policy-reviewed roadmap.         |
+| **No real integrations**     | No real Vercel/Stripe/Camunda/Linear/Datadog APIs, no auth, no payments, no SDKs. All data is seeded mock.  |
+| **No new components**        | v21 _consumes_ the library; it adds no `@cascivo/*` components. New components go through the dark factory. |
+| **No BPMN engine**           | Cascade Flow's diagram is a hand-built SVG visual with a simulated token, not a real BPMN parser/runtime.   |
+| **No drag-and-drop library** | Board moves use menus/keyboard/buttons; a full DnD kit is out of scope (revisit if an evaluator asks).      |
 
 ## Deferred (do not re-litigate in v21)
 

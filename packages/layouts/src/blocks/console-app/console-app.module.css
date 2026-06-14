@@ -1,0 +1,142 @@
+@layer cascade.component {
+  /* ── Main content area ──────────────────────────── */
+  .content {
+    padding: var(--cascivo-space-6);
+  }
+
+  /* ── Notification panel items ───────────────────── */
+  .panel-item {
+    padding: var(--cascivo-space-3) var(--cascivo-space-4);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .panel-item:last-child {
+    border-block-end: none;
+  }
+
+  /* ── Resource details aside ─────────────────────── */
+  .aside-content {
+    padding: var(--cascivo-space-4);
+    border-inline-start: 1px solid var(--cascivo-color-border);
+    block-size: 100%;
+  }
+
+  .aside-title {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    margin-block-end: var(--cascivo-space-3);
+    color: var(--cascivo-color-text);
+  }
+
+  .aside-dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--cascivo-space-1) var(--cascivo-space-3);
+    font-size: var(--cascivo-text-sm);
+  }
+
+  .aside-dt {
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .aside-dd {
+    margin: 0;
+  }
+
+  /* ── Instances table ────────────────────────────── */
+  .table-wrap {
+    container-type: inline-size;
+    margin-block-start: var(--cascivo-space-4);
+    overflow-x: auto; /* fallback for non-container-query environments */
+  }
+
+  .table {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .th {
+    text-align: start;
+    padding: var(--cascivo-space-2);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    white-space: nowrap;
+  }
+
+  .td {
+    padding: var(--cascivo-space-2);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    font-size: var(--cascivo-text-sm);
+  }
+
+  /* Visually-hidden thead for screen readers below md */
+  .thead-sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  /* Mobile: table → stacked cards */
+  @container (max-width: 40rem) {
+    .table {
+      display: block;
+    }
+
+    .thead {
+      /* visually hidden but keep for a11y tree */
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .tbody {
+      display: block;
+    }
+
+    .tr {
+      display: block;
+      padding: var(--cascivo-space-3);
+      border: 1px solid var(--cascivo-color-border);
+      border-radius: var(--cascivo-radius-surface);
+      margin-block-end: var(--cascivo-space-3);
+    }
+
+    .td {
+      display: grid;
+      grid-template-columns: 6rem 1fr;
+      padding: var(--cascivo-space-1) 0;
+      border-block-end: none;
+      font-size: var(--cascivo-text-sm);
+    }
+
+    /* Show data-label as cell header */
+    .td::before {
+      content: attr(data-label);
+      font-weight: var(--cascivo-font-medium);
+      color: var(--cascivo-color-text-subtle);
+      flex-shrink: 0;
+    }
+
+    /* Actions cell: make tappable */
+    .td:last-child {
+      padding-block-start: var(--cascivo-space-2);
+    }
+  }
+
+  /* Coarse-pointer: actions column reaches comfortable tap target */
+  @media (pointer: coarse) {
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      padding-inline: var(--cascivo-space-3);
+    }
+  }
+}

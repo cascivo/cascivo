@@ -68,6 +68,13 @@
     color: var(--cascivo-color-text);
     line-height: var(--cascivo-leading-snug);
   }
+
+  /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */
+  @media (pointer: coarse) {
+    .toggle {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
 }
 
 @media (forced-colors: active) {

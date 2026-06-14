@@ -58,7 +58,7 @@ for the mobile sweep. Oxlint/Oxfmt via `vp`.
 - **ConsoleApp** (`packages/layouts/src/blocks/console-app/console-app.tsx`): no own CSS; composes
   `AppShell` + `ShellHeader` + `SideNav` + two `HeaderPanel`s + an inline-styled `aside`
   (lines ~92–117) + a main containing an **inline-styled 7-column `<table>`** (`Name, Status, Type,
-  Region, IP, Created, Actions`, lines ~162–236). On a phone the table overflows horizontally and the
+Region, IP, Created, Actions`, lines ~162–236). On a phone the table overflows horizontally and the
   aside is hidden by AppShell — both fail the "no user must think about it" bar. `console-app.test.tsx`
   has no mobile assertions.
 - **Tests/checks.** `scripts/checks/target-size.test.ts` (≥24px), `media-features.test.ts` (a11y media
@@ -127,15 +127,15 @@ for the mobile sweep. Oxlint/Oxfmt via `vp`.
 
 ## Tranche map
 
-| T#  | Focus                          | Files changed (primary)                                                                                                                                  | Risk     |
-| --- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| T1  | Responsive token foundation    | `packages/tokens/src/index.css` (scale + fluid + coarse-target tokens), new `packages/tokens/src/screens.ts` (JS constants), `packages/tokens` exports   | Medium   |
-| T2  | Enforcement & authoring DNA    | new `scripts/checks/breakpoint.test.ts` + allowlist; new reusable mobile-sweep helper + first enrolled spec; `CLAUDE.md` authoring rule; check wiring     | Medium   |
-| T3  | Interactive primitives         | `button.module.css` (+ icon/menu/copy/button-group), `input`, `select`, `textarea`, `toggle`, `checkbox`, `radio` CSS; enroll in sweep                    | Medium   |
-| T4  | Overlays & navigation          | `modal.module.css`, `alert-dialog`, `dropdown`, `select` menu, `tabs`, `toast`; enroll in sweep                                                          | **High** |
-| T5  | Layout shells & blocks         | `app-shell.module.css` + `shell-state.ts` (64rem → canonical `lg`), block CSS/TSX (sidebar-app, users-table-page, settings-form-page, stats-cards, …)     | Medium   |
-| T6  | ConsoleApp flagship rebuild    | `console-app.tsx` (+ new `console-app.module.css`), `console-app.test.tsx`, new `console-app` mobile e2e                                                  | **High** |
-| T7  | Storybook + docs + close       | `apps/storybook/.storybook/{main.ts,preview.tsx}`, new docs responsive page, `CLAUDE.md`/manifest notes, `docs/ROADMAP-V20.md`                            | Low      |
+| T#  | Focus                       | Files changed (primary)                                                                                                                                | Risk     |
+| --- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| T1  | Responsive token foundation | `packages/tokens/src/index.css` (scale + fluid + coarse-target tokens), new `packages/tokens/src/screens.ts` (JS constants), `packages/tokens` exports | Medium   |
+| T2  | Enforcement & authoring DNA | new `scripts/checks/breakpoint.test.ts` + allowlist; new reusable mobile-sweep helper + first enrolled spec; `CLAUDE.md` authoring rule; check wiring  | Medium   |
+| T3  | Interactive primitives      | `button.module.css` (+ icon/menu/copy/button-group), `input`, `select`, `textarea`, `toggle`, `checkbox`, `radio` CSS; enroll in sweep                 | Medium   |
+| T4  | Overlays & navigation       | `modal.module.css`, `alert-dialog`, `dropdown`, `select` menu, `tabs`, `toast`; enroll in sweep                                                        | **High** |
+| T5  | Layout shells & blocks      | `app-shell.module.css` + `shell-state.ts` (64rem → canonical `lg`), block CSS/TSX (sidebar-app, users-table-page, settings-form-page, stats-cards, …)  | Medium   |
+| T6  | ConsoleApp flagship rebuild | `console-app.tsx` (+ new `console-app.module.css`), `console-app.test.tsx`, new `console-app` mobile e2e                                               | **High** |
+| T7  | Storybook + docs + close    | `apps/storybook/.storybook/{main.ts,preview.tsx}`, new docs responsive page, `CLAUDE.md`/manifest notes, `docs/ROADMAP-V20.md`                         | Low      |
 
 **Risk notes:**
 
@@ -158,12 +158,12 @@ for the mobile sweep. Oxlint/Oxfmt via `vp`.
 
 ### Enrollment ledger (the growing gate)
 
-| Enrolled in | Surfaces added to the mobile-overflow + touch-target sweep                                   |
-| ----------- | ------------------------------------------------------------------------------------------- |
-| T2          | A seed set: Button, Input, Modal (smoke) — proves the harness                                |
-| T3          | All touched interactive primitives                                                           |
-| T4          | Modal/AlertDialog/Dropdown/Select/Tabs/Toast                                                 |
-| T5          | AppShell + each migrated block                                                               |
-| T6          | ConsoleApp (dedicated spec, 320/360/390/414)                                                 |
+| Enrolled in | Surfaces added to the mobile-overflow + touch-target sweep    |
+| ----------- | ------------------------------------------------------------- |
+| T2          | A seed set: Button, Input, Modal (smoke) — proves the harness |
+| T3          | All touched interactive primitives                            |
+| T4          | Modal/AlertDialog/Dropdown/Select/Tabs/Toast                  |
+| T5          | AppShell + each migrated block                                |
+| T6          | ConsoleApp (dedicated spec, 320/360/390/414)                  |
 
 A surface is "done" for v20 only once it is enrolled and green.

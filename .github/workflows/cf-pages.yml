@@ -18,6 +18,11 @@ jobs:
       landing: ${{ steps.out.outputs.landing }}
       storybook: ${{ steps.out.outputs.storybook }}
       playground: ${{ steps.out.outputs.playground }}
+      deploy: ${{ steps.out.outputs.deploy }}
+      pay: ${{ steps.out.outputs.pay }}
+      flow: ${{ steps.out.outputs.flow }}
+      track: ${{ steps.out.outputs.track }}
+      pulse: ${{ steps.out.outputs.pulse }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -43,6 +48,31 @@ jobs:
               - 'packages/render/**'
               - 'packages/react/**'
               - 'pnpm-lock.yaml'
+            deploy:
+              - 'apps/examples/deploy/**'
+              - 'apps/examples/kit/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            pay:
+              - 'apps/examples/pay/**'
+              - 'apps/examples/kit/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            flow:
+              - 'apps/examples/flow/**'
+              - 'apps/examples/kit/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            track:
+              - 'apps/examples/track/**'
+              - 'apps/examples/kit/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
+            pulse:
+              - 'apps/examples/pulse/**'
+              - 'apps/examples/kit/**'
+              - 'packages/**'
+              - 'pnpm-lock.yaml'
       - id: out
         env:
           FORCE: ${{ github.event_name == 'workflow_dispatch' }}
@@ -50,11 +80,21 @@ jobs:
           LANDING: ${{ steps.filter.outputs.landing }}
           STORYBOOK: ${{ steps.filter.outputs.storybook }}
           PLAYGROUND: ${{ steps.filter.outputs.playground }}
+          DEPLOY: ${{ steps.filter.outputs.deploy }}
+          PAY: ${{ steps.filter.outputs.pay }}
+          FLOW: ${{ steps.filter.outputs.flow }}
+          TRACK: ${{ steps.filter.outputs.track }}
+          PULSE: ${{ steps.filter.outputs.pulse }}
         run: |
           echo "docs=$(     [ "$FORCE" = "true" ] && echo true || echo "$DOCS"      )" >> $GITHUB_OUTPUT
           echo "landing=$(  [ "$FORCE" = "true" ] && echo true || echo "$LANDING"   )" >> $GITHUB_OUTPUT
           echo "storybook=$([ "$FORCE" = "true" ] && echo true || echo "$STORYBOOK" )" >> $GITHUB_OUTPUT
           echo "playground=$([ "$FORCE" = "true" ] && echo true || echo "$PLAYGROUND" )" >> $GITHUB_OUTPUT
+          echo "deploy=$([ "$FORCE" = "true" ] && echo true || echo "$DEPLOY")" >> $GITHUB_OUTPUT
+          echo "pay=$([ "$FORCE" = "true" ] && echo true || echo "$PAY")" >> $GITHUB_OUTPUT
+          echo "flow=$([ "$FORCE" = "true" ] && echo true || echo "$FLOW")" >> $GITHUB_OUTPUT
+          echo "track=$([ "$FORCE" = "true" ] && echo true || echo "$TRACK")" >> $GITHUB_OUTPUT
+          echo "pulse=$([ "$FORCE" = "true" ] && echo true || echo "$PULSE")" >> $GITHUB_OUTPUT
 
   # ── Shared install + build step ───────────────────────────────────────────
   # Each app builds in its own job so failures are isolated and CF Pages
@@ -140,6 +180,111 @@ jobs:
       - run: >
           npx wrangler pages deploy apps/examples/json-playground/dist
           --project-name=${{ vars.CF_PROJECT_PLAYGROUND || 'cascade-ui-playground' }}
+          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  deploy-deploy:
+    needs: changes
+    if: needs.changes.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascivo/example-deploy#build
+      - run: >
+          npx wrangler pages deploy apps/examples/deploy/dist
+          --project-name=${{ vars.CF_PROJECT_DEPLOY || 'cascade-ui-deploy' }}
+          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  deploy-pay:
+    needs: changes
+    if: needs.changes.outputs.pay == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascivo/example-pay#build
+      - run: >
+          npx wrangler pages deploy apps/examples/pay/dist
+          --project-name=${{ vars.CF_PROJECT_PAY || 'cascade-ui-pay' }}
+          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  deploy-flow:
+    needs: changes
+    if: needs.changes.outputs.flow == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascivo/example-flow#build
+      - run: >
+          npx wrangler pages deploy apps/examples/flow/dist
+          --project-name=${{ vars.CF_PROJECT_FLOW || 'cascade-ui-flow' }}
+          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  deploy-track:
+    needs: changes
+    if: needs.changes.outputs.track == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascivo/example-track#build
+      - run: >
+          npx wrangler pages deploy apps/examples/track/dist
+          --project-name=${{ vars.CF_PROJECT_TRACK || 'cascade-ui-track' }}
+          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  deploy-pulse:
+    needs: changes
+    if: needs.changes.outputs.pulse == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp run @cascivo/example-pulse#build
+      - run: >
+          npx wrangler pages deploy apps/examples/pulse/dist
+          --project-name=${{ vars.CF_PROJECT_PULSE || 'cascade-ui-pulse' }}
           ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

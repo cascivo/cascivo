@@ -47,13 +47,15 @@ export function UsersTablePage({ users = demoUsers, onInvite }: UsersTablePagePr
         description="Manage who has access to this workspace."
         actions={<Button onClick={onInvite}>Invite user</Button>}
       />
-      <DataTable
-        columns={columns}
-        rows={users}
-        getRowId={(u) => u.id}
-        searchable
-        pagination={{ pageSize: 10 }}
-      />
+      <div style={{ overflowX: 'auto' }}>
+        <DataTable
+          columns={columns}
+          rows={users}
+          getRowId={(u) => u.id}
+          searchable
+          pagination={{ pageSize: 10 }}
+        />
+      </div>
     </Stack>
   )
 }

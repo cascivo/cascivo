@@ -9,6 +9,12 @@
     display: flex;
     gap: var(--cascivo-space-1);
     border-block-end: 1px solid var(--cascivo-color-border);
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
 
   .trigger {

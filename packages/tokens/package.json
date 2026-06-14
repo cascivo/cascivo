@@ -7,7 +7,8 @@
     "src"
   ],
   "exports": {
-    ".": "./src/index.css"
+    ".": "./src/index.css",
+    "./screens": "./src/screens.ts"
   },
   "scripts": {
     "build": "echo 'tokens: CSS-only, no build'",

@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-14",
-  "count": 206,
+  "count": 213,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -966,26 +966,26 @@
     },
     {
       "name": "--cascivo-control-height-sm",
-      "value": "1.75rem",
+      "value": "2rem",
       "layer": "component",
       "group": "control",
-      "resolvedDefault": "1.75rem",
+      "resolvedDefault": "2rem",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascivo-control-height-md",
-      "value": "2.25rem",
+      "value": "2.5rem",
       "layer": "component",
       "group": "control",
-      "resolvedDefault": "2.25rem",
+      "resolvedDefault": "2.5rem",
       "resolvesPerTheme": false
     },
     {
       "name": "--cascivo-control-height-lg",
-      "value": "2.75rem",
+      "value": "3rem",
       "layer": "component",
       "group": "control",
-      "resolvedDefault": "2.75rem",
+      "resolvedDefault": "3rem",
       "resolvesPerTheme": false
     },
     {
@@ -1314,6 +1314,62 @@
       "layer": "component",
       "group": "shell",
       "resolvedDefault": "18rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-screen-sm",
+      "value": "30rem",
+      "layer": "semantic",
+      "group": "screen",
+      "resolvedDefault": "30rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-screen-md",
+      "value": "40rem",
+      "layer": "semantic",
+      "group": "screen",
+      "resolvedDefault": "40rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-screen-lg",
+      "value": "64rem",
+      "layer": "semantic",
+      "group": "screen",
+      "resolvedDefault": "64rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-screen-xl",
+      "value": "80rem",
+      "layer": "semantic",
+      "group": "screen",
+      "resolvedDefault": "80rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-2xl-fluid",
+      "value": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-3xl-fluid",
+      "value": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-target-min-coarse",
+      "value": "2.75rem",
+      "layer": "semantic",
+      "group": "target",
+      "resolvedDefault": "2.75rem",
       "resolvesPerTheme": false
     },
     {

@@ -13713,7 +13713,8 @@
       "category": "display",
       "version": "0.0.0",
       "files": [
-        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx"
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
       ],
       "dependencies": [
         "@cascivo/react",
