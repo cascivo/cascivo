@@ -1,8 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
-import { createSimulation } from './simulation'
-
-// Tests cover createSimulation() (pure signals, no React hooks).
-// useSimulation is React-hook territory tested via component tests in the deploy app.
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { renderHook } from '@testing-library/react'
+import { createSimulation, useSimulation } from './simulation'
 
 describe('createSimulation', () => {
   it('starts stopped by default', () => {
@@ -65,5 +63,26 @@ describe('createSimulation', () => {
     expect(onTick).toHaveBeenCalledTimes(3)
     sim.stop()
     vi.useRealTimers()
+  })
+})
+
+describe('useSimulation', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('starts the sim on mount and stops on unmount', () => {
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 100, seed: 0, onTick })
+    expect(sim.running.value).toBe(false)
+
+    const { unmount } = renderHook(() => useSimulation(sim))
+    expect(sim.running.value).toBe(true)
+
+    unmount()
+    expect(sim.running.value).toBe(false)
   })
 })

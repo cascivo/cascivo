@@ -47,9 +47,7 @@ export function createSimulation(opts: {
 export function useSimulation(sim: Simulation): void {
   useSignals()
   useSignalEffect(() => {
-    if (sim.running.value) {
-      sim.start()
-      return () => sim.stop()
-    }
+    sim.start()
+    return () => sim.stop()
   })
 }

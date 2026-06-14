@@ -14,4 +14,9 @@ export default defineConfig({
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setup.ts'],
+  },
 })
