@@ -56,8 +56,7 @@ permitted. Mobile-first, token-based CSS. Playwright for e2e/build-time renderin
 - **Mobile drawer** (`Header.tsx`): `useSignals()` first ✓; Esc + scrim close it; **no focus trap /
   `inert`** on the background while open.
 - **Signal correctness:** audit found landing components correctly call `useSignals()` where they read
-  signals; the only `useState` is the **sanctioned** comparison twin in `SignalsDemo.tsx` (v7 decision
-  9) — do not touch it.
+  signals; the only `useState` is the **sanctioned** comparison twin in `SignalsDemo.tsx` (v7 decision 9) — do not touch it.
 - **Code-splitting:** none. `App.tsx` eagerly imports every home section including heavy
   `ChartShowcase` (`@cascivo/charts`) and `RelayConsole` (DataTable/Modal/Toast/etc.).
 - **Tests:** `a11y.spec.ts` (`/`, `/accessibility`, `/performance`, light+dark, modal);
@@ -132,16 +131,16 @@ permitted. Mobile-first, token-based CSS. Playwright for e2e/build-time renderin
 
 ## Tranche map
 
-| T#  | Focus                          | Files changed (primary)                                                                                                                          | Risk     |
-| --- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| T1  | SEO metadata foundation        | `index.html`, new per-route head model (`App.tsx` + a `seo.ts`), `public/robots.txt`, `public/sitemap.xml`, JSON-LD                              | Medium   |
-| T2  | OG image + favicon/PWA set     | `vite.config.ts` (OG build step), `public/og.png`, `public/favicon.ico`, `public/apple-touch-icon.png`, `public/site.webmanifest`, `index.html` | Medium   |
-| T3  | Crawlability + 404             | `vite.config.ts` (prerender), per-route HTML, `App.tsx` (`NotFound`), `public/404.html`                                                          | **High** |
-| T4  | Links + nav semantics          | `Footer.tsx`, `Hero.tsx`, `CtaBand.tsx`, `pages/guides/GuidesCta.tsx`, `pages/accessibility/A11yCta.tsx`, `landing.css`                          | Low      |
-| T5  | Accessibility hardening        | `App.tsx`/HomePage, `PerformancePage.tsx` (skip-nav), `Header.tsx` (focus trap), `landing.css`                                                  | Medium   |
-| T6  | Performance / code-splitting   | `App.tsx` (lazy routes), home section lazy boundaries, `landing.css` (fallbacks)                                                                | Medium   |
-| T7  | Test coverage                  | `test/mobile.spec.ts`, `test/a11y.spec.ts`, new `test/links.spec.ts`, `playwright.config.ts`                                                     | Low      |
-| T8  | Final gate + DoD + close        | `docs/ROADMAP-V19.md`                                                                                                                            | Low      |
+| T#  | Focus                        | Files changed (primary)                                                                                                                         | Risk     |
+| --- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| T1  | SEO metadata foundation      | `index.html`, new per-route head model (`App.tsx` + a `seo.ts`), `public/robots.txt`, `public/sitemap.xml`, JSON-LD                             | Medium   |
+| T2  | OG image + favicon/PWA set   | `vite.config.ts` (OG build step), `public/og.png`, `public/favicon.ico`, `public/apple-touch-icon.png`, `public/site.webmanifest`, `index.html` | Medium   |
+| T3  | Crawlability + 404           | `vite.config.ts` (prerender), per-route HTML, `App.tsx` (`NotFound`), `public/404.html`                                                         | **High** |
+| T4  | Links + nav semantics        | `Footer.tsx`, `Hero.tsx`, `CtaBand.tsx`, `pages/guides/GuidesCta.tsx`, `pages/accessibility/A11yCta.tsx`, `landing.css`                         | Low      |
+| T5  | Accessibility hardening      | `App.tsx`/HomePage, `PerformancePage.tsx` (skip-nav), `Header.tsx` (focus trap), `landing.css`                                                  | Medium   |
+| T6  | Performance / code-splitting | `App.tsx` (lazy routes), home section lazy boundaries, `landing.css` (fallbacks)                                                                | Medium   |
+| T7  | Test coverage                | `test/mobile.spec.ts`, `test/a11y.spec.ts`, new `test/links.spec.ts`, `playwright.config.ts`                                                    | Low      |
+| T8  | Final gate + DoD + close     | `docs/ROADMAP-V19.md`                                                                                                                           | Low      |
 
 **Risk notes:**
 

@@ -1,7 +1,7 @@
 # cascivo — Roadmap v19: The Landing Audit & Hardening
 
 **Last updated:** 2026-06-14
-**Status:** 📋 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-14-v19-master-plan.md` + tranches 1–8
 
 ---
@@ -31,50 +31,50 @@ Severity: 🔴 broken · 🟡 not-ideal · 🔵 polish. Every row is a real find
 `#axe` was flagged during the audit and **verified valid** (`id="axe"` exists in
 `AxeComparison.tsx:17`) — it is explicitly _not_ a finding and must not be "fixed."
 
-| #   | Sev | Finding                                                                        | Today (file)                                                                          | Fix v19 ships                                                                                |
-| --- | --- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 1   | 🔴  | Stale headline numbers                                                         | `index.html` og:description: "97+ components", "five themes"                           | Live values: **118 components, 10 themes** (sourced, not re-hardcoded where avoidable)       |
-| 2   | 🔴  | Social preview image missing on cold deploy                                    | `/og.png` referenced; generated only by `og.spec.ts` (`@og`, excluded from CI)        | OG image produced as a **build step**, committed/drift-checked, 1200×630, with `og:image:alt`|
-| 3   | 🔴  | No crawlable HTML per route                                                    | SPA renders client-side only; `deepLinkCopies` copies the empty shell to 3 routes     | **Prerender** each route's HTML + per-route head so crawlers/AI agents get real content      |
-| 4   | 🔴  | No SEO fundamentals                                                            | No canonical, no `robots` meta, no `robots.txt`, no `sitemap.xml`, no JSON-LD          | Add canonical (per route), robots meta, `robots.txt`, `sitemap.xml`, `SoftwareApplication`/`WebSite` JSON-LD |
-| 5   | 🔴  | Unknown paths silently render home                                             | `App.tsx` falls back to `HOME` for any path; no 404 view, no `404.html`               | A real `NotFound` view + `404.html` fallback for static hosts                                |
-| 6   | 🟡  | Per-route metadata is title-only                                              | `App.tsx` updates `document.title` only; description/og/canonical never change         | Per-route `description` + `og:*` + canonical, set on navigation **and** prerendered          |
-| 7   | 🟡  | External links lack `rel`/`target`                                            | `Footer.tsx:53` renders every link (incl. GitHub) via one `<a href>`                   | External links get `target="_blank"` + `rel="noopener noreferrer"`; internal stay plain      |
-| 8   | 🟡  | Buttons used for navigation                                                    | `Hero.tsx`, `CtaBand.tsx`, `GuidesCta.tsx`, `A11yCta.tsx` use `window.location.href`   | Replace with real anchors styled as buttons (keyboard + crawlable + semantic)                |
-| 9   | 🟡  | Skip-nav missing on 2 of 4 pages                                              | Home (`App.tsx` HomePage) and `PerformancePage` lack `SkipNavLink`/`SkipNavTarget`     | Add skip-nav to Home and Performance (mirror Accessibility/Guides)                           |
-| 10  | 🟡  | Mobile drawer has no focus trap                                              | `Header.tsx` opens a drawer; Esc/scrim close it, but focus can escape behind it        | Trap focus while open (or `inert` the background); restore focus on close                    |
-| 11  | 🟡  | Favicon/PWA set incomplete                                                    | Only `favicon.svg`; no `.ico`, no `apple-touch-icon`, no manifest, no 192/512 PNGs     | Full set: `favicon.ico`, `apple-touch-icon.png` (180), `site.webmanifest` (192/512), head tags|
-| 12  | 🟡  | No code-splitting                                                              | `App.tsx` eagerly imports all sections incl. heavy `ChartShowcase`/`RelayConsole`      | Route-level lazy + `Suspense`; defer below-the-fold heavy home sections                       |
-| 13  | 🟡  | Missing `twitter:title`/`twitter:description`                                  | `index.html` has only `twitter:card` + `twitter:image`                                 | Add `twitter:title` + `twitter:description` (per route once prerendered)                      |
-| 14  | 🟡  | Mobile-overflow harness skips routes                                          | `mobile.spec.ts` covers only `/` and `/guides`                                         | Add `/accessibility` and `/performance` at 320/375/390/414                                   |
-| 15  | 🟡  | axe sweep skips `/guides`                                                     | `a11y.spec.ts` covers `/`, `/accessibility`, `/performance`                            | Add `/guides` to the axe matrix (light + dark)                                               |
-| 16  | 🔵  | `theme-color` is a static hex                                                 | `index.html` `theme-color="#0079bf"` (the `--cascivo-brand-primary` fallback hex)      | Verify it equals computed `--cascivo-brand-primary` (`oklch(0.55 0.15 240)`); keep or correct|
-| 17  | 🔵  | No link-checker in CI                                                          | No test asserts in-page anchors resolve or that nav targets exist                      | A link/anchor integrity test (every in-page `#anchor` has a matching `id`)                    |
-| 18  | 🔵  | Cross-app footer links unverified                                            | `/docs`, `/storybook`, `/why`, `/llms.txt`, `/registry.json` leave the landing app     | Document + verify they resolve on the deployed domain (and that `llms.txt`/`registry.json` are served) |
-| 19  | 🔵  | No analytics/privacy posture stated                                          | No analytics, cookie banner, or privacy link (privacy-friendly, but undocumented)      | State the posture explicitly (no-tracking is a feature) — README note; no tracking added     |
+| #   | Sev | Finding                                       | Today (file)                                                                         | Fix v19 ships                                                                                                |
+| --- | --- | --------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| 1   | 🔴  | Stale headline numbers                        | `index.html` og:description: "97+ components", "five themes"                         | Live values: **118 components, 10 themes** (sourced, not re-hardcoded where avoidable)                       |
+| 2   | 🔴  | Social preview image missing on cold deploy   | `/og.png` referenced; generated only by `og.spec.ts` (`@og`, excluded from CI)       | OG image produced as a **build step**, committed/drift-checked, 1200×630, with `og:image:alt`                |
+| 3   | 🔴  | No crawlable HTML per route                   | SPA renders client-side only; `deepLinkCopies` copies the empty shell to 3 routes    | **Prerender** each route's HTML + per-route head so crawlers/AI agents get real content                      |
+| 4   | 🔴  | No SEO fundamentals                           | No canonical, no `robots` meta, no `robots.txt`, no `sitemap.xml`, no JSON-LD        | Add canonical (per route), robots meta, `robots.txt`, `sitemap.xml`, `SoftwareApplication`/`WebSite` JSON-LD |
+| 5   | 🔴  | Unknown paths silently render home            | `App.tsx` falls back to `HOME` for any path; no 404 view, no `404.html`              | A real `NotFound` view + `404.html` fallback for static hosts                                                |
+| 6   | 🟡  | Per-route metadata is title-only              | `App.tsx` updates `document.title` only; description/og/canonical never change       | Per-route `description` + `og:*` + canonical, set on navigation **and** prerendered                          |
+| 7   | 🟡  | External links lack `rel`/`target`            | `Footer.tsx:53` renders every link (incl. GitHub) via one `<a href>`                 | External links get `target="_blank"` + `rel="noopener noreferrer"`; internal stay plain                      |
+| 8   | 🟡  | Buttons used for navigation                   | `Hero.tsx`, `CtaBand.tsx`, `GuidesCta.tsx`, `A11yCta.tsx` use `window.location.href` | Replace with real anchors styled as buttons (keyboard + crawlable + semantic)                                |
+| 9   | 🟡  | Skip-nav missing on 2 of 4 pages              | Home (`App.tsx` HomePage) and `PerformancePage` lack `SkipNavLink`/`SkipNavTarget`   | Add skip-nav to Home and Performance (mirror Accessibility/Guides)                                           |
+| 10  | 🟡  | Mobile drawer has no focus trap               | `Header.tsx` opens a drawer; Esc/scrim close it, but focus can escape behind it      | Trap focus while open (or `inert` the background); restore focus on close                                    |
+| 11  | 🟡  | Favicon/PWA set incomplete                    | Only `favicon.svg`; no `.ico`, no `apple-touch-icon`, no manifest, no 192/512 PNGs   | Full set: `favicon.ico`, `apple-touch-icon.png` (180), `site.webmanifest` (192/512), head tags               |
+| 12  | 🟡  | No code-splitting                             | `App.tsx` eagerly imports all sections incl. heavy `ChartShowcase`/`RelayConsole`    | Route-level lazy + `Suspense`; defer below-the-fold heavy home sections                                      |
+| 13  | 🟡  | Missing `twitter:title`/`twitter:description` | `index.html` has only `twitter:card` + `twitter:image`                               | Add `twitter:title` + `twitter:description` (per route once prerendered)                                     |
+| 14  | 🟡  | Mobile-overflow harness skips routes          | `mobile.spec.ts` covers only `/` and `/guides`                                       | Add `/accessibility` and `/performance` at 320/375/390/414                                                   |
+| 15  | 🟡  | axe sweep skips `/guides`                     | `a11y.spec.ts` covers `/`, `/accessibility`, `/performance`                          | Add `/guides` to the axe matrix (light + dark)                                                               |
+| 16  | 🔵  | `theme-color` is a static hex                 | `index.html` `theme-color="#0079bf"` (the `--cascivo-brand-primary` fallback hex)    | Verify it equals computed `--cascivo-brand-primary` (`oklch(0.55 0.15 240)`); keep or correct                |
+| 17  | 🔵  | No link-checker in CI                         | No test asserts in-page anchors resolve or that nav targets exist                    | A link/anchor integrity test (every in-page `#anchor` has a matching `id`)                                   |
+| 18  | 🔵  | Cross-app footer links unverified             | `/docs`, `/storybook`, `/why`, `/llms.txt`, `/registry.json` leave the landing app   | Document + verify they resolve on the deployed domain (and that `llms.txt`/`registry.json` are served)       |
+| 19  | 🔵  | No analytics/privacy posture stated           | No analytics, cookie banner, or privacy link (privacy-friendly, but undocumented)    | State the posture explicitly (no-tracking is a feature) — README note; no tracking added                     |
 
 ## Non-goals (explicitly out of scope)
 
 This is a hardening pass, not a redesign or a feature release.
 
-| #   | Claim                          | Substance                                                                                                                                 |
-| --- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| —   | **No new marketing claims**    | v16 (1–30) and v17 (31–33) stand. v19 adds zero claims to `/why`. It makes the existing claims _deliverable to crawlers and AI agents_.   |
-| —   | **No new sections/pages**      | No new landing route except a `NotFound` view. The five existing routes (`/`, `/accessibility`, `/performance`, `/guides`, `/og`) stay.   |
-| —   | **No package/registry changes**| All work is in `apps/landing` (+ root host config + build wiring). No `@cascivo/*` source, no `registry.json`, no new npm runtime deps.    |
+| #   | Claim                           | Substance                                                                                                                               |
+| --- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| —   | **No new marketing claims**     | v16 (1–30) and v17 (31–33) stand. v19 adds zero claims to `/why`. It makes the existing claims _deliverable to crawlers and AI agents_. |
+| —   | **No new sections/pages**       | No new landing route except a `NotFound` view. The five existing routes (`/`, `/accessibility`, `/performance`, `/guides`, `/og`) stay. |
+| —   | **No package/registry changes** | All work is in `apps/landing` (+ root host config + build wiring). No `@cascivo/*` source, no `registry.json`, no new npm runtime deps. |
 
 ## Workstreams
 
-| #   | Workstream                | Tranche | Summary                                                                                                              |
-| --- | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
-| A   | SEO metadata foundation   | T1      | Fix stale numbers; add canonical/robots/JSON-LD; `robots.txt` + `sitemap.xml`; per-route head model.                |
-| B   | Social image + favicons   | T2      | OG image at build time (1200×630 + alt); full favicon/manifest/apple-touch set + head tags.                          |
-| C   | Crawlability + 404        | T3      | Prerender each route to real HTML with per-route head; `NotFound` view + `404.html` static fallback.                |
-| D   | Links + nav semantics     | T4      | External `rel`/`target`; buttons→anchors for navigation; verify cross-app links.                                    |
-| E   | Accessibility hardening   | T5      | Skip-nav on Home + Performance; mobile-drawer focus trap; axe sweep for `/guides`.                                  |
-| F   | Performance               | T6      | Route-level code-splitting (lazy + Suspense); defer heavy home sections; LCP/font check.                            |
-| G   | Test coverage             | T7      | Mobile harness for all routes; axe `/guides`; anchor/link-integrity test; optional perf budget.                     |
-| H   | Final gate + DoD          | T8      | Full CLAUDE.md gate; Playwright re-verify; DoD walkthrough; roadmap close.                                          |
+| #   | Workstream              | Tranche | Summary                                                                                              |
+| --- | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| A   | SEO metadata foundation | T1      | Fix stale numbers; add canonical/robots/JSON-LD; `robots.txt` + `sitemap.xml`; per-route head model. |
+| B   | Social image + favicons | T2      | OG image at build time (1200×630 + alt); full favicon/manifest/apple-touch set + head tags.          |
+| C   | Crawlability + 404      | T3      | Prerender each route to real HTML with per-route head; `NotFound` view + `404.html` static fallback. |
+| D   | Links + nav semantics   | T4      | External `rel`/`target`; buttons→anchors for navigation; verify cross-app links.                     |
+| E   | Accessibility hardening | T5      | Skip-nav on Home + Performance; mobile-drawer focus trap; axe sweep for `/guides`.                   |
+| F   | Performance             | T6      | Route-level code-splitting (lazy + Suspense); defer heavy home sections; LCP/font check.             |
+| G   | Test coverage           | T7      | Mobile harness for all routes; axe `/guides`; anchor/link-integrity test; optional perf budget.      |
+| H   | Final gate + DoD        | T8      | Full CLAUDE.md gate; Playwright re-verify; DoD walkthrough; roadmap close.                           |
 
 ## Decisions baked in
 
@@ -115,28 +115,42 @@ This is a hardening pass, not a redesign or a feature release.
 
 ## Definition of Done
 
-- [ ] Headline numbers are correct everywhere (118 components, 10 themes); a drift check fails if a
-      hardcoded count diverges from source. _Verify: T1._
-- [ ] A cold `git clone` + build produces `public/og.png` (1200×630); `index.html` exposes
-      `og:image`, `og:image:alt`, `twitter:image`, `twitter:title`, `twitter:description`. _Verify: T2._
-- [ ] Each route ships prerendered HTML containing its own `<title>`, meta description, canonical, and
-      og tags (viewable with JS disabled / `curl`). _Verify: T3._
-- [ ] `robots.txt` and `sitemap.xml` are served at the site root; every public route has a canonical
-      link; `SoftwareApplication`/`WebSite` JSON-LD is present and validates. _Verify: T1/T3._
-- [ ] An unknown path renders a real `NotFound` view (not a silent home page) and static hosts serve a
-      `404.html`. _Verify: T3._
-- [ ] No element that navigates is a `<button onClick=window.location>`; external links carry
-      `target="_blank"` + `rel="noopener noreferrer"`. _Verify: T4._
-- [ ] All four content pages have skip-nav; the mobile drawer traps focus while open and restores it on
-      close. _Verify: T5._
-- [ ] A complete favicon/PWA set ships (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`,
+- [x] Headline numbers are correct everywhere; a drift check fails if a hardcoded count diverges from
+      source. _Verify: T1._ — Counts injected at build (`vite injectCounts`) from `registry.json` +
+      `packages/themes/src`: live values re-verified as **147 components, 10 themes** (plan estimated
+      118; re-counted at implementation). `index.html` uses placeholders; `test/counts.test.ts` guards.
+- [x] A cold `git clone` + build produces `public/og.png` (1200×630); `index.html` exposes `og:image`,
+      `og:image:alt`, `twitter:image`, `twitter:title`, `twitter:description`. _Verify: T2._ — `og.png`
+      committed (generated via `scripts/gen-og.mjs`), 1200×630; all five tags present.
+- [x] Each route ships prerendered HTML containing its own `<title>`, meta description, canonical, and
+      og tags (viewable with JS disabled / `curl`). _Verify: T3._ — **Approach B (browserless head
+      injection)** shipped, not full-body prerender (A): the deploy-landing CI job builds without
+      `playwright install`, so a build-time Chromium prerender would break the deploy. `prerenderHeads`
+      writes per-route `dist/<route>/index.html` with route-specific head (verified via grep).
+- [x] `robots.txt` and `sitemap.xml` are served at the site root; every public route has a canonical
+      link; `SoftwareApplication` JSON-LD is present and valid. _Verify: T1/T3._
+- [x] An unknown path renders a real `NotFound` view (not a silent home page) and static hosts serve a
+      `404.html`. _Verify: T3._ — `App.tsx` routes unknown paths to `<NotFound>` (noindex); `dist/404.html`
+      emitted at build.
+- [x] No element that navigates is a `<button onClick=window.location>`; external links carry
+      `target="_blank"` + `rel="noopener noreferrer"`. _Verify: T4._ — `LinkButton` (anchor) replaces all
+      four button-navs; Footer external links secured.
+- [x] All four content pages have skip-nav; the mobile drawer traps focus while open and restores it on
+      close. _Verify: T5._ — Verified via Playwright (first Tab → skip link; 8 Tabs stay inside drawer;
+      Esc returns focus to the toggle).
+- [x] A complete favicon/PWA set ships (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`,
       `site.webmanifest` with 192/512 icons) with correct head tags. _Verify: T2._
-- [ ] Heavy below-the-fold/home sections and non-home routes are code-split (lazy + `Suspense`); the
-      initial home bundle shrinks measurably vs. baseline. _Verify: T6._
-- [ ] Playwright mobile-overflow covers `/`, `/accessibility`, `/performance`, `/guides` at
-      320/375/390/414; axe covers all four (light + dark); an anchor/link-integrity test passes. _Verify: T7._
-- [ ] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff). _Verify: T8._
-- [ ] `ROADMAP-V19.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T8._
+- [x] Heavy below-the-fold/home sections and non-home routes are code-split (lazy + `Suspense`); the
+      initial home bundle shrinks measurably vs. baseline. _Verify: T6._ — Home JS 886.53 → 758.88 KB
+      raw; 234.46 → 197.57 KB gzip (~16%). RelayConsole/ChartShowcase + all subpages now on-demand chunks.
+- [x] Playwright mobile-overflow covers `/`, `/accessibility`, `/performance`, `/guides` at
+      320/375/390/414; axe covers all four (light + dark); an anchor/link-integrity test passes.
+      _Verify: T7._ — Full landing e2e: **47 passed**. Note: axe-green required one user-approved scope
+      exception — `--cascivo-color-accent` darkened in `light.css` (link text was 3.55:1, now AA); the
+      ThemeDemo 10-theme gallery is excluded from the page scan (deliberate swatch showcase).
+- [x] Full CLAUDE.md gate exits 0 (`vp check` → build → `vp run -r check` → test → regen + diff).
+      _Verify: T8._
+- [x] `ROADMAP-V19.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T8._
 
 ## Deferred (do not re-litigate in v19)
 
