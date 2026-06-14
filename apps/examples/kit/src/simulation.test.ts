@@ -1,47 +1,69 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { createSimulation } from './simulation'
 
 // Tests cover createSimulation() (pure signals, no React hooks).
 // useSimulation is React-hook territory tested via component tests in the deploy app.
 
 describe('createSimulation', () => {
-  it('starts paused by default', () => {
-    const sim = createSimulation()
+  it('starts stopped by default', () => {
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 1000, seed: 0, onTick })
     expect(sim.running.value).toBe(false)
-    expect(sim.tick.value).toBe(0)
-    expect(sim.elapsed.value).toBe(0)
-  })
-
-  it('autoStart option starts running', () => {
-    const sim = createSimulation({ autoStart: true })
-    expect(sim.running.value).toBe(true)
   })
 
   it('start() sets running to true', () => {
-    const sim = createSimulation()
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 1000, seed: 0, onTick })
     sim.start()
     expect(sim.running.value).toBe(true)
+    sim.stop()
   })
 
-  it('pause() sets running to false', () => {
-    const sim = createSimulation({ autoStart: true })
-    sim.pause()
-    expect(sim.running.value).toBe(false)
-  })
-
-  it('reset() clears tick and stops', () => {
-    const sim = createSimulation()
+  it('stop() sets running to false', () => {
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 1000, seed: 0, onTick })
     sim.start()
-    // Manually advance tick to simulate time passing
-    sim.tick.value = 5
-    sim.reset()
-    expect(sim.tick.value).toBe(0)
+    sim.stop()
     expect(sim.running.value).toBe(false)
   })
 
-  it('elapsed reflects tickMs * tick', () => {
-    const sim = createSimulation({ tickMs: 500 })
-    sim.tick.value = 4
-    expect(sim.elapsed.value).toBe(2000)
+  it('toggle() starts when stopped', () => {
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 1000, seed: 0, onTick })
+    sim.toggle()
+    expect(sim.running.value).toBe(true)
+    sim.stop()
+  })
+
+  it('toggle() stops when running', () => {
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 1000, seed: 0, onTick })
+    sim.start()
+    sim.toggle()
+    expect(sim.running.value).toBe(false)
+  })
+
+  it('start() is idempotent — double-start does not duplicate interval', () => {
+    vi.useFakeTimers()
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 100, seed: 0, onTick })
+    sim.start()
+    sim.start()
+    vi.advanceTimersByTime(300)
+    // should tick exactly 3 times, not 6
+    expect(onTick).toHaveBeenCalledTimes(3)
+    sim.stop()
+    vi.useRealTimers()
+  })
+
+  it('onTick is called with rng on each interval', () => {
+    vi.useFakeTimers()
+    const onTick = vi.fn()
+    const sim = createSimulation({ tickMs: 50, seed: 42, onTick })
+    sim.start()
+    vi.advanceTimersByTime(150)
+    expect(onTick).toHaveBeenCalledTimes(3)
+    sim.stop()
+    vi.useRealTimers()
   })
 })

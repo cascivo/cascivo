@@ -1,8 +1,10 @@
 'use client'
+import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
+import { Skeleton } from '@cascivo/react'
 import type { Environment } from '@cascivo/example-kit'
 import { deployMsg } from '../i18n'
-import { environments } from '../data/fixtures'
+import { loading, environments } from '../data/fixtures'
 import styles from './EnvironmentGrid.module.css'
 
 function tierLabel(tier: Environment['tier']): string {
@@ -51,9 +53,23 @@ function EnvironmentCard({ env }: { env: Environment }) {
 }
 
 export function EnvironmentGrid() {
+  useSignals()
+  const isLoading = loading.value
+  const data = environments.value
+
+  if (isLoading) {
+    return (
+      <div className={styles['root']}>
+        {Array.from({ length: 4 }, (_, i) => (
+          <Skeleton key={i} variant="rect" height="8rem" />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className={styles['root']}>
-      {environments.map((env) => (
+      {data.map((env) => (
         <EnvironmentCard key={env.id} env={env} />
       ))}
     </div>

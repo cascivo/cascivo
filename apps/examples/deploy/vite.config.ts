@@ -14,6 +14,7 @@ export default defineConfig({
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
+      '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
       // example-kit is source-only, alias to its src entry
       '@cascivo/example-kit': resolve(__dirname, '../kit/src/index.ts'),

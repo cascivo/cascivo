@@ -1,8 +1,10 @@
 'use client'
+import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
+import { Skeleton } from '@cascivo/react'
 import type { DeployStatus, Pipeline } from '@cascivo/example-kit'
 import { deployMsg } from '../i18n'
-import { pipelines } from '../data/fixtures'
+import { loading, pipelines } from '../data/fixtures'
 import styles from './PipelineList.module.css'
 
 function statusLabel(s: DeployStatus): string {
@@ -49,9 +51,23 @@ function PipelineRow({ pipeline }: { pipeline: Pipeline }) {
 }
 
 export function PipelineList() {
+  useSignals()
+  const isLoading = loading.value
+  const data = pipelines.value
+
+  if (isLoading) {
+    return (
+      <div className={styles['root']}>
+        {Array.from({ length: 3 }, (_, i) => (
+          <Skeleton key={i} variant="rect" height="5rem" />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className={styles['root']}>
-      {pipelines.map((p) => (
+      {data.map((p) => (
         <PipelineRow key={p.id} pipeline={p} />
       ))}
     </div>

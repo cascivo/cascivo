@@ -420,6 +420,9 @@ importers:
       '@cascivo/i18n':
         specifier: workspace:*
         version: link:../../../packages/i18n
+      '@cascivo/react':
+        specifier: workspace:*
+        version: link:../../../packages/react
       '@cascivo/storage':
         specifier: workspace:*
         version: link:../../../packages/storage

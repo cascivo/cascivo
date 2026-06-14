@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
+      '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
     },
   },

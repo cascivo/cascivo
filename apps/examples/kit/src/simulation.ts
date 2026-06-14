@@ -1,81 +1,55 @@
-import { signal, computed, useSignal, useComputed, useSignalEffect } from '@cascivo/core'
-import type { Signal, ReadonlySignal } from '@cascivo/core'
+import { signal, useSignalEffect, useSignals } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
+import { seededRandom } from './seeded-random'
+import type { SeededRandom } from './seeded-random'
 
-export interface SimulationOptions {
-  tickMs?: number
-  autoStart?: boolean
-}
-
-export interface SimulationState {
+export interface Simulation {
   running: Signal<boolean>
-  tick: Signal<number>
-  elapsed: ReadonlySignal<number>
   start(): void
-  pause(): void
-  reset(): void
+  stop(): void
+  toggle(): void
 }
 
-/**
- * createSimulation — pure signal-based simulation state, no React hooks.
- * Uses signal() / computed() primitives directly so it's safe outside components
- * (module scope, tests, factory functions).
- */
-export function createSimulation(options: SimulationOptions = {}): SimulationState {
-  const { tickMs = 1000, autoStart = false } = options
+export function createSimulation(opts: {
+  tickMs: number
+  seed: number
+  onTick: (rng: SeededRandom) => void
+}): Simulation {
+  const running = signal(false)
+  const rng = seededRandom(opts.seed)
+  let handle: ReturnType<typeof setInterval> | null = null
 
-  const running = signal(autoStart)
-  const tick = signal(0)
-  const elapsed = computed(() => tick.value * tickMs)
-
-  return {
-    running,
-    tick,
-    elapsed,
-    start() {
-      running.value = true
-    },
-    pause() {
-      running.value = false
-    },
-    reset() {
-      running.value = false
-      tick.value = 0
-    },
+  function start() {
+    if (handle !== null) return
+    running.value = true
+    handle = setInterval(() => opts.onTick(rng), opts.tickMs)
   }
+
+  function stop() {
+    if (handle !== null) {
+      clearInterval(handle)
+      handle = null
+    }
+    running.value = false
+  }
+
+  function toggle() {
+    if (running.value) {
+      stop()
+    } else {
+      start()
+    }
+  }
+
+  return { running, start, stop, toggle }
 }
 
-/**
- * useSimulation — React hook that wires the simulation to a real interval.
- * Uses useSignalEffect (never useEffect) to manage the interval lifecycle.
- */
-export function useSimulation(options: SimulationOptions = {}): SimulationState {
-  const { tickMs = 1000, autoStart = false } = options
-
-  const running = useSignal(autoStart)
-  const tick = useSignal(0)
-  const elapsed = useComputed(() => tick.value * tickMs)
-
+export function useSimulation(sim: Simulation): void {
+  useSignals()
   useSignalEffect(() => {
-    if (!running.value) return
-    const id = setInterval(() => {
-      tick.value++
-    }, tickMs)
-    return () => clearInterval(id)
+    if (sim.running.value) {
+      sim.start()
+      return () => sim.stop()
+    }
   })
-
-  return {
-    running,
-    tick,
-    elapsed,
-    start() {
-      running.value = true
-    },
-    pause() {
-      running.value = false
-    },
-    reset() {
-      running.value = false
-      tick.value = 0
-    },
-  }
 }

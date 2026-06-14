@@ -1,4 +1,6 @@
-import { mulberry32 } from './seeded-random'
+import { signal } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
+import { seededRandom } from './seeded-random'
 
 export type DeployStatus = 'pending' | 'running' | 'success' | 'failed' | 'cancelled'
 
@@ -35,7 +37,15 @@ export interface Metrics {
   mttr: number
 }
 
+export interface MockApiConfig {
+  latencyMs: [number, number]
+  errorRate: number
+}
+
 export interface MockApi {
+  config: Signal<MockApiConfig>
+  failNext(): void
+  wrap<T>(fn: () => T): () => Promise<T>
   getPipelines(): Pipeline[]
   getEnvironments(): Environment[]
   getMetrics(): Metrics
@@ -65,8 +75,14 @@ function commitHash(rand: () => number): string {
   return Array.from({ length: 7 }, () => Math.floor(rand() * 16).toString(16)).join('')
 }
 
-export function createMockApi(seed = 0): MockApi {
-  const rand = mulberry32(seed)
+export function createMockApi(seed = 0, config?: Partial<MockApiConfig>): MockApi {
+  const rng = seededRandom(seed)
+  const rand = () => rng.next()
+  const cfg = signal<MockApiConfig>({
+    latencyMs: config?.latencyMs ?? [300, 600],
+    errorRate: config?.errorRate ?? 0,
+  })
+  let _failNext = false
 
   function getPipelines(): Pipeline[] {
     return PIPELINE_NAMES.map((name, i) => {
@@ -114,5 +130,26 @@ export function createMockApi(seed = 0): MockApi {
     }
   }
 
-  return { getPipelines, getEnvironments, getMetrics }
+  return {
+    config: cfg,
+    failNext() {
+      _failNext = true
+    },
+    wrap<T>(fn: () => T) {
+      return async (): Promise<T> => {
+        const [min, max] = cfg.value.latencyMs
+        const delay = min + rng.next() * (max - min)
+        await new Promise((res) => setTimeout(res, delay))
+        if (_failNext || rng.next() < cfg.value.errorRate) {
+          _failNext = false
+          throw new Error('Mock API error')
+        }
+        _failNext = false
+        return fn()
+      }
+    },
+    getPipelines,
+    getEnvironments,
+    getMetrics,
+  }
 }

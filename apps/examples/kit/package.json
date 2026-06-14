@@ -15,6 +15,7 @@
   "dependencies": {
     "@cascivo/core": "workspace:*",
     "@cascivo/i18n": "workspace:*",
+    "@cascivo/react": "workspace:*",
     "@cascivo/storage": "workspace:*",
     "react": "catalog:"
   },

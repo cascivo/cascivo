@@ -1,7 +1,9 @@
 'use client'
-import { useSignal, useSignals } from '@cascivo/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
+import { persistedSignal } from '@cascivo/storage'
 import { deployMsg } from './i18n'
+import { loadData } from './data/fixtures'
 import { MetricsBar } from './sections/MetricsBar'
 import { PipelineList } from './sections/PipelineList'
 import { EnvironmentGrid } from './sections/EnvironmentGrid'
@@ -14,9 +16,16 @@ import '@cascivo/tokens'
 const THEMES = ['dark', 'light'] as const
 type Theme = (typeof THEMES)[number]
 
+// Module-level persisted signal — theme survives page reload
+const theme = persistedSignal<Theme>('deploy.theme', 'dark')
+
 export default function App() {
   useSignals()
-  const theme = useSignal<Theme>('dark')
+
+  // Trigger initial data load via signal effect (never useEffect)
+  useSignalEffect(() => {
+    void loadData()
+  })
 
   function cycleTheme() {
     const next = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]

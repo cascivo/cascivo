@@ -12,3 +12,20 @@ export function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
+
+export interface SeededRandom {
+  next(): number
+  int(min: number, max: number): number
+  pick<T>(arr: T[]): T
+  bool(p?: number): boolean
+}
+
+export function seededRandom(seed: number): SeededRandom {
+  const rng = mulberry32(seed)
+  return {
+    next: () => rng(),
+    int: (min, max) => Math.floor(rng() * (max - min + 1)) + min,
+    pick: <T>(arr: T[]) => arr[Math.floor(rng() * arr.length)] as T,
+    bool: (p = 0.5) => rng() < p,
+  }
+}
