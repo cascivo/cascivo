@@ -140,9 +140,12 @@ pnpm test
 pnpm regen
 pnpm exec vp check --fix
 git diff --exit-code
+
+# 6. Breakpoint literal check (off-scale @media/@container widths)
+pnpm breakpoint:check
 ```
 
-All five must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
+All six must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
 ### Workspace package aliases — keep in sync
 
@@ -331,6 +334,34 @@ Tiered automation:
 
 These rules are non-negotiable. Violating them ships broken code.
 
+#### Responsive by default (mobile-first)
+
+Base styles target the smallest screen (320px); enhancements layer via `min-width`/min container queries.
+Prefer `@container` (component adapts to its slot) over `@media` (viewport) wherever a component can live
+in arbitrary containers.
+
+**Canonical scale** (the only allowed width literals in `@media`/`@container` — `breakpoint:check` enforces this):
+
+| Name | Value | px (16px root) | Used for |
+| ---- | ----- | -------------- | -------- |
+| `sm` | `30rem` | 480 | narrow/small phone |
+| `md` | `40rem` | 640 | tablet/wide phone |
+| `lg` | `64rem` | 1024 | desktop (AppShell drawer breakpoint) |
+| `xl` | `80rem` | 1280 | wide desktop |
+
+`@media`/`@container` **cannot read CSS custom properties** — copy the rem value directly. The
+`--cascivo-screen-*` custom properties exist as documentation and JS/`calc` use only.
+
+**Touch targets:** Interactive controls must reach ≥44px effective tap target under
+`@media (pointer: coarse)`. Use `var(--cascivo-target-min-coarse, 2.75rem)` via `min-block-size`.
+Desktop density (pointer: fine) is untouched.
+
+**Never hide content:** `display:none` on mobile is data loss. Relocate content to a disclosure,
+drawer, or bottom-sheet so it stays keyboard-reachable and in the a11y tree.
+
+**Verify:** Pass the mobile-overflow + touch-target sweep at 320/360/390/414 before merging.
+Run: `pnpm breakpoint:check` to confirm no off-scale literals.
+
 #### Reactivity — use signals, not React hooks
 
 | Allowed                                                            | Forbidden                                    |
@@ -415,3 +446,4 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 4. All tests pass: `vp run @cascivo/components#test`.
 5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascivo/react` distribution).
 6. User-visible strings default from the `@cascivo/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.
+7. Passes the mobile-overflow + touch-target sweep at 320/360/390/414; no off-scale breakpoint literals (`pnpm breakpoint:check`).
