@@ -6,6 +6,7 @@
   "scripts": {
     "build": "vp run -r build",
     "build:landing-demos": "vp run @cascivo/landing#build && node scripts/assemble-demos.mjs --build",
+    "screenshots:generate": "node scripts/gen-demo-screenshots.mjs",
     "test": "vp run -r test",
     "check": "vp check",
     "check:fix": "vp check --fix",
