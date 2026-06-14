@@ -30,4 +30,6 @@ export const msg = defineMessages('pay', {
   filterRefunded: 'Refunded',
   filterFailed: 'Failed',
   emptyTransactions: 'No transactions match this filter.',
+  previous: 'Previous page',
+  next: 'Next page',
 })

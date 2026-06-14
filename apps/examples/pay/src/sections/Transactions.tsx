@@ -205,7 +205,7 @@ export function Transactions() {
                 page.value -= 1
               }}
             >
-              Previous
+              {t(msg.previous)}
             </Button>
             <Button
               size="sm"
@@ -215,7 +215,7 @@ export function Transactions() {
                 page.value += 1
               }}
             >
-              Next
+              {t(msg.next)}
             </Button>
           </div>
         </div>
