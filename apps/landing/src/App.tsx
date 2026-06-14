@@ -19,6 +19,7 @@ import { AccessibilityPage } from './pages/AccessibilityPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { GuidesPage } from './pages/GuidesPage'
 import { initReveal } from './reveal'
+import { applyRouteSeo } from './seo'
 
 function HomePage() {
   return (
@@ -63,9 +64,7 @@ export function App() {
     typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/'
   const route = ROUTES[pathname] ?? HOME
 
-  if (typeof document !== 'undefined') {
-    document.title = route.title
-  }
+  applyRouteSeo(pathname, route.title)
 
   return <route.Page />
 }

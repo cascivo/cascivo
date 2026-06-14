@@ -2,6 +2,8 @@ import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './test',
+  // Only Playwright specs; unit tests live in *.test.ts and run under `vp test`.
+  testMatch: '**/*.spec.ts',
   timeout: 30_000,
   // Serial execution: tests that set data-theme via evaluate() depend on
   // localStorage isolation; parallel workers can interleave and bleed state.

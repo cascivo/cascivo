@@ -9,7 +9,7 @@
     "build": "vp build",
     "preview": "vp preview",
     "check": "tsc --noEmit",
-    "test": "echo 'landing: no unit tests'",
+    "test": "node --experimental-strip-types --test test/counts.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

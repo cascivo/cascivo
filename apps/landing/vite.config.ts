@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, readFileSync } from 'node:fs'
+import { copyFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { type Plugin, defineConfig } from 'vite-plus'
@@ -7,6 +7,34 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../..')
 
 const DEEP_LINK_ROUTES = ['accessibility', 'performance', 'guides']
+
+/** Single source of truth for the headline counts injected into static HTML. */
+export function componentCount(): number {
+  const registry = JSON.parse(readFileSync(resolve(root, 'registry.json'), 'utf8')) as {
+    components: unknown[]
+  }
+  return registry.components.length
+}
+
+export function themeCount(): number {
+  return readdirSync(resolve(root, 'packages/themes/src')).filter((f) => f.endsWith('.css')).length
+}
+
+/**
+ * Replace `%CASCIVO_COMPONENT_COUNT%` / `%CASCIVO_THEME_COUNT%` placeholders in
+ * index.html with live values read from registry.json + packages/themes/src.
+ * Keeps the headline numbers from ever silently rotting (roadmap v19 #1).
+ */
+function injectCounts(): Plugin {
+  return {
+    name: 'cascade:inject-counts',
+    transformIndexHtml(html) {
+      return html
+        .replaceAll('%CASCIVO_COMPONENT_COUNT%', String(componentCount()))
+        .replaceAll('%CASCIVO_THEME_COUNT%', String(themeCount()))
+    },
+  }
+}
 
 function deepLinkCopies(): Plugin {
   return {
@@ -55,7 +83,7 @@ function benchData(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [deepLinkCopies(), benchData()],
+  plugins: [injectCounts(), deepLinkCopies(), benchData()],
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
   resolve: {
