@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { useSignalEffect } from '@cascivo/core'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
@@ -26,19 +27,24 @@ import { ROUTE_HEAD } from './route-head'
 function HomePage() {
   return (
     <>
+      <SkipNavLink />
       <Header />
-      <Hero />
-      <Principles />
-      <StatsBand />
-      <RelayConsole />
-      <SignalsDemo />
-      <ProofTeasers />
-      <AgentLayer />
-      <ThemeDemo />
-      <ChartShowcase />
-      <Ecosystem />
-      <QuickStart />
-      <CtaBand />
+      <SkipNavTarget>
+        <main>
+          <Hero />
+          <Principles />
+          <StatsBand />
+          <RelayConsole />
+          <SignalsDemo />
+          <ProofTeasers />
+          <AgentLayer />
+          <ThemeDemo />
+          <ChartShowcase />
+          <Ecosystem />
+          <QuickStart />
+          <CtaBand />
+        </main>
+      </SkipNavTarget>
       <Footer />
     </>
   )

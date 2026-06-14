@@ -1446,10 +1446,10 @@
     },
     {
       "name": "--cascivo-color-accent",
-      "value": "oklch(0.623 0.214 250)",
+      "value": "oklch(0.52 0.2 250)",
       "layer": "semantic",
       "group": "color",
-      "resolvedDefault": "oklch(0.623 0.214 250)",
+      "resolvedDefault": "oklch(0.52 0.2 250)",
       "resolvesPerTheme": true
     },
     {
@@ -1462,10 +1462,10 @@
     },
     {
       "name": "--cascivo-color-accent-hover",
-      "value": "oklch(0.546 0.224 250)",
+      "value": "oklch(0.45 0.2 250)",
       "layer": "semantic",
       "group": "color",
-      "resolvedDefault": "oklch(0.546 0.224 250)",
+      "resolvedDefault": "oklch(0.45 0.2 250)",
       "resolvesPerTheme": true
     },
     {
