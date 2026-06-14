@@ -18,6 +18,11 @@ const NAV_LINKS = [
     href: '/performance',
     active: path.startsWith('/performance'),
   },
+  {
+    label: 'Guides',
+    href: '/guides',
+    active: path.startsWith('/guides'),
+  },
   { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
 ]
 

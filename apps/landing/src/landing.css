@@ -1863,3 +1863,55 @@ kbd {
     display: none;
   }
 }
+
+/* ── Guides page ──────────────────────────────────────── */
+.guides-eyebrow {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-semibold);
+  letter-spacing: var(--cascivo-tracking-wide);
+  text-transform: uppercase;
+  color: var(--cascivo-color-accent);
+}
+
+.guides-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-3);
+  margin-block-start: var(--cascivo-space-2);
+}
+
+.guides-section {
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--cascivo-space-12) var(--cascivo-space-6);
+  scroll-margin-block-start: var(--cascivo-space-12);
+}
+
+.guides-section h2 {
+  margin: 0 0 var(--cascivo-space-2);
+  font-size: clamp(1.375rem, 3vw + 0.5rem, 1.75rem);
+  font-weight: var(--cascivo-font-bold);
+  letter-spacing: var(--cascivo-tracking-tight);
+}
+
+.guides-section-sub {
+  margin: 0 0 var(--cascivo-space-8);
+  max-width: 44rem;
+  color: var(--cascivo-color-text-subtle);
+}
+
+@media (max-width: 29.99rem) {
+  .guides-section {
+    padding: var(--cascivo-space-8) var(--cascivo-space-4);
+  }
+
+  .guides-hero-ctas {
+    flex-direction: column;
+  }
+
+  .guides-hero-ctas > * {
+    width: 100%;
+    justify-content: center;
+  }
+}

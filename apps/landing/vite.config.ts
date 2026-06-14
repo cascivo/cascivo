@@ -6,7 +6,7 @@ import { type Plugin, defineConfig } from 'vite-plus'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../..')
 
-const DEEP_LINK_ROUTES = ['accessibility', 'performance']
+const DEEP_LINK_ROUTES = ['accessibility', 'performance', 'guides']
 
 function deepLinkCopies(): Plugin {
   return {
