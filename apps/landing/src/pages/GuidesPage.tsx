@@ -4,6 +4,8 @@ import { Footer } from '../sections/Footer'
 import { GuidesHero } from './guides/GuidesHero'
 import { MigrationGuide } from './guides/MigrationGuide'
 import { BrandCustomization } from './guides/BrandCustomization'
+import { UseCaseScenarios } from './guides/UseCaseScenarios'
+import { WhenNotToUse } from './guides/WhenNotToUse'
 
 export function GuidesPage() {
   return (
@@ -15,6 +17,8 @@ export function GuidesPage() {
           <GuidesHero />
           <MigrationGuide />
           <BrandCustomization />
+          <UseCaseScenarios />
+          <WhenNotToUse />
         </main>
       </SkipNavTarget>
       <Footer />

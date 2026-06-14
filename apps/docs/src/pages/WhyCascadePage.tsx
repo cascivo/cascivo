@@ -172,6 +172,15 @@ const CLAIMS: Claim[] = [
       'brand theme, the create-theme skill and the create_theme MCP tool generate one from a color.',
     receipt: { label: 'Make it yours — the customization guide', href: '/guides#customize' },
   },
+  {
+    number: 33,
+    title: 'Honest about fit',
+    substance:
+      'Use-case scenarios that say where cascivo wins — AI-driven UI, multi-brand, performance, ' +
+      'accessibility, ownership — and a "when not to use" section that says where it does not: ' +
+      'Chrome-leading CSS pilots, alpha tooling, React/Preact-only, modern browsers. Candor, not adjectives.',
+    receipt: { label: 'Use cases & honest boundaries', href: '/guides#use-cases' },
+  },
 ]
 
 export function WhyCascadePage() {
@@ -181,7 +190,7 @@ export function WhyCascadePage() {
         <div class="doc-eyebrow">Why cascivo</div>
         <h1>The claims — and the receipts</h1>
         <p class="doc-lede">
-          "AI-first" is easy to say. Claims 14–30 are v13–v16's additions to the cascivo pitch. Each
+          "AI-first" is easy to say. Claims 14–33 are v13–v17's additions to the cascivo pitch. Each
           one links its receipt — the artifact that proves it shipped.
         </p>
       </header>

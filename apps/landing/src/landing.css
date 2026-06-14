@@ -2197,3 +2197,94 @@ kbd {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ── Guides: use cases ────────────────────────────────── */
+.scenario-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-5);
+}
+
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--cascivo-color-surface);
+  padding: var(--cascivo-space-5);
+}
+
+.scenario-persona {
+  margin: 0;
+  font-size: var(--cascivo-text-base);
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.scenario-situation {
+  margin: 0;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.scenario-why {
+  margin: 0;
+}
+
+.scenario-receipt {
+  margin-block-start: auto;
+  padding-block-start: var(--cascivo-space-2);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+}
+
+@media (min-width: 48rem) {
+  .scenario-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Bento: the lead scenario spans both columns. */
+  .scenario-card:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Guides: boundaries ───────────────────────────────── */
+.boundary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  max-width: 44rem;
+}
+
+.boundary-item {
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-bg-subtle);
+  padding: var(--cascivo-space-5);
+}
+
+.boundary-limit {
+  margin: 0 0 var(--cascivo-space-2);
+  font-size: var(--cascivo-text-base);
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.boundary-framing {
+  margin: 0;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.boundary-receipt {
+  display: inline-block;
+  margin-block-start: var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+}

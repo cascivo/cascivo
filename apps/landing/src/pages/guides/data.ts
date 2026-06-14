@@ -165,3 +165,85 @@ export const CUSTOMIZE = {
     },
   ] satisfies CustomizeEscalation[],
 } as const
+
+export interface Scenario {
+  persona: string
+  situation: string
+  why: string
+  receipt: { label: string; href: string }
+}
+
+export const SCENARIOS: Scenario[] = [
+  {
+    persona: "You're building UIs with an AI agent",
+    situation: 'Your agent writes components and you need them correct, not just plausible.',
+    why: 'Machine-readable manifests, an MCP server, and audit --ai keep generated code on-system — invented values and props become detectable errors.',
+    receipt: { label: 'See the context layer', href: '/context' },
+  },
+  {
+    persona: "You're shipping a multi-brand product",
+    situation: 'One codebase, several brands or tenants, each with its own look.',
+    why: 'data-theme scopes a full theme to any subtree; a semantic token override rebrands in a single line.',
+    receipt: { label: 'Make it yours', href: '/guides#customize' },
+  },
+  {
+    persona: 'Performance is a hard requirement',
+    situation: 'Re-render storms and bundle bloat are non-negotiable for your app.',
+    why: 'Fine-grained signals update only what changed — the bench shows the fewest re-renders across the field — and the bundle is the smallest of the three.',
+    receipt: { label: 'See the performance data', href: '/performance' },
+  },
+  {
+    persona: 'Accessibility is mandatory',
+    situation: 'Government, enterprise, or regulated — WCAG is a contract, not a nicety.',
+    why: 'WCAG 2.2 AA is built into every component and CI fails the build on a single axe violation.',
+    receipt: { label: 'See the accessibility receipts', href: '/accessibility' },
+  },
+  {
+    persona: 'You want to own your components, not rent them',
+    situation: "You're done depending on UI you can't open up and edit.",
+    why: 'Copy the source into your repo and change anything — no wrapper, no black box. It is your code from the first commit.',
+    receipt: { label: 'Start with the quickstart', href: '/docs' },
+  },
+]
+
+export interface Boundary {
+  limit: string
+  framing: string
+  receipt: { label: string; href: string }
+}
+
+export const BOUNDARIES: Boundary[] = [
+  {
+    limit: 'CSS @function / if() is Chrome-leading',
+    framing:
+      'It is progressive enhancement: Safari and Firefox render pixel-identically through static fallbacks, and a CI audit blocks any @function or if() that ships without one. The CSS-native path is a forward pilot, not a requirement — nothing breaks where it is not yet supported.',
+    receipt: {
+      label: 'functions.css + fallback audit',
+      href: 'https://github.com/urbanisierung/cascivo/blob/main/packages/tokens/src/functions.css',
+    },
+  },
+  {
+    limit: 'The toolchain (vp / vite+) is alpha',
+    framing:
+      'An accepted, pinned risk for a greenfield system, tracked on every update. If you need a fully battle-tested build toolchain today, weigh that before adopting.',
+    receipt: { label: 'vite+ (viteplus.dev)', href: 'https://viteplus.dev' },
+  },
+  {
+    limit: 'React and Preact only',
+    framing:
+      "If you're on Vue, Svelte, or Angular, cascivo is not your library today — and we would rather say so than pretend otherwise.",
+    receipt: {
+      label: 'See the example apps',
+      href: 'https://github.com/urbanisierung/cascivo/tree/main/apps/examples',
+    },
+  },
+  {
+    limit: 'Modern browsers only',
+    framing:
+      'cascivo relies on :has() and @container — the last two versions of Chrome, Firefox, and Safari. No IE, no deep legacy support.',
+    receipt: {
+      label: 'Browser targets',
+      href: 'https://github.com/urbanisierung/cascivo/blob/main/CLAUDE.md',
+    },
+  },
+]
