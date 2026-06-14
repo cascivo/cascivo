@@ -71,4 +71,7 @@ export const msg = defineMessages('track', {
 
   // Unassigned
   unassigned: 'Unassigned',
+
+  // Actions
+  cancel: 'Cancel',
 })

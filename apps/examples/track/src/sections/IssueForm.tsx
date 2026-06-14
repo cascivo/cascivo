@@ -16,21 +16,6 @@ interface IssueFormProps {
   onClose: () => void
 }
 
-const STATUS_OPTIONS: { value: IssueStatus; label: string }[] = [
-  { value: 'backlog', label: 'Backlog' },
-  { value: 'todo', label: 'Todo' },
-  { value: 'in-progress', label: 'In Progress' },
-  { value: 'in-review', label: 'In Review' },
-  { value: 'done', label: 'Done' },
-]
-
-const PRIORITY_OPTIONS: { value: IssuePriority; label: string }[] = [
-  { value: 'urgent', label: 'Urgent' },
-  { value: 'high', label: 'High' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'low', label: 'Low' },
-]
-
 type FormValues = {
   title: string
   status: IssueStatus
@@ -42,6 +27,21 @@ type FormValues = {
 export function IssueForm({ open, issueId, onClose }: IssueFormProps) {
   useSignals()
   const { toast } = useToast()
+
+  const statusOptions: { value: IssueStatus; label: string }[] = [
+    { value: 'backlog', label: t(msg.statusBacklog) },
+    { value: 'todo', label: t(msg.statusTodo) },
+    { value: 'in-progress', label: t(msg.statusInProgress) },
+    { value: 'in-review', label: t(msg.statusInReview) },
+    { value: 'done', label: t(msg.statusDone) },
+  ]
+
+  const priorityOptions: { value: IssuePriority; label: string }[] = [
+    { value: 'urgent', label: t(msg.priorityUrgent) },
+    { value: 'high', label: t(msg.priorityHigh) },
+    { value: 'medium', label: t(msg.priorityMedium) },
+    { value: 'low', label: t(msg.priorityLow) },
+  ]
 
   const existingIssue = issueId ? issues.value.find((i) => i.id === issueId) : null
 
@@ -137,14 +137,14 @@ export function IssueForm({ open, issueId, onClose }: IssueFormProps) {
 
         <Select
           label={t(msg.formFieldStatus)}
-          options={STATUS_OPTIONS}
+          options={statusOptions}
           value={statusField.value}
           onChange={(e) => statusField.onChange(e.currentTarget.value as IssueStatus)}
         />
 
         <Select
           label={t(msg.formFieldPriority)}
-          options={PRIORITY_OPTIONS}
+          options={priorityOptions}
           value={priorityField.value}
           onChange={(e) => priorityField.onChange(e.currentTarget.value as IssuePriority)}
         />
@@ -178,7 +178,7 @@ export function IssueForm({ open, issueId, onClose }: IssueFormProps) {
 
         <div className={styles['actions']}>
           <Button type="button" variant="secondary" onClick={handleClose}>
-            Cancel
+            {t(msg.cancel)}
           </Button>
           <Button type="submit" disabled={form.submitting.value}>
             {submitLabel}
