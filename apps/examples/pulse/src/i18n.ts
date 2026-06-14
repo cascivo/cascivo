@@ -34,6 +34,7 @@ export const msg = defineMessages('pulse', {
   alertSeverityCritical: 'Critical',
   alertSeverityWarning: 'Warning',
   logsTitle: 'Log Stream',
+  lineCount: '{count} lines',
   logLevelError: 'ERR',
   logLevelWarn: 'WRN',
   logLevelInfo: 'INF',

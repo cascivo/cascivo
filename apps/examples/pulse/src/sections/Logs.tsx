@@ -14,14 +14,14 @@ const LEVEL_COLOR: Record<string, string> = {
   info: 'var(--cascivo-color-foreground-muted)',
 }
 
-const LEVEL_LABEL: Record<string, string> = {
-  error: 'ERR',
-  warn: 'WRN',
-  info: 'INF',
-}
-
 export function Logs() {
   useSignals()
+
+  const LEVEL_LABEL: Record<string, string> = {
+    error: t(msg.logLevelError),
+    warn: t(msg.logLevelWarn),
+    info: t(msg.logLevelInfo),
+  }
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
   // Scroll event listener — track whether user scrolled away from bottom
@@ -72,7 +72,7 @@ export function Logs() {
             color: 'var(--cascivo-color-foreground-muted)',
           }}
         >
-          {lines.length} lines
+          {t(msg.lineCount, { count: lines.length })}
         </span>
       </div>
 
