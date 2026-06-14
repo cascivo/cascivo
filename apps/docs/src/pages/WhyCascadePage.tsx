@@ -163,6 +163,15 @@ const CLAIMS: Claim[] = [
       'tokens, data-theme), with honest bundle and accessibility deltas read from live bench data.',
     receipt: { label: 'Coming from shadcn? See the guide', href: '/guides#migrate' },
   },
+  {
+    number: 32,
+    title: 'Brand it without forking the system',
+    substance:
+      'Three-tier token overrides — primitive, semantic, component — let you rebrand in one line, ' +
+      'brand a single component, or scope a whole theme to any subtree with data-theme. For a full ' +
+      'brand theme, the create-theme skill and the create_theme MCP tool generate one from a color.',
+    receipt: { label: 'Make it yours — the customization guide', href: '/guides#customize' },
+  },
 ]
 
 export function WhyCascadePage() {
