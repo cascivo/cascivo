@@ -20,8 +20,8 @@
   }
 
   .mockBanner {
-    background: var(--cascivo-color-warning-bg, #fef3c7);
-    color: var(--cascivo-color-warning-text, #92400e);
+    background: var(--cascivo-color-warning-subtle);
+    color: var(--cascivo-color-warning-foreground);
     text-align: center;
     padding-block: var(--cascivo-space-2);
     padding-inline: var(--cascivo-space-4);
