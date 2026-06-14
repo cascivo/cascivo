@@ -5,6 +5,42 @@ import { Bell, Database, Grid, HelpCircle, Home, Server, Settings, Users } from 
 import { AppShell } from '../../app-shell/app-shell'
 import { createShellState } from '../../app-shell/shell-state'
 import { PageHeader } from '../../page-header/page-header'
+import styles from './console-app.module.css'
+
+const instances = [
+  {
+    name: 'web-01',
+    status: 'Running',
+    type: 't3.medium',
+    region: 'us-east-1',
+    ip: '10.0.0.1',
+    created: '2024-01-01',
+  },
+  {
+    name: 'web-02',
+    status: 'Running',
+    type: 't3.medium',
+    region: 'us-east-1',
+    ip: '10.0.0.2',
+    created: '2024-01-02',
+  },
+  {
+    name: 'db-01',
+    status: 'Running',
+    type: 'r5.large',
+    region: 'us-west-2',
+    ip: '10.0.1.1',
+    created: '2024-01-03',
+  },
+  {
+    name: 'cache-01',
+    status: 'Stopped',
+    type: 't3.small',
+    region: 'us-east-1',
+    ip: '10.0.0.3',
+    created: '2024-01-04',
+  },
+]
 
 export function ConsoleApp() {
   useSignals()
@@ -90,28 +126,17 @@ export function ConsoleApp() {
         />
       }
       aside={
-        <div
-          style={{ padding: '1rem', borderInlineStart: '1px solid var(--cascivo-color-border)' }}
-        >
-          <h2 style={{ fontSize: '0.875rem', fontWeight: 600, marginBlockEnd: '0.75rem' }}>
-            Resource details
-          </h2>
-          <dl
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'auto 1fr',
-              gap: '0.25rem 0.75rem',
-              fontSize: '0.875rem',
-            }}
-          >
-            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Status</dt>
-            <dd>Running</dd>
-            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Region</dt>
-            <dd>us-east-1</dd>
-            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>CPU</dt>
-            <dd>4 vCPU</dd>
-            <dt style={{ color: 'var(--cascivo-color-text-subtle)' }}>Memory</dt>
-            <dd>16 GB</dd>
+        <div className={styles['aside-content']}>
+          <h2 className={styles['aside-title']}>Resource details</h2>
+          <dl className={styles['aside-dl']}>
+            <dt className={styles['aside-dt']}>Status</dt>
+            <dd className={styles['aside-dd']}>Running</dd>
+            <dt className={styles['aside-dt']}>Region</dt>
+            <dd className={styles['aside-dd']}>us-east-1</dd>
+            <dt className={styles['aside-dt']}>CPU</dt>
+            <dd className={styles['aside-dd']}>4 vCPU</dd>
+            <dt className={styles['aside-dt']}>Memory</dt>
+            <dd className={styles['aside-dd']}>16 GB</dd>
           </dl>
         </div>
       }
@@ -124,23 +149,9 @@ export function ConsoleApp() {
         label="Notifications"
       >
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          <li
-            style={{
-              padding: '0.75rem 1rem',
-              borderBlockEnd: '1px solid var(--cascivo-color-border)',
-            }}
-          >
-            Instance i-001 started
-          </li>
-          <li
-            style={{
-              padding: '0.75rem 1rem',
-              borderBlockEnd: '1px solid var(--cascivo-color-border)',
-            }}
-          >
-            Backup completed
-          </li>
-          <li style={{ padding: '0.75rem 1rem' }}>Certificate renewed</li>
+          <li className={styles['panel-item']}>Instance i-001 started</li>
+          <li className={styles['panel-item']}>Backup completed</li>
+          <li className={styles['panel-item']}>Certificate renewed</li>
         </ul>
       </HeaderPanel>
       <HeaderPanel
@@ -159,80 +170,50 @@ export function ConsoleApp() {
           ]}
         />
       </HeaderPanel>
-      <div style={{ padding: '1.5rem' }}>
+      <div className={styles['content']}>
         <PageHeader title="Instances" description="Manage your compute instances" />
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBlockStart: '1rem' }}>
-          <thead>
-            <tr>
-              {['Name', 'Status', 'Type', 'Region', 'IP', 'Created', 'Actions'].map((h) => (
-                <th
-                  key={h}
-                  style={{
-                    textAlign: 'start',
-                    padding: '0.5rem',
-                    borderBlockEnd: '1px solid var(--cascivo-color-border)',
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              {
-                name: 'web-01',
-                status: 'Running',
-                type: 't3.medium',
-                region: 'us-east-1',
-                ip: '10.0.0.1',
-                created: '2024-01-01',
-              },
-              {
-                name: 'web-02',
-                status: 'Running',
-                type: 't3.medium',
-                region: 'us-east-1',
-                ip: '10.0.0.2',
-                created: '2024-01-02',
-              },
-              {
-                name: 'db-01',
-                status: 'Running',
-                type: 'r5.large',
-                region: 'us-west-2',
-                ip: '10.0.1.1',
-                created: '2024-01-03',
-              },
-              {
-                name: 'cache-01',
-                status: 'Stopped',
-                type: 't3.small',
-                region: 'us-east-1',
-                ip: '10.0.0.3',
-                created: '2024-01-04',
-              },
-            ].map((row) => (
-              <tr key={row.name}>
-                {[row.name, row.status, row.type, row.region, row.ip, row.created, 'Manage'].map(
-                  (cell) => (
-                    <td
-                      key={cell}
-                      style={{
-                        padding: '0.5rem',
-                        borderBlockEnd: '1px solid var(--cascivo-color-border)',
-                        fontSize: '0.875rem',
-                      }}
-                    >
-                      {cell}
-                    </td>
-                  ),
-                )}
+        <div className={styles['table-wrap']}>
+          <table className={styles['table']}>
+            <thead className={styles['thead']}>
+              <tr>
+                {['Name', 'Status', 'Type', 'Region', 'IP', 'Created', 'Actions'].map((h) => (
+                  <th key={h} className={styles['th']}>
+                    {h}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className={styles['tbody']}>
+              {instances.map((row) => (
+                <tr key={row.name} className={styles['tr']}>
+                  <td className={styles['td']} data-label="Name">
+                    {row.name}
+                  </td>
+                  <td className={styles['td']} data-label="Status">
+                    {row.status}
+                  </td>
+                  <td className={styles['td']} data-label="Type">
+                    {row.type}
+                  </td>
+                  <td className={styles['td']} data-label="Region">
+                    {row.region}
+                  </td>
+                  <td className={styles['td']} data-label="IP">
+                    {row.ip}
+                  </td>
+                  <td className={styles['td']} data-label="Created">
+                    {row.created}
+                  </td>
+                  <td className={styles['td']} data-label="Actions">
+                    <a href="#" className={styles['action-link']}>
+                      Manage
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </AppShell>
   )

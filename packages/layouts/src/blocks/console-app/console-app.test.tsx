@@ -44,4 +44,27 @@ describe('ConsoleApp', () => {
     )
     expect(notifPanel).toBeDefined()
   })
+
+  it('table has data-label attributes for mobile card transform', () => {
+    render(<ConsoleApp />)
+    const tds = document.querySelectorAll('td[data-label]')
+    expect(tds.length).toBeGreaterThan(0)
+  })
+
+  it('aside contains resource details dl', () => {
+    render(<ConsoleApp />)
+    expect(screen.getByText('Resource details')).toBeInTheDocument()
+    expect(screen.getAllByText('Status').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Region').length).toBeGreaterThan(0)
+    expect(screen.getByText('CPU')).toBeInTheDocument()
+    expect(screen.getByText('Memory')).toBeInTheDocument()
+  })
+
+  it('table has thead and tbody with instance rows', () => {
+    render(<ConsoleApp />)
+    expect(document.querySelector('thead')).toBeInTheDocument()
+    expect(document.querySelector('tbody')).toBeInTheDocument()
+    expect(screen.getByText('web-01')).toBeInTheDocument()
+    expect(screen.getByText('cache-01')).toBeInTheDocument()
+  })
 })
