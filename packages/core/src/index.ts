@@ -47,3 +47,22 @@ export { useScrollLock } from './scroll-lock.ts'
 export { useId } from './use-id.ts'
 export { useClipboard } from './clipboard.ts'
 export type { UseClipboardOptions, UseClipboardReturn } from './clipboard.ts'
+export { DismissableLayer } from './dismissable-layer.tsx'
+export type { DismissableLayerProps } from './dismissable-layer.tsx'
+export { useRovingFocus } from './roving-focus.ts'
+export type {
+  UseRovingFocusOptions,
+  UseRovingFocusReturn,
+  RovingItemProps,
+  RovingOrientation,
+} from './roving-focus.ts'
+export { Presence } from './presence.tsx'
+export type { PresenceProps } from './presence.tsx'
+export { useAnchorPosition, computePosition } from './anchor.tsx'
+export type {
+  UseAnchorPositionOptions,
+  UseAnchorPositionReturn,
+  AnchorPlacement,
+  AnchorSide,
+  AnchorAlign,
+} from './anchor.tsx'
