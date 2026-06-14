@@ -17,6 +17,7 @@ import { Footer } from './sections/Footer'
 import { initReveal } from './reveal'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
+import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
@@ -35,6 +36,12 @@ const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const ExamplesPage = lazy(() =>
+  import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
+)
+const ExampleDetailPage = lazy(() =>
+  import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
+)
 const OgCard = lazy(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 
@@ -88,7 +95,15 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
+  // One detail route per demo (/examples/<slug>); titles from ROUTE_HEAD.
+  ...Object.fromEntries(
+    DEMOS.map((d) => [
+      d.detailHref,
+      { Page: ExampleDetailPage, title: ROUTE_HEAD[d.detailHref]?.title ?? 'cascivo' },
+    ]),
+  ),
 }
 
 export function App() {

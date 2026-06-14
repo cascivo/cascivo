@@ -8,7 +8,7 @@ const path = typeof window !== 'undefined' ? window.location.pathname : '/'
 
 const NAV_LINKS = [
   { label: 'Components', href: '/docs' },
-  { label: 'Examples', href: '/#examples' },
+  { label: 'Examples', href: '/examples', active: path.startsWith('/examples') },
   { label: 'Storybook', href: '/storybook' },
   {
     label: 'Accessibility',

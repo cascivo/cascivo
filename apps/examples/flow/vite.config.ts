@@ -6,6 +6,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  // Relative base so the same build runs at `/` (standalone `vp preview`) and
+  // when assembled under `/demos/flow/` in the landing (v22). The app has no
+  // internal client routing, so relative asset URLs are always correct.
+  base: './',
   resolve: {
     alias: {
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),

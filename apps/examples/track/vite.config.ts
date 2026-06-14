@@ -6,6 +6,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  // Relative base so the same build runs at `/` (standalone `vp preview`) and
+  // when assembled under `/demos/track/` in the landing (v22). The app has no
+  // internal client routing, so relative asset URLs are always correct.
+  base: './',
   resolve: {
     alias: {
       // Source aliases so Rolldown doesn't need pre-built dist files
