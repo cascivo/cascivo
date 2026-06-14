@@ -170,14 +170,14 @@ From studying current dev-tool / SaaS landing pages and FAQ best practices (2025
 
 ## Tranche map
 
-| T#  | Focus                          | Files changed                                                                                              | Risk   |
-| --- | ------------------------------ | --------------------------------------------------------------------------------------------------------- | ------ |
-| T1  | Page scaffold + IA + hero      | New `GuidesPage.tsx`, `guides/GuidesHero.tsx`, `guides/data.ts`, `App.tsx`, `Header.tsx`, `landing.css`, `test/mobile.spec.ts` | Low    |
-| T2  | Migration guide (shadcn)       | New `guides/MigrationGuide.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 31)          | Medium |
-| T3  | Brand customization guide      | New `guides/BrandCustomization.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 32)      | Medium |
-| T4  | Use cases + when-not-to-use    | New `guides/UseCaseScenarios.tsx`, `guides/WhenNotToUse.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 33) | Low    |
-| T5  | FAQ accordion                  | New `guides/GuidesFaq.tsx`, `guides/GuidesCta.tsx`, `guides/data.ts`, `landing.css`                        | Medium |
-| T6  | Final gate + DoD               | `ROADMAP-V17.md` (DoD checks)                                                                              | Low    |
+| T#  | Focus                       | Files changed                                                                                                                  | Risk   |
+| --- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------ |
+| T1  | Page scaffold + IA + hero   | New `GuidesPage.tsx`, `guides/GuidesHero.tsx`, `guides/data.ts`, `App.tsx`, `Header.tsx`, `landing.css`, `test/mobile.spec.ts` | Low    |
+| T2  | Migration guide (shadcn)    | New `guides/MigrationGuide.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 31)                              | Medium |
+| T3  | Brand customization guide   | New `guides/BrandCustomization.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 32)                          | Medium |
+| T4  | Use cases + when-not-to-use | New `guides/UseCaseScenarios.tsx`, `guides/WhenNotToUse.tsx`, `guides/data.ts`, `landing.css`; `WhyCascadePage.tsx` (claim 33) | Low    |
+| T5  | FAQ accordion               | New `guides/GuidesFaq.tsx`, `guides/GuidesCta.tsx`, `guides/data.ts`, `landing.css`                                            | Medium |
+| T6  | Final gate + DoD            | `ROADMAP-V17.md` (DoD checks)                                                                                                  | Low    |
 
 **Risk notes:**
 

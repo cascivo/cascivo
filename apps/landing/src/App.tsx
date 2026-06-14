@@ -17,6 +17,7 @@ import { Footer } from './sections/Footer'
 import { OgCard } from './sections/OgCard'
 import { AccessibilityPage } from './pages/AccessibilityPage'
 import { PerformancePage } from './pages/PerformancePage'
+import { GuidesPage } from './pages/GuidesPage'
 import { initReveal } from './reveal'
 
 function HomePage() {
@@ -51,6 +52,7 @@ const ROUTES: Record<string, Route> = {
   '/': HOME,
   '/accessibility': { Page: AccessibilityPage, title: 'Accessibility — cascivo' },
   '/performance': { Page: PerformancePage, title: 'Performance — cascivo' },
+  '/guides': { Page: GuidesPage, title: 'Guides — cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
 }
 
