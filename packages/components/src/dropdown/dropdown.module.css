@@ -9,6 +9,7 @@
     inset-block-start: calc(100% + var(--cascivo-space-1));
     z-index: var(--cascivo-z-dropdown);
     min-inline-size: 10rem;
+    max-inline-size: calc(100vw - var(--cascivo-space-4, 1rem));
     padding: var(--cascivo-space-1);
     background-color: var(--cascivo-color-surface-overlay);
     border: 1px solid var(--cascivo-color-border);

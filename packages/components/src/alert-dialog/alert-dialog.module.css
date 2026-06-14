@@ -88,6 +88,38 @@
     margin-block-start: var(--cascivo-space-4);
   }
 
+  @media (max-width: 40rem) {
+    .dialog {
+      /* Pin to bottom viewport edge — bottom-sheet */
+      margin: 0;
+      inset-block-end: 0;
+      inset-inline: 0;
+      max-block-size: 90dvh;
+    }
+
+    .content {
+      inline-size: 100%;
+      max-width: 100%;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+      border-start-start-radius: var(--cascivo-radius-overlay);
+      border-start-end-radius: var(--cascivo-radius-overlay);
+      max-block-size: 90dvh;
+      overflow-y: auto;
+      /* Safe area for home indicator on iOS */
+      padding-block-end: env(safe-area-inset-bottom, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dialog {
+      transition: none;
+    }
+    .dialog[data-state='closed'] {
+      transition: none;
+    }
+  }
+
   .cancel,
   .confirm {
     padding: var(--cascivo-space-2) var(--cascivo-space-4);
