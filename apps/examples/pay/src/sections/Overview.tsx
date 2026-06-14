@@ -42,19 +42,26 @@ export function Overview() {
 
   useSignalEffect(() => {
     const currentRange = rangeSignal.value
+    let cancelled = false
     loading.value = true
     error.value = null
 
     Promise.all([getRevenueSeries(currentRange), getVolumeByProduct(currentRange)])
       .then(([rev, vol]) => {
+        if (cancelled) return
         revenueSeries.value = rev
         volumeByProduct.value = vol
         loading.value = false
       })
       .catch((err: unknown) => {
+        if (cancelled) return
         error.value = err instanceof Error ? err.message : 'Unknown error'
         loading.value = false
       })
+
+    return () => {
+      cancelled = true
+    }
   })
 
   const kpis = computeKpis(rangeSignal.value)

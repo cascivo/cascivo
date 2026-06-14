@@ -64,23 +64,37 @@ export function Transactions() {
   const { toast } = useToast()
 
   useSignalEffect(() => {
+    // Read rangeSignal to subscribe; reset page whenever range changes
+    const _range = rangeSignal.value
+    void _range
+    page.value = 1
+  })
+
+  useSignalEffect(() => {
     // Track all three dependencies so this re-runs on any change
     const currentRange = rangeSignal.value
     const currentPage = page.value
     const currentStatus = statusFilter.value
+    let cancelled = false
 
     loading.value = true
     loadError.value = null
 
     listTransactions(currentRange, currentPage, currentStatus)
       .then((result) => {
+        if (cancelled) return
         txPage.value = result
         loading.value = false
       })
       .catch((err: unknown) => {
+        if (cancelled) return
         loadError.value = err instanceof Error ? err.message : 'Unknown error'
         loading.value = false
       })
+
+    return () => {
+      cancelled = true
+    }
   })
 
   function handleRefund(tx: EnrichedTx) {
@@ -93,6 +107,8 @@ export function Transactions() {
     // 2. API call
     refundTx(tx.id)
       .then(() => {
+        // Remove from optimistic overlay — server state is confirmed
+        refundedIds.value = refundedIds.value.filter((id) => id !== tx.id)
         toast({ title: t(msg.refundSuccess), variant: 'success' })
       })
       .catch((err: unknown) => {
