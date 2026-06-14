@@ -172,6 +172,23 @@
         "note": "Any focusable controls (Button, IconButton, links) may be grouped"
       }
     ],
+    "Calendar": [
+      {
+        "area": "date type",
+        "level": "strict",
+        "note": "All date props are native Date objects compared in UTC"
+      },
+      {
+        "area": "locale",
+        "level": "flexible",
+        "note": "Weekday labels, month label, and first-day-of-week derive from the locale via Intl (with Monday fallback)"
+      },
+      {
+        "area": "view control",
+        "level": "flexible",
+        "note": "month/year/onViewChange/hideNav let a parent drive navigation (used by DateRangePicker)"
+      }
+    ],
     "Card": [
       {
         "area": "variant and padding",
@@ -182,6 +199,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
+      }
+    ],
+    "Carousel": [
+      {
+        "area": "transition",
+        "level": "strict",
+        "note": "Paging uses native CSS scroll-snap, not transform math — no custom easing config"
+      },
+      {
+        "area": "slide content",
+        "level": "flexible",
+        "note": "Any ReactNode may be a slide; pass via children or the slides array"
       }
     ],
     "Checkbox": [
@@ -220,6 +249,18 @@
         "note": "Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens"
       }
     ],
+    "CodeSnippet": [
+      {
+        "area": "variant",
+        "level": "strict",
+        "note": "inline | single | multi — controls the wrapping element and layout"
+      },
+      {
+        "area": "copy button",
+        "level": "flexible",
+        "note": "Shown by default for single/multi; togglable via showCopyButton"
+      }
+    ],
     "Collapsible": [
       {
         "area": "open state",
@@ -230,6 +271,18 @@
         "area": "trigger markup",
         "level": "strict",
         "note": "Always rendered as a native button for keyboard and a11y correctness"
+      }
+    ],
+    "ColorPicker": [
+      {
+        "area": "color model",
+        "level": "flexible",
+        "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surfaces, borders and focus ring must resolve to --cascivo-* tokens"
       }
     ],
     "Combobox": [
@@ -266,6 +319,18 @@
         "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
       }
     ],
+    "ContainedList": [
+      {
+        "area": "kind",
+        "level": "flexible",
+        "note": "on-page sits inline; disclosed adds a header band for menus and popovers"
+      },
+      {
+        "area": "list semantics",
+        "level": "strict",
+        "note": "Rows are always ul/li; do not replace with generic divs"
+      }
+    ],
     "ContextMenu": [
       {
         "area": "menu contents",
@@ -288,6 +353,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
+      }
+    ],
+    "DataList": [
+      {
+        "area": "orientation and size",
+        "level": "flexible",
+        "note": "horizontal for wide panels, vertical for narrow columns; size tunes density"
+      },
+      {
+        "area": "dl semantics",
+        "level": "strict",
+        "note": "Always renders dl/dt/dd; do not substitute generic elements"
       }
     ],
     "DataTable": [
@@ -317,6 +394,40 @@
         "area": "token names",
         "level": "strict",
         "note": "Styling resolves to --cascivo-date-picker-* component tokens"
+      }
+    ],
+    "DateRangePicker": [
+      {
+        "area": "range type",
+        "level": "strict",
+        "note": "value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC"
+      },
+      {
+        "area": "presets",
+        "level": "flexible",
+        "note": "Optional preset ranges render as quick-select buttons in a side column"
+      },
+      {
+        "area": "locale",
+        "level": "flexible",
+        "note": "Display, weekday labels, and week start derive from the locale via Intl"
+      }
+    ],
+    "Drawer": [
+      {
+        "area": "side",
+        "level": "strict",
+        "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      },
+      {
+        "area": "body content",
+        "level": "flexible",
+        "note": "Any children; the consumer owns the panel contents"
       }
     ],
     "Dropdown": [
@@ -522,6 +633,18 @@
         "note": "prefix/suffix and addon children accept arbitrary ReactNode"
       }
     ],
+    "Item": [
+      {
+        "area": "variant and size",
+        "level": "flexible",
+        "note": "Tune density and emphasis to match the surrounding list"
+      },
+      {
+        "area": "compound parts",
+        "level": "flexible",
+        "note": "Media, content, title, description, and actions are optional and composable"
+      }
+    ],
     "Kbd": [
       {
         "area": "size",
@@ -587,6 +710,35 @@
         "note": "MenuItem and MenuSeparator can be mixed freely under the trigger"
       }
     ],
+    "MenuButton": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Trigger and menu styling must resolve to the listed --cascivo-* tokens"
+      },
+      {
+        "area": "item content",
+        "level": "flexible",
+        "note": "Each item label accepts arbitrary ReactNode; onSelect defines the action"
+      },
+      {
+        "area": "trigger appearance",
+        "level": "flexible",
+        "note": "variant and size choose among the standard button looks and dimensions"
+      }
+    ],
+    "Menubar": [
+      {
+        "area": "menu content",
+        "level": "strict",
+        "note": "Menus are described by data (menus prop) so roles and keyboard wiring stay correct"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
+      }
+    ],
     "Modal": [
       {
         "area": "token names",
@@ -619,6 +771,30 @@
         "area": "options",
         "level": "flexible",
         "note": "Caller supplies the option list and may mark individual options disabled"
+      }
+    ],
+    "NativeSelect": [
+      {
+        "area": "options",
+        "level": "flexible",
+        "note": "Pass an options array or raw <option> children"
+      },
+      {
+        "area": "value",
+        "level": "flexible",
+        "note": "Controlled (value/onChange) or uncontrolled (defaultValue)"
+      }
+    ],
+    "NavigationMenu": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "horizontal (default) or vertical roving navigation"
+      },
+      {
+        "area": "panel content",
+        "level": "flexible",
+        "note": "content is arbitrary ReactNode; links without content render as plain anchors"
       }
     ],
     "Notification": [
@@ -799,6 +975,18 @@
         "note": "max sets the scale and labels.rating customizes the per-star announcement"
       }
     ],
+    "Resizable": [
+      {
+        "area": "sizing",
+        "level": "strict",
+        "note": "Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex"
+      },
+      {
+        "area": "min/max ratio",
+        "level": "flexible",
+        "note": "Consumer-defined clamp range"
+      }
+    ],
     "ScrollArea": [
       {
         "area": "orientation",
@@ -967,6 +1155,18 @@
         "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
       }
     ],
+    "StructuredList": [
+      {
+        "area": "selectable",
+        "level": "flexible",
+        "note": "Toggle selectable based on whether the list is interactive or purely presentational"
+      },
+      {
+        "area": "roles",
+        "level": "strict",
+        "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+      }
+    ],
     "Switcher": [
       {
         "area": "dividers",
@@ -1039,6 +1239,23 @@
         "note": "Consumer chooses initial rows and whether the field can resize"
       }
     ],
+    "Tile": [
+      {
+        "area": "selectable",
+        "level": "strict",
+        "note": "single (radio, select-only) | multi (checkbox, toggle)"
+      },
+      {
+        "area": "selected state",
+        "level": "flexible",
+        "note": "Controlled (selected/onSelect) or uncontrolled (defaultSelected)"
+      },
+      {
+        "area": "element",
+        "level": "flexible",
+        "note": "asChild renders onto a custom element via Slot"
+      }
+    ],
     "TimePicker": [
       {
         "area": "value format",
@@ -1049,6 +1266,18 @@
         "area": "min/max/step",
         "level": "flexible",
         "note": "Consumer-defined bounds and step granularity"
+      }
+    ],
+    "Timeline": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "vertical for feeds, horizontal for compact progress strips"
+      },
+      {
+        "area": "status semantics",
+        "level": "strict",
+        "note": "Use a single current item; status drives marker colour via data-status"
       }
     ],
     "Toast": [
@@ -1087,6 +1316,23 @@
         "note": "Items may use a text label, an icon, or both; consumer owns the icon set"
       }
     ],
+    "Toggletip": [
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Trigger and bubble styling must resolve to the listed --cascivo-* tokens"
+      },
+      {
+        "area": "content",
+        "level": "flexible",
+        "note": "trigger and children accept arbitrary ReactNode supplied by the consumer"
+      },
+      {
+        "area": "open state ownership",
+        "level": "flexible",
+        "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+      }
+    ],
     "Tooltip": [
       {
         "area": "placement",
@@ -1097,6 +1343,23 @@
         "area": "delay",
         "level": "flexible",
         "note": "Consumer can tune the show delay (default 200ms)"
+      }
+    ],
+    "TreeView": [
+      {
+        "area": "selectionMode",
+        "level": "flexible",
+        "note": "single vs multi is the consumer’s choice based on the interaction"
+      },
+      {
+        "area": "keyboard model",
+        "level": "strict",
+        "note": "Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped"
+      },
+      {
+        "area": "indent token",
+        "level": "flexible",
+        "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
       }
     ],
     "VisuallyHidden": [

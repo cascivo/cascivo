@@ -75,7 +75,9 @@ New MCP tools:
 - [breadcrumb](/llms/breadcrumb.md) — Shows the current page location within a navigation hierarchy
 - [button](/llms/button.md) — Triggers an action or event
 - [button-group](/llms/button-group.md) — Visually joins a set of related buttons into a single segmented control
+- [calendar](/llms/calendar.md) — An accessible standalone month-grid date picker.
 - [card](/llms/card.md) — Container for grouping related content
+- [carousel](/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators
 - [chart/area-chart](/llms/chart/area-chart.md) — Area chart with optional stacking, multi-series support, and hover tooltip.
 - [chart/bar-chart](/llms/chart/bar-chart.md) — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.
 - [chart/boxplot](/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series.
@@ -95,13 +97,19 @@ New MCP tools:
 - [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
 - [checkbox-card](/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
 - [code](/llms/code.md) — Inline code span for identifiers, commands, and short snippets
+- [code-snippet](/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting
 - [collapsible](/llms/collapsible.md) — A single disclosure region toggled open and closed by its trigger
+- [color-picker](/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
 - [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
 - [command-menu](/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
+- [contained-list](/llms/contained-list.md) — Labelled list of rows inside a bordered container
 - [context-menu](/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
 - [copy-button](/llms/copy-button.md) — Icon button that copies a value to the clipboard with copied feedback
+- [data-list](/llms/data-list.md) — Key-value pairs rendered as a description list
 - [data-table](/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
 - [date-picker](/llms/date-picker.md) — An accessible date-picker with a calendar popover.
+- [date-range-picker](/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
+- [drawer](/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
 - [dropdown](/llms/dropdown.md) — Menu of actions revealed from a trigger
 - [editable](/llms/editable.md) — Inline click-to-edit text field
 - [empty-state](/llms/empty-state.md) — Placeholder for views that have no data to display
@@ -116,6 +124,7 @@ New MCP tools:
 - [inline-loading](/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
 - [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+- [item](/llms/item.md) — Generic content row primitive with media, content, and action regions
 - [kbd](/llms/kbd.md) — Displays a keyboard key or shortcut
 - [label](/llms/label.md) — Accessible caption for a form control
 - [layout/app-shell](/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
@@ -135,8 +144,12 @@ New MCP tools:
 - [link](/llms/link.md) — Styled anchor for navigation, standalone or inline within prose
 - [list](/llms/list.md) — Styled unordered or ordered list with ListItem
 - [menu](/llms/menu.md) — Dropdown menu with keyboard navigation, built on usePopover
+- [menu-button](/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands
+- [menubar](/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus
 - [modal](/llms/modal.md) — Accessible dialog overlay using native <dialog> element
 - [multi-select](/llms/multi-select.md) — Searchable multi-value select with popover listbox
+- [native-select](/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
+- [navigation-menu](/llms/navigation-menu.md) — Site navigation bar with links and dropdown flyout panels
 - [notification](/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
 - [number-input](/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting
 - [otp-input](/llms/otp-input.md) — Segmented one-time code input
@@ -151,6 +164,7 @@ New MCP tools:
 - [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
 - [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
+- [resizable](/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
 - [scroll-area](/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows
 - [search](/llms/search.md) — Search input with debounced search callback and clear button
 - [section/cta](/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
@@ -171,17 +185,22 @@ New MCP tools:
 - [spinner](/llms/spinner.md) — Indeterminate loading indicator
 - [stat](/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
 - [status](/llms/status.md) — Colored dot with a label communicating the state of a system or entity
+- [structured-list](/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
 - [switcher](/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
 - [tabs](/llms/tabs.md) — Switch between related panels of content
 - [tag](/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
 - [tags-input](/llms/tags-input.md) — Free-form multi-value chip input
 - [text](/llms/text.md) — Body text with size, weight, and muted variants
 - [textarea](/llms/textarea.md) — Multi-line text input with optional label, hint, and error state
+- [tile](/llms/tile.md) — A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard
 - [time-picker](/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants
+- [timeline](/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
 - [toast](/llms/toast.md) — Transient notification surfaced via the useToast hook
 - [toggle](/llms/toggle.md) — On/off switch built as an accessible button
 - [toggle-group](/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection
+- [toggletip](/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content
 - [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
+- [tree-view](/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection
 - [visually-hidden](/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
 
 ## Component intent summaries
@@ -206,7 +225,9 @@ New MCP tools:
 - [Breadcrumb](/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
 - [Button](/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
 - [ButtonGroup](/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
+- [Calendar](/context/calendar.md) — Use when: Showing an always-visible month grid for picking a single date (inline, not a popover)
 - [Card](/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
+- [Carousel](/context/carousel.md) — Use when: Presenting a sequence of media or cards the user pages through one at a time
 - [AreaChart](/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
 - [BarChart](/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
 - [Boxplot](/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
@@ -226,13 +247,19 @@ New MCP tools:
 - [Checkbox](/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
 - [CheckboxCard](/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
 - [Code](/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
+- [CodeSnippet](/context/code-snippet.md) — Use when: Showing a command, token, or path the user is expected to copy
 - [Collapsible](/context/collapsible.md) — Use when: Hiding a single secondary block until the user asks for it
+- [ColorPicker](/context/color-picker.md) — Use when: Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control
 - [Combobox](/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
 - [CommandMenu](/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
+- [ContainedList](/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
 - [ContextMenu](/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
 - [CopyButton](/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
+- [DataList](/context/data-list.md) — Use when: Displaying read-only key-value metadata (profile fields, record summaries)
 - [DataTable](/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
 - [DatePicker](/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
+- [DateRangePicker](/context/date-range-picker.md) — Use when: Selecting a contiguous start–end date range (reporting windows, bookings, filters)
+- [Drawer](/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
 - [Dropdown](/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
 - [Editable](/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
 - [EmptyState](/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
@@ -247,6 +274,7 @@ New MCP tools:
 - [InlineLoading](/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
 - [InputGroup](/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
+- [Item](/context/item.md) — Use when: Composing a single content row with leading media, a text block, and trailing actions
 - [Kbd](/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
 - [AppShell](/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
@@ -266,8 +294,12 @@ New MCP tools:
 - [Link](/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
 - [List](/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
 - [Menu](/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
+- [MenuButton](/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
+- [Menubar](/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions
 - [Modal](/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
 - [MultiSelect](/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
+- [NativeSelect](/context/native-select.md) — Use when: A standard single-choice dropdown where native behavior and form integration matter most
+- [NavigationMenu](/context/navigation-menu.md) — Use when: Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links
 - [Notification](/context/notification.md) — Use when: Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)
 - [NumberInput](/context/number-input.md) — Use when: Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)
 - [OtpInput](/context/otp-input.md) — Use when: Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots
@@ -282,6 +314,7 @@ New MCP tools:
 - [Radio](/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
 - [RadioCard](/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
 - [RatingGroup](/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
+- [Resizable](/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
 - [ScrollArea](/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
 - [Search](/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
 - [Cta](/context/section/cta.md) — Use when: A call-to-action band with title, description, and centered actions
@@ -302,17 +335,22 @@ New MCP tools:
 - [Spinner](/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
 - [Stat](/context/stat.md) — Use when: Highlighting a single key metric with a clear label
 - [Status](/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
+- [StructuredList](/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
 - [Switcher](/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
 - [Tabs](/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
 - [Tag](/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
 - [TagsInput](/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
 - [Text](/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
 - [Textarea](/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
+- [Tile](/context/tile.md) — Use when: A visually rich, clickable choice card in a single- or multi-select group
 - [TimePicker](/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
+- [Timeline](/context/timeline.md) — Use when: Showing an ordered sequence of events over time (activity feeds, order tracking)
 - [Toast](/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
 - [Toggle](/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
 - [ToggleGroup](/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
+- [Toggletip](/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
 - [Tooltip](/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
+- [TreeView](/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
 _Generated: 2026-06-14 from registry v0.0.0_

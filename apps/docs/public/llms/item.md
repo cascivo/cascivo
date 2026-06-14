@@ -1,0 +1,83 @@
+# Item
+
+Generic content row primitive with media, content, and action regions
+
+## Install
+
+```bash
+npx cascivo add item
+```
+
+## Category
+
+`display`
+
+## Variants
+
+- `default`
+- `muted`
+
+## Sizes
+
+- `sm`
+- `md`
+
+## Props
+
+| Prop      | Type       | Required | Default | Description |
+| --------- | ---------- | -------- | ------- | ----------- | --- |
+| `asChild` | `boolean`  | no       | `false` | —           |
+| `variant` | `'default' | 'muted'` | no      | `default`   | —   |
+| `size`    | `'sm'      | 'md'`    | no      | `md`        | —   |
+
+## Examples
+
+### Item with media, content, and actions
+
+```tsx
+<Item>
+  <ItemMedia>
+    <Avatar />
+  </ItemMedia>
+  <ItemContent>
+    <ItemTitle>Ada Lovelace</ItemTitle>
+    <ItemDescription>Mathematician</ItemDescription>
+  </ItemContent>
+  <ItemActions>
+    <Button size="sm">Edit</Button>
+  </ItemActions>
+</Item>
+```
+
+### As a link via asChild
+
+```tsx
+<Item asChild>
+  <a href="/profile">
+    <ItemContent>
+      <ItemTitle>Profile</ItemTitle>
+    </ItemContent>
+  </a>
+</Item>
+```
+
+## Design tokens
+
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-radius-item`
+- `--cascivo-space-3`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `none`
+
+## Dependencies
+
+- `@cascivo/core`
+
+## Tags
+
+row, primitive, list-item, layout

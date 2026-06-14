@@ -1,0 +1,78 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Drawer',
+  description:
+    'Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion',
+  category: 'overlay',
+  states: ['open', 'closed'],
+  variants: [],
+  sizes: [],
+  props: [],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-border',
+    '--cascivo-radius-overlay',
+    '--cascivo-shadow-overlay',
+    '--cascivo-motion-enter',
+    '--cascivo-motion-exit',
+  ],
+  accessibility: {
+    role: 'dialog',
+    wcag: '2.2-AA',
+    keyboard: ['Escape', 'Tab', 'Shift+Tab'],
+  },
+  examples: [],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['overlay', 'drawer', 'panel', 'slide', 'dialog'],
+  intent: {
+    whenToUse: [
+      'A side or edge panel for navigation, filters, or detail views that needs full-height space',
+      'A modal surface that slides in and locks the page behind it while open',
+      'A controllable open/close panel where the parent owns the state via open/onOpenChange',
+    ],
+    whenNotToUse: [
+      'A short yes/no confirmation — use AlertDialog',
+      'Small content anchored to a trigger element — use Popover',
+      'A gesture-driven, swipe-to-dismiss sheet — use Sheet',
+    ],
+    antiPatterns: [
+      {
+        bad: '<Drawer title="Delete item?">Are you sure?</Drawer>',
+        good: '<AlertDialog title="Delete item?" />',
+        why: 'A full edge panel with focus trap and scroll lock is overkill for a yes/no decision',
+      },
+    ],
+    related: [
+      {
+        name: 'Sheet',
+        relationship: 'alternative',
+        reason: 'Use Sheet when swipe/gesture dismissal is wanted; Drawer is a plain dialog panel',
+      },
+      {
+        name: 'Modal',
+        relationship: 'alternative',
+        reason: 'Use a centered modal rather than an edge panel for focused decisions',
+      },
+    ],
+    a11yRationale:
+      'Renders role="dialog" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal.',
+    flexibility: [
+      {
+        area: 'side',
+        level: 'strict',
+        note: 'Limited to start | end | top | bottom — drives the slide direction and animation',
+      },
+      {
+        area: 'open state',
+        level: 'flexible',
+        note: 'Controlled (open/onOpenChange) or uncontrolled (defaultOpen)',
+      },
+      {
+        area: 'body content',
+        level: 'flexible',
+        note: 'Any children; the consumer owns the panel contents',
+      },
+    ],
+  },
+}

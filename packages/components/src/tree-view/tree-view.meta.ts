@@ -1,0 +1,115 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'TreeView',
+  description: 'Hierarchical, expandable tree of nodes with keyboard navigation and selection',
+  category: 'display',
+  states: ['default', 'expanded', 'collapsed', 'selected'],
+  variants: ['single', 'multi'],
+  sizes: [],
+  props: [
+    {
+      name: 'items',
+      type: '{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]',
+      required: true,
+    },
+    { name: 'selectionMode', type: "'single' | 'multi'", required: false, default: 'single' },
+    { name: 'selected', type: 'string | string[]', required: false },
+    { name: 'defaultSelected', type: 'string | string[]', required: false },
+    { name: 'onSelectChange', type: '(selected: string | string[]) => void', required: false },
+    { name: 'expanded', type: 'string[]', required: false },
+    { name: 'defaultExpanded', type: 'string[]', required: false },
+    { name: 'onExpandedChange', type: '(expanded: string[]) => void', required: false },
+  ],
+  tokens: [
+    '--cascivo-tree-indent',
+    '--cascivo-color-border',
+    '--cascivo-color-bg-subtle',
+    '--cascivo-color-text',
+    '--cascivo-color-text-subtle',
+    '--cascivo-radius-control',
+    '--cascivo-focus-ring',
+    '--cascivo-duration-200',
+    '--cascivo-ease-out',
+  ],
+  accessibility: {
+    role: 'tree',
+    wcag: '2.2-AA',
+    keyboard: [
+      'ArrowDown',
+      'ArrowUp',
+      'ArrowRight',
+      'ArrowLeft',
+      'Home',
+      'End',
+      'Enter',
+      'Space',
+      'Typeahead',
+    ],
+    apgPattern: 'tree-view',
+    reducedMotion: true,
+    forcedColors: true,
+  },
+  examples: [
+    {
+      title: 'Single select',
+      code: '<TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />',
+    },
+    {
+      title: 'Multi select',
+      code: '<TreeView selectionMode="multi" items={nodes} onSelectChange={(ids) => set(ids)} />',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['display', 'tree', 'hierarchy', 'navigation', 'files'],
+  intent: {
+    whenToUse: [
+      'Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)',
+      'Letting the user pick one or several nodes from a hierarchy',
+      'Navigating deep structures where indentation communicates depth',
+    ],
+    whenNotToUse: [
+      'A flat, non-nested list of choices — use List or StructuredList',
+      'A small set of mutually exclusive sections of prose — use Accordion',
+    ],
+    antiPatterns: [
+      {
+        bad: 'A single-level TreeView with no children on any node',
+        good: 'A List or StructuredList',
+        why: 'A tree with no hierarchy adds twisties and ARIA tree semantics for content that is flat',
+      },
+    ],
+    related: [
+      {
+        name: 'Accordion',
+        relationship: 'alternative',
+        reason:
+          'Accordion stacks a few sequential disclosure sections; TreeView models arbitrary-depth hierarchy',
+      },
+      {
+        name: 'StructuredList',
+        relationship: 'alternative',
+        reason: 'StructuredList is flat tabular rows; TreeView is nested with expand/collapse',
+      },
+    ],
+    a11yRationale:
+      'Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)',
+    flexibility: [
+      {
+        area: 'selectionMode',
+        level: 'flexible',
+        note: 'single vs multi is the consumer’s choice based on the interaction',
+      },
+      {
+        area: 'keyboard model',
+        level: 'strict',
+        note: 'Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped',
+      },
+      {
+        area: 'indent token',
+        level: 'flexible',
+        note: 'Per-level indent is driven by --cascivo-tree-indent and may be overridden',
+      },
+    ],
+  },
+}

@@ -104,24 +104,32 @@
             "Bullet",
             "Button",
             "ButtonGroup",
+            "Calendar",
             "Card",
+            "Carousel",
             "Center",
             "Checkbox",
             "CheckboxCard",
             "Code",
+            "CodeSnippet",
             "Collapsible",
+            "ColorPicker",
             "Columns",
             "ComboChart",
             "Combobox",
             "CommandMenu",
             "ConsoleApp",
+            "ContainedList",
             "ContextMenu",
             "CopyButton",
             "Cta",
             "DashboardCharts",
             "DashboardLayout",
+            "DataList",
             "DataTable",
             "DatePicker",
+            "DateRangePicker",
+            "Drawer",
             "Dropdown",
             "Editable",
             "EmptyDashboard",
@@ -142,6 +150,7 @@
             "InlineLoading",
             "Input",
             "InputGroup",
+            "Item",
             "Kbd",
             "Kpi",
             "Label",
@@ -152,9 +161,13 @@
             "Masonry",
             "MediaMasonry",
             "Menu",
+            "MenuButton",
+            "Menubar",
             "Meter",
             "Modal",
             "MultiSelect",
+            "NativeSelect",
+            "NavigationMenu",
             "Notification",
             "NotificationCenter",
             "NumberInput",
@@ -175,6 +188,7 @@
             "Radio",
             "RadioCard",
             "RatingGroup",
+            "Resizable",
             "ScatterChart",
             "ScrollArea",
             "Search",
@@ -200,17 +214,22 @@
             "StatsBand",
             "StatsCards",
             "Status",
+            "StructuredList",
             "Switcher",
             "Tabs",
             "Tag",
             "TagsInput",
             "Text",
             "Textarea",
+            "Tile",
             "TimePicker",
+            "Timeline",
             "Toast",
             "Toggle",
             "ToggleGroup",
+            "Toggletip",
             "Tooltip",
+            "TreeView",
             "Treemap",
             "UsersTablePage",
             "VisuallyHidden"
@@ -545,6 +564,61 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Calendar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "enum": ["Date", "null"]
+                  },
+                  "defaultValue": {
+                    "type": "string",
+                    "enum": ["Date"]
+                  },
+                  "min": {
+                    "type": "string",
+                    "enum": ["Date"]
+                  },
+                  "max": {
+                    "type": "string",
+                    "enum": ["Date"]
+                  },
+                  "locale": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["CalendarLabels"]
+                  },
+                  "month": {
+                    "type": "number"
+                  },
+                  "year": {
+                    "type": "number"
+                  },
+                  "hideNav": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Card"
               }
             },
@@ -562,6 +636,38 @@
                   "padding": {
                     "type": "string",
                     "enum": ["none", "sm", "md", "lg"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Carousel"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "index": {
+                    "type": "number"
+                  },
+                  "defaultIndex": {
+                    "type": "number"
+                  },
+                  "loop": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -663,6 +769,24 @@
           "if": {
             "properties": {
               "component": {
+                "const": "CodeSnippet"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Collapsible"
               }
             },
@@ -692,6 +816,44 @@
                   }
                 },
                 "required": ["trigger"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ColorPicker"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "alpha": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  }
+                }
               }
             }
           }
@@ -796,6 +958,38 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ContainedList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": ["on-page", "disclosed"]
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  }
+                },
+                "required": ["label"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ContextMenu"
               }
             },
@@ -833,6 +1027,37 @@
                   }
                 },
                 "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "DataList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "dividers": {
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  }
+                },
+                "required": ["items"]
               }
             }
           }
@@ -952,6 +1177,65 @@
                     "enum": ["DatePickerLabels"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "DateRangePicker"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "string",
+                    "enum": ["Date"]
+                  },
+                  "max": {
+                    "type": "string",
+                    "enum": ["Date"]
+                  },
+                  "locale": {
+                    "type": "string"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["DateRangePickerLabels"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Drawer"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
               }
             }
           }
@@ -1412,6 +1696,36 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Item"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "asChild": {
+                    "type": "boolean"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["default", "muted"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Kbd"
               }
             },
@@ -1549,6 +1863,71 @@
           "if": {
             "properties": {
               "component": {
+                "const": "MenuButton"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["primary", "secondary", "ghost"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "align": {
+                    "type": "string",
+                    "enum": ["start", "end"]
+                  }
+                },
+                "required": ["label", "items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Menubar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["menus", "aria-label"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Modal"
               }
             },
@@ -1603,6 +1982,54 @@
                   }
                 },
                 "required": ["options", "value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "NativeSelect"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "NavigationMenu"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical", "both"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
               }
             }
           }
@@ -2105,6 +2532,46 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Resizable"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "defaultRatio": {
+                    "type": "number"
+                  },
+                  "ratio": {
+                    "type": "number"
+                  },
+                  "minRatio": {
+                    "type": "number"
+                  },
+                  "maxRatio": {
+                    "type": "number"
+                  }
+                },
+                "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ScrollArea"
               }
             },
@@ -2570,6 +3037,35 @@
           "if": {
             "properties": {
               "component": {
+                "const": "StructuredList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "selectable": {
+                    "type": "boolean"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Switcher"
               }
             },
@@ -2752,6 +3248,24 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Tile"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "TimePicker"
               }
             },
@@ -2797,6 +3311,30 @@
                     "type": "string"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Timeline"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["vertical", "horizontal"]
+                  }
+                },
+                "required": ["items"]
               }
             }
           }
@@ -2908,6 +3446,53 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Toggletip"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "trigger": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": [
+                      "top",
+                      "bottom",
+                      "left",
+                      "right",
+                      "top-start",
+                      "top-end",
+                      "bottom-start",
+                      "bottom-end"
+                    ]
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "open": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["trigger", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Tooltip"
               }
             },
@@ -2935,6 +3520,30 @@
                   }
                 },
                 "required": ["content", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "TreeView"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "selectionMode": {
+                    "type": "string",
+                    "enum": ["single", "multi"]
+                  }
+                },
+                "required": ["items"]
               }
             }
           }

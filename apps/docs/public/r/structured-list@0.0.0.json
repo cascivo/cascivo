@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "name": "structured-list",
+  "type": "component",
+  "description": "Tabular row list for scannable data, optionally single-selectable",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/structured-list/structured-list.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["display", "list", "table", "data"],
+  "category": "display",
+  "meta": {
+    "name": "StructuredList",
+    "description": "Tabular row list for scannable data, optionally single-selectable",
+    "category": "display",
+    "states": ["default", "selected"],
+    "variants": ["static", "selectable"],
+    "sizes": [],
+    "props": [
+      {
+        "name": "items",
+        "type": "{ id: string; cells: ReactNode[]; selected?: boolean }[]",
+        "required": true
+      },
+      {
+        "name": "headers",
+        "type": "ReactNode[]",
+        "required": false
+      },
+      {
+        "name": "selectable",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "defaultValue",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": false
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-border",
+      "--cascivo-color-bg-subtle",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-primary",
+      "--cascivo-color-surface",
+      "--cascivo-focus-ring"
+    ],
+    "accessibility": {
+      "role": "table",
+      "wcag": "2.2-AA",
+      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space"],
+      "reducedMotion": true,
+      "forcedColors": true
+    },
+    "examples": [
+      {
+        "title": "Static",
+        "code": "<StructuredList headers={[\"Name\", \"Role\"]} items={[{ id: \"a\", cells: [\"Ada\", \"Engineer\"] }]} />"
+      },
+      {
+        "title": "Selectable",
+        "code": "<StructuredList selectable defaultValue=\"a\" items={[{ id: \"a\", cells: [\"Ada\"] }, { id: \"b\", cells: [\"Grace\"] }]} onSelect={(id) => set(id)} />"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["display", "list", "table", "data"],
+    "intent": {
+      "whenToUse": [
+        "Presenting a set of related records in aligned columns the user scans top to bottom",
+        "Letting the user pick exactly one row from a short, readable list (selectable)",
+        "Carbon-style structured content where a full data table is heavier than needed"
+      ],
+      "whenNotToUse": [
+        "Sorting, filtering, pagination, or multi-select over many rows — use DataTable",
+        "Free-form vertical content without column alignment — use List"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "selectable with multiple rows marked selected",
+          "good": "A single selected id (value/defaultValue) — selection is single-choice",
+          "why": "The selectable variant is a radiogroup; multiple selected rows break the radio semantics"
+        }
+      ],
+      "related": [
+        {
+          "name": "DataTable",
+          "relationship": "alternative",
+          "reason": "DataTable adds sorting, filtering, and pagination; StructuredList stays static and lightweight"
+        },
+        {
+          "name": "List",
+          "relationship": "alternative",
+          "reason": "List is single-column vertical content; StructuredList aligns multiple cells per row"
+        }
+      ],
+      "a11yRationale": "Static lists use table/row/cell roles so columns are announced; selectable lists become a radiogroup of role=radio rows with roving tabindex, so arrow keys move focus and Enter/Space check a row exactly like native radios",
+      "flexibility": [
+        {
+          "area": "selectable",
+          "level": "flexible",
+          "note": "Toggle selectable based on whether the list is interactive or purely presentational"
+        },
+        {
+          "area": "roles",
+          "level": "strict",
+          "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+        }
+      ]
+    }
+  }
+}

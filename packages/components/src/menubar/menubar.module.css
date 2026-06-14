@@ -1,0 +1,101 @@
+@layer cascade.component {
+  .menubar {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-1);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-control);
+  }
+
+  .trigger {
+    display: inline-flex;
+    align-items: center;
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-item);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    cursor: pointer;
+
+    &:hover,
+    &[data-state='open'] {
+      background: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: var(--cascivo-focus-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  .panel {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: var(--cascivo-space-1);
+    min-width: 10rem;
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-overlay);
+    box-shadow: var(--cascivo-shadow-md);
+
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--cascivo-motion-enter),
+      translate var(--cascivo-motion-enter);
+
+    @starting-style {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--cascivo-space-2));
+    }
+
+    &[data-state='closed'] {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--cascivo-space-2));
+      transition:
+        opacity var(--cascivo-motion-exit),
+        translate var(--cascivo-motion-exit);
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    border-radius: var(--cascivo-radius-item);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--cascivo-color-bg-subtle);
+    }
+
+    &[aria-disabled='true'] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .trigger:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

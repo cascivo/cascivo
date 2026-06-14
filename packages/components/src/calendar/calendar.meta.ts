@@ -1,0 +1,162 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Calendar',
+  description: 'An accessible standalone month-grid date picker.',
+  category: 'inputs',
+  states: ['default', 'selected', 'today', 'disabled'],
+  variants: [],
+  sizes: ['sm', 'md', 'lg'],
+  props: [
+    {
+      name: 'value',
+      type: 'Date | null',
+      required: false,
+      description: 'Controlled selected date',
+    },
+    {
+      name: 'defaultValue',
+      type: 'Date',
+      required: false,
+      description: 'Uncontrolled initial selected date',
+    },
+    {
+      name: 'onValueChange',
+      type: '(date: Date) => void',
+      required: false,
+      description: 'Called when a day is selected',
+    },
+    { name: 'min', type: 'Date', required: false, description: 'Earliest selectable date' },
+    { name: 'max', type: 'Date', required: false, description: 'Latest selectable date' },
+    {
+      name: 'disabled',
+      type: '(date: Date) => boolean',
+      required: false,
+      description: 'Predicate to disable individual days',
+    },
+    {
+      name: 'locale',
+      type: 'string',
+      required: false,
+      description: 'BCP-47 locale; defaults to the current i18n locale',
+    },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, description: 'Grid cell size' },
+    {
+      name: 'labels',
+      type: 'CalendarLabels',
+      required: false,
+      description: 'i18n label overrides for the nav buttons',
+    },
+    {
+      name: 'month',
+      type: 'number',
+      required: false,
+      description: 'Controlled view month (0-11)',
+    },
+    { name: 'year', type: 'number', required: false, description: 'Controlled view year' },
+    {
+      name: 'onViewChange',
+      type: '(view: { month: number; year: number }) => void',
+      required: false,
+      description: 'Called when the visible month changes',
+    },
+    {
+      name: 'hideNav',
+      type: 'boolean',
+      required: false,
+      description: 'Hides the prev/next nav so a parent can drive navigation',
+    },
+  ],
+  tokens: [
+    '--cascivo-calendar-bg',
+    '--cascivo-calendar-radius',
+    '--cascivo-calendar-cell-size',
+    '--cascivo-calendar-day-selected-bg',
+    '--cascivo-calendar-day-selected-fg',
+    '--cascivo-calendar-day-today-color',
+    '--cascivo-calendar-range-bg',
+  ],
+  accessibility: {
+    role: 'grid',
+    wcag: '2.2-AA',
+    keyboard: [
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowUp',
+      'ArrowDown',
+      'Home',
+      'End',
+      'PageUp',
+      'PageDown',
+      'Enter',
+      'Space',
+    ],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<Calendar defaultValue={new Date(Date.UTC(2024, 5, 15))} />',
+      description: 'Uncontrolled calendar',
+    },
+    {
+      title: 'Constrained',
+      code: '<Calendar min={new Date(Date.UTC(2024, 5, 1))} max={new Date(Date.UTC(2024, 5, 30))} />',
+      description: 'Limits the selectable range',
+    },
+    {
+      title: 'Disabled weekends',
+      code: '<Calendar disabled={(d) => [0, 6].includes(d.getUTCDay())} />',
+      description: 'Predicate disables individual days',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['calendar', 'date', 'month', 'grid', 'picker', 'input'],
+  intent: {
+    whenToUse: [
+      'Showing an always-visible month grid for picking a single date (inline, not a popover)',
+      'As the building block inside a date-picker or date-range-picker popover',
+    ],
+    whenNotToUse: [
+      'A compact form field where an inline grid wastes space — use DatePicker (trigger + popover)',
+      'Selecting a contiguous date range — use DateRangePicker, which composes two calendars',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Comparing dates with local-time getters (getHours/getDate) after constructing them with new Date(y, m, d)',
+        good: 'All arithmetic and comparisons use UTC getters/Date.UTC so DST and timezone offsets never shift a day',
+        why: 'Local-time construction can land a midnight date on the previous day in negative-offset zones, breaking selection and range math',
+      },
+    ],
+    related: [
+      {
+        name: 'DatePicker',
+        relationship: 'alternative',
+        reason: 'Use the popover-based picker when an inline grid is too heavy for the layout',
+      },
+      {
+        name: 'DateRangePicker',
+        relationship: 'contained-by',
+        reason: 'The range picker renders two Calendar instances side-by-side',
+      },
+    ],
+    a11yRationale:
+      'Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current="date", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection',
+    flexibility: [
+      {
+        area: 'date type',
+        level: 'strict',
+        note: 'All date props are native Date objects compared in UTC',
+      },
+      {
+        area: 'locale',
+        level: 'flexible',
+        note: 'Weekday labels, month label, and first-day-of-week derive from the locale via Intl (with Monday fallback)',
+      },
+      {
+        area: 'view control',
+        level: 'flexible',
+        note: 'month/year/onViewChange/hideNav let a parent drive navigation (used by DateRangePicker)',
+      },
+    ],
+  },
+}

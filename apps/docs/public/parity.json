@@ -3,9 +3,9 @@
   "competitors": {
     "shadcn": {
       "total": 59,
-      "covered": 50,
-      "partial": 1,
-      "gap": 7,
+      "covered": 58,
+      "partial": 0,
+      "gap": 0,
       "byConvention": 1,
       "deferred": 0,
       "rows": [
@@ -65,7 +65,7 @@
         },
         {
           "competitor": "Calendar",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "calendar",
           "note": "Queued (v18-t6)"
         },
@@ -77,7 +77,7 @@
         },
         {
           "competitor": "Carousel",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "carousel",
           "note": "Queued (v18-t6)"
         },
@@ -143,7 +143,7 @@
         },
         {
           "competitor": "Drawer",
-          "status": "partial",
+          "status": "covered",
           "cascivo": "sheet",
           "note": "sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6)"
         },
@@ -191,7 +191,7 @@
         },
         {
           "competitor": "Item",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "item",
           "note": "Queued (v18-t6)"
         },
@@ -209,19 +209,19 @@
         },
         {
           "competitor": "Menubar",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "menubar",
           "note": "Queued (v18-t6)"
         },
         {
           "competitor": "Native Select",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "native-select",
           "note": "cascivo select is a custom listbox, not the native control. Queued (v18-t6)"
         },
         {
           "competitor": "Navigation Menu",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "navigation-menu",
           "note": "Queued (v18-t6)"
         },
@@ -251,7 +251,7 @@
         },
         {
           "competitor": "Resizable",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "resizable",
           "note": "Queued (v18-t6, a.k.a. splitter)"
         },
@@ -367,9 +367,9 @@
     },
     "carbon": {
       "total": 47,
-      "covered": 38,
+      "covered": 45,
       "partial": 0,
-      "gap": 7,
+      "gap": 0,
       "byConvention": 0,
       "deferred": 2,
       "rows": [
@@ -411,7 +411,7 @@
         },
         {
           "competitor": "Code snippet",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "code-snippet",
           "note": "Queued (v18-t6)"
         },
@@ -423,7 +423,7 @@
         },
         {
           "competitor": "Contained list",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "contained-list",
           "note": "Queued (v18-t6)"
         },
@@ -507,7 +507,7 @@
         },
         {
           "competitor": "Menu buttons",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "menu-button",
           "note": "Queued (v18-t6)"
         },
@@ -591,7 +591,7 @@
         },
         {
           "competitor": "Structured list",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "structured-list",
           "note": "Queued (v18-t6)"
         },
@@ -621,7 +621,7 @@
         },
         {
           "competitor": "Tile",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "tile",
           "note": "Queued (v18-t6)"
         },
@@ -633,7 +633,7 @@
         },
         {
           "competitor": "Toggletip",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "toggletip",
           "note": "Distinct from hover tooltip. Queued (v18-t6)"
         },
@@ -645,7 +645,7 @@
         },
         {
           "competitor": "Tree view",
-          "status": "gap",
+          "status": "covered",
           "cascivo": "tree-view",
           "note": "Queued (v18-t6)"
         },

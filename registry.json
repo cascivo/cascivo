@@ -1117,6 +1117,198 @@
       }
     },
     {
+      "name": "calendar",
+      "type": "component",
+      "description": "An accessible standalone month-grid date picker.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/calendar/calendar.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/calendar/calendar.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["calendar", "date", "month", "grid", "picker", "input"],
+      "meta": {
+        "name": "Calendar",
+        "description": "An accessible standalone month-grid date picker.",
+        "category": "inputs",
+        "states": ["default", "selected", "today", "disabled"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "Date | null",
+            "required": false,
+            "description": "Controlled selected date"
+          },
+          {
+            "name": "defaultValue",
+            "type": "Date",
+            "required": false,
+            "description": "Uncontrolled initial selected date"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(date: Date) => void",
+            "required": false,
+            "description": "Called when a day is selected"
+          },
+          {
+            "name": "min",
+            "type": "Date",
+            "required": false,
+            "description": "Earliest selectable date"
+          },
+          {
+            "name": "max",
+            "type": "Date",
+            "required": false,
+            "description": "Latest selectable date"
+          },
+          {
+            "name": "disabled",
+            "type": "(date: Date) => boolean",
+            "required": false,
+            "description": "Predicate to disable individual days"
+          },
+          {
+            "name": "locale",
+            "type": "string",
+            "required": false,
+            "description": "BCP-47 locale; defaults to the current i18n locale"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "description": "Grid cell size"
+          },
+          {
+            "name": "labels",
+            "type": "CalendarLabels",
+            "required": false,
+            "description": "i18n label overrides for the nav buttons"
+          },
+          {
+            "name": "month",
+            "type": "number",
+            "required": false,
+            "description": "Controlled view month (0-11)"
+          },
+          {
+            "name": "year",
+            "type": "number",
+            "required": false,
+            "description": "Controlled view year"
+          },
+          {
+            "name": "onViewChange",
+            "type": "(view: { month: number; year: number }) => void",
+            "required": false,
+            "description": "Called when the visible month changes"
+          },
+          {
+            "name": "hideNav",
+            "type": "boolean",
+            "required": false,
+            "description": "Hides the prev/next nav so a parent can drive navigation"
+          }
+        ],
+        "tokens": [
+          "--cascivo-calendar-bg",
+          "--cascivo-calendar-radius",
+          "--cascivo-calendar-cell-size",
+          "--cascivo-calendar-day-selected-bg",
+          "--cascivo-calendar-day-selected-fg",
+          "--cascivo-calendar-day-today-color",
+          "--cascivo-calendar-range-bg"
+        ],
+        "accessibility": {
+          "role": "grid",
+          "wcag": "2.2-AA",
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
+            "Enter",
+            "Space"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Calendar defaultValue={new Date(Date.UTC(2024, 5, 15))} />",
+            "description": "Uncontrolled calendar"
+          },
+          {
+            "title": "Constrained",
+            "code": "<Calendar min={new Date(Date.UTC(2024, 5, 1))} max={new Date(Date.UTC(2024, 5, 30))} />",
+            "description": "Limits the selectable range"
+          },
+          {
+            "title": "Disabled weekends",
+            "code": "<Calendar disabled={(d) => [0, 6].includes(d.getUTCDay())} />",
+            "description": "Predicate disables individual days"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["calendar", "date", "month", "grid", "picker", "input"],
+        "intent": {
+          "whenToUse": [
+            "Showing an always-visible month grid for picking a single date (inline, not a popover)",
+            "As the building block inside a date-picker or date-range-picker popover"
+          ],
+          "whenNotToUse": [
+            "A compact form field where an inline grid wastes space — use DatePicker (trigger + popover)",
+            "Selecting a contiguous date range — use DateRangePicker, which composes two calendars"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Comparing dates with local-time getters (getHours/getDate) after constructing them with new Date(y, m, d)",
+              "good": "All arithmetic and comparisons use UTC getters/Date.UTC so DST and timezone offsets never shift a day",
+              "why": "Local-time construction can land a midnight date on the previous day in negative-offset zones, breaking selection and range math"
+            }
+          ],
+          "related": [
+            {
+              "name": "DatePicker",
+              "relationship": "alternative",
+              "reason": "Use the popover-based picker when an inline grid is too heavy for the layout"
+            },
+            {
+              "name": "DateRangePicker",
+              "relationship": "contained-by",
+              "reason": "The range picker renders two Calendar instances side-by-side"
+            }
+          ],
+          "a11yRationale": "Renders an APG-compliant role=\"grid\" table with role=\"row\"/role=\"gridcell\"; a roving tabindex keeps exactly one day focusable (the focused date) so arrow keys move focus per APG, Home/End jump to the week edges, PageUp/PageDown change month (with Shift for year), today exposes aria-current=\"date\", selection sets data-selected with aria-selected on the cell, and out-of-range or predicate-disabled days get aria-disabled and are skipped by selection",
+          "flexibility": [
+            {
+              "area": "date type",
+              "level": "strict",
+              "note": "All date props are native Date objects compared in UTC"
+            },
+            {
+              "area": "locale",
+              "level": "flexible",
+              "note": "Weekday labels, month label, and first-day-of-week derive from the locale via Intl (with Monday fallback)"
+            },
+            {
+              "area": "view control",
+              "level": "flexible",
+              "note": "month/year/onViewChange/hideNav let a parent drive navigation (used by DateRangePicker)"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "card",
       "type": "component",
       "description": "Container for grouping related content",
@@ -1203,6 +1395,130 @@
               "area": "token names",
               "level": "strict",
               "note": "Surface, border, radius, and shadow must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "carousel",
+      "type": "component",
+      "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/carousel/carousel.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/carousel/carousel.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["slider", "gallery", "slideshow", "deck", "scroll-snap"],
+      "meta": {
+        "name": "Carousel",
+        "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Slides as children"
+          },
+          {
+            "name": "slides",
+            "type": "ReactNode[]",
+            "required": false,
+            "description": "Slides as an array"
+          },
+          {
+            "name": "index",
+            "type": "number",
+            "required": false,
+            "description": "Controlled active index"
+          },
+          {
+            "name": "defaultIndex",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "onIndexChange",
+            "type": "(index: number) => void",
+            "required": false
+          },
+          {
+            "name": "loop",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-accent",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-radius-md",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"],
+          "forcedColors": true,
+          "reducedMotion": true
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Carousel>\n  <img src=\"/1.jpg\" alt=\"\" />\n  <img src=\"/2.jpg\" alt=\"\" />\n</Carousel>"
+          },
+          {
+            "title": "Looping with array",
+            "code": "<Carousel loop slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["slider", "gallery", "slideshow", "deck", "scroll-snap"],
+        "intent": {
+          "whenToUse": [
+            "Presenting a sequence of media or cards the user pages through one at a time",
+            "Image galleries, onboarding decks, or featured-content rotators",
+            "When horizontal swiping/scrolling is a natural interaction on touch devices"
+          ],
+          "whenNotToUse": [
+            "Content users must compare side-by-side — show a grid instead",
+            "Critical information that must always be visible — carousels hide most of their content"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Auto-rotating carousel for primary navigation or key calls-to-action",
+              "good": "A static list or grid where every item is visible",
+              "why": "Auto-rotation and hidden slides reduce discoverability and accessibility of important content"
+            }
+          ],
+          "related": [
+            {
+              "name": "Tabs",
+              "relationship": "alternative",
+              "reason": "Use tabs when sections are distinct and should be directly addressable"
+            }
+          ],
+          "a11yRationale": "The container is a labelled region with aria-roledescription=\"carousel\"; each slide is a labelled group (\"n of total\"); prev/next are real buttons and the dot indicators use roving tabindex with arrow-key navigation. Scrolling honours prefers-reduced-motion.",
+          "flexibility": [
+            {
+              "area": "transition",
+              "level": "strict",
+              "note": "Paging uses native CSS scroll-snap, not transform math — no custom easing config"
+            },
+            {
+              "area": "slide content",
+              "level": "flexible",
+              "note": "Any ReactNode may be a slide; pass via children or the slides array"
             }
           ]
         }
@@ -1566,6 +1882,84 @@
       }
     },
     {
+      "name": "code-snippet",
+      "type": "component",
+      "description": "Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["display", "code", "snippet", "copy", "pre"],
+      "meta": {
+        "name": "CodeSnippet",
+        "description": "Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting",
+        "category": "display",
+        "states": ["idle", "copied"],
+        "variants": ["inline", "single", "multi"],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascivo-font-mono",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-surface",
+          "--cascivo-radius-control"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["display", "code", "snippet", "copy", "pre"],
+        "intent": {
+          "whenToUse": [
+            "Showing a command, token, or path the user is expected to copy",
+            "Displaying a short read-only code block in docs or UI",
+            "Inline code references inside flowing text (inline variant)"
+          ],
+          "whenNotToUse": [
+            "An editable code input — use a textarea or code editor",
+            "Long files needing syntax highlighting and folding — use a dedicated viewer"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<CodeSnippet variant=\"inline\" code={\"line1\\nline2\"} />",
+              "good": "<CodeSnippet variant=\"multi\" code={\"line1\\nline2\"} />",
+              "why": "The inline variant is a single in-text chip; multi-line content belongs in the multi variant"
+            }
+          ],
+          "related": [
+            {
+              "name": "CopyButton",
+              "relationship": "pairs-with",
+              "reason": "CodeSnippet embeds the same clipboard behavior for its copy affordance"
+            }
+          ],
+          "a11yRationale": "Code is rendered in semantic <code>/<pre>. The copy button is a real button with an aria-label that flips between the copy and copied messages so the action and its result are announced. Line numbers are aria-hidden so they are not read as content.",
+          "flexibility": [
+            {
+              "area": "variant",
+              "level": "strict",
+              "note": "inline | single | multi — controls the wrapping element and layout"
+            },
+            {
+              "area": "copy button",
+              "level": "flexible",
+              "note": "Shown by default for single/multi; togglable via showCopyButton"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "collapsible",
       "type": "component",
       "description": "A single disclosure region toggled open and closed by its trigger",
@@ -1690,6 +2084,145 @@
               "area": "trigger markup",
               "level": "strict",
               "note": "Always rendered as a native button for keyboard and a11y correctness"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "color-picker",
+      "type": "component",
+      "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/color-picker/color-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["color", "input", "form", "picker", "hue", "alpha"],
+      "meta": {
+        "name": "ColorPicker",
+        "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
+        "category": "inputs",
+        "states": [],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "description": "Controlled hex color value"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "default": "#3b82f6"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
+            "name": "presets",
+            "type": "string[]",
+            "required": false,
+            "description": "Preset swatch colors"
+          },
+          {
+            "name": "alpha",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-accent",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-radius-md",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "slider",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"],
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<ColorPicker defaultValue=\"#3b82f6\" onValueChange={setColor} />"
+          },
+          {
+            "title": "With presets",
+            "code": "<ColorPicker presets={[\"#ef4444\", \"#3b82f6\", \"#10b981\"]} alpha={false} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["color", "input", "form", "picker", "hue", "alpha"],
+        "intent": {
+          "whenToUse": [
+            "Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control",
+            "Brand or theme customization UIs where an exact color value (hex) is captured",
+            "Forms that need an optional alpha channel alongside the color"
+          ],
+          "whenNotToUse": [
+            "Choosing from a small fixed palette only — use a swatch RadioGroup instead",
+            "A single accent toggle where a few preset chips suffice"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<ColorPicker /> with no presets for a brand palette of 4 fixed colors",
+              "good": "<RadioGroup> of color swatches",
+              "why": "A free-form picker invites off-brand values when only a fixed set is allowed"
+            }
+          ],
+          "related": [
+            {
+              "name": "Slider",
+              "relationship": "contains",
+              "reason": "Hue and alpha channels are range sliders"
+            },
+            {
+              "name": "Input",
+              "relationship": "pairs-with",
+              "reason": "The hex text field lets users paste an exact value"
+            }
+          ],
+          "a11yRationale": "The saturation/lightness area is a focusable role=\"slider\" with arrow-key nudging and an aria-valuetext reporting the current hex; hue and alpha are native range inputs that inherit platform slider semantics and announcements.",
+          "flexibility": [
+            {
+              "area": "color model",
+              "level": "flexible",
+              "note": "Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed"
+            },
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Surfaces, borders and focus ring must resolve to --cascivo-* tokens"
             }
           ]
         }
@@ -2044,6 +2577,112 @@
       }
     },
     {
+      "name": "contained-list",
+      "type": "component",
+      "description": "Labelled list of rows inside a bordered container",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/contained-list/contained-list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/contained-list/contained-list.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["list", "container", "rows", "group"],
+      "meta": {
+        "name": "ContainedList",
+        "description": "Labelled list of rows inside a bordered container",
+        "category": "display",
+        "states": [],
+        "variants": ["on-page", "disclosed"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "kind",
+            "type": "'on-page' | 'disclosed'",
+            "required": false,
+            "default": "on-page"
+          },
+          {
+            "name": "action",
+            "type": "ReactNode",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-surface",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space"]
+        },
+        "examples": [
+          {
+            "title": "Basic contained list",
+            "code": "<ContainedList label=\"Members\">\n  <ContainedListItem>Ada Lovelace</ContainedListItem>\n  <ContainedListItem>Alan Turing</ContainedListItem>\n</ContainedList>"
+          },
+          {
+            "title": "Interactive rows",
+            "code": "<ContainedList label=\"Settings\" kind=\"disclosed\">\n  <ContainedListItem asChild>\n    <button type=\"button\" onClick={open}>Profile</button>\n  </ContainedListItem>\n</ContainedList>"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["list", "container", "rows", "group"],
+        "intent": {
+          "whenToUse": [
+            "Grouping a short set of related rows under a visible heading in a bordered surface",
+            "Presenting selectable or navigable rows (settings groups, member lists)",
+            "Separating a labelled cluster of items from surrounding page content"
+          ],
+          "whenNotToUse": [
+            "A long, virtualised data set — use a Table or DataList instead",
+            "Plain bulleted prose where the container border adds no meaning — use List"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Putting interactive controls on a plain ContainedListItem div",
+              "good": "Use ContainedListItem asChild with a <button> or <a> so the row is keyboard-focusable",
+              "why": "A non-interactive div gives no focus or role semantics to assistive tech"
+            }
+          ],
+          "related": [
+            {
+              "name": "List",
+              "relationship": "alternative",
+              "reason": "List is for unbordered prose lists; ContainedList adds a labelled surface"
+            },
+            {
+              "name": "ContainedListItem",
+              "relationship": "contains",
+              "reason": "Each row is a ContainedListItem"
+            }
+          ],
+          "a11yRationale": "The container heading labels the ul/li structure; interactive rows must slot a real button or link via asChild so role and focus are native, not faked on a div",
+          "flexibility": [
+            {
+              "area": "kind",
+              "level": "flexible",
+              "note": "on-page sits inline; disclosed adds a header band for menus and popovers"
+            },
+            {
+              "area": "list semantics",
+              "level": "strict",
+              "note": "Rows are always ul/li; do not replace with generic divs"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "context-menu",
       "type": "component",
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
@@ -2240,6 +2879,114 @@
               "area": "token names",
               "level": "strict",
               "note": "Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "data-list",
+      "type": "component",
+      "description": "Key-value pairs rendered as a description list",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/data-list/data-list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/data-list/data-list.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["key-value", "description", "metadata", "details"],
+      "meta": {
+        "name": "DataList",
+        "description": "Key-value pairs rendered as a description list",
+        "category": "display",
+        "states": [],
+        "variants": ["horizontal", "vertical"],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "items",
+            "type": "{ id?: string; label: ReactNode; value: ReactNode }[]",
+            "required": true
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal"
+          },
+          {
+            "name": "dividers",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-border",
+          "--cascivo-space-3",
+          "--cascivo-space-4"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Horizontal data list",
+            "code": "<DataList\n  items={[\n    { label: 'Name', value: 'Ada Lovelace' },\n    { label: 'Role', value: 'Mathematician' },\n  ]}\n/>"
+          },
+          {
+            "title": "Vertical with dividers",
+            "code": "<DataList\n  orientation=\"vertical\"\n  dividers\n  items={[{ label: 'Email', value: 'ada@example.com' }]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["key-value", "description", "metadata", "details"],
+        "intent": {
+          "whenToUse": [
+            "Displaying read-only key-value metadata (profile fields, record summaries)",
+            "Presenting structured attributes where each value maps to a single label",
+            "Compact detail panels next to or below a primary subject"
+          ],
+          "whenNotToUse": [
+            "Editable fields — use form Inputs, not a DataList",
+            "Tabular data with many rows and columns — use a Table"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Faking a description list with stacked divs and manual labels",
+              "good": "Use the native dl/dt/dd structure DataList emits",
+              "why": "dl/dt/dd conveys the term-to-description relationship to assistive tech for free"
+            }
+          ],
+          "related": [
+            {
+              "name": "ContainedList",
+              "relationship": "alternative",
+              "reason": "ContainedList shows single-value rows; DataList shows labelled pairs"
+            }
+          ],
+          "a11yRationale": "Rendered as semantic dl with dt/dd pairs so the label-to-value association is native; no extra ARIA role is added",
+          "flexibility": [
+            {
+              "area": "orientation and size",
+              "level": "flexible",
+              "note": "horizontal for wide panels, vertical for narrow columns; size tunes density"
+            },
+            {
+              "area": "dl semantics",
+              "level": "strict",
+              "note": "Always renders dl/dt/dd; do not substitute generic elements"
             }
           ]
         }
@@ -2644,6 +3391,271 @@
               "area": "token names",
               "level": "strict",
               "note": "Styling resolves to --cascivo-date-picker-* component tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "date-range-picker",
+      "type": "component",
+      "description": "A dual-calendar picker for selecting a contiguous date range.",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "tags": ["date", "range", "calendar", "picker", "input", "form"],
+      "meta": {
+        "name": "DateRangePicker",
+        "description": "A dual-calendar picker for selecting a contiguous date range.",
+        "category": "inputs",
+        "states": ["default", "open", "selecting"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "{ start: Date; end: Date } | null",
+            "required": false,
+            "description": "Controlled selected range"
+          },
+          {
+            "name": "defaultValue",
+            "type": "{ start: Date; end: Date }",
+            "required": false,
+            "description": "Uncontrolled initial range"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(range: { start: Date; end: Date }) => void",
+            "required": false,
+            "description": "Called when a complete range is selected"
+          },
+          {
+            "name": "min",
+            "type": "Date",
+            "required": false,
+            "description": "Earliest selectable date"
+          },
+          {
+            "name": "max",
+            "type": "Date",
+            "required": false,
+            "description": "Latest selectable date"
+          },
+          {
+            "name": "disabled",
+            "type": "(date: Date) => boolean",
+            "required": false,
+            "description": "Predicate to disable individual days"
+          },
+          {
+            "name": "presets",
+            "type": "{ label: string; range: { start: Date; end: Date } }[]",
+            "required": false,
+            "description": "Quick-select preset ranges shown in a side column"
+          },
+          {
+            "name": "locale",
+            "type": "string",
+            "required": false,
+            "description": "BCP-47 locale; defaults to the current i18n locale"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false,
+            "description": "Empty-state trigger text"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "description": "Field/grid size"
+          },
+          {
+            "name": "labels",
+            "type": "DateRangePickerLabels",
+            "required": false,
+            "description": "i18n label overrides"
+          }
+        ],
+        "tokens": [
+          "--cascivo-calendar-bg",
+          "--cascivo-calendar-day-selected-bg",
+          "--cascivo-calendar-day-selected-fg",
+          "--cascivo-calendar-range-bg"
+        ],
+        "accessibility": {
+          "role": "combobox",
+          "wcag": "2.2-AA",
+          "keyboard": [
+            "Enter",
+            "Space",
+            "Escape",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<DateRangePicker />",
+            "description": "Uncontrolled dual-calendar range picker"
+          },
+          {
+            "title": "With presets",
+            "code": "<DateRangePicker presets={[{ label: \"Last 7 days\", range: last7 }]} />",
+            "description": "Quick-select common ranges"
+          },
+          {
+            "title": "Constrained",
+            "code": "<DateRangePicker min={new Date(Date.UTC(2024, 0, 1))} max={new Date(Date.UTC(2024, 11, 31))} />",
+            "description": "Limits the selectable dates"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+        "tags": ["date", "range", "calendar", "picker", "input", "form"],
+        "intent": {
+          "whenToUse": [
+            "Selecting a contiguous start–end date range (reporting windows, bookings, filters)",
+            "When two months visible at once and hover-preview of the in-between span aid selection"
+          ],
+          "whenNotToUse": [
+            "Picking a single date — use DatePicker or Calendar",
+            "Selecting many non-contiguous dates — a range picker only models one continuous span"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Emitting the range in click order, so onValueChange can fire with end before start",
+              "good": "The two clicked dates are sorted before emitting, so start is always <= end",
+              "why": "Consumers expect range.start <= range.end; an unsorted range breaks downstream comparisons and queries"
+            }
+          ],
+          "related": [
+            {
+              "name": "Calendar",
+              "relationship": "contains",
+              "reason": "Renders two Calendar instances side-by-side with synced navigation"
+            },
+            {
+              "name": "DatePicker",
+              "relationship": "alternative",
+              "reason": "Use the single-date picker when only one date is needed"
+            }
+          ],
+          "a11yRationale": "The trigger is role=\"combobox\" with aria-haspopup=\"dialog\"/aria-expanded; the popover is a role=\"dialog\" containing two Calendar grids, each an APG role=\"grid\" with roving tabindex; selection is two clicks (first sets the pending start, second emits the sorted range; clicking the same day twice clears), and the hover/keyboard preview marks in-between cells with data-in-range; Escape and outside-click close the panel",
+          "flexibility": [
+            {
+              "area": "range type",
+              "level": "strict",
+              "note": "value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC"
+            },
+            {
+              "area": "presets",
+              "level": "flexible",
+              "note": "Optional preset ranges render as quick-select buttons in a side column"
+            },
+            {
+              "area": "locale",
+              "level": "flexible",
+              "note": "Display, weekday labels, and week start derive from the locale via Intl"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "drawer",
+      "type": "component",
+      "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/drawer/drawer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/drawer/drawer.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
+      "meta": {
+        "name": "Drawer",
+        "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-overlay",
+          "--cascivo-shadow-overlay",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "2.2-AA",
+          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
+        "intent": {
+          "whenToUse": [
+            "A side or edge panel for navigation, filters, or detail views that needs full-height space",
+            "A modal surface that slides in and locks the page behind it while open",
+            "A controllable open/close panel where the parent owns the state via open/onOpenChange"
+          ],
+          "whenNotToUse": [
+            "A short yes/no confirmation — use AlertDialog",
+            "Small content anchored to a trigger element — use Popover",
+            "A gesture-driven, swipe-to-dismiss sheet — use Sheet"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Drawer title=\"Delete item?\">Are you sure?</Drawer>",
+              "good": "<AlertDialog title=\"Delete item?\" />",
+              "why": "A full edge panel with focus trap and scroll lock is overkill for a yes/no decision"
+            }
+          ],
+          "related": [
+            {
+              "name": "Sheet",
+              "relationship": "alternative",
+              "reason": "Use Sheet when swipe/gesture dismissal is wanted; Drawer is a plain dialog panel"
+            },
+            {
+              "name": "Modal",
+              "relationship": "alternative",
+              "reason": "Use a centered modal rather than an edge panel for focused decisions"
+            }
+          ],
+          "a11yRationale": "Renders role=\"dialog\" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal.",
+          "flexibility": [
+            {
+              "area": "side",
+              "level": "strict",
+              "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+            },
+            {
+              "area": "open state",
+              "level": "flexible",
+              "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+            },
+            {
+              "area": "body content",
+              "level": "flexible",
+              "note": "Any children; the consumer owns the panel contents"
             }
           ]
         }
@@ -4415,6 +5427,114 @@
       }
     },
     {
+      "name": "item",
+      "type": "component",
+      "description": "Generic content row primitive with media, content, and action regions",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/item/item.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/item/item.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["row", "primitive", "list-item", "layout"],
+      "meta": {
+        "name": "Item",
+        "description": "Generic content row primitive with media, content, and action regions",
+        "category": "display",
+        "states": [],
+        "variants": ["default", "muted"],
+        "sizes": ["sm", "md"],
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "variant",
+            "type": "'default' | 'muted'",
+            "required": false,
+            "default": "default"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-item",
+          "--cascivo-space-3"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Item with media, content, and actions",
+            "code": "<Item>\n  <ItemMedia><Avatar /></ItemMedia>\n  <ItemContent>\n    <ItemTitle>Ada Lovelace</ItemTitle>\n    <ItemDescription>Mathematician</ItemDescription>\n  </ItemContent>\n  <ItemActions><Button size=\"sm\">Edit</Button></ItemActions>\n</Item>"
+          },
+          {
+            "title": "As a link via asChild",
+            "code": "<Item asChild>\n  <a href=\"/profile\">\n    <ItemContent><ItemTitle>Profile</ItemTitle></ItemContent>\n  </a>\n</Item>"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["row", "primitive", "list-item", "layout"],
+        "intent": {
+          "whenToUse": [
+            "Composing a single content row with leading media, a text block, and trailing actions",
+            "Building list, menu, or card rows from a consistent layout primitive",
+            "Slotting a row onto a real anchor or button via asChild for navigation or selection"
+          ],
+          "whenNotToUse": [
+            "A full surface with elevation and padding regions — use Card",
+            "Key-value metadata pairs — use DataList"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Wrapping an Item div in an anchor to make the whole row clickable",
+              "good": "Use Item asChild with the anchor as the single child so semantics and focus are native",
+              "why": "asChild merges row styling onto the real interactive element instead of nesting a non-semantic div"
+            }
+          ],
+          "related": [
+            {
+              "name": "Card",
+              "relationship": "alternative",
+              "reason": "Card is a padded surface; Item is a lightweight horizontal row"
+            },
+            {
+              "name": "ContainedListItem",
+              "relationship": "alternative",
+              "reason": "ContainedListItem is bound to a contained list; Item is a free-standing row"
+            }
+          ],
+          "a11yRationale": "Item is presentational by default; the slotted element determines the role and focus behaviour, so wrap it asChild around a button or link when the row is interactive",
+          "flexibility": [
+            {
+              "area": "variant and size",
+              "level": "flexible",
+              "note": "Tune density and emphasis to match the surrounding list"
+            },
+            {
+              "area": "compound parts",
+              "level": "flexible",
+              "note": "Media, content, title, description, and actions are optional and composable"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "kbd",
       "type": "component",
       "description": "Displays a keyboard key or shortcut",
@@ -4964,6 +6084,293 @@
       }
     },
     {
+      "name": "menu-button",
+      "type": "component",
+      "description": "A button that opens an anchored action menu of one-shot commands",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu-button/menu-button.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
+      "meta": {
+        "name": "MenuButton",
+        "description": "A button that opens an anchored action menu of one-shot commands",
+        "category": "navigation",
+        "states": ["open", "closed"],
+        "variants": ["primary", "secondary", "ghost"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "label",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Trigger button content"
+          },
+          {
+            "name": "items",
+            "type": "MenuButtonItem[]",
+            "required": true,
+            "description": "Action items: { id, label, onSelect?, disabled? }"
+          },
+          {
+            "name": "variant",
+            "type": "'primary' | 'secondary' | 'ghost'",
+            "required": false,
+            "default": "'secondary'",
+            "description": "Trigger visual variant"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "'md'",
+            "description": "Trigger size"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Disables the trigger"
+          },
+          {
+            "name": "align",
+            "type": "'start' | 'end'",
+            "required": false,
+            "default": "'start'",
+            "description": "Aligns the menu to the start or end edge of the trigger"
+          },
+          {
+            "name": "labels",
+            "type": "{ open?: string }",
+            "required": false,
+            "description": "Override the trigger accessible name"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-primary",
+          "--cascivo-color-primary-fg",
+          "--cascivo-color-primary-hover",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-control",
+          "--cascivo-radius-overlay",
+          "--cascivo-radius-item",
+          "--cascivo-shadow-md",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter",
+          "--cascivo-z-dropdown"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape", "Tab"],
+          "apgPattern": "menu-button",
+          "forcedColors": true,
+          "reducedMotion": true
+        },
+        "examples": [
+          {
+            "title": "Basic action menu",
+            "description": "A secondary button that opens a list of actions",
+            "code": "<MenuButton\n  label=\"Actions\"\n  items={[\n    { id: 'edit', label: 'Edit', onSelect: () => edit() },\n    { id: 'duplicate', label: 'Duplicate', onSelect: () => duplicate() },\n    { id: 'delete', label: 'Delete', onSelect: () => remove(), disabled: !canDelete },\n  ]}\n/>"
+          },
+          {
+            "title": "End-aligned, primary",
+            "description": "Aligns the menu to the trigger end edge",
+            "code": "<MenuButton\n  label=\"Create\"\n  variant=\"primary\"\n  align=\"end\"\n  items={[\n    { id: 'doc', label: 'New document', onSelect: createDoc },\n    { id: 'folder', label: 'New folder', onSelect: createFolder },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
+        "intent": {
+          "whenToUse": [
+            "Exposing a small set of one-shot actions behind a single labeled button",
+            "Toolbar or header overflow actions where each item runs a command on activation",
+            "Action lists that need ArrowUp/ArrowDown roving focus and Enter/Space activation"
+          ],
+          "whenNotToUse": [
+            "Choosing and persisting a value from options — use Select",
+            "Right-click contextual actions on a target element — use ContextMenu",
+            "A single action with no list — use a plain Button",
+            "Rich interactive content (forms, pickers) rather than a list of commands — use Popover"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Rendering checkbox or radio state inside MenuButton items and treating selection as a chosen value",
+              "good": "Use Select or MultiSelect for value selection; MenuButton items are one-shot actions that close the menu on activation",
+              "why": "role=\"menuitem\" items do not model a selected value and dismiss the menu when activated, so they cannot represent persistent choices"
+            },
+            {
+              "bad": "Leaving the trigger label empty with no visible text and no labels.open override",
+              "good": "Provide visible label text, or pass labels.open / rely on the built-in i18n accessible name",
+              "why": "A trigger with no accessible name is unusable for screen-reader and voice-control users"
+            }
+          ],
+          "related": [
+            {
+              "name": "Menu",
+              "relationship": "alternative",
+              "reason": "Use Menu for fully composable trigger + item children; MenuButton is the prop-driven convenience form"
+            },
+            {
+              "name": "ContextMenu",
+              "relationship": "alternative",
+              "reason": "Use ContextMenu when actions are triggered by right-click on a target rather than a button"
+            },
+            {
+              "name": "Select",
+              "relationship": "alternative",
+              "reason": "Use Select when the user is picking a value instead of firing an action"
+            },
+            {
+              "name": "Button",
+              "relationship": "contains",
+              "reason": "The trigger is a styled button that opens the menu"
+            }
+          ],
+          "a11yRationale": "The trigger is a real <button> exposing aria-haspopup=\"menu\", aria-expanded reflecting open state, and aria-controls pointing at the role=\"menu\" panel. ArrowDown/Enter/Space open the menu and move focus to the first enabled item, ArrowUp opens and focuses the last item, ArrowUp/ArrowDown rove focus between items with wrap-around, disabled items are aria-disabled and skipped by roving focus, Escape closes and restores focus to the trigger, and Tab closes without trapping focus. DismissableLayer provides outside-pointer and Escape dismissal, and high-contrast plus reduced-motion preferences are honored in CSS.",
+          "flexibility": [
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Trigger and menu styling must resolve to the listed --cascivo-* tokens"
+            },
+            {
+              "area": "item content",
+              "level": "flexible",
+              "note": "Each item label accepts arbitrary ReactNode; onSelect defines the action"
+            },
+            {
+              "area": "trigger appearance",
+              "level": "flexible",
+              "note": "variant and size choose among the standard button looks and dimensions"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "menubar",
+      "type": "component",
+      "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menubar/menubar.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menubar/menubar.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["navigation", "menubar", "menu", "application"],
+      "meta": {
+        "name": "Menubar",
+        "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
+        "category": "navigation",
+        "states": ["closed", "open"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "menus",
+            "type": "MenubarMenu[]",
+            "required": true
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-border",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
+        ],
+        "accessibility": {
+          "role": "menubar",
+          "wcag": "2.2-AA",
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowDown",
+            "ArrowUp",
+            "Home",
+            "End",
+            "Enter",
+            "Escape"
+          ],
+          "apgPattern": "menubar",
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Menubar aria-label=\"Main\" menus={[{ id: \"file\", label: \"File\", items: [{ id: \"new\", label: \"New\", onSelect: () => {} }] }]} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["navigation", "menubar", "menu", "application"],
+        "intent": {
+          "whenToUse": [
+            "A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions",
+            "Desktop-like apps that expose grouped commands across a horizontal bar"
+          ],
+          "whenNotToUse": [
+            "Site or section navigation between pages or destinations — use NavigationMenu",
+            "A single trigger that opens one menu of actions — use a Menu/Dropdown",
+            "Switching between peer content panels — use Tabs"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Using Menubar entries as page links",
+              "good": "<NavigationMenu> for navigating between destinations",
+              "why": "menubar implies commands/actions within the current view, not navigation to other pages"
+            }
+          ],
+          "related": [
+            {
+              "name": "NavigationMenu",
+              "relationship": "alternative",
+              "reason": "NavigationMenu navigates between destinations; Menubar invokes commands"
+            },
+            {
+              "name": "Menu",
+              "relationship": "contains",
+              "reason": "Each Menubar entry behaves like a single Menu anchored under its trigger"
+            }
+          ],
+          "a11yRationale": "Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem triggers (Left/Right/Home/End) where ArrowDown opens the menu and focuses its first item, Up/Down move within the menu, and Escape closes and restores focus to the trigger",
+          "flexibility": [
+            {
+              "area": "menu content",
+              "level": "strict",
+              "note": "Menus are described by data (menus prop) so roles and keyboard wiring stay correct"
+            },
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Surface, borders, and focus ring must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "modal",
       "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
@@ -5224,6 +6631,200 @@
               "area": "options",
               "level": "flexible",
               "note": "Caller supplies the option list and may mark individual options disabled"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "native-select",
+      "type": "component",
+      "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/native-select/native-select.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/native-select/native-select.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["inputs", "select", "native", "form", "dropdown"],
+      "meta": {
+        "name": "NativeSelect",
+        "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
+        "category": "inputs",
+        "states": ["default", "focus", "disabled", "invalid"],
+        "variants": [],
+        "sizes": ["sm", "md", "lg"],
+        "props": [],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-field",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "combobox",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Space", "Home", "End"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["inputs", "select", "native", "form", "dropdown"],
+        "intent": {
+          "whenToUse": [
+            "A standard single-choice dropdown where native behavior and form integration matter most",
+            "Mobile-first forms that should use the platform picker UI",
+            "Pairing with a Field/Label inside a regular HTML form"
+          ],
+          "whenNotToUse": [
+            "Multi-select, search/typeahead, or rich option rendering — use the custom Select/Combobox",
+            "A handful of mutually exclusive options where radios read better"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<NativeSelect options={oneHundredOptionsWithIcons} />",
+              "good": "<Combobox options={...} />",
+              "why": "Native <option> cannot render icons or be searched; use a custom listbox for rich options"
+            }
+          ],
+          "related": [
+            {
+              "name": "Select",
+              "relationship": "alternative",
+              "reason": "Custom-rendered listbox for richer options at the cost of native form/keyboard behavior"
+            },
+            {
+              "name": "RadioCard",
+              "relationship": "alternative",
+              "reason": "Better for a small fixed set of mutually exclusive choices shown inline"
+            }
+          ],
+          "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.",
+          "flexibility": [
+            {
+              "area": "options",
+              "level": "flexible",
+              "note": "Pass an options array or raw <option> children"
+            },
+            {
+              "area": "value",
+              "level": "flexible",
+              "note": "Controlled (value/onChange) or uncontrolled (defaultValue)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "navigation-menu",
+      "type": "component",
+      "description": "Site navigation bar with links and dropdown flyout panels",
+      "category": "navigation",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/navigation-menu/navigation-menu.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["navigation", "menu", "flyout", "site-nav"],
+      "meta": {
+        "name": "NavigationMenu",
+        "description": "Site navigation bar with links and dropdown flyout panels",
+        "category": "navigation",
+        "states": ["closed", "open"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "NavigationMenuItem[]",
+            "required": true
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical' | 'both'",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-border",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit"
+        ],
+        "accessibility": {
+          "role": "navigation",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Escape"],
+          "apgPattern": "disclosure",
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<NavigationMenu aria-label=\"Main\" items={[{ id: \"home\", label: \"Home\", href: \"/\" }, { id: \"products\", label: \"Products\", content: <ul>…</ul> }]} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["navigation", "menu", "flyout", "site-nav"],
+        "intent": {
+          "whenToUse": [
+            "Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links",
+            "A header nav bar that mixes direct links with rich dropdown panels"
+          ],
+          "whenNotToUse": [
+            "Application commands and actions grouped under File/Edit/View — use Menubar",
+            "A single trigger opening a list of actions — use a Menu/Dropdown",
+            "Switching between peer content panels in place — use Tabs"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Putting action commands (Save, Delete) inside NavigationMenu flyouts",
+              "good": "<Menubar> or <Menu> for commands; NavigationMenu is for destinations",
+              "why": "navigation landmark implies moving between destinations, not invoking actions"
+            }
+          ],
+          "related": [
+            {
+              "name": "Menubar",
+              "relationship": "alternative",
+              "reason": "Menubar invokes application commands; NavigationMenu navigates to destinations"
+            },
+            {
+              "name": "Tabs",
+              "relationship": "alternative",
+              "reason": "Tabs swap in-page panels; NavigationMenu links to other destinations"
+            }
+          ],
+          "a11yRationale": "Wrapped in a navigation landmark with a roving-tabindex row of links and disclosure triggers; triggers expose aria-expanded/aria-controls onto a flyout panel, and outside-pointer or Escape dismisses the open panel and restores trigger focus",
+          "flexibility": [
+            {
+              "area": "orientation",
+              "level": "flexible",
+              "note": "horizontal (default) or vertical roving navigation"
+            },
+            {
+              "area": "panel content",
+              "level": "flexible",
+              "note": "content is arbitrary ReactNode; links without content render as plain anchors"
             }
           ]
         }
@@ -7022,6 +8623,133 @@
       }
     },
     {
+      "name": "resizable",
+      "type": "component",
+      "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/resizable/resizable.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/resizable/resizable.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["splitter", "panes", "layout", "resize", "divider"],
+      "meta": {
+        "name": "Resizable",
+        "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Exactly two panes"
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal"
+          },
+          {
+            "name": "defaultRatio",
+            "type": "number",
+            "required": false,
+            "default": "0.5"
+          },
+          {
+            "name": "ratio",
+            "type": "number",
+            "required": false,
+            "description": "Controlled ratio (0–1)"
+          },
+          {
+            "name": "minRatio",
+            "type": "number",
+            "required": false,
+            "default": "0.1"
+          },
+          {
+            "name": "maxRatio",
+            "type": "number",
+            "required": false,
+            "default": "0.9"
+          },
+          {
+            "name": "onRatioChange",
+            "type": "(ratio: number) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-radius-full",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "separator",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
+          "apgPattern": "windowsplitter",
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Horizontal split",
+            "code": "<Resizable>\n  <Editor />\n  <Preview />\n</Resizable>"
+          },
+          {
+            "title": "Vertical with bounds",
+            "code": "<Resizable orientation=\"vertical\" defaultRatio={0.3} minRatio={0.2} maxRatio={0.8}>\n  <Toolbar />\n  <Canvas />\n</Resizable>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["splitter", "panes", "layout", "resize", "divider"],
+        "intent": {
+          "whenToUse": [
+            "Letting users reallocate space between two adjacent regions, e.g. an editor and a preview",
+            "Side panels or inspectors whose width the user should control",
+            "Master/detail layouts where one pane may need more room than the default"
+          ],
+          "whenNotToUse": [
+            "Fixed layouts where the split should never change — use plain flex/grid",
+            "More than two siblings need independent resizing — compose nested splitters instead"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Resizable> wrapping three panes",
+              "good": "Nest two Resizable splitters so each divider controls exactly one boundary",
+              "why": "A single separator can only mediate one boundary between two panes"
+            }
+          ],
+          "related": [
+            {
+              "name": "Slider",
+              "relationship": "alternative",
+              "reason": "Use a slider when picking a value, not when allocating layout space"
+            }
+          ],
+          "a11yRationale": "The divider is a focusable role=\"separator\" with aria-orientation and aria-valuenow/min/max reflecting the percentage split; arrow keys nudge the ratio and Home/End snap to the configured bounds, matching the APG window-splitter pattern.",
+          "flexibility": [
+            {
+              "area": "sizing",
+              "level": "strict",
+              "note": "Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex"
+            },
+            {
+              "area": "min/max ratio",
+              "level": "flexible",
+              "note": "Consumer-defined clamp range"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "scroll-area",
       "type": "component",
       "description": "A scroll container with styled, slim scrollbars and overflow shadows",
@@ -8733,6 +10461,131 @@
       }
     },
     {
+      "name": "structured-list",
+      "type": "component",
+      "description": "Tabular row list for scannable data, optionally single-selectable",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/structured-list/structured-list.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["display", "list", "table", "data"],
+      "meta": {
+        "name": "StructuredList",
+        "description": "Tabular row list for scannable data, optionally single-selectable",
+        "category": "display",
+        "states": ["default", "selected"],
+        "variants": ["static", "selectable"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "{ id: string; cells: ReactNode[]; selected?: boolean }[]",
+            "required": true
+          },
+          {
+            "name": "headers",
+            "type": "ReactNode[]",
+            "required": false
+          },
+          {
+            "name": "selectable",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onSelect",
+            "type": "(id: string) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-primary",
+          "--cascivo-color-surface",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "table",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space"],
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Static",
+            "code": "<StructuredList headers={[\"Name\", \"Role\"]} items={[{ id: \"a\", cells: [\"Ada\", \"Engineer\"] }]} />"
+          },
+          {
+            "title": "Selectable",
+            "code": "<StructuredList selectable defaultValue=\"a\" items={[{ id: \"a\", cells: [\"Ada\"] }, { id: \"b\", cells: [\"Grace\"] }]} onSelect={(id) => set(id)} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["display", "list", "table", "data"],
+        "intent": {
+          "whenToUse": [
+            "Presenting a set of related records in aligned columns the user scans top to bottom",
+            "Letting the user pick exactly one row from a short, readable list (selectable)",
+            "Carbon-style structured content where a full data table is heavier than needed"
+          ],
+          "whenNotToUse": [
+            "Sorting, filtering, pagination, or multi-select over many rows — use DataTable",
+            "Free-form vertical content without column alignment — use List"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "selectable with multiple rows marked selected",
+              "good": "A single selected id (value/defaultValue) — selection is single-choice",
+              "why": "The selectable variant is a radiogroup; multiple selected rows break the radio semantics"
+            }
+          ],
+          "related": [
+            {
+              "name": "DataTable",
+              "relationship": "alternative",
+              "reason": "DataTable adds sorting, filtering, and pagination; StructuredList stays static and lightweight"
+            },
+            {
+              "name": "List",
+              "relationship": "alternative",
+              "reason": "List is single-column vertical content; StructuredList aligns multiple cells per row"
+            }
+          ],
+          "a11yRationale": "Static lists use table/row/cell roles so columns are announced; selectable lists become a radiogroup of role=radio rows with roving tabindex, so arrow keys move focus and Enter/Space check a row exactly like native radios",
+          "flexibility": [
+            {
+              "area": "selectable",
+              "level": "flexible",
+              "note": "Toggle selectable based on whether the list is interactive or purely presentational"
+            },
+            {
+              "area": "roles",
+              "level": "strict",
+              "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "switcher",
       "type": "component",
       "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
@@ -9444,6 +11297,94 @@
       }
     },
     {
+      "name": "tile",
+      "type": "component",
+      "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
+      "category": "inputs",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tile/tile.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tile/tile.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["inputs", "tile", "card", "selectable", "choice"],
+      "meta": {
+        "name": "Tile",
+        "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
+        "category": "inputs",
+        "states": ["default", "selected", "focus", "disabled"],
+        "variants": ["single", "multi"],
+        "sizes": [],
+        "props": [],
+        "tokens": [
+          "--cascivo-color-bg",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-surface",
+          "--cascivo-focus-ring"
+        ],
+        "accessibility": {
+          "role": "radio",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["inputs", "tile", "card", "selectable", "choice"],
+        "intent": {
+          "whenToUse": [
+            "A visually rich, clickable choice card in a single- or multi-select group",
+            "Plan/option pickers where each option needs an icon and supporting content",
+            "A larger touch target than a plain radio or checkbox"
+          ],
+          "whenNotToUse": [
+            "A simple inline boolean — use Checkbox or Toggle",
+            "A dense list of text-only options — use RadioGroup or a Select"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Tile value=\"on\">Enable</Tile> // used as a standalone on/off control",
+              "good": "<Tile value=\"on\" selectable=\"multi\">Enable</Tile> // multi allows deselect",
+              "why": "Single (radio) tiles cannot be unselected by clicking; use multi for toggleable behavior"
+            }
+          ],
+          "related": [
+            {
+              "name": "RadioCard",
+              "relationship": "alternative",
+              "reason": "RadioCard wraps a native input in a group; Tile is a standalone ARIA radio/checkbox"
+            },
+            {
+              "name": "CheckboxCard",
+              "relationship": "alternative",
+              "reason": "Use CheckboxCard when native checkbox form semantics are required"
+            }
+          ],
+          "a11yRationale": "Exposes role=\"radio\" (single) or role=\"checkbox\" (multi) with aria-checked reflecting selection, is focusable, and toggles on Space/Enter. aria-disabled and a -1 tabindex remove disabled tiles from interaction.",
+          "flexibility": [
+            {
+              "area": "selectable",
+              "level": "strict",
+              "note": "single (radio, select-only) | multi (checkbox, toggle)"
+            },
+            {
+              "area": "selected state",
+              "level": "flexible",
+              "note": "Controlled (selected/onSelect) or uncontrolled (defaultSelected)"
+            },
+            {
+              "area": "element",
+              "level": "flexible",
+              "note": "asChild renders onto a custom element via Slot"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "time-picker",
       "type": "component",
       "description": "Native time input wrapper with label, hint, error, and size variants",
@@ -9591,6 +11532,99 @@
               "area": "min/max/step",
               "level": "flexible",
               "note": "Consumer-defined bounds and step granularity"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "component",
+      "description": "Ordered sequence of events with status markers and a connector line",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/timeline/timeline.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/timeline/timeline.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["timeline", "steps", "history", "progress", "events"],
+      "meta": {
+        "name": "Timeline",
+        "description": "Ordered sequence of events with status markers and a connector line",
+        "category": "display",
+        "states": ["complete", "current", "upcoming"],
+        "variants": ["vertical", "horizontal"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\" }[]",
+            "required": true
+          },
+          {
+            "name": "orientation",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "default": "vertical"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-surface",
+          "--cascivo-color-success",
+          "--cascivo-color-primary",
+          "--cascivo-radius-full"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Vertical timeline with statuses",
+            "code": "<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:00', status: 'complete' },\n    { id: '2', title: 'Shipped', time: '12:30', status: 'current' },\n    { id: '3', title: 'Delivered', status: 'upcoming' },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["timeline", "steps", "history", "progress", "events"],
+        "intent": {
+          "whenToUse": [
+            "Showing an ordered sequence of events over time (activity feeds, order tracking)",
+            "Communicating progress through discrete stages with complete/current/upcoming status",
+            "Presenting a chronological history where order is meaningful"
+          ],
+          "whenNotToUse": [
+            "Interactive multi-step navigation the user controls — use Tabs or a Stepper",
+            "Unordered lists where sequence carries no meaning — use List"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Marking several items as status=\"current\" at once",
+              "good": "Exactly one current item so aria-current=\"step\" points to a single position",
+              "why": "Multiple current markers make the active position ambiguous for assistive tech"
+            }
+          ],
+          "related": [
+            {
+              "name": "List",
+              "relationship": "alternative",
+              "reason": "List is for unordered prose; Timeline conveys ordered, time-stamped events"
+            }
+          ],
+          "a11yRationale": "Rendered as an ordered list (ol/li) to convey sequence; the active item carries aria-current=\"step\" and decorative markers are aria-hidden so screen readers read only the text",
+          "flexibility": [
+            {
+              "area": "orientation",
+              "level": "flexible",
+              "note": "vertical for feeds, horizontal for compact progress strips"
+            },
+            {
+              "area": "status semantics",
+              "level": "strict",
+              "note": "Use a single current item; status drives marker colour via data-status"
             }
           ]
         }
@@ -9990,6 +12024,166 @@
       }
     },
     {
+      "name": "toggletip",
+      "type": "component",
+      "description": "A click-triggered info popover for supplementary, selectable content",
+      "category": "overlay",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggletip/toggletip.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggletip/toggletip.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["overlay", "toggletip", "info", "popover", "floating"],
+      "meta": {
+        "name": "Toggletip",
+        "description": "A click-triggered info popover for supplementary, selectable content",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "trigger",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Trigger content, rendered inside a button (e.g. an info icon)"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "The popover content — interactive and selectable"
+          },
+          {
+            "name": "placement",
+            "type": "'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
+            "required": false,
+            "default": "'top'",
+            "description": "Side and alignment of the bubble relative to the trigger"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Initial open state when uncontrolled"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "description": "Controlled open state"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "description": "Called whenever the open state should change"
+          },
+          {
+            "name": "labels",
+            "type": "{ label?: string }",
+            "required": false,
+            "description": "Override the trigger accessible name"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-text",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-radius-control",
+          "--cascivo-radius-overlay",
+          "--cascivo-shadow-md",
+          "--cascivo-focus-ring",
+          "--cascivo-motion-enter",
+          "--cascivo-z-tooltip"
+        ],
+        "accessibility": {
+          "role": "status",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space", "Escape"],
+          "forcedColors": true,
+          "reducedMotion": true
+        },
+        "examples": [
+          {
+            "title": "Info toggletip",
+            "description": "An info button that reveals supplementary text on click",
+            "code": "<Toggletip trigger={<InfoIcon />}>\n  Your password must contain at least 12 characters.\n</Toggletip>"
+          },
+          {
+            "title": "Controlled",
+            "description": "Drive the open state from the parent",
+            "code": "<Toggletip\n  trigger={<InfoIcon />}\n  open={open}\n  onOpenChange={setOpen}\n  placement=\"bottom-start\"\n>\n  <a href=\"/docs\">Learn more</a>\n</Toggletip>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["overlay", "toggletip", "info", "popover", "floating"],
+        "intent": {
+          "whenToUse": [
+            "Revealing brief supplementary information on demand when the user clicks an info affordance",
+            "Content that must be selectable or contain a link, where a hover Tooltip would be unreachable",
+            "Touch-friendly hint surfaces where hover is unavailable"
+          ],
+          "whenNotToUse": [
+            "A passive label that should appear on hover/focus without a click — use Tooltip",
+            "A blocking, focus-trapping dialog for a task — use Modal",
+            "Rich forms or pickers anchored to a trigger — use Popover",
+            "A list of one-shot actions behind a button — use MenuButton"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Using a hover Tooltip to hold a link or text the user needs to read or copy",
+              "good": "Use a Toggletip so the content stays open on click and remains reachable and selectable",
+              "why": "Hover tooltips disappear on pointer-out and are not keyboard- or touch-reachable for interaction, so interactive or copyable content needs a click-toggled bubble"
+            },
+            {
+              "bad": "Giving the trigger an icon with no text and no labels.label override",
+              "good": "Provide labels.label or rely on the built-in i18n accessible name",
+              "why": "An icon-only button with no accessible name cannot be operated by screen-reader or voice users"
+            }
+          ],
+          "related": [
+            {
+              "name": "Tooltip",
+              "relationship": "alternative",
+              "reason": "Use Tooltip for non-interactive hints shown on hover/focus rather than click"
+            },
+            {
+              "name": "Popover",
+              "relationship": "alternative",
+              "reason": "Use Popover for richer interactive content like forms or pickers"
+            },
+            {
+              "name": "MenuButton",
+              "relationship": "alternative",
+              "reason": "Use MenuButton when the trigger should reveal a list of actions"
+            }
+          ],
+          "a11yRationale": "The trigger is a real <button> with aria-expanded reflecting open state and aria-controls pointing at the bubble; an icon-only trigger gets an accessible name from labels.label or the built-in i18n catalog. The bubble is role=\"status\" so its content is announced when it opens, and unlike a hover tooltip the content remains visible and reachable for selection and links. DismissableLayer provides Escape and outside-pointer dismissal, and high-contrast and reduced-motion preferences are honored in CSS.",
+          "flexibility": [
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Trigger and bubble styling must resolve to the listed --cascivo-* tokens"
+            },
+            {
+              "area": "content",
+              "level": "flexible",
+              "note": "trigger and children accept arbitrary ReactNode supplied by the consumer"
+            },
+            {
+              "area": "open state ownership",
+              "level": "flexible",
+              "note": "Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "tooltip",
       "type": "component",
       "description": "Contextual label shown on hover or focus",
@@ -10105,6 +12299,159 @@
               "area": "delay",
               "level": "flexible",
               "note": "Consumer can tune the show delay (default 200ms)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "tree-view",
+      "type": "component",
+      "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tree-view/tree-view.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["display", "tree", "hierarchy", "navigation", "files"],
+      "meta": {
+        "name": "TreeView",
+        "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
+        "category": "display",
+        "states": ["default", "expanded", "collapsed", "selected"],
+        "variants": ["single", "multi"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]",
+            "required": true
+          },
+          {
+            "name": "selectionMode",
+            "type": "'single' | 'multi'",
+            "required": false,
+            "default": "single"
+          },
+          {
+            "name": "selected",
+            "type": "string | string[]",
+            "required": false
+          },
+          {
+            "name": "defaultSelected",
+            "type": "string | string[]",
+            "required": false
+          },
+          {
+            "name": "onSelectChange",
+            "type": "(selected: string | string[]) => void",
+            "required": false
+          },
+          {
+            "name": "expanded",
+            "type": "string[]",
+            "required": false
+          },
+          {
+            "name": "defaultExpanded",
+            "type": "string[]",
+            "required": false
+          },
+          {
+            "name": "onExpandedChange",
+            "type": "(expanded: string[]) => void",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-tree-indent",
+          "--cascivo-color-border",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-radius-control",
+          "--cascivo-focus-ring",
+          "--cascivo-duration-200",
+          "--cascivo-ease-out"
+        ],
+        "accessibility": {
+          "role": "tree",
+          "wcag": "2.2-AA",
+          "keyboard": [
+            "ArrowDown",
+            "ArrowUp",
+            "ArrowRight",
+            "ArrowLeft",
+            "Home",
+            "End",
+            "Enter",
+            "Space",
+            "Typeahead"
+          ],
+          "apgPattern": "tree-view",
+          "reducedMotion": true,
+          "forcedColors": true
+        },
+        "examples": [
+          {
+            "title": "Single select",
+            "code": "<TreeView defaultExpanded={[\"src\"]} items={[{ id: \"src\", label: \"src\", children: [{ id: \"index\", label: \"index.ts\" }] }]} />"
+          },
+          {
+            "title": "Multi select",
+            "code": "<TreeView selectionMode=\"multi\" items={nodes} onSelectChange={(ids) => set(ids)} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["display", "tree", "hierarchy", "navigation", "files"],
+        "intent": {
+          "whenToUse": [
+            "Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)",
+            "Letting the user pick one or several nodes from a hierarchy",
+            "Navigating deep structures where indentation communicates depth"
+          ],
+          "whenNotToUse": [
+            "A flat, non-nested list of choices — use List or StructuredList",
+            "A small set of mutually exclusive sections of prose — use Accordion"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "A single-level TreeView with no children on any node",
+              "good": "A List or StructuredList",
+              "why": "A tree with no hierarchy adds twisties and ARIA tree semantics for content that is flat"
+            }
+          ],
+          "related": [
+            {
+              "name": "Accordion",
+              "relationship": "alternative",
+              "reason": "Accordion stacks a few sequential disclosure sections; TreeView models arbitrary-depth hierarchy"
+            },
+            {
+              "name": "StructuredList",
+              "relationship": "alternative",
+              "reason": "StructuredList is flat tabular rows; TreeView is nested with expand/collapse"
+            }
+          ],
+          "a11yRationale": "Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem with aria-level/posinset/setsize and aria-expanded on each node, a single roving tabindex, and full APG keyboard support (arrows expand/collapse and move, Home/End, Enter/Space select, printable-character typeahead)",
+          "flexibility": [
+            {
+              "area": "selectionMode",
+              "level": "flexible",
+              "note": "single vs multi is the consumer’s choice based on the interaction"
+            },
+            {
+              "area": "keyboard model",
+              "level": "strict",
+              "note": "Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped"
+            },
+            {
+              "area": "indent token",
+              "level": "flexible",
+              "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
             }
           ]
         }

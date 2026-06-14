@@ -1,0 +1,92 @@
+@layer cascade.component {
+  .root {
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-text);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+    overflow: hidden;
+    background-color: var(--cascivo-color-surface);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-3);
+  }
+
+  .root[data-kind='disclosed'] .header {
+    background-color: var(--cascivo-color-bg-subtle);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .label {
+    margin: 0;
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-semibold);
+    line-height: var(--cascivo-leading-tight);
+    color: var(--cascivo-color-text);
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+
+  .list > .item:first-child {
+    border-block-start: none;
+  }
+
+  .root[data-kind='disclosed'] .list > .item:first-child {
+    border-block-start: none;
+  }
+
+  .itemContent {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    inline-size: 100%;
+    box-sizing: border-box;
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-3);
+    font: inherit;
+    color: inherit;
+    text-align: start;
+    text-decoration: none;
+  }
+
+  .item[data-interactive] .itemContent {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+  }
+
+  .item[data-interactive] .itemContent:hover {
+    background-color: var(--cascivo-color-bg-subtle);
+  }
+
+  .item[data-interactive] .itemContent:focus-visible {
+    outline: none;
+    box-shadow: var(--cascivo-focus-ring);
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border: 1px solid CanvasText;
+  }
+}

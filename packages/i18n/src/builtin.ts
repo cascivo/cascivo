@@ -200,6 +200,20 @@ export const builtin = {
   resizable: defineMessages('cascade.resizable', {
     handle: 'Resize panels',
   }),
+  codeSnippet: defineMessages('cascade.codeSnippet', {
+    copy: 'Copy code',
+    copied: 'Copied',
+  }),
+  dateRangePicker: defineMessages('cascade.dateRangePicker', {
+    placeholder: 'Select a date range',
+    start: 'Start date',
+    end: 'End date',
+    apply: 'Apply',
+    clear: 'Clear',
+  }),
+  toggletip: defineMessages('cascade.toggletip', {
+    label: 'More information',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -395,4 +409,18 @@ defineCatalog(builtin.menuButton, 'de', {
 })
 defineCatalog(builtin.resizable, 'de', {
   handle: 'Bereiche anpassen',
+})
+defineCatalog(builtin.codeSnippet, 'de', {
+  copy: 'Code kopieren',
+  copied: 'Kopiert',
+})
+defineCatalog(builtin.dateRangePicker, 'de', {
+  placeholder: 'Zeitraum auswählen',
+  start: 'Startdatum',
+  end: 'Enddatum',
+  apply: 'Anwenden',
+  clear: 'Löschen',
+})
+defineCatalog(builtin.toggletip, 'de', {
+  label: 'Weitere Informationen',
 })
