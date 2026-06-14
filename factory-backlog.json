@@ -444,129 +444,157 @@
     {
       "name": "icon-button",
       "status": "pending",
-      "milestone": null,
-      "priority": 50,
+      "milestone": "v18",
+      "priority": 103,
       "category": "inputs",
       "attempts": 0,
-      "spec": "IconButton — square icon-only button. Props: icon: ReactNode, label: string (aria-label + tooltip text), size?: 'sm'|'md'|'lg', variant?: 'ghost'|'outline'|'filled', disabled?: boolean, onClick?: () => void. Renders button with aria-label=label. No signals needed — purely structural. Sizes use --cascivo-control-height-sm/md/lg tokens. No useState/useEffect."
+      "spec": "IconButton — square icon-only button. Props: icon: ReactNode, label: string (aria-label + tooltip text), size?: 'sm'|'md'|'lg', variant?: 'ghost'|'outline'|'filled', disabled?: boolean, onClick?: () => void. Renders button with aria-label=label. No signals needed — purely structural. Sizes use --cascivo-control-height-sm/md/lg tokens. No useState/useEffect.",
+      "tier": 1,
+      "primitives": ["Slot"]
     },
     {
       "name": "code-snippet",
       "status": "pending",
-      "milestone": null,
-      "priority": 52,
+      "milestone": "v18",
+      "priority": 218,
       "category": "display",
       "attempts": 0,
-      "spec": "CodeSnippet — code display block. Variants: 'inline' (span), 'single-line' (pre, horizontal scroll), 'multi-line' (pre, optional line numbers). Props: code: string, variant?: 'inline'|'single'|'multi', showLineNumbers?: boolean, showCopyButton?: boolean. Uses CopyButton internally when showCopyButton. data-language attribute for styling (no syntax highlighting). No useState/useEffect."
+      "spec": "CodeSnippet — code display block. Variants: 'inline' (span), 'single-line' (pre, horizontal scroll), 'multi-line' (pre, optional line numbers). Props: code: string, variant?: 'inline'|'single'|'multi', showLineNumbers?: boolean, showCopyButton?: boolean. Uses CopyButton internally when showCopyButton. data-language attribute for styling (no syntax highlighting). No useState/useEffect.",
+      "tier": 2,
+      "primitives": ["useClipboard"]
     },
     {
       "name": "notification",
       "status": "pending",
-      "milestone": null,
-      "priority": 53,
+      "milestone": "v18",
+      "priority": 106,
       "category": "feedback",
       "attempts": 0,
-      "spec": "Notification — inline alert/banner. Props: title: string, description?: string, variant?: 'info'|'success'|'warning'|'error', onDismiss?: () => void, icon?: ReactNode. role='alert' for error/warning, role='status' for info/success. Dismiss button with aria-label from builtin.notification.dismiss. No signals, no useState/useEffect."
+      "spec": "Notification — inline alert/banner. Props: title: string, description?: string, variant?: 'info'|'success'|'warning'|'error', onDismiss?: () => void, icon?: ReactNode. role='alert' for error/warning, role='status' for info/success. Dismiss button with aria-label from builtin.notification.dismiss. No signals, no useState/useEffect.",
+      "tier": 1,
+      "primitives": ["Presence", "DismissableLayer"]
     },
     {
       "name": "structured-list",
       "status": "pending",
-      "milestone": null,
-      "priority": 55,
+      "milestone": "v18",
+      "priority": 208,
       "category": "display",
       "attempts": 0,
-      "spec": "StructuredList — lightweight list of rows. Props: items: {id: string, cells: ReactNode[], selected?: boolean}[], headers?: ReactNode[], selectable?: boolean, onSelect?: (id: string) => void. Renders as semantic list (ul/li). Selectable rows: role='button', Enter/Space calls onSelect. CSS: hover via :hover, selected via data-selected. No signals needed. No useState/useEffect."
+      "spec": "StructuredList — lightweight list of rows. Props: items: {id: string, cells: ReactNode[], selected?: boolean}[], headers?: ReactNode[], selectable?: boolean, onSelect?: (id: string) => void. Renders as semantic list (ul/li). Selectable rows: role='button', Enter/Space calls onSelect. CSS: hover via :hover, selected via data-selected. No signals needed. No useState/useEffect.",
+      "tier": 2,
+      "primitives": ["RovingFocus"]
     },
     {
       "name": "tile",
       "status": "pending",
-      "milestone": null,
-      "priority": 56,
+      "milestone": "v18",
+      "priority": 207,
       "category": "inputs",
       "attempts": 0,
-      "spec": "Tile — selectable card choice. Props: value: string, selected: boolean, onSelect: (v: string) => void, children: ReactNode, selectable?: 'single'|'multi', disabled?: boolean, icon?: ReactNode. role='radio' for single, role='checkbox' for multi. data-selected drives CSS. Keyboard: Space/Enter toggle. No useState/useEffect."
+      "spec": "Tile — selectable card choice. Props: value: string, selected: boolean, onSelect: (v: string) => void, children: ReactNode, selectable?: 'single'|'multi', disabled?: boolean, icon?: ReactNode. role='radio' for single, role='checkbox' for multi. data-selected drives CSS. Keyboard: Space/Enter toggle. No useState/useEffect.",
+      "tier": 2,
+      "primitives": ["Slot", "useControllableSignal"]
     },
     {
       "name": "scroll-area",
       "status": "pending",
-      "milestone": null,
-      "priority": 58,
+      "milestone": "v18",
+      "priority": 107,
       "category": "layout",
       "attempts": 0,
-      "spec": "ScrollArea — styled scrollbars. Props: children: ReactNode, height?: string, width?: string, orientation?: 'vertical'|'horizontal'|'both'. CSS: scrollbar-width: thin + scrollbar-color for modern browsers; ::-webkit-scrollbar for WebKit. Optional scroll shadows: useSignalEffect subscribes to scroll events and sets data-scroll-start/end attributes on the container that CSS reads for shadow gradients. No useState/useEffect."
+      "spec": "ScrollArea — styled scrollbars. Props: children: ReactNode, height?: string, width?: string, orientation?: 'vertical'|'horizontal'|'both'. CSS: scrollbar-width: thin + scrollbar-color for modern browsers; ::-webkit-scrollbar for WebKit. Optional scroll shadows: useSignalEffect subscribes to scroll events and sets data-scroll-start/end attributes on the container that CSS reads for shadow gradients. No useState/useEffect.",
+      "tier": 1,
+      "primitives": []
     },
     {
       "name": "calendar",
       "status": "pending",
-      "milestone": "v11",
-      "priority": 61,
+      "milestone": "v18",
+      "priority": 211,
       "category": "inputs",
       "attempts": 0,
-      "spec": "Calendar — standalone month-grid date picker. Props: value?: Date | null, onValueChange: (v: Date) => void, defaultValue?: Date, min?: Date, max?: Date, disabled?: (date: Date) => boolean, locale?: string, size?: 'sm'|'md'|'lg'. Signals: viewMonth=useSignal, viewYear=useSignal, focusedDate=useSignal (roving tabindex). Month grid computed from viewMonth/viewYear with UTC-safe Date arithmetic. First-day-of-week per locale via Intl.Locale weekInfo (fallback Monday). Weekday headers and month/year label via Intl.DateTimeFormat with currentLocale() from @cascivo/i18n. ARIA APG grid pattern: role=grid on table, role=row on tr, role=gridcell on each day button; roving tabindex — only focused day gets tabIndex=0. Keyboard: ArrowLeft/Right move one day, ArrowUp/Down move one week, Home/End jump to start/end of week, PageUp/PageDown move one month, Shift+PageUp/Down move one year, Enter/Space select. Disabled and out-of-range dates get aria-disabled=true and are skipped by keyboard nav. Today gets data-today, selected gets aria-selected + data-selected, disabled gets data-disabled. CSS tokens: --cascivo-calendar-cell-size, --cascivo-calendar-cell-radius, --cascivo-calendar-today-color, --cascivo-calendar-selected-bg, --cascivo-calendar-range-bg, --cascivo-calendar-disabled-opacity. i18n: add builtin.calendar.prevMonth, nextMonth, today (en+de) to packages/i18n/src/builtin.ts. Sizes sm/md/lg scale cell size. No useState/useEffect."
+      "spec": "Calendar — standalone month-grid date picker. Props: value?: Date | null, onValueChange: (v: Date) => void, defaultValue?: Date, min?: Date, max?: Date, disabled?: (date: Date) => boolean, locale?: string, size?: 'sm'|'md'|'lg'. Signals: viewMonth=useSignal, viewYear=useSignal, focusedDate=useSignal (roving tabindex). Month grid computed from viewMonth/viewYear with UTC-safe Date arithmetic. First-day-of-week per locale via Intl.Locale weekInfo (fallback Monday). Weekday headers and month/year label via Intl.DateTimeFormat with currentLocale() from @cascivo/i18n. ARIA APG grid pattern: role=grid on table, role=row on tr, role=gridcell on each day button; roving tabindex — only focused day gets tabIndex=0. Keyboard: ArrowLeft/Right move one day, ArrowUp/Down move one week, Home/End jump to start/end of week, PageUp/PageDown move one month, Shift+PageUp/Down move one year, Enter/Space select. Disabled and out-of-range dates get aria-disabled=true and are skipped by keyboard nav. Today gets data-today, selected gets aria-selected + data-selected, disabled gets data-disabled. CSS tokens: --cascivo-calendar-cell-size, --cascivo-calendar-cell-radius, --cascivo-calendar-today-color, --cascivo-calendar-selected-bg, --cascivo-calendar-range-bg, --cascivo-calendar-disabled-opacity. i18n: add builtin.calendar.prevMonth, nextMonth, today (en+de) to packages/i18n/src/builtin.ts. Sizes sm/md/lg scale cell size. No useState/useEffect.",
+      "tier": 2,
+      "primitives": ["RovingFocus", "useControllableSignal"]
     },
     {
       "name": "date-range-picker",
       "category": "inputs",
-      "priority": 61,
+      "priority": 212,
       "status": "pending",
-      "milestone": "v11",
+      "milestone": "v18",
       "attempts": 0,
       "registryDependencies": ["calendar"],
-      "spec": "DateRangePicker — dual-calendar date-range selection. Props: value?: {start: Date, end: Date} | null, onValueChange: (range: {start: Date, end: Date}) => void, defaultValue?, min?: Date, max?: Date, disabled?: (date: Date) => boolean, presets?: {label: string, range: {start: Date, end: Date}}[], locale?: string, placeholder?: string, label?, hint?, error?, size?: 'sm'|'md'|'lg'. Signals: open=useSignal(false), hoverDate=useSignal<Date|null> (hover preview), pendingStart=useSignal<Date|null> (first click awaiting second), internalRange=useSignal<{start,end}|null>. Selection state machine (signal-driven, no machine object — purely controlled transitions): on first date click set pendingStart; on second click emit range sorted start≤end; clicking the same date twice clears the selection (pendingStart and internalRange both reset). Hover preview: while pendingStart is set and hoverDate is non-null, highlight the in-between cells via data-in-range attribute computed per cell; uses the Calendar component's range token set (--cascivo-calendar-range-bg). Renders a text-input trigger (two date values joined by an arrow, or placeholder) that opens a popover (popover='auto') containing two Calendar instances side-by-side (left shows month M, right shows M+1; prev/next on either advances both). Anchor + position via CSS anchor-positioning (anchorName on trigger, positionAnchor on popover, inset-block-start: anchor(block-end)). Presets slot: vertical list of buttons on the popover's leading edge; clicking a preset emits immediately, closes the popover, and highlights the preset label while its range is active. Keyboard: Tab moves through trigger → preset buttons → left calendar → right calendar → confirm button; Escape closes without committing; Enter on a day completes selection when pendingStart is set; all Calendar APG keyboard rules apply within each calendar grid. Controlled + uncontrolled modes (prop wins when provided). i18n: add builtin.dateRangePicker.placeholder, startDate, endDate, presetToday, presetLast7, presetLast30, presetCustom, apply, clear (en+de) to packages/i18n/src/builtin.ts. CSS tokens: extends calendar tokens; adds --cascivo-drp-preset-width. No useState/useEffect."
+      "spec": "DateRangePicker — dual-calendar date-range selection. Props: value?: {start: Date, end: Date} | null, onValueChange: (range: {start: Date, end: Date}) => void, defaultValue?, min?: Date, max?: Date, disabled?: (date: Date) => boolean, presets?: {label: string, range: {start: Date, end: Date}}[], locale?: string, placeholder?: string, label?, hint?, error?, size?: 'sm'|'md'|'lg'. Signals: open=useSignal(false), hoverDate=useSignal<Date|null> (hover preview), pendingStart=useSignal<Date|null> (first click awaiting second), internalRange=useSignal<{start,end}|null>. Selection state machine (signal-driven, no machine object — purely controlled transitions): on first date click set pendingStart; on second click emit range sorted start≤end; clicking the same date twice clears the selection (pendingStart and internalRange both reset). Hover preview: while pendingStart is set and hoverDate is non-null, highlight the in-between cells via data-in-range attribute computed per cell; uses the Calendar component's range token set (--cascivo-calendar-range-bg). Renders a text-input trigger (two date values joined by an arrow, or placeholder) that opens a popover (popover='auto') containing two Calendar instances side-by-side (left shows month M, right shows M+1; prev/next on either advances both). Anchor + position via CSS anchor-positioning (anchorName on trigger, positionAnchor on popover, inset-block-start: anchor(block-end)). Presets slot: vertical list of buttons on the popover's leading edge; clicking a preset emits immediately, closes the popover, and highlights the preset label while its range is active. Keyboard: Tab moves through trigger → preset buttons → left calendar → right calendar → confirm button; Escape closes without committing; Enter on a day completes selection when pendingStart is set; all Calendar APG keyboard rules apply within each calendar grid. Controlled + uncontrolled modes (prop wins when provided). i18n: add builtin.dateRangePicker.placeholder, startDate, endDate, presetToday, presetLast7, presetLast30, presetCustom, apply, clear (en+de) to packages/i18n/src/builtin.ts. CSS tokens: extends calendar tokens; adds --cascivo-drp-preset-width. No useState/useEffect.",
+      "tier": 2,
+      "primitives": ["useControllableSignal"]
     },
     {
       "name": "tree-view",
       "category": "display",
-      "priority": 62,
+      "priority": 206,
       "spec": "TreeView — hierarchical tree list following WAI-ARIA APG TreeView pattern. Props: items: TreeNode[] ({id: string, label: string, icon?: ReactNode, children?: TreeNode[], loadChildren?: () => Promise<TreeNode[]>}), selected?: string | string[] (controlled), defaultSelected?, onSelectChange?: (ids: string[]) => void, selectionMode?: 'single'|'multi', expanded?: string[] (controlled), defaultExpanded?, onExpandedChange?: (ids: string[]) => void. Signals: expandedIds=useSignal<Set<string>>, selectedIds=useSignal<Set<string>>, focusedId=useSignal<string|null>, loadingIds=useSignal<Set<string>>. Lazy loading: when a node with loadChildren is expanded and has no children yet, call loadChildren(), add to loadingIds while pending, merge returned nodes into a localNodes signal. Expand/collapse animates via grid-template-rows 0fr→1fr with motion tokens and @starting-style; prefers-reduced-motion fallback skips animation. Content-visibility: auto + contain-intrinsic-size on each subtree ul for large trees. WAI-ARIA: role=tree on root ul, role=treeitem on each li, aria-expanded on branch items, aria-selected on items, aria-level (computed from depth), aria-setsize/aria-posinset. Roving tabindex: only focusedId node gets tabIndex=0; others tabIndex=-1. Keyboard per APG: ArrowDown moves to next visible node, ArrowUp to previous, ArrowRight on collapsed branch expands it, ArrowRight on expanded branch moves focus to first child, ArrowLeft on expanded branch collapses it, ArrowLeft on collapsed branch or leaf moves to parent, Home focuses first node, End focuses last visible node, Enter/Space selects (multi: toggles, single: selects). Typeahead: printable character moves focus to next node whose label starts with that character (case-insensitive). Icon slot via @cascivo/icons (optional, any ReactNode). CSS tokens: --cascivo-tree-indent (default 1.25rem per level), --cascivo-tree-expand-icon-size, --cascivo-tree-item-height, --cascivo-tree-selected-bg, --cascivo-tree-focus-outline. i18n: add builtin.treeView.loading, collapse, expand (en+de). No useState/useEffect.",
       "status": "pending",
-      "milestone": "v11",
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": ["RovingFocus", "useControllableSignal"]
     },
     {
       "name": "color-picker",
       "category": "inputs",
-      "priority": 63,
+      "priority": 213,
       "spec": "ColorPicker — oklch-first color selection widget. Props: value: string (canonical oklch(L C H / A) or hex), onValueChange: (v: string) => void, defaultValue?, presets?: string[] (configurable swatch row), format?: 'oklch'|'hex'|'hsl' (display format, default oklch), alpha?: boolean (show alpha slider, default true), label?, hint?, error?, disabled?, size?: 'sm'|'md'. Signals: internalOklch=useSignal({l,c,h,a}) (always store in oklch; convert on output), activeFormat=useSignal(format ?? 'oklch'). Interactive gradient area: a CSS-painted canvas-like div (background: CSS gradient combining lightness×chroma axes) with pointer drag via useSignalEffect on pointermove/pointerup; pointer position maps to L (y-axis, 0–1) and C (x-axis, 0–0.4). Hue slider: input[type=range] 0–360, aria-label from builtin.colorPicker.hue. Alpha slider (when alpha=true): input[type=range] 0–1 step 0.01, aria-label from builtin.colorPicker.alpha. Chroma/lightness picker area: aria-label from builtin.colorPicker.colorArea, keyboard arrow keys nudge L/C by 0.01. Swatches row: each swatch is a button with aria-label=hex value, ArrowLeft/Right cycle focus. Text input: shows value in activeFormat; format toggle button cycles oklch→hex→hsl; input validated on blur, invalid input resets to previous value. Eyedropper: renders an EyeDropper button when window.EyeDropper is defined (wraps native EyeDropper API), graceful no-op otherwise; aria-label from builtin.colorPicker.eyedropper. Conversion utilities (oklch↔hex↔hsl, pure functions, no dependency): implement from-scratch using standard formulas (oklch→linear-sRGB→sRGB→hex). CSS tokens: --cascivo-color-picker-area-size, --cascivo-color-picker-slider-thumb-size, --cascivo-color-picker-swatch-size. i18n: add builtin.colorPicker.hue, alpha, colorArea, eyedropper, formatToggle, presets (en+de) to packages/i18n/src/builtin.ts. No useState/useEffect.",
       "status": "pending",
-      "milestone": "v11",
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": ["useControllableSignal"]
     },
     {
       "name": "carousel",
       "category": "display",
-      "priority": 64,
+      "priority": 210,
       "spec": "Carousel — slide deck. Props: children (slides), index/onIndexChange (controlled) or defaultIndex, loop?, autoplay? (interval ms; pauses on hover/focus and never starts under prefers-reduced-motion), labels?. CSS scroll-snap track — no transform math; prev/next buttons plus dot indicators; the active index is a signal synced from scroll events via useSignalEffect. Keyboard: buttons natively tabbable, ArrowLeft/Right on the dot group. A11y: section with aria-roledescription=carousel, each slide aria-roledescription=slide and aria-label 'n of total'; control strings via builtin catalog (carousel namespace, en+de). No useState/useEffect.",
       "status": "pending",
-      "milestone": null,
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": ["RovingFocus", "useMediaQuery"]
     },
     {
       "name": "timeline",
       "category": "display",
-      "priority": 65,
+      "priority": 214,
       "spec": "Timeline — ordered event display. Props: items {id, title, description?, time?, icon?, status? 'complete'|'current'|'upcoming'}[], orientation? vertical (default) / horizontal. Renders ol > li with <time> for timestamps; the connector line and markers are CSS pseudo-elements built with logical properties; status drives marker color via data-status and semantic tokens. Pure display — no machine, no signals, no keyboard handling beyond native list semantics. A11y: native ordered-list semantics, aria-current=step on the current item. No useState/useEffect.",
       "status": "pending",
-      "milestone": null,
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": []
     },
     {
       "name": "data-list",
       "category": "display",
-      "priority": 66,
+      "priority": 215,
       "spec": "DataList — key-value pairs. Props: items {id?, label: ReactNode, value: ReactNode}[], orientation? 'horizontal'|'vertical', dividers?, size? sm/md. Renders dl with dt/dd pairs; horizontal mode is a two-column grid (logical properties), vertical stacks label above value; dividers render via border-block-end on each row. Pure display — no machine, no signals. A11y: native dl/dt/dd semantics, no extra role. No useState/useEffect.",
       "status": "pending",
-      "milestone": null,
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": []
     },
     {
       "name": "collapsible",
       "category": "display",
-      "priority": 67,
+      "priority": 108,
       "spec": "Collapsible — single disclosure region. Props: open (controlled) / defaultOpen, onOpenChange, trigger (ReactNode rendered inside the built-in button), disabled, children. Uncontrolled mode runs a genuine open/closed machine driven by the trigger; controlled mode syncs the prop into the signal during render. Content animates via grid-template-rows 0fr→1fr with motion tokens, @starting-style enter, and a prefers-reduced-motion fallback; data-state open/closed drives CSS. A11y: trigger is a button with aria-expanded + aria-controls; keyboard Enter/Space. No useState/useEffect.",
       "status": "pending",
-      "milestone": null,
-      "attempts": 0
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 1,
+      "primitives": ["useControllableSignal", "Presence"]
     },
     {
       "name": "code-block",
@@ -578,12 +606,168 @@
       "attempts": 0
     },
     {
-      "name": "splitter",
+      "name": "resizable",
       "category": "layout",
-      "priority": 69,
-      "spec": "Splitter — two resizable panes. Props: children (exactly two panes), orientation? 'horizontal'|'vertical', defaultRatio? (0–1), minRatio?/maxRatio?, onRatioChange?, storageKey? (persists the ratio via @cascivo/storage). The ratio is a signal; pointer drag tracking attaches listeners via useSignalEffect. A11y: the divider is role=separator with aria-orientation and aria-valuenow/min/max. Keyboard: ArrowLeft/Right (ArrowUp/Down when vertical) nudge the ratio, Home/End snap to min/max. No useState/useEffect.",
+      "priority": 204,
+      "spec": "Resizable (a.k.a. splitter) — two resizable panes. Props: children (exactly two panes), orientation? 'horizontal'|'vertical', defaultRatio? (0–1), minRatio?/maxRatio?, onRatioChange?, storageKey? (persists the ratio via @cascivo/storage). The ratio is a signal; pointer drag tracking attaches listeners via useSignalEffect. A11y: the divider is role=separator with aria-orientation and aria-valuenow/min/max. Keyboard: ArrowLeft/Right (ArrowUp/Down when vertical) nudge the ratio, Home/End snap to min/max. No useState/useEffect.",
       "status": "pending",
-      "milestone": null,
+      "milestone": "v18",
+      "attempts": 0,
+      "tier": 2,
+      "primitives": ["useControllableSignal"]
+    },
+    {
+      "name": "label",
+      "category": "inputs",
+      "priority": 100,
+      "tier": 1,
+      "primitives": ["useId", "Slot"],
+      "spec": "Label — accessible form label. Props: htmlFor?: string, children: ReactNode, asChild?: boolean, required?: boolean, disabled?: boolean. Associates with a control via htmlFor; generates a stable id via useId when wiring Field. asChild renders via @cascivo/core Slot so the label can wrap a custom element. Required marker (visually + aria) from builtin.label.required. Clicking the label focuses its control (native <label> behaviour). a11y role: label semantics via native <label>; keyboard: none (passthrough). No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "field",
+      "category": "inputs",
+      "priority": 101,
+      "tier": 1,
+      "primitives": ["useId"],
+      "spec": "Field — form-field wrapper composing Label + control + description + error. Props: label?: ReactNode, description?: ReactNode, error?: ReactNode, required?: boolean, disabled?: boolean, id?: string, children: ReactNode (the control). Generates ids via useId and wires aria-describedby (description + error) and aria-invalid onto the control by cloning it. Error message has role=\"alert\". This is the a11y substrate Tier-2 form components reuse. a11y: programmatic label/description/error association; keyboard: passthrough. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "button-group",
+      "category": "inputs",
+      "priority": 102,
+      "tier": 1,
+      "primitives": ["RovingFocus", "Slot"],
+      "spec": "ButtonGroup (Carbon Button set) — visually-joined row/column of buttons. Props: children: ReactNode (Button/IconButton), orientation?: \"horizontal\"|\"vertical\", size?: \"sm\"|\"md\"|\"lg\", roving?: boolean (opt-in RovingFocus for arrow-key traversal across the group). Joins adjacent buttons by collapsing inner border-radius via CSS :first-child/:last-child logical-property selectors. role=\"group\" with aria-label/aria-labelledby. When roving, arrow keys move focus across buttons (useRovingFocus). No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "toggle-group",
+      "category": "inputs",
+      "priority": 104,
+      "tier": 1,
+      "primitives": ["RovingFocus", "useControllableSignal"],
+      "spec": "ToggleGroup — single/multiple selection of toggle buttons. Props: type: \"single\"|\"multiple\", value?/defaultValue (string | string[]), onValueChange, items: {value: string, label?: string, icon?: ReactNode, disabled?: boolean}[], orientation?, size?, disabled?. State via useControllableSignal; keyboard traversal via useRovingFocus; each item is role=\"radio\" (single) within role=\"radiogroup\", or aria-pressed button (multiple) within role=\"group\". data-state=\"on|off\" drives CSS (no JS visual state). No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "inline-loading",
+      "category": "feedback",
+      "priority": 105,
+      "tier": 1,
+      "primitives": ["Presence"],
+      "spec": "InlineLoading (Carbon) — compact inline status with label. Props: status: \"inactive\"|\"active\"|\"finished\"|\"error\", label?: ReactNode, labels?: {active,finished,error}. Active shows a spinner; finished shows a check; error shows an error mark; transitions surfaced via data-state and animated with Presence on the icon swap. role=\"status\" aria-live=\"polite\" so the status label is announced. Strings default from builtin.inlineLoading.* (en+de). No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "aspect-ratio",
+      "category": "layout",
+      "priority": 109,
+      "tier": 1,
+      "primitives": [],
+      "spec": "AspectRatio — maintains a width/height ratio for its child. Props: ratio?: number (default 16/9), children: ReactNode. Pure CSS using the aspect-ratio property on a wrapper with the ratio passed via a custom property (--cascivo-aspect-ratio); child fills via inset:0 / object-fit. No JS state, no machine, no signals. a11y: presentational wrapper, no role. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "navigation-menu",
+      "category": "navigation",
+      "priority": 200,
+      "tier": 2,
+      "primitives": ["DismissableLayer", "useAnchorPosition", "RovingFocus", "Presence"],
+      "spec": "NavigationMenu — site navigation with flyout panels. Props: items: {label, href?, content?: ReactNode, children?}[], orientation?, value?/defaultValue (open item), onValueChange. Triggers are a roving-focus row (useRovingFocus); opening a trigger shows its flyout panel positioned via useAnchorPosition (CSS anchor + JS fallback) and mounted via Presence; outside-click/Escape close via DismissableLayer. a11y: role=\"navigation\" wrapper, triggers aria-expanded + aria-controls; ArrowLeft/Right move between triggers, ArrowDown opens, Escape closes. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "menubar",
+      "category": "navigation",
+      "priority": 201,
+      "tier": 2,
+      "primitives": ["RovingFocus", "DismissableLayer", "useAnchorPosition"],
+      "spec": "Menubar — horizontal application menu bar (APG menubar pattern). Props: menus: {label, items: MenuItem[]}[], value?/defaultValue (open menu), onValueChange. Top-level triggers form a roving-focus row; each opens a menu (reuses existing menu component) positioned via useAnchorPosition; DismissableLayer handles outside-click/Escape (top-most layer first). a11y: role=\"menubar\", triggers role=\"menuitem\" aria-haspopup aria-expanded; ArrowLeft/Right across triggers, ArrowDown into menu, Escape closes, typeahead. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "menu-button",
+      "category": "navigation",
+      "priority": 202,
+      "tier": 2,
+      "primitives": ["DismissableLayer", "useAnchorPosition"],
+      "spec": "MenuButton (Carbon Menu buttons) — a button that opens an action menu. Props: label: ReactNode, items: MenuItem[], variant?, size?, disabled?, align?: \"start\"|\"end\". Button toggles an anchored menu (useAnchorPosition) and reuses the existing menu component for items; DismissableLayer closes on outside-click/Escape. a11y: button aria-haspopup=\"menu\" aria-expanded aria-controls; ArrowDown/Enter/Space open and focus first item; Escape closes and restores focus to the button. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "toggletip",
+      "category": "overlay",
+      "priority": 203,
+      "tier": 2,
+      "primitives": ["DismissableLayer", "useAnchorPosition"],
+      "spec": "Toggletip (Carbon) — click/toggle-triggered informational popover, distinct from the hover tooltip. Props: trigger: ReactNode (usually an info IconButton), children: ReactNode, placement?, defaultOpen?, open?/onOpenChange. Click toggles a small anchored bubble (useAnchorPosition); DismissableLayer closes on outside-click/Escape. Content is interactive/selectable (unlike tooltip). a11y: trigger is a button aria-expanded; bubble role=\"status\" / dialog-lite, focus moves in on open; Escape closes. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "drawer",
+      "category": "overlay",
+      "priority": 205,
+      "tier": 2,
+      "primitives": ["Presence", "DismissableLayer", "useScrollLock"],
+      "spec": "Drawer — edge-anchored panel (complements sheet; no swipe physics — deferred). Props: open?/defaultOpen, onOpenChange, side?: \"start\"|\"end\"|\"top\"|\"bottom\", size?, children, title?, description?. Mount/exit via Presence (data-state open|closed drives the slide transition); DismissableLayer for outside-click/Escape; useScrollLock locks body scroll while open; focus trapped via FocusScope; rendered in a Portal. a11y: role=\"dialog\" aria-modal, labelled by title. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "contained-list",
+      "category": "display",
+      "priority": 209,
+      "tier": 2,
+      "primitives": ["Slot"],
+      "spec": "ContainedList (Carbon) — a labelled list inside a bordered container. Props: label: ReactNode, kind?: \"on-page\"|\"disclosed\", children: ReactNode (ContainedListItem rows), action?: ReactNode (header action slot). Items can be static or interactive (asChild via Slot to render as button/link). a11y: header is a heading; list uses ul/li; interactive items expose proper role via the slotted element. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "native-select",
+      "category": "inputs",
+      "priority": 216,
+      "tier": 2,
+      "primitives": [],
+      "spec": "NativeSelect (shadcn) — styled native <select> control (distinct from the custom-listbox select). Props: options: {value, label, disabled?}[] | children (<option>), value?/defaultValue, onChange, size?, disabled?, invalid?, placeholder?. Renders a real <select> for zero-JS form behaviour and native mobile pickers; custom chevron + focus ring via CSS only. a11y: native select semantics; pairs with Field/Label. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
+      "attempts": 0
+    },
+    {
+      "name": "item",
+      "category": "display",
+      "priority": 217,
+      "tier": 2,
+      "primitives": ["Slot"],
+      "spec": "Item (shadcn) — generic content row primitive (media + content + actions). Props: children, asChild?: boolean (Slot — render as a/button/div), variant?: \"default\"|\"muted\", size?. Provides ItemMedia / ItemContent / ItemTitle / ItemDescription / ItemActions sub-parts via a small compound API; layout via CSS grid with logical properties. Used to build lists, menus, command rows consistently. a11y: role depends on the slotted element. No useState/useEffect.",
+      "status": "pending",
+      "milestone": "v18",
       "attempts": 0
     }
   ]
