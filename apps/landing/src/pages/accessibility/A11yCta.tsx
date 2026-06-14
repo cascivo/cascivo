@@ -1,4 +1,4 @@
-import { Button } from '@cascivo/components/button'
+import { LinkButton } from '../../sections/LinkButton'
 
 export function A11yCta() {
   return (
@@ -9,22 +9,12 @@ export function A11yCta() {
         says about speed.
       </p>
       <div className="cta-band-actions">
-        <Button
-          onClick={() => {
-            window.location.href =
-              'https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md'
-          }}
-        >
+        <LinkButton href="https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md">
           Read the methodology
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            window.location.href = '/performance'
-          }}
-        >
+        </LinkButton>
+        <LinkButton href="/performance" variant="secondary">
           Performance, same treatment
-        </Button>
+        </LinkButton>
       </div>
     </section>
   )
