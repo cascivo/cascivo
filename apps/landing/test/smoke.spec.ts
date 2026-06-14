@@ -23,7 +23,7 @@ test('copy button writes to clipboard', async ({ page, context }) => {
   await page.goto('/')
   await page.locator('.copy-command button').first().click()
   const text = await page.evaluate(() => navigator.clipboard.readText())
-  expect(text).toContain('npx cascivo')
+  expect(text).toContain('npx @cascivo/cli')
 })
 
 test('re-render counters move when typing', async ({ page }) => {

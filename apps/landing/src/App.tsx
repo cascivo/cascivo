@@ -1,28 +1,48 @@
-import type { ComponentType } from 'react'
+import { type ComponentType, Suspense, lazy } from 'react'
 import { useSignalEffect } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
 import { StatsBand } from './sections/StatsBand'
-import { RelayConsole } from './demo/RelayConsole'
 import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
 import { AgentLayer } from './sections/AgentLayer'
 import { ThemeDemo } from './sections/ThemeDemo'
-import { ChartShowcase } from './sections/ChartShowcase'
 import { Ecosystem } from './sections/Ecosystem'
 import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
-import { OgCard } from './sections/OgCard'
-import { AccessibilityPage } from './pages/AccessibilityPage'
-import { PerformancePage } from './pages/PerformancePage'
-import { GuidesPage } from './pages/GuidesPage'
-import { NotFound } from './pages/NotFound'
 import { initReveal } from './reveal'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
+
+// Heavy below-the-fold home sections — split into their own chunks so the
+// initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
+const RelayConsole = lazy(() =>
+  import('./demo/RelayConsole').then((m) => ({ default: m.RelayConsole })),
+)
+const ChartShowcase = lazy(() =>
+  import('./sections/ChartShowcase').then((m) => ({ default: m.ChartShowcase })),
+)
+
+// Non-home routes — loaded on demand, never in the home bundle.
+const AccessibilityPage = lazy(() =>
+  import('./pages/AccessibilityPage').then((m) => ({ default: m.AccessibilityPage })),
+)
+const PerformancePage = lazy(() =>
+  import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
+)
+const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const OgCard = lazy(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
+
+/** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
+function SectionFallback({ tall = false }: { tall?: boolean }) {
+  return (
+    <div className={tall ? 'lazy-fallback lazy-fallback--tall' : 'lazy-fallback'} aria-hidden />
+  )
+}
 
 function HomePage() {
   return (
@@ -34,12 +54,16 @@ function HomePage() {
           <Hero />
           <Principles />
           <StatsBand />
-          <RelayConsole />
+          <Suspense fallback={<SectionFallback tall />}>
+            <RelayConsole />
+          </Suspense>
           <SignalsDemo />
           <ProofTeasers />
           <AgentLayer />
           <ThemeDemo />
-          <ChartShowcase />
+          <Suspense fallback={<SectionFallback tall />}>
+            <ChartShowcase />
+          </Suspense>
           <Ecosystem />
           <QuickStart />
           <CtaBand />
@@ -74,10 +98,18 @@ export function App() {
 
   if (!route) {
     applyNotFoundSeo()
-    return <NotFound />
+    return (
+      <Suspense fallback={<SectionFallback tall />}>
+        <NotFound />
+      </Suspense>
+    )
   }
 
   applyRouteSeo(pathname, route.title)
 
-  return <route.Page />
+  return (
+    <Suspense fallback={<SectionFallback tall />}>
+      <route.Page />
+    </Suspense>
+  )
 }

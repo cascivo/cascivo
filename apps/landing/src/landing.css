@@ -2312,6 +2312,15 @@ kbd {
   margin-block-start: var(--cascivo-space-4);
 }
 
+/* ── Lazy-section reserved space (avoid CLS while a split chunk loads) ── */
+.lazy-fallback {
+  min-block-size: 40vh;
+}
+
+.lazy-fallback--tall {
+  min-block-size: 70vh;
+}
+
 /* ── Anchor styled as button (semantic nav: real <a>, button look) ──────
    Mirrors @cascivo/components Button visuals via the same tokens so CTAs that
    navigate can be crawlable, keyboard-native anchors instead of
