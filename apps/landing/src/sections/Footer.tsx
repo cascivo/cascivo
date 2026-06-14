@@ -21,7 +21,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
     links: [
       { label: 'Docs', href: '/docs' },
       { label: 'Storybook', href: '/storybook' },
-      { label: 'Examples', href: '/#examples' },
+      { label: 'Examples', href: '/examples' },
       { label: 'GitHub', href: REPO },
     ],
   },

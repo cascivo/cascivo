@@ -37,10 +37,16 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Guides for adopting cascivo: migrating from shadcn, brand customization, real use-case scenarios, and an honest take on when not to use it.',
   },
+  '/examples': {
+    title: 'Examples — cascivo',
+    description:
+      'Five functional example dashboards built with cascivo — each modelled on a well-known SaaS product (Vercel, Stripe, Camunda, Linear, Datadog). Open one and play: no backend, no accounts, no setup.',
+    ogTitle: 'cascivo examples',
+  },
 }
 
 /** Routes that get prerendered + listed in the sitemap (excludes `/` root and `/og`). */
-export const PRERENDER_ROUTES = ['accessibility', 'performance', 'guides'] as const
+export const PRERENDER_ROUTES = ['accessibility', 'performance', 'guides', 'examples'] as const
 
 export function canonicalFor(path: string): string {
   return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`

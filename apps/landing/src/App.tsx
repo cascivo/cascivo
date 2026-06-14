@@ -35,6 +35,9 @@ const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const ExamplesPage = lazy(() =>
+  import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
+)
 const OgCard = lazy(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 
@@ -88,6 +91,7 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
 }
 

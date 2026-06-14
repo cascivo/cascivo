@@ -16,4 +16,8 @@
     <loc>https://cascivo.com/guides</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://cascivo.com/examples</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
