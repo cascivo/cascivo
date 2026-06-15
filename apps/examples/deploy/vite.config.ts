@@ -15,6 +15,14 @@ export default defineConfig({
   // when assembled under `/demos/deploy/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.
   base: './',
+  server: {
+    port: 4181,
+    strictPort: true,
+    // Inject absolute asset URLs so the landing dev proxy can serve the initial
+    // HTML while the browser fetches all subsequent resources directly from this
+    // server (bypassing the proxy and avoiding path-rewrite complexity).
+    origin: 'http://localhost:4181',
+  },
   resolve: {
     alias: {
       // Source aliases so Rolldown doesn't need pre-built dist files

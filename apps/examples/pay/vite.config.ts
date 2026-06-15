@@ -6,6 +6,13 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  server: {
+    port: 4182,
+    strictPort: true,
+    // Inject absolute asset URLs so the landing dev proxy can serve the initial
+    // HTML while the browser fetches all resources directly from this server.
+    origin: 'http://localhost:4182',
+  },
   // Relative base so the same build runs at `/` (standalone `vp preview`) and
   // when assembled under `/demos/pay/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.

@@ -6,6 +6,13 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  server: {
+    port: 4184,
+    strictPort: true,
+    // Inject absolute asset URLs so the landing dev proxy can serve the initial
+    // HTML while the browser fetches all resources directly from this server.
+    origin: 'http://localhost:4184',
+  },
   test: {
     environment: 'jsdom',
     globals: true,

@@ -144,7 +144,36 @@ function benchData(): Plugin {
 export default defineConfig({
   plugins: [injectCounts(), prerenderHeads(), benchData()],
   preview: { port: 4180, strictPort: true },
-  server: { port: 4180 },
+  server: {
+    port: 4180,
+    // In dev, proxy /demos/<slug>/ to each example app's dev server so
+    // "Open live demo" links work without a full assemble-demos build.
+    // Each example app runs on its fixed port (418x) with server.origin set,
+    // so the browser fetches all assets directly from the example server
+    // (absolute URLs); the proxy only handles the initial HTML navigation.
+    proxy: {
+      '/demos/deploy': {
+        target: 'http://localhost:4181',
+        rewrite: (p) => p.replace(/^\/demos\/deploy/, '') || '/',
+      },
+      '/demos/pay': {
+        target: 'http://localhost:4182',
+        rewrite: (p) => p.replace(/^\/demos\/pay/, '') || '/',
+      },
+      '/demos/flow': {
+        target: 'http://localhost:4183',
+        rewrite: (p) => p.replace(/^\/demos\/flow/, '') || '/',
+      },
+      '/demos/track': {
+        target: 'http://localhost:4184',
+        rewrite: (p) => p.replace(/^\/demos\/track/, '') || '/',
+      },
+      '/demos/pulse': {
+        target: 'http://localhost:4185',
+        rewrite: (p) => p.replace(/^\/demos\/pulse/, '') || '/',
+      },
+    },
+  },
   resolve: {
     alias: {
       // Profiling build so the SignalsDemo <Profiler> commit counters work in
