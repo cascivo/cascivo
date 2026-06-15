@@ -1,0 +1,1 @@
+Registry source for all cascade components — Button, Input, Checkbox, Select, Modal, DataTable, and 60+ more. This package is the source of truth; components are copied into user projects via the CLI and are not intended to be imported directly from this path in production apps. Use `@cascivo/react` for prebuilt distribution.

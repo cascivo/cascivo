@@ -4,6 +4,10 @@
 
 > Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+Signal-driven internationalisation layer for cascade — locale store, typed string catalogs, and `Intl` formatting helpers. Components read from the built-in catalog by default; pass a `labels` prop to override per-instance.
+
 ## Install
 
 ```sh
@@ -12,4 +16,4 @@ pnpm add @cascivo/i18n
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

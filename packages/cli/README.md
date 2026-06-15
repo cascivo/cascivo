@@ -4,6 +4,10 @@
 
 > CLI — npx cascivo init / add / list / update
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+CLI for scaffold and copy-paste workflows — `npx cascivo init`, `cascivo add <component>`, `cascivo audit --ai`. Detects your package manager, writes `cascivo.config.ts`, and fetches component source from `registry.json`.
+
 ## Install
 
 ```sh
@@ -12,4 +16,4 @@ pnpm add @cascivo/cli
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

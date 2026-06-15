@@ -1,0 +1,1 @@
+Auto-generated documentation site for cascade — component API references, live interactive examples, accessibility tables, and theming guides. Built with Vite + Preact and deployed to `docs.cascivo.com`.
