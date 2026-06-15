@@ -7,6 +7,7 @@ import { AppShell } from '@cascivo/example-kit'
 import { Instances } from './sections/Instances'
 import { Incidents } from './sections/Incidents'
 import { Tasklist } from './sections/Tasklist'
+import { CatalogShell } from './sections/catalog/CatalogShell'
 import { msg } from './i18n'
 
 import '@cascivo/themes/dark'
@@ -94,6 +95,7 @@ export default function App() {
         {currentSection.value === 'instances' && <Instances />}
         {currentSection.value === 'incidents' && <Incidents />}
         {currentSection.value === 'tasklist' && <Tasklist />}
+        {currentSection.value === 'catalog' && <CatalogShell />}
       </AppShell>
     </ToastProvider>
   )

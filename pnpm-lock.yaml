@@ -374,6 +374,9 @@ importers:
 
   apps/examples/flow:
     dependencies:
+      '@cascivo/charts':
+        specifier: workspace:*
+        version: link:../../../packages/charts
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core
@@ -405,6 +408,9 @@ importers:
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.60.0
+      '@testing-library/jest-dom':
+        specifier: 'catalog:'
+        version: 6.9.1
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
