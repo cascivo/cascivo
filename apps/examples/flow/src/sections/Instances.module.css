@@ -9,7 +9,6 @@
 @media (min-width: 64rem) {
   .layout {
     flex-direction: row;
-    align-items: flex-start;
   }
 
   .list {

@@ -46,5 +46,25 @@
 
 .status {
   font-size: var(--cascivo-text-xs);
+  font-weight: 500;
+  padding-block: 0.125rem;
+  padding-inline: var(--cascivo-space-2);
+  border-radius: var(--cascivo-radius-full);
+  background: var(--cascivo-color-surface-raised);
   color: var(--cascivo-color-foreground-muted);
+
+  &[data-status='ready'] {
+    background: color-mix(in srgb, var(--cascivo-color-success) 15%, transparent);
+    color: var(--cascivo-color-success);
+  }
+
+  &[data-status='building'] {
+    background: color-mix(in srgb, var(--cascivo-color-accent) 15%, transparent);
+    color: var(--cascivo-color-accent);
+  }
+
+  &[data-status='error'] {
+    background: color-mix(in srgb, var(--cascivo-color-error) 15%, transparent);
+    color: var(--cascivo-color-error);
+  }
 }

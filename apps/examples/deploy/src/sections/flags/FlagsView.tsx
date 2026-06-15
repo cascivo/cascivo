@@ -1,22 +1,52 @@
 'use client'
 import { signal, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { Select, Button, EmptyState, Card, CardHeader, CardContent, Link } from '@cascivo/react'
+import {
+  Select,
+  Search,
+  Button,
+  EmptyState,
+  Card,
+  CardHeader,
+  CardContent,
+  Link,
+} from '@cascivo/react'
 import { deployMsg } from '../../i18n'
 import styles from './FlagsView.module.css'
 
 const typeFilter = signal<string>('all')
+const flagSearch = signal<string>('')
 
 interface Provider {
   id: string
   name: string
   description: string
+  iconColor: string
+  iconLabel: string
 }
 
 const PROVIDERS: Provider[] = [
-  { id: 'statsig', name: 'Statsig', description: 'Manage flags and A/B tests' },
-  { id: 'growthbook', name: 'GrowthBook', description: 'Open source experimentation' },
-  { id: 'posthog', name: 'PostHog', description: 'Feature flags and A/B tests' },
+  {
+    id: 'statsig',
+    name: 'Statsig',
+    description: 'Manage flags and A/B tests',
+    iconColor: '#e8611a',
+    iconLabel: 'S',
+  },
+  {
+    id: 'growthbook',
+    name: 'GrowthBook',
+    description: 'Open source experimentation',
+    iconColor: '#3d9970',
+    iconLabel: 'G',
+  },
+  {
+    id: 'posthog',
+    name: 'PostHog',
+    description: 'Feature flags and A/B tests',
+    iconColor: '#7c5cbf',
+    iconLabel: 'P',
+  },
 ]
 
 const TYPE_OPTIONS = [
@@ -31,6 +61,13 @@ export function FlagsView() {
   return (
     <div className={styles['root']}>
       <div className={styles['topBar']}>
+        <Search
+          placeholder={t(deployMsg.flagsSearchPlaceholder)}
+          value={flagSearch.value}
+          onChange={(v) => {
+            flagSearch.value = v
+          }}
+        />
         <Select
           options={TYPE_OPTIONS}
           value={typeFilter.value}
@@ -72,7 +109,16 @@ export function FlagsView() {
             {PROVIDERS.map((p) => (
               <Card key={p.id} className={styles['providerCard']}>
                 <CardHeader>
-                  <span className={styles['providerName']}>{p.name}</span>
+                  <div className={styles['providerHeaderRow']}>
+                    <span
+                      className={styles['providerIcon']}
+                      style={{ background: p.iconColor }}
+                      aria-hidden="true"
+                    >
+                      {p.iconLabel}
+                    </span>
+                    <span className={styles['providerName']}>{p.name}</span>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className={styles['providerDesc']}>{p.description}</p>

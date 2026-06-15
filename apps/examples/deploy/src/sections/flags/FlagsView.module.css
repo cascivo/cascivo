@@ -8,10 +8,13 @@
 .topBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--cascivo-space-3);
   padding-block-end: var(--cascivo-space-4);
   border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.topBar > :first-child {
+  flex: 1;
 }
 
 .content {
@@ -71,6 +74,26 @@
 .providerCard {
   display: flex;
   flex-direction: column;
+}
+
+.providerHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+}
+
+.providerIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: var(--cascivo-radius-sm);
+  color: #fff;
+  font-size: var(--cascivo-text-sm);
+  font-weight: 700;
+  font-family: var(--cascivo-font-sans);
+  flex-shrink: 0;
 }
 
 .providerName {

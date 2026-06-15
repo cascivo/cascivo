@@ -9,6 +9,7 @@ const dateRangeFilter = signal<string>('all')
 const authorFilter = signal<string>('all')
 const envFilter = signal<string>('all')
 const repoFilter = signal<string>('all')
+const statusFilter = signal<string>('all')
 const branchSearch = signal<string>('')
 
 function clearFilters() {
@@ -16,6 +17,7 @@ function clearFilters() {
   authorFilter.value = 'all'
   envFilter.value = 'all'
   repoFilter.value = 'all'
+  statusFilter.value = 'all'
   branchSearch.value = ''
 }
 
@@ -33,6 +35,12 @@ const ENV_OPTIONS = [
   { value: 'preview', label: 'Preview' },
 ]
 const REPO_OPTIONS = [{ value: 'all', label: 'All Repositories' }]
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'ready', label: 'Ready' },
+  { value: 'building', label: 'Building' },
+  { value: 'error', label: 'Error' },
+]
 
 const MOCK_DEPLOYMENTS = [
   { id: 'd1', branch: 'main', status: 'ready', author: 'adam', env: 'production', repo: 'cascivo' },
@@ -57,7 +65,8 @@ export function Deployments() {
         (q === '' || d.branch.includes(q)) &&
         (authorFilter.value === 'all' || d.author === authorFilter.value) &&
         (envFilter.value === 'all' || d.env === envFilter.value) &&
-        (repoFilter.value === 'all' || d.repo === repoFilter.value),
+        (repoFilter.value === 'all' || d.repo === repoFilter.value) &&
+        (statusFilter.value === 'all' || d.status === statusFilter.value),
     )
   })
 
@@ -96,6 +105,14 @@ export function Deployments() {
           }}
           aria-label={t(deployMsg.deplFilterReposLabel)}
         />
+        <Select
+          options={STATUS_OPTIONS}
+          value={statusFilter.value}
+          onChange={(v) => {
+            statusFilter.value = v
+          }}
+          aria-label={t(deployMsg.deplFilterStatusLabel)}
+        />
         <Search
           placeholder={t(deployMsg.deplFilterBranchPlaceholder)}
           value={branchSearch.value}
@@ -121,7 +138,9 @@ export function Deployments() {
             <div key={d.id} className={styles['row']}>
               <span className={styles['branch']}>{d.branch}</span>
               <span className={styles['env']}>{d.env}</span>
-              <span className={styles['status']}>{d.status}</span>
+              <span className={styles['status']} data-status={d.status}>
+                {d.status}
+              </span>
             </div>
           ))}
         </div>

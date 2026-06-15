@@ -84,6 +84,7 @@ export const deployMsg = defineMessages('deploy', {
   deplClearFilters: 'Clear Filters',
 
   // FlagsView
+  flagsSearchPlaceholder: 'Search Flags…',
   flagsFilterLabel: 'Type',
   flagsFilterAll: 'All types',
   flagsCreateBtn: 'Create Flag',
