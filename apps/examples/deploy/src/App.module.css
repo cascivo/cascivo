@@ -6,23 +6,7 @@
     container-type: inline-size;
   }
 
-  /* homeLayout has container-type so cannot query itself — use @media */
-  @media (min-width: 64rem) {
-    .homeLayout {
-      flex-direction: row;
-      /* align-items defaults to stretch — columns fill the same height */
-    }
-
-    .sidebar {
-      inline-size: 18rem;
-      flex-shrink: 0;
-      padding: var(--cascivo-space-4);
-      border-inline-end: 1px solid var(--cascivo-color-border);
-    }
-  }
-
   .main {
-    flex: 1;
     display: flex;
     flex-direction: column;
     padding: var(--cascivo-space-6) var(--cascivo-space-4);
@@ -32,6 +16,26 @@
   @container (min-width: 40rem) {
     .main {
       padding-inline: var(--cascivo-space-6);
+    }
+  }
+
+  /* homeLayout has container-type so cannot query itself — use @media */
+  @media (min-width: 64rem) {
+    .homeLayout {
+      flex-direction: row;
+      /* align-items defaults to stretch — columns fill the same height */
+    }
+
+    .sidebar {
+      flex: 1;
+      padding: var(--cascivo-space-4);
+      border-inline-end: 1px solid var(--cascivo-color-border);
+      min-inline-size: 0;
+    }
+
+    .main {
+      flex: 2.5;
+      min-inline-size: 0;
     }
   }
 
