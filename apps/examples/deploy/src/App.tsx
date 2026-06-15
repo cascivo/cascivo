@@ -24,6 +24,7 @@ import styles from './App.module.css'
 
 import '@cascivo/themes/dark'
 import '@cascivo/themes/light'
+import '@cascivo/themes/warm'
 import '@cascivo/tokens'
 
 type View = 'projects' | 'deployments' | 'flags'

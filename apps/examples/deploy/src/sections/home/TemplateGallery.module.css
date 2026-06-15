@@ -29,10 +29,7 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-sm);
-  overflow: hidden;
+  gap: var(--cascivo-space-2);
 }
 
 .row {
@@ -42,16 +39,14 @@
   gap: var(--cascivo-space-3);
   padding-inline: var(--cascivo-space-4);
   padding-block: var(--cascivo-space-3);
-  min-block-size: 2.75rem;
-  border-block-end: 1px solid var(--cascivo-color-border);
+  min-block-size: 3.5rem;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-sm);
   background: var(--cascivo-color-surface);
-
-  &:last-child {
-    border-block-end: none;
-  }
 
   &:hover {
     background: var(--cascivo-color-surface-raised);
+    border-color: var(--cascivo-color-border-strong);
   }
 }
 
