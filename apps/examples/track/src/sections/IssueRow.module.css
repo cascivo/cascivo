@@ -1,6 +1,6 @@
 .row {
   display: grid;
-  grid-template-columns: 1rem 4rem 1fr auto auto auto;
+  grid-template-columns: 1rem 1.5rem 4rem 1fr auto auto auto;
   align-items: center;
   gap: var(--cascivo-space-3);
   padding-inline: var(--cascivo-space-4);
@@ -60,6 +60,23 @@
 .statusCircle[data-status='done'] {
   color: var(--cascivo-color-success);
   background: color-mix(in srgb, var(--cascivo-color-success) 20%, transparent);
+}
+
+.priorityIcon {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 600;
+  font-family: var(--cascivo-font-mono);
+  color: var(--cascivo-color-foreground-muted);
+  text-align: center;
+  line-height: 1;
+}
+
+.priorityIcon[data-priority='urgent'] {
+  color: var(--cascivo-color-destructive);
+}
+
+.priorityIcon[data-priority='high'] {
+  color: var(--cascivo-color-warning);
 }
 
 .issueId {

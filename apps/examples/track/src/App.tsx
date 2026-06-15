@@ -79,6 +79,20 @@ export default function App() {
           },
         },
         {
+          label: t(msg.navReviews),
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navViews),
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
           label: t(msg.navNotifications),
           active: false,
           icon: notifBadge,

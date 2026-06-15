@@ -33,6 +33,15 @@ export const deployMsg = defineMessages('deploy', {
   labelLastDeploy: 'Last deploy',
   labelStages: 'Stages',
 
+  // Sidebar nav
+  navProjects: 'Projects',
+  navDeployments: 'Deployments',
+  navDomains: 'Domains',
+  navAnalytics: 'Analytics',
+  navStorage: 'Storage',
+  navUsage: 'Usage',
+  navSettings: 'Settings',
+
   // Flags nav
   navFlags: 'Flags',
 

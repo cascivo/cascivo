@@ -157,7 +157,14 @@ export function AssetsTable({ onSelect }: Props) {
               <div key={i} className={styles['subRow']}>
                 <span>{wr.workspace}</span>
                 <span>{wr.project}</span>
-                <span className={styles['mono']}>{wr.versionInUse}</span>
+                <span className={styles['mono']}>
+                  {wr.versionInUse}
+                  {wr.versionInUse !== row.latestVersion && (
+                    <Badge size="sm" variant="warning">
+                      {t(msg.assetStatusOutdated)}
+                    </Badge>
+                  )}
+                </span>
                 <span>{wr.lastDeployed}</span>
               </div>
             ))}

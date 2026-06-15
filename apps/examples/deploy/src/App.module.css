@@ -1,81 +1,4 @@
 @layer cascade.example {
-  .shell {
-    display: flex;
-    flex-direction: column;
-    min-block-size: 100%;
-    background: var(--cascivo-color-background);
-    color: var(--cascivo-color-text);
-    font-family: var(--cascivo-font-sans);
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    gap: var(--cascivo-space-4);
-    padding-inline: var(--cascivo-space-4);
-    padding-block: var(--cascivo-space-3);
-    background: var(--cascivo-color-surface);
-    border-block-end: 1px solid var(--cascivo-color-border);
-    flex-shrink: 0;
-  }
-
-  @container (min-width: 40rem) {
-    .header {
-      padding-inline: var(--cascivo-space-6);
-    }
-  }
-
-  .headerTitle {
-    font-size: var(--cascivo-text-lg);
-    font-weight: var(--cascivo-font-bold);
-    color: var(--cascivo-color-text);
-    flex: 1;
-  }
-
-  .nav {
-    display: flex;
-    align-items: center;
-    gap: var(--cascivo-space-1);
-  }
-
-  .navBtn {
-    padding-inline: var(--cascivo-space-3);
-    padding-block: var(--cascivo-space-2);
-    font-size: var(--cascivo-text-sm);
-    font-family: var(--cascivo-font-sans);
-    background: transparent;
-    border: none;
-    border-radius: var(--cascivo-radius-control);
-    color: var(--cascivo-color-foreground-muted);
-    cursor: pointer;
-
-    &[data-active] {
-      background: var(--cascivo-color-bg-subtle);
-      color: var(--cascivo-color-text);
-    }
-
-    @media (pointer: coarse) {
-      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
-    }
-  }
-
-  .themeToggle {
-    padding-inline: var(--cascivo-space-3);
-    padding-block: var(--cascivo-space-2);
-    font-size: var(--cascivo-text-xs);
-    font-family: var(--cascivo-font-sans);
-    background: var(--cascivo-color-bg-subtle);
-    border: 1px solid var(--cascivo-color-border);
-    border-radius: var(--cascivo-radius-control);
-    color: var(--cascivo-color-text);
-    cursor: pointer;
-
-    /* Touch target for coarse pointer */
-    @media (pointer: coarse) {
-      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
-    }
-  }
-
   .homeLayout {
     flex: 1;
     display: flex;
@@ -92,7 +15,7 @@
     .sidebar {
       width: 18rem;
       flex-shrink: 0;
-      border-inline-start: 1px solid var(--cascivo-color-border);
+      border-inline-end: 1px solid var(--cascivo-color-border);
     }
   }
 
@@ -100,7 +23,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--cascivo-space-8);
     padding: var(--cascivo-space-6) var(--cascivo-space-4);
     container-type: inline-size;
   }

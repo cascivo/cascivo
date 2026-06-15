@@ -12,9 +12,9 @@ const issue: Issue = {
   createdAt: new Date(2026, 5, 10).toISOString(),
 }
 
-it('renders issue ID with TRK prefix', () => {
+it('renders issue ID with FO prefix', () => {
   render(<IssueRow issue={issue} index={1} />)
-  expect(screen.getByText('TRK-1')).toBeInTheDocument()
+  expect(screen.getByText('FO-1')).toBeInTheDocument()
 })
 
 it('renders issue title', () => {

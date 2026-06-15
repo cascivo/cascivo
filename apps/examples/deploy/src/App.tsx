@@ -1,12 +1,11 @@
 'use client'
 import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { persistedSignal } from '@cascivo/storage'
+import { ToastProvider } from '@cascivo/react'
+import type { SideNavGroup } from '@cascivo/react'
+import { AppShell } from '@cascivo/example-kit'
 import { deployMsg } from './i18n'
 import { loadData, loadError } from './data/fixtures'
-import { MetricsBar } from './sections/MetricsBar'
-import { PipelineList } from './sections/PipelineList'
-import { EnvironmentGrid } from './sections/EnvironmentGrid'
 import { UsagePanel } from './sections/home/UsagePanel'
 import { TemplateGallery } from './sections/home/TemplateGallery'
 import { Deployments } from './sections/project/Deployments'
@@ -17,18 +16,9 @@ import '@cascivo/themes/dark'
 import '@cascivo/themes/light'
 import '@cascivo/tokens'
 
-const THEMES = ['dark', 'light'] as const
-type Theme = (typeof THEMES)[number]
+type View = 'projects' | 'deployments' | 'flags'
 
-type View = 'home' | 'flags' | 'deployments'
-
-const theme = persistedSignal<Theme>('deploy.theme', 'dark')
-const currentView = signal<View>('home')
-
-const NAV_ITEMS: Array<{ label: string; view: View }> = [
-  { label: t(deployMsg.navPipelines), view: 'home' },
-  { label: t(deployMsg.navFlags), view: 'flags' },
-]
+const currentView = signal<View>('projects')
 
 export default function App() {
   useSignals()
@@ -37,70 +27,74 @@ export default function App() {
     void loadData()
   })
 
-  function cycleTheme() {
-    const next = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]
-    theme.value = next ?? 'dark'
-  }
+  const navGroups: SideNavGroup[] = [
+    {
+      items: [
+        {
+          label: t(deployMsg.navProjects),
+          active: currentView.value === 'projects',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'projects'
+          },
+        },
+        {
+          label: t(deployMsg.navDeployments),
+          active: currentView.value === 'deployments',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'deployments'
+          },
+        },
+        { label: t(deployMsg.navDomains), active: false, onClick: (e) => e.preventDefault() },
+        { label: t(deployMsg.navAnalytics), active: false, onClick: (e) => e.preventDefault() },
+        { label: t(deployMsg.navStorage), active: false, onClick: (e) => e.preventDefault() },
+      ],
+    },
+    {
+      items: [
+        {
+          label: t(deployMsg.navFlags),
+          active: currentView.value === 'flags',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'flags'
+          },
+        },
+        { label: t(deployMsg.navUsage), active: false, onClick: (e) => e.preventDefault() },
+        { label: t(deployMsg.navSettings), active: false, onClick: (e) => e.preventDefault() },
+      ],
+    },
+  ]
 
   return (
-    <div className={styles['shell']} data-theme={theme.value}>
-      <header className={styles['header']}>
-        <span className={styles['headerTitle']}>{t(deployMsg.appTitle)}</span>
-        <nav className={styles['nav']}>
-          {NAV_ITEMS.map((item) => (
-            <button
-              key={item.view}
-              type="button"
-              className={styles['navBtn']}
-              data-active={currentView.value === item.view || undefined}
-              onClick={() => {
-                currentView.value = item.view
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-        <button type="button" className={styles['themeToggle']} onClick={cycleTheme}>
-          {theme.value}
-        </button>
-      </header>
-      {loadError.value && (
-        <div
-          role="alert"
-          style={{
-            padding: '0.5rem 1rem',
-            background: 'var(--cascivo-color-destructive-subtle)',
-            color: 'var(--cascivo-color-error)',
-          }}
-        >
-          {loadError.value}
-        </div>
-      )}
-      {currentView.value === 'flags' && <FlagsView />}
-      {currentView.value === 'deployments' && <Deployments />}
-      {currentView.value === 'home' && (
-        <div className={styles['homeLayout']}>
-          <main className={styles['main']}>
-            <section className={styles['section']}>
-              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionMetrics)}</h2>
-              <MetricsBar />
-            </section>
-            <section className={styles['section']}>
-              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionPipelines)}</h2>
-              <PipelineList />
-            </section>
-            <section className={styles['section']}>
-              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionEnvironments)}</h2>
-              <EnvironmentGrid />
-            </section>
-            <TemplateGallery />
-          </main>
-          <aside className={styles['sidebar']}>
-            <UsagePanel />
-          </aside>
-        </div>
-      )}
-    </div>
+    <ToastProvider>
+      <AppShell navGroups={navGroups} mockBanner>
+        {loadError.value && (
+          <div
+            role="alert"
+            style={{
+              padding: '0.5rem 1rem',
+              background: 'var(--cascivo-color-destructive-subtle)',
+              color: 'var(--cascivo-color-error)',
+            }}
+          >
+            {loadError.value}
+          </div>
+        )}
+        {currentView.value === 'flags' && <FlagsView />}
+        {currentView.value === 'deployments' && <Deployments />}
+        {currentView.value === 'projects' && (
+          <div className={styles['homeLayout']}>
+            <aside className={styles['sidebar']}>
+              <UsagePanel />
+            </aside>
+            <main className={styles['main']}>
+              <TemplateGallery />
+            </main>
+          </div>
+        )}
+      </AppShell>
+    </ToastProvider>
   )
 }

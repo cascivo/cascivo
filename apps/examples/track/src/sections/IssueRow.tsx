@@ -20,6 +20,13 @@ function relativeDate(iso: string): string {
   return `${Math.floor(days / 30)}mo ago`
 }
 
+function priorityGlyph(priority: Issue['priority']): string {
+  if (priority === 'urgent') return '!!'
+  if (priority === 'high') return '↑'
+  if (priority === 'low') return '↓'
+  return '–'
+}
+
 export function IssueRow({ issue, index }: Props) {
   useSignals()
 
@@ -34,7 +41,10 @@ export function IssueRow({ issue, index }: Props) {
       }}
     >
       <span className={styles['statusCircle']} data-status={issue.status} aria-hidden />
-      <span className={styles['issueId']}>TRK-{index}</span>
+      <span className={styles['priorityIcon']} data-priority={issue.priority} aria-hidden>
+        {priorityGlyph(issue.priority)}
+      </span>
+      <span className={styles['issueId']}>FO-{index}</span>
       <span className={styles['title']}>{issue.title}</span>
       <span className={styles['spacer']} />
       {assignee ? (

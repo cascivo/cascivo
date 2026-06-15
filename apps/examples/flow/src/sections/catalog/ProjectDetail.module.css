@@ -50,6 +50,35 @@
   overflow: hidden;
 }
 
+.fileHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding-inline: var(--cascivo-space-4);
+  padding-block: var(--cascivo-space-2);
+  background: var(--cascivo-color-surface-raised);
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.fileHeaderName {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex: 1;
+}
+
+.fileHeaderMeta {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  min-inline-size: 8rem;
+}
+
 .fileRow {
   display: grid;
   grid-template-columns: auto 1fr auto auto auto auto auto;

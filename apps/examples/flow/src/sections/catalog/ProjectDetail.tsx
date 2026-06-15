@@ -72,6 +72,12 @@ export function ProjectDetail({ asset, detail, onBack }: Props) {
         </div>
 
         <div className={styles['fileList']}>
+          <div className={styles['fileHeader']}>
+            <span className={styles['fileHeaderName']}>{t(msg.fileColName)}</span>
+            <span className={styles['fileHeaderMeta']}>{t(msg.fileColLastModified)}</span>
+            <span className={styles['fileHeaderMeta']}>{t(msg.fileColModifiedBy)}</span>
+            <span className={styles['fileHeaderMeta']}>{t(msg.fileColCreatedBy)}</span>
+          </div>
           {detail.files.map((file) => (
             <div key={file.id} className={styles['fileRow']}>
               <span className={styles['fileIcon']}>📄</span>
