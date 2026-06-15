@@ -1,7 +1,7 @@
 # cascivo — Roadmap v25: Landing Polish & README Automation
 
 **Last updated:** 2026-06-15
-**Status:** 🚧 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-15-v25-master-plan.md` + tranches 1–6
 
 ---
@@ -199,72 +199,72 @@ and footer; per-package content remains in `readme.body.md`.
 
 ### Broken rendering (T1)
 
-- [ ] `RelayConsole` renders on the home page: SideNav visible, nav items clickable, dashboard
+- [x] `RelayConsole` renders on the home page: SideNav visible, nav items clickable, dashboard
       content shown for each nav item. No JS errors in browser console. _Verify: T1._
-- [ ] "Count the re-renders" demo: typing in the `useState` form increments the badge counter
+- [x] "Count the re-renders" demo: typing in the `useState` form increments the badge counter
       on every keystroke; the signals form badge stays at 1. _Verify: T1._
-- [ ] `ProofTeasers` BarChart shows a tooltip on hover/focus. _Verify: T1._
-- [ ] `/accessibility` `A11yMatrix` `DataTable` renders rows (or an explicit `EmptyState` if
+- [x] `ProofTeasers` BarChart shows a tooltip on hover/focus. _Verify: T1._
+- [x] `/accessibility` `A11yMatrix` `DataTable` renders rows (or an explicit `EmptyState` if
       `A11Y_ROWS` is genuinely empty). _Verify: T1._
-- [ ] `/performance` page shows fallback UI for each chart section when bench data is absent;
+- [x] `/performance` page shows fallback UI for each chart section when bench data is absent;
       shows charts when `results.json` is populated. _Verify: T1._
 
 ### Agent Layer (T2)
 
-- [ ] "Your agent already knows cascivo" section shows four numbered steps (Setup, Discovery,
+- [x] "Your agent already knows cascivo" section shows four numbered steps (Setup, Discovery,
       Build, Validate) in visual order. _Verify: T2._
-- [ ] Each step is self-contained and makes sense without reading the others. _Verify: T2._
-- [ ] MCP client tabs (Claude Code / Cursor / VS Code) remain functional. _Verify: T2._
-- [ ] `CascadeView` live preview renders in the Build step. _Verify: T2._
-- [ ] Section is readable and scannable on mobile (375 px). _Verify: T2._
+- [x] Each step is self-contained and makes sense without reading the others. _Verify: T2._
+- [x] MCP client tabs (Claude Code / Cursor / VS Code) remain functional. _Verify: T2._
+- [x] `CascadeView` live preview renders in the Build step. _Verify: T2._
+- [x] Section is readable and scannable on mobile (375 px). _Verify: T2._
 
 ### ThemeDemo (T3)
 
-- [ ] A single `SignupCard` is shown at a time. The `data-theme` attribute auto-advances through
+- [x] A single `SignupCard` is shown at a time. The `data-theme` attribute auto-advances through
       all ten themes every 1.2 s with a visible CSS cross-fade. _Verify: T3._
-- [ ] Dot indicators below the card show the active theme; clicking a dot pauses auto-advance
+- [x] Dot indicators below the card show the active theme; clicking a dot pauses auto-advance
       and navigates to that theme. _Verify: T3._
-- [ ] Section fits in viewport width at 375 px without horizontal scroll. _Verify: T3._
-- [ ] `pnpm breakpoint:check` exits 0. _Verify: T3._
+- [x] Section fits in viewport width at 375 px without horizontal scroll. _Verify: T3._
+- [x] `pnpm breakpoint:check` exits 0. _Verify: T3._
 
 ### ExamplesGallery (T4)
 
-- [ ] Each of the five demos has a screenshot image rendered above its description. _Verify: T4._
-- [ ] The carousel auto-advances every 4 s; dot indicators show the active demo; prev/next
+- [x] Each of the five demos has a screenshot image rendered above its description. _Verify: T4._
+- [x] The carousel auto-advances every 4 s; dot indicators show the active demo; prev/next
       buttons navigate manually. _Verify: T4._
-- [ ] `demo.description` (long form) is shown in the carousel, not `demo.tagline`. _Verify: T4._
-- [ ] Image container has a fixed aspect ratio (`16/10`) — no layout shift when slides change.
+- [x] `demo.description` (long form) is shown in the carousel, not `demo.tagline`. _Verify: T4._
+- [x] Image container has a fixed aspect ratio (`16/10`) — no layout shift when slides change.
       _Verify: T4._
-- [ ] Section works at 375 px: image visible, text readable, dots tappable. _Verify: T4._
+- [x] Section works at 375 px: image visible, text readable, dots tappable. _Verify: T4._
 
 ### QuickStart + nav (T5)
 
-- [ ] "Up and running in three steps" section has a second block below the three CLI steps
+- [x] "Up and running in three steps" section has a second block below the three CLI steps
       showing the prebuilt pathway (`npm add @cascivo/react` + import example). _Verify: T5._
-- [ ] Header "Components" link navigates to `https://docs.cascivo.com`. _Verify: T5._
-- [ ] Header "Storybook" link navigates to `https://storybook.cascivo.com`. _Verify: T5._
-- [ ] Footer "Docs" link navigates to `https://docs.cascivo.com`. _Verify: T5._
-- [ ] Footer "Storybook" link navigates to `https://storybook.cascivo.com`. _Verify: T5._
+- [x] Header "Components" link navigates to `https://docs.cascivo.com`. _Verify: T5._
+- [x] Header "Storybook" link navigates to `https://storybook.cascivo.com`. _Verify: T5._
+- [x] Footer "Docs" link navigates to `https://docs.cascivo.com`. _Verify: T5._
+- [x] Footer "Storybook" link navigates to `https://storybook.cascivo.com`. _Verify: T5._
 
 ### README generator (T6)
 
-- [ ] Running `pnpm readme:generate` produces READMEs that include a link bar
+- [x] Running `pnpm readme:generate` produces READMEs that include a link bar
       (`cascivo.com · docs.cascivo.com · storybook.cascivo.com · GitHub`) after each title.
       _Verify: T6._
-- [ ] The footer in every README links to cascivo.com, docs.cascivo.com, storybook.cascivo.com,
+- [x] The footer in every README links to cascivo.com, docs.cascivo.com, storybook.cascivo.com,
       and GitHub. _Verify: T6._
-- [ ] All packages and apps under `packages/` and `apps/` have a non-empty `readme.body.md`
+- [x] All packages and apps under `packages/` and `apps/` have a non-empty `readme.body.md`
       file. _Verify: T6._
-- [ ] `pnpm regen && git diff --exit-code` exits 0 after running the generator. _Verify: T6._
+- [x] `pnpm regen && git diff --exit-code` exits 0 after running the generator. _Verify: T6._
 
 ### Gate
 
-- [ ] `pnpm exec vp check` exits 0. _Verify: T6 (final gate)._
-- [ ] `pnpm build` exits 0. _Verify: T6._
-- [ ] `pnpm exec vp run -r check` exits 0. _Verify: T6._
-- [ ] `pnpm test` exits 0. _Verify: T6._
-- [ ] `pnpm regen && pnpm exec vp check --fix && git diff --exit-code` exits 0. _Verify: T6._
-- [ ] `pnpm breakpoint:check` exits 0. _Verify: T6._
+- [x] `pnpm exec vp check` exits 0. _Verify: T6 (final gate)._
+- [x] `pnpm build` exits 0. _Verify: T6._
+- [x] `pnpm exec vp run -r check` exits 0. _Verify: T6._
+- [x] `pnpm test` exits 0. _Verify: T6._
+- [x] `pnpm regen && pnpm exec vp check --fix && git diff --exit-code` exits 0. _Verify: T6._
+- [x] `pnpm breakpoint:check` exits 0. _Verify: T6._
 
 ---
 
