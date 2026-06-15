@@ -4,6 +4,10 @@
 
 > Micro-FSM and Preact Signals primitives powering every cascade component
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+Core runtime for cascade — micro-FSM engine, Preact Signals integration (`useSignal`, `useComputed`, `useSignalEffect`, `useSignals`), and base utilities shared across all components.
+
 ## Install
 
 ```sh
@@ -12,4 +16,4 @@ pnpm add @cascivo/core
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

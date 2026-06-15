@@ -4,6 +4,8 @@
 
 > MCP server exposing the cascade component registry to AI agents
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
 ## Usage
 
 Add it to your MCP client configuration:
@@ -54,4 +56,4 @@ pnpm add @cascivo/mcp
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

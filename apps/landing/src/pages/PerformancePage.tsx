@@ -97,7 +97,16 @@ function PerfHero() {
 
 function BundleSection() {
   const series = bundleChartSeries()
-  if (!series) return null
+  if (!series) {
+    return (
+      <section className="section" data-reveal="">
+        <h2>Bundle size</h2>
+        <p className="perf-note">
+          No bundle data yet — run <code>pnpm bench</code> to populate results.
+        </p>
+      </section>
+    )
+  }
   const treeshake = bench.bundle?.treeshake
   return (
     <section className="section" data-reveal="">
@@ -136,7 +145,16 @@ function MatrixSection() {
   useSignals()
   const lens = useSignal<Lens>('incremental')
   const rows = matrixRows()
-  if (!rows) return null
+  if (!rows) {
+    return (
+      <section className="section" data-reveal="">
+        <h2>What does one component cost?</h2>
+        <p className="perf-note">
+          No per-component data yet — run <code>pnpm bench</code> to populate.
+        </p>
+      </section>
+    )
+  }
 
   const activeLens = lens.value
 
@@ -231,7 +249,16 @@ function MatrixSection() {
 function LatencySection() {
   const spotlight = latencySpotlightSeries()
   const rows = latencyRows()
-  if (!spotlight || !rows) return null
+  if (!spotlight || !rows) {
+    return (
+      <section className="section" data-reveal="">
+        <h2>Interaction latency</h2>
+        <p className="perf-note">
+          No latency data yet — run <code>pnpm bench</code> to populate results.
+        </p>
+      </section>
+    )
+  }
   return (
     <section className="section" data-reveal="">
       <h2>Interaction latency</h2>
@@ -293,7 +320,16 @@ function LatencySection() {
 
 function RendersSection() {
   const series = rendersSeries()
-  if (!series) return null
+  if (!series) {
+    return (
+      <section className="section" data-reveal="">
+        <h2>Re-renders</h2>
+        <p className="perf-note">
+          No render data yet — run <code>pnpm bench</code> to populate results.
+        </p>
+      </section>
+    )
+  }
   const typing = bench.renders?.['type-20-chars']
   const comparison =
     typing?.cascade !== undefined && typing.shadcn !== undefined
@@ -323,7 +359,16 @@ function RendersSection() {
 
 function LighthouseSection() {
   const lh = bench.lighthouse
-  if (!lh?.cascade) return null
+  if (!lh?.cascade) {
+    return (
+      <section className="section" data-reveal="">
+        <h2>Lighthouse</h2>
+        <p className="perf-note">
+          No Lighthouse data yet — run <code>pnpm bench</code> to populate results.
+        </p>
+      </section>
+    )
+  }
   const c = lh.cascade
   return (
     <section className="section" data-reveal="">

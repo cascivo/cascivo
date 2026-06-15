@@ -1,0 +1,1 @@
+CSS design tokens for cascade — primitive, semantic, and component-level custom properties in a three-level system. Primitive tokens define the raw scale; semantic tokens map intent (`--cascivo-color-accent`); component tokens map usage (`--cascivo-button-bg`).

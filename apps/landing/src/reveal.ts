@@ -18,5 +18,21 @@ export function initReveal(): () => void {
     { threshold: 0, rootMargin: '0px 0px -60px 0px' },
   )
   for (const el of document.querySelectorAll('[data-reveal]')) observer.observe(el)
-  return () => observer.disconnect()
+
+  // Lazy-loaded sections arrive after the initial scan — watch for them.
+  const mutation = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const node of m.addedNodes) {
+        if (!(node instanceof Element)) continue
+        if (node.hasAttribute('data-reveal')) observer.observe(node)
+        for (const el of node.querySelectorAll('[data-reveal]')) observer.observe(el)
+      }
+    }
+  })
+  mutation.observe(document.body, { childList: true, subtree: true })
+
+  return () => {
+    observer.disconnect()
+    mutation.disconnect()
+  }
 }

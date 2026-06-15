@@ -59,7 +59,6 @@ export function ProofTeasers() {
               <p className="proof-number">{bundle.apps.cascade.totalGzKb.toFixed(1)} KB</p>
               <p className="proof-number-label">total gzip · full benchmark app · JS + CSS</p>
               <BarChart
-                plain
                 orientation="horizontal"
                 title="Total gzip size: cascivo vs shadcn vs Carbon"
                 series={BUNDLE_SERIES}

@@ -2,6 +2,8 @@
 
 # @cascivo/example-pay
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
 Cascade Pay — a functional mock of a payments and revenue dashboard (feels like Stripe).
 
 **Mock demo: no real backend.** Data loads via a client-side mock API with seeded latency. Refund
@@ -30,4 +32,4 @@ standalone (`vp preview`, served at `/`) and under `/demos/pay/`.
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

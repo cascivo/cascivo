@@ -4,6 +4,10 @@
 
 > Registry schema v2 types, validation, and static build for the cascade ecosystem
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+Registry client and type definitions — reads `registry.json` and validates component entries. Used internally by the CLI and MCP server.
+
 ## Install
 
 ```sh
@@ -12,4 +16,4 @@ pnpm add @cascivo/registry
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

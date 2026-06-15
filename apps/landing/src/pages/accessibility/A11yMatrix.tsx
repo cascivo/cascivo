@@ -1,6 +1,7 @@
 'use client'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import { DataTable, type Column } from '@cascivo/components/data-table'
+import { EmptyState } from '@cascivo/components/empty-state'
 import { Kbd } from '@cascivo/components/kbd'
 import { SegmentedControl } from '@cascivo/components/segmented-control'
 import { VisuallyHidden } from '@cascivo/components/visually-hidden'
@@ -87,15 +88,22 @@ export function A11yMatrix() {
           }}
         />
       </div>
-      <DataTable
-        columns={COLUMNS}
-        rows={rows.value}
-        getRowId={(r) => r.name}
-        density="compact"
-        stickyHeader
-        title="Keyboard and ARIA matrix"
-        description="Role, WCAG level, and keyboard interaction per registry entry, generated from each component.meta.ts."
-      />
+      {rows.value.length === 0 ? (
+        <EmptyState
+          title="No accessibility data available"
+          description="Run pnpm regen to regenerate registry.json with accessibility metadata."
+        />
+      ) : (
+        <DataTable
+          columns={COLUMNS}
+          rows={rows.value}
+          getRowId={(r) => r.name}
+          density="compact"
+          stickyHeader
+          title="Keyboard and ARIA matrix"
+          description="Role, WCAG level, and keyboard interaction per registry entry, generated from each component.meta.ts."
+        />
+      )}
     </section>
   )
 }

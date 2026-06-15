@@ -1,0 +1,1 @@
+CLI for scaffold and copy-paste workflows — `npx cascivo init`, `cascivo add <component>`, `cascivo audit --ai`. Detects your package manager, writes `cascivo.config.ts`, and fetches component source from `registry.json`.

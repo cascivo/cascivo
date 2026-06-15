@@ -4,6 +4,10 @@
 
 > Runtime JSON → UI renderer for cascade
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+`CascadeView` renderer — takes a `view.v1.json` config object and renders it to live cascade UI. Used by AI agents that emit layout configs instead of writing TSX directly.
+
 ## Install
 
 ```sh
@@ -12,4 +16,4 @@ pnpm add @cascivo/render
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

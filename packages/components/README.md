@@ -4,6 +4,10 @@
 
 > Registry source — copy-paste component TSX + CSS + manifests (not published)
 
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+
+Registry source for all cascade components — Button, Input, Checkbox, Select, Modal, DataTable, and 60+ more. This package is the source of truth; components are copied into user projects via the CLI and are not intended to be imported directly from this path in production apps. Use `@cascivo/react` for prebuilt distribution.
+
 ## Components
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
@@ -158,4 +162,4 @@
 
 ---
 
-[Docs](https://cascivo.com/docs) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

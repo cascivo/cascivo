@@ -1,0 +1,1 @@
+Signal-driven internationalisation layer for cascade — locale store, typed string catalogs, and `Intl` formatting helpers. Components read from the built-in catalog by default; pass a `labels` prop to override per-instance.

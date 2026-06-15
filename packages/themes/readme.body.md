@@ -1,0 +1,1 @@
+First-party themes for cascade — `light.css`, `dark.css`, `warm.css`, and more. Apply via `data-theme` on any container; themes override the semantic token layer only, leaving component and primitive tokens unchanged.
