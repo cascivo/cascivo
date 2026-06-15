@@ -161,14 +161,14 @@ and footer; per-package content remains in `readme.body.md`.
 
 ## Workstreams
 
-| # | Workstream | Tranche | Summary |
-| --- | --- | --- | --- |
-| A | Fix broken rendering (RelayConsole, re-render counter, BarChart tooltip, A11y table, Perf page) | T1 | Restore all five broken surfaces |
-| B | Agent Layer narrative redesign | T2 | Rewrite AgentLayer.tsx as 4-step workflow; update CSS |
-| C | ThemeDemo animation | T3 | Single-card cycler with CSS cross-fade and dot nav |
-| D | ExamplesGallery carousel | T4 | Full-width screenshot carousel; 4 s auto-advance; dots |
-| E | QuickStart + nav link fixes | T5 | Prebuilt pathway; fix Components + Storybook hrefs in header/footer |
-| F | README generator enhancement | T6 | Link bar in header; full footer; audit missing readme.body.md files |
+| #   | Workstream                                                                                      | Tranche | Summary                                                             |
+| --- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------- |
+| A   | Fix broken rendering (RelayConsole, re-render counter, BarChart tooltip, A11y table, Perf page) | T1      | Restore all five broken surfaces                                    |
+| B   | Agent Layer narrative redesign                                                                  | T2      | Rewrite AgentLayer.tsx as 4-step workflow; update CSS               |
+| C   | ThemeDemo animation                                                                             | T3      | Single-card cycler with CSS cross-fade and dot nav                  |
+| D   | ExamplesGallery carousel                                                                        | T4      | Full-width screenshot carousel; 4 s auto-advance; dots              |
+| E   | QuickStart + nav link fixes                                                                     | T5      | Prebuilt pathway; fix Components + Storybook hrefs in header/footer |
+| F   | README generator enhancement                                                                    | T6      | Link bar in header; full footer; audit missing readme.body.md files |
 
 ---
 
@@ -270,15 +270,15 @@ and footer; per-package content remains in `readme.body.md`.
 
 ## Non-goals (explicitly out of scope)
 
-| Claim | Substance |
-| --- | --- |
-| **No new landing sections** | All changes fix or replace existing sections. |
-| **No new library components** | All animation and carousel work uses existing `@cascivo/react` primitives + `useSignal`/`useSignalEffect` from `@cascivo/core`. |
-| **No new example apps** | The demo data changes only in how the ExamplesGallery carousel renders it. |
-| **No dark-mode carousel** | The carousel uses `screenshots.desktopLight` only; dark-mode toggling in the gallery is deferred. |
-| **No pause-on-hover for ThemeDemo or gallery** | Pause on hover adds event-listener complexity; manual dot navigation satisfies the same need. |
-| **No backend** | All data is build-time (bench results, registry.json) or live-in-browser signals. |
-| **No npm badges in READMEs** | Badge images from shields.io are external resources that may be blocked in some contexts; deferred. |
+| Claim                                          | Substance                                                                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **No new landing sections**                    | All changes fix or replace existing sections.                                                                                   |
+| **No new library components**                  | All animation and carousel work uses existing `@cascivo/react` primitives + `useSignal`/`useSignalEffect` from `@cascivo/core`. |
+| **No new example apps**                        | The demo data changes only in how the ExamplesGallery carousel renders it.                                                      |
+| **No dark-mode carousel**                      | The carousel uses `screenshots.desktopLight` only; dark-mode toggling in the gallery is deferred.                               |
+| **No pause-on-hover for ThemeDemo or gallery** | Pause on hover adds event-listener complexity; manual dot navigation satisfies the same need.                                   |
+| **No backend**                                 | All data is build-time (bench results, registry.json) or live-in-browser signals.                                               |
+| **No npm badges in READMEs**                   | Badge images from shields.io are external resources that may be blocked in some contexts; deferred.                             |
 
 ---
 

@@ -57,11 +57,16 @@ function SigCheckbox({ sig, label }: { sig: Signal<boolean>; label: string }) {
 
 function SignalForm() {
   // No useSignals() — this component renders once (on mount) and never again
+  const mounted = useRef(false)
   const renders = useRef(0)
-  renders.current++
-  queueMicrotask(() => {
-    signalFormRenders.value = renders.current
-  })
+  if (mounted.current) {
+    renders.current++
+    queueMicrotask(() => {
+      signalFormRenders.value = renders.current
+    })
+  } else {
+    mounted.current = true
+  }
   return (
     <form className="twin-form" aria-label="cascivo form">
       <SigInput sig={sigName} label="Name" />
@@ -79,11 +84,16 @@ function StateForm() {
   const [email, setEmail] = useState('')
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [newsletter, setNewsletter] = useState(false)
+  const mounted = useRef(false)
   const renders = useRef(0)
-  renders.current++
-  queueMicrotask(() => {
-    stateFormRenders.value = renders.current
-  })
+  if (mounted.current) {
+    renders.current++
+    queueMicrotask(() => {
+      stateFormRenders.value = renders.current
+    })
+  } else {
+    mounted.current = true
+  }
   return (
     <form className="twin-form" aria-label="useState form">
       <Input label="Name" value={name} onChange={(e) => setName(e.currentTarget.value)} />

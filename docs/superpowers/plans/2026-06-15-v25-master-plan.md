@@ -12,14 +12,14 @@
 
 ## Tranche Overview
 
-| Tranche | Title | Goal |
-| --- | --- | --- |
-| T1 | Fix broken rendering | Restore RelayConsole, re-render counter, BarChart tooltip, A11y table, Performance page |
-| T2 | Agent Layer narrative redesign | Rewrite AgentLayer as 4-step sequential workflow |
-| T3 | ThemeDemo animation | Single-card cycler with CSS cross-fade and dot navigation |
-| T4 | ExamplesGallery carousel | Screenshot carousel with auto-advance and description |
-| T5 | QuickStart + nav link fixes | Add prebuilt option; fix Components + Storybook hrefs |
-| T6 | README generator enhancement | Link bar header + full footer; audit readme.body.md files |
+| Tranche | Title                          | Goal                                                                                    |
+| ------- | ------------------------------ | --------------------------------------------------------------------------------------- |
+| T1      | Fix broken rendering           | Restore RelayConsole, re-render counter, BarChart tooltip, A11y table, Performance page |
+| T2      | Agent Layer narrative redesign | Rewrite AgentLayer as 4-step sequential workflow                                        |
+| T3      | ThemeDemo animation            | Single-card cycler with CSS cross-fade and dot navigation                               |
+| T4      | ExamplesGallery carousel       | Screenshot carousel with auto-advance and description                                   |
+| T5      | QuickStart + nav link fixes    | Add prebuilt option; fix Components + Storybook hrefs                                   |
+| T6      | README generator enhancement   | Link bar header + full footer; audit readme.body.md files                               |
 
 ---
 
@@ -27,48 +27,48 @@
 
 ### T1 — Fix broken rendering
 
-| Action | Path |
-| --- | --- |
-| Modify | `apps/landing/src/demo/RelayConsole.tsx` |
-| Modify | `apps/landing/src/sections/SignalsDemo.tsx` |
-| Modify | `apps/landing/src/sections/ProofTeasers.tsx` |
+| Action | Path                                                  |
+| ------ | ----------------------------------------------------- |
+| Modify | `apps/landing/src/demo/RelayConsole.tsx`              |
+| Modify | `apps/landing/src/sections/SignalsDemo.tsx`           |
+| Modify | `apps/landing/src/sections/ProofTeasers.tsx`          |
 | Modify | `apps/landing/src/pages/accessibility/A11yMatrix.tsx` |
-| Modify | `apps/landing/src/pages/PerformancePage.tsx` |
+| Modify | `apps/landing/src/pages/PerformancePage.tsx`          |
 
 ### T2 — Agent Layer narrative redesign
 
-| Action | Path |
-| --- | --- |
+| Action | Path                                       |
+| ------ | ------------------------------------------ |
 | Modify | `apps/landing/src/sections/AgentLayer.tsx` |
-| Modify | `apps/landing/src/landing.css` |
+| Modify | `apps/landing/src/landing.css`             |
 
 ### T3 — ThemeDemo animation
 
-| Action | Path |
-| --- | --- |
+| Action | Path                                      |
+| ------ | ----------------------------------------- |
 | Modify | `apps/landing/src/sections/ThemeDemo.tsx` |
-| Modify | `apps/landing/src/landing.css` |
+| Modify | `apps/landing/src/landing.css`            |
 
 ### T4 — ExamplesGallery carousel
 
-| Action | Path |
-| --- | --- |
+| Action | Path                                            |
+| ------ | ----------------------------------------------- |
 | Modify | `apps/landing/src/sections/ExamplesGallery.tsx` |
-| Modify | `apps/landing/src/landing.css` |
+| Modify | `apps/landing/src/landing.css`                  |
 
 ### T5 — QuickStart + nav link fixes
 
-| Action | Path |
-| --- | --- |
+| Action | Path                                       |
+| ------ | ------------------------------------------ |
 | Modify | `apps/landing/src/sections/QuickStart.tsx` |
-| Modify | `apps/landing/src/sections/Header.tsx` |
-| Modify | `apps/landing/src/sections/Footer.tsx` |
+| Modify | `apps/landing/src/sections/Header.tsx`     |
+| Modify | `apps/landing/src/sections/Footer.tsx`     |
 
 ### T6 — README generator enhancement
 
-| Action | Path |
-| --- | --- |
-| Modify | `scripts/readme/generate.ts` |
+| Action       | Path                                                            |
+| ------------ | --------------------------------------------------------------- |
+| Modify       | `scripts/readme/generate.ts`                                    |
 | Audit/create | `readme.body.md` for all packages and apps that are missing one |
 
 ---
@@ -90,13 +90,13 @@ the final gate check across all changes.
 
 ## Root Cause Summary (T1)
 
-| Surface | Most Likely Cause | Fix |
-| --- | --- | --- |
-| RelayConsole blank | Icon import name mismatch — `@cascivo/icons` export renamed | Audit exports; update import names |
-| Re-render counter | Counter signal update races React StrictMode double-invoke | Wrap `queueMicrotask` emit in `if` guard; verify both counters increment |
-| ProofTeasers tooltip | `plain` prop passed to `BarChart` strips interactivity | Remove `plain` |
-| A11y table blank | `A11Y_ROWS` empty OR `rows.value` not subscribed | Add `EmptyState` fallback; verify signal subscription |
-| Performance charts blank | `results.json` keys absent → all sections return `null` | Add explicit fallback UI per section |
+| Surface                  | Most Likely Cause                                           | Fix                                                                      |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------ |
+| RelayConsole blank       | Icon import name mismatch — `@cascivo/icons` export renamed | Audit exports; update import names                                       |
+| Re-render counter        | Counter signal update races React StrictMode double-invoke  | Wrap `queueMicrotask` emit in `if` guard; verify both counters increment |
+| ProofTeasers tooltip     | `plain` prop passed to `BarChart` strips interactivity      | Remove `plain`                                                           |
+| A11y table blank         | `A11Y_ROWS` empty OR `rows.value` not subscribed            | Add `EmptyState` fallback; verify signal subscription                    |
+| Performance charts blank | `results.json` keys absent → all sections return `null`     | Add explicit fallback UI per section                                     |
 
 ---
 
