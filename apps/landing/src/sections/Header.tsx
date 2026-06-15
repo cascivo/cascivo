@@ -7,9 +7,9 @@ import { THEMES, setTheme, theme } from '../theme'
 const path = typeof window !== 'undefined' ? window.location.pathname : '/'
 
 const NAV_LINKS = [
-  { label: 'Components', href: '/docs' },
+  { label: 'Components', href: 'https://docs.cascivo.com' },
   { label: 'Examples', href: '/examples', active: path.startsWith('/examples') },
-  { label: 'Storybook', href: '/storybook' },
+  { label: 'Storybook', href: 'https://storybook.cascivo.com' },
   {
     label: 'Accessibility',
     href: '/accessibility',
@@ -138,19 +138,23 @@ export function Header() {
         aria-label="Main navigation"
         aria-hidden={!isNavOpen.value}
       >
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className="mobile-nav-link"
-            aria-current={link.active ? 'page' : undefined}
-            onClick={() => {
-              isNavOpen.value = false
-            }}
-          >
-            {link.label}
-          </a>
-        ))}
+        {NAV_LINKS.map((link) => {
+          const isExternal = /^https?:\/\//.test(link.href)
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              className="mobile-nav-link"
+              aria-current={link.active ? 'page' : undefined}
+              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              onClick={() => {
+                isNavOpen.value = false
+              }}
+            >
+              {link.label}
+            </a>
+          )
+        })}
       </nav>
     </>
   )
