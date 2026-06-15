@@ -16,6 +16,17 @@
   display: inline-flex;
   align-items: center;
   gap: var(--cascivo-space-2);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .assetIcon {

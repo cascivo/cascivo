@@ -2,13 +2,16 @@
 import { signal, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { Tabs, TabsList, TabsTrigger, TabsContent, SegmentedControl } from '@cascivo/react'
+import { CATALOG_ASSETS, PROJECT_DETAILS } from '../../data/catalog'
 import { msg } from '../../i18n'
 import { AdoptionView } from './AdoptionView'
 import { AssetsTable } from './AssetsTable'
+import { ProjectDetail } from './ProjectDetail'
 import styles from './CatalogShell.module.css'
 
 export const catalogTab = signal<'assets' | 'usage' | 'adoption'>('adoption')
 export const catalogRange = signal<'7d' | '30d' | '90d'>('30d')
+export const selectedAssetId = signal<string | null>(null)
 
 const RANGE_OPTIONS = [
   { label: '7d', value: '7d' },
@@ -18,6 +21,21 @@ const RANGE_OPTIONS = [
 
 export function CatalogShell() {
   useSignals()
+
+  const asset = CATALOG_ASSETS.find((a) => a.id === selectedAssetId.value)
+  const detail = PROJECT_DETAILS.find((d) => d.assetId === selectedAssetId.value)
+
+  if (asset && detail) {
+    return (
+      <ProjectDetail
+        asset={asset}
+        detail={detail}
+        onBack={() => {
+          selectedAssetId.value = null
+        }}
+      />
+    )
+  }
 
   return (
     <div className={styles['shell']}>
@@ -45,7 +63,11 @@ export function CatalogShell() {
           <TabsTrigger value="adoption">{t(msg.catalogTabAdoption)}</TabsTrigger>
         </TabsList>
         <TabsContent value="assets">
-          <AssetsTable />
+          <AssetsTable
+            onSelect={(id) => {
+              selectedAssetId.value = id
+            }}
+          />
         </TabsContent>
         <TabsContent value="usage">
           <p

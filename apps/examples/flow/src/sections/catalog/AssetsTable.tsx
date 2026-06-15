@@ -30,17 +30,7 @@ function statusLabel(status: AssetStatus): string {
   return t(msg.assetStatusUnavailable)
 }
 
-const COLUMNS: Column<CatalogAsset>[] = [
-  {
-    key: 'name',
-    header: t(msg.colAssetName),
-    render: (row) => (
-      <span className={styles['assetName']}>
-        <span className={styles['assetIcon']}>{row.icon}</span>
-        {row.name}
-      </span>
-    ),
-  },
+const COLUMNS_TAIL: Column<CatalogAsset>[] = [
   {
     key: 'workspaces',
     header: t(msg.colWorkspaces),
@@ -81,8 +71,32 @@ const COLUMNS: Column<CatalogAsset>[] = [
   },
 ]
 
-export function AssetsTable() {
+interface Props {
+  onSelect?: (id: string) => void
+}
+
+export function AssetsTable({ onSelect }: Props) {
   useSignals()
+
+  const columns: Column<CatalogAsset>[] = [
+    {
+      key: 'name',
+      header: t(msg.colAssetName),
+      render: (row) =>
+        onSelect ? (
+          <button type="button" className={styles['assetName']} onClick={() => onSelect(row.id)}>
+            <span className={styles['assetIcon']}>{row.icon}</span>
+            {row.name}
+          </button>
+        ) : (
+          <span className={styles['assetName']}>
+            <span className={styles['assetIcon']}>{row.icon}</span>
+            {row.name}
+          </span>
+        ),
+    },
+    ...COLUMNS_TAIL,
+  ]
 
   const filteredRows = useComputed(() => {
     const q = searchSignal.value.toLowerCase()
@@ -126,7 +140,7 @@ export function AssetsTable() {
       </div>
 
       <DataTable<CatalogAsset>
-        columns={COLUMNS}
+        columns={columns}
         rows={filteredRows.value}
         getRowId={(row) => row.id}
         emptyState={<EmptyState title={t(msg.assetsEmpty)} />}
