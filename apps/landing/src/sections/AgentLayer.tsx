@@ -124,120 +124,124 @@ const RELAY_SLICE_JSON = JSON.stringify(RELAY_SLICE, null, 2)
 export function AgentLayer() {
   return (
     <section className="agents" id="agents" data-reveal="">
-      <h2>Your agent already knows cascivo</h2>
+      <h2>AI-native, not AI-aware</h2>
       <p className="agents-sub">
-        Your agent already knows cascivo — and cascivo can audit what it writes.
+        Four steps from zero to a working cascivo UI, built entirely by your agent.
       </p>
 
-      <div className="agents-grid">
-        <article className="agent-artifact">
-          <h3>The manifest is the source of truth</h3>
-          <pre
-            className="agent-code"
-            tabIndex={0}
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: highlightTS(manifestExcerpt) }}
-          />
-          <p className="agent-caption">
-            button.meta.ts — real file, imported into this page at build time.
-          </p>
-        </article>
-
-        <article className="agent-artifact">
-          <h3>Connect the MCP server</h3>
-          <Tabs defaultValue="claude">
-            <TabsList>
+      <ol className="agent-steps">
+        {/* Step 1: Setup */}
+        <li className="agent-step">
+          <div className="agent-step-header">
+            <span className="agent-step-num" aria-hidden="true">
+              1
+            </span>
+            <h3 className="agent-step-title">Connect the MCP server</h3>
+          </div>
+          <div className="agent-step-body">
+            <Tabs defaultValue="claude">
+              <TabsList>
+                {MCP_CLIENTS.map((c) => (
+                  <TabsTrigger key={c.id} value={c.id}>
+                    {c.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
               {MCP_CLIENTS.map((c) => (
-                <TabsTrigger key={c.id} value={c.id}>
-                  {c.label}
-                </TabsTrigger>
+                <TabsContent key={c.id} value={c.id}>
+                  <CopyCommand command={c.command} />
+                </TabsContent>
               ))}
-            </TabsList>
-            {MCP_CLIENTS.map((c) => (
-              <TabsContent key={c.id} value={c.id}>
-                <CopyCommand command={c.command} />
-              </TabsContent>
-            ))}
-          </Tabs>
-          <p className="agent-caption">
-            Six tools: list_components, get_component, search_components, add_to_project,
-            create_theme, scaffold_page.
-          </p>
-        </article>
+            </Tabs>
+            <p className="agent-caption">
+              Six tools: list_components, get_component, search_components, add_to_project,
+              create_theme, scaffold_page. No MCP? Use <a href="/llms.txt">llms.txt</a> instead —
+              same manifest data, plain text.
+            </p>
+          </div>
+        </li>
 
-        <article className="agent-artifact agent-prompt">
-          <h3>Then just ask</h3>
-          <blockquote className="agent-prompt-text">
-            &ldquo;Add a deploys table with status badges and a new-deploy dialog to my settings
-            page — use cascivo components.&rdquo;
-          </blockquote>
-          <p className="agent-caption">
-            The agent resolves components via MCP, copies owned code via the CLI, and validates
-            against the manifest — the same flow as <code>npx @cascivo/cli add</code>.
-          </p>
-        </article>
-
-        <article className="agent-artifact agent-render">
-          <h3>Agents don&apos;t screenshot. They render.</h3>
-          <div className="agent-render-panes">
+        {/* Step 2: Discovery */}
+        <li className="agent-step">
+          <div className="agent-step-header">
+            <span className="agent-step-num" aria-hidden="true">
+              2
+            </span>
+            <h3 className="agent-step-title">Your agent reads every manifest</h3>
+          </div>
+          <div className="agent-step-body agent-step-body--split">
             <pre
               className="agent-code"
               tabIndex={0}
               // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: highlightJSON(RELAY_SLICE_JSON) }}
+              dangerouslySetInnerHTML={{ __html: highlightTS(manifestExcerpt) }}
             />
-            <div className="agent-render-preview">
-              <CascadeView config={RELAY_SLICE} onInvalid="render" />
+            <p className="agent-caption">
+              button.meta.ts — real file, imported at build time. Every component ships one: props,
+              states, variants, tokens, keyboard patterns, WCAG level, and usage examples. The MCP
+              server exposes all of it as structured tool responses.
+            </p>
+          </div>
+        </li>
+
+        {/* Step 3: Build */}
+        <li className="agent-step">
+          <div className="agent-step-header">
+            <span className="agent-step-num" aria-hidden="true">
+              3
+            </span>
+            <h3 className="agent-step-title">Ask it to build something</h3>
+          </div>
+          <div className="agent-step-body">
+            <blockquote className="agent-prompt-text">
+              &ldquo;Add a deploys table with status badges and a new-deploy dialog to my settings
+              page — use cascivo components.&rdquo;
+            </blockquote>
+            <p className="agent-caption">
+              The agent resolves components via MCP, copies owned code via the CLI, and wires up the
+              manifest — the same flow as <code>npx @cascivo/cli add</code>. For simple layouts, it
+              can emit a <code>view.v1.json</code> config that renders directly:
+            </p>
+            <div className="agent-render-panes">
+              <pre
+                className="agent-code"
+                tabIndex={0}
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{ __html: highlightJSON(RELAY_SLICE_JSON) }}
+              />
+              <div className="agent-render-preview">
+                <CascadeView config={RELAY_SLICE} onInvalid="render" />
+              </div>
             </div>
           </div>
-          <p className="agent-caption">
-            CascadeView renders <code>view.v1.json</code> configs straight to live cascade UI — the
-            JSON on the left is the source of the panel on the right.{' '}
-            <a href="/docs/playground">Edit it in the playground →</a>
-          </p>
-        </article>
+        </li>
 
-        <article className="agent-artifact">
-          <h3>Audit the agent&apos;s output</h3>
-          <pre
-            className="agent-code code-bad"
-            tabIndex={0}
-          >{`color: #3b82f6;  /* ← hard-coded */`}</pre>
-          <pre className="agent-code" tabIndex={0}>{`npx @cascivo/cli audit --ai src/`}</pre>
-          <pre
-            className="agent-code"
-            tabIndex={0}
-          >{`Dashboard.tsx:14  warn  hardcoded-value  #3b82f6 → var(--cascivo-color-accent)
----
-0 errors, 1 warning`}</pre>
-          <p className="agent-caption">
-            <code>cascivo audit --ai</code> scans agent-generated code for hard-coded values,
-            invented props, missing required props, and raw strings where i18n is expected.
-          </p>
-        </article>
-
-        <article className="agent-artifact">
-          <h3>One file. Everything an agent needs.</h3>
-          <pre className="agent-code" tabIndex={0}>{`# cascivo llms.txt — generated at build time
-
-## Button
-
-Intent: trigger a user action or navigation event.
-
-tokens:
-  --cascivo-button-bg: var(--cascivo-color-primary)
-  --cascivo-button-fg: var(--cascivo-color-primary-fg)
-  --cascivo-button-radius: var(--cascivo-radius-button)
-
-variants: primary | secondary | ghost | destructive
-sizes: sm | md | lg`}</pre>
-          <p className="agent-caption">
-            llms.txt consolidates every component&apos;s manifest, intent block, token catalog, and
-            design specs into a single LLM-readable document — generated at build time from the same
-            source that drives the MCP server and the docs. <a href="/llms.txt">View llms.txt →</a>
-          </p>
-        </article>
-      </div>
+        {/* Step 4: Validate */}
+        <li className="agent-step">
+          <div className="agent-step-header">
+            <span className="agent-step-num" aria-hidden="true">
+              4
+            </span>
+            <h3 className="agent-step-title">Audit what it built</h3>
+          </div>
+          <div className="agent-step-body">
+            <pre
+              className="agent-code code-bad"
+              tabIndex={0}
+            >{`color: #3b82f6;  /* ← hard-coded */`}</pre>
+            <pre className="agent-code" tabIndex={0}>{`npx @cascivo/cli audit --ai src/`}</pre>
+            <pre
+              className="agent-code"
+              tabIndex={0}
+            >{`Dashboard.tsx:14  warn  hardcoded-value  #3b82f6 → var(--cascivo-color-accent)\n\n0 errors, 1 warning`}</pre>
+            <p className="agent-caption">
+              <code>cascivo audit --ai</code> scans agent-generated code for hard-coded values,
+              invented props, missing required props, and raw strings where i18n is expected. Run it
+              as a CI gate or as a post-generation hook.
+            </p>
+          </div>
+        </li>
+      </ol>
     </section>
   )
 }

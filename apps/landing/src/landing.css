@@ -1127,36 +1127,67 @@ kbd {
   max-inline-size: 44rem;
 }
 
-.agents-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--cascivo-space-6);
-}
-
-@media (min-width: 40rem) {
-  .agents-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 64rem) {
-  .agents-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.agent-artifact {
+.agent-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--cascivo-space-3);
-  /* Prevent grid item from expanding beyond its column due to pre/code content */
-  min-inline-size: 0;
+  gap: var(--cascivo-space-8);
 }
 
-.agent-artifact h3 {
+.agent-step {
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  overflow: hidden;
+}
+
+.agent-step-header {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4) var(--cascivo-space-5);
+  background-color: var(--cascivo-color-surface-raised);
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.agent-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: 50%;
+  background-color: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-fg);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-bold);
+  flex-shrink: 0;
+}
+
+.agent-step-title {
   margin: 0;
   font-size: var(--cascivo-text-base);
   font-weight: var(--cascivo-font-semibold);
+}
+
+.agent-step-body {
+  padding: var(--cascivo-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.agent-step-body--split {
+  display: grid;
+  gap: var(--cascivo-space-4);
+}
+
+@media (min-width: 40rem) {
+  .agent-step-body--split {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
 }
 
 .agent-code {
@@ -1184,10 +1215,6 @@ kbd {
   color: var(--cascivo-color-text-subtle);
 }
 
-.agent-prompt {
-  grid-column: span 1;
-}
-
 .agent-prompt-text {
   margin: 0;
   padding: var(--cascivo-space-4);
@@ -1195,10 +1222,6 @@ kbd {
   font-size: var(--cascivo-text-base);
   color: var(--cascivo-color-text-subtle);
   font-style: normal;
-}
-
-.agent-render {
-  grid-column: 1 / -1;
 }
 
 .agent-render-panes {
@@ -1639,8 +1662,7 @@ kbd {
 .component-grid,
 .theme-demo-grid,
 .quickstart,
-.proof-teasers,
-.agents-grid {
+.proof-teasers {
   container-type: inline-size;
 }
 
