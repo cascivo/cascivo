@@ -6,15 +6,17 @@
     container-type: inline-size;
   }
 
-  @container (min-width: 64rem) {
+  /* homeLayout has container-type so cannot query itself — use @media */
+  @media (min-width: 64rem) {
     .homeLayout {
       flex-direction: row;
       align-items: flex-start;
     }
 
     .sidebar {
-      width: 18rem;
+      inline-size: 18rem;
       flex-shrink: 0;
+      padding: var(--cascivo-space-4);
       border-inline-end: 1px solid var(--cascivo-color-border);
     }
   }

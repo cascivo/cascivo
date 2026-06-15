@@ -62,6 +62,7 @@ export function AppShell({
       <LayoutsAppShell
         state={shellState}
         persistKey={false}
+        className={styles['shell']}
         header={
           <>
             {mockBanner && <div className={styles['mockBanner']}>{t(msg.mockBanner)}</div>}

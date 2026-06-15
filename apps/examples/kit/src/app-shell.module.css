@@ -1,4 +1,11 @@
 @layer cascade.component {
+  /* Background/color/font on the layouts AppShell shell — it has none by default */
+  .shell {
+    background: var(--cascivo-color-bg);
+    color: var(--cascivo-color-text);
+    font-family: var(--cascivo-font-sans);
+  }
+
   .mockBanner {
     background: var(--cascivo-color-warning-subtle);
     color: var(--cascivo-color-warning-foreground);
