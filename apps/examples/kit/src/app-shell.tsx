@@ -22,6 +22,13 @@ const THEMES: AppShellTheme[] = ['dark', 'light']
 // Module-level persisted signal — theme survives page reload
 const theme = persistedSignal<AppShellTheme>('kit.appShell.theme', 'dark')
 
+export function setAppTheme(t: AppShellTheme) {
+  theme.value = t
+}
+export function getAppTheme(): AppShellTheme {
+  return theme.value
+}
+
 // Module-level signal for command menu open state
 const menuOpen = signal(false)
 

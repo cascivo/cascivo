@@ -1,4 +1,4 @@
-export { AppShell } from './app-shell'
+export { AppShell, setAppTheme, getAppTheme } from './app-shell'
 export type { AppShellProps, AppShellTheme } from './app-shell'
 export { seededRandom } from './seeded-random'
 export type { SeededRandom } from './seeded-random'

@@ -7,6 +7,7 @@ import { persistedSignal } from '@cascivo/storage'
 import { AppShell } from '@cascivo/example-kit'
 import { Board } from './sections/Board'
 import { IssueListView } from './sections/IssueListView'
+import { Settings } from './sections/Settings'
 import { IssueForm } from './sections/IssueForm'
 import { msg } from './i18n'
 import { USERS } from './data/seed'
@@ -165,11 +166,7 @@ export default function App() {
     <ToastProvider>
       <AppShell navGroups={navGroups} actions={actions} mockBanner>
         {currentSection.value === 'settings' ? (
-          <div style={{ padding: 'var(--cascivo-space-6)' }}>
-            <p style={{ color: 'var(--cascivo-color-foreground-muted)' }}>
-              Settings — coming in T7
-            </p>
-          </div>
+          <Settings />
         ) : currentView.value === 'board' ? (
           <Board />
         ) : (

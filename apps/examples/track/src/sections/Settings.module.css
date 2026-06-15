@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-5);
+  padding: var(--cascivo-space-6);
+  max-inline-size: 48rem;
+}
+
+.title {
+  font-size: var(--cascivo-text-2xl);
+  font-weight: 600;
+  margin: 0;
+}
