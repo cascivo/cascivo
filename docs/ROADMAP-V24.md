@@ -226,50 +226,50 @@ SideNavGroup[]` prop. When `groups` is provided, `items` is ignored. Existing co
 
 ### Shared
 
-- [ ] `SideNavProps` gains `groups?: SideNavGroup[]`; flat `items` prop remains; all existing
+- [x] `SideNavProps` gains `groups?: SideNavGroup[]`; flat `items` prop remains; all existing
       consumers compile with zero TypeScript errors. _Verify: T1._
-- [ ] `pnpm exec vp check` (fmt + lint + tsc) exits 0 on `packages/components` after SideNav
+- [x] `pnpm exec vp check` (fmt + lint + tsc) exits 0 on `packages/components` after SideNav
       change. _Verify: T1._
 
 ### Cascade Flow
 
-- [ ] Flow sidebar shows two section headers ("CONSOLE", "CLUSTERS") with items beneath each;
+- [x] Flow sidebar shows two section headers ("CONSOLE", "CLUSTERS") with items beneath each;
       one cluster entry renders an env `Badge` chip inline. _Verify: T1._
-- [ ] A "Catalog" top-level nav item is present; selecting it shows three sub-tabs (Catalog
+- [x] A "Catalog" top-level nav item is present; selecting it shows three sub-tabs (Catalog
       assets / Asset usage / Asset adoption) rendered with the `Tabs` component. _Verify: T2._
-- [ ] The Adoption sub-tab renders: a date-range `SegmentedControl`; four `Kpi` metric cards
+- [x] The Adoption sub-tab renders: a date-range `SegmentedControl`; four `Kpi` metric cards
       (each with a % value, label, sub-metric, and trend `Badge`); an `AreaChart` with three
       labelled series and seeded 30-day data; a "Top 5 assets" ranked list using `ProgressBar`.
       _Verify: T2._
-- [ ] The Catalog assets sub-tab renders a `DataTable` with expandable rows, a `Search` bar, a
+- [x] The Catalog assets sub-tab renders a `DataTable` with expandable rows, a `Search` bar, a
       Status dropdown, a Workspaces dropdown, status `Badge` cells, and a fraction `Badge` on the
       "On latest" column. _Verify: T3._
-- [ ] Clicking a catalog asset navigates (signal, no router) to a project detail view with a
+- [x] Clicking a catalog asset navigates (signal, no router) to a project detail view with a
       `Breadcrumb`, version `Select`, "Deploy & run" primary `Button`, file list with "Outdated
       asset" `Badge`s, a README section, and a right sidebar containing three `Card` panels
       (Latest deployment, Git repository, Assets). _Verify: T4._
-- [ ] `apps/examples/coverage.test.ts` stays green for Flow. _Verify: T8._
+- [x] `apps/examples/coverage.test.ts` stays green for Flow. _Verify: T8._
 
 ### Cascade Track
 
-- [ ] Track sidebar renders three groups: Personal (Inbox, My Issues, Notifications with a count
+- [x] Track sidebar renders three groups: Personal (Inbox, My Issues, Notifications with a count
       `Badge`), Favorites (empty placeholder), and Your teams (team sub-header + Issues, Cycles,
       Projects, Views, Pages sub-items). _Verify: T5._
-- [ ] Issues content area has a `Breadcrumb` ("Forum / Issues") + issue count `Badge` + a `Tabs`
+- [x] Issues content area has a `Breadcrumb` ("Forum / Issues") + issue count `Badge` + a `Tabs`
       bar (All Issues / Active / Backlog) that correctly filters the displayed issue list.
       _Verify: T5 + T6._
-- [ ] Each issue row renders: colored status circle (CSS-driven by `data-status`), issue ID
+- [x] Each issue row renders: colored status circle (CSS-driven by `data-status`), issue ID
       (`TRK-{n}`), title, spacer, assignee `Avatar` (sm), relative date; row height ≤36px.
       _Verify: T6._
-- [ ] A Settings nav item opens a settings surface with two sub-pages (Preferences, Workspace)
+- [x] A Settings nav item opens a settings surface with two sub-pages (Preferences, Workspace)
       selectable via `Tabs`. _Verify: T7._
-- [ ] Preferences page: General section with display-name `Input` and notifications `Toggle`;
+- [x] Preferences page: General section with display-name `Input` and notifications `Toggle`;
       Interface & theme section with Light / Dark `Radio` that updates the persisted theme signal.
       _Verify: T7._
-- [ ] Workspace page: logo `FileUploader`, name + URL `Input`s, fiscal-month + region `Select`s,
+- [x] Workspace page: logo `FileUploader`, name + URL `Input`s, fiscal-month + region `Select`s,
       and a Danger zone with a "Delete workspace" destructive `Button` wrapped in an `AlertDialog`.
       _Verify: T7._
-- [ ] `apps/examples/coverage.test.ts` stays green for Track. _Verify: T8._
+- [x] `apps/examples/coverage.test.ts` stays green for Track. _Verify: T8._
 
 ### Cascade Edge (T9)
 
@@ -292,7 +292,7 @@ SideNavGroup[]` prop. When `groups` is provided, `items` is ignored. Existing co
 
 ### Gate
 
-- [ ] Deterministic screenshots regenerated for `flow` (light/dark/mobile) and `track`
+- [x] Deterministic screenshots regenerated for `flow` (light/dark/mobile) and `track`
       (light/dark/mobile); re-running the capture is a no-op diff. _Verify: T8._
 - [ ] Deterministic screenshots regenerated for `edge` (light/dark/mobile) after T9 changes;
       re-running the capture is a no-op diff. _Verify: T9._
