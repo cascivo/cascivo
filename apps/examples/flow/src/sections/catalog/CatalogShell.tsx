@@ -4,6 +4,7 @@ import { t } from '@cascivo/i18n'
 import { Tabs, TabsList, TabsTrigger, TabsContent, SegmentedControl } from '@cascivo/react'
 import { msg } from '../../i18n'
 import { AdoptionView } from './AdoptionView'
+import { AssetsTable } from './AssetsTable'
 import styles from './CatalogShell.module.css'
 
 export const catalogTab = signal<'assets' | 'usage' | 'adoption'>('adoption')
@@ -44,14 +45,7 @@ export function CatalogShell() {
           <TabsTrigger value="adoption">{t(msg.catalogTabAdoption)}</TabsTrigger>
         </TabsList>
         <TabsContent value="assets">
-          <p
-            style={{
-              color: 'var(--cascivo-color-foreground-muted)',
-              padding: 'var(--cascivo-space-4)',
-            }}
-          >
-            {t(msg.catalogAssetsPlaceholder)}
-          </p>
+          <AssetsTable />
         </TabsContent>
         <TabsContent value="usage">
           <p
