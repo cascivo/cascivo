@@ -52,15 +52,15 @@ the Usage page. `@cascivo/storage` for persistence. Playwright for the screensho
   SideNav + CommandMenu + theme toggle, `mockBanner` prop), `seededRandom`, and `createSimulation`/
   `useSimulation` (used by `pulse`/`flow` for live-ticking state). Confirm signatures at use.
 - **Landing integration (v22):** `apps/landing/src/pages/examples/data.ts` holds `DemoSlug` (`'deploy' |
-  'pay' | 'flow' | 'track' | 'pulse'`) and a `DEMOS` array whose first entry is the `deploy` demo
+'pay' | 'flow' | 'track' | 'pulse'`) and a `DEMOS` array whose first entry is the `deploy` demo
   (`name: 'Cascade Deploy'`, `feelsLike: 'Vercel'`, `liveHref: '/demos/deploy/'`, `detailHref:
-  '/examples/deploy'`, `coverage: [...]`, `screenshots('deploy')`). `ExamplesGallery.tsx`,
+'/examples/deploy'`, `coverage: [...]`, `screenshots('deploy')`). `ExamplesGallery.tsx`,
   `ExamplesPage.tsx`, and `ExampleDetailPage.tsx` all read from this array.
 - **Prerender + SEO:** `apps/landing/src/route-head.ts` has a `ROUTE_HEAD['/examples/deploy']` entry and
   `'examples/deploy'` in `PRERENDER_ROUTES`. `apps/landing/public/sitemap.xml` lists
   `https://cascivo.com/examples/deploy`.
 - **Assembly + checks:** `scripts/assemble-demos.mjs` has a `DEMOS` map with `deploy:
-  '@cascivo/example-deploy'`. `scripts/checks/demo-storage-keys.test.ts` lists `'deploy'` in its `DEMOS`
+'@cascivo/example-deploy'`. `scripts/checks/demo-storage-keys.test.ts` lists `'deploy'` in its `DEMOS`
   array. `apps/examples/coverage.test.ts` lists `'deploy'` in `APPS`. Screenshots live at
   `apps/landing/public/screenshots/deploy/{light,dark}-{desktop,mobile}.png`. The screenshot generator
   is `scripts/gen-demo-screenshots.mjs` (re-verify whether it reads slugs from `data.ts` or hardcodes).
@@ -82,14 +82,14 @@ the Usage page. `@cascivo/storage` for persistence. Playwright for the screensho
 
 ## Tranche map
 
-| Tranche | Title                                          | Outcome                                                                                              |
+| Tranche | Title                                          | Outcome                                                                                             |
 | ------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | T1      | Rename + rebrand `deploy` → `edge`             | Mechanical sweep: app dir/package/i18n/storage + all landing/CI/script/screenshot refs. Gate green. |
 | T2      | Domain model + app chrome + projects home      | Vercel domain model on kit primitives; top chrome + signal view-routing; the projects grid home.    |
-| T3      | Project detail + deployments table             | Project header + tabs; Production Deployment panel; Deployments DataTable + filters.                 |
-| T4      | Deployment inspector (live build logs)         | Simulation-driven log stream Queued→Building→Ready, ProgressBar, copy-logs, Toast, summary.          |
+| T3      | Project detail + deployments table             | Project header + tabs; Production Deployment panel; Deployments DataTable + filters.                |
+| T4      | Deployment inspector (live build logs)         | Simulation-driven log stream Queued→Building→Ready, ProgressBar, copy-logs, Toast, summary.         |
 | T5      | Usage / Speed Insights (charts)                | KPI cards, AreaChart, BarChart, Core Web Vitals (Meter/Bullet/ProgressCircle); coverage preserved.  |
-| T6      | Screenshots + landing copy + CI + gate + close | Deterministic `edge` captures; landing copy/chips; README regen; full gate; flip ROADMAP DoD.        |
+| T6      | Screenshots + landing copy + CI + gate + close | Deterministic `edge` captures; landing copy/chips; README regen; full gate; flip ROADMAP DoD.       |
 
 ## Global constraints (apply to every tranche)
 
@@ -103,7 +103,7 @@ the Usage page. `@cascivo/storage` for persistence. Playwright for the screensho
   `@cascivo/example-kit`. Do not modify `createMockApi` or the `Pipeline`/`Environment`/`Metrics` types.
 - **Mobile-first + tokens.** Base styles target 320px; enhancements via `@container`/`@media` using only
   canonical scale literals (30/40/64/80rem); no hardcoded colours; ≥44px touch targets under `(pointer:
-  coarse)`; never `display:none` to hide content on mobile (relocate to a disclosure/drawer);
+coarse)`; never `display:none` to hide content on mobile (relocate to a disclosure/drawer);
   `pnpm breakpoint:check` clean.
 - **i18n.** Every user-visible string routes through `@cascivo/i18n` (`defineMessages('edge.…')` + `t`),
   never hardcoded English.

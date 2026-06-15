@@ -53,17 +53,17 @@ Two choices were settled up front (see "Decisions baked in"):
 
 ## Naming & identity
 
-| Field            | Before (`deploy`)          | After (`edge`)                        |
-| ---------------- | -------------------------- | ------------------------------------- |
-| Slug             | `deploy`                   | `edge`                                |
-| Package          | `@cascivo/example-deploy`  | `@cascivo/example-edge`               |
-| Display name     | Cascade Deploy             | Cascade Edge                          |
-| `feelsLike`      | Vercel                     | Vercel (unchanged)                    |
-| i18n namespace   | `deploy.*`                 | `edge.*`                              |
-| Storage prefix   | `deploy.*`                 | `edge.*`                              |
-| Live URL         | `/demos/deploy/`           | `/demos/edge/`                        |
-| Marketing route  | `/examples/deploy`         | `/examples/edge`                      |
-| Screenshots dir  | `screenshots/deploy/`      | `screenshots/edge/`                   |
+| Field           | Before (`deploy`)         | After (`edge`)          |
+| --------------- | ------------------------- | ----------------------- |
+| Slug            | `deploy`                  | `edge`                  |
+| Package         | `@cascivo/example-deploy` | `@cascivo/example-edge` |
+| Display name    | Cascade Deploy            | Cascade Edge            |
+| `feelsLike`     | Vercel                    | Vercel (unchanged)      |
+| i18n namespace  | `deploy.*`                | `edge.*`                |
+| Storage prefix  | `deploy.*`                | `edge.*`                |
+| Live URL        | `/demos/deploy/`          | `/demos/edge/`          |
+| Marketing route | `/examples/deploy`        | `/examples/edge`        |
+| Screenshots dir | `screenshots/deploy/`     | `screenshots/edge/`     |
 
 ## What "faithful" means here (the surfaces to build)
 
@@ -90,14 +90,14 @@ Two choices were settled up front (see "Decisions baked in"):
 
 ## Workstreams
 
-| #   | Workstream                      | Tranche | Summary                                                                                                                                  |
-| --- | ------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| A   | Rename + rebrand `deploy`→`edge` | T1      | Mechanical sweep across the app, the kit-independent fixtures, all landing/CI/script references, and the screenshots dir. Gate green.   |
+| #   | Workstream                       | Tranche | Summary                                                                                                                                                          |
+| --- | -------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | Rename + rebrand `deploy`→`edge` | T1      | Mechanical sweep across the app, the kit-independent fixtures, all landing/CI/script references, and the screenshots dir. Gate green.                            |
 | B   | Domain model + app chrome + home | T2      | Vercel domain model (teams/projects/deployments/usage) on kit primitives; top chrome (scope switcher, Cmd+K, tabs, signal view-routing); the projects grid home. |
-| C   | Project detail + deployments     | T3      | Project header + tabs; Production Deployment panel; Deployments DataTable with status/environment filters.                              |
-| D   | Deployment inspector             | T4      | Live build-log stream (simulation), ProgressBar, copy-logs, completion Toast, deployment summary.                                       |
-| E   | Usage / Speed Insights (charts)  | T5      | KPI cards, AreaChart, BarChart, Core Web Vitals (Meter/Bullet/ProgressCircle); preserves chart coverage.                               |
-| F   | Screenshots + wiring + gate      | T6      | Deterministic `edge` screenshots; landing copy/coverage chips; README regen; CI verify; full CLAUDE.md gate; close DoD.                |
+| C   | Project detail + deployments     | T3      | Project header + tabs; Production Deployment panel; Deployments DataTable with status/environment filters.                                                       |
+| D   | Deployment inspector             | T4      | Live build-log stream (simulation), ProgressBar, copy-logs, completion Toast, deployment summary.                                                                |
+| E   | Usage / Speed Insights (charts)  | T5      | KPI cards, AreaChart, BarChart, Core Web Vitals (Meter/Bullet/ProgressCircle); preserves chart coverage.                                                         |
+| F   | Screenshots + wiring + gate      | T6      | Deterministic `edge` screenshots; landing copy/coverage chips; README regen; CI verify; full CLAUDE.md gate; close DoD.                                          |
 
 ## Decisions baked in
 
@@ -106,7 +106,7 @@ Two choices were settled up front (see "Decisions baked in"):
 2. **Faithful, comprehensive clone.** The real dashboard chrome + projects grid + project detail +
    deployment inspector + usage, not a metrics bar.
 3. **Signal-driven view navigation, no client router.** The demo stays a single-page app with `base:
-   './'` so it remains mount-portable under `/demos/edge/` (v22). View state (which project, which tab,
+'./'` so it remains mount-portable under `/demos/edge/` (v22). View state (which project, which tab,
    which deployment) lives in module-level signals — **no `pushState`, no router** — preserving the v22
    assembly/preview assumption and existing Playwright spec at `/`.
 4. **Reuse kit primitives; never touch shared kit API.** Edge composes `AppShell`, `seededRandom`, and
@@ -157,15 +157,15 @@ Two choices were settled up front (see "Decisions baked in"):
 
 ## Non-goals (explicitly out of scope)
 
-| Claim                          | Substance                                                                                                       |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| **No sixth demo**              | v23 replaces `deploy`; the showcase stays at five apps.                                                         |
-| **No client router**          | View navigation is signal-driven; no `pushState`/router is added (preserves v22 mount-portability).             |
-| **No new components / deps**   | Built from existing `@cascivo/react` + `@cascivo/charts`; no new `@cascivo/*` component, no runtime dependency. |
-| **No changes to shared kit API** | `createMockApi`/`Pipeline`/`Environment`/`Metrics` stay as-is (used by `pay` + `flow`).                       |
-| **No backend**                 | Mock fixtures + `@cascivo/storage` + seeded simulation only.                                                    |
-| **No real Vercel assets**      | No Vercel logos/marks/screenshots; thumbnails are generated placeholders. "Mock demo" disclaimer stays.        |
-| **No team/auth flows**        | The scope switcher cycles seeded teams; there is no login, no real multi-tenant data.                           |
+| Claim                            | Substance                                                                                                       |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **No sixth demo**                | v23 replaces `deploy`; the showcase stays at five apps.                                                         |
+| **No client router**             | View navigation is signal-driven; no `pushState`/router is added (preserves v22 mount-portability).             |
+| **No new components / deps**     | Built from existing `@cascivo/react` + `@cascivo/charts`; no new `@cascivo/*` component, no runtime dependency. |
+| **No changes to shared kit API** | `createMockApi`/`Pipeline`/`Environment`/`Metrics` stay as-is (used by `pay` + `flow`).                         |
+| **No backend**                   | Mock fixtures + `@cascivo/storage` + seeded simulation only.                                                    |
+| **No real Vercel assets**        | No Vercel logos/marks/screenshots; thumbnails are generated placeholders. "Mock demo" disclaimer stays.         |
+| **No team/auth flows**           | The scope switcher cycles seeded teams; there is no login, no real multi-tenant data.                           |
 
 ## Deferred (do not re-litigate in v23)
 
