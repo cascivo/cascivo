@@ -1,18 +1,11 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: var(--cascivo-space-5);
+  gap: var(--cascivo-space-3);
   padding: var(--cascivo-space-4);
-  border-inline-start: 1px solid var(--cascivo-color-border);
   min-inline-size: 16rem;
   max-inline-size: 20rem;
-  background: var(--cascivo-color-surface);
-}
-
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-3);
+  overflow-y: auto;
 }
 
 .sectionHeader {
@@ -67,4 +60,24 @@
 .metricBar {
   grid-column: 1 / -1;
   grid-row: 2;
+}
+
+.compactEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+}
+
+.compactTitle {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  margin: 0;
+  color: var(--cascivo-color-foreground);
+}
+
+.compactDesc {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+  line-height: var(--cascivo-leading-relaxed);
 }
