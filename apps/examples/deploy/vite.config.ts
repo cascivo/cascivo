@@ -18,10 +18,6 @@ export default defineConfig({
   server: {
     port: 4181,
     strictPort: true,
-    // Inject absolute asset URLs so the landing dev proxy can serve the initial
-    // HTML while the browser fetches all subsequent resources directly from this
-    // server (bypassing the proxy and avoiding path-rewrite complexity).
-    origin: 'http://localhost:4181',
   },
   resolve: {
     alias: {
