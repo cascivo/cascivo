@@ -1,7 +1,7 @@
 # cascivo — Roadmap v24: Pixel Fidelity for Edge (Vercel), Flow (Camunda) and Track (Linear)
 
 **Last updated:** 2026-06-15
-**Status:** 🚧 Planned
+**Status:** ✅ Shipped
 **Plan documents:** `docs/superpowers/plans/2026-06-15-v24-master-plan.md` + tranches 1–9
 
 ---
@@ -273,32 +273,32 @@ SideNavGroup[]` prop. When `groups` is provided, `items` is ignored. Existing co
 
 ### Cascade Edge (T9)
 
-- [ ] The edge app home view renders a right-side panel containing: a **Usage** section with four
+- [x] The edge app home view renders a right-side panel containing: a **Usage** section with four
       cost/limit rows (Fast Data Transfer, Fast Edge Transfer, Private Data Transfer, Edge Requests),
       each with a `ProgressBar` showing consumed ratio and a cost string; an "Alerts" panel with an
       `EmptyState`; a "Recent Processes" panel with an `EmptyState`. _Verify: T9._
-- [ ] When the seeded projects array is empty, the main home area renders "Deploy your first project"
+- [x] When the seeded projects array is empty, the main home area renders "Deploy your first project"
       heading + a template list (≥4 templates, each with name, description, and a `Button`) + a
       "Browse Templates" link. _Verify: T9._
-- [ ] The per-project Deployments tab filter bar renders five filter controls in a row: date-range
+- [x] The per-project Deployments tab filter bar renders five filter controls in a row: date-range
       `Select`, Authors `Select`, Environments `Select`, Repositories `Select`, Branch `Search`
       input, and a Status `Select` chip; filtering to zero results shows `EmptyState` "No Results" + a "Clear Filters" link `Button`. _Verify: T9._
-- [ ] A "Flags" nav item is present in the edge sidebar; clicking it renders the Flags view with:
+- [x] A "Flags" nav item is present in the edge sidebar; clicking it renders the Flags view with:
       a top-bar "All types" `Select` + "Create Flag" `Button`; an `EmptyState` "No flags found"
       with a "Create Flag" `Button`; a Marketplace Providers section with three provider `Card`s
       (Statsig, GrowthBook, PostHog) each with name, description, and a "Create" `Button`.
       _Verify: T9._
-- [ ] `apps/examples/coverage.test.ts` stays green for Edge. _Verify: T9._
+- [x] `apps/examples/coverage.test.ts` stays green for Edge. _Verify: T9._
 
 ### Gate
 
 - [x] Deterministic screenshots regenerated for `flow` (light/dark/mobile) and `track`
       (light/dark/mobile); re-running the capture is a no-op diff. _Verify: T8._
-- [ ] Deterministic screenshots regenerated for `edge` (light/dark/mobile) after T9 changes;
+- [x] Deterministic screenshots regenerated for `edge` (light/dark/mobile) after T9 changes;
       re-running the capture is a no-op diff. _Verify: T9._
-- [ ] Full CLAUDE.md gate exits 0: `vp check` → `pnpm build` → `vp run -r check` → `pnpm test`
+- [x] Full CLAUDE.md gate exits 0: `vp check` → `pnpm build` → `vp run -r check` → `pnpm test`
       → regen + diff → `breakpoint:check`. _Verify: T9 (final gate across all tranches)._
-- [ ] `ROADMAP-V24.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T9._
+- [x] `ROADMAP-V24.md` DoD boxes all checked; status → ✅ Shipped. _Verify: T9._
 
 ---
 

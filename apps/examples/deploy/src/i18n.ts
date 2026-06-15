@@ -32,4 +32,57 @@ export const deployMsg = defineMessages('deploy', {
   labelVersion: 'Version',
   labelLastDeploy: 'Last deploy',
   labelStages: 'Stages',
+
+  // Flags nav
+  navFlags: 'Flags',
+
+  // UsagePanel
+  usageTitle: 'Usage',
+  usageRange: 'Last 30 Days',
+  usageUpgrade: 'Upgrade',
+  alertsTitle: 'Alerts',
+  alertsEmptyTitle: 'Get started for anomalies',
+  alertsEmptyDesc: 'Automatically monitor your projects for anomalies and get notified.',
+  alertsUpgradeBtn: 'Upgrade to Pro',
+  recentTitle: 'Recent Processes',
+  recentEmptyDesc:
+    'Preview deployments from repos you have recently visited or created will appear here.',
+
+  // TemplateGallery
+  galleryHeading: 'Deploy your first project',
+  gallerySub: 'Start with one of our templates or create something new.',
+  galleryImportBtn: 'Import',
+  galleryDeployBtn: 'Deploy',
+  galleryBrowseLink: 'Browse Templates',
+
+  // Deployments filter bar
+  deplFilterDateLabel: 'Date range',
+  deplFilterDateAll: 'Select Date Range',
+  deplFilterDate24h: 'Last 24 hours',
+  deplFilterDate7d: 'Last 7 days',
+  deplFilterDate30d: 'Last 30 days',
+  deplFilterAuthorsLabel: 'Authors',
+  deplFilterAllAuthors: 'All Authors',
+  deplFilterEnvsLabel: 'Environments',
+  deplFilterAllEnvs: 'All Environments',
+  deplFilterReposLabel: 'Repositories',
+  deplFilterAllRepos: 'All Repositories',
+  deplFilterBranchPlaceholder: 'Search Branches…',
+  deplFilterStatusLabel: 'Status',
+  deplFilterStatusAll: 'All',
+  deplNoResults: 'No Results',
+  deplNoResultsDesc: 'No deployments match the current filters.',
+  deplClearFilters: 'Clear Filters',
+
+  // FlagsView
+  flagsFilterLabel: 'Type',
+  flagsFilterAll: 'All types',
+  flagsCreateBtn: 'Create Flag',
+  flagsEmptyTitle: 'No flags found',
+  flagsEmptyDesc: 'Create flags in Manage Feature releases.',
+  flagsLearnMore: 'Learn more →',
+  flagsMarketplaceTitle: 'Create feature flags and experiments',
+  flagsMarketplaceSub: 'Set up a provider to start creating feature flags and experiments.',
+  flagsProvidersTitle: 'Marketplace Providers',
+  flagsProviderCreateBtn: 'Create',
 })

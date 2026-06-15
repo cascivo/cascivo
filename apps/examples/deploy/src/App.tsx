@@ -1,5 +1,5 @@
 'use client'
-import { useSignalEffect, useSignals } from '@cascivo/core'
+import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { persistedSignal } from '@cascivo/storage'
 import { deployMsg } from './i18n'
@@ -7,6 +7,10 @@ import { loadData, loadError } from './data/fixtures'
 import { MetricsBar } from './sections/MetricsBar'
 import { PipelineList } from './sections/PipelineList'
 import { EnvironmentGrid } from './sections/EnvironmentGrid'
+import { UsagePanel } from './sections/home/UsagePanel'
+import { TemplateGallery } from './sections/home/TemplateGallery'
+import { Deployments } from './sections/project/Deployments'
+import { FlagsView } from './sections/flags/FlagsView'
 import styles from './App.module.css'
 
 import '@cascivo/themes/dark'
@@ -16,13 +20,19 @@ import '@cascivo/tokens'
 const THEMES = ['dark', 'light'] as const
 type Theme = (typeof THEMES)[number]
 
-// Module-level persisted signal — theme survives page reload
+type View = 'home' | 'flags' | 'deployments'
+
 const theme = persistedSignal<Theme>('deploy.theme', 'dark')
+const currentView = signal<View>('home')
+
+const NAV_ITEMS: Array<{ label: string; view: View }> = [
+  { label: t(deployMsg.navPipelines), view: 'home' },
+  { label: t(deployMsg.navFlags), view: 'flags' },
+]
 
 export default function App() {
   useSignals()
 
-  // Trigger initial data load via signal effect (never useEffect)
   useSignalEffect(() => {
     void loadData()
   })
@@ -36,6 +46,21 @@ export default function App() {
     <div className={styles['shell']} data-theme={theme.value}>
       <header className={styles['header']}>
         <span className={styles['headerTitle']}>{t(deployMsg.appTitle)}</span>
+        <nav className={styles['nav']}>
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.view}
+              type="button"
+              className={styles['navBtn']}
+              data-active={currentView.value === item.view || undefined}
+              onClick={() => {
+                currentView.value = item.view
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
         <button type="button" className={styles['themeToggle']} onClick={cycleTheme}>
           {theme.value}
         </button>
@@ -52,20 +77,30 @@ export default function App() {
           {loadError.value}
         </div>
       )}
-      <main className={styles['main']}>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionMetrics)}</h2>
-          <MetricsBar />
-        </section>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionPipelines)}</h2>
-          <PipelineList />
-        </section>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionEnvironments)}</h2>
-          <EnvironmentGrid />
-        </section>
-      </main>
+      {currentView.value === 'flags' && <FlagsView />}
+      {currentView.value === 'deployments' && <Deployments />}
+      {currentView.value === 'home' && (
+        <div className={styles['homeLayout']}>
+          <main className={styles['main']}>
+            <section className={styles['section']}>
+              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionMetrics)}</h2>
+              <MetricsBar />
+            </section>
+            <section className={styles['section']}>
+              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionPipelines)}</h2>
+              <PipelineList />
+            </section>
+            <section className={styles['section']}>
+              <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionEnvironments)}</h2>
+              <EnvironmentGrid />
+            </section>
+            <TemplateGallery />
+          </main>
+          <aside className={styles['sidebar']}>
+            <UsagePanel />
+          </aside>
+        </div>
+      )}
     </div>
   )
 }
