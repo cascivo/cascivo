@@ -1,22 +1,12 @@
 'use client'
 import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import {
-  ToastProvider,
-  Button,
-  Combobox,
-  Badge,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  SegmentedControl,
-} from '@cascivo/react'
+import { ToastProvider, Button, Combobox, Badge, SegmentedControl } from '@cascivo/react'
 import type { SideNavGroup } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell } from '@cascivo/example-kit'
 import { Board } from './sections/Board'
-import { List } from './sections/List'
+import { IssueListView } from './sections/IssueListView'
 import { IssueForm } from './sections/IssueForm'
 import { msg } from './i18n'
 import { USERS } from './data/seed'
@@ -183,27 +173,7 @@ export default function App() {
         ) : currentView.value === 'board' ? (
           <Board />
         ) : (
-          <Tabs
-            value={issueTab.value}
-            onValueChange={(v) => {
-              issueTab.value = v as 'all' | 'active' | 'backlog'
-            }}
-          >
-            <TabsList>
-              <TabsTrigger value="all">{t(msg.issueTabAll)}</TabsTrigger>
-              <TabsTrigger value="active">{t(msg.issueTabActive)}</TabsTrigger>
-              <TabsTrigger value="backlog">{t(msg.issueTabBacklog)}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="all">
-              <List />
-            </TabsContent>
-            <TabsContent value="active">
-              <List />
-            </TabsContent>
-            <TabsContent value="backlog">
-              <List />
-            </TabsContent>
-          </Tabs>
+          <IssueListView />
         )}
       </AppShell>
       <IssueForm

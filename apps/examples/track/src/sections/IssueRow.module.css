@@ -1,0 +1,96 @@
+.row {
+  display: grid;
+  grid-template-columns: 1rem 4rem 1fr auto auto auto;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding-inline: var(--cascivo-space-4);
+  min-block-size: 2.25rem;
+  background: transparent;
+  border: none;
+  border-block-end: 1px solid var(--cascivo-color-border-subtle, var(--cascivo-color-border));
+  cursor: pointer;
+  text-align: start;
+  width: 100%;
+  color: var(--cascivo-color-foreground);
+
+  @media (pointer: coarse) {
+    min-block-size: 2.75rem;
+  }
+
+  &:hover {
+    background: var(--cascivo-color-surface-raised);
+  }
+
+  &:last-child {
+    border-block-end: none;
+  }
+}
+
+.statusCircle {
+  display: inline-block;
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  background: transparent;
+}
+
+.statusCircle[data-status='backlog'] {
+  color: var(--cascivo-color-foreground-muted);
+  border-style: dashed;
+}
+
+.statusCircle[data-status='todo'] {
+  color: var(--cascivo-color-accent);
+  border-style: solid;
+}
+
+.statusCircle[data-status='in-progress'] {
+  color: var(--cascivo-color-warning);
+  border-style: solid;
+  background: color-mix(in srgb, var(--cascivo-color-warning) 20%, transparent);
+}
+
+.statusCircle[data-status='in-review'] {
+  color: oklch(60% 0.2 280);
+  background: oklch(60% 0.2 280 / 0.2);
+}
+
+.statusCircle[data-status='done'] {
+  color: var(--cascivo-color-success);
+  background: color-mix(in srgb, var(--cascivo-color-success) 20%, transparent);
+}
+
+.issueId {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  white-space: nowrap;
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.avatarPlaceholder {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border-radius: 50%;
+  background: var(--cascivo-color-surface-raised);
+}
+
+.date {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  white-space: nowrap;
+  min-inline-size: 5ch;
+  text-align: end;
+}

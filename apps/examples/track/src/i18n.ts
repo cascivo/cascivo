@@ -29,6 +29,7 @@ export const msg = defineMessages('track', {
   toolbarNewIssue: 'New issue',
   toolbarFilter: 'Filter by assignee',
   toolbarFilterAll: 'All assignees',
+  toolbarSort: 'Sort',
   viewBoard: 'Board',
   viewList: 'List',
 
