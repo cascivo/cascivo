@@ -45,4 +45,11 @@ export const msg = defineMessages('flow', {
   statusOpen: 'Open',
   titleIncidents: 'Incidents',
   currentStep: 'Current step:',
+  navGroupConsole: 'Console',
+  navGroupClusters: 'Clusters',
+  navDashboard: 'Dashboard',
+  navClustersNav: 'Clusters',
+  navOrganization: 'Organization',
+  navClusterItem: 'Default DEV',
+  navCatalog: 'Catalog',
 })

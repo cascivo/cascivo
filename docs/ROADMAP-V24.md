@@ -34,11 +34,11 @@ product. v24 closes that gap for all three apps simultaneously.
 
 Screenshots live in `tmp/` and informed every design decision in this roadmap:
 
-| App   | Files                                           | Key surfaces observed |
-| ----- | ----------------------------------------------- | --------------------- |
-| Edge  | `vercel0.png`, `vercel1.png`, `vercel2.png`     | Team-level home: 2-column layout with compact Usage billing widget (cost/limit rows + `ProgressBar`) + Alerts panel + project template gallery empty state; Deployments page: 5-filter dense bar (Date Range, Authors, Environments, Repositories, Branch search + Status chip) + "No Results" empty state; Flags page: "No flags found" EmptyState + "Create Flag" + Marketplace Providers grid (Statsig / GrowthBook / PostHog cards) |
-| Flow  | `camunda-hub.png`, `camunda-hub2.png`, `camunda-hub3.png` | Asset adoption metrics + AreaChart + ranked list; Catalog DataTable with expandable rows and status badges; Project detail 2-column layout with right sidebar |
-| Track | `linear0.png`, `linear1.png`, `linear2.png`     | Grouped sidebar (Personal / Favorites / Your teams) with notification badge; dense issue rows (status circle + ID prefix + assignee + date); sub-tabs (All / Active / Backlog); Preferences + Workspace settings forms |
+| App   | Files                                                     | Key surfaces observed                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Edge  | `vercel0.png`, `vercel1.png`, `vercel2.png`               | Team-level home: 2-column layout with compact Usage billing widget (cost/limit rows + `ProgressBar`) + Alerts panel + project template gallery empty state; Deployments page: 5-filter dense bar (Date Range, Authors, Environments, Repositories, Branch search + Status chip) + "No Results" empty state; Flags page: "No flags found" EmptyState + "Create Flag" + Marketplace Providers grid (Statsig / GrowthBook / PostHog cards) |
+| Flow  | `camunda-hub.png`, `camunda-hub2.png`, `camunda-hub3.png` | Asset adoption metrics + AreaChart + ranked list; Catalog DataTable with expandable rows and status badges; Project detail 2-column layout with right sidebar                                                                                                                                                                                                                                                                           |
+| Track | `linear0.png`, `linear1.png`, `linear2.png`               | Grouped sidebar (Personal / Favorites / Your teams) with notification badge; dense issue rows (status circle + ID prefix + assignee + date); sub-tabs (All / Active / Backlog); Preferences + Workspace settings forms                                                                                                                                                                                                                  |
 
 ---
 
@@ -175,21 +175,21 @@ AppShell provides a two-item flat sidebar (Board, List).
 
 ## Workstreams
 
-| #   | Workstream                              | App   | Tranche | Summary |
-| --- | --------------------------------------- | ----- | ------- | ------- |
-| A   | SideNav groups extension                | Shared| T1      | Add `SideNavGroup` type + group-header rendering to the SideNav component; keep flat `items` prop working. |
-| B   | Flow sidebar + nav restructure          | Flow  | T1      | Wire Flow App.tsx to use SideNav groups (CONSOLE, CLUSTERS sections, cluster badge item). |
-| C   | Flow Catalog — domain model + chrome    | Flow  | T2      | Catalog data model (assets, workspaces, projects) on kit primitives; Catalog nav item; sub-tab routing signal; date-range control. |
-| D   | Flow Catalog — Adoption view            | Flow  | T2      | Kpi metric cards + AreaChart (3 series) + ranked ProgressBar list. |
-| E   | Flow Catalog — Assets DataTable         | Flow  | T3      | Expandable DataTable rows; Search + Status + Workspace filters; version fraction badge; status badge variants. |
-| F   | Flow Project Detail                     | Flow  | T4      | 2-column layout; Breadcrumb; version Select; Deploy & run Button; file list with badges; README; right-sidebar Cards. |
-| G   | Track sidebar + sub-tabs                | Track | T5      | SideNav groups (Personal, Favorites, Your teams); notification count badge; Settings nav item; Tabs (All Issues / Active / Backlog). |
-| H   | Track issue row redesign                | Track | T6      | Dense custom row list; status circle icon; issue ID prefix; assignee Avatar; team section header; Breadcrumb + count badge content header. |
-| I   | Track Settings section                  | Track | T7      | Preferences (General + Interface & theme with radio-driven theme toggle) + Workspace (Logo FileUploader, Name/URL, fiscal/region, danger zone AlertDialog). |
-| J   | Screenshots + gate (Flow + Track)       | Both  | T8      | Regenerate `flow` + `track` screenshots; update coverage test app list; full CLAUDE.md gate. |
-| K   | Edge home — Usage widget + template gallery | Edge | T9  | Right-panel Usage billing widget (cost/limit rows + ProgressBar); Alerts EmptyState; Recent Processes EmptyState; "Deploy your first project" template gallery when projects signal is empty. |
-| L   | Edge Deployments — 5-filter bar         | Edge  | T9      | Replace 2-filter approach with 5-filter dense bar (DateRange, Authors, Environments, Repositories, Branch search + Status chip); "No Results" EmptyState + "Clear Filters" link. |
-| M   | Edge Feature Flags section              | Edge  | T9      | New "Flags" nav item; EmptyState + Create Flag Button; Marketplace Providers grid (3 provider Cards with Create buttons); top-bar type filter Select. |
+| #   | Workstream                                  | App    | Tranche | Summary                                                                                                                                                                                       |
+| --- | ------------------------------------------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A   | SideNav groups extension                    | Shared | T1      | Add `SideNavGroup` type + group-header rendering to the SideNav component; keep flat `items` prop working.                                                                                    |
+| B   | Flow sidebar + nav restructure              | Flow   | T1      | Wire Flow App.tsx to use SideNav groups (CONSOLE, CLUSTERS sections, cluster badge item).                                                                                                     |
+| C   | Flow Catalog — domain model + chrome        | Flow   | T2      | Catalog data model (assets, workspaces, projects) on kit primitives; Catalog nav item; sub-tab routing signal; date-range control.                                                            |
+| D   | Flow Catalog — Adoption view                | Flow   | T2      | Kpi metric cards + AreaChart (3 series) + ranked ProgressBar list.                                                                                                                            |
+| E   | Flow Catalog — Assets DataTable             | Flow   | T3      | Expandable DataTable rows; Search + Status + Workspace filters; version fraction badge; status badge variants.                                                                                |
+| F   | Flow Project Detail                         | Flow   | T4      | 2-column layout; Breadcrumb; version Select; Deploy & run Button; file list with badges; README; right-sidebar Cards.                                                                         |
+| G   | Track sidebar + sub-tabs                    | Track  | T5      | SideNav groups (Personal, Favorites, Your teams); notification count badge; Settings nav item; Tabs (All Issues / Active / Backlog).                                                          |
+| H   | Track issue row redesign                    | Track  | T6      | Dense custom row list; status circle icon; issue ID prefix; assignee Avatar; team section header; Breadcrumb + count badge content header.                                                    |
+| I   | Track Settings section                      | Track  | T7      | Preferences (General + Interface & theme with radio-driven theme toggle) + Workspace (Logo FileUploader, Name/URL, fiscal/region, danger zone AlertDialog).                                   |
+| J   | Screenshots + gate (Flow + Track)           | Both   | T8      | Regenerate `flow` + `track` screenshots; update coverage test app list; full CLAUDE.md gate.                                                                                                  |
+| K   | Edge home — Usage widget + template gallery | Edge   | T9      | Right-panel Usage billing widget (cost/limit rows + ProgressBar); Alerts EmptyState; Recent Processes EmptyState; "Deploy your first project" template gallery when projects signal is empty. |
+| L   | Edge Deployments — 5-filter bar             | Edge   | T9      | Replace 2-filter approach with 5-filter dense bar (DateRange, Authors, Environments, Repositories, Branch search + Status chip); "No Results" EmptyState + "Clear Filters" link.              |
+| M   | Edge Feature Flags section                  | Edge   | T9      | New "Flags" nav item; EmptyState + Create Flag Button; Marketplace Providers grid (3 provider Cards with Create buttons); top-bar type filter Select.                                         |
 
 ---
 
@@ -202,22 +202,22 @@ AppShell provides a two-item flat sidebar (Board, List).
 2. **Both Flow and Track apps are rebuilt in place; slugs and package names are unchanged.** `flow` stays
    `@cascivo/example-flow`; `track` stays `@cascivo/example-track`. Unlike v23's rename, the
    Camunda and Linear analogs are already correctly named.
-2. **SideNav groups are additive, not replacing.** `SideNavProps` gains an optional `groups?:
-   SideNavGroup[]` prop. When `groups` is provided, `items` is ignored. Existing consumers that
+3. **SideNav groups are additive, not replacing.** `SideNavProps` gains an optional `groups?:
+SideNavGroup[]` prop. When `groups` is provided, `items` is ignored. Existing consumers that
    pass only `items` (all current apps) are unaffected at the callsite.
-3. **Signal-driven navigation everywhere, no router.** The Flow catalog sub-tabs and project
+4. **Signal-driven navigation everywhere, no router.** The Flow catalog sub-tabs and project
    detail, and the Track settings sub-pages, all use module-level signals — no `pushState`, no
    React Router — preserving v22's mount-portable `/demos/<slug>/` assembly assumption.
-4. **No new chart types.** Flow's Adoption view uses `AreaChart` (already in `@cascivo/charts`)
+5. **No new chart types.** Flow's Adoption view uses `AreaChart` (already in `@cascivo/charts`)
    and `ProgressBar` (already in `@cascivo/react`). No new chart component is introduced.
-5. **No real Camunda or Linear assets.** No logos, marks, or content is copied from the real
+6. **No real Camunda or Linear assets.** No logos, marks, or content is copied from the real
    products. All screenshots in `tmp/` are reference-only; the apps use placeholder branding.
-6. **Determinism holds.** All data derives from `seededRandom` fixtures; no `Math.random()` in
+7. **Determinism holds.** All data derives from `seededRandom` fixtures; no `Math.random()` in
    committed code. Re-running the screenshot script produces a no-op diff.
-7. **Coverage does not regress.** Both apps must continue demoing every component they currently
+8. **Coverage does not regress.** Both apps must continue demoing every component they currently
    cover. The `coverage.test.ts` APPS list already includes `flow` and `track`; it is not changed
    — only new component usages are added.
-8. **CSS rules hold.** Token-only CSS; mobile-first with canonical breakpoints; ≥44px touch
+9. **CSS rules hold.** Token-only CSS; mobile-first with canonical breakpoints; ≥44px touch
    targets; `pnpm breakpoint:check` and `pnpm fallback:check` must exit 0.
 
 ---
@@ -282,8 +282,7 @@ AppShell provides a two-item flat sidebar (Board, List).
       "Browse Templates" link. _Verify: T9._
 - [ ] The per-project Deployments tab filter bar renders five filter controls in a row: date-range
       `Select`, Authors `Select`, Environments `Select`, Repositories `Select`, Branch `Search`
-      input, and a Status `Select` chip; filtering to zero results shows `EmptyState` "No Results"
-      + a "Clear Filters" link `Button`. _Verify: T9._
+      input, and a Status `Select` chip; filtering to zero results shows `EmptyState` "No Results" + a "Clear Filters" link `Button`. _Verify: T9._
 - [ ] A "Flags" nav item is present in the edge sidebar; clicking it renders the Flags view with:
       a top-bar "All types" `Select` + "Create Flag" `Button`; an `EmptyState` "No flags found"
       with a "Create Flag" `Button`; a Marketplace Providers section with three provider `Card`s
@@ -305,18 +304,18 @@ AppShell provides a two-item flat sidebar (Board, List).
 
 ## Non-goals (explicitly out of scope)
 
-| Claim | Substance |
-| ----- | --------- |
-| **No rename of flow or track slugs** | Package names, slugs, and i18n namespaces are unchanged. |
-| **No new components** | All surfaces compose existing `@cascivo/react` + `@cascivo/charts`. The SideNav groups extension is additive to a shared component's props only. |
-| **No client router** | Navigation between catalog / project detail / settings is signal-driven; no `pushState` added. |
-| **No real product assets** | No Camunda or Linear logos, marks, or screenshots are included. |
-| **No BPMN/workflow diagram rendering** | Flow remains a hub-style catalog app; live process graph visualisation is deferred. |
-| **No real auth / multi-tenant** | Team and workspace switching is seeded fiction; no login flow. |
-| **No backend** | Seeded fixtures + `@cascivo/storage` + mock API only. |
-| **No changes to pay or pulse** | Both apps are out of scope for v24. |
-| **No real Vercel assets or flag providers** | No Vercel / Statsig / GrowthBook / PostHog logos, APIs, or SDKs. The Flags Marketplace grid uses placeholder card content only. |
-| **No live flag management** | "Create Flag" buttons are no-ops; the Flags section renders permanently in empty state. |
+| Claim                                       | Substance                                                                                                                                        |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **No rename of flow or track slugs**        | Package names, slugs, and i18n namespaces are unchanged.                                                                                         |
+| **No new components**                       | All surfaces compose existing `@cascivo/react` + `@cascivo/charts`. The SideNav groups extension is additive to a shared component's props only. |
+| **No client router**                        | Navigation between catalog / project detail / settings is signal-driven; no `pushState` added.                                                   |
+| **No real product assets**                  | No Camunda or Linear logos, marks, or screenshots are included.                                                                                  |
+| **No BPMN/workflow diagram rendering**      | Flow remains a hub-style catalog app; live process graph visualisation is deferred.                                                              |
+| **No real auth / multi-tenant**             | Team and workspace switching is seeded fiction; no login flow.                                                                                   |
+| **No backend**                              | Seeded fixtures + `@cascivo/storage` + mock API only.                                                                                            |
+| **No changes to pay or pulse**              | Both apps are out of scope for v24.                                                                                                              |
+| **No real Vercel assets or flag providers** | No Vercel / Statsig / GrowthBook / PostHog logos, APIs, or SDKs. The Flags Marketplace grid uses placeholder card content only.                  |
+| **No live flag management**                 | "Create Flag" buttons are no-ops; the Flags section renders permanently in empty state.                                                          |
 
 ---
 

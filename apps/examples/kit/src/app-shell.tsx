@@ -2,7 +2,7 @@
 import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { defineMessages, t } from '@cascivo/i18n'
 import { CommandMenu, Header, SideNav } from '@cascivo/react'
-import type { CommandGroup, SideNavItem } from '@cascivo/react'
+import type { CommandGroup, SideNavGroup, SideNavItem } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { useRef, type ReactNode } from 'react'
 import styles from './app-shell.module.css'
@@ -26,7 +26,8 @@ const theme = persistedSignal<AppShellTheme>('kit.appShell.theme', 'dark')
 const menuOpen = signal(false)
 
 export interface AppShellProps {
-  navItems: SideNavItem[]
+  navItems?: SideNavItem[]
+  navGroups?: SideNavGroup[]
   commandGroups?: CommandGroup[]
   brand?: ReactNode
   actions?: ReactNode
@@ -36,6 +37,7 @@ export interface AppShellProps {
 
 export function AppShell({
   navItems,
+  navGroups,
   commandGroups = [],
   brand,
   actions,
@@ -68,7 +70,7 @@ export function AppShell({
       {mockBanner && <div className={styles['mockBanner']}>{t(msg.mockBanner)}</div>}
       <Header brand={brand} actions={actions ?? themeButton} sticky />
       <div className={styles['body']}>
-        <SideNav items={navItems} />
+        <SideNav groups={navGroups} items={navItems} />
         <main className={styles['content']}>{children}</main>
       </div>
       {commandGroups.length > 0 && (

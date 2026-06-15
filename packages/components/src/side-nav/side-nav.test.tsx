@@ -3,6 +3,34 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SideNav, type SideNavItem } from './side-nav'
 
+describe('SideNav groups prop', () => {
+  it('renders section headers when groups are provided', () => {
+    render(
+      <SideNav
+        groups={[
+          { label: 'CONSOLE', items: [{ label: 'Dashboard' }] },
+          { label: 'CLUSTERS', items: [{ label: 'Dev Cluster' }] },
+        ]}
+      />,
+    )
+    expect(screen.getByText('CONSOLE')).toBeInTheDocument()
+    expect(screen.getByText('CLUSTERS')).toBeInTheDocument()
+    expect(screen.getByText('Dashboard')).toBeInTheDocument()
+    expect(screen.getByText('Dev Cluster')).toBeInTheDocument()
+  })
+
+  it('renders no section headers when groups have no label', () => {
+    render(<SideNav groups={[{ items: [{ label: 'Dashboard' }] }]} />)
+    expect(screen.getByText('Dashboard')).toBeInTheDocument()
+    expect(screen.queryByRole('heading')).toBeNull()
+  })
+
+  it('existing flat items prop still works when groups is absent', () => {
+    render(<SideNav items={[{ label: 'Instances' }, { label: 'Incidents' }]} />)
+    expect(screen.getByText('Instances')).toBeInTheDocument()
+  })
+})
+
 const items: SideNavItem[] = [
   { label: 'Home', href: '/', active: true },
   { label: 'Reports', href: '/reports' },
