@@ -1,0 +1,82 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  block-size: 100%;
+  overflow-y: auto;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.sectionMeta {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+}
+
+.metricRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: var(--cascivo-space-1) var(--cascivo-space-2);
+  align-items: center;
+}
+
+.metricLabel {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.metricCost {
+  font-size: var(--cascivo-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-foreground-muted);
+  grid-column: 2;
+  grid-row: 1;
+  white-space: nowrap;
+}
+
+.metricBar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.compactEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+}
+
+.compactTitle {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  margin: 0;
+  color: var(--cascivo-color-foreground);
+}
+
+.compactDesc {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+  line-height: var(--cascivo-leading-relaxed);
+}

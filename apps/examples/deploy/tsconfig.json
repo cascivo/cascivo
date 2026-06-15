@@ -8,6 +8,8 @@
       "@cascivo/i18n": ["../../../packages/i18n/src/index.ts"],
       "@cascivo/storage": ["../../../packages/storage/src/index.ts"],
       "@cascivo/react": ["../../../packages/react/src/index.ts"],
+      "@cascivo/icons": ["../../../packages/icons/src/index.tsx"],
+      "@cascivo/layouts/*": ["../../../packages/layouts/src/*"],
       "@cascivo/example-kit": ["../kit/src/index.ts"]
     }
   },

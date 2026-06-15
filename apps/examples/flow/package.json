@@ -11,6 +11,7 @@
     "check": "vp check"
   },
   "dependencies": {
+    "@cascivo/charts": "workspace:*",
     "@cascivo/core": "workspace:*",
     "@cascivo/example-kit": "workspace:*",
     "@cascivo/i18n": "workspace:*",
@@ -23,7 +24,9 @@
   },
   "devDependencies": {
     "@playwright/test": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "typescript": "catalog:",

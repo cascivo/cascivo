@@ -33,6 +33,7 @@
     "regen": "pnpm registry:generate && pnpm catalog:generate && pnpm specs:generate && pnpm context:generate && pnpm parity:generate && pnpm readme:generate && pnpm llms:generate",
     "dev:docs": "vp run @cascivo/docs#dev",
     "dev:landing": "vp run @cascivo/landing#dev",
+    "dev:landing:full": "vp run -F @cascivo/example-deploy -F @cascivo/example-pay -F @cascivo/example-flow -F @cascivo/example-track -F @cascivo/example-pulse build && vp run @cascivo/landing#dev",
     "ready": "vp check && vp run -r check && vp run -r test && vp run -r build",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",

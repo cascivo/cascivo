@@ -6,6 +6,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  server: {
+    port: 4183,
+    strictPort: true,
+  },
   // Relative base so the same build runs at `/` (standalone `vp preview`) and
   // when assembled under `/demos/flow/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.
@@ -19,7 +23,13 @@ export default defineConfig({
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
       '@cascivo/example-kit': resolve(__dirname, '../kit/src/index.ts'),
     },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setup.ts'],
   },
 })

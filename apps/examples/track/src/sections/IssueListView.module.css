@@ -1,0 +1,74 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--cascivo-space-4);
+  padding-block: var(--cascivo-space-3);
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.breadcrumbWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-1);
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--cascivo-radius-sm);
+  cursor: pointer;
+  color: var(--cascivo-color-foreground-muted);
+  font-size: var(--cascivo-text-base);
+
+  @media (pointer: coarse) {
+    min-block-size: 2.75rem;
+    min-inline-size: 2.75rem;
+  }
+
+  &:hover {
+    background: var(--cascivo-color-surface-raised);
+    color: var(--cascivo-color-foreground);
+  }
+}
+
+.teamHeader {
+  padding-inline: var(--cascivo-space-4);
+  padding-block: var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xs);
+  font-weight: 700;
+  color: var(--cascivo-color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-block-end: 1px solid var(--cascivo-color-border-subtle, var(--cascivo-color-border));
+}
+
+.issueList {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty {
+  padding: var(--cascivo-space-6);
+  text-align: center;
+  color: var(--cascivo-color-foreground-muted);
+  font-size: var(--cascivo-text-sm);
+  margin: 0;
+}

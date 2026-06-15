@@ -1,71 +1,139 @@
 'use client'
-import { useSignalEffect, useSignals } from '@cascivo/core'
+import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { persistedSignal } from '@cascivo/storage'
+import { ToastProvider } from '@cascivo/react'
+import type { SideNavGroup } from '@cascivo/react'
+import { AppShell } from '@cascivo/example-kit'
+import {
+  Folder,
+  Server,
+  Globe,
+  BarChart,
+  Database,
+  Zap,
+  Grid,
+  Settings as SettingsIcon,
+} from '@cascivo/icons'
 import { deployMsg } from './i18n'
 import { loadData, loadError } from './data/fixtures'
-import { MetricsBar } from './sections/MetricsBar'
-import { PipelineList } from './sections/PipelineList'
-import { EnvironmentGrid } from './sections/EnvironmentGrid'
+import { UsagePanel } from './sections/home/UsagePanel'
+import { TemplateGallery } from './sections/home/TemplateGallery'
+import { Deployments } from './sections/project/Deployments'
+import { FlagsView } from './sections/flags/FlagsView'
 import styles from './App.module.css'
 
 import '@cascivo/themes/dark'
 import '@cascivo/themes/light'
+import '@cascivo/themes/warm'
 import '@cascivo/tokens'
 
-const THEMES = ['dark', 'light'] as const
-type Theme = (typeof THEMES)[number]
+type View = 'projects' | 'deployments' | 'flags'
 
-// Module-level persisted signal — theme survives page reload
-const theme = persistedSignal<Theme>('deploy.theme', 'dark')
+const currentView = signal<View>('projects')
 
 export default function App() {
   useSignals()
 
-  // Trigger initial data load via signal effect (never useEffect)
   useSignalEffect(() => {
     void loadData()
   })
 
-  function cycleTheme() {
-    const next = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]
-    theme.value = next ?? 'dark'
-  }
+  const navGroups: SideNavGroup[] = [
+    {
+      items: [
+        {
+          label: t(deployMsg.navProjects),
+          icon: <Folder size={16} />,
+          active: currentView.value === 'projects',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'projects'
+          },
+        },
+        {
+          label: t(deployMsg.navDeployments),
+          icon: <Server size={16} />,
+          active: currentView.value === 'deployments',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'deployments'
+          },
+        },
+        {
+          label: t(deployMsg.navDomains),
+          icon: <Globe size={16} />,
+          active: false,
+          onClick: (e) => e.preventDefault(),
+        },
+        {
+          label: t(deployMsg.navAnalytics),
+          icon: <BarChart size={16} />,
+          active: false,
+          onClick: (e) => e.preventDefault(),
+        },
+        {
+          label: t(deployMsg.navStorage),
+          icon: <Database size={16} />,
+          active: false,
+          onClick: (e) => e.preventDefault(),
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          label: t(deployMsg.navFlags),
+          icon: <Zap size={16} />,
+          active: currentView.value === 'flags',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'flags'
+          },
+        },
+        {
+          label: t(deployMsg.navUsage),
+          icon: <Grid size={16} />,
+          active: false,
+          onClick: (e) => e.preventDefault(),
+        },
+        {
+          label: t(deployMsg.navSettings),
+          icon: <SettingsIcon size={16} />,
+          active: false,
+          onClick: (e) => e.preventDefault(),
+        },
+      ],
+    },
+  ]
 
   return (
-    <div className={styles['shell']} data-theme={theme.value}>
-      <header className={styles['header']}>
-        <span className={styles['headerTitle']}>{t(deployMsg.appTitle)}</span>
-        <button type="button" className={styles['themeToggle']} onClick={cycleTheme}>
-          {theme.value}
-        </button>
-      </header>
-      {loadError.value && (
-        <div
-          role="alert"
-          style={{
-            padding: '0.5rem 1rem',
-            background: 'var(--cascivo-color-destructive-subtle)',
-            color: 'var(--cascivo-color-error)',
-          }}
-        >
-          {loadError.value}
-        </div>
-      )}
-      <main className={styles['main']}>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionMetrics)}</h2>
-          <MetricsBar />
-        </section>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionPipelines)}</h2>
-          <PipelineList />
-        </section>
-        <section className={styles['section']}>
-          <h2 className={styles['sectionTitle']}>{t(deployMsg.sectionEnvironments)}</h2>
-          <EnvironmentGrid />
-        </section>
-      </main>
-    </div>
+    <ToastProvider>
+      <AppShell navGroups={navGroups} mockBanner>
+        {loadError.value && (
+          <div
+            role="alert"
+            style={{
+              padding: '0.5rem 1rem',
+              background: 'var(--cascivo-color-destructive-subtle)',
+              color: 'var(--cascivo-color-error)',
+            }}
+          >
+            {loadError.value}
+          </div>
+        )}
+        {currentView.value === 'flags' && <FlagsView />}
+        {currentView.value === 'deployments' && <Deployments />}
+        {currentView.value === 'projects' && (
+          <div className={styles['homeLayout']}>
+            <aside className={styles['sidebar']}>
+              <UsagePanel />
+            </aside>
+            <main className={styles['main']}>
+              <TemplateGallery />
+            </main>
+          </div>
+        )}
+      </AppShell>
+    </ToastProvider>
   )
 }

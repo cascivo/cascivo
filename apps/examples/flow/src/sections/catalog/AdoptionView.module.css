@@ -1,0 +1,90 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-6);
+  padding-block: var(--cascivo-space-4);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--cascivo-space-4);
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-4);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface);
+}
+
+.metricSub {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-6);
+
+  @media (min-width: 64rem) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.areaChartWrap,
+.rankedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface);
+}
+
+.sectionTitle {
+  font-size: var(--cascivo-text-base);
+  font-weight: 600;
+  margin: 0;
+}
+
+.chartDesc {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+}
+
+.rankItems {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  --cascivo-color-accent: var(--cascivo-color-warning);
+}
+
+.rankRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+}
+
+.rankName {
+  font-size: var(--cascivo-text-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rankCount {
+  font-size: var(--cascivo-text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-foreground-muted);
+  min-inline-size: 2ch;
+  text-align: end;
+}

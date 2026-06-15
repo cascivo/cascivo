@@ -1,13 +1,14 @@
 'use client'
 import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { ToastProvider, Button, Combobox } from '@cascivo/react'
-import { SegmentedControl } from '@cascivo/react'
+import { ToastProvider, Button, Combobox, Badge, SegmentedControl } from '@cascivo/react'
+import type { SideNavGroup } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell } from '@cascivo/example-kit'
-import type { SideNavItem } from '@cascivo/react'
+import { Inbox, User, Eye, Grid, Settings as SettingsIcon } from '@cascivo/icons'
 import { Board } from './sections/Board'
-import { List } from './sections/List'
+import { IssueListView } from './sections/IssueListView'
+import { Settings } from './sections/Settings'
 import { IssueForm } from './sections/IssueForm'
 import { msg } from './i18n'
 import { USERS } from './data/seed'
@@ -20,9 +21,10 @@ import '@cascivo/tokens'
 
 type View = 'board' | 'list'
 
-// Module-level signals
 export const currentView = persistedSignal<View>('track-view', 'board')
 export const assigneeFilter = signal<string | undefined>(undefined)
+export const currentSection = signal<'issues' | 'settings'>('issues')
+export const issueTab = signal<'all' | 'active' | 'backlog'>('all')
 
 const VIEW_OPTIONS = [
   { label: 'Board', value: 'board' as View },
@@ -32,7 +34,6 @@ const VIEW_OPTIONS = [
 export default function App() {
   useSignals()
 
-  // Keyboard shortcut: C = new issue, Escape handled per-component
   useSignalEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement
@@ -55,22 +56,93 @@ export default function App() {
     ...USERS.map((u) => ({ value: u.id, label: u.name })),
   ]
 
-  const navItems: SideNavItem[] = [
+  const notifBadge = (
+    <Badge size="sm" variant="destructive">
+      {t(msg.notifCount)}
+    </Badge>
+  )
+
+  const navGroups: SideNavGroup[] = [
     {
-      label: t(msg.navBoard),
-      active: currentView.value === 'board',
-      onClick: (e) => {
-        e.preventDefault()
-        currentView.value = 'board'
-      },
+      items: [
+        {
+          label: t(msg.navInbox),
+          icon: <Inbox size={16} />,
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navMyIssues),
+          icon: <User size={16} />,
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navReviews),
+          icon: <Eye size={16} />,
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navViews),
+          icon: <Grid size={16} />,
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navNotifications),
+          active: false,
+          icon: notifBadge,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+      ],
     },
     {
-      label: t(msg.navList),
-      active: currentView.value === 'list',
-      onClick: (e) => {
-        e.preventDefault()
-        currentView.value = 'list'
-      },
+      label: t(msg.navGroupFavorites),
+      items: [],
+    },
+    {
+      label: t(msg.navGroupTeams),
+      items: [
+        {
+          label: t(msg.navTeamName),
+          active: currentSection.value === 'issues',
+          items: [
+            {
+              label: t(msg.navSubIssues),
+              href: '#',
+              active: currentSection.value === 'issues',
+            },
+            { label: t(msg.navSubCycles), href: '#', active: false },
+            { label: t(msg.navSubProjects), href: '#', active: false },
+            { label: t(msg.navSubViews), href: '#', active: false },
+            { label: t(msg.navSubPages), href: '#', active: false },
+          ],
+          onClick: (e) => {
+            e.preventDefault()
+            currentSection.value = 'issues'
+          },
+        },
+        {
+          label: t(msg.navSettings),
+          icon: <SettingsIcon size={16} />,
+          active: currentSection.value === 'settings',
+          onClick: (e) => {
+            e.preventDefault()
+            currentSection.value = 'settings'
+          },
+        },
+      ],
     },
   ]
 
@@ -112,8 +184,14 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <AppShell navItems={navItems} actions={actions} mockBanner>
-        {currentView.value === 'board' ? <Board /> : <List />}
+      <AppShell navGroups={navGroups} actions={actions} mockBanner>
+        {currentSection.value === 'settings' ? (
+          <Settings />
+        ) : currentView.value === 'board' ? (
+          <Board />
+        ) : (
+          <IssueListView />
+        )}
       </AppShell>
       <IssueForm
         open={newIssueOpen.value || editingIssueId.value !== null}

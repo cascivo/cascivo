@@ -353,4 +353,4 @@ New MCP tools:
 - [TreeView](/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-14 from registry v0.0.0_
+_Generated: 2026-06-15 from registry v0.0.0_

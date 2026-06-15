@@ -6,10 +6,19 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setup.ts'],
+  },
   // Relative base so the same build runs at `/` (standalone `vp preview`) and
   // when assembled under `/demos/deploy/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.
   base: './',
+  server: {
+    port: 4181,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       // Source aliases so Rolldown doesn't need pre-built dist files

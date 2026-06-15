@@ -1,5 +1,13 @@
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import {
+  createReadStream,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
+import { extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { type Plugin, defineConfig } from 'vite-plus'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/route-head'
@@ -141,8 +149,65 @@ function benchData(): Plugin {
   }
 }
 
+/**
+ * In dev mode, serve pre-built example app dists statically at /demos/<slug>/.
+ * Built apps use base:'./' so relative asset paths resolve correctly in the
+ * browser without any proxy magic. The user must build examples first (the
+ * dev:landing:full script handles this). Missing dists fall through to the
+ * landing SPA (which shows Not Found).
+ */
+function serveExampleDemos(): Plugin {
+  const examplesDir = resolve(__dirname, '../examples')
+  const MIME: Record<string, string> = {
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.png': 'image/png',
+    '.svg': 'image/svg+xml',
+    '.json': 'application/json',
+    '.ico': 'image/x-icon',
+    '.woff2': 'font/woff2',
+    '.woff': 'font/woff',
+    '.ttf': 'font/ttf',
+  }
+  return {
+    name: 'cascade:serve-example-demos',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/demos', (req, res, next) => {
+        const raw = (req.url ?? '/').replace(/^\//, '')
+        const [slug, ...rest] = raw.split('/')
+        if (!slug) {
+          next()
+          return
+        }
+        const distDir = resolve(examplesDir, slug, 'dist')
+        if (!existsSync(distDir)) {
+          next()
+          return
+        }
+        const sub = rest.filter(Boolean).join('/')
+        const candidate = resolve(distDir, sub || 'index.html')
+        const filePath =
+          !existsSync(candidate) || statSync(candidate).isDirectory()
+            ? // No extension → navigation; fall back to index.html
+              !extname(sub)
+              ? resolve(distDir, 'index.html')
+              : null
+            : candidate
+        if (!filePath || !existsSync(filePath)) {
+          next()
+          return
+        }
+        res.setHeader('Content-Type', MIME[extname(filePath)] ?? 'application/octet-stream')
+        createReadStream(filePath).pipe(res)
+      })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [injectCounts(), prerenderHeads(), benchData()],
+  plugins: [injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
   resolve: {

@@ -1,0 +1,108 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-5);
+  padding: var(--cascivo-space-5);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding-block-end: var(--cascivo-space-4);
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.topBar > :first-child {
+  flex: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-6);
+}
+
+.emptyWrap {
+  padding-block: var(--cascivo-space-6);
+}
+
+.marketplace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  padding: var(--cascivo-space-5);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface);
+}
+
+.marketplaceHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cascivo-space-4);
+}
+
+.marketplaceTitle {
+  font-size: var(--cascivo-text-base);
+  font-weight: 600;
+  margin: 0 0 var(--cascivo-space-1);
+}
+
+.marketplaceSub {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+}
+
+.providersTitle {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.providerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--cascivo-space-3);
+}
+
+.providerCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.providerHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+}
+
+.providerIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: var(--cascivo-radius-sm);
+  color: #fff;
+  font-size: var(--cascivo-text-sm);
+  font-weight: 700;
+  font-family: var(--cascivo-font-sans);
+  flex-shrink: 0;
+}
+
+.providerName {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+}
+
+.providerDesc {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  margin: 0 0 var(--cascivo-space-3);
+}

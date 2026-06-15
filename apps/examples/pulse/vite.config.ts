@@ -6,6 +6,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  server: {
+    port: 4185,
+    strictPort: true,
+  },
   // Relative base so the same build runs at `/` (standalone `vp preview`) and
   // when assembled under `/demos/pulse/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.
