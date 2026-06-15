@@ -5,6 +5,7 @@ import { ToastProvider, Button, Combobox, Badge, SegmentedControl } from '@casci
 import type { SideNavGroup } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell } from '@cascivo/example-kit'
+import { Inbox, User, Eye, Grid, Settings as SettingsIcon } from '@cascivo/icons'
 import { Board } from './sections/Board'
 import { IssueListView } from './sections/IssueListView'
 import { Settings } from './sections/Settings'
@@ -66,6 +67,7 @@ export default function App() {
       items: [
         {
           label: t(msg.navInbox),
+          icon: <Inbox size={16} />,
           active: false,
           onClick: (e) => {
             e.preventDefault()
@@ -73,6 +75,7 @@ export default function App() {
         },
         {
           label: t(msg.navMyIssues),
+          icon: <User size={16} />,
           active: false,
           onClick: (e) => {
             e.preventDefault()
@@ -80,6 +83,7 @@ export default function App() {
         },
         {
           label: t(msg.navReviews),
+          icon: <Eye size={16} />,
           active: false,
           onClick: (e) => {
             e.preventDefault()
@@ -87,6 +91,7 @@ export default function App() {
         },
         {
           label: t(msg.navViews),
+          icon: <Grid size={16} />,
           active: false,
           onClick: (e) => {
             e.preventDefault()
@@ -130,6 +135,7 @@ export default function App() {
         },
         {
           label: t(msg.navSettings),
+          icon: <SettingsIcon size={16} />,
           active: currentSection.value === 'settings',
           onClick: (e) => {
             e.preventDefault()

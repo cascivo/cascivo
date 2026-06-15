@@ -4,6 +4,7 @@ import { t } from '@cascivo/i18n'
 import { Badge, ToastProvider } from '@cascivo/react'
 import type { SideNavGroup } from '@cascivo/react'
 import { AppShell } from '@cascivo/example-kit'
+import { Dashboard, Server, Users, Layers } from '@cascivo/icons'
 import { Instances } from './sections/Instances'
 import { Incidents } from './sections/Incidents'
 import { Tasklist } from './sections/Tasklist'
@@ -29,6 +30,7 @@ export default function App() {
       items: [
         {
           label: t(msg.navDashboard),
+          icon: <Dashboard size={16} />,
           active: currentSection.value === 'instances',
           onClick: (e) => {
             e.preventDefault()
@@ -37,14 +39,17 @@ export default function App() {
         },
         {
           label: t(msg.navClustersNav),
+          icon: <Server size={16} />,
           active: false,
         },
         {
           label: t(msg.navOrganization),
+          icon: <Users size={16} />,
           active: false,
         },
         {
           label: t(msg.navCatalog),
+          icon: <Layers size={16} />,
           active: currentSection.value === 'catalog',
           onClick: (e) => {
             e.preventDefault()
