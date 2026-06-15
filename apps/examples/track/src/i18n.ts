@@ -8,6 +8,22 @@ export const msg = defineMessages('track', {
   // Nav
   navBoard: 'Board',
   navList: 'List',
+  navInbox: 'Inbox',
+  navMyIssues: 'My Issues',
+  navNotifications: 'Notifications',
+  navGroupFavorites: 'Favorites',
+  navGroupTeams: 'Your teams',
+  navTeamName: 'Forum',
+  navSubIssues: 'Issues',
+  navSubCycles: 'Cycles',
+  navSubProjects: 'Projects',
+  navSubViews: 'Views',
+  navSubPages: 'Pages',
+  navSettings: 'Settings',
+  notifCount: '3',
+  issueTabAll: 'All Issues',
+  issueTabActive: 'Active',
+  issueTabBacklog: 'Backlog',
 
   // Toolbar
   toolbarNewIssue: 'New issue',

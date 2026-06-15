@@ -1,11 +1,20 @@
 'use client'
 import { signal, useSignalEffect, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { ToastProvider, Button, Combobox } from '@cascivo/react'
-import { SegmentedControl } from '@cascivo/react'
+import {
+  ToastProvider,
+  Button,
+  Combobox,
+  Badge,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  SegmentedControl,
+} from '@cascivo/react'
+import type { SideNavGroup } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell } from '@cascivo/example-kit'
-import type { SideNavItem } from '@cascivo/react'
 import { Board } from './sections/Board'
 import { List } from './sections/List'
 import { IssueForm } from './sections/IssueForm'
@@ -20,9 +29,10 @@ import '@cascivo/tokens'
 
 type View = 'board' | 'list'
 
-// Module-level signals
 export const currentView = persistedSignal<View>('track-view', 'board')
 export const assigneeFilter = signal<string | undefined>(undefined)
+export const currentSection = signal<'issues' | 'settings'>('issues')
+export const issueTab = signal<'all' | 'active' | 'backlog'>('all')
 
 const VIEW_OPTIONS = [
   { label: 'Board', value: 'board' as View },
@@ -32,7 +42,6 @@ const VIEW_OPTIONS = [
 export default function App() {
   useSignals()
 
-  // Keyboard shortcut: C = new issue, Escape handled per-component
   useSignalEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement
@@ -55,22 +64,74 @@ export default function App() {
     ...USERS.map((u) => ({ value: u.id, label: u.name })),
   ]
 
-  const navItems: SideNavItem[] = [
+  const notifBadge = (
+    <Badge size="sm" variant="destructive">
+      {t(msg.notifCount)}
+    </Badge>
+  )
+
+  const navGroups: SideNavGroup[] = [
     {
-      label: t(msg.navBoard),
-      active: currentView.value === 'board',
-      onClick: (e) => {
-        e.preventDefault()
-        currentView.value = 'board'
-      },
+      items: [
+        {
+          label: t(msg.navInbox),
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navMyIssues),
+          active: false,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+        {
+          label: t(msg.navNotifications),
+          active: false,
+          icon: notifBadge,
+          onClick: (e) => {
+            e.preventDefault()
+          },
+        },
+      ],
     },
     {
-      label: t(msg.navList),
-      active: currentView.value === 'list',
-      onClick: (e) => {
-        e.preventDefault()
-        currentView.value = 'list'
-      },
+      label: t(msg.navGroupFavorites),
+      items: [],
+    },
+    {
+      label: t(msg.navGroupTeams),
+      items: [
+        {
+          label: t(msg.navTeamName),
+          active: currentSection.value === 'issues',
+          items: [
+            {
+              label: t(msg.navSubIssues),
+              href: '#',
+              active: currentSection.value === 'issues',
+            },
+            { label: t(msg.navSubCycles), href: '#', active: false },
+            { label: t(msg.navSubProjects), href: '#', active: false },
+            { label: t(msg.navSubViews), href: '#', active: false },
+            { label: t(msg.navSubPages), href: '#', active: false },
+          ],
+          onClick: (e) => {
+            e.preventDefault()
+            currentSection.value = 'issues'
+          },
+        },
+        {
+          label: t(msg.navSettings),
+          active: currentSection.value === 'settings',
+          onClick: (e) => {
+            e.preventDefault()
+            currentSection.value = 'settings'
+          },
+        },
+      ],
     },
   ]
 
@@ -112,8 +173,38 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <AppShell navItems={navItems} actions={actions} mockBanner>
-        {currentView.value === 'board' ? <Board /> : <List />}
+      <AppShell navGroups={navGroups} actions={actions} mockBanner>
+        {currentSection.value === 'settings' ? (
+          <div style={{ padding: 'var(--cascivo-space-6)' }}>
+            <p style={{ color: 'var(--cascivo-color-foreground-muted)' }}>
+              Settings — coming in T7
+            </p>
+          </div>
+        ) : currentView.value === 'board' ? (
+          <Board />
+        ) : (
+          <Tabs
+            value={issueTab.value}
+            onValueChange={(v) => {
+              issueTab.value = v as 'all' | 'active' | 'backlog'
+            }}
+          >
+            <TabsList>
+              <TabsTrigger value="all">{t(msg.issueTabAll)}</TabsTrigger>
+              <TabsTrigger value="active">{t(msg.issueTabActive)}</TabsTrigger>
+              <TabsTrigger value="backlog">{t(msg.issueTabBacklog)}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="all">
+              <List />
+            </TabsContent>
+            <TabsContent value="active">
+              <List />
+            </TabsContent>
+            <TabsContent value="backlog">
+              <List />
+            </TabsContent>
+          </Tabs>
+        )}
       </AppShell>
       <IssueForm
         open={newIssueOpen.value || editingIssueId.value !== null}
