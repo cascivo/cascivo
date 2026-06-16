@@ -12,11 +12,13 @@ const componentItems: SearchItem[] = (registry as { components: RegEntry[] }).co
   (e) => {
     const description = e.meta.description ?? e.description
     return {
-      id: `component-${e.meta.name.toLowerCase()}`,
+      // e.name is the kebab-case registry slug (e.g. "shell-header"); meta.name
+      // is the PascalCase display name. Docs URLs use the kebab slug.
+      id: `component-${e.name}`,
       title: e.meta.name,
       section: e.category,
       ...(description ? { description } : {}),
-      href: `https://docs.cascivo.com/components/${e.meta.name.toLowerCase()}`,
+      href: `https://docs.cascivo.com/components/${e.name}`,
       type: 'component' as const,
       category: e.category,
     }
