@@ -1,0 +1,80 @@
+@layer cascade.blocks.dashboard-overview {
+  .root {
+    padding: var(--cascivo-space-8);
+    background: var(--cascivo-color-surface);
+    min-block-size: 100vh;
+  }
+
+  .header {
+    margin-block-end: var(--cascivo-space-8);
+  }
+
+  .heading {
+    font-size: var(--cascivo-text-3xl);
+    font-weight: var(--cascivo-font-bold);
+    margin-block-end: var(--cascivo-space-1);
+  }
+
+  .date {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .grid {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cascivo-space-4);
+  }
+
+  @container (min-inline-size: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (min-inline-size: 64rem) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .statCard {
+    padding: var(--cascivo-space-6);
+  }
+
+  .statIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border-radius: var(--cascivo-radius-md);
+    background: var(--cascivo-color-accent-subtle);
+    color: var(--cascivo-color-accent);
+    margin-block-end: var(--cascivo-space-4);
+  }
+
+  .statLabel {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    margin-block-end: var(--cascivo-space-1);
+  }
+
+  .statValue {
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    margin-block-end: var(--cascivo-space-2);
+  }
+
+  .statDelta {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-1-5);
+    font-size: var(--cascivo-text-sm);
+  }
+
+  .statTrend {
+    color: var(--cascivo-color-foreground-muted);
+  }
+}

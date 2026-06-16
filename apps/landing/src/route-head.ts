@@ -85,6 +85,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Design your cascivo theme in seconds: pick an accent colour, border radius, and font — see real components update live, then copy the CSS.',
     ogTitle: 'cascivo theme configurator',
   },
+  '/blocks': {
+    title: 'Blocks — cascivo',
+    description:
+      'Production-ready UI sections built with cascivo components. Browse auth flows, dashboards, marketing sections, and app shells — then copy the source in one click.',
+    ogTitle: 'cascivo blocks',
+  },
 }
 
 /** Routes that get prerendered + listed in the sitemap (excludes `/` root and `/og`). */
@@ -100,6 +106,7 @@ export const PRERENDER_ROUTES = [
   'examples/track',
   'examples/pulse',
   'create',
+  'blocks',
 ] as const
 
 export function canonicalFor(path: string): string {

@@ -57,12 +57,12 @@ v31 closes the vocabulary and component count gap. It does not borrow the Tailwi
 
 ```css
 /* New in every theme */
---cascivo-color-primary-content:     oklch(0.985 0 0);      /* white on dark primary */
---cascivo-color-accent-content:      oklch(1 0 0);           /* white on accent blue */
---cascivo-color-info-content:        oklch(1 0 0);
---cascivo-color-success-content:     oklch(1 0 0);
---cascivo-color-warning-content:     oklch(0.145 0 0);       /* dark on yellow warning */
---cascivo-color-error-content:       oklch(1 0 0);
+--cascivo-color-primary-content: oklch(0.985 0 0); /* white on dark primary */
+--cascivo-color-accent-content: oklch(1 0 0); /* white on accent blue */
+--cascivo-color-info-content: oklch(1 0 0);
+--cascivo-color-success-content: oklch(1 0 0);
+--cascivo-color-warning-content: oklch(0.145 0 0); /* dark on yellow warning */
+--cascivo-color-error-content: oklch(1 0 0);
 --cascivo-color-destructive-content: oklch(1 0 0);
 ```
 
@@ -71,10 +71,10 @@ Existing `*-fg` and `text-on-*` tokens are kept as-is for backward compatibility
 **Secondary color role.** A new `secondary` semantic color is added to every theme. Where `primary` is monochrome (bold black actions on light themes) and `accent` is the hue-driven interactive color, `secondary` is a mid-weight muted tone suited for secondary actions and differentiated badge variants. Each theme sets:
 
 ```css
---cascivo-color-secondary:         oklch(...);
+--cascivo-color-secondary: oklch(...);
 --cascivo-color-secondary-content: oklch(...);
---cascivo-color-secondary-hover:   oklch(...);
---cascivo-color-secondary-subtle:  oklch(...);
+--cascivo-color-secondary-hover: oklch(...);
+--cascivo-color-secondary-subtle: oklch(...);
 ```
 
 `Button` and `Badge` gain `variant="secondary"` once the tokens exist.
@@ -116,6 +116,7 @@ Existing `*-fg` and `text-on-*` tokens are kept as-is for backward compatibility
 **Why a secondary color role?** The current primary/accent split covers bold actions (primary) and interactive links (accent) but leaves no slot for secondary actions — buttons that are "less important than primary but not ghost." DaisyUI, Bootstrap, and Material all have a secondary role. Without it, developers reach for `variant="outline"` as a workaround, which is not always the right semantic.
 
 **Why these 12 components?** They close practical coverage gaps in the four most common developer tasks:
+
 - **Building forms:** Progress (status feedback), Kbd (help text shortcuts), Filter (facet chips)
 - **Navigation flows:** Steps (multi-step UX), Pagination (listings), Dock (mobile shell)
 - **Layout composition:** Join (input groups), Indicator (notification badges), Stack (card piles)
@@ -127,14 +128,14 @@ Existing `*-fg` and `text-on-*` tokens are kept as-is for backward compatibility
 
 ## Workstreams
 
-| # | Workstream | Tranche | Summary |
-|---|---|---|---|
-| A | Token Architecture | T1 | -content pairs for all status colors, secondary color role — across all 10 themes; update Alert, Badge, Button |
-| B | Form Utilities | T2 | Progress, Kbd, Filter — full implementation + tests + manifests + react/index.ts exports |
-| C | Navigation Components | T3 | Steps, Pagination, Dock — full implementation + tests + manifests + react/index.ts exports |
-| D | Layout Primitives | T4 | Join, Indicator, Stack — full implementation + tests + manifests + react/index.ts exports |
-| E | Interaction Patterns | T5 | Swap, Chat Bubble, Radial Progress — full implementation + tests + manifests + react/index.ts exports |
-| F | Gate | T6 | Full CI gate: registry.json audit, manifest completeness check, format+lint+build+type-check+tests+drift+breakpoints |
+| #   | Workstream            | Tranche | Summary                                                                                                              |
+| --- | --------------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| A   | Token Architecture    | T1      | -content pairs for all status colors, secondary color role — across all 10 themes; update Alert, Badge, Button       |
+| B   | Form Utilities        | T2      | Progress, Kbd, Filter — full implementation + tests + manifests + react/index.ts exports                             |
+| C   | Navigation Components | T3      | Steps, Pagination, Dock — full implementation + tests + manifests + react/index.ts exports                           |
+| D   | Layout Primitives     | T4      | Join, Indicator, Stack — full implementation + tests + manifests + react/index.ts exports                            |
+| E   | Interaction Patterns  | T5      | Swap, Chat Bubble, Radial Progress — full implementation + tests + manifests + react/index.ts exports                |
+| F   | Gate                  | T6      | Full CI gate: registry.json audit, manifest completeness check, format+lint+build+type-check+tests+drift+breakpoints |
 
 ---
 

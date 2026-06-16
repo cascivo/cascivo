@@ -13,6 +13,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import type { ComponentMeta } from '@cascivo/core'
 import { buildRegistry, parseLegacyRegistry } from '../../packages/registry/src/index.ts'
+import type { BlockMeta } from '../../packages/components/src/blocks/types.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -134,6 +135,61 @@ async function buildEntry(
   return entry
 }
 
+interface BlockRegistryEntry {
+  name: string
+  type: 'block'
+  displayName: string
+  description: string
+  category: string
+  version: string
+  files: string[]
+  dependencies: string[]
+  tags: string[]
+  screenshot: { light: string; dark: string }
+}
+
+const BLOCKS_DIR = join(REPO_ROOT, 'packages', 'components', 'src', 'blocks')
+
+async function scanBlocks(version: string): Promise<BlockRegistryEntry[]> {
+  if (!existsSync(BLOCKS_DIR)) return []
+
+  const dirents = await readdir(BLOCKS_DIR, { withFileTypes: true })
+  const names = dirents
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort()
+
+  const entries: BlockRegistryEntry[] = []
+  for (const name of names) {
+    const metaPath = join(BLOCKS_DIR, name, `${name}.meta.ts`)
+    if (!existsSync(metaPath)) {
+      console.warn(`  skip block/${name}: no ${name}.meta.ts found`)
+      continue
+    }
+    const mod = (await import(pathToFileURL(metaPath).href)) as { meta: BlockMeta }
+    const meta = mod.meta
+    const relDir = `packages/components/src/blocks/${name}`
+    const files = (await readdir(join(BLOCKS_DIR, name)))
+      .filter(isSourceFile)
+      .sort(sortFiles)
+      .map((file) => `${BASE_URL}/${relDir}/${file}`)
+
+    entries.push({
+      name: meta.name,
+      type: 'block',
+      displayName: meta.displayName,
+      description: meta.description,
+      category: meta.category,
+      version,
+      files,
+      dependencies: ['@cascivo/react'],
+      tags: meta.tags,
+      screenshot: meta.screenshot,
+    })
+  }
+  return entries
+}
+
 async function scanRoot(root: SourceRoot, version: string): Promise<RegistryComponent[]> {
   if (!existsSync(root.dir)) return []
 
@@ -171,15 +227,20 @@ async function main(): Promise<void> {
     components.push(...entries)
   }
 
+  const blocks = await scanBlocks(version)
+
   const registry = {
     version,
     generatedAt: new Date().toISOString().slice(0, 10),
     components,
+    blocks,
   }
 
   await writeFile(REGISTRY_PATH, `${JSON.stringify(registry, null, 2)}\n`, 'utf8')
   formatRegistry()
-  console.log(`Wrote ${components.length} entries to registry.json (base: ${BASE_URL})`)
+  console.log(
+    `Wrote ${components.length} component entries and ${blocks.length} block entries to registry.json (base: ${BASE_URL})`,
+  )
 
   // Emit per-item static files under apps/docs/public/r/
   const docsPublicR = join(REPO_ROOT, 'apps', 'docs', 'public', 'r')

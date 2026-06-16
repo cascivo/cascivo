@@ -16876,5 +16876,151 @@
         }
       }
     }
+  ],
+  "blocks": [
+    {
+      "name": "app-shell",
+      "type": "block",
+      "displayName": "App Shell",
+      "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
+      "category": "shell",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/app-shell/app-shell.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["shell", "layout", "sidebar", "navigation", "responsive"],
+      "screenshot": {
+        "light": "/blocks/screenshots/app-shell-light.png",
+        "dark": "/blocks/screenshots/app-shell-dark.png"
+      }
+    },
+    {
+      "name": "auth-login",
+      "type": "block",
+      "displayName": "Login Form",
+      "description": "Email + password login with remember-me checkbox and forgot-password link.",
+      "category": "auth",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "login", "form", "email", "password"],
+      "screenshot": {
+        "light": "/blocks/screenshots/auth-login-light.png",
+        "dark": "/blocks/screenshots/auth-login-dark.png"
+      }
+    },
+    {
+      "name": "auth-signup",
+      "type": "block",
+      "displayName": "Sign Up Form",
+      "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
+      "category": "auth",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "signup", "register", "form"],
+      "screenshot": {
+        "light": "/blocks/screenshots/auth-signup-light.png",
+        "dark": "/blocks/screenshots/auth-signup-dark.png"
+      }
+    },
+    {
+      "name": "dashboard-overview",
+      "type": "block",
+      "displayName": "Dashboard Overview",
+      "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
+      "category": "dashboard",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "stats", "kpi", "cards", "overview"],
+      "screenshot": {
+        "light": "/blocks/screenshots/dashboard-overview-light.png",
+        "dark": "/blocks/screenshots/dashboard-overview-dark.png"
+      }
+    },
+    {
+      "name": "dashboard-table",
+      "type": "block",
+      "displayName": "Dashboard Table",
+      "description": "Searchable, sortable, paginated data table with export button.",
+      "category": "dashboard",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "table", "data", "search", "sort", "pagination"],
+      "screenshot": {
+        "light": "/blocks/screenshots/dashboard-table-light.png",
+        "dark": "/blocks/screenshots/dashboard-table-dark.png"
+      }
+    },
+    {
+      "name": "marketing-features",
+      "type": "block",
+      "displayName": "Feature Grid",
+      "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "features", "grid", "icons"],
+      "screenshot": {
+        "light": "/blocks/screenshots/marketing-features-light.png",
+        "dark": "/blocks/screenshots/marketing-features-dark.png"
+      }
+    },
+    {
+      "name": "marketing-hero",
+      "type": "block",
+      "displayName": "Hero Section",
+      "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "hero", "landing", "cta"],
+      "screenshot": {
+        "light": "/blocks/screenshots/marketing-hero-light.png",
+        "dark": "/blocks/screenshots/marketing-hero-dark.png"
+      }
+    },
+    {
+      "name": "settings-profile",
+      "type": "block",
+      "displayName": "Settings — Profile",
+      "description": "Two-section settings form: personal info fields + preference toggles.",
+      "category": "shell",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["settings", "profile", "form", "toggles", "preferences"],
+      "screenshot": {
+        "light": "/blocks/screenshots/settings-profile-light.png",
+        "dark": "/blocks/screenshots/settings-profile-dark.png"
+      }
+    }
   ]
 }

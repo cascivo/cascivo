@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",
+    "@playwright/test": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {

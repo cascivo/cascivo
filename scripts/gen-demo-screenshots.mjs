@@ -26,13 +26,18 @@ const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..')
 const OUT_ROOT = resolve(root, 'apps/landing/public/screenshots')
 
-/** slug → { accent, storageThemeKey } */
+// All five demo apps use @cascivo/example-kit's AppShell, which stores the
+// active theme under a single shared key in the persistedSignal envelope format:
+// { v: 1, value: "<theme>" }. The per-demo themeKey entries were stale.
+const THEME_STORAGE_KEY = 'kit.appShell.theme'
+
+/** slug → { accent } */
 const DEMOS = {
-  deploy: { accent: [0, 112, 243], themeKey: 'deploy.theme' },
-  pay: { accent: [99, 91, 255], themeKey: 'pay.theme' },
-  flow: { accent: [252, 93, 39], themeKey: 'flow.theme' },
-  track: { accent: [94, 106, 210], themeKey: 'track.theme' },
-  pulse: { accent: [99, 44, 166], themeKey: 'pulse.theme' },
+  deploy: { accent: [0, 112, 243] },
+  pay: { accent: [99, 91, 255] },
+  flow: { accent: [252, 93, 39] },
+  track: { accent: [94, 106, 210] },
+  pulse: { accent: [99, 44, 166] },
 }
 
 const VIEWPORTS = {
@@ -181,10 +186,27 @@ function writePlaceholders() {
 // ── Real capture (Playwright) ───────────────────────────────────────────────
 async function capture() {
   const { chromium } = await import('@playwright/test')
-  const { spawn } = await import('node:child_process')
+  const { spawn, execFileSync } = await import('node:child_process')
+  const { existsSync } = await import('node:fs')
+
+  const landingDist = resolve(root, 'apps/landing/dist')
+  if (!existsSync(landingDist)) {
+    throw new Error(
+      'Landing is not built. Run `pnpm build:landing-demos` from the repo root first.',
+    )
+  }
+
+  // Copy each demo's built dist into landing/dist/demos/<slug>/ so the preview
+  // server can serve them. assemble-demos.mjs does the copy (no --build flag
+  // since example apps are expected to already be built).
+  console.log('[screenshots] assembling demo apps into landing dist…')
+  execFileSync('node', [resolve(root, 'scripts/assemble-demos.mjs')], {
+    cwd: root,
+    stdio: 'inherit',
+  })
 
   const PORT = Number(process.env.SHOT_PORT ?? 4190)
-  // Serve the already-built+assembled landing dist so /demos/<slug>/ is live.
+  // Serve the assembled landing dist so /demos/<slug>/ is live.
   const server = spawn('pnpm', ['exec', 'vp', 'preview', '--port', String(PORT), '--strictPort'], {
     cwd: resolve(root, 'apps/landing'),
     stdio: 'ignore',
@@ -193,7 +215,7 @@ async function capture() {
 
   const browser = await chromium.launch()
   try {
-    for (const [slug, { themeKey }] of Object.entries(DEMOS)) {
+    for (const [slug] of Object.entries(DEMOS)) {
       const dir = resolve(OUT_ROOT, slug)
       mkdirSync(dir, { recursive: true })
       for (const theme of THEMES) {
@@ -202,12 +224,18 @@ async function capture() {
             viewport: { width: w, height: h },
             reducedMotion: 'reduce',
             // Seed the demo's persisted theme before first paint.
+            // persistedSignal stores values in an envelope: { v: 1, value: T }.
             storageState: {
               cookies: [],
               origins: [
                 {
                   origin: `http://localhost:${PORT}`,
-                  localStorage: [{ name: themeKey, value: JSON.stringify(theme) }],
+                  localStorage: [
+                    {
+                      name: THEME_STORAGE_KEY,
+                      value: JSON.stringify({ v: 1, value: theme }),
+                    },
+                  ],
                 },
               ],
             },
@@ -226,6 +254,24 @@ async function capture() {
     server.kill()
   }
 }
+
+// ── Block screenshots ──────────────────────────────────────────────────────
+const BLOCK_NAMES = [
+  'app-shell',
+  'auth-login',
+  'auth-signup',
+  'dashboard-overview',
+  'dashboard-table',
+  'marketing-features',
+  'marketing-hero',
+  'settings-profile',
+]
+
+const BLOCKS_OUT_ROOT = resolve(root, 'apps/landing/public/blocks/screenshots')
+
+// Called from T5 once /blocks/preview/:name route exists in the landing app.
+// Placeholder — implementation goes here when preview route is available.
+async function captureBlocks() {}
 
 const mode = process.argv.includes('--capture') ? 'capture' : 'placeholder'
 if (mode === 'capture') {
