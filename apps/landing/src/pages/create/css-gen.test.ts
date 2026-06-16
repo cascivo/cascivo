@@ -49,4 +49,24 @@ describe('configToCSS', () => {
     expect(light).toContain('@cascivo/themes/light.css')
     expect(dark).toContain('@cascivo/themes/dark.css')
   })
+
+  it('previewMode=false omits base surface tokens', () => {
+    const css = configToCSS(DEFAULT_CONFIG)
+    expect(css).not.toContain('--cascivo-color-background:')
+    expect(css).not.toContain('color-scheme:')
+  })
+
+  it('previewMode=true includes light surface tokens', () => {
+    const css = configToCSS({ ...DEFAULT_CONFIG, baseMode: 'light' }, true)
+    expect(css).toContain('color-scheme: light')
+    expect(css).toContain('--cascivo-color-background: oklch(1 0 0)')
+    expect(css).toContain('--cascivo-color-foreground: oklch(0.145')
+  })
+
+  it('previewMode=true includes dark surface tokens', () => {
+    const css = configToCSS({ ...DEFAULT_CONFIG, baseMode: 'dark' }, true)
+    expect(css).toContain('color-scheme: dark')
+    expect(css).toContain('--cascivo-color-background: oklch(0.145 0.005 250)')
+    expect(css).toContain('--cascivo-color-foreground: oklch(0.985')
+  })
 })

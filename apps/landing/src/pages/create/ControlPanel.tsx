@@ -1,10 +1,11 @@
 'use client'
-import { useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { Button } from '@cascivo/components/button'
 import { Select } from '@cascivo/components/select'
 import { config, DEFAULT_CONFIG, RADIUS_STOPS, RADIUS_LABELS } from './store'
 import type { FontFamily, RadiusStop } from './store'
 import { PRESETS } from './presets'
+import { hexToOklch, oklchToHex } from './color-utils'
 
 const FONT_OPTIONS: { value: FontFamily; label: string }[] = [
   { value: 'system', label: 'System (default)' },
@@ -14,13 +15,36 @@ const FONT_OPTIONS: { value: FontFamily; label: string }[] = [
   { value: 'mono', label: 'Monospace' },
 ]
 
+// Lightness used when converting OKLCH↔hex for display/input.
+const DISPLAY_L = 0.65
+
 export function ControlPanel() {
   useSignals()
   const current = config.value
 
+  // Local draft for the hex text input — allows partial typing without resetting.
+  const hexDraft = useSignal(oklchToHex(DISPLAY_L, current.accentChroma, current.accentHue))
+
+  // Keep draft in sync when config changes externally (preset, slider, URL load).
+  useSignalEffect(() => {
+    const c = config.value
+    hexDraft.value = oklchToHex(DISPLAY_L, c.accentChroma, c.accentHue)
+  })
+
   function applyPreset(id: string) {
     const preset = PRESETS.find((p) => p.id === id)
     if (preset) config.value = preset.config
+  }
+
+  function applyHex(hex: string) {
+    const parsed = hexToOklch(hex)
+    if (!parsed) return
+    config.value = {
+      ...config.value,
+      accentHue: Math.round(parsed.hue),
+      accentChroma: Math.max(0.05, Math.min(0.3, parsed.chroma)),
+      presetId: null,
+    }
   }
 
   return (
@@ -83,6 +107,32 @@ export function ControlPanel() {
       {/* Accent color */}
       <section className="ctrl-section">
         <h3 className="ctrl-label">Accent colour</h3>
+
+        {/* Hex colour picker */}
+        <div className="ctrl-hex-row">
+          <input
+            type="color"
+            className="ctrl-hex-picker"
+            value={oklchToHex(DISPLAY_L, current.accentChroma, current.accentHue)}
+            onChange={(e) => applyHex(e.target.value)}
+            aria-label="Pick accent colour"
+          />
+          <input
+            type="text"
+            className="ctrl-hex-text"
+            value={hexDraft.value}
+            onChange={(e) => {
+              hexDraft.value = e.target.value
+              applyHex(e.target.value)
+            }}
+            placeholder="#3b82f6"
+            aria-label="Hex colour value"
+            maxLength={7}
+            spellCheck={false}
+          />
+        </div>
+
+        {/* Hue slider */}
         <div className="ctrl-slider-row">
           <label className="ctrl-slider-label" htmlFor="ctrl-hue">
             Hue
@@ -103,11 +153,13 @@ export function ControlPanel() {
           <span
             className="ctrl-swatch-circle"
             style={{
-              background: `oklch(0.65 ${current.accentChroma.toFixed(3)} ${current.accentHue})`,
+              background: `oklch(${DISPLAY_L} ${current.accentChroma.toFixed(3)} ${current.accentHue})`,
             }}
             aria-hidden="true"
           />
         </div>
+
+        {/* Chroma slider */}
         <div className="ctrl-slider-row">
           <label className="ctrl-slider-label" htmlFor="ctrl-chroma">
             Chroma
@@ -136,7 +188,7 @@ export function ControlPanel() {
             className="ctrl-swatch-circle"
             aria-hidden="true"
             style={{
-              background: `oklch(0.65 ${current.accentChroma.toFixed(3)} ${current.accentHue})`,
+              background: `oklch(${DISPLAY_L} ${current.accentChroma.toFixed(3)} ${current.accentHue})`,
             }}
           />
         </div>
