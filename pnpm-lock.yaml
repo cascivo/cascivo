@@ -781,6 +781,9 @@ importers:
       '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
+      '@cascivo/search':
+        specifier: workspace:*
+        version: link:../../packages/search
       '@cascivo/storage':
         specifier: workspace:*
         version: link:../../packages/storage
@@ -1264,6 +1267,22 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.1.24(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.100.0))
+
+  packages/search:
+    dependencies:
+      '@cascivo/components':
+        specifier: workspace:*
+        version: link:../components
+      '@cascivo/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
 
   packages/storage:
     dependencies:

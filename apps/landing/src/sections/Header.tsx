@@ -5,6 +5,8 @@ import { ShellHeader } from '@cascivo/components/shell-header'
 import { Tooltip } from '@cascivo/components/tooltip'
 import { setTheme, theme, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
+import { SearchButton } from '../search/SearchButton'
+import { searchOpen } from '../search/state'
 
 const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 
@@ -223,6 +225,11 @@ export function Header() {
                 {(THEME_ICONS[theme.value] ?? SunIcon)()}
               </button>
             </Tooltip>
+            <SearchButton
+              onClick={() => {
+                searchOpen.value = true
+              }}
+            />
             <a
               href={GITHUB_HREF}
               className="header-icon-link"

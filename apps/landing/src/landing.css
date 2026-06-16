@@ -797,6 +797,46 @@ kbd {
   outline-offset: 2px;
 }
 
+/* ── Header search button ───────────────────────────────── */
+.header-search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-inline: var(--cascivo-space-3);
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  background: var(--cascivo-color-surface-raised);
+  border: 1px solid var(--cascivo-color-border);
+  cursor: pointer;
+  color: var(--cascivo-color-text-subtle);
+  font-size: var(--cascivo-text-sm);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+  white-space: nowrap;
+}
+
+.header-search-btn:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface);
+}
+
+.header-search-btn:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+/* Hide the shortcut hint on narrow viewports */
+.header-search-shortcut {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .header-search-shortcut {
+    display: inline-flex;
+  }
+}
+
 /* ── Hero (rewritten v7) ──────────────────────────────── */
 .hero-title {
   margin: 0;
