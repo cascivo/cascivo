@@ -210,6 +210,19 @@ export default defineConfig({
   plugins: [injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setup.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
+    alias: {
+      '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
+      '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+      '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
+      '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/components/blocks/types': resolve(root, 'packages/components/src/blocks/types.ts'),
+    },
+  },
   resolve: {
     alias: {
       // Profiling build so the SignalsDemo <Profiler> commit counters work in
@@ -222,9 +235,78 @@ export default defineConfig({
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
       '@cascivo/search/SearchDialog': resolve(root, 'packages/search/src/SearchDialog.tsx'),
       '@cascivo/search': resolve(root, 'packages/search/src/index.ts'),
+      // Block types
+      '@cascivo/components/blocks/types': resolve(root, 'packages/components/src/blocks/types.ts'),
+      // Block component aliases (more-specific /component paths before bare name aliases)
+      '@cascivo/blocks/app-shell/component': resolve(
+        root,
+        'packages/components/src/blocks/app-shell/app-shell.tsx',
+      ),
+      '@cascivo/blocks/auth-login/component': resolve(
+        root,
+        'packages/components/src/blocks/auth-login/auth-login.tsx',
+      ),
+      '@cascivo/blocks/auth-signup/component': resolve(
+        root,
+        'packages/components/src/blocks/auth-signup/auth-signup.tsx',
+      ),
+      '@cascivo/blocks/dashboard-overview/component': resolve(
+        root,
+        'packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx',
+      ),
+      '@cascivo/blocks/dashboard-table/component': resolve(
+        root,
+        'packages/components/src/blocks/dashboard-table/dashboard-table.tsx',
+      ),
+      '@cascivo/blocks/marketing-features/component': resolve(
+        root,
+        'packages/components/src/blocks/marketing-features/marketing-features.tsx',
+      ),
+      '@cascivo/blocks/marketing-hero/component': resolve(
+        root,
+        'packages/components/src/blocks/marketing-hero/marketing-hero.tsx',
+      ),
+      '@cascivo/blocks/settings-profile/component': resolve(
+        root,
+        'packages/components/src/blocks/settings-profile/settings-profile.tsx',
+      ),
+      // Block meta aliases (bare name → meta file)
+      '@cascivo/blocks/app-shell': resolve(
+        root,
+        'packages/components/src/blocks/app-shell/app-shell.meta.ts',
+      ),
+      '@cascivo/blocks/auth-login': resolve(
+        root,
+        'packages/components/src/blocks/auth-login/auth-login.meta.ts',
+      ),
+      '@cascivo/blocks/auth-signup': resolve(
+        root,
+        'packages/components/src/blocks/auth-signup/auth-signup.meta.ts',
+      ),
+      '@cascivo/blocks/dashboard-overview': resolve(
+        root,
+        'packages/components/src/blocks/dashboard-overview/dashboard-overview.meta.ts',
+      ),
+      '@cascivo/blocks/dashboard-table': resolve(
+        root,
+        'packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts',
+      ),
+      '@cascivo/blocks/marketing-features': resolve(
+        root,
+        'packages/components/src/blocks/marketing-features/marketing-features.meta.ts',
+      ),
+      '@cascivo/blocks/marketing-hero': resolve(
+        root,
+        'packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts',
+      ),
+      '@cascivo/blocks/settings-profile': resolve(
+        root,
+        'packages/components/src/blocks/settings-profile/settings-profile.meta.ts',
+      ),
     },
   },
 })
