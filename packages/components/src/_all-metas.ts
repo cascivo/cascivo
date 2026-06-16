@@ -8,6 +8,7 @@ import { meta as blockquoteMeta } from './blockquote/blockquote.meta'
 import { meta as breadcrumbMeta } from './breadcrumb/breadcrumb.meta'
 import { meta as buttonMeta } from './button/button.meta'
 import { meta as cardMeta } from './card/card.meta'
+import { meta as chatBubbleMeta } from './chat-bubble/chat-bubble.meta'
 import { meta as checkboxMeta } from './checkbox/checkbox.meta'
 import { meta as checkboxCardMeta } from './checkbox-card/checkbox-card.meta'
 import { meta as codeMeta } from './code/code.meta'
@@ -17,17 +18,21 @@ import { meta as contextMenuMeta } from './context-menu/context-menu.meta'
 import { meta as copyButtonMeta } from './copy-button/copy-button.meta'
 import { meta as dataTableMeta } from './data-table/data-table.meta'
 import { meta as datePickerMeta } from './date-picker/date-picker.meta'
+import { meta as dockMeta } from './dock/dock.meta'
 import { meta as dropdownMeta } from './dropdown/dropdown.meta'
 import { meta as editableMeta } from './editable/editable.meta'
 import { meta as emptyStateMeta } from './empty-state/empty-state.meta'
 import { meta as fileUploaderMeta } from './file-uploader/file-uploader.meta'
+import { meta as filterMeta } from './filter/filter.meta'
 import { meta as formMeta } from './form/form.meta'
 import { meta as headerMeta } from './header/header.meta'
 import { meta as headerPanelMeta } from './header-panel/header-panel.meta'
 import { meta as headingMeta } from './heading/heading.meta'
 import { meta as hoverCardMeta } from './hover-card/hover-card.meta'
+import { meta as indicatorMeta } from './indicator/indicator.meta'
 import { meta as inputMeta } from './input/input.meta'
 import { meta as inputGroupMeta } from './input-group/input-group.meta'
+import { meta as joinMeta } from './join/join.meta'
 import { meta as kbdMeta } from './kbd/kbd.meta'
 import { meta as linkMeta } from './link/link.meta'
 import { meta as listMeta } from './list/list.meta'
@@ -40,6 +45,8 @@ import { meta as overflowMenuMeta } from './overflow-menu/overflow-menu.meta'
 import { meta as paginationMeta } from './pagination/pagination.meta'
 import { meta as passwordInputMeta } from './password-input/password-input.meta'
 import { meta as popoverMeta } from './popover/popover.meta'
+import { meta as progressMeta } from './progress/progress.meta'
+import { meta as radialProgressMeta } from './radial-progress/radial-progress.meta'
 import { meta as progressBarMeta } from './progress-bar/progress-bar.meta'
 import { meta as progressCircleMeta } from './progress-circle/progress-circle.meta'
 import { meta as progressIndicatorMeta } from './progress-indicator/progress-indicator.meta'
@@ -54,12 +61,15 @@ import { meta as separatorMeta } from './separator/separator.meta'
 import { meta as sheetMeta } from './sheet/sheet.meta'
 import { meta as shellHeaderMeta } from './shell-header/shell-header.meta'
 import { meta as sideNavMeta } from './side-nav/side-nav.meta'
+import { meta as stackMeta } from './stack/stack.meta'
+import { meta as stepsMeta } from './steps/steps.meta'
 import { meta as skeletonMeta } from './skeleton/skeleton.meta'
 import { meta as skipNavMeta } from './skip-nav/skip-nav.meta'
 import { meta as sliderMeta } from './slider/slider.meta'
 import { meta as spinnerMeta } from './spinner/spinner.meta'
 import { meta as statMeta } from './stat/stat.meta'
 import { meta as statusMeta } from './status/status.meta'
+import { meta as swapMeta } from './swap/swap.meta'
 import { meta as switcherMeta } from './switcher/switcher.meta'
 import { meta as tabsMeta } from './tabs/tabs.meta'
 import { meta as tagMeta } from './tag/tag.meta'
@@ -82,6 +92,7 @@ export const allMetas: ComponentMeta[] = [
   breadcrumbMeta,
   buttonMeta,
   cardMeta,
+  chatBubbleMeta,
   checkboxMeta,
   checkboxCardMeta,
   codeMeta,
@@ -91,17 +102,21 @@ export const allMetas: ComponentMeta[] = [
   copyButtonMeta,
   dataTableMeta,
   datePickerMeta,
+  dockMeta,
   dropdownMeta,
   editableMeta,
   emptyStateMeta,
   fileUploaderMeta,
+  filterMeta,
   formMeta,
   headerMeta,
   headerPanelMeta,
   headingMeta,
   hoverCardMeta,
+  indicatorMeta,
   inputMeta,
   inputGroupMeta,
+  joinMeta,
   kbdMeta,
   linkMeta,
   listMeta,
@@ -114,6 +129,8 @@ export const allMetas: ComponentMeta[] = [
   paginationMeta,
   passwordInputMeta,
   popoverMeta,
+  progressMeta,
+  radialProgressMeta,
   progressBarMeta,
   progressCircleMeta,
   progressIndicatorMeta,
@@ -132,8 +149,11 @@ export const allMetas: ComponentMeta[] = [
   skipNavMeta,
   sliderMeta,
   spinnerMeta,
+  stackMeta,
   statMeta,
   statusMeta,
+  stepsMeta,
+  swapMeta,
   switcherMeta,
   tabsMeta,
   tagMeta,

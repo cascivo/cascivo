@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 2,
+  "name": "progress",
+  "type": "component",
+  "description": "Horizontal bar showing the completion progress of a tracked operation",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress/progress.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress/progress.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["progress", "loading", "upload", "bar"],
+  "category": "feedback",
+  "meta": {
+    "name": "Progress",
+    "description": "Horizontal bar showing the completion progress of a tracked operation",
+    "category": "feedback",
+    "states": ["determinate", "indeterminate"],
+    "variants": ["primary", "info", "success", "warning", "error"],
+    "sizes": ["sm", "md", "lg"],
+    "props": [
+      {
+        "name": "value",
+        "type": "number",
+        "required": false,
+        "description": "0–100. Omit for indeterminate state."
+      },
+      {
+        "name": "variant",
+        "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
+        "required": false,
+        "default": "primary"
+      },
+      {
+        "name": "size",
+        "type": "'sm' | 'md' | 'lg'",
+        "required": false,
+        "default": "md"
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-surface-2",
+      "--cascivo-color-primary",
+      "--cascivo-color-info",
+      "--cascivo-color-success",
+      "--cascivo-color-warning",
+      "--cascivo-color-error",
+      "--cascivo-color-accent",
+      "--cascivo-radius-full",
+      "--cascivo-ease-out"
+    ],
+    "accessibility": {
+      "role": "progressbar",
+      "wcag": "2.2-AA",
+      "keyboard": [],
+      "reducedMotion": true
+    },
+    "examples": [
+      {
+        "title": "Determinate",
+        "code": "<Progress value={65} />"
+      },
+      {
+        "title": "Indeterminate",
+        "code": "<Progress aria-label=\"Loading…\" />"
+      },
+      {
+        "title": "Success variant",
+        "code": "<Progress value={100} variant=\"success\" />"
+      },
+      {
+        "title": "Small",
+        "code": "<Progress value={40} size=\"sm\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["progress", "loading", "upload", "bar"],
+    "intent": {
+      "whenToUse": [
+        "Tracked operations with a known total (file uploads, multi-step imports)",
+        "Showing completion percentage of a long-running task"
+      ],
+      "whenNotToUse": [
+        "Unbounded waits of unknown duration — use Spinner",
+        "Single-action button loading state — use the button's own loading prop"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<Progress />",
+          "good": "<Progress aria-label=\"Uploading file…\" />",
+          "why": "Indeterminate progress bars must have an aria-label so screen readers can announce what is loading"
+        }
+      ],
+      "related": [
+        {
+          "name": "Spinner",
+          "relationship": "alternative",
+          "reason": "Spinner is for unbounded waits; Progress is for operations with a known end point"
+        },
+        {
+          "name": "ProgressBar",
+          "relationship": "alternative",
+          "reason": "ProgressBar is the richer compound variant with label and percentage display"
+        }
+      ],
+      "a11yRationale": "Uses the native <progress> element which maps to role=\"progressbar\" automatically; aria-label or aria-labelledby is required for indeterminate state",
+      "flexibility": [
+        {
+          "area": "variant",
+          "level": "flexible",
+          "note": "Choose the variant that matches the semantic meaning of the operation"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Colors must resolve to --cascivo-* tokens"
+        }
+      ]
+    }
+  }
+}

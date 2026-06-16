@@ -11,6 +11,7 @@
     />
     <link rel="canonical" href="https://cascivo.com/" />
     <meta name="robots" content="index, follow" />
+    <link rel="dns-prefetch" href="https://github.com" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -52,6 +53,663 @@
         "sameAs": ["https://github.com/urbanisierung/cascivo"]
       }
     </script>
+    <style>
+      /* Critical CSS — above the fold */
+
+      /* ── Layer order ─────────────────────────────────────── */
+      @layer cascade.tokens, cascade.functions, cascade.theme;
+
+      /* ── Primitive tokens (:root) ─────────────────────────── */
+      @layer cascade.tokens {
+        :root {
+          --cascivo-gray-0: oklch(1 0 0);
+          --cascivo-gray-50: oklch(0.985 0.002 264);
+          --cascivo-gray-100: oklch(0.967 0.003 264);
+          --cascivo-gray-200: oklch(0.928 0.006 264);
+          --cascivo-gray-300: oklch(0.872 0.008 264);
+          --cascivo-gray-400: oklch(0.707 0.015 264);
+          --cascivo-gray-500: oklch(0.554 0.018 264);
+          --cascivo-gray-600: oklch(0.446 0.018 264);
+          --cascivo-gray-700: oklch(0.373 0.015 264);
+          --cascivo-gray-800: oklch(0.269 0.01 264);
+          --cascivo-gray-900: oklch(0.205 0.007 264);
+          --cascivo-gray-950: oklch(0.145 0.005 264);
+          --cascivo-blue-50: oklch(0.97 0.025 250);
+          --cascivo-blue-100: oklch(0.932 0.055 250);
+          --cascivo-blue-200: oklch(0.882 0.095 250);
+          --cascivo-blue-300: oklch(0.808 0.14 250);
+          --cascivo-blue-400: oklch(0.707 0.18 250);
+          --cascivo-blue-500: oklch(0.623 0.214 250);
+          --cascivo-blue-600: oklch(0.546 0.224 250);
+          --cascivo-blue-700: oklch(0.452 0.196 250);
+          --cascivo-blue-800: oklch(0.373 0.155 250);
+          --cascivo-blue-900: oklch(0.29 0.105 250);
+          --cascivo-blue-950: oklch(0.205 0.065 250);
+          --cascivo-green-50: oklch(0.982 0.018 145);
+          --cascivo-green-100: oklch(0.962 0.044 145);
+          --cascivo-green-200: oklch(0.925 0.084 145);
+          --cascivo-green-400: oklch(0.75 0.15 145);
+          --cascivo-green-500: oklch(0.648 0.15 145);
+          --cascivo-green-600: oklch(0.548 0.14 145);
+          --cascivo-green-700: oklch(0.448 0.12 145);
+          --cascivo-green-900: oklch(0.28 0.075 145);
+          --cascivo-red-50: oklch(0.971 0.013 22);
+          --cascivo-red-100: oklch(0.936 0.032 22);
+          --cascivo-red-200: oklch(0.885 0.062 22);
+          --cascivo-red-400: oklch(0.72 0.16 22);
+          --cascivo-red-500: oklch(0.628 0.188 22);
+          --cascivo-red-600: oklch(0.54 0.188 22);
+          --cascivo-red-700: oklch(0.448 0.17 22);
+          --cascivo-red-900: oklch(0.28 0.1 22);
+          --cascivo-orange-50: oklch(0.98 0.02 75);
+          --cascivo-orange-100: oklch(0.96 0.045 75);
+          --cascivo-orange-400: oklch(0.82 0.13 60);
+          --cascivo-orange-500: oklch(0.768 0.145 55);
+          --cascivo-orange-600: oklch(0.68 0.155 50);
+          --cascivo-yellow-50: oklch(0.987 0.026 95);
+          --cascivo-yellow-100: oklch(0.973 0.05 95);
+          --cascivo-yellow-400: oklch(0.868 0.145 80);
+          --cascivo-yellow-500: oklch(0.768 0.145 75);
+          --cascivo-warm-50: oklch(0.982 0.008 80);
+          --cascivo-warm-100: oklch(0.962 0.016 80);
+          --cascivo-warm-200: oklch(0.92 0.025 78);
+          --cascivo-warm-300: oklch(0.87 0.035 75);
+          --cascivo-warm-400: oklch(0.76 0.045 70);
+          --cascivo-warm-500: oklch(0.64 0.045 65);
+          --cascivo-warm-600: oklch(0.52 0.04 60);
+          --cascivo-warm-700: oklch(0.42 0.03 55);
+          --cascivo-warm-800: oklch(0.31 0.022 50);
+          --cascivo-warm-900: oklch(0.21 0.015 50);
+          --cascivo-space-0: 0px;
+          --cascivo-space-1: 0.25rem;
+          --cascivo-space-2: 0.5rem;
+          --cascivo-space-3: 0.75rem;
+          --cascivo-space-4: 1rem;
+          --cascivo-space-5: 1.25rem;
+          --cascivo-space-6: 1.5rem;
+          --cascivo-space-8: 2rem;
+          --cascivo-space-10: 2.5rem;
+          --cascivo-space-12: 3rem;
+          --cascivo-space-16: 4rem;
+          --cascivo-space-20: 5rem;
+          --cascivo-space-24: 6rem;
+          --cascivo-font-sans:
+            ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          --cascivo-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+          --cascivo-text-xs: 0.75rem;
+          --cascivo-text-sm: 0.875rem;
+          --cascivo-text-base: 1rem;
+          --cascivo-text-lg: 1.125rem;
+          --cascivo-text-xl: 1.25rem;
+          --cascivo-text-2xl: 1.5rem;
+          --cascivo-text-3xl: 1.875rem;
+          --cascivo-font-normal: 400;
+          --cascivo-font-medium: 500;
+          --cascivo-font-semibold: 600;
+          --cascivo-font-bold: 700;
+          --cascivo-leading-none: 1;
+          --cascivo-leading-tight: 1.25;
+          --cascivo-leading-snug: 1.375;
+          --cascivo-leading-normal: 1.5;
+          --cascivo-leading-relaxed: 1.625;
+          --cascivo-tracking-tight: -0.025em;
+          --cascivo-tracking-normal: 0em;
+          --cascivo-tracking-wide: 0.025em;
+          --cascivo-radius-none: 0px;
+          --cascivo-radius-sm: 0.25rem;
+          --cascivo-radius-md: 0.375rem;
+          --cascivo-radius-lg: 0.5rem;
+          --cascivo-radius-xl: 0.75rem;
+          --cascivo-radius-2xl: 1rem;
+          --cascivo-radius-full: 9999px;
+          --cascivo-radius-base: 0.375rem;
+          --cascivo-radius-control: var(--cascivo-radius-base);
+          --cascivo-radius-field: var(--cascivo-radius-base);
+          --cascivo-radius-item: calc(var(--cascivo-radius-base) * 0.66);
+          --cascivo-radius-surface: calc(var(--cascivo-radius-base) * 1.66);
+          --cascivo-radius-overlay: calc(var(--cascivo-radius-base) * 2);
+          --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
+          --cascivo-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+          --cascivo-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-md: 0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-overlay: 0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
+          --cascivo-shadow-xl: var(--cascivo-shadow-overlay);
+          --cascivo-ring-width: 3px;
+          --cascivo-ring-offset: 0px;
+          --cascivo-ring-color: color-mix(
+            in oklch,
+            var(--cascivo-color-accent, oklch(0.623 0.214 250)) 55%,
+            transparent
+          );
+          --cascivo-color-primary: oklch(0.205 0 0);
+          --cascivo-color-primary-fg: oklch(0.985 0 0);
+          --cascivo-color-primary-hover: oklch(0.27 0 0);
+          --cascivo-color-primary-active: oklch(0.32 0 0);
+          --cascivo-color-active-bg: oklch(0.145 0.005 264 / 6%);
+          --cascivo-control-height-sm: 2rem;
+          --cascivo-control-height-md: 2.5rem;
+          --cascivo-control-height-lg: 3rem;
+          --cascivo-border-subtle: oklch(0.928 0.006 264);
+          --cascivo-border-default: oklch(0.872 0.008 264);
+          --cascivo-border-strong: oklch(0.707 0.015 264);
+          --cascivo-ease-in: cubic-bezier(0.4, 0, 1, 1);
+          --cascivo-ease-out: cubic-bezier(0, 0, 0.2, 1);
+          --cascivo-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+          --cascivo-duration-75: 75ms;
+          --cascivo-duration-100: 100ms;
+          --cascivo-duration-150: 150ms;
+          --cascivo-duration-200: 200ms;
+          --cascivo-duration-300: 300ms;
+          --cascivo-duration-500: 500ms;
+          --cascivo-motion-enter: var(--cascivo-duration-200) var(--cascivo-ease-out);
+          --cascivo-motion-exit: var(--cascivo-duration-150) var(--cascivo-ease-in);
+          --cascivo-motion-emphasis: var(--cascivo-duration-300) var(--cascivo-ease-in-out);
+          --cascivo-chart-1: oklch(0.74 0.13 70);
+          --cascivo-chart-2: oklch(0.74 0.11 240);
+          --cascivo-chart-3: oklch(0.66 0.13 165);
+          --cascivo-chart-4: oklch(0.93 0.16 100);
+          --cascivo-chart-5: oklch(0.5 0.13 250);
+          --cascivo-chart-6: oklch(0.6 0.16 40);
+          --cascivo-chart-7: oklch(0.66 0.12 350);
+          --cascivo-chart-8: oklch(0.55 0.02 280);
+          --cascivo-chart-grid: var(--cascivo-gray-200);
+          --cascivo-chart-axis: var(--cascivo-gray-400);
+          --cascivo-brand-primary: oklch(0.55 0.15 240);
+          --cascivo-brand-accent: oklch(0.72 0.13 195);
+          --cascivo-brand-ink: oklch(0.22 0.03 250);
+          --cascivo-brand-paper: oklch(0.99 0.005 250);
+          --cascivo-brand-gradient-start: oklch(0.55 0.15 240);
+          --cascivo-brand-gradient-end: oklch(0.72 0.13 195);
+          --cascivo-z-base: 0;
+          --cascivo-z-raised: 10;
+          --cascivo-z-dropdown: 100;
+          --cascivo-z-overlay: 200;
+          --cascivo-z-modal: 300;
+          --cascivo-z-toast: 400;
+          --cascivo-z-tooltip: 500;
+          --cascivo-shell-header-block-size: 3rem;
+          --cascivo-shell-panel-inline-size: 20rem;
+          --cascivo-shell-aside-inline-size: 18rem;
+          --cascivo-screen-sm: 30rem;
+          --cascivo-screen-md: 40rem;
+          --cascivo-screen-lg: 64rem;
+          --cascivo-screen-xl: 80rem;
+          --cascivo-text-2xl-fluid: clamp(1.25rem, 1rem + 1.25vw, 1.5rem);
+          --cascivo-text-3xl-fluid: clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem);
+          --cascivo-target-min-coarse: 2.75rem;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          :root {
+            --cascivo-duration-75: 0.01ms;
+            --cascivo-duration-100: 0.01ms;
+            --cascivo-duration-150: 0.01ms;
+            --cascivo-duration-200: 0.01ms;
+            --cascivo-duration-300: 0.01ms;
+            --cascivo-duration-500: 0.01ms;
+          }
+        }
+      }
+
+      /* ── CSS @function helpers ────────────────────────────── */
+      @layer cascade.functions {
+        @function --cascivo-step(--n <number>, --base: 0.25rem) {
+          result: calc(var(--base) * var(--n));
+        }
+        @function --cascivo-scale(--n <number>, --ratio: 1.25, --base: 1rem) {
+          result: calc(var(--base) * var(--ratio) * var(--n));
+        }
+      }
+
+      /* ── Light theme (default; page ships data-theme="light") ── */
+      @layer cascade.theme {
+        [data-theme='light'],
+        :root:not([data-theme]) {
+          color-scheme: light;
+          --cascivo-color-background: oklch(1 0 0);
+          --cascivo-color-surface: oklch(0.985 0.002 264);
+          --cascivo-color-surface-2: oklch(0.967 0.003 264);
+          --cascivo-color-bg: var(--cascivo-color-background);
+          --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+          --cascivo-color-surface-raised: var(--cascivo-color-surface);
+          --cascivo-color-surface-overlay: var(--cascivo-color-background);
+          --cascivo-color-border: var(--cascivo-gray-200);
+          --cascivo-color-border-strong: var(--cascivo-gray-300);
+          --cascivo-border-subtle: oklch(0.928 0.006 264);
+          --cascivo-border-default: oklch(0.872 0.008 264);
+          --cascivo-border-strong: oklch(0.707 0.015 264);
+          --cascivo-color-foreground: oklch(0.145 0.005 264);
+          --cascivo-color-foreground-muted: oklch(0.554 0.018 264);
+          --cascivo-color-text: var(--cascivo-color-foreground);
+          --cascivo-color-text-subtle: var(--cascivo-gray-600);
+          --cascivo-color-text-muted: var(--cascivo-gray-400);
+          --cascivo-color-text-on-accent: oklch(1 0 0);
+          --cascivo-color-text-on-destructive: oklch(1 0 0);
+          --cascivo-color-accent: oklch(0.52 0.2 250);
+          --cascivo-color-accent-foreground: oklch(1 0 0);
+          --cascivo-color-accent-hover: oklch(0.45 0.2 250);
+          --cascivo-color-accent-active: var(--cascivo-blue-800);
+          --cascivo-color-accent-subtle: var(--cascivo-blue-50);
+          --cascivo-color-accent-muted: var(--cascivo-blue-100);
+          --cascivo-color-primary: oklch(0.205 0 0);
+          --cascivo-color-primary-fg: oklch(0.985 0 0);
+          --cascivo-color-primary-hover: oklch(0.27 0 0);
+          --cascivo-color-primary-active: oklch(0.32 0 0);
+          --cascivo-color-active-bg: oklch(0.145 0.005 264 / 6%);
+          --cascivo-color-destructive: var(--cascivo-red-600);
+          --cascivo-color-destructive-hover: var(--cascivo-red-700);
+          --cascivo-color-destructive-subtle: var(--cascivo-red-50);
+          --cascivo-color-error: oklch(0.628 0.188 22);
+          --cascivo-color-warning: oklch(0.768 0.145 75);
+          --cascivo-color-success: oklch(0.648 0.15 145);
+          --cascivo-color-success-subtle: var(--cascivo-green-50);
+          --cascivo-color-warning-subtle: var(--cascivo-orange-50);
+          --cascivo-color-info: var(--cascivo-blue-600);
+          --cascivo-color-info-subtle: var(--cascivo-blue-50);
+          --cascivo-color-success-foreground: oklch(0.45 0.14 145);
+          --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
+          --cascivo-radius-base: 0.375rem;
+          --cascivo-radius-control: var(--cascivo-radius-base);
+          --cascivo-radius-surface: calc(var(--cascivo-radius-base) * 1.66);
+          --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
+          --cascivo-radius-full: 9999px;
+          --cascivo-radius-component: var(--cascivo-radius-base);
+          --cascivo-radius-button: var(--cascivo-radius-base);
+          --cascivo-radius-input: var(--cascivo-radius-base);
+          --cascivo-radius-card: calc(var(--cascivo-radius-base) * 1.66);
+          --cascivo-radius-badge: var(--cascivo-radius-full);
+          --cascivo-radius-modal: calc(var(--cascivo-radius-base) * 2);
+          --cascivo-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+          --cascivo-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-md: 0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-overlay: 0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04);
+          --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
+          --cascivo-ring-width: 2px;
+          --cascivo-ring-offset: 0px;
+          --cascivo-ring-color: color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent);
+          --cascivo-color-focus-ring: var(--cascivo-blue-500);
+          --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
+          --cascivo-chart-1: oklch(0.62 0.13 70);
+          --cascivo-chart-2: oklch(0.62 0.11 240);
+          --cascivo-chart-3: oklch(0.6 0.13 135);
+          --cascivo-chart-4: oklch(0.6 0.18 55);
+          --cascivo-chart-5: oklch(0.5 0.13 270);
+          --cascivo-chart-6: oklch(0.58 0.16 30);
+          --cascivo-chart-7: oklch(0.62 0.12 350);
+          --cascivo-chart-8: oklch(0.5 0.12 200);
+          --cascivo-chart-grid: var(--cascivo-gray-200);
+          --cascivo-chart-axis: var(--cascivo-gray-400);
+        }
+      }
+
+      /* ── Reset ────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--cascivo-font-sans);
+        background-color: var(--cascivo-color-bg);
+        color: var(--cascivo-color-text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      code {
+        font-family: var(--cascivo-font-mono);
+      }
+
+      /* ── Sticky header ────────────────────────────────────── */
+      .landing-shell-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--cascivo-z-overlay);
+        background: var(--cascivo-color-surface);
+        border-block-end: 1px solid
+          color-mix(in oklch, var(--cascivo-color-border) 60%, transparent);
+      }
+
+      /* ── Header safe-area + mobile padding ────────────────── */
+      .header {
+        padding-inline: max(var(--cascivo-space-3), env(safe-area-inset-left));
+      }
+
+      /* ── Theme cycle button ───────────────────────────────── */
+      .header-theme-cycle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        inline-size: 2.25rem;
+        block-size: 2.25rem;
+        border-radius: var(--cascivo-radius-sm);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--cascivo-color-text-subtle);
+        transition:
+          color 150ms ease,
+          background 150ms ease;
+      }
+
+      .header-theme-cycle:hover {
+        color: var(--cascivo-color-text);
+        background: var(--cascivo-color-surface-raised);
+      }
+
+      .header-theme-cycle:focus-visible {
+        outline: 2px solid var(--cascivo-color-accent);
+        outline-offset: 2px;
+      }
+
+      /* ── Header icon links ────────────────────────────────── */
+      .header-icon-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        inline-size: 2.25rem;
+        block-size: 2.25rem;
+        border-radius: var(--cascivo-radius-sm);
+        color: var(--cascivo-color-text-subtle);
+        transition:
+          color 150ms ease,
+          background 150ms ease;
+      }
+
+      .header-icon-link:hover {
+        color: var(--cascivo-color-text);
+        background: var(--cascivo-color-surface-raised);
+      }
+
+      .header-icon-link:focus-visible {
+        outline: 2px solid var(--cascivo-color-accent);
+        outline-offset: 2px;
+      }
+
+      /* ── Header search button ─────────────────────────────── */
+      .header-search-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--cascivo-space-2);
+        padding-inline: var(--cascivo-space-3);
+        block-size: 2.25rem;
+        border-radius: var(--cascivo-radius-sm);
+        background: var(--cascivo-color-surface-raised);
+        border: 1px solid var(--cascivo-color-border);
+        cursor: pointer;
+        color: var(--cascivo-color-text-subtle);
+        font-size: var(--cascivo-text-sm);
+        transition:
+          color 150ms ease,
+          background 150ms ease;
+        white-space: nowrap;
+      }
+
+      .header-search-btn:hover {
+        color: var(--cascivo-color-text);
+        background: var(--cascivo-color-surface);
+      }
+
+      .header-search-btn:focus-visible {
+        outline: 2px solid var(--cascivo-color-accent);
+        outline-offset: 2px;
+      }
+
+      .header-search-shortcut {
+        display: none;
+      }
+
+      @media (min-width: 40rem) {
+        .header-search-shortcut {
+          display: inline-flex;
+        }
+      }
+
+      /* ── Mobile nav toggle ────────────────────────────────── */
+      .mobile-nav-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        inline-size: 44px;
+        block-size: 44px;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: var(--cascivo-space-2);
+        color: var(--cascivo-color-text);
+        flex-shrink: 0;
+      }
+
+      .mobile-nav-toggle:focus-visible {
+        outline: 2px solid var(--cascivo-color-accent);
+        outline-offset: 2px;
+        border-radius: var(--cascivo-radius-sm);
+      }
+
+      .hamburger-bar {
+        display: block;
+        inline-size: 22px;
+        block-size: 2px;
+        background: currentColor;
+        border-radius: 1px;
+        transition: transform 200ms ease;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hamburger-bar {
+          transition: none;
+        }
+      }
+
+      @media (max-width: 47.99rem) {
+        .mobile-nav-toggle {
+          display: flex;
+        }
+
+        [role='banner'] nav {
+          display: none;
+        }
+      }
+
+      /* ── Hero ─────────────────────────────────────────────── */
+      .hero {
+        max-width: 880px;
+        margin-inline: auto;
+        padding: var(--cascivo-space-16) var(--cascivo-space-6) var(--cascivo-space-12);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--cascivo-space-6);
+        text-align: center;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        font-weight: var(--cascivo-font-bold);
+        letter-spacing: var(--cascivo-tracking-tight);
+        line-height: 1.15;
+      }
+
+      .hero h1 em {
+        font-style: normal;
+        color: var(--cascivo-color-accent);
+      }
+
+      .hero-tagline {
+        margin: 0;
+        max-width: 38rem;
+        font-size: var(--cascivo-text-lg);
+        color: var(--cascivo-color-text-subtle);
+      }
+
+      .hero-ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--cascivo-space-3);
+        justify-content: center;
+      }
+
+      .hero-stage-wrap {
+        inline-size: min(100%, 560px);
+        margin-block-start: var(--cascivo-space-6);
+        border: 1px solid var(--cascivo-color-border);
+        border-radius: var(--cascivo-radius-lg);
+        background-color: var(--cascivo-color-surface);
+        overflow: hidden;
+      }
+
+      .hero-stage-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--cascivo-space-2) var(--cascivo-space-4);
+        border-block-end: 1px solid var(--cascivo-color-border);
+        background-color: var(--cascivo-color-bg-subtle);
+      }
+
+      .hero-stage-label {
+        font-family: var(--cascivo-font-mono);
+        font-size: var(--cascivo-text-xs);
+        color: var(--cascivo-color-text-muted);
+      }
+
+      .hero-theme-switcher {
+        display: flex;
+        gap: var(--cascivo-space-1);
+      }
+
+      .hero-theme-btn {
+        padding: var(--cascivo-space-1) var(--cascivo-space-2);
+        font-size: var(--cascivo-text-xs);
+        font-family: var(--cascivo-font-sans);
+        background: transparent;
+        border: 1px solid var(--cascivo-color-border);
+        border-radius: var(--cascivo-radius-sm);
+        color: var(--cascivo-color-text-subtle);
+        cursor: pointer;
+      }
+
+      .hero-theme-btn.active {
+        background-color: var(--cascivo-color-accent);
+        border-color: var(--cascivo-color-accent);
+        color: var(--cascivo-color-text-on-accent);
+      }
+
+      .hero-stage {
+        view-transition-name: hero-stage;
+        display: grid;
+        place-items: center;
+        min-block-size: 14rem;
+        padding: var(--cascivo-space-8);
+        text-align: start;
+      }
+
+      .hero-slide-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--cascivo-space-3);
+        justify-content: center;
+      }
+
+      .hero-slide-col {
+        display: flex;
+        flex-direction: column;
+        gap: var(--cascivo-space-4);
+        inline-size: min(100%, 20rem);
+      }
+
+      .hero-title {
+        margin: 0;
+        font-size: clamp(1.75rem, 5vw + 0.5rem, 3rem);
+        font-weight: var(--cascivo-font-bold);
+        letter-spacing: var(--cascivo-tracking-tight);
+        line-height: 1.15;
+        text-wrap: balance;
+      }
+
+      .hero-title-accent {
+        color: var(--cascivo-color-accent);
+      }
+
+      .hero-sub {
+        margin: 0;
+        max-width: min(100%, 44rem);
+        font-size: var(--cascivo-text-lg);
+        color: var(--cascivo-color-text-subtle);
+      }
+
+      .hero-chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--cascivo-space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-inline-size: 44rem;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(hero-stage) {
+          animation: hero-out 200ms ease both;
+        }
+
+        ::view-transition-new(hero-stage) {
+          animation: hero-in 250ms ease both;
+        }
+
+        @keyframes hero-out {
+          to {
+            opacity: 0;
+            translate: 0 -0.5rem;
+          }
+        }
+
+        @keyframes hero-in {
+          from {
+            opacity: 0;
+            translate: 0 0.5rem;
+          }
+        }
+      }
+
+      /* ── Lazy-section reserved space (avoid CLS while a split chunk loads) ── */
+      .lazy-fallback {
+        min-block-size: 40vh;
+      }
+
+      .lazy-fallback--tall {
+        min-block-size: 70vh;
+      }
+
+      /* ── Narrow (≤29.99rem / 479px) hero overrides ────────── */
+      @media (max-width: 29.99rem) {
+        .hero {
+          padding-block: var(--cascivo-space-8) var(--cascivo-space-6);
+          padding-inline: var(--cascivo-space-4);
+        }
+
+        .hero-ctas {
+          flex-direction: column;
+          gap: var(--cascivo-space-3);
+        }
+
+        .hero-ctas > * {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/src/landing.css" media="print" onload="this.media = 'all'" />
+    <noscript><link rel="stylesheet" href="/src/landing.css" /></noscript>
   </head>
   <body>
     <div id="app"></div>

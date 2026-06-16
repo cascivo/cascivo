@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-16",
-  "count": 213,
+  "count": 224,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1706,6 +1706,94 @@
       "layer": "component",
       "group": "focus",
       "resolvedDefault": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-primary-content",
+      "value": "var(--cascivo-color-primary-fg)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.985 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-accent-content",
+      "value": "var(--cascivo-color-text-on-accent)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(1 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-destructive-content",
+      "value": "var(--cascivo-color-text-on-destructive)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(1 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-info-content",
+      "value": "oklch(1 0 0)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(1 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-success-content",
+      "value": "oklch(1 0 0)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(1 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-warning-content",
+      "value": "oklch(0.145 0 0)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.145 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-error-content",
+      "value": "oklch(1 0 0)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(1 0 0)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-secondary",
+      "value": "oklch(0.92 0.004 264)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.92 0.004 264)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-secondary-content",
+      "value": "oklch(0.27 0.01 264)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.27 0.01 264)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-secondary-hover",
+      "value": "oklch(0.86 0.006 264)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.86 0.006 264)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-secondary-subtle",
+      "value": "oklch(0.967 0.002 264)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.967 0.002 264)",
       "resolvesPerTheme": true
     }
   ]

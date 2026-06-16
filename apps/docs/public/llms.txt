@@ -94,6 +94,7 @@ New MCP tools:
 - [chart/scatter-chart](/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
 - [chart/sparkline](/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 - [chart/treemap](/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
+- [chat-bubble](/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support
 - [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
 - [checkbox-card](/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
 - [code](/llms/code.md) — Inline code span for identifiers, commands, and short snippets
@@ -109,22 +110,26 @@ New MCP tools:
 - [data-table](/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
 - [date-picker](/llms/date-picker.md) — An accessible date-picker with a calendar popover.
 - [date-range-picker](/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
+- [dock](/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items
 - [drawer](/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
 - [dropdown](/llms/dropdown.md) — Menu of actions revealed from a trigger
 - [editable](/llms/editable.md) — Inline click-to-edit text field
 - [empty-state](/llms/empty-state.md) — Placeholder for views that have no data to display
 - [field](/llms/field.md) — Form-field wrapper composing label, control, description, and error
 - [file-uploader](/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
+- [filter](/llms/filter.md) — A group of toggleable pill or outline buttons for filtering content by category
 - [form](/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
 - [header](/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot
 - [header-panel](/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
 - [heading](/llms/heading.md) — Section heading with semantic level decoupled from visual size
 - [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
 - [icon-button](/llms/icon-button.md) — Square, icon-only button with a required accessible label
+- [indicator](/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child
 - [inline-loading](/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
 - [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
 - [item](/llms/item.md) — Generic content row primitive with media, content, and action regions
+- [join](/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii
 - [kbd](/llms/kbd.md) — Displays a keyboard key or shortcut
 - [label](/llms/label.md) — Accessible caption for a form control
 - [layout/app-shell](/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
@@ -157,10 +162,12 @@ New MCP tools:
 - [pagination](/llms/pagination.md) — Controls for navigating paged data sets, with page size selection
 - [password-input](/llms/password-input.md) — Password input with reveal toggle and optional strength meter
 - [popover](/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API
+- [progress](/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation
 - [progress-bar](/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
 - [progress-circle](/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
 - [progress-indicator](/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
 - [prose](/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
+- [radial-progress](/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
 - [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
@@ -183,9 +190,12 @@ New MCP tools:
 - [skip-nav](/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content
 - [slider](/llms/slider.md) — Range input for selecting a value within bounds
 - [spinner](/llms/spinner.md) — Indeterminate loading indicator
+- [stack](/llms/stack.md) — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect
 - [stat](/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
 - [status](/llms/status.md) — Colored dot with a label communicating the state of a system or entity
+- [steps](/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations
 - [structured-list](/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
+- [swap](/llms/swap.md) — Animated toggle between two icon/content states with rotate or flip transition
 - [switcher](/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
 - [tabs](/llms/tabs.md) — Switch between related panels of content
 - [tag](/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
@@ -244,6 +254,7 @@ New MCP tools:
 - [ScatterChart](/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
 - [Sparkline](/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
 - [Treemap](/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
+- [ChatBubble](/context/chat-bubble.md) — Use when: Chat UIs and messaging features showing conversation history
 - [Checkbox](/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
 - [CheckboxCard](/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
 - [Code](/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
@@ -259,22 +270,26 @@ New MCP tools:
 - [DataTable](/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
 - [DatePicker](/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
 - [DateRangePicker](/context/date-range-picker.md) — Use when: Selecting a contiguous start–end date range (reporting windows, bookings, filters)
+- [Dock](/context/dock.md) — Use when: Mobile app-shell navigation with 3–5 top-level destinations
 - [Drawer](/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
 - [Dropdown](/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
 - [Editable](/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
 - [EmptyState](/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
 - [Field](/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
 - [FileUploader](/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
+- [Filter](/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
 - [Form](/context/form.md) — Use when: Collecting and submitting a set of related field values together
 - [Header](/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
 - [HeaderPanel](/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)
 - [Heading](/context/heading.md) — Use when: Titling a page or section as part of the document outline
 - [HoverCard](/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
 - [IconButton](/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
+- [Indicator](/context/indicator.md) — Use when: Notification counts on icon buttons
 - [InlineLoading](/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
 - [InputGroup](/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
 - [Item](/context/item.md) — Use when: Composing a single content row with leading media, a text block, and trailing actions
+- [Join](/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
 - [Kbd](/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
 - [AppShell](/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
@@ -307,10 +322,12 @@ New MCP tools:
 - [Pagination](/context/pagination.md) — Use when: Navigating between pages of a paged dataset
 - [PasswordInput](/context/password-input.md) — Use when: Collecting a secret credential that should be masked by default with an opt-in reveal toggle
 - [Popover](/context/popover.md) — Use when: Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking
+- [Progress](/context/progress.md) — Use when: Tracked operations with a known total (file uploads, multi-step imports)
 - [ProgressBar](/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
 - [ProgressCircle](/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
 - [ProgressIndicator](/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
 - [Prose](/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [RadialProgress](/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
 - [Radio](/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
 - [RadioCard](/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
 - [RatingGroup](/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
@@ -333,9 +350,12 @@ New MCP tools:
 - [SkipNav](/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
 - [Slider](/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
 - [Spinner](/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
+- [Stack](/context/stack.md) — Use when: Card pile UI where depth and layering should be visible
 - [Stat](/context/stat.md) — Use when: Highlighting a single key metric with a clear label
 - [Status](/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
+- [Steps](/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
 - [StructuredList](/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
+- [Swap](/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
 - [Switcher](/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
 - [Tabs](/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
 - [Tag](/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip

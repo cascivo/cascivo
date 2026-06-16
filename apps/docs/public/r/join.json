@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "name": "join",
+  "type": "component",
+  "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/join/join.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/join/join.module.css"
+    }
+  ],
+  "dependencies": [],
+  "tags": ["group", "join", "segmented", "layout"],
+  "category": "layout",
+  "meta": {
+    "name": "Join",
+    "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+    "category": "layout",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true
+      },
+      {
+        "name": "orientation",
+        "type": "'horizontal' | 'vertical'",
+        "required": false,
+        "default": "horizontal"
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "tokens": [],
+    "accessibility": {
+      "role": "none",
+      "wcag": "2.2-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Search group",
+        "code": "<Join><Input placeholder=\"Search…\" /><Button>Go</Button></Join>",
+        "description": "Input and button joined into a single search control"
+      },
+      {
+        "title": "Segmented buttons",
+        "code": "<Join><Button variant=\"secondary\">Day</Button><Button variant=\"secondary\">Week</Button><Button variant=\"secondary\">Month</Button></Join>",
+        "description": "Segmented button row with no gaps between items"
+      },
+      {
+        "title": "Vertical stack",
+        "code": "<Join orientation=\"vertical\"><Button>Top</Button><Button>Middle</Button><Button>Bottom</Button></Join>",
+        "description": "Vertically joined button group"
+      }
+    ],
+    "dependencies": [],
+    "tags": ["group", "join", "segmented", "layout"],
+    "intent": {
+      "whenToUse": [
+        "Input + button search groups where the two controls should appear as one unit",
+        "Segmented button rows where buttons share borders"
+      ],
+      "whenNotToUse": [
+        "Independent adjacent buttons that should remain visually separate",
+        "SegmentedControl — it has its own built-in grouping and selection semantics"
+      ],
+      "related": [
+        {
+          "name": "SegmentedControl",
+          "relationship": "alternative",
+          "reason": "SegmentedControl has built-in selection state; Join is purely a layout wrapper"
+        },
+        {
+          "name": "InputGroup",
+          "relationship": "alternative",
+          "reason": "InputGroup handles input + addon joining; Join is the general-purpose grouping primitive"
+        }
+      ],
+      "antiPatterns": [],
+      "a11yRationale": "Join is a layout-only container (role=\"none\"). Accessibility semantics belong on the individual child controls — buttons carry their own role, inputs their labels.",
+      "flexibility": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "Horizontal and vertical grouping are both supported via the orientation prop"
+        }
+      ]
+    }
+  }
+}

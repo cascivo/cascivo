@@ -107,5 +107,20 @@
     --cascivo-chart-8: oklch(0.46 0.12 200);
     --cascivo-chart-grid: oklch(0.92 0.005 80);
     --cascivo-chart-axis: oklch(0.65 0.012 80);
+
+    /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
+    --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
+    --cascivo-color-accent-content: var(--cascivo-color-text-on-accent);
+    --cascivo-color-destructive-content: var(--cascivo-color-text-on-destructive);
+    --cascivo-color-info-content: oklch(1 0 0);
+    --cascivo-color-success-content: oklch(1 0 0);
+    --cascivo-color-warning-content: oklch(0.145 0 0);
+    --cascivo-color-error-content: oklch(1 0 0);
+
+    /* ── Secondary color role ────────────────────────── */
+    --cascivo-color-secondary: oklch(0.92 0.004 80);
+    --cascivo-color-secondary-content: oklch(0.28 0.008 80);
+    --cascivo-color-secondary-hover: oklch(0.86 0.006 80);
+    --cascivo-color-secondary-subtle: oklch(0.962 0.003 80);
   }
 }

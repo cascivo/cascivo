@@ -1,9 +1,6 @@
 import { Badge } from '@cascivo/components/badge'
-import registry from '../../../../registry.json'
 import { CopyCommand } from './CopyCommand'
 import { LinkButton } from './LinkButton'
-
-const componentCount = (registry as { components: unknown[] }).components.length
 
 const CHIPS = [
   '@layer CSS, no runtime',
@@ -18,7 +15,7 @@ const CHIPS = [
 export function Hero() {
   return (
     <section className="hero">
-      <Badge variant="outline">{componentCount}+ components · 10 themes · MIT</Badge>
+      <Badge variant="outline">{__CASCIVO_COMPONENT_COUNT__}+ components · 10 themes · MIT</Badge>
       <h1 className="hero-title">
         Native to the web. <span className="hero-title-accent">Fluent in agent.</span>
       </h1>

@@ -1,10 +1,8 @@
 import { Stat } from '@cascivo/components/stat'
-import registry from '../../../../registry.json'
 import bench from 'virtual:bench'
 
 type StatItem = { label: string; value: string | number; helpText: string }
 
-const registryCount = (registry as { components: unknown[] }).components.length
 const cascadeBundle = bench.bundle?.apps.cascade
 const cascadeAxe = bench.a11y?.cascade
 const typeRenders = bench.renders?.['type-20-chars']?.cascade
@@ -12,7 +10,7 @@ const typeRenders = bench.renders?.['type-20-chars']?.cascade
 const STATS: StatItem[] = [
   {
     label: 'Registry entries',
-    value: registryCount,
+    value: __CASCIVO_COMPONENT_COUNT__,
     helpText: 'Components, charts, layouts, blocks — each with a machine-readable manifest.',
   },
   ...(cascadeBundle

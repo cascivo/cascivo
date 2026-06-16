@@ -108,6 +108,7 @@
             "Card",
             "Carousel",
             "Center",
+            "ChatBubble",
             "Checkbox",
             "CheckboxCard",
             "Code",
@@ -129,6 +130,7 @@
             "DataTable",
             "DatePicker",
             "DateRangePicker",
+            "Dock",
             "Drawer",
             "Dropdown",
             "Editable",
@@ -137,6 +139,7 @@
             "FeatureGrid",
             "Field",
             "FileUploader",
+            "Filter",
             "Form",
             "Grid",
             "Header",
@@ -147,10 +150,12 @@
             "Histogram",
             "HoverCard",
             "IconButton",
+            "Indicator",
             "InlineLoading",
             "Input",
             "InputGroup",
             "Item",
+            "Join",
             "Kbd",
             "Kpi",
             "Label",
@@ -180,11 +185,13 @@
             "PasswordInput",
             "PieChart",
             "Popover",
+            "Progress",
             "ProgressBar",
             "ProgressCircle",
             "ProgressIndicator",
             "Prose",
             "Radar",
+            "RadialProgress",
             "Radio",
             "RadioCard",
             "RatingGroup",
@@ -210,11 +217,14 @@
             "Spinner",
             "SplitView",
             "Stack",
+            "Stack",
             "Stat",
             "StatsBand",
             "StatsCards",
             "Status",
+            "Steps",
             "StructuredList",
+            "Swap",
             "Switcher",
             "Tabs",
             "Tag",
@@ -670,6 +680,39 @@
                     "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ChatBubble"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "side": {
+                    "type": "string",
+                    "enum": ["start", "end"]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "time": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
@@ -1226,6 +1269,32 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Dock"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "activeIndex": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Drawer"
               }
             },
@@ -1431,6 +1500,33 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Filter"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "multi": {
+                    "type": "boolean"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["pill", "outline"]
+                  }
+                },
+                "required": ["options"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Form"
               }
             },
@@ -1598,6 +1694,33 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Indicator"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "placement": {
+                    "type": "string",
+                    "enum": ["top-start", "top-end", "bottom-start", "bottom-end"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children", "overlay"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "InlineLoading"
               }
             },
@@ -1718,6 +1841,33 @@
                     "enum": ["sm", "md"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Join"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
@@ -2304,6 +2454,36 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Progress"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["primary", "info", "success", "warning", "error"]
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ProgressBar"
               }
             },
@@ -2418,6 +2598,43 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "RadialProgress"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["primary", "info", "success", "warning", "error"]
+                  },
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
               }
             }
           }
@@ -2974,6 +3191,32 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Stack"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "offset": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Stat"
               }
             },
@@ -3037,6 +3280,36 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Steps"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "activeStep": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["steps"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "StructuredList"
               }
             },
@@ -3058,6 +3331,39 @@
                   }
                 },
                 "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Swap"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "checked": {
+                    "type": "boolean"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["rotate", "flip"]
+                  },
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["on", "off"]
               }
             }
           }

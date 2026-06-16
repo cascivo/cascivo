@@ -1,0 +1,93 @@
+# ChatBubble
+
+**Category:** display  
+**Description:** Message bubble for chat and messaging UIs with avatar, name, and timestamp support
+
+## When to use
+
+- Chat UIs and messaging features showing conversation history
+- Comment threads with a bubble-style layout
+- Customer support widgets displaying agent and user messages
+
+## When NOT to use
+
+- General content cards without a conversational context — use Card
+- Inline comments that do not need a bubble visual treatment
+
+## Anti-patterns
+
+### ChatBubble implies a back-and-forth conversation; use Card for standalone content pieces
+
+**Bad:** `Using ChatBubble for notification cards or feed items`  
+**Good:** `<Card> or <Alert> for non-conversational content`  
+**Why:** ChatBubble implies a back-and-forth conversation; use Card for standalone content pieces
+
+## Related components
+
+- **Card** (alternative): Use for general content display that is not part of a conversation
+- **Avatar** (pairs-with): Pass an Avatar as the avatar prop to identify the message sender
+
+## Accessibility rationale
+
+Pure layout component with role="none". Wrap a list of ChatBubble elements in an element with role="log" and aria-live="polite" to announce new messages to screen readers.
+
+## Props
+
+| Name        | Type              | Required | Default | Description |
+| ----------- | ----------------- | -------- | ------- | ----------- | --- |
+| `children`  | `React.ReactNode` | Yes      | —       | —           |
+| `side`      | `'start'          | 'end'`   | No      | start       | —   |
+| `avatar`    | `React.ReactNode` | No       | —       | —           |
+| `name`      | `string`          | No       | —       | —           |
+| `time`      | `string`          | No       | —       | —           |
+| `className` | `string`          | No       | —       | —           |
+
+## Tokens
+
+- `--cascivo-color-surface`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-accent`
+- `--cascivo-color-accent-content`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-indicator`
+
+## Examples
+
+### Incoming message
+
+Message from another user, aligned to the start
+
+```jsx
+<ChatBubble side="start" name="Alice" time="10:42 AM">
+  Hey, how are you?
+</ChatBubble>
+```
+
+### Outgoing message
+
+Current user message, aligned to the end with accent background
+
+```jsx
+<ChatBubble side="end" time="10:43 AM">
+  Doing great, thanks!
+</ChatBubble>
+```
+
+### With avatar
+
+Message with an avatar beside the bubble
+
+```jsx
+<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">
+  See you tomorrow!
+</ChatBubble>
+```
+
+## Boundaries
+
+| Area         | Level    | Note                                                                      |
+| ------------ | -------- | ------------------------------------------------------------------------- |
+| avatar slot  | flexible | Accepts any ReactNode — Avatar, initials, icon, or nothing                |
+| body content | flexible | children accepts rich content including images, links, and formatted text |

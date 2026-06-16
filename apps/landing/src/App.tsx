@@ -1,23 +1,16 @@
 import { type ComponentType, Suspense, lazy } from 'react'
-import { useSignalEffect, useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
 import { TechDeepDive } from './sections/TechDeepDive'
 import { StatsBand } from './sections/StatsBand'
-import { SignalsDemo } from './sections/SignalsDemo'
-import { ProofTeasers } from './sections/ProofTeasers'
-import { AgentLayer } from './sections/AgentLayer'
-import { ThemeDemo } from './sections/ThemeDemo'
-import { ExamplesGallery } from './sections/ExamplesGallery'
-import { Ecosystem } from './sections/Ecosystem'
-import { QuickStart } from './sections/QuickStart'
-import { CtaBand } from './sections/CtaBand'
-import { Footer } from './sections/Footer'
 import { initReveal } from './reveal'
 import { currentPath, initRouter, navigate } from './router'
-import { SearchDialog } from '@cascivo/search/SearchDialog'
+const SearchDialog = lazy(() =>
+  import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
+)
 import { landingIndex } from './search/buildIndex'
 import { searchOpen } from './search/state'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
@@ -32,6 +25,25 @@ const RelayConsole = lazy(() =>
 const ChartShowcase = lazy(() =>
   import('./sections/ChartShowcase').then((m) => ({ default: m.ChartShowcase })),
 )
+const SignalsDemo = lazy(() =>
+  import('./sections/SignalsDemo').then((m) => ({ default: m.SignalsDemo })),
+)
+const ProofTeasers = lazy(() =>
+  import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
+)
+const AgentLayer = lazy(() =>
+  import('./sections/AgentLayer').then((m) => ({ default: m.AgentLayer })),
+)
+const ThemeDemo = lazy(() => import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })))
+const ExamplesGallery = lazy(() =>
+  import('./sections/ExamplesGallery').then((m) => ({ default: m.ExamplesGallery })),
+)
+const Ecosystem = lazy(() => import('./sections/Ecosystem').then((m) => ({ default: m.Ecosystem })))
+const QuickStart = lazy(() =>
+  import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
+)
+const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
+const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -64,9 +76,13 @@ const BlockPreviewPage = lazy(() =>
 )
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
-function SectionFallback({ tall = false }: { tall?: boolean }) {
+function SectionFallback({ tall = false, height }: { tall?: boolean; height?: number }) {
   return (
-    <div className={tall ? 'lazy-fallback lazy-fallback--tall' : 'lazy-fallback'} aria-hidden />
+    <div
+      className={tall ? 'lazy-fallback lazy-fallback--tall' : 'lazy-fallback'}
+      style={height !== undefined ? { minBlockSize: height } : undefined}
+      aria-hidden
+    />
   )
 }
 
@@ -84,20 +100,38 @@ function HomePage() {
           <Suspense fallback={<SectionFallback tall />}>
             <RelayConsole />
           </Suspense>
-          <SignalsDemo />
-          <ProofTeasers />
-          <AgentLayer />
-          <ThemeDemo />
+          <Suspense fallback={<SectionFallback height={600} />}>
+            <SignalsDemo />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={400} />}>
+            <ProofTeasers />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={500} />}>
+            <AgentLayer />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={480} />}>
+            <ThemeDemo />
+          </Suspense>
           <Suspense fallback={<SectionFallback tall />}>
             <ChartShowcase />
           </Suspense>
-          <ExamplesGallery />
-          <Ecosystem />
-          <QuickStart />
-          <CtaBand />
+          <Suspense fallback={<SectionFallback height={520} />}>
+            <ExamplesGallery />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={360} />}>
+            <Ecosystem />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={420} />}>
+            <QuickStart />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={180} />}>
+            <CtaBand />
+          </Suspense>
         </main>
       </SkipNavTarget>
-      <Footer />
+      <Suspense fallback={<SectionFallback height={260} />}>
+        <Footer />
+      </Suspense>
     </>
   )
 }
@@ -159,6 +193,10 @@ function navigateToResult(href: string) {
 
 export function App() {
   useSignals()
+  const hasOpenedSearch = useSignal(false)
+  useSignalEffect(() => {
+    if (searchOpen.value) hasOpenedSearch.value = true
+  })
   useSignalEffect(() => initReveal())
   useSignalEffect(() => {
     initRouter()
@@ -179,16 +217,18 @@ export function App() {
   const pathname = currentPath.value
   const route = ROUTES[pathname]
 
-  const search = (
-    <SearchDialog
-      index={landingIndex}
-      open={searchOpen.value}
-      onClose={() => {
-        searchOpen.value = false
-      }}
-      onNavigate={navigateToResult}
-    />
-  )
+  const search = hasOpenedSearch.value ? (
+    <Suspense fallback={null}>
+      <SearchDialog
+        index={landingIndex}
+        open={searchOpen.value}
+        onClose={() => {
+          searchOpen.value = false
+        }}
+        onNavigate={navigateToResult}
+      />
+    </Suspense>
+  ) : null
 
   // Handle /blocks/preview/:name — bare preview page (no header/footer)
   if (pathname.startsWith('/blocks/preview/')) {

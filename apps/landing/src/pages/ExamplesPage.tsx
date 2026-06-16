@@ -36,6 +36,7 @@ export function ExamplesPage() {
                       width={1280}
                       height={800}
                       loading="lazy"
+                      decoding="async"
                     />
                   </a>
                   <div className="examples-hub-body">
