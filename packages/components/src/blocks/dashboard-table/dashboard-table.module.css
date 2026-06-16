@@ -1,0 +1,74 @@
+@layer cascade.blocks.dashboard-table {
+  .root {
+    padding: var(--cascivo-space-8);
+    background: var(--cascivo-color-surface);
+    min-block-size: 100vh;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    margin-block-end: var(--cascivo-space-6);
+    flex-wrap: wrap;
+  }
+
+  .toolbarTitle {
+    font-size: var(--cascivo-text-xl);
+    font-weight: var(--cascivo-font-semibold);
+    flex: 1;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+  }
+
+  .table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--cascivo-text-sm);
+  }
+
+  .table thead {
+    background: var(--cascivo-color-surface-raised);
+  }
+
+  .table th {
+    padding: var(--cascivo-space-3) var(--cascivo-space-4);
+    text-align: start;
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-foreground-muted);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .table th:hover {
+    color: var(--cascivo-color-foreground);
+  }
+
+  .table td {
+    padding: var(--cascivo-space-3) var(--cascivo-space-4);
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+
+  .table tbody tr:hover {
+    background: var(--cascivo-color-surface-raised);
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: var(--cascivo-space-4);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .paginationControls {
+    display: flex;
+    gap: var(--cascivo-space-2);
+  }
+}
