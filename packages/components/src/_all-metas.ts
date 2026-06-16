@@ -8,6 +8,7 @@ import { meta as blockquoteMeta } from './blockquote/blockquote.meta'
 import { meta as breadcrumbMeta } from './breadcrumb/breadcrumb.meta'
 import { meta as buttonMeta } from './button/button.meta'
 import { meta as cardMeta } from './card/card.meta'
+import { meta as chatBubbleMeta } from './chat-bubble/chat-bubble.meta'
 import { meta as checkboxMeta } from './checkbox/checkbox.meta'
 import { meta as checkboxCardMeta } from './checkbox-card/checkbox-card.meta'
 import { meta as codeMeta } from './code/code.meta'
@@ -45,6 +46,7 @@ import { meta as paginationMeta } from './pagination/pagination.meta'
 import { meta as passwordInputMeta } from './password-input/password-input.meta'
 import { meta as popoverMeta } from './popover/popover.meta'
 import { meta as progressMeta } from './progress/progress.meta'
+import { meta as radialProgressMeta } from './radial-progress/radial-progress.meta'
 import { meta as progressBarMeta } from './progress-bar/progress-bar.meta'
 import { meta as progressCircleMeta } from './progress-circle/progress-circle.meta'
 import { meta as progressIndicatorMeta } from './progress-indicator/progress-indicator.meta'
@@ -67,6 +69,7 @@ import { meta as sliderMeta } from './slider/slider.meta'
 import { meta as spinnerMeta } from './spinner/spinner.meta'
 import { meta as statMeta } from './stat/stat.meta'
 import { meta as statusMeta } from './status/status.meta'
+import { meta as swapMeta } from './swap/swap.meta'
 import { meta as switcherMeta } from './switcher/switcher.meta'
 import { meta as tabsMeta } from './tabs/tabs.meta'
 import { meta as tagMeta } from './tag/tag.meta'
@@ -89,6 +92,7 @@ export const allMetas: ComponentMeta[] = [
   breadcrumbMeta,
   buttonMeta,
   cardMeta,
+  chatBubbleMeta,
   checkboxMeta,
   checkboxCardMeta,
   codeMeta,
@@ -126,6 +130,7 @@ export const allMetas: ComponentMeta[] = [
   passwordInputMeta,
   popoverMeta,
   progressMeta,
+  radialProgressMeta,
   progressBarMeta,
   progressCircleMeta,
   progressIndicatorMeta,
@@ -148,6 +153,7 @@ export const allMetas: ComponentMeta[] = [
   statMeta,
   statusMeta,
   stepsMeta,
+  swapMeta,
   switcherMeta,
   tabsMeta,
   tagMeta,

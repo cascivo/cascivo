@@ -1,0 +1,63 @@
+@layer cascade.component {
+  .swap {
+    display: inline-grid;
+    grid-template-areas: 'swap';
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swap:focus-visible {
+    outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+    outline-offset: 2px;
+    border-radius: var(--cascivo-radius-control);
+  }
+
+  .on,
+  .off {
+    grid-area: swap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition-property: transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: var(--cascivo-ease-out);
+  }
+
+  .swap[data-mode='rotate'] .on {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  .swap[data-mode='rotate'] .off {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+  .swap[data-mode='rotate'][data-checked] .on {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+  .swap[data-mode='rotate'][data-checked] .off {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+
+  .swap[data-mode='flip'] .on {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+  .swap[data-mode='flip'] .off {
+    transform: rotateY(180deg);
+    opacity: 0;
+  }
+  .swap[data-mode='flip'][data-checked] .on {
+    transform: rotateY(-180deg);
+    opacity: 0;
+  }
+  .swap[data-mode='flip'][data-checked] .off {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}

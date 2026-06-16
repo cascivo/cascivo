@@ -1,0 +1,57 @@
+@layer cascade.component {
+  .radialProgress {
+    --cascivo-radial-size: 5rem;
+    --cascivo-radial-thickness: 0.375rem;
+    --cascivo-radial-color: var(--cascivo-color-accent);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--cascivo-radial-size);
+    block-size: var(--cascivo-radial-size);
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-surface-2);
+    background-image: conic-gradient(
+      var(--cascivo-radial-color) calc(var(--cascivo-radial-progress, 0) * 1%),
+      transparent 0
+    );
+    box-shadow: inset 0 0 0 calc(var(--cascivo-radial-size) / 2 - var(--cascivo-radial-thickness))
+      var(--cascivo-color-surface);
+  }
+
+  .radialProgress[data-size='sm'] {
+    --cascivo-radial-size: 3.5rem;
+    --cascivo-radial-thickness: 0.25rem;
+  }
+  .radialProgress[data-size='md'] {
+    --cascivo-radial-size: 5rem;
+    --cascivo-radial-thickness: 0.375rem;
+  }
+  .radialProgress[data-size='lg'] {
+    --cascivo-radial-size: 7rem;
+    --cascivo-radial-thickness: 0.5rem;
+  }
+
+  .radialProgress[data-variant='primary'] {
+    --cascivo-radial-color: var(--cascivo-color-primary);
+  }
+  .radialProgress[data-variant='info'] {
+    --cascivo-radial-color: var(--cascivo-color-info);
+  }
+  .radialProgress[data-variant='success'] {
+    --cascivo-radial-color: var(--cascivo-color-success);
+  }
+  .radialProgress[data-variant='warning'] {
+    --cascivo-radial-color: var(--cascivo-color-warning);
+  }
+  .radialProgress[data-variant='error'] {
+    --cascivo-radial-color: var(--cascivo-color-error);
+  }
+
+  .label {
+    font-size: 0.875em;
+    font-weight: 600;
+    color: var(--cascivo-color-text);
+    line-height: 1;
+  }
+}

@@ -125,3 +125,7 @@ export * from '../../components/src/tile/tile'
 export * from '../../components/src/indicator/indicator'
 export * from '../../components/src/join/join'
 export * from '../../components/src/stack/stack'
+// v31 T5 interaction patterns
+export * from '../../components/src/chat-bubble/chat-bubble'
+export * from '../../components/src/radial-progress/radial-progress'
+export * from '../../components/src/swap/swap'
