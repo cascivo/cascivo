@@ -9,6 +9,8 @@ const meta: Meta<typeof PasswordInput> = {
 export default meta
 type Story = StoryObj<typeof PasswordInput>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const WithStrengthMeter: Story = {

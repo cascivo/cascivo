@@ -9,6 +9,8 @@ const meta: Meta<typeof Editable> = {
 export default meta
 type Story = StoryObj<typeof Editable>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Empty: Story = { args: { value: '', placeholder: 'Enter title…' } }
 export const Disabled: Story = { args: { disabled: true } }

@@ -16,6 +16,8 @@ const meta: Meta<typeof OverflowMenu> = {
 export default meta
 type Story = StoryObj<typeof OverflowMenu>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const Small: Story = { args: { size: 'sm' } }

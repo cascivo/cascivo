@@ -8,6 +8,8 @@ const meta: Meta<typeof Prose> = {
 export default meta
 type Story = StoryObj<typeof Prose>
 
+export const Primary: Story = {}
+
 export const Article: Story = {
   render: () => (
     <Prose style={{ maxWidth: 640 }}>

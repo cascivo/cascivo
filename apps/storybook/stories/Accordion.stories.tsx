@@ -13,6 +13,8 @@ const meta: Meta<typeof Accordion> = {
 export default meta
 type Story = StoryObj<typeof Accordion>
 
+export const Primary: Story = {}
+
 const faq = (
   <>
     <AccordionItem value="what">

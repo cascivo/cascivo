@@ -8,6 +8,8 @@ const meta: Meta<typeof FileUploader> = {
 export default meta
 type Story = StoryObj<typeof FileUploader>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithFiles: Story = {
   args: {

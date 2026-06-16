@@ -17,6 +17,8 @@ const meta: Meta<typeof Combobox> = {
 export default meta
 type Story = StoryObj<typeof Combobox>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithValue: Story = { args: { value: 'de' } }
 export const Clearable: Story = { args: { value: 'fr', clearable: true } }

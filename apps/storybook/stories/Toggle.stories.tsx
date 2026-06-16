@@ -10,6 +10,8 @@ const meta: Meta<typeof Toggle> = {
 export default meta
 type Story = StoryObj<typeof Toggle>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const On: Story = { args: { defaultChecked: true } }
 export const Disabled: Story = { args: { disabled: true } }

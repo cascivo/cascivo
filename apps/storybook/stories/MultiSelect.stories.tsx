@@ -21,6 +21,8 @@ const meta: Meta<typeof MultiSelect> = {
 export default meta
 type Story = StoryObj<typeof MultiSelect>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithSelection: Story = { args: { value: ['react', 'vue'] } }
 export const Disabled: Story = { args: { disabled: true } }

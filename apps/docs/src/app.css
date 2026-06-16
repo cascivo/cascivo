@@ -147,6 +147,19 @@ a {
   background-color: var(--cascivo-color-bg-subtle);
 }
 
+.storybook-link {
+  display: inline-block;
+  margin-block-start: var(--cascivo-space-3);
+  font-size: 0.875rem;
+  color: var(--cascivo-color-accent);
+  text-decoration: none;
+}
+
+.storybook-link:hover,
+.storybook-link:focus-visible {
+  text-decoration: underline;
+}
+
 .example {
   margin-block-end: var(--cascivo-space-6);
 }

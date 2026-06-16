@@ -9,6 +9,8 @@ const meta: Meta<typeof Badge> = {
 export default meta
 type Story = StoryObj<typeof Badge>
 
+export const Primary: Story = {}
+
 export const Default: Story = { args: { children: 'New' } }
 export const Secondary: Story = { args: { variant: 'secondary', children: 'Draft' } }
 export const Success: Story = { args: { variant: 'success', children: 'Active' } }

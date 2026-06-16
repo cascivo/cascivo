@@ -10,6 +10,8 @@ const meta: Meta<typeof Modal> = {
 export default meta
 type Story = StoryObj<typeof Modal>
 
+export const Primary: Story = {}
+
 function ModalDemo({ size }: { size?: 'sm' | 'md' | 'lg' }) {
   const [open, setOpen] = useState(false)
   return (

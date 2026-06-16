@@ -16,6 +16,8 @@ const meta: Meta<typeof Switcher> = {
 export default meta
 type Story = StoryObj<typeof Switcher>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   args: {
     items: [

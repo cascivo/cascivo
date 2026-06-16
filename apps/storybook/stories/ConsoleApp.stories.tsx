@@ -9,4 +9,6 @@ const meta: Meta<typeof ConsoleApp> = {
 export default meta
 type Story = StoryObj<typeof ConsoleApp>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}

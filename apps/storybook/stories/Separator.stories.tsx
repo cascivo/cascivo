@@ -8,6 +8,8 @@ const meta: Meta<typeof Separator> = {
 export default meta
 type Story = StoryObj<typeof Separator>
 
+export const Primary: Story = {}
+
 export const Horizontal: Story = {
   render: () => (
     <div style={{ maxWidth: 320 }}>

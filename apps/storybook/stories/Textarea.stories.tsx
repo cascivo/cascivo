@@ -9,6 +9,8 @@ const meta: Meta<typeof Textarea> = {
 export default meta
 type Story = StoryObj<typeof Textarea>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithHint: Story = { args: { hint: 'Up to 500 characters' } }
 export const WithError: Story = {

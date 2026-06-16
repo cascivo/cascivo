@@ -9,6 +9,8 @@ const meta: Meta<typeof StreamingText> = {
 export default meta
 type Story = StoryObj<typeof StreamingText>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Fast: Story = { args: { speed: 5 } }
 export const Slow: Story = { args: { speed: 1 } }

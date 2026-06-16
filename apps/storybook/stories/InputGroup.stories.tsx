@@ -10,6 +10,8 @@ const meta: Meta<typeof InputGroup> = {
 export default meta
 type Story = StoryObj<typeof InputGroup>
 
+export const Primary: Story = {}
+
 export const WithPrefix: Story = {
   render: () => (
     <InputGroup prefix="https://">

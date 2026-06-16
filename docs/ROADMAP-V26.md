@@ -99,13 +99,13 @@ so the command block never forces horizontal scroll on the page.
 The footer `COLUMNS` array references five targets that are either unreachable from the landing
 SPA, missing from the public directory, or not yet implemented:
 
-| Link | Current href | Problem | Fix |
-|---|---|---|---|
-| Why cascivo | `/why` | No `/why` route in landing SPA — shows NotFound | Change to `https://docs.cascivo.com/why` |
-| Methodology | `${REPO}/blob/main/apps/bench/METHODOLOGY.md` | File exists on GitHub; correct as external link | Verify link works; add `target="_blank"` if missing |
-| llms.txt | `/llms.txt` | File not in `apps/landing/public/` — 404 | Generate and commit `apps/landing/public/llms.txt` |
-| registry.json | `/registry.json` | Not copied into `apps/landing/public/` — 404 | Add a build step that copies root `registry.json` to `apps/landing/public/` |
-| MCP | `${REPO}/tree/main/packages/mcp` | External GitHub link; correct | Verify it resolves; no change needed if it does |
+| Link          | Current href                                  | Problem                                         | Fix                                                                         |
+| ------------- | --------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
+| Why cascivo   | `/why`                                        | No `/why` route in landing SPA — shows NotFound | Change to `https://docs.cascivo.com/why`                                    |
+| Methodology   | `${REPO}/blob/main/apps/bench/METHODOLOGY.md` | File exists on GitHub; correct as external link | Verify link works; add `target="_blank"` if missing                         |
+| llms.txt      | `/llms.txt`                                   | File not in `apps/landing/public/` — 404        | Generate and commit `apps/landing/public/llms.txt`                          |
+| registry.json | `/registry.json`                              | Not copied into `apps/landing/public/` — 404    | Add a build step that copies root `registry.json` to `apps/landing/public/` |
+| MCP           | `${REPO}/tree/main/packages/mcp`              | External GitHub link; correct                   | Verify it resolves; no change needed if it does                             |
 
 The `Methodology` link is technically correct (the file exists at that path on GitHub) but the
 `Footer.tsx` comment says these external links open in the same tab — add `rel="noopener noreferrer"` and `target="_blank"` consistently via `isExternal`.
@@ -170,14 +170,14 @@ variant or defining a minimal default).
 
 ## Workstreams
 
-| # | Workstream | Tranche | Summary |
-|---|---|---|---|
-| A | Console mobile: burger menu + sidebar overlay | T1 | Add hamburger button; position SideNav as overlay on mobile |
-| B | Layout stability: fixed heights, bar chart, QuickStart width | T2 | Three CSS/layout fixes in one pass |
-| C | View transitions | T3 | Cross-document CSS transitions; `view-transition-name` on shell |
-| D | Footer fixes + static files | T4 | Fix /why, verify Methodology/MCP, generate llms.txt, copy registry.json |
-| E | Screenshot pipeline | T5 | Real Playwright captures; CI/build integration |
-| F | Storybook welcome + docs links + dark theme + gate | T6 | Introduction.mdx; Storybook links in ComponentPage; docs dark default; gate |
+| #   | Workstream                                                   | Tranche | Summary                                                                     |
+| --- | ------------------------------------------------------------ | ------- | --------------------------------------------------------------------------- |
+| A   | Console mobile: burger menu + sidebar overlay                | T1      | Add hamburger button; position SideNav as overlay on mobile                 |
+| B   | Layout stability: fixed heights, bar chart, QuickStart width | T2      | Three CSS/layout fixes in one pass                                          |
+| C   | View transitions                                             | T3      | Cross-document CSS transitions; `view-transition-name` on shell             |
+| D   | Footer fixes + static files                                  | T4      | Fix /why, verify Methodology/MCP, generate llms.txt, copy registry.json     |
+| E   | Screenshot pipeline                                          | T5      | Real Playwright captures; CI/build integration                              |
+| F   | Storybook welcome + docs links + dark theme + gate           | T6      | Introduction.mdx; Storybook links in ComponentPage; docs dark default; gate |
 
 ---
 
@@ -277,14 +277,14 @@ variant or defining a minimal default).
 
 ## Non-goals (explicitly out of scope)
 
-| Claim | Substance |
-|---|---|
-| **No new components** | All animation and overlay work uses existing `SideNav`, CSS positioning, and landing CSS classes. |
-| **No router change** | Navigation remains anchor-based; view transitions use the CSS cross-document API. |
-| **No dark-mode screenshot variant in gallery** | Gallery uses `desktopLight` only; dark-mode toggle is deferred. |
-| **No i18n for llms.txt** | The file is machine-readable; English only is the spec convention. |
-| **No storybook autodocs** | The Storybook link points to `/story/…--primary`, not `/docs/…`. Autodocs setup is deferred. |
-| **No design-system changes to SideNav** | Mobile overlay behaviour is implemented via landing CSS scoping, not a change to `@cascivo/components`. |
+| Claim                                          | Substance                                                                                               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **No new components**                          | All animation and overlay work uses existing `SideNav`, CSS positioning, and landing CSS classes.       |
+| **No router change**                           | Navigation remains anchor-based; view transitions use the CSS cross-document API.                       |
+| **No dark-mode screenshot variant in gallery** | Gallery uses `desktopLight` only; dark-mode toggle is deferred.                                         |
+| **No i18n for llms.txt**                       | The file is machine-readable; English only is the spec convention.                                      |
+| **No storybook autodocs**                      | The Storybook link points to `/story/…--primary`, not `/docs/…`. Autodocs setup is deferred.            |
+| **No design-system changes to SideNav**        | Mobile overlay behaviour is implemented via landing CSS scoping, not a change to `@cascivo/components`. |
 
 ---
 

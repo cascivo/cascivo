@@ -21,14 +21,14 @@ within each app's existing CSS file.
 
 ## Tranche Overview
 
-| Tranche | Title | Goal |
-|---|---|---|
-| T1 | Console mobile: burger + overlay sidebar | Add hamburger button; SideNav overlay on mobile |
-| T2 | Layout stability: heights, bar chart, QuickStart | Three CSS/layout fixes for shifting content |
-| T3 | View transitions | Cross-document CSS fade between landing pages |
-| T4 | Footer fixes + static files | Fix /why, llms.txt, registry.json, Methodology, MCP |
-| T5 | Screenshot pipeline | Playwright real captures; CI integration |
-| T6 | Storybook welcome + docs links + dark theme + gate | Introduction.mdx; story links; dark default; final gate |
+| Tranche | Title                                              | Goal                                                    |
+| ------- | -------------------------------------------------- | ------------------------------------------------------- |
+| T1      | Console mobile: burger + overlay sidebar           | Add hamburger button; SideNav overlay on mobile         |
+| T2      | Layout stability: heights, bar chart, QuickStart   | Three CSS/layout fixes for shifting content             |
+| T3      | View transitions                                   | Cross-document CSS fade between landing pages           |
+| T4      | Footer fixes + static files                        | Fix /why, llms.txt, registry.json, Methodology, MCP     |
+| T5      | Screenshot pipeline                                | Playwright real captures; CI integration                |
+| T6      | Storybook welcome + docs links + dark theme + gate | Introduction.mdx; story links; dark default; final gate |
 
 ---
 
@@ -36,49 +36,49 @@ within each app's existing CSS file.
 
 ### T1 — Console mobile
 
-| Action | Path |
-|---|---|
+| Action | Path                                     |
+| ------ | ---------------------------------------- |
 | Modify | `apps/landing/src/demo/RelayConsole.tsx` |
-| Modify | `apps/landing/src/landing.css` |
+| Modify | `apps/landing/src/landing.css`           |
 
 ### T2 — Layout stability
 
-| Action | Path |
-|---|---|
-| Modify | `apps/landing/src/landing.css` |
+| Action | Path                                         |
+| ------ | -------------------------------------------- |
+| Modify | `apps/landing/src/landing.css`               |
 | Modify | `apps/landing/src/sections/ProofTeasers.tsx` |
 
 ### T3 — View transitions
 
-| Action | Path |
-|---|---|
+| Action | Path                           |
+| ------ | ------------------------------ |
 | Modify | `apps/landing/src/landing.css` |
-| Modify | `apps/landing/index.html` |
+| Modify | `apps/landing/index.html`      |
 
 ### T4 — Footer fixes + static files
 
-| Action | Path |
-|---|---|
-| Modify | `apps/landing/src/sections/Footer.tsx` |
-| Create | `apps/landing/public/llms.txt` |
+| Action | Path                                                                                     |
+| ------ | ---------------------------------------------------------------------------------------- |
+| Modify | `apps/landing/src/sections/Footer.tsx`                                                   |
+| Create | `apps/landing/public/llms.txt`                                                           |
 | Modify | `apps/landing/vite.config.ts` (or `package.json`) to copy `registry.json` into `public/` |
 
 ### T5 — Screenshot pipeline
 
-| Action | Path |
-|---|---|
-| Modify | `scripts/gen-demo-screenshots.mjs` |
-| Modify | `apps/landing/package.json` (`screenshots:capture` alias) |
+| Action | Path                                                               |
+| ------ | ------------------------------------------------------------------ |
+| Modify | `scripts/gen-demo-screenshots.mjs`                                 |
+| Modify | `apps/landing/package.json` (`screenshots:capture` alias)          |
 | Create | `.github/workflows/screenshots.yml` (or annotation in existing CI) |
 
 ### T6 — Storybook + docs + gate
 
-| Action | Path |
-|---|---|
-| Create | `apps/storybook/stories/Introduction.mdx` |
-| Modify | `apps/storybook/.storybook/main.ts` (ensure MDX is enabled) |
-| Modify | `apps/docs/src/theme.ts` (default `'dark'`) |
-| Modify | `apps/docs/src/pages/ComponentPage.tsx` (Storybook link) |
+| Action | Path                                                                                 |
+| ------ | ------------------------------------------------------------------------------------ |
+| Create | `apps/storybook/stories/Introduction.mdx`                                            |
+| Modify | `apps/storybook/.storybook/main.ts` (ensure MDX is enabled)                          |
+| Modify | `apps/docs/src/theme.ts` (default `'dark'`)                                          |
+| Modify | `apps/docs/src/pages/ComponentPage.tsx` (Storybook link)                             |
 | Modify | Multiple `apps/storybook/stories/*.stories.tsx` (add `Primary` export where missing) |
 
 ---
@@ -112,7 +112,7 @@ The `SideNav` inside `RelayConsole` renders as a grid column that disappears at 
     position: relative;
     overflow: hidden;
   }
-  .console-frame [class^="side-nav"] {
+  .console-frame [class^='side-nav'] {
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
@@ -120,7 +120,7 @@ The `SideNav` inside `RelayConsole` renders as a grid column that disappears at 
     transform: translateX(-100%);
     transition: transform 250ms ease;
   }
-  .console-frame.sidebar-open [class^="side-nav"] {
+  .console-frame.sidebar-open [class^='side-nav'] {
     transform: translateX(0);
   }
 }

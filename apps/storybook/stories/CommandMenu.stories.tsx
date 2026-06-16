@@ -62,6 +62,8 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 
+export const Primary: Story = {}
+
 export const Default: Story = { render: () => <Demo /> }
 
 export const Loading: Story = { render: () => <Demo loading /> }

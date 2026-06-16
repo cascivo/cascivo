@@ -9,6 +9,8 @@ const meta: Meta<typeof Link> = {
 export default meta
 type Story = StoryObj<typeof Link>
 
+export const Primary: Story = {}
+
 export const Standalone: Story = {}
 export const External: Story = {
   args: { external: true, href: 'https://example.com', children: 'Example.com' },

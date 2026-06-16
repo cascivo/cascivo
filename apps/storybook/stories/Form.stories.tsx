@@ -34,6 +34,8 @@ const meta: Meta = { title: 'Inputs/Form', component: Form, parameters: { layout
 export default meta
 type Story = StoryObj
 
+export const Primary: Story = {}
+
 export const Default: Story = { render: () => <BasicDemo /> }
 
 export const Accessibility: Story = {

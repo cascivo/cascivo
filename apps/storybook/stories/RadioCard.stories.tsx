@@ -8,6 +8,8 @@ const meta: Meta<typeof RadioCardGroup> = {
 export default meta
 type Story = StoryObj<typeof RadioCardGroup>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render: () => (
     <RadioCardGroup name="plan" defaultValue="pro" label="Plan">

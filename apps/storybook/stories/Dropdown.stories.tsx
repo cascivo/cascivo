@@ -16,6 +16,8 @@ const meta: Meta<typeof Dropdown> = {
 export default meta
 type Story = StoryObj<typeof Dropdown>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render: () => <Dropdown trigger={<Button>Actions ▾</Button>} items={items} />,
 }

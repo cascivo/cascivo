@@ -9,6 +9,8 @@ const meta: Meta<typeof TagsInput> = {
 export default meta
 type Story = StoryObj<typeof TagsInput>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Empty: Story = { args: { value: [], placeholder: 'Add tag…' } }
 export const WithValidation: Story = {

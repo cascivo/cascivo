@@ -17,6 +17,8 @@ const meta: Meta<typeof SideNav> = {
 export default meta
 type Story = StoryObj<typeof SideNav>
 
+export const Primary: Story = {}
+
 const consoleItems: SideNavItem[] = [
   { label: 'Home', href: '#home', icon: <Home size={16} />, active: true },
   { label: 'Activity', href: '#activity', icon: <Activity size={16} /> },

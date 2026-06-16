@@ -9,6 +9,8 @@ const meta: Meta<typeof Alert> = {
 export default meta
 type Story = StoryObj<typeof Alert>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Info: Story = { args: { variant: 'info' } }
 export const Success: Story = {

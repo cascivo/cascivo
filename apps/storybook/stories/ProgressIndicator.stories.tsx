@@ -19,6 +19,8 @@ const meta: Meta<typeof ProgressIndicator> = {
 export default meta
 type Story = StoryObj<typeof ProgressIndicator>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const FirstStep: Story = {

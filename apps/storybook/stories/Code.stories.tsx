@@ -9,6 +9,8 @@ const meta: Meta<typeof Code> = {
 export default meta
 type Story = StoryObj<typeof Code>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Small: Story = { args: { size: 'sm', children: '--cascivo-color-accent' } }
 

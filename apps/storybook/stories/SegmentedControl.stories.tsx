@@ -15,6 +15,8 @@ const meta: Meta<typeof SegmentedControl> = {
 export default meta
 type Story = StoryObj<typeof SegmentedControl>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Small: Story = { args: { size: 'sm' } }
 export const Large: Story = { args: { size: 'lg' } }

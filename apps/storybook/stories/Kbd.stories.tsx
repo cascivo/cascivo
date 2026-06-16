@@ -9,6 +9,8 @@ const meta: Meta<typeof Kbd> = {
 export default meta
 type Story = StoryObj<typeof Kbd>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Symbol: Story = { args: { children: '⌘' } }
 export const Word: Story = { args: { children: 'Esc' } }

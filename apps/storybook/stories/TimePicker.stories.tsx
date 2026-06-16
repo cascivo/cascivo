@@ -9,6 +9,8 @@ const meta: Meta<typeof TimePicker> = {
 export default meta
 type Story = StoryObj<typeof TimePicker>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithValue: Story = { args: { defaultValue: '09:30' } }
 export const WithHint: Story = { args: { hint: 'Use 24h format', defaultValue: '14:00' } }

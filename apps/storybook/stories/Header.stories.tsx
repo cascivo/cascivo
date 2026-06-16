@@ -10,6 +10,8 @@ const meta: Meta<typeof Header> = {
 export default meta
 type Story = StoryObj<typeof Header>
 
+export const Primary: Story = {}
+
 const links = [
   { label: 'Docs', href: '#docs' },
   { label: 'Components', href: '#components', active: true },
