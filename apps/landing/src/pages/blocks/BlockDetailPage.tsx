@@ -40,6 +40,13 @@ export function BlockDetailPage({ name }: Props) {
     )
   }
 
+  return <BlockDetailInner entry={entry} name={name} />
+}
+
+type InnerProps = { entry: BlockEntry; name: string }
+
+function BlockDetailInner({ entry, name }: InnerProps) {
+  useSignals()
   const previewTheme = useSignal<ThemeKey>('light')
   const viewport = useSignal<string>('80rem')
   const activeTab = useSignal<'tsx' | 'css'>('tsx')
