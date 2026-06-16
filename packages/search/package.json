@@ -11,8 +11,7 @@
     "./SearchDialog": {
       "import": "./src/SearchDialog.tsx",
       "types": "./src/SearchDialog.tsx"
-    },
-    "./search.css": "./src/search.css"
+    }
   },
   "dependencies": {
     "@cascivo/components": "workspace:*",

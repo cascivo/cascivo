@@ -15,6 +15,11 @@ export class SearchIndex {
     this.items = items
   }
 
+  /** All indexed items (used by consumers that do their own filtering). */
+  all(): SearchItem[] {
+    return this.items
+  }
+
   search(query: string, limit = 8): SearchItem[] {
     const q = query.toLowerCase().trim()
     if (q.length < 2) return []
