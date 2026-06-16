@@ -208,6 +208,10 @@ function serveExampleDemos(): Plugin {
 
 export default defineConfig({
   plugins: [injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
+  define: {
+    __CASCIVO_COMPONENT_COUNT__: componentCount(),
+    __CASCIVO_THEME_COUNT__: themeCount(),
+  },
   preview: { port: 4180, strictPort: true },
   server: { port: 4180 },
   test: {
