@@ -21,6 +21,7 @@ import { meta as dropdownMeta } from './dropdown/dropdown.meta'
 import { meta as editableMeta } from './editable/editable.meta'
 import { meta as emptyStateMeta } from './empty-state/empty-state.meta'
 import { meta as fileUploaderMeta } from './file-uploader/file-uploader.meta'
+import { meta as filterMeta } from './filter/filter.meta'
 import { meta as formMeta } from './form/form.meta'
 import { meta as headerMeta } from './header/header.meta'
 import { meta as headerPanelMeta } from './header-panel/header-panel.meta'
@@ -40,6 +41,7 @@ import { meta as overflowMenuMeta } from './overflow-menu/overflow-menu.meta'
 import { meta as paginationMeta } from './pagination/pagination.meta'
 import { meta as passwordInputMeta } from './password-input/password-input.meta'
 import { meta as popoverMeta } from './popover/popover.meta'
+import { meta as progressMeta } from './progress/progress.meta'
 import { meta as progressBarMeta } from './progress-bar/progress-bar.meta'
 import { meta as progressCircleMeta } from './progress-circle/progress-circle.meta'
 import { meta as progressIndicatorMeta } from './progress-indicator/progress-indicator.meta'
@@ -95,6 +97,7 @@ export const allMetas: ComponentMeta[] = [
   editableMeta,
   emptyStateMeta,
   fileUploaderMeta,
+  filterMeta,
   formMeta,
   headerMeta,
   headerPanelMeta,
@@ -114,6 +117,7 @@ export const allMetas: ComponentMeta[] = [
   paginationMeta,
   passwordInputMeta,
   popoverMeta,
+  progressMeta,
   progressBarMeta,
   progressCircleMeta,
   progressIndicatorMeta,

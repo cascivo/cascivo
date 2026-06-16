@@ -1,0 +1,72 @@
+@layer cascade.component {
+  .progress {
+    display: block;
+    inline-size: 100%;
+    appearance: none;
+    border: none;
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-surface-2);
+    overflow: hidden;
+  }
+
+  .progress[data-size='sm'] {
+    block-size: 0.25rem;
+  }
+  .progress[data-size='md'] {
+    block-size: 0.5rem;
+  }
+  .progress[data-size='lg'] {
+    block-size: 0.75rem;
+  }
+
+  .progress::-webkit-progress-bar {
+    background: transparent;
+  }
+  .progress::-webkit-progress-value {
+    background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));
+    border-radius: var(--cascivo-radius-full);
+    transition: inline-size 150ms var(--cascivo-ease-out);
+  }
+  .progress::-moz-progress-bar {
+    background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));
+    border-radius: var(--cascivo-radius-full);
+  }
+
+  .progress[data-variant='primary'] {
+    --cascivo-progress-color: var(--cascivo-color-primary);
+  }
+  .progress[data-variant='info'] {
+    --cascivo-progress-color: var(--cascivo-color-info);
+  }
+  .progress[data-variant='success'] {
+    --cascivo-progress-color: var(--cascivo-color-success);
+  }
+  .progress[data-variant='warning'] {
+    --cascivo-progress-color: var(--cascivo-color-warning);
+  }
+  .progress[data-variant='error'] {
+    --cascivo-progress-color: var(--cascivo-color-error);
+  }
+
+  .progress:indeterminate::-webkit-progress-value {
+    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;
+  }
+  .progress:indeterminate::-moz-progress-bar {
+    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;
+  }
+
+  @keyframes cascivo-progress-indeterminate {
+    0% {
+      inline-size: 0%;
+      margin-inline-start: 0;
+    }
+    50% {
+      inline-size: 50%;
+      margin-inline-start: 25%;
+    }
+    100% {
+      inline-size: 0%;
+      margin-inline-start: 100%;
+    }
+  }
+}
