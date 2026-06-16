@@ -2,8 +2,60 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@cascivo/react": ["../../packages/react/src/index.ts"],
+      "@cascivo/components/blocks/types": ["../../packages/components/src/blocks/types.ts"],
+      "@cascivo/blocks/app-shell/component": [
+        "../../packages/components/src/blocks/app-shell/app-shell.tsx"
+      ],
+      "@cascivo/blocks/auth-login/component": [
+        "../../packages/components/src/blocks/auth-login/auth-login.tsx"
+      ],
+      "@cascivo/blocks/auth-signup/component": [
+        "../../packages/components/src/blocks/auth-signup/auth-signup.tsx"
+      ],
+      "@cascivo/blocks/dashboard-overview/component": [
+        "../../packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx"
+      ],
+      "@cascivo/blocks/dashboard-table/component": [
+        "../../packages/components/src/blocks/dashboard-table/dashboard-table.tsx"
+      ],
+      "@cascivo/blocks/marketing-features/component": [
+        "../../packages/components/src/blocks/marketing-features/marketing-features.tsx"
+      ],
+      "@cascivo/blocks/marketing-hero/component": [
+        "../../packages/components/src/blocks/marketing-hero/marketing-hero.tsx"
+      ],
+      "@cascivo/blocks/settings-profile/component": [
+        "../../packages/components/src/blocks/settings-profile/settings-profile.tsx"
+      ],
+      "@cascivo/blocks/app-shell": [
+        "../../packages/components/src/blocks/app-shell/app-shell.meta.ts"
+      ],
+      "@cascivo/blocks/auth-login": [
+        "../../packages/components/src/blocks/auth-login/auth-login.meta.ts"
+      ],
+      "@cascivo/blocks/auth-signup": [
+        "../../packages/components/src/blocks/auth-signup/auth-signup.meta.ts"
+      ],
+      "@cascivo/blocks/dashboard-overview": [
+        "../../packages/components/src/blocks/dashboard-overview/dashboard-overview.meta.ts"
+      ],
+      "@cascivo/blocks/dashboard-table": [
+        "../../packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts"
+      ],
+      "@cascivo/blocks/marketing-features": [
+        "../../packages/components/src/blocks/marketing-features/marketing-features.meta.ts"
+      ],
+      "@cascivo/blocks/marketing-hero": [
+        "../../packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts"
+      ],
+      "@cascivo/blocks/settings-profile": [
+        "../../packages/components/src/blocks/settings-profile/settings-profile.meta.ts"
+      ]
+    }
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/setup.ts"]
 }
