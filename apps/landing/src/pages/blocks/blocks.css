@@ -1,0 +1,26 @@
+@layer cascade.blocks {
+  .blocks-page {
+    padding-block: var(--cascivo-space-16);
+    padding-inline: var(--cascivo-space-6);
+    max-inline-size: 80rem;
+    margin-inline: auto;
+  }
+
+  .blocks-page__heading {
+    font-size: var(--cascivo-text-4xl);
+    font-weight: var(--cascivo-font-bold);
+    margin-block-end: var(--cascivo-space-2);
+  }
+
+  .blocks-page__subtitle {
+    font-size: var(--cascivo-text-lg);
+    color: var(--cascivo-color-foreground-muted);
+    margin-block-end: var(--cascivo-space-10);
+  }
+
+  .blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--cascivo-space-6);
+  }
+}

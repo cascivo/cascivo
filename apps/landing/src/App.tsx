@@ -53,6 +53,12 @@ const ExampleDetailPage = lazy(() =>
 const OgCard = lazy(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
 const CreatePage = lazy(() => import('./pages/CreatePage').then((m) => ({ default: m.CreatePage })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
+const BlocksPage = lazy(() =>
+  import('./pages/blocks/BlocksPage').then((m) => ({ default: m.BlocksPage })),
+)
+const BlockDetailPage = lazy(() =>
+  import('./pages/blocks/BlockDetailPage').then((m) => ({ default: m.BlockDetailPage })),
+)
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
 function SectionFallback({ tall = false }: { tall?: boolean }) {
@@ -111,6 +117,10 @@ const ROUTES: Record<string, Route> = {
   '/create': {
     Page: CreatePage,
     title: ROUTE_HEAD['/create']?.title ?? 'cascivo',
+  },
+  '/blocks': {
+    Page: BlocksPage,
+    title: ROUTE_HEAD['/blocks']?.title ?? 'cascivo',
   },
   // One detail route per demo (/examples/<slug>); titles from ROUTE_HEAD.
   ...Object.fromEntries(
@@ -176,6 +186,22 @@ export function App() {
       onNavigate={navigateToResult}
     />
   )
+
+  // Handle /blocks/:name dynamic route
+  if (pathname.startsWith('/blocks/') && pathname !== '/blocks/') {
+    const blockName = pathname.slice('/blocks/'.length).split('/')[0]
+    if (blockName) {
+      applyRouteSeo(pathname, `${blockName} — cascivo`)
+      return (
+        <>
+          <Suspense fallback={<SectionFallback tall />}>
+            <BlockDetailPage name={blockName} />
+          </Suspense>
+          {search}
+        </>
+      )
+    }
+  }
 
   if (!route) {
     applyNotFoundSeo()
