@@ -1,9 +1,10 @@
 import { type ComponentType, Suspense, lazy } from 'react'
-import { useSignalEffect } from '@cascivo/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
+import { TechDeepDive } from './sections/TechDeepDive'
 import { StatsBand } from './sections/StatsBand'
 import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
@@ -15,6 +16,10 @@ import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
 import { initReveal } from './reveal'
+import { currentPath, initRouter, navigate } from './router'
+import { SearchDialog } from '@cascivo/search/SearchDialog'
+import { landingIndex } from './search/buildIndex'
+import { searchOpen } from './search/state'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
 import { DEMOS } from './pages/examples/data'
@@ -36,6 +41,9 @@ const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const ModernCssPage = lazy(() =>
+  import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
+)
 const ExamplesPage = lazy(() =>
   import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
 )
@@ -61,6 +69,7 @@ function HomePage() {
         <main>
           <Hero />
           <Principles />
+          <TechDeepDive teaser />
           <StatsBand />
           <Suspense fallback={<SectionFallback tall />}>
             <RelayConsole />
@@ -95,6 +104,7 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
   // One detail route per demo (/examples/<slug>); titles from ROUTE_HEAD.
@@ -106,27 +116,82 @@ const ROUTES: Record<string, Route> = {
   ),
 }
 
-export function App() {
-  useSignalEffect(() => initReveal())
+/**
+ * Navigate to a search result. External (docs) links are full browser
+ * navigations — `history.pushState` would throw on a cross-origin URL.
+ * Same-origin hash links navigate to the path, then jump to the anchor.
+ */
+function navigateToResult(href: string) {
+  if (/^https?:\/\//.test(href)) {
+    window.location.href = href
+    return
+  }
+  const hashIndex = href.indexOf('#')
+  if (hashIndex >= 0) {
+    const path = href.slice(0, hashIndex) || '/'
+    const hash = href.slice(hashIndex)
+    navigate(path)
+    requestAnimationFrame(() => {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+    })
+    return
+  }
+  navigate(href)
+}
 
-  const pathname =
-    typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/'
+export function App() {
+  useSignals()
+  useSignalEffect(() => initReveal())
+  useSignalEffect(() => {
+    initRouter()
+  })
+
+  // CMD+K / Ctrl+K opens the search dialog.
+  useSignalEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        searchOpen.value = true
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  })
+
+  const pathname = currentPath.value
   const route = ROUTES[pathname]
+
+  const search = (
+    <SearchDialog
+      index={landingIndex}
+      open={searchOpen.value}
+      onClose={() => {
+        searchOpen.value = false
+      }}
+      onNavigate={navigateToResult}
+    />
+  )
 
   if (!route) {
     applyNotFoundSeo()
     return (
-      <Suspense fallback={<SectionFallback tall />}>
-        <NotFound />
-      </Suspense>
+      <>
+        <Suspense fallback={<SectionFallback tall />}>
+          <NotFound />
+        </Suspense>
+        {search}
+      </>
     )
   }
 
   applyRouteSeo(pathname, route.title)
 
   return (
-    <Suspense fallback={<SectionFallback tall />}>
-      <route.Page />
-    </Suspense>
+    <>
+      <Suspense fallback={<SectionFallback tall />}>
+        <route.Page />
+      </Suspense>
+      {search}
+    </>
   )
 }

@@ -115,6 +115,12 @@
     table-layout: auto;
   }
 
+  /* Paginated tables use a fixed layout so column widths stay constant as the
+     page changes — content of the visible rows can no longer shift columns. */
+  .root[data-paginated='true'] .table {
+    table-layout: fixed;
+  }
+
   .table thead th {
     padding-block: var(--cascivo-space-2);
     padding-inline: var(--cascivo-space-4);
@@ -144,6 +150,11 @@
 
   .table td[data-align='end'] {
     text-align: end;
+  }
+
+  /* Spacer that pads partial pages to a constant height — no divider line. */
+  .table tbody tr[data-filler-row] td {
+    border-block-end: none;
   }
 
   /* Sticky header */

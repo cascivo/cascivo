@@ -1,38 +1,150 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, type ReactElement } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader } from '@cascivo/components/shell-header'
-import { THEMES, setTheme, theme } from '../theme'
+import { Tooltip } from '@cascivo/components/tooltip'
+import { setTheme, theme, type ThemeName } from '../theme'
+import { currentPath, navigate } from '../router'
+import { SearchButton } from '../search/SearchButton'
+import { searchOpen } from '../search/state'
 
-const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 
 const NAV_LINKS = [
   { label: 'Components', href: 'https://docs.cascivo.com' },
-  { label: 'Examples', href: '/examples', active: path.startsWith('/examples') },
+  { label: 'Examples', href: '/examples' },
   { label: 'Storybook', href: 'https://storybook.cascivo.com' },
-  {
-    label: 'Accessibility',
-    href: '/accessibility',
-    active: path.startsWith('/accessibility'),
-  },
-  {
-    label: 'Performance',
-    href: '/performance',
-    active: path.startsWith('/performance'),
-  },
-  {
-    label: 'Guides',
-    href: '/guides',
-    active: path.startsWith('/guides'),
-  },
-  { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
+  { label: 'Accessibility', href: '/accessibility' },
+  { label: 'Performance', href: '/performance' },
+  { label: 'Guides', href: '/guides' },
 ]
+
+function isExternalHref(href: string) {
+  return /^https?:\/\//.test(href)
+}
+
+// The compact switcher cycles the three first-party themes (roadmap decision #5).
+const CYCLE_THEMES = ['light', 'dark', 'warm'] as const satisfies readonly ThemeName[]
+
+function cycleTheme() {
+  const idx = CYCLE_THEMES.indexOf(theme.value as (typeof CYCLE_THEMES)[number])
+  setTheme(CYCLE_THEMES[(idx + 1) % CYCLE_THEMES.length] ?? CYCLE_THEMES[0])
+}
+
+function SunIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="12" y1="18" x2="12" y2="22" />
+      <line x1="4.22" y1="4.22" x2="7.05" y2="7.05" />
+      <line x1="16.95" y1="16.95" x2="19.78" y2="19.78" />
+      <line x1="2" y1="12" x2="6" y2="12" />
+      <line x1="18" y1="12" x2="22" y2="12" />
+      <line x1="4.22" y1="19.78" x2="7.05" y2="16.95" />
+      <line x1="16.95" y1="7.05" x2="19.78" y2="4.22" />
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  )
+}
+
+function WarmIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+      <path d="M17 12a5 5 0 0 1-5 5" strokeOpacity="0.5" />
+    </svg>
+  )
+}
+
+const THEME_ICONS: Record<string, () => ReactElement> = {
+  light: SunIcon,
+  dark: MoonIcon,
+  warm: WarmIcon,
+}
+
+function GitHubIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="20"
+      height="20"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+    >
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  )
+}
 
 export function Header() {
   useSignals()
   const isNavOpen = useSignal(false)
+
+  // Active detection is reactive: reads currentPath so navigation re-renders it.
+  const navItems = NAV_LINKS.map((link) => ({
+    ...link,
+    active: !isExternalHref(link.href) && currentPath.value.startsWith(link.href),
+  }))
   const drawerRef = useRef<HTMLElement>(null)
   const toggleRef = useRef<HTMLElement | null>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+
+  // Scroll progress — write to a CSS custom property directly to avoid re-renders.
+  useSignalEffect(() => {
+    const update = () => {
+      const el = progressRef.current
+      if (!el) return
+      const scrollable = document.body.scrollHeight - window.innerHeight
+      const ratio = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0
+      el.style.setProperty('--scroll-ratio', String(ratio))
+    }
+    window.addEventListener('scroll', update, { passive: true })
+    update()
+    return () => window.removeEventListener('scroll', update)
+  })
 
   // Body scroll lock
   useSignalEffect(() => {
@@ -88,8 +200,9 @@ export function Header() {
   return (
     <>
       <ShellHeader
+        className="landing-shell-header"
         brand={{ name: 'cascivo', href: '/' }}
-        nav={NAV_LINKS}
+        nav={navItems}
         // The landing supplies its own SkipNavLink/SkipNavTarget on every page;
         // disable ShellHeader's built-in skip link so its default #cascade-main
         // target (which the landing doesn't render) can't dangle.
@@ -101,23 +214,36 @@ export function Header() {
         }}
         menuExpanded={isNavOpen.value}
         end={
-          <div className="header-themes" role="group" aria-label="Theme">
-            {THEMES.map((t) => (
+          <>
+            <Tooltip content={`Theme: ${theme.value}`} placement="bottom">
               <button
-                key={t}
                 type="button"
-                className="header-theme-dot"
-                data-state={theme.value === t ? 'active' : undefined}
-                data-theme-name={t}
-                aria-pressed={theme.value === t}
-                onClick={() => setTheme(t)}
+                className="header-theme-cycle"
+                aria-label={`Switch theme, current: ${theme.value}`}
+                onClick={cycleTheme}
               >
-                <span className="visually-hidden">{t}</span>
+                {(THEME_ICONS[theme.value] ?? SunIcon)()}
               </button>
-            ))}
-          </div>
+            </Tooltip>
+            <SearchButton
+              onClick={() => {
+                searchOpen.value = true
+              }}
+            />
+            <a
+              href={GITHUB_HREF}
+              className="header-icon-link"
+              aria-label="GitHub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHubIcon />
+            </a>
+          </>
         }
       />
+
+      <div ref={progressRef} className="scroll-progress" aria-hidden="true" />
 
       {/* Scrim */}
       {isNavOpen.value && (
@@ -138,8 +264,8 @@ export function Header() {
         aria-label="Main navigation"
         aria-hidden={!isNavOpen.value}
       >
-        {NAV_LINKS.map((link) => {
-          const isExternal = /^https?:\/\//.test(link.href)
+        {navItems.map((link) => {
+          const isExternal = isExternalHref(link.href)
           return (
             <a
               key={link.href}
@@ -149,6 +275,7 @@ export function Header() {
               {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               onClick={() => {
                 isNavOpen.value = false
+                if (!isExternal) navigate(link.href)
               }}
             >
               {link.label}

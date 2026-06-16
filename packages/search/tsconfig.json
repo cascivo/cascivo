@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@cascivo/core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

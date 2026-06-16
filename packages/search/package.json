@@ -1,0 +1,27 @@
+{
+  "name": "@cascivo/search",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    },
+    "./SearchDialog": {
+      "import": "./src/SearchDialog.tsx",
+      "types": "./src/SearchDialog.tsx"
+    }
+  },
+  "dependencies": {
+    "@cascivo/components": "workspace:*",
+    "@cascivo/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "react": "catalog:"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  }
+}

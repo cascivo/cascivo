@@ -37,6 +37,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Guides for adopting cascivo: migrating from shadcn, brand customization, real use-case scenarios, and an honest take on when not to use it.',
   },
+  '/modern-css': {
+    title: 'Modern CSS — cascivo',
+    description:
+      'Why cascivo uses modern CSS: @layer for cascade control without specificity wars, @container for components that respond to their slot, and :has() for conditional styling without JavaScript.',
+    ogTitle: 'Modern CSS — cascivo',
+  },
   '/examples': {
     title: 'Examples — cascivo',
     description:
@@ -80,6 +86,7 @@ export const PRERENDER_ROUTES = [
   'accessibility',
   'performance',
   'guides',
+  'modern-css',
   'examples',
   'examples/deploy',
   'examples/pay',

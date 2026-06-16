@@ -223,6 +223,8 @@ export default defineConfig({
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
       '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
+      '@cascivo/search/SearchDialog': resolve(root, 'packages/search/src/SearchDialog.tsx'),
+      '@cascivo/search': resolve(root, 'packages/search/src/index.ts'),
     },
   },
 })

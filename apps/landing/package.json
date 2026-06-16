@@ -24,6 +24,7 @@
     "@cascivo/core": "workspace:*",
     "@cascivo/icons": "workspace:*",
     "@cascivo/render": "workspace:*",
+    "@cascivo/search": "workspace:*",
     "@cascivo/storage": "workspace:*",
     "@cascivo/themes": "workspace:*",
     "@cascivo/tokens": "workspace:*",

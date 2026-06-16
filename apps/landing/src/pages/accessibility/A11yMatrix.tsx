@@ -8,16 +8,18 @@ import { VisuallyHidden } from '@cascivo/components/visually-hidden'
 import { A11Y_CATEGORIES, A11Y_COVERED, A11Y_ROWS, KEYBOARD_DOCUMENTED, type A11yRow } from './data'
 
 const COLUMNS: Column<A11yRow>[] = [
-  { key: 'name', header: 'Component' },
-  { key: 'category', header: 'Category' },
+  { key: 'name', header: 'Component', width: '16%' },
+  { key: 'category', header: 'Category', width: '13%' },
   {
     key: 'role',
     header: 'Role',
+    width: '17%',
     render: (r) => <code className="a11y-role">{r.role}</code>,
   },
   {
     key: 'wcag',
     header: 'WCAG',
+    width: '13%',
     render: (r) =>
       r.wcag
         .replace('2.2-AA', 'WCAG 2.2 AA')
@@ -27,6 +29,7 @@ const COLUMNS: Column<A11yRow>[] = [
   {
     key: 'apgPattern',
     header: 'APG Pattern',
+    width: '19%',
     render: (r) =>
       r.apgPattern ? (
         <code className="a11y-role">{r.apgPattern}</code>
@@ -40,6 +43,7 @@ const COLUMNS: Column<A11yRow>[] = [
   {
     key: 'keyboard',
     header: 'Keyboard',
+    width: '22%',
     render: (r) =>
       r.keyboard.length > 0 ? (
         <span className="a11y-keys">
@@ -100,6 +104,7 @@ export function A11yMatrix() {
           getRowId={(r) => r.name}
           density="compact"
           stickyHeader
+          pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}
           title="Keyboard and ARIA matrix"
           description="Role, WCAG level, and keyboard interaction per registry entry, generated from each component.meta.ts."
         />

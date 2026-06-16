@@ -134,7 +134,9 @@
     user-select: none;
 
     &[data-state='active'] {
-      background-color: var(--cascivo-color-bg-subtle);
+      /* bg-subtle collapses to the panel surface in some themes (e.g. dark),
+         making the selection invisible — use an accent tint that stays distinct. */
+      background-color: var(--cascivo-color-accent-muted);
     }
 
     &[data-disabled] {
