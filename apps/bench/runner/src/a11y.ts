@@ -13,7 +13,9 @@ const STATES: A11yState[] = [
     prepare: async (page) => {
       await page.click('[data-bench="create-1k"]')
       await page.waitForFunction(
-        () => document.querySelectorAll('[data-bench-root="table"] tbody tr').length === 1000,
+        () =>
+          document.querySelectorAll('[data-bench-root="table"] tbody tr:not([data-empty-row])')
+            .length === 1000,
       )
     },
   },
@@ -22,7 +24,7 @@ const STATES: A11yState[] = [
     route: '/dialog',
     prepare: async (page) => {
       await page.click('[data-bench="open-dialog"]')
-      await page.waitForSelector('[role="dialog"]')
+      await page.waitForSelector('[role="dialog"], dialog[open]')
     },
   },
 ]

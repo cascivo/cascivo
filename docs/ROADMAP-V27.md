@@ -53,6 +53,7 @@ the right end slot and displays three unlabelled colored circles with no tooltip
 is plain text. Together these consume more space than they deliver.
 
 **Fix:**
+
 - **Sticky:** add `position: sticky; top: 0; z-index: var(--cascivo-z-overlay)` to the landing
   header in `landing.css`. The rest of the page content scrolls under it.
 - **Scroll indicator:** a 2 px progress bar directly below the sticky header, driven by a
@@ -72,8 +73,9 @@ A landing for a UI library with no search forces visitors to scan visually. The 
 package concept solves this for cascivo _and_ for users who adopt cascivo in their own projects.
 
 **Package concept (`@cascivo/search`):**
+
 - `SearchIndex` class: accepts an array of indexable items (`{ id, title, section, content,
-  href }`). Builds a client-side trigram index at runtime (no build step). Suitable for
+href }`). Builds a client-side trigram index at runtime (no build step). Suitable for
   indexing component registries, MDX pages, or any static JSON dataset.
 - `SearchDialog` component: a `Modal`-based CMD+K dialog with an `Input`, a scrollable results
   list, keyboard navigation (↑/↓/Enter), and section grouping. Built with cascivo components
@@ -82,6 +84,7 @@ package concept solves this for cascivo _and_ for users who adopt cascivo in the
   search dialog that matches their cascivo theme.
 
 **Landing integration:**
+
 - Index is built at startup from `registry.json` (components) + a static `SEARCH_PAGES` manifest
   (landing page sections: headings, one-line descriptions, `href`).
 - CMD+K (and `Ctrl+K`) opens the dialog. A search icon in the navbar is the visible affordance.
@@ -98,11 +101,11 @@ tradeoff before they can champion adoption internally.
 **Fix:** Add a `TechDeepDive` section between `Principles` and `StatsBand` on the home page.
 The section has a short prose intro and three comparison blocks:
 
-| Approach | Representative libraries | What cascivo does instead |
-|---|---|---|
-| Utility classes | Tailwind | CSS custom properties + `@layer` |
-| CSS-in-JS | Emotion, styled-components | Zero runtime; static CSS files |
-| Class-toggling via JS | shadcn/ui (some patterns) | `:has()`, `@container`, data attributes |
+| Approach              | Representative libraries   | What cascivo does instead               |
+| --------------------- | -------------------------- | --------------------------------------- |
+| Utility classes       | Tailwind                   | CSS custom properties + `@layer`        |
+| CSS-in-JS             | Emotion, styled-components | Zero runtime; static CSS files          |
+| Class-toggling via JS | shadcn/ui (some patterns)  | `:has()`, `@container`, data attributes |
 
 Each block shows a two-panel "them vs us" code snippet. The section links to the v26-era
 `docs.cascivo.com/why` deep-dive (once that page exists; falls back to the docs home).
@@ -152,15 +155,15 @@ to 1 (DataTable already handles this: it resets on `rows` change).
 
 ## Workstreams
 
-| #   | Workstream                              | Tranche | Summary                                                                        |
-| --- | --------------------------------------- | ------- | ------------------------------------------------------------------------------ |
-| A   | SPA client-side router                  | T1      | Intercept clicks; pushState; popstate; view transitions                        |
-| B   | Sticky navbar + scroll indicator        | T2      | Sticky CSS; progress bar signal; GitHub icon                                   |
-| C   | Compact theme switcher                  | T3      | Cycle icon button replaces dots; Tooltip label                                 |
-| D   | Quick search: package design + landing  | T4      | SearchIndex + SearchDialog; index registry.json; CMD+K in navbar               |
-| E   | Modern CSS tech deep dive               | T5      | New TechDeepDive section on home page; three comparison blocks                 |
-| F   | A11y brand fix + table pagination       | T6      | Replace "Cascade" × 4; add pagination to A11yMatrix DataTable                 |
-| G   | Gate                                    | T7      | Full CI gate across all changes                                                |
+| #   | Workstream                             | Tranche | Summary                                                          |
+| --- | -------------------------------------- | ------- | ---------------------------------------------------------------- |
+| A   | SPA client-side router                 | T1      | Intercept clicks; pushState; popstate; view transitions          |
+| B   | Sticky navbar + scroll indicator       | T2      | Sticky CSS; progress bar signal; GitHub icon                     |
+| C   | Compact theme switcher                 | T3      | Cycle icon button replaces dots; Tooltip label                   |
+| D   | Quick search: package design + landing | T4      | SearchIndex + SearchDialog; index registry.json; CMD+K in navbar |
+| E   | Modern CSS tech deep dive              | T5      | New TechDeepDive section on home page; three comparison blocks   |
+| F   | A11y brand fix + table pagination      | T6      | Replace "Cascade" × 4; add pagination to A11yMatrix DataTable    |
+| G   | Gate                                   | T7      | Full CI gate across all changes                                  |
 
 ---
 
@@ -258,14 +261,14 @@ to 1 (DataTable already handles this: it resets on `rows` change).
 
 ## Non-goals (explicitly out of scope)
 
-| Claim                                              | Substance                                                                                            |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **No Pagefind integration**                        | Runtime trigram index over registry.json is sufficient for v27. Pagefind deferred to docs site.     |
-| **No nav mega-menu**                               | Secondary links use drawer on mobile and `@container`-driven visibility on desktop. No flyout.       |
-| **No theme persistence change**                    | Theme persistence in `localStorage` is unchanged.                                                    |
-| **No `@cascivo/search` npm publish**               | Source only, workspace-local. Publish in a future version.                                           |
-| **No redesign of non-navbar sections**             | Hero, ProofTeasers, etc. are unchanged. Only the sticky, theme switcher, and search are new.         |
-| **No full prerender refactor**                     | Prerendered HTML pages remain. SPA mode activates only after hydration; direct URL access still works. |
+| Claim                                  | Substance                                                                                              |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **No Pagefind integration**            | Runtime trigram index over registry.json is sufficient for v27. Pagefind deferred to docs site.        |
+| **No nav mega-menu**                   | Secondary links use drawer on mobile and `@container`-driven visibility on desktop. No flyout.         |
+| **No theme persistence change**        | Theme persistence in `localStorage` is unchanged.                                                      |
+| **No `@cascivo/search` npm publish**   | Source only, workspace-local. Publish in a future version.                                             |
+| **No redesign of non-navbar sections** | Hero, ProofTeasers, etc. are unchanged. Only the sticky, theme switcher, and search are new.           |
+| **No full prerender refactor**         | Prerendered HTML pages remain. SPA mode activates only after hydration; direct URL access still works. |
 
 ---
 

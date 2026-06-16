@@ -33,15 +33,22 @@ function collectOne(app: BenchApp, workDir: string): LhMetrics {
   )
   if (result.status !== 0) throw new Error(`lhci collect failed for ${app.id}`)
 
-  const manifest = JSON.parse(readFileSync(join(workDir, 'manifest.json'), 'utf8')) as Array<{
-    isRepresentativeRun: boolean
-    jsonPath: string
-  }>
-  const median = manifest.find((m) => m.isRepresentativeRun) ?? manifest[0]!
-  const report = JSON.parse(readFileSync(median.jsonPath, 'utf8')) as {
-    audits: Record<string, { numericValue?: number }>
-  }
-  const audit = (id: string) => report.audits[id]?.numericValue ?? -1
+  // lhci 0.15+ no longer writes manifest.json; read LHR files directly
+  const lhrFiles = readdirSync(workDir)
+    .filter((f) => f.startsWith('lhr-') && f.endsWith('.json'))
+    .map((f) => join(workDir, f))
+  if (lhrFiles.length === 0) throw new Error(`No LHR files in ${workDir}`)
+
+  type LhrReport = { audits: Record<string, { numericValue?: number }> }
+  const reports = lhrFiles.map((p) => JSON.parse(readFileSync(p, 'utf8')) as LhrReport)
+  // Pick the run with median LCP as the representative run
+  reports.sort(
+    (a, b) =>
+      (a.audits['largest-contentful-paint']?.numericValue ?? 0) -
+      (b.audits['largest-contentful-paint']?.numericValue ?? 0),
+  )
+  const rep = reports[Math.floor(reports.length / 2)]!
+  const audit = (id: string) => rep.audits[id]?.numericValue ?? -1
   return {
     fcpMs: Math.round(audit('first-contentful-paint')),
     lcpMs: Math.round(audit('largest-contentful-paint')),

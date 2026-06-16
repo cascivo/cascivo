@@ -21,15 +21,15 @@ progress.
 
 ## Tranche Overview
 
-| Tranche | Title                              | Goal                                                                   |
-| ------- | ---------------------------------- | ---------------------------------------------------------------------- |
-| T1      | SPA client-side router             | Intercept anchor clicks; pushState; popstate; view transitions         |
-| T2      | Sticky navbar + scroll indicator   | Sticky CSS; scroll progress bar; GitHub icon                           |
-| T3      | Compact theme switcher             | Cycle icon button replaces header-themes dots; Tooltip                 |
-| T4      | Quick search                       | `@cascivo/search` package + CMD+K dialog + landing index               |
-| T5      | Modern CSS tech deep dive          | New `TechDeepDive` section on home page                                |
-| T6      | A11y page: brand fix + pagination  | Fix "Cascade" × 4; pagination on A11yMatrix DataTable                  |
-| T7      | Gate                               | Full CI gate                                                           |
+| Tranche | Title                             | Goal                                                           |
+| ------- | --------------------------------- | -------------------------------------------------------------- |
+| T1      | SPA client-side router            | Intercept anchor clicks; pushState; popstate; view transitions |
+| T2      | Sticky navbar + scroll indicator  | Sticky CSS; scroll progress bar; GitHub icon                   |
+| T3      | Compact theme switcher            | Cycle icon button replaces header-themes dots; Tooltip         |
+| T4      | Quick search                      | `@cascivo/search` package + CMD+K dialog + landing index       |
+| T5      | Modern CSS tech deep dive         | New `TechDeepDive` section on home page                        |
+| T6      | A11y page: brand fix + pagination | Fix "Cascade" × 4; pagination on A11yMatrix DataTable          |
+| T7      | Gate                              | Full CI gate                                                   |
 
 ---
 
@@ -37,55 +37,55 @@ progress.
 
 ### T1 — SPA router
 
-| Action | Path                                          |
-| ------ | --------------------------------------------- |
-| Create | `apps/landing/src/router.ts`                  |
-| Modify | `apps/landing/src/App.tsx`                    |
-| Modify | `apps/landing/src/sections/Header.tsx`        |
+| Action | Path                                   |
+| ------ | -------------------------------------- |
+| Create | `apps/landing/src/router.ts`           |
+| Modify | `apps/landing/src/App.tsx`             |
+| Modify | `apps/landing/src/sections/Header.tsx` |
 
 ### T2 — Sticky navbar + scroll indicator
 
-| Action | Path                                          |
-| ------ | --------------------------------------------- |
-| Modify | `apps/landing/src/landing.css`                |
-| Modify | `apps/landing/src/sections/Header.tsx`        |
+| Action | Path                                   |
+| ------ | -------------------------------------- |
+| Modify | `apps/landing/src/landing.css`         |
+| Modify | `apps/landing/src/sections/Header.tsx` |
 
 ### T3 — Compact theme switcher
 
-| Action | Path                                          |
-| ------ | --------------------------------------------- |
-| Modify | `apps/landing/src/sections/Header.tsx`        |
-| Modify | `apps/landing/src/landing.css`                |
+| Action | Path                                   |
+| ------ | -------------------------------------- |
+| Modify | `apps/landing/src/sections/Header.tsx` |
+| Modify | `apps/landing/src/landing.css`         |
 
 ### T4 — Quick search
 
-| Action | Path                                                        |
-| ------ | ----------------------------------------------------------- |
+| Action | Path                                                       |
+| ------ | ---------------------------------------------------------- |
 | Create | `packages/search/src/index.ts` (SearchIndex + types)       |
-| Create | `packages/search/src/SearchDialog.tsx`                      |
-| Create | `packages/search/src/search.css`                            |
-| Create | `packages/search/package.json`                              |
-| Create | `apps/landing/src/search/index.ts` (index builder)          |
-| Create | `apps/landing/src/search/SearchButton.tsx`                  |
-| Modify | `apps/landing/src/sections/Header.tsx`                      |
-| Modify | `apps/landing/src/App.tsx` (mount CMD+K listener globally)  |
-| Modify | `apps/landing/vite.config.ts` (alias for packages/search)   |
+| Create | `packages/search/src/SearchDialog.tsx`                     |
+| Create | `packages/search/src/search.css`                           |
+| Create | `packages/search/package.json`                             |
+| Create | `apps/landing/src/search/index.ts` (index builder)         |
+| Create | `apps/landing/src/search/SearchButton.tsx`                 |
+| Modify | `apps/landing/src/sections/Header.tsx`                     |
+| Modify | `apps/landing/src/App.tsx` (mount CMD+K listener globally) |
+| Modify | `apps/landing/vite.config.ts` (alias for packages/search)  |
 
 ### T5 — Tech deep dive
 
-| Action | Path                                                      |
-| ------ | --------------------------------------------------------- |
-| Create | `apps/landing/src/sections/TechDeepDive.tsx`              |
-| Modify | `apps/landing/src/App.tsx` (insert section)               |
-| Modify | `apps/landing/src/landing.css`                            |
+| Action | Path                                         |
+| ------ | -------------------------------------------- |
+| Create | `apps/landing/src/sections/TechDeepDive.tsx` |
+| Modify | `apps/landing/src/App.tsx` (insert section)  |
+| Modify | `apps/landing/src/landing.css`               |
 
 ### T6 — A11y fixes
 
-| Action | Path                                                                    |
-| ------ | ----------------------------------------------------------------------- |
-| Modify | `apps/landing/src/pages/accessibility/AccessibilityStatement.tsx`       |
-| Modify | `apps/landing/src/pages/accessibility/AxeComparison.tsx`                |
-| Modify | `apps/landing/src/pages/accessibility/A11yMatrix.tsx`                   |
+| Action | Path                                                              |
+| ------ | ----------------------------------------------------------------- |
+| Modify | `apps/landing/src/pages/accessibility/AccessibilityStatement.tsx` |
+| Modify | `apps/landing/src/pages/accessibility/AxeComparison.tsx`          |
+| Modify | `apps/landing/src/pages/accessibility/A11yMatrix.tsx`             |
 
 ### T7 — Gate
 
@@ -125,9 +125,7 @@ The router is 40–60 lines. It exports a `currentPath` signal and two functions
 import { signal } from '@preact/signals-react'
 
 export const currentPath = signal(
-  typeof window !== 'undefined'
-    ? window.location.pathname.replace(/\/+$/, '') || '/'
-    : '/',
+  typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/',
 )
 
 export function navigate(href: string) {
@@ -135,7 +133,9 @@ export function navigate(href: string) {
   if (target === currentPath.value) return
   history.pushState(null, '', href)
   if ('startViewTransition' in document) {
-    document.startViewTransition(() => { currentPath.value = target })
+    document.startViewTransition(() => {
+      currentPath.value = target
+    })
   } else {
     currentPath.value = target
   }
@@ -147,9 +147,9 @@ export function initRouter() {
     const a = (e.target as Element).closest('a')
     if (!a || !a.href) return
     const url = new URL(a.href)
-    if (url.origin !== location.origin) return     // external — allow
-    if (a.target === '_blank') return              // new tab — allow
-    if (a.download) return                         // download — allow
+    if (url.origin !== location.origin) return // external — allow
+    if (a.target === '_blank') return // new tab — allow
+    if (a.download) return // download — allow
     e.preventDefault()
     navigate(url.pathname)
   })
@@ -247,15 +247,20 @@ export interface SearchItem {
 
 export class SearchIndex {
   private items: SearchItem[]
-  constructor(items: SearchItem[]) { this.items = items }
+  constructor(items: SearchItem[]) {
+    this.items = items
+  }
   search(query: string): SearchItem[] {
     const q = query.toLowerCase().trim()
     if (!q) return []
-    return this.items.filter(item =>
-      item.title.toLowerCase().includes(q) ||
-      item.description?.toLowerCase().includes(q) ||
-      item.section?.toLowerCase().includes(q)
-    ).slice(0, 8)
+    return this.items
+      .filter(
+        (item) =>
+          item.title.toLowerCase().includes(q) ||
+          item.description?.toLowerCase().includes(q) ||
+          item.section?.toLowerCase().includes(q),
+      )
+      .slice(0, 8)
   }
 }
 ```
@@ -323,11 +328,13 @@ CSS highlights:
 ### A11y fixes (T6)
 
 `AccessibilityStatement.tsx`:
+
 - Line 90: `Cascade targets` → `cascivo targets`
 - Line 92: `Cascade at 2.2 AA` → `cascivo at 2.2 AA`
 - Line 100: `<th scope="col">Cascade</th>` → `<th scope="col">cascivo</th>`
 
 `AxeComparison.tsx`:
+
 - Line 54: `Cascivo complements` → `cascivo complements`
 
 `A11yMatrix.tsx` — add `pagination` prop to `DataTable`:
