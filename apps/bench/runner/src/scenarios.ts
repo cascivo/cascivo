@@ -18,7 +18,9 @@ async function clickAndSettle(page: Page, sel: string, expectRows?: number) {
   await page.click(sel)
   if (expectRows !== undefined) {
     await page.waitForFunction(
-      (n) => document.querySelectorAll('[data-bench-root="table"] tbody tr').length === n,
+      (n) =>
+        document.querySelectorAll('[data-bench-root="table"] tbody tr:not([data-empty-row])')
+          .length === n,
       expectRows,
       { timeout: 60_000 },
     )
@@ -75,13 +77,13 @@ export const SCENARIOS: Scenario[] = [
     dispatch: 'click',
     warmup: async (page) => {
       await page.click('[data-bench="open-dialog"]')
-      await page.waitForSelector('[role="dialog"]')
+      await page.waitForSelector('[role="dialog"], dialog[open]')
       await page.click('[data-bench="close-dialog"]')
-      await page.waitForSelector('[role="dialog"]', { state: 'hidden' })
+      await page.waitForSelector('[role="dialog"], dialog[open]', { state: 'hidden' })
     },
     op: async (page) => {
       await page.click('[data-bench="open-dialog"]')
-      await page.waitForSelector('[role="dialog"]')
+      await page.waitForSelector('[role="dialog"], dialog[open]')
     },
   },
   {
