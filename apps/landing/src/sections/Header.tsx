@@ -1,8 +1,9 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, type ReactElement } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader } from '@cascivo/components/shell-header'
-import { THEMES, setTheme, theme } from '../theme'
+import { Tooltip } from '@cascivo/components/tooltip'
+import { setTheme, theme, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
 
 const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
@@ -18,6 +19,87 @@ const NAV_LINKS = [
 
 function isExternalHref(href: string) {
   return /^https?:\/\//.test(href)
+}
+
+// The compact switcher cycles the three first-party themes (roadmap decision #5).
+const CYCLE_THEMES = ['light', 'dark', 'warm'] as const satisfies readonly ThemeName[]
+
+function cycleTheme() {
+  const idx = CYCLE_THEMES.indexOf(theme.value as (typeof CYCLE_THEMES)[number])
+  setTheme(CYCLE_THEMES[(idx + 1) % CYCLE_THEMES.length] ?? CYCLE_THEMES[0])
+}
+
+function SunIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="12" y1="18" x2="12" y2="22" />
+      <line x1="4.22" y1="4.22" x2="7.05" y2="7.05" />
+      <line x1="16.95" y1="16.95" x2="19.78" y2="19.78" />
+      <line x1="2" y1="12" x2="6" y2="12" />
+      <line x1="18" y1="12" x2="22" y2="12" />
+      <line x1="4.22" y1="19.78" x2="7.05" y2="16.95" />
+      <line x1="16.95" y1="7.05" x2="19.78" y2="4.22" />
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  )
+}
+
+function WarmIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+      <path d="M17 12a5 5 0 0 1-5 5" strokeOpacity="0.5" />
+    </svg>
+  )
+}
+
+const THEME_ICONS: Record<string, () => ReactElement> = {
+  light: SunIcon,
+  dark: MoonIcon,
+  warm: WarmIcon,
 }
 
 function GitHubIcon() {
@@ -131,21 +213,16 @@ export function Header() {
         menuExpanded={isNavOpen.value}
         end={
           <>
-            <div className="header-themes" role="group" aria-label="Theme">
-              {THEMES.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className="header-theme-dot"
-                  data-state={theme.value === t ? 'active' : undefined}
-                  data-theme-name={t}
-                  aria-pressed={theme.value === t}
-                  onClick={() => setTheme(t)}
-                >
-                  <span className="visually-hidden">{t}</span>
-                </button>
-              ))}
-            </div>
+            <Tooltip content={`Theme: ${theme.value}`} placement="bottom">
+              <button
+                type="button"
+                className="header-theme-cycle"
+                aria-label={`Switch theme, current: ${theme.value}`}
+                onClick={cycleTheme}
+              >
+                {(THEME_ICONS[theme.value] ?? SunIcon)()}
+              </button>
+            </Tooltip>
             <a
               href={GITHUB_HREF}
               className="header-icon-link"

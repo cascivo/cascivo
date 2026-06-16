@@ -708,42 +708,29 @@ kbd {
   border-width: 0;
 }
 
-/* ── Header theme dots ────────────────────────────────── */
-.header-themes {
-  display: flex;
-  gap: var(--cascivo-space-2);
+/* ── Theme cycle button ─────────────────────────────────── */
+.header-theme-cycle {
+  display: inline-flex;
   align-items: center;
-}
-
-.header-theme-dot {
-  position: relative;
-  inline-size: 1rem;
-  block-size: 1rem;
-  border-radius: var(--cascivo-radius-full);
-  border: 1px solid var(--cascivo-color-border);
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 0;
-  overflow: hidden;
+  color: var(--cascivo-color-text-subtle);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
 }
 
-/* Each dot renders in its own theme by wrapping its background */
-.header-theme-dot[data-theme-name='light'] {
-  background: #f5f5f5;
-}
-.header-theme-dot[data-theme-name='dark'] {
-  background: #1a1a1a;
-}
-.header-theme-dot[data-theme-name='warm'] {
-  background: #fdf6ec;
-}
-.header-theme-dot[data-theme-name='flat'] {
-  background: #e8e8e8;
-}
-.header-theme-dot[data-theme-name='minimal'] {
-  background: #fafafa;
+.header-theme-cycle:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface-raised);
 }
 
-.header-theme-dot[data-state='active'] {
+.header-theme-cycle:focus-visible {
   outline: 2px solid var(--cascivo-color-accent);
   outline-offset: 2px;
 }
@@ -2142,11 +2129,6 @@ kbd {
 
   /* ShellHeader desktop nav — hidden on mobile; off-canvas drawer serves it */
   [role='banner'] nav {
-    display: none;
-  }
-
-  /* Theme dots require >232px; hide on mobile to prevent header overflow */
-  .header-themes {
     display: none;
   }
 }
