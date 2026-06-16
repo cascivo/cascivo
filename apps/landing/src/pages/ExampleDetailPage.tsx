@@ -12,10 +12,10 @@ function currentDemo(): Demo | undefined {
 }
 
 const SHOTS = [
-  { key: 'desktopLight', label: 'Desktop · light', theme: 'light' },
-  { key: 'desktopDark', label: 'Desktop · dark', theme: 'dark' },
-  { key: 'mobileLight', label: 'Mobile · light', theme: 'light' },
-  { key: 'mobileDark', label: 'Mobile · dark', theme: 'dark' },
+  { key: 'desktopLight', label: 'Desktop · light', theme: 'light', width: 1280, height: 800 },
+  { key: 'desktopDark', label: 'Desktop · dark', theme: 'dark', width: 1280, height: 800 },
+  { key: 'mobileLight', label: 'Mobile · light', theme: 'light', width: 390, height: 844 },
+  { key: 'mobileDark', label: 'Mobile · dark', theme: 'dark', width: 390, height: 844 },
 ] as const
 
 export function ExampleDetailPage() {
@@ -61,13 +61,17 @@ export function ExampleDetailPage() {
 
               <section className="section example-detail-shots" aria-label="Screenshots">
                 <div className="example-shots-grid">
-                  {SHOTS.map((shot) => (
+                  {SHOTS.map((shot, i) => (
                     <figure key={shot.key} className="example-shot" data-theme={shot.theme}>
                       <img
                         className="example-shot-img"
                         src={demo.screenshots[shot.key]}
                         alt={`${demo.name} — ${shot.label}`}
-                        loading="lazy"
+                        width={shot.width}
+                        height={shot.height}
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                        {...(i === 0 ? { fetchpriority: 'high' as const } : {})}
                       />
                       <figcaption className="example-shot-caption">{shot.label}</figcaption>
                     </figure>

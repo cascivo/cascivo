@@ -9,6 +9,7 @@ import {
 } from 'node:fs'
 import { extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { imagetools } from 'vite-imagetools'
 import { type Plugin, defineConfig } from 'vite-plus'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/route-head'
 
@@ -207,7 +208,7 @@ function serveExampleDemos(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
+  plugins: [imagetools(), injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
