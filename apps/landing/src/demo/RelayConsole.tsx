@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import {
   Activity,
   AlertTriangle,
@@ -73,6 +73,15 @@ function TitlebarMenu() {
 export function RelayConsole() {
   useSignals()
   const activeNav = useSignal(0)
+  const sidebarOpen = useSignal(false)
+
+  useSignalEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') sidebarOpen.value = false
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  })
 
   const navItems = NAV.map((label, i) => ({
     label,
@@ -99,8 +108,22 @@ export function RelayConsole() {
           The console below is live — 25+ cascivo components, real markup. Switch the theme in the
           header; the on-call card stays <code>data-theme=&quot;warm&quot;</code> on purpose.
         </p>
-        <div className="console-frame">
+        <div className="console-frame" data-sidebar-open={sidebarOpen.value ? '' : undefined}>
           <header className="console-titlebar">
+            <button
+              type="button"
+              className="console-burger"
+              aria-label={sidebarOpen.value ? 'Close sidebar' : 'Open sidebar'}
+              aria-expanded={sidebarOpen.value}
+              aria-controls="console-sidebar"
+              onClick={() => {
+                sidebarOpen.value = !sidebarOpen.value
+              }}
+            >
+              <span className="console-burger-bar" />
+              <span className="console-burger-bar" />
+              <span className="console-burger-bar" />
+            </button>
             <span className="console-brand">Relay</span>
             <div className="console-titlebar-actions">
               <span className="console-env">production · eu-central</span>
@@ -108,7 +131,13 @@ export function RelayConsole() {
             </div>
           </header>
           <div className="console-body">
-            <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
+            <div
+              id="console-sidebar"
+              className={`console-sidebar${sidebarOpen.value ? ' console-sidebar--open' : ''}`}
+              aria-hidden={!sidebarOpen.value ? true : undefined}
+            >
+              <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
+            </div>
             <main className="console-main">
               {activeView === 'Overview' && (
                 <>
@@ -140,6 +169,15 @@ export function RelayConsole() {
               {activeView === 'Settings' && <SettingsView />}
             </main>
           </div>
+          {sidebarOpen.value && (
+            <div
+              className="console-scrim"
+              aria-hidden="true"
+              onClick={() => {
+                sidebarOpen.value = false
+              }}
+            />
+          )}
         </div>
         <p className="console-after">
           Built from <a href="/docs">{componentCount}+ components</a> — this page imports them like
