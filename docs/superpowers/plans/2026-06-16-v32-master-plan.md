@@ -6,15 +6,15 @@
 
 Target metrics (measured after T4):
 
-| Metric                                          | Target  |
-| ----------------------------------------------- | ------- |
-| Landing live demo links functional              | 5 / 5   |
-| SideNav overflow-y scrollable                  | yes     |
-| SKIP_PREVIEW additions                          | 8       |
-| New component demos in `demos.tsx`              | 39      |
-| Components with empty preview after T3          | 0       |
-| `pnpm exec vp run @cascivo/components#test`     | passes  |
-| Full CI gate (T4)                               | passes  |
+| Metric                                      | Target |
+| ------------------------------------------- | ------ |
+| Landing live demo links functional          | 5 / 5  |
+| SideNav overflow-y scrollable               | yes    |
+| SKIP_PREVIEW additions                      | 8      |
+| New component demos in `demos.tsx`          | 39     |
+| Components with empty preview after T3      | 0      |
+| `pnpm exec vp run @cascivo/components#test` | passes |
+| Full CI gate (T4)                           | passes |
 
 **Architecture:** T1 is two surgical one-liner fixes in separate packages (landing router, sidenav CSS). T2 and T3 both touch `apps/docs/src/demos.tsx` and `apps/docs/src/pages/Home.tsx` only — no component source changes. T4 runs the full CI gate.
 
@@ -24,12 +24,12 @@ Target metrics (measured after T4):
 
 ## Tranche Overview
 
-| Tranche | Title                       | Goal                                                                                     |
-| ------- | --------------------------- | ---------------------------------------------------------------------------------------- |
-| T1      | Quick fixes                 | SPA router guard for `/demos/`; sidenav overflow-x/y split                              |
-| T2      | Docs previews (static)      | SKIP_PREVIEW += 8; 30 static demos with no interactive state                            |
-| T3      | Docs previews (interactive) | 9 interactive demos using `useState`                                                     |
-| T4      | Gate                        | Full CI gate: format + lint + build + type-check + tests + drift + breakpoints           |
+| Tranche | Title                       | Goal                                                                           |
+| ------- | --------------------------- | ------------------------------------------------------------------------------ |
+| T1      | Quick fixes                 | SPA router guard for `/demos/`; sidenav overflow-x/y split                     |
+| T2      | Docs previews (static)      | SKIP_PREVIEW += 8; 30 static demos with no interactive state                   |
+| T3      | Docs previews (interactive) | 9 interactive demos using `useState`                                           |
+| T4      | Gate                        | Full CI gate: format + lint + build + type-check + tests + drift + breakpoints |
 
 ---
 
@@ -37,23 +37,23 @@ Target metrics (measured after T4):
 
 ### T1 — Quick fixes
 
-| Action | Path                                                               |
-| ------ | ------------------------------------------------------------------ |
-| Modify | `apps/landing/src/router.ts`                                       |
-| Modify | `packages/components/src/side-nav/side-nav.module.css`             |
+| Action | Path                                                   |
+| ------ | ------------------------------------------------------ |
+| Modify | `apps/landing/src/router.ts`                           |
+| Modify | `packages/components/src/side-nav/side-nav.module.css` |
 
 ### T2 — Docs previews (static)
 
-| Action | Path                                    |
-| ------ | --------------------------------------- |
-| Modify | `apps/docs/src/pages/Home.tsx`          |
-| Modify | `apps/docs/src/demos.tsx`               |
+| Action | Path                           |
+| ------ | ------------------------------ |
+| Modify | `apps/docs/src/pages/Home.tsx` |
+| Modify | `apps/docs/src/demos.tsx`      |
 
 ### T3 — Docs previews (interactive)
 
-| Action | Path                          |
-| ------ | ----------------------------- |
-| Modify | `apps/docs/src/demos.tsx`     |
+| Action | Path                      |
+| ------ | ------------------------- |
+| Modify | `apps/docs/src/demos.tsx` |
 
 ### T4 — Gate
 

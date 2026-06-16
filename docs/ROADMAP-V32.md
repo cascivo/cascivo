@@ -56,12 +56,12 @@ Additionally, 8 overlay/portal/invisible components are not in the `SKIP_PREVIEW
 
 ## Workstreams
 
-| #   | Workstream                  | Tranche | Summary                                                                             |
-| --- | --------------------------- | ------- | ----------------------------------------------------------------------------------- |
-| A   | Quick fixes                 | T1      | `router.ts` guard + `side-nav.module.css` overflow fix — one change each           |
-| B   | Docs previews (static)      | T2      | SKIP_PREVIEW += 8 items; 30 new static demos added to `demos.tsx`                  |
-| C   | Docs previews (interactive) | T3      | 9 interactive demos (require `useState`) added to `demos.tsx`                       |
-| D   | Gate                        | T4      | Full CI gate: format + lint + build + type-check + tests + drift + breakpoints      |
+| #   | Workstream                  | Tranche | Summary                                                                        |
+| --- | --------------------------- | ------- | ------------------------------------------------------------------------------ |
+| A   | Quick fixes                 | T1      | `router.ts` guard + `side-nav.module.css` overflow fix — one change each       |
+| B   | Docs previews (static)      | T2      | SKIP_PREVIEW += 8 items; 30 new static demos added to `demos.tsx`              |
+| C   | Docs previews (interactive) | T3      | 9 interactive demos (require `useState`) added to `demos.tsx`                  |
+| D   | Gate                        | T4      | Full CI gate: format + lint + build + type-check + tests + drift + breakpoints |
 
 ---
 
