@@ -5,35 +5,35 @@
 
 ## Environment
 
-| | |
-| --- | --- |
-| Date | 2026-06-16 |
-| CPU | Intel(R) Core(TM) Ultra 9 185H (22 cores, 62GB) |
-| OS / Node / Chrome | linux 7.0.9-205.fc44.x86_64 / v24.16.0 / 148.0.7778.96 |
-| CPU throttle (timed ops) | 4× |
-| Lockfile | 57da3ccdfb54 |
-| Source | local |
+|                          |                                                        |
+| ------------------------ | ------------------------------------------------------ |
+| Date                     | 2026-06-16                                             |
+| CPU                      | Intel(R) Core(TM) Ultra 9 185H (22 cores, 62GB)        |
+| OS / Node / Chrome       | linux 7.0.9-205.fc44.x86_64 / v24.16.0 / 148.0.7778.96 |
+| CPU throttle (timed ops) | 4×                                                     |
+| Lockfile                 | 57da3ccdfb54                                           |
+| Source                   | local                                                  |
 
 ## Bundle size (min+gzip, level 6)
 
-| App | JS | CSS | Total |
-| --- | ---: | ---: | ---: |
-| cascade | 69.75KB | 2.2KB | **71.95KB** |
-| shadcn | 93.07KB | 3.43KB | **96.51KB** |
-| carbon | 108.72KB | 81.02KB | **189.74KB** |
+| App     |       JS |     CSS |        Total |
+| ------- | -------: | ------: | -----------: |
+| cascade |  69.75KB |   2.2KB |  **71.95KB** |
+| shadcn  |  93.07KB |  3.43KB |  **96.51KB** |
+| carbon  | 108.72KB | 81.02KB | **189.74KB** |
 
 ### Per-component incremental cost (min+gzip, vs baseline)
 
-| Component | cascade | shadcn | carbon |
-| --- | ---: | ---: | ---: |
-| button | 1.99KB | 9.87KB | 16.73KB |
-| input | 2.02KB | 8.71KB | 20.65KB |
-| checkbox | 1.88KB | 12.85KB | 19.99KB |
-| select | 2.18KB | 0.01KB | 20.58KB |
-| dialog | 2.23KB | 19.77KB | 28.09KB |
-| table | 5.42KB | 21KB | 40.77KB |
-| badge | 1.67KB | 8.67KB | 19.44KB |
-| tabs | 2.21KB | 13.46KB | 21.78KB |
+| Component | cascade |  shadcn |  carbon |
+| --------- | ------: | ------: | ------: |
+| button    |  1.99KB |  9.87KB | 16.73KB |
+| input     |  2.02KB |  8.71KB | 20.65KB |
+| checkbox  |  1.88KB | 12.85KB | 19.99KB |
+| select    |  2.18KB |  0.01KB | 20.58KB |
+| dialog    |  2.23KB | 19.77KB | 28.09KB |
+| table     |  5.42KB |    21KB | 40.77KB |
+| badge     |  1.67KB |  8.67KB | 19.44KB |
+| tabs      |  2.21KB | 13.46KB | 21.78KB |
 
 ### Treeshake (@cascivo/react)
 
@@ -46,51 +46,50 @@
 Median of ≥12 samples at 4× CPU throttle; IQR in parentheses.
 Deltas vs cascade with Mann-Whitney p ≥ 0.05 are reported as **tie** — no winner is claimed.
 
-| Scenario | cascade | shadcn | carbon |
-| --- | ---: | ---: | ---: |
-| create-1k | 344.9ms (319.5ms–383.0ms) | 418.2ms (412.0ms–432.4ms) | 726.9ms (711.0ms–763.5ms) |
-| create-10k | 3375.0ms (3289.3ms–3580.6ms) | 3902.6ms (3797.0ms–3995.0ms) | 7504.6ms (7465.7ms–7571.8ms) |
-| update-every-10th | 918.1ms (901.6ms–945.5ms) | 1764.6ms (1707.5ms–1774.0ms) | 3884.0ms (3827.5ms–3979.1ms) |
-| select-row | 86.3ms (83.9ms–95.2ms) | 41.5ms (40.3ms–44.0ms) | 293.5ms (278.8ms–298.1ms) |
-| clear | 308.6ms (289.0ms–332.4ms) | 228.4ms (224.3ms–234.9ms) | 1729.2ms (1695.1ms–1784.8ms) |
-| open-dialog | 10.5ms (9.7ms–11.5ms) | 174.8ms (174.7ms–186.1ms) | 107.4ms (106.6ms–107.8ms) |
-| type-20-chars | 138.8ms (130.0ms–155.6ms) | 175.0ms (159.8ms–181.4ms) | 124.4ms (114.1ms–131.7ms) |
-| toggle-50-checkboxes | 8.7ms (7.6ms–9.6ms) | 17.5ms (17.0ms–17.8ms) | 121.7ms (119.2ms–123.1ms) |
+| Scenario             |                      cascade |                       shadcn |                       carbon |
+| -------------------- | ---------------------------: | ---------------------------: | ---------------------------: |
+| create-1k            |    344.9ms (319.5ms–383.0ms) |    418.2ms (412.0ms–432.4ms) |    726.9ms (711.0ms–763.5ms) |
+| create-10k           | 3375.0ms (3289.3ms–3580.6ms) | 3902.6ms (3797.0ms–3995.0ms) | 7504.6ms (7465.7ms–7571.8ms) |
+| update-every-10th    |    918.1ms (901.6ms–945.5ms) | 1764.6ms (1707.5ms–1774.0ms) | 3884.0ms (3827.5ms–3979.1ms) |
+| select-row           |       86.3ms (83.9ms–95.2ms) |       41.5ms (40.3ms–44.0ms) |    293.5ms (278.8ms–298.1ms) |
+| clear                |    308.6ms (289.0ms–332.4ms) |    228.4ms (224.3ms–234.9ms) | 1729.2ms (1695.1ms–1784.8ms) |
+| open-dialog          |        10.5ms (9.7ms–11.5ms) |    174.8ms (174.7ms–186.1ms) |    107.4ms (106.6ms–107.8ms) |
+| type-20-chars        |    138.8ms (130.0ms–155.6ms) |    175.0ms (159.8ms–181.4ms) |    124.4ms (114.1ms–131.7ms) |
+| toggle-50-checkboxes |          8.7ms (7.6ms–9.6ms) |       17.5ms (17.0ms–17.8ms) |    121.7ms (119.2ms–123.1ms) |
 
 ## Re-render counts (React Profiler root commits)
 
 Deterministic integers from instrumented dev builds (Profiler is a production no-op).
 Timings above are NOT from these builds.
 
-| Scenario | cascade | shadcn | carbon |
-| --- | ---: | ---: | ---: |
-| create-1k | 0 | 0 | 0 |
-| create-10k | 0 | 0 | 0 |
-| update-every-10th | 0 | 0 | 0 |
-| select-row | 0 | 0 | 0 |
-| clear | 0 | 0 | 0 |
-| open-dialog | 0 | 0 | 0 |
-| type-20-chars | 0 | 0 | 0 |
-| toggle-50-checkboxes | 0 | 0 | 0 |
+| Scenario             | cascade | shadcn | carbon |
+| -------------------- | ------: | -----: | -----: |
+| create-1k            |       0 |      0 |      0 |
+| create-10k           |       0 |      0 |      0 |
+| update-every-10th    |       0 |      0 |      0 |
+| select-row           |       0 |      0 |      0 |
+| clear                |       0 |      0 |      0 |
+| open-dialog          |       0 |      0 |      0 |
+| type-20-chars        |       0 |      0 |      0 |
+| toggle-50-checkboxes |       0 |      0 |      0 |
 
 ## Lighthouse (median of 5 runs, desktop preset)
 
 TBT is a lab proxy for INP — INP itself cannot be measured in a lab.
 
-| App | FCP | LCP | TBT | Transfer |
-| --- | ---: | ---: | ---: | ---: |
-| cascade | 322ms | 322ms | 0ms | 74KB |
-| shadcn | 361ms | 361ms | 0ms | 98KB |
-| carbon | 442ms | 442ms | 0ms | 193KB |
+| App     |   FCP |   LCP | TBT | Transfer |
+| ------- | ----: | ----: | --: | -------: |
+| cascade | 322ms | 322ms | 0ms |     74KB |
+| shadcn  | 361ms | 361ms | 0ms |     98KB |
+| carbon  | 442ms | 442ms | 0ms |    193KB |
 
 ## Accessibility (axe-core sweep — parity gate, not a score)
 
 Automated tools detect roughly 57% of WCAG issues at best; these numbers are a floor,
 not a ranking. cascade CI fails on any violation. Competitor numbers are context only.
 
-| App | Violations | Rules |
-| --- | ---: | --- |
-| cascade | 0 | — |
-| shadcn | 0 | — |
-| carbon | 1 | label |
-
+| App     | Violations | Rules |
+| ------- | ---------: | ----- |
+| cascade |          0 | —     |
+| shadcn  |          0 | —     |
+| carbon  |          1 | label |

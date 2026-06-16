@@ -22,14 +22,14 @@ Node.js for registry script extension.
 
 ## Tranche Overview
 
-| Tranche | Title | Goal |
-|---------|-------|------|
-| T1 | Route + scaffold | `/blocks` and `/blocks/:name` routes, nav link, SEO, `BlockMeta` type, skeleton pages |
-| T2 | Auth blocks | `auth-login` and `auth-signup` — full components, CSS, meta, tests |
-| T3 | Dashboard + Marketing blocks | `dashboard-overview`, `dashboard-table`, `marketing-hero`, `marketing-features` |
-| T4 | Shell + Settings + registry | `app-shell`, `settings-profile`, `registry.json` blocks array, CLI prefix, screenshots |
-| T5 | Gallery + detail pages | `BlocksPage` (grid + filter + search) and `BlockDetailPage` (live preview + code tabs) |
-| T6 | Gate | Full CI gate |
+| Tranche | Title                        | Goal                                                                                   |
+| ------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| T1      | Route + scaffold             | `/blocks` and `/blocks/:name` routes, nav link, SEO, `BlockMeta` type, skeleton pages  |
+| T2      | Auth blocks                  | `auth-login` and `auth-signup` — full components, CSS, meta, tests                     |
+| T3      | Dashboard + Marketing blocks | `dashboard-overview`, `dashboard-table`, `marketing-hero`, `marketing-features`        |
+| T4      | Shell + Settings + registry  | `app-shell`, `settings-profile`, `registry.json` blocks array, CLI prefix, screenshots |
+| T5      | Gallery + detail pages       | `BlocksPage` (grid + filter + search) and `BlockDetailPage` (live preview + code tabs) |
+| T6      | Gate                         | Full CI gate                                                                           |
 
 ---
 
@@ -37,79 +37,79 @@ Node.js for registry script extension.
 
 ### T1 — Route + scaffold
 
-| Action | Path |
-|--------|------|
-| Create | `packages/components/src/blocks/types.ts` |
-| Create | `apps/landing/src/pages/blocks/BlocksPage.tsx` |
+| Action | Path                                                |
+| ------ | --------------------------------------------------- |
+| Create | `packages/components/src/blocks/types.ts`           |
+| Create | `apps/landing/src/pages/blocks/BlocksPage.tsx`      |
 | Create | `apps/landing/src/pages/blocks/BlockDetailPage.tsx` |
-| Create | `apps/landing/src/pages/blocks/blocks.css` |
-| Modify | `apps/landing/src/App.tsx` |
-| Modify | `apps/landing/src/sections/Header.tsx` |
-| Modify | `apps/landing/src/route-head.ts` |
+| Create | `apps/landing/src/pages/blocks/blocks.css`          |
+| Modify | `apps/landing/src/App.tsx`                          |
+| Modify | `apps/landing/src/sections/Header.tsx`              |
+| Modify | `apps/landing/src/route-head.ts`                    |
 
 ### T2 — Auth blocks
 
-| Action | Path |
-|--------|------|
-| Create | `packages/components/src/blocks/auth-login/auth-login.tsx` |
-| Create | `packages/components/src/blocks/auth-login/auth-login.module.css` |
-| Create | `packages/components/src/blocks/auth-login/auth-login.meta.ts` |
-| Create | `packages/components/src/blocks/auth-login/auth-login.test.tsx` |
-| Create | `packages/components/src/blocks/auth-signup/auth-signup.tsx` |
+| Action | Path                                                                |
+| ------ | ------------------------------------------------------------------- |
+| Create | `packages/components/src/blocks/auth-login/auth-login.tsx`          |
+| Create | `packages/components/src/blocks/auth-login/auth-login.module.css`   |
+| Create | `packages/components/src/blocks/auth-login/auth-login.meta.ts`      |
+| Create | `packages/components/src/blocks/auth-login/auth-login.test.tsx`     |
+| Create | `packages/components/src/blocks/auth-signup/auth-signup.tsx`        |
 | Create | `packages/components/src/blocks/auth-signup/auth-signup.module.css` |
-| Create | `packages/components/src/blocks/auth-signup/auth-signup.meta.ts` |
-| Create | `packages/components/src/blocks/auth-signup/auth-signup.test.tsx` |
+| Create | `packages/components/src/blocks/auth-signup/auth-signup.meta.ts`    |
+| Create | `packages/components/src/blocks/auth-signup/auth-signup.test.tsx`   |
 
 ### T3 — Dashboard + Marketing blocks
 
-| Action | Path |
-|--------|------|
-| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx` |
+| Action | Path                                                                              |
+| ------ | --------------------------------------------------------------------------------- |
+| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx`        |
 | Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css` |
-| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.meta.ts` |
-| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.test.tsx` |
-| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.tsx` |
-| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.module.css` |
-| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts` |
-| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.test.tsx` |
-| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.tsx` |
-| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.module.css` |
-| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts` |
-| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.test.tsx` |
-| Create | `packages/components/src/blocks/marketing-features/marketing-features.tsx` |
+| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.meta.ts`    |
+| Create | `packages/components/src/blocks/dashboard-overview/dashboard-overview.test.tsx`   |
+| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.tsx`              |
+| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.module.css`       |
+| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts`          |
+| Create | `packages/components/src/blocks/dashboard-table/dashboard-table.test.tsx`         |
+| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.tsx`                |
+| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.module.css`         |
+| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts`            |
+| Create | `packages/components/src/blocks/marketing-hero/marketing-hero.test.tsx`           |
+| Create | `packages/components/src/blocks/marketing-features/marketing-features.tsx`        |
 | Create | `packages/components/src/blocks/marketing-features/marketing-features.module.css` |
-| Create | `packages/components/src/blocks/marketing-features/marketing-features.meta.ts` |
-| Create | `packages/components/src/blocks/marketing-features/marketing-features.test.tsx` |
+| Create | `packages/components/src/blocks/marketing-features/marketing-features.meta.ts`    |
+| Create | `packages/components/src/blocks/marketing-features/marketing-features.test.tsx`   |
 
 ### T4 — Shell + Settings + registry
 
-| Action | Path |
-|--------|------|
-| Create | `packages/components/src/blocks/app-shell/app-shell.tsx` |
-| Create | `packages/components/src/blocks/app-shell/app-shell.module.css` |
-| Create | `packages/components/src/blocks/app-shell/app-shell.meta.ts` |
-| Create | `packages/components/src/blocks/app-shell/app-shell.test.tsx` |
-| Create | `packages/components/src/blocks/settings-profile/settings-profile.tsx` |
+| Action | Path                                                                          |
+| ------ | ----------------------------------------------------------------------------- |
+| Create | `packages/components/src/blocks/app-shell/app-shell.tsx`                      |
+| Create | `packages/components/src/blocks/app-shell/app-shell.module.css`               |
+| Create | `packages/components/src/blocks/app-shell/app-shell.meta.ts`                  |
+| Create | `packages/components/src/blocks/app-shell/app-shell.test.tsx`                 |
+| Create | `packages/components/src/blocks/settings-profile/settings-profile.tsx`        |
 | Create | `packages/components/src/blocks/settings-profile/settings-profile.module.css` |
-| Create | `packages/components/src/blocks/settings-profile/settings-profile.meta.ts` |
-| Create | `packages/components/src/blocks/settings-profile/settings-profile.test.tsx` |
-| Modify | `registry.json` |
-| Modify | `scripts/registry/gen-registry.mjs` |
-| Modify | `packages/cli/src/utils/registry.ts` |
-| Modify | `scripts/gen-demo-screenshots.mjs` |
-| Create | `apps/landing/public/blocks/screenshots/` (directory, 16 PNGs committed) |
+| Create | `packages/components/src/blocks/settings-profile/settings-profile.meta.ts`    |
+| Create | `packages/components/src/blocks/settings-profile/settings-profile.test.tsx`   |
+| Modify | `registry.json`                                                               |
+| Modify | `scripts/registry/gen-registry.mjs`                                           |
+| Modify | `packages/cli/src/utils/registry.ts`                                          |
+| Modify | `scripts/gen-demo-screenshots.mjs`                                            |
+| Create | `apps/landing/public/blocks/screenshots/` (directory, 16 PNGs committed)      |
 
 ### T5 — Gallery + detail pages
 
-| Action | Path |
-|--------|------|
-| Create | `apps/landing/src/pages/blocks/blocks-data.ts` |
-| Modify | `apps/landing/src/pages/blocks/BlocksPage.tsx` (full implementation) |
+| Action | Path                                                                      |
+| ------ | ------------------------------------------------------------------------- |
+| Create | `apps/landing/src/pages/blocks/blocks-data.ts`                            |
+| Modify | `apps/landing/src/pages/blocks/BlocksPage.tsx` (full implementation)      |
 | Modify | `apps/landing/src/pages/blocks/BlockDetailPage.tsx` (full implementation) |
-| Modify | `apps/landing/src/pages/blocks/blocks.css` (full styles) |
-| Modify | `apps/landing/vite.config.ts` (add `@cascivo/blocks/*` aliases) |
-| Create | `apps/landing/src/pages/blocks/BlocksPage.test.tsx` |
-| Create | `apps/landing/src/pages/blocks/BlockDetailPage.test.tsx` |
+| Modify | `apps/landing/src/pages/blocks/blocks.css` (full styles)                  |
+| Modify | `apps/landing/vite.config.ts` (add `@cascivo/blocks/*` aliases)           |
+| Create | `apps/landing/src/pages/blocks/BlocksPage.test.tsx`                       |
+| Create | `apps/landing/src/pages/blocks/BlockDetailPage.test.tsx`                  |
 
 ### T6 — Gate
 
@@ -125,14 +125,14 @@ No new files. Runs all CI checks.
 export type BlockCategory = 'auth' | 'dashboard' | 'marketing' | 'shell'
 
 export type BlockMeta = {
-  name: string          // 'auth-login' — matches directory name
-  displayName: string   // 'Login Form'
-  description: string   // one-line prose
+  name: string // 'auth-login' — matches directory name
+  displayName: string // 'Login Form'
+  description: string // one-line prose
   category: BlockCategory
   tags: string[]
   screenshot: {
-    light: string       // '/blocks/screenshots/auth-login-light.png'
-    dark: string        // '/blocks/screenshots/auth-login-dark.png'
+    light: string // '/blocks/screenshots/auth-login-light.png'
+    dark: string // '/blocks/screenshots/auth-login-dark.png'
   }
 }
 ```
@@ -145,7 +145,9 @@ export type BlockEntry = {
   load: () => Promise<{ default: React.ComponentType }>
 }
 
-export const BLOCKS: BlockEntry[] = [ /* 8 entries */ ]
+export const BLOCKS: BlockEntry[] = [
+  /* 8 entries */
+]
 export const findBlock = (name: string): BlockEntry | undefined =>
   BLOCKS.find((b) => b.meta.name === name)
 export const blocksByCategory = (cat: BlockCategory | 'all'): BlockEntry[] =>
