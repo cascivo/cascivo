@@ -9,6 +9,8 @@ const meta: Meta<typeof ShellHeader> = {
 export default meta
 type Story = StoryObj<typeof ShellHeader>
 
+export const Primary: Story = {}
+
 const nav = [
   { label: 'Overview', href: '#', active: true },
   {

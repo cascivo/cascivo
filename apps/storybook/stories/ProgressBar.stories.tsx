@@ -9,6 +9,8 @@ const meta: Meta<typeof ProgressBar> = {
 export default meta
 type Story = StoryObj<typeof ProgressBar>
 
+export const Primary: Story = {}
+
 export const Determinate: Story = {}
 export const Indeterminate: Story = { args: { label: 'Processing' } }
 

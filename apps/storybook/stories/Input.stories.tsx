@@ -9,6 +9,8 @@ const meta: Meta<typeof Input> = {
 export default meta
 type Story = StoryObj<typeof Input>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithHint: Story = {
   args: { label: 'Username', hint: 'Must be 3–20 characters' },

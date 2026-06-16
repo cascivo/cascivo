@@ -13,6 +13,8 @@ const meta: Meta<typeof NumberInput> = {
 export default meta
 type Story = StoryObj<typeof NumberInput>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const WithMinMax: Story = {

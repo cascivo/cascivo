@@ -18,6 +18,8 @@ const meta: Meta<typeof ToastProvider> = {
 export default meta
 type Story = StoryObj<typeof ToastProvider>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render: () => (
     <ToastProvider>

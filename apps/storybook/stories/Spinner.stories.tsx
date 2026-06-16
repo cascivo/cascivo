@@ -8,6 +8,8 @@ const meta: Meta<typeof Spinner> = {
 export default meta
 type Story = StoryObj<typeof Spinner>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const CustomLabel: Story = { args: { label: 'Loading results' } }
 

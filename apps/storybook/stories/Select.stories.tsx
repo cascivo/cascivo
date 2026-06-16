@@ -16,6 +16,8 @@ const meta: Meta<typeof Select> = {
 export default meta
 type Story = StoryObj<typeof Select>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithHint: Story = { args: { hint: 'You can change this later' } }
 export const WithError: Story = { args: { error: 'A role is required' } }

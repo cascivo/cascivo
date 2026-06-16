@@ -16,6 +16,8 @@ const meta: Meta<typeof Terminal> = {
 export default meta
 type Story = StoryObj<typeof Terminal>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithError: Story = {
   args: {

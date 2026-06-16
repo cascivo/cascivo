@@ -15,6 +15,51 @@
 @import '@cascivo/themes/corporate';
 @import '@cascivo/themes/terminal';
 
+/* ── Cross-document view transitions ─────────────────── */
+@view-transition {
+  navigation: auto;
+}
+
+[role='banner'] {
+  view-transition-name: shell-header;
+}
+
+main {
+  view-transition-name: page-content;
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(1.5rem);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-out-to-left {
+  to {
+    transform: translateX(-1.5rem);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(page-content) {
+    animation: slide-out-to-left 200ms ease both;
+  }
+
+  ::view-transition-new(page-content) {
+    animation: slide-in-from-right 200ms ease both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -255,6 +300,7 @@ code {
 
 .theme-demo-pane--single {
   inline-size: min(28rem, 100%);
+  min-block-size: 22rem;
   padding: var(--cascivo-space-6);
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-lg);
@@ -504,6 +550,11 @@ kbd {
   gap: var(--cascivo-space-5);
 }
 
+.quickstart-prebuilt-steps > div {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
 @media (min-width: 40rem) {
   .quickstart-prebuilt-steps {
     flex-direction: row;
@@ -511,6 +562,7 @@ kbd {
 
   .quickstart-prebuilt-steps > div {
     flex: 1;
+    min-inline-size: 0;
   }
 }
 
@@ -846,6 +898,14 @@ kbd {
   color: var(--cascivo-color-accent-hover);
 }
 
+.proof-chart-wrap {
+  padding-inline-start: 3.5rem;
+}
+
+.proof-chart-wrap svg {
+  overflow: visible;
+}
+
 /* ── Footer mono links ────────────────────────────────── */
 .footer-link-mono {
   font-family: var(--cascivo-font-mono);
@@ -906,12 +966,6 @@ kbd {
   min-block-size: 32rem;
 }
 
-@media (max-width: 56rem) {
-  .console-body {
-    grid-template-columns: 1fr;
-  }
-}
-
 .console-main {
   padding: var(--cascivo-space-6);
   display: flex;
@@ -943,6 +997,56 @@ kbd {
   font-family: var(--cascivo-font-mono);
   font-size: var(--cascivo-text-xs);
   color: var(--cascivo-color-text-subtle);
+}
+
+/* ── Console burger button ───────────────────────────── */
+.console-burger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--cascivo-space-2);
+  color: var(--cascivo-color-text);
+  flex-shrink: 0;
+  border-radius: var(--cascivo-radius-sm);
+}
+
+.console-burger:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.console-burger-bar {
+  display: block;
+  inline-size: 1.25rem;
+  block-size: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-burger-bar {
+    transition: none;
+  }
+}
+
+/* ── Console sidebar wrapper ─────────────────────────── */
+.console-sidebar {
+  display: contents;
+}
+
+/* ── Console scrim ───────────────────────────────────── */
+.console-scrim {
+  display: none;
 }
 
 /* ── KPI row ──────────────────────────────────────────── */
@@ -1757,10 +1861,54 @@ kbd {
 @media (max-width: 47.99rem) {
   .console-body {
     min-block-size: auto;
+    /* sidebar now overlays; only one column visible */
+    grid-template-columns: 1fr;
   }
 
   .console-main {
     padding: var(--cascivo-space-4);
+  }
+
+  .console-burger {
+    display: flex;
+  }
+
+  /* console-frame is the positioning context for the overlay */
+  .console-frame {
+    position: relative;
+  }
+
+  /* sidebar wrapper: hidden off-screen by default */
+  .console-sidebar {
+    display: block;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 20;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 250ms ease;
+    /* ensure SideNav fills available block space */
+    align-self: stretch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .console-sidebar {
+      transition: none;
+    }
+  }
+
+  .console-sidebar.console-sidebar--open {
+    transform: translateX(0);
+  }
+
+  /* scrim behind open sidebar */
+  .console-scrim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: oklch(0 0 0 / 0.45);
+    z-index: 19;
   }
 }
 
@@ -2518,6 +2666,7 @@ kbd {
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-3);
+  min-block-size: 14rem;
 }
 
 .examples-desc--long {

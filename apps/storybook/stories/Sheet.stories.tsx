@@ -9,6 +9,8 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 
+export const Primary: Story = {}
+
 function SheetDemo({ side }: { side?: 'start' | 'end' | 'top' | 'bottom' }) {
   const [open, setOpen] = useState(false)
   return (

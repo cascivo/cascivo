@@ -1,0 +1,47 @@
+# Regenerates the landing's demo screenshots weekly.
+# Triggered automatically on Sundays or manually via workflow_dispatch.
+# Run locally: pnpm --filter @cascivo/landing screenshots:capture
+
+name: Regenerate demo screenshots
+
+on:
+  schedule:
+    # Every Sunday at 02:00 UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    # Also triggerable manually from the Actions tab
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Build landing (with demo apps assembled)
+        run: pnpm exec vp run @cascivo/landing#build
+
+      - name: Capture screenshots
+        run: node scripts/gen-demo-screenshots.mjs --capture
+
+      - name: Commit updated screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/landing/public/screenshots/
+          git diff --staged --quiet || git commit -m "chore(screenshots): regenerate demo screenshots [skip ci]"
+          git push

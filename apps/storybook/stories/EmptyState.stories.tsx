@@ -10,6 +10,8 @@ const meta: Meta<typeof EmptyState> = {
 export default meta
 type Story = StoryObj<typeof EmptyState>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithIcon: Story = {
   args: {

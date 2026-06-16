@@ -8,6 +8,8 @@ const meta: Meta<typeof CheckboxCard> = {
 export default meta
 type Story = StoryObj<typeof CheckboxCard>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 12 }}>

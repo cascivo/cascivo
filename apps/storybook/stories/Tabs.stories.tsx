@@ -9,6 +9,8 @@ const meta: Meta<typeof Tabs> = {
 export default meta
 type Story = StoryObj<typeof Tabs>
 
+export const Primary: Story = {}
+
 const tabs = (
   <>
     <TabsList>

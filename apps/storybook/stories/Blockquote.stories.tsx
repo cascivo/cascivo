@@ -9,6 +9,8 @@ const meta: Meta<typeof Blockquote> = {
 export default meta
 type Story = StoryObj<typeof Blockquote>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithAttribution: Story = { args: { cite: 'Dieter Rams' } }
 

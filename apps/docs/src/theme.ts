@@ -45,7 +45,7 @@ if (
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, value: legacy }))
 }
 
-export const theme = persistedSignal<Theme>(STORAGE_KEY, 'light')
+export const theme = persistedSignal<Theme>(STORAGE_KEY, 'dark')
 
 // Keep data-theme in sync with the signal (covers cross-tab storage events).
 if (typeof document !== 'undefined') {

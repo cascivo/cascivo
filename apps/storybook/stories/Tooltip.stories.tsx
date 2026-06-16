@@ -10,6 +10,8 @@ const meta: Meta<typeof Tooltip> = {
 export default meta
 type Story = StoryObj<typeof Tooltip>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render: (args) => (
     <div style={{ padding: '4rem', display: 'grid', placeItems: 'center' }}>

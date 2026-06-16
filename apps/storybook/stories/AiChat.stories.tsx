@@ -16,6 +16,8 @@ const meta: Meta<typeof AiChat> = {
 export default meta
 type Story = StoryObj<typeof AiChat>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Streaming: Story = {
   args: { isStreaming: true, streamingText: 'Generating response…' },

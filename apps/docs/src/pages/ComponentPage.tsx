@@ -4,6 +4,11 @@ import { CodeBlock } from './components/CodeBlock'
 import { PropsTable } from './components/PropsTable'
 import { TokenList } from './components/TokenList'
 
+function storybookUrl(category: string, name: string): string {
+  const slug = `${category}-${name.toLowerCase().replace(/[^a-z0-9]/g, '')}`
+  return `https://storybook.cascivo.com/?path=/story/${slug}--primary`
+}
+
 function Chips({ values }: { values: string[] }) {
   if (values.length === 0) return <span class="muted">None</span>
   return (
@@ -44,6 +49,14 @@ export function ComponentPage({ name }: { name?: string }) {
       <section class="doc-section">
         <h2>Preview</h2>
         <div class="preview">{Demo ? <Demo /> : <span class="muted">No live preview.</span>}</div>
+        <a
+          class="storybook-link"
+          href={storybookUrl(entry.category, meta.name)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View in Storybook →
+        </a>
       </section>
 
       {meta.examples.length > 0 && (

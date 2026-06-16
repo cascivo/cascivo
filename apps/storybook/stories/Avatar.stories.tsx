@@ -9,6 +9,8 @@ const meta: Meta<typeof Avatar> = {
 export default meta
 type Story = StoryObj<typeof Avatar>
 
+export const Primary: Story = {}
+
 export const Fallback: Story = {}
 export const BrokenImage: Story = {
   args: { src: 'https://invalid.example/x.png', alt: 'Jane Doe', fallback: 'JD' },

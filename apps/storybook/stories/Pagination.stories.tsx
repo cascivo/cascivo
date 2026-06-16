@@ -15,6 +15,8 @@ const meta: Meta<typeof Pagination> = {
 export default meta
 type Story = StoryObj<typeof Pagination>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const WithPageSizeSelect: Story = {

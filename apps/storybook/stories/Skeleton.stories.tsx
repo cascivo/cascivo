@@ -8,6 +8,8 @@ const meta: Meta<typeof Skeleton> = {
 export default meta
 type Story = StoryObj<typeof Skeleton>
 
+export const Primary: Story = {}
+
 export const Text: Story = {}
 export const MultiLine: Story = { args: { lines: 3 } }
 export const Circle: Story = { args: { variant: 'circle' } }

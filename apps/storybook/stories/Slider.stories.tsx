@@ -9,6 +9,8 @@ const meta: Meta<typeof Slider> = {
 export default meta
 type Story = StoryObj<typeof Slider>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const Stepped: Story = {
   args: { label: 'Brightness', min: 0, max: 100, step: 10, defaultValue: 50 },

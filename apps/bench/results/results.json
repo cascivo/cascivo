@@ -1,31 +1,31 @@
 {
   "meta": {
-    "date": "2026-06-12",
+    "date": "2026-06-16",
     "cpu": "Intel(R) Core(TM) Ultra 9 185H",
     "cores": 22,
     "memGb": 62,
     "os": "linux 7.0.9-205.fc44.x86_64",
     "node": "v24.16.0",
-    "chrome": "placeholder",
+    "chrome": "148.0.7778.96",
     "cpuThrottle": 4,
-    "lockfileHash": "a4919632484d",
+    "lockfileHash": "57da3ccdfb54",
     "source": "local"
   },
   "bundle": {
     "apps": {
       "cascade": {
-        "jsGzKb": 67.45,
-        "cssGzKb": 1.99,
-        "totalGzKb": 69.43,
-        "jsRawKb": 214.92,
-        "cssRawKb": 9.64
+        "jsGzKb": 69.75,
+        "cssGzKb": 2.2,
+        "totalGzKb": 71.95,
+        "jsRawKb": 221.69,
+        "cssRawKb": 10.44
       },
       "shadcn": {
         "jsGzKb": 93.07,
-        "cssGzKb": 3.36,
-        "totalGzKb": 96.43,
+        "cssGzKb": 3.43,
+        "totalGzKb": 96.51,
         "jsRawKb": 303.85,
-        "cssRawKb": 13.04
+        "cssRawKb": 14.1
       },
       "carbon": {
         "jsGzKb": 108.72,
@@ -38,106 +38,795 @@
     "matrix": {
       "cascade": {
         "button": {
-          "totalGzKb": 64.86,
-          "incrementalGzKb": 5
+          "totalGzKb": 67.18,
+          "incrementalGzKb": 1.99,
+          "standaloneGzKb": 67.18,
+          "amortizedGzKb": 2.45
         },
         "input": {
-          "totalGzKb": 64.88,
-          "incrementalGzKb": 5.02
+          "totalGzKb": 67.21,
+          "incrementalGzKb": 2.02,
+          "standaloneGzKb": 67.21,
+          "amortizedGzKb": 2.45
         },
         "checkbox": {
-          "totalGzKb": 64.73,
-          "incrementalGzKb": 4.87
+          "totalGzKb": 67.07,
+          "incrementalGzKb": 1.88,
+          "standaloneGzKb": 67.07,
+          "amortizedGzKb": 2.45
         },
         "select": {
-          "totalGzKb": 65.04,
-          "incrementalGzKb": 5.18
+          "totalGzKb": 67.37,
+          "incrementalGzKb": 2.18,
+          "standaloneGzKb": 67.37,
+          "amortizedGzKb": 2.45
         },
         "dialog": {
-          "totalGzKb": 65.12,
-          "incrementalGzKb": 5.26
+          "totalGzKb": 67.42,
+          "incrementalGzKb": 2.23,
+          "standaloneGzKb": 67.42,
+          "amortizedGzKb": 2.45
         },
         "table": {
-          "totalGzKb": 68.1,
-          "incrementalGzKb": 8.24
+          "totalGzKb": 70.61,
+          "incrementalGzKb": 5.42,
+          "standaloneGzKb": 70.61,
+          "amortizedGzKb": 2.45
         },
         "badge": {
-          "totalGzKb": 64.48,
-          "incrementalGzKb": 4.62
+          "totalGzKb": 66.86,
+          "incrementalGzKb": 1.67,
+          "standaloneGzKb": 66.86,
+          "amortizedGzKb": 2.45
         },
         "tabs": {
-          "totalGzKb": 65.16,
-          "incrementalGzKb": 5.3
+          "totalGzKb": 67.4,
+          "incrementalGzKb": 2.21,
+          "standaloneGzKb": 67.4,
+          "amortizedGzKb": 2.45
         }
       },
       "shadcn": {
         "button": {
-          "totalGzKb": 71.09,
-          "incrementalGzKb": 9.86
+          "totalGzKb": 71.17,
+          "incrementalGzKb": 9.87,
+          "standaloneGzKb": 71.17,
+          "amortizedGzKb": 11.79
         },
         "input": {
-          "totalGzKb": 69.93,
-          "incrementalGzKb": 8.7
+          "totalGzKb": 70.01,
+          "incrementalGzKb": 8.71,
+          "standaloneGzKb": 70.01,
+          "amortizedGzKb": 11.79
         },
         "checkbox": {
-          "totalGzKb": 74.07,
-          "incrementalGzKb": 12.84
+          "totalGzKb": 74.15,
+          "incrementalGzKb": 12.85,
+          "standaloneGzKb": 74.15,
+          "amortizedGzKb": 11.79
         },
         "select": {
-          "totalGzKb": 61.23,
-          "incrementalGzKb": 0
+          "totalGzKb": 61.31,
+          "incrementalGzKb": 0.01,
+          "standaloneGzKb": 61.31,
+          "amortizedGzKb": 11.79,
+          "note": "Standalone cost is 61.31 KB but marginal over runtime-preloaded baseline is ~0"
         },
         "dialog": {
-          "totalGzKb": 80.99,
-          "incrementalGzKb": 19.76
+          "totalGzKb": 81.07,
+          "incrementalGzKb": 19.77,
+          "standaloneGzKb": 81.07,
+          "amortizedGzKb": 11.79
         },
         "table": {
-          "totalGzKb": 82.22,
-          "incrementalGzKb": 20.99
+          "totalGzKb": 82.3,
+          "incrementalGzKb": 21,
+          "standaloneGzKb": 82.3,
+          "amortizedGzKb": 11.79
         },
         "badge": {
-          "totalGzKb": 69.89,
-          "incrementalGzKb": 8.66
+          "totalGzKb": 69.97,
+          "incrementalGzKb": 8.67,
+          "standaloneGzKb": 69.97,
+          "amortizedGzKb": 11.79
         },
         "tabs": {
-          "totalGzKb": 61.25,
-          "incrementalGzKb": 0.02
+          "totalGzKb": 74.76,
+          "incrementalGzKb": 13.46,
+          "standaloneGzKb": 74.76,
+          "amortizedGzKb": 11.79
         }
       },
       "carbon": {
         "button": {
           "totalGzKb": 155.62,
-          "incrementalGzKb": 16.73
+          "incrementalGzKb": 16.73,
+          "standaloneGzKb": 155.62,
+          "amortizedGzKb": 23.5
         },
         "input": {
           "totalGzKb": 159.54,
-          "incrementalGzKb": 20.65
+          "incrementalGzKb": 20.65,
+          "standaloneGzKb": 159.54,
+          "amortizedGzKb": 23.5
         },
         "checkbox": {
           "totalGzKb": 158.88,
-          "incrementalGzKb": 19.99
+          "incrementalGzKb": 19.99,
+          "standaloneGzKb": 158.88,
+          "amortizedGzKb": 23.5
         },
         "select": {
           "totalGzKb": 159.47,
-          "incrementalGzKb": 20.58
+          "incrementalGzKb": 20.58,
+          "standaloneGzKb": 159.47,
+          "amortizedGzKb": 23.5
         },
         "dialog": {
           "totalGzKb": 166.98,
-          "incrementalGzKb": 28.09
+          "incrementalGzKb": 28.09,
+          "standaloneGzKb": 166.98,
+          "amortizedGzKb": 23.5
         },
         "table": {
           "totalGzKb": 179.66,
-          "incrementalGzKb": 40.77
+          "incrementalGzKb": 40.77,
+          "standaloneGzKb": 179.66,
+          "amortizedGzKb": 23.5
         },
         "badge": {
           "totalGzKb": 158.33,
-          "incrementalGzKb": 19.44
+          "incrementalGzKb": 19.44,
+          "standaloneGzKb": 158.33,
+          "amortizedGzKb": 23.5
         },
         "tabs": {
           "totalGzKb": 160.67,
-          "incrementalGzKb": 21.78
+          "incrementalGzKb": 21.78,
+          "standaloneGzKb": 160.67,
+          "amortizedGzKb": 23.5
         }
       }
+    },
+    "treeshake": {
+      "bareImportGzBytes": 20,
+      "buttonOnlyGzKb": 4.93359375,
+      "fullGzKb": 44.9697265625
+    }
+  },
+  "runtime": {
+    "create-1k": {
+      "cascade": {
+        "samples": [
+          304.394,
+          311.34,
+          318.412,
+          319.882,
+          332.196,
+          338.843,
+          350.906,
+          372.727,
+          381.035,
+          388.919,
+          408.279,
+          491.854
+        ],
+        "median": 344.8745,
+        "p25": 319.5145,
+        "p75": 383.00600000000003,
+        "mean": 359.8989166666667,
+        "stddev": 51.038542023746345
+      },
+      "shadcn": {
+        "samples": [
+          396.178,
+          408.271,
+          410.542,
+          412.55,
+          413.651,
+          417.179,
+          419.198,
+          421.916,
+          431.792,
+          434.274,
+          450.571,
+          467.963
+        ],
+        "median": 418.1885,
+        "p25": 412.048,
+        "p75": 432.41249999999997,
+        "mean": 423.67375,
+        "stddev": 18.97031007533
+      },
+      "carbon": {
+        "samples": [
+          685.447,
+          700.399,
+          701.756,
+          714.028,
+          715.332,
+          723.035,
+          730.823,
+          745.267,
+          757.781,
+          780.458,
+          806.323,
+          816.912
+        ],
+        "median": 726.929,
+        "p25": 710.96,
+        "p75": 763.45025,
+        "mean": 739.79675,
+        "stddev": 40.78031742177632
+      },
+      "pVsCascade": {
+        "shadcn": 0.0008122274929016626,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "create-10k": {
+      "cascade": {
+        "samples": [
+          3272.423,
+          3276.283,
+          3282.543,
+          3291.507,
+          3321.103,
+          3340.488,
+          3409.415,
+          3442.02,
+          3508.697,
+          3796.34,
+          3883.022,
+          3922.429
+        ],
+        "median": 3374.9515,
+        "p25": 3289.266,
+        "p75": 3580.60775,
+        "mean": 3478.8558333333335,
+        "stddev": 236.16612070385025
+      },
+      "shadcn": {
+        "samples": [
+          3698.897,
+          3707.249,
+          3793.905,
+          3798.084,
+          3813.143,
+          3857.373,
+          3947.733,
+          3949.059,
+          3991.185,
+          4006.283,
+          4092.76,
+          4179.422
+        ],
+        "median": 3902.553,
+        "p25": 3797.03925,
+        "p75": 3994.9595,
+        "mean": 3902.9244166666667,
+        "stddev": 143.7666032391032
+      },
+      "carbon": {
+        "samples": [
+          7431.738,
+          7441.649,
+          7451.373,
+          7470.513,
+          7491.279,
+          7498.73,
+          7510.442,
+          7546.299,
+          7558.812,
+          7610.722,
+          7716.603,
+          7854.982
+        ],
+        "median": 7504.585999999999,
+        "p25": 7465.728,
+        "p75": 7571.7895,
+        "mean": 7548.595166666667,
+        "stddev": 120.39460104508652
+      },
+      "pVsCascade": {
+        "shadcn": 0.0009988043704693972,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "update-every-10th": {
+      "cascade": {
+        "samples": [
+          893.541,
+          898.787,
+          901.294,
+          901.68,
+          904.751,
+          911.732,
+          924.511,
+          924.87,
+          944.48,
+          948.632,
+          974.14,
+          1053.148
+        ],
+        "median": 918.1215,
+        "p25": 901.5835,
+        "p75": 945.518,
+        "mean": 931.7971666666666,
+        "stddev": 43.38690121421695
+      },
+      "shadcn": {
+        "samples": [
+          1656.969,
+          1691.861,
+          1693.73,
+          1712.136,
+          1756.682,
+          1762.528,
+          1766.698,
+          1766.95,
+          1770.731,
+          1783.948,
+          1796.247,
+          1820.442
+        ],
+        "median": 1764.613,
+        "p25": 1707.5345,
+        "p75": 1774.03525,
+        "mean": 1748.2434999999998,
+        "stddev": 46.591048157523424
+      },
+      "carbon": {
+        "samples": [
+          3759.204,
+          3794.493,
+          3820.658,
+          3829.753,
+          3863.44,
+          3873.413,
+          3894.527,
+          3896.945,
+          3977.244,
+          3984.5,
+          4054.943,
+          4116.36
+        ],
+        "median": 3883.9700000000003,
+        "p25": 3827.4792500000003,
+        "p75": 3979.058,
+        "mean": 3905.4566666666665,
+        "stddev": 103.21352843041238
+      },
+      "pVsCascade": {
+        "shadcn": 0.000032275411516513586,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "select-row": {
+      "cascade": {
+        "samples": [
+          80.509,
+          81.41,
+          82.721,
+          84.257,
+          84.322,
+          85.117,
+          87.475,
+          89.152,
+          95.2,
+          95.244,
+          99.617,
+          100.741
+        ],
+        "median": 86.29599999999999,
+        "p25": 83.873,
+        "p75": 95.211,
+        "mean": 88.81375000000001,
+        "stddev": 6.822268746844166
+      },
+      "shadcn": {
+        "samples": [
+          36.829,
+          37.46,
+          39.762,
+          40.479,
+          40.637,
+          41.003,
+          42.035,
+          42.487,
+          43.529,
+          45.417,
+          48.429,
+          73.525
+        ],
+        "median": 41.519,
+        "p25": 40.29975,
+        "p75": 44.001000000000005,
+        "mean": 44.29933333333333,
+        "stddev": 9.325106293704588
+      },
+      "carbon": {
+        "samples": [
+          268.334,
+          271.83,
+          272.499,
+          280.889,
+          281.96,
+          291.456,
+          295.634,
+          297.514,
+          297.915,
+          298.683,
+          300.651,
+          308.985
+        ],
+        "median": 293.545,
+        "p25": 278.79150000000004,
+        "p75": 298.107,
+        "mean": 288.8625,
+        "stddev": 12.7155165414806
+      },
+      "pVsCascade": {
+        "shadcn": 0.000032275411516513586,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "clear": {
+      "cascade": {
+        "samples": [
+          277.046,
+          282.627,
+          285.126,
+          290.276,
+          300.315,
+          305.246,
+          311.883,
+          327.682,
+          329.878,
+          339.779,
+          367.839,
+          394.53
+        ],
+        "median": 308.56449999999995,
+        "p25": 288.9885,
+        "p75": 332.35325,
+        "mean": 317.68558333333334,
+        "stddev": 34.56801761613937
+      },
+      "shadcn": {
+        "samples": [
+          212.798,
+          217.144,
+          222.896,
+          224.764,
+          224.816,
+          226.674,
+          230.041,
+          231.545,
+          234.672,
+          235.732,
+          236.837,
+          238.541
+        ],
+        "median": 228.35750000000002,
+        "p25": 224.297,
+        "p75": 234.937,
+        "mean": 228.03833333333333,
+        "stddev": 7.678931754410169
+      },
+      "carbon": {
+        "samples": [
+          1644.489,
+          1672.53,
+          1680.544,
+          1699.946,
+          1703.372,
+          1718.647,
+          1739.661,
+          1757.818,
+          1783.191,
+          1789.441,
+          1790.065,
+          1816.297
+        ],
+        "median": 1729.154,
+        "p25": 1695.0955,
+        "p75": 1784.7535,
+        "mean": 1733.0000833333331,
+        "stddev": 52.4234944998556
+      },
+      "pVsCascade": {
+        "shadcn": 0.000032275411516513586,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "open-dialog": {
+      "cascade": {
+        "samples": [
+          7.298,
+          7.823,
+          8.399,
+          10.101,
+          10.314,
+          10.426,
+          10.553,
+          11.421,
+          11.505,
+          11.547,
+          11.988,
+          12.297
+        ],
+        "median": 10.4895,
+        "p25": 9.6755,
+        "p75": 11.515500000000001,
+        "mean": 10.306,
+        "stddev": 1.5806541894629156
+      },
+      "shadcn": {
+        "samples": [
+          171.924,
+          174.052,
+          174.653,
+          174.672,
+          174.757,
+          174.797,
+          174.88,
+          175.407,
+          185.237,
+          188.583,
+          188.891,
+          189.861
+        ],
+        "median": 174.8385,
+        "p25": 174.66725,
+        "p75": 186.0735,
+        "mean": 178.9761666666667,
+        "stddev": 6.60967235488181
+      },
+      "carbon": {
+        "samples": [
+          103.926,
+          104.728,
+          105.552,
+          106.953,
+          107.24,
+          107.406,
+          107.432,
+          107.586,
+          107.702,
+          108.174,
+          109.02,
+          116.957
+        ],
+        "median": 107.41900000000001,
+        "p25": 106.60275,
+        "p75": 107.82,
+        "mean": 107.723,
+        "stddev": 3.112922126662769
+      },
+      "pVsCascade": {
+        "shadcn": 0.000032275411516513586,
+        "carbon": 0.000032275411516513586
+      }
+    },
+    "type-20-chars": {
+      "cascade": {
+        "samples": [
+          122.886,
+          125.276,
+          128.751,
+          130.413,
+          134.486,
+          136.621,
+          140.932,
+          153.302,
+          155.475,
+          155.813,
+          158.174,
+          171.031
+        ],
+        "median": 138.7765,
+        "p25": 129.9975,
+        "p75": 155.55949999999999,
+        "mean": 142.76333333333332,
+        "stddev": 14.829253478251095
+      },
+      "shadcn": {
+        "samples": [
+          140.889,
+          153.241,
+          159.53,
+          159.948,
+          169.346,
+          174.094,
+          175.922,
+          178.088,
+          179.584,
+          186.703,
+          189.932,
+          204.611
+        ],
+        "median": 175.00799999999998,
+        "p25": 159.8435,
+        "p75": 181.36375,
+        "mean": 172.65733333333333,
+        "stddev": 16.678240691258637
+      },
+      "carbon": {
+        "samples": [
+          110.113,
+          110.913,
+          111.781,
+          114.869,
+          120.136,
+          124.334,
+          124.429,
+          126.233,
+          126.645,
+          146.753,
+          172.839,
+          179.996
+        ],
+        "median": 124.3815,
+        "p25": 114.09700000000001,
+        "p75": 131.672,
+        "mean": 130.75341666666665,
+        "stddev": 22.574323860152614
+      },
+      "pVsCascade": {
+        "shadcn": 0.0008122274929016626,
+        "carbon": 0.04330800591918349
+      }
+    },
+    "toggle-50-checkboxes": {
+      "cascade": {
+        "samples": [
+          5.767,
+          7.033,
+          7.227,
+          7.691,
+          8.598,
+          8.661,
+          8.689,
+          8.87,
+          9.483,
+          9.954,
+          10.594,
+          11.613
+        ],
+        "median": 8.675,
+        "p25": 7.575,
+        "p75": 9.600750000000001,
+        "mean": 8.681666666666667,
+        "stddev": 1.5509274286338766
+      },
+      "shadcn": {
+        "samples": [
+          15.318,
+          16.295,
+          16.815,
+          17.087,
+          17.264,
+          17.452,
+          17.489,
+          17.727,
+          17.8,
+          17.885,
+          23.761,
+          25.455
+        ],
+        "median": 17.4705,
+        "p25": 17.019,
+        "p75": 17.82125,
+        "mean": 18.362333333333336,
+        "stddev": 2.8976936039240275
+      },
+      "carbon": {
+        "samples": [
+          13.356,
+          17.696,
+          117.732,
+          119.711,
+          121.043,
+          121.259,
+          122.071,
+          122.959,
+          123.057,
+          123.356,
+          124.007,
+          124.431
+        ],
+        "median": 121.66499999999999,
+        "p25": 119.21625,
+        "p75": 123.13175,
+        "mean": 104.22316666666667,
+        "stddev": 39.717116695939666
+      },
+      "pVsCascade": {
+        "shadcn": 0.000032275411516513586,
+        "carbon": 0.000032275411516513586
+      }
+    }
+  },
+  "renders": {
+    "create-1k": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "create-10k": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "update-every-10th": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "select-row": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "clear": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "open-dialog": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "type-20-chars": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    },
+    "toggle-50-checkboxes": {
+      "cascade": 0,
+      "shadcn": 0,
+      "carbon": 0
+    }
+  },
+  "lighthouse": {
+    "cascade": {
+      "fcpMs": 322,
+      "lcpMs": 322,
+      "tbtMs": 0,
+      "transferKb": 74,
+      "runs": 5
+    },
+    "shadcn": {
+      "fcpMs": 361,
+      "lcpMs": 361,
+      "tbtMs": 0,
+      "transferKb": 98,
+      "runs": 5
+    },
+    "carbon": {
+      "fcpMs": 442,
+      "lcpMs": 442,
+      "tbtMs": 0,
+      "transferKb": 193,
+      "runs": 5
+    }
+  },
+  "a11y": {
+    "cascade": {
+      "violations": 0,
+      "rules": []
+    },
+    "shadcn": {
+      "violations": 0,
+      "rules": []
+    },
+    "carbon": {
+      "violations": 1,
+      "rules": [
+        "label"
+      ]
     }
   }
 }

@@ -9,6 +9,8 @@ const meta: Meta<typeof DatePicker> = {
 export default meta
 type Story = StoryObj<typeof DatePicker>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const WithValue: Story = { args: { defaultValue: '2024-06-15' } }
 export const Clearable: Story = { args: { defaultValue: '2024-06-15', clearable: true } }

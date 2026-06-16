@@ -9,6 +9,8 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 
+export const Primary: Story = {}
+
 function AlertDialogDemo({ variant }: { variant?: 'destructive' | 'default' }) {
   const [open, setOpen] = useState(false)
   return (

@@ -433,7 +433,7 @@ export function DataTable<Row>({
                 </tr>
               ))}
             {!loading && pageEntries.length === 0 && (
-              <tr>
+              <tr data-empty-row>
                 <td colSpan={colCount} className={styles['emptyCell']}>
                   {emptyState ?? l.empty}
                 </td>

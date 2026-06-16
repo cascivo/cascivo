@@ -9,6 +9,8 @@ const meta: Meta<typeof OtpInput> = {
 export default meta
 type Story = StoryObj<typeof OtpInput>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 export const FourDigit: Story = { args: { length: 4 } }
 export const Alphanumeric: Story = { args: { type: 'alphanumeric', length: 6 } }

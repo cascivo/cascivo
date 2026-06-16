@@ -1,8 +1,9 @@
-import { useSignal } from '@cascivo/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { Badge, Button, DataTable } from '@cascivo/react'
 import { buildRows, updateEveryTenth, type Row } from '../data'
 
 export function TablePage() {
+  useSignals()
   const rows = useSignal<Row[]>([])
   const selected = useSignal<string[]>([])
 

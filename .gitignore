@@ -7,6 +7,7 @@ dist-matrix/
 .lighthouseci/
 storybook-static/
 apps/examples/registry-starter/public/
+apps/landing/public/registry.json
 *.d.ts.map
 
 # Playwright

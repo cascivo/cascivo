@@ -58,14 +58,16 @@ export function ProofTeasers() {
             <CardContent>
               <p className="proof-number">{bundle.apps.cascade.totalGzKb.toFixed(1)} KB</p>
               <p className="proof-number-label">total gzip · full benchmark app · JS + CSS</p>
-              <BarChart
-                orientation="horizontal"
-                title="Total gzip size: cascivo vs shadcn vs Carbon"
-                series={BUNDLE_SERIES}
-                x={(d) => d.x}
-                y={(d) => d.y}
-                height={72}
-              />
+              <div className="proof-chart-wrap">
+                <BarChart
+                  orientation="horizontal"
+                  title="Total gzip size: cascivo vs shadcn vs Carbon"
+                  series={BUNDLE_SERIES}
+                  x={(d) => d.x}
+                  y={(d) => d.y}
+                  height={72}
+                />
+              </div>
               <p className="proof-line">
                 shadcn {bundle.apps.shadcn.totalGzKb.toFixed(1)} KB · Carbon{' '}
                 {bundle.apps.carbon.totalGzKb.toFixed(1)} KB — plus latency, re-render, and

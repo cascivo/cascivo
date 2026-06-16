@@ -12,6 +12,8 @@ const meta: Meta<typeof HeaderPanel> = {
 export default meta
 type Story = StoryObj<typeof HeaderPanel>
 
+export const Primary: Story = {}
+
 export const Default: Story = {
   render() {
     const [open, setOpen] = useState(false)

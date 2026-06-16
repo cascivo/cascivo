@@ -8,6 +8,8 @@ const meta: Meta<typeof Search> = {
 export default meta
 type Story = StoryObj<typeof Search>
 
+export const Primary: Story = {}
+
 export const Default: Story = {}
 
 export const WithValue: Story = { args: { defaultValue: 'design tokens' } }
