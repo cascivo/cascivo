@@ -59,6 +59,9 @@ const BlocksPage = lazy(() =>
 const BlockDetailPage = lazy(() =>
   import('./pages/blocks/BlockDetailPage').then((m) => ({ default: m.BlockDetailPage })),
 )
+const BlockPreviewPage = lazy(() =>
+  import('./pages/blocks/BlockPreviewPage').then((m) => ({ default: m.BlockPreviewPage })),
+)
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
 function SectionFallback({ tall = false }: { tall?: boolean }) {
@@ -186,6 +189,19 @@ export function App() {
       onNavigate={navigateToResult}
     />
   )
+
+  // Handle /blocks/preview/:name — bare preview page (no header/footer)
+  if (pathname.startsWith('/blocks/preview/')) {
+    const blockName = pathname.slice('/blocks/preview/'.length).split('/')[0]
+    if (blockName) {
+      applyRouteSeo(pathname, `${blockName} preview — cascivo`)
+      return (
+        <Suspense fallback={null}>
+          <BlockPreviewPage name={blockName} />
+        </Suspense>
+      )
+    }
+  }
 
   // Handle /blocks/:name dynamic route
   if (pathname.startsWith('/blocks/') && pathname !== '/blocks/') {
