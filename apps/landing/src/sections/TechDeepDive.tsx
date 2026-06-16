@@ -79,7 +79,26 @@ input.addEventListener('invalid', () => {
   },
 ]
 
-export function TechDeepDive() {
+export function TechDeepDive({ teaser = false }: { teaser?: boolean }) {
+  if (teaser) {
+    return (
+      <section className="section tech-deep-dive" id="tech-deep-dive" data-reveal="">
+        <h2>Modern CSS changes the rules</h2>
+        <p className="section-sub">
+          Most UI libraries use JavaScript to manage state that CSS can already express. cascivo
+          uses <code>@layer</code>, <code>@container</code>, and <code>:has()</code> to eliminate
+          runtime overhead, specificity conflicts, and JS-driven visual state — everywhere they
+          apply.
+        </p>
+        <p className="tech-deep-dive-footer">
+          <a href="/modern-css" className="tech-learn-more">
+            See how cascivo uses modern CSS →
+          </a>
+        </p>
+      </section>
+    )
+  }
+
   return (
     <section className="section tech-deep-dive" id="tech-deep-dive" data-reveal="">
       <h2>Modern CSS changes the rules</h2>

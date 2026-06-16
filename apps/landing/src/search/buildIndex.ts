@@ -61,9 +61,9 @@ const PAGE_SECTIONS: SearchItem[] = [
   },
   {
     id: 'page-tech',
-    title: 'Modern CSS deep dive',
-    section: 'Home',
-    href: '/#tech-deep-dive',
+    title: 'Modern CSS',
+    section: 'Landing',
+    href: '/modern-css',
     type: 'page',
     description: '@layer, @container, :has() explained',
   },

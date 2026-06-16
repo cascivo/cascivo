@@ -41,6 +41,9 @@ const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const ModernCssPage = lazy(() =>
+  import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
+)
 const ExamplesPage = lazy(() =>
   import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
 )
@@ -66,7 +69,7 @@ function HomePage() {
         <main>
           <Hero />
           <Principles />
-          <TechDeepDive />
+          <TechDeepDive teaser />
           <StatsBand />
           <Suspense fallback={<SectionFallback tall />}>
             <RelayConsole />
@@ -101,6 +104,7 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
   // One detail route per demo (/examples/<slug>); titles from ROUTE_HEAD.
