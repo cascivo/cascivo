@@ -1,0 +1,51 @@
+@layer cascade.blocks.marketing-hero {
+  .root {
+    padding-block: var(--cascivo-space-24);
+    padding-inline: var(--cascivo-space-6);
+    text-align: center;
+    background: var(--cascivo-color-surface);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    margin-block-end: var(--cascivo-space-6);
+  }
+
+  .heading {
+    font-size: var(--cascivo-text-5xl);
+    font-weight: var(--cascivo-font-extrabold);
+    line-height: var(--cascivo-leading-tight);
+    letter-spacing: var(--cascivo-tracking-tight);
+    max-inline-size: 40rem;
+    margin-inline: auto;
+    margin-block-end: var(--cascivo-space-6);
+  }
+
+  .subtitle {
+    font-size: var(--cascivo-text-xl);
+    color: var(--cascivo-color-foreground-muted);
+    max-inline-size: 32rem;
+    margin-inline: auto;
+    margin-block-end: var(--cascivo-space-10);
+    line-height: var(--cascivo-leading-relaxed);
+  }
+
+  .ctaRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-4);
+    flex-wrap: wrap;
+    margin-block-end: var(--cascivo-space-10);
+  }
+
+  .badgesRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-3);
+    flex-wrap: wrap;
+  }
+}
