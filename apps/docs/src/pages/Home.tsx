@@ -8,15 +8,23 @@ const SKIP_PREVIEW: Set<string> = new Set([
   'alert-dialog',
   'command-menu',
   'context-menu',
+  'dock',
+  'drawer',
   'dropdown',
+  'header',
   'hover-card',
   'menu',
+  'menubar',
   'modal',
+  'navigation-menu',
   'overflow-menu',
   'popover',
   'sheet',
+  'skip-nav',
   'toast',
+  'toggletip',
   'tooltip',
+  'visually-hidden',
 ])
 
 const QUICK_START = `npx cascivo init

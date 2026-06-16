@@ -9,7 +9,8 @@
     font-family: var(--cascivo-font-sans);
     background-color: var(--cascivo-sidenav-bg, var(--cascivo-color-surface));
     border-inline-end: 1px solid var(--cascivo-color-border);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     transition: inline-size var(--cascivo-motion-emphasis);
 
     &[data-state='collapsed'] {

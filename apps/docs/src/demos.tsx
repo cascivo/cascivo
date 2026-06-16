@@ -63,7 +63,46 @@ import { Switcher } from '@cascivo/components/switcher'
 import { Editable } from '@cascivo/components/editable'
 import { RadioCard, RadioCardGroup } from '@cascivo/components/radio-card'
 import { CheckboxCard } from '@cascivo/components/checkbox-card'
-import { Home, BarChart, Settings, Users, Server, Grid } from '@cascivo/icons'
+import { Home, BarChart, Settings, Users, Server, Grid, Edit, Plus } from '@cascivo/icons'
+import { Blockquote } from '@cascivo/components/blockquote'
+import { Code } from '@cascivo/components/code'
+import { CodeSnippet } from '@cascivo/components/code-snippet'
+import { Heading } from '@cascivo/components/heading'
+import { Text } from '@cascivo/components/text'
+import { Prose } from '@cascivo/components/prose'
+import { Label } from '@cascivo/components/label'
+import { IconButton } from '@cascivo/components/icon-button'
+import { Status } from '@cascivo/components/status'
+import { Stat } from '@cascivo/components/stat'
+import { Notification } from '@cascivo/components/notification'
+import { Item } from '@cascivo/components/item'
+import { List, ListItem } from '@cascivo/components/list'
+import { ContainedList, ContainedListItem } from '@cascivo/components/contained-list'
+import { DataList } from '@cascivo/components/data-list'
+import { StructuredList } from '@cascivo/components/structured-list'
+import { NativeSelect } from '@cascivo/components/native-select'
+import { Search } from '@cascivo/components/search'
+import { Field } from '@cascivo/components/field'
+import { InlineLoading } from '@cascivo/components/inline-loading'
+import { CopyButton } from '@cascivo/components/copy-button'
+import { Progress } from '@cascivo/components/progress'
+import { ProgressCircle } from '@cascivo/components/progress-circle'
+import { RadialProgress } from '@cascivo/components/radial-progress'
+import { ChatBubble } from '@cascivo/components/chat-bubble'
+import { Steps } from '@cascivo/components/steps'
+import { Filter } from '@cascivo/components/filter'
+import { Timeline } from '@cascivo/components/timeline'
+import { Tile } from '@cascivo/components/tile'
+import { MenuButton } from '@cascivo/components/menu-button'
+import { ButtonGroup as StandaloneButtonGroup } from '@cascivo/components/button-group'
+import { Calendar } from '@cascivo/components/calendar'
+import { Carousel } from '@cascivo/components/carousel'
+import { Collapsible } from '@cascivo/components/collapsible'
+import { ColorPicker } from '@cascivo/components/color-picker'
+import { DateRangePicker } from '@cascivo/components/date-range-picker'
+import { Swap } from '@cascivo/components/swap'
+import { ToggleGroup } from '@cascivo/components/toggle-group'
+import { TreeView } from '@cascivo/components/tree-view'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -293,6 +332,168 @@ function ToastDemo() {
     <ToastProvider>
       <ToastInner />
     </ToastProvider>
+  )
+}
+
+function ButtonGroupDemo() {
+  return (
+    <Col>
+      <StandaloneButtonGroup roving>
+        <Button variant="secondary">Bold</Button>
+        <Button variant="secondary">Italic</Button>
+        <Button variant="secondary">Underline</Button>
+      </StandaloneButtonGroup>
+      <StandaloneButtonGroup orientation="vertical">
+        <Button variant="secondary">Option A</Button>
+        <Button variant="secondary">Option B</Button>
+        <Button variant="secondary">Option C</Button>
+      </StandaloneButtonGroup>
+    </Col>
+  )
+}
+
+function CalendarDemo() {
+  const [date, setDate] = useState<Date | null>(null)
+  return (
+    <Col>
+      <Calendar value={date} onValueChange={setDate} />
+    </Col>
+  )
+}
+
+function CarouselDemo() {
+  const [index, setIndex] = useState(0)
+  return (
+    <Carousel
+      slides={[
+        <div
+          style={{
+            padding: '2rem',
+            textAlign: 'center',
+            background: 'var(--cascivo-color-bg-subtle)',
+            borderRadius: 'var(--cascivo-radius-md)',
+          }}
+        >
+          Slide 1 of 3
+        </div>,
+        <div
+          style={{
+            padding: '2rem',
+            textAlign: 'center',
+            background: 'var(--cascivo-color-bg-subtle)',
+            borderRadius: 'var(--cascivo-radius-md)',
+          }}
+        >
+          Slide 2 of 3
+        </div>,
+        <div
+          style={{
+            padding: '2rem',
+            textAlign: 'center',
+            background: 'var(--cascivo-color-bg-subtle)',
+            borderRadius: 'var(--cascivo-radius-md)',
+          }}
+        >
+          Slide 3 of 3
+        </div>,
+      ]}
+      index={index}
+      onIndexChange={setIndex}
+      loop
+    />
+  )
+}
+
+function CollapsibleDemo() {
+  return (
+    <Col>
+      <Collapsible trigger="Advanced options" defaultOpen>
+        <Col>
+          <Input label="Custom endpoint" placeholder="https://api.example.com" />
+          <Toggle label="Enable debug logging" />
+        </Col>
+      </Collapsible>
+    </Col>
+  )
+}
+
+function ColorPickerDemo() {
+  const [color, setColor] = useState('#3b82f6')
+  return (
+    <ColorPicker
+      value={color}
+      onValueChange={setColor}
+      label="Brand color"
+      presets={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']}
+    />
+  )
+}
+
+function DateRangePickerDemo() {
+  const [range, setRange] = useState<{ start: Date; end: Date } | null>(null)
+  return (
+    <Col>
+      <DateRangePicker value={range} onValueChange={setRange} placeholder="Select date range" />
+    </Col>
+  )
+}
+
+function SwapDemo() {
+  const [checked, setChecked] = useState(false)
+  return (
+    <Row>
+      <Swap checked={checked} onChange={setChecked} on="Light" off="Dark" mode="rotate" />
+      <span
+        style={{ fontSize: 'var(--cascivo-text-sm)', color: 'var(--cascivo-color-text-subtle)' }}
+      >
+        {checked ? 'Light mode' : 'Dark mode'}
+      </span>
+    </Row>
+  )
+}
+
+function ToggleGroupDemo() {
+  const [value, setValue] = useState<string>('week')
+  return (
+    <Col>
+      <ToggleGroup
+        type="single"
+        value={value}
+        onValueChange={(v) => {
+          if (typeof v === 'string') setValue(v)
+        }}
+        items={[
+          { value: 'day', label: 'Day' },
+          { value: 'week', label: 'Week' },
+          { value: 'month', label: 'Month' },
+        ]}
+      />
+    </Col>
+  )
+}
+
+function TreeViewDemo() {
+  return (
+    <TreeView
+      items={[
+        {
+          id: 'src',
+          label: 'src',
+          children: [
+            {
+              id: 'components',
+              label: 'components',
+              children: [
+                { id: 'button', label: 'button.tsx' },
+                { id: 'input', label: 'input.tsx' },
+              ],
+            },
+            { id: 'main', label: 'main.tsx' },
+          ],
+        },
+      ]}
+      defaultExpanded={['src', 'components']}
+    />
   )
 }
 
@@ -805,6 +1006,300 @@ export const demos: Record<string, () => JSX.Element> = {
       ]}
     />
   ),
+  blockquote: () => (
+    <Blockquote>
+      The heart of software is its ability to solve domain-related problems for its user.
+    </Blockquote>
+  ),
+  code: () => (
+    <Row>
+      <Code>const x = signal(42)</Code>
+      <Code size="sm">npm install</Code>
+    </Row>
+  ),
+  'code-snippet': () => (
+    <Col>
+      <CodeSnippet variant="single" code={`import { Button } from '@cascivo/components/button'`} />
+      <CodeSnippet
+        variant="multi"
+        code={`export function App() {\n  return <Button>Get started</Button>\n}`}
+        showLineNumbers
+      />
+    </Col>
+  ),
+  heading: () => (
+    <Col>
+      <Heading level={1} size="xl">
+        Heading 1
+      </Heading>
+      <Heading level={2} size="lg">
+        Heading 2
+      </Heading>
+      <Heading level={3}>Heading 3</Heading>
+      <Heading level={4} size="sm">
+        Heading 4
+      </Heading>
+    </Col>
+  ),
+  text: () => (
+    <Col>
+      <Text>Body text at default size — readable at paragraph scale.</Text>
+      <Text size="sm" variant="subtle">
+        Small subtle text for captions or helper hints.
+      </Text>
+    </Col>
+  ),
+  prose: () => (
+    <Prose>
+      <h2>Design principles</h2>
+      <p>
+        cascivo is CSS-native, signal-driven, and AI-first. Every component is owned by your
+        project.
+      </p>
+      <ul>
+        <li>No Tailwind required</li>
+        <li>Copy-paste via CLI</li>
+      </ul>
+    </Prose>
+  ),
+  label: () => (
+    <Col>
+      <Label>Email address</Label>
+      <Label required>Required field</Label>
+      <Label disabled>Disabled field</Label>
+    </Col>
+  ),
+  'icon-button': () => (
+    <Row>
+      <IconButton label="Edit" icon={<Edit size={16} />} />
+      <IconButton label="Add" icon={<Plus size={16} />} variant="secondary" />
+      <IconButton label="Settings" icon={<Settings size={16} />} size="sm" />
+    </Row>
+  ),
+  status: () => (
+    <Col>
+      <Status status="success">Operational</Status>
+      <Status status="warning">Degraded</Status>
+      <Status status="error">Outage</Status>
+      <Status status="neutral" pulse>
+        Checking
+      </Status>
+    </Col>
+  ),
+  stat: () => (
+    <Row>
+      <Stat label="Revenue" value="$12,400" delta="+8.2%" trend="up" />
+      <Stat label="Uptime" value="99.9%" />
+      <Stat label="Errors" value="3" delta="-1" trend="down" />
+    </Row>
+  ),
+  notification: () => (
+    <Col>
+      <Notification
+        title="Deployment complete"
+        description="v2.1.0 shipped to production."
+        variant="success"
+      />
+      <Notification
+        title="High memory usage"
+        description="Instance memory exceeds 90%."
+        variant="warning"
+        dismissible
+      />
+    </Col>
+  ),
+  item: () => (
+    <Col>
+      <Item>First item</Item>
+      <Item>Second item</Item>
+      <Item>Third item</Item>
+    </Col>
+  ),
+  list: () => (
+    <Col>
+      <List>
+        <ListItem>Alpha</ListItem>
+        <ListItem>Beta</ListItem>
+        <ListItem>Gamma</ListItem>
+      </List>
+      <List as="ol" marker="decimal">
+        <ListItem>First step</ListItem>
+        <ListItem>Second step</ListItem>
+      </List>
+    </Col>
+  ),
+  'contained-list': () => (
+    <ContainedList label="Team members">
+      <ContainedListItem>Alice Chen</ContainedListItem>
+      <ContainedListItem>Bob Smith</ContainedListItem>
+      <ContainedListItem>Carol Davis</ContainedListItem>
+    </ContainedList>
+  ),
+  'data-list': () => (
+    <DataList
+      items={[
+        { label: 'Plan', value: 'Pro' },
+        { label: 'Region', value: 'us-east-1' },
+        { label: 'Status', value: 'Active' },
+      ]}
+    />
+  ),
+  'structured-list': () => (
+    <StructuredList
+      headers={['Name', 'Role', 'Status']}
+      items={[
+        { id: '1', cells: ['Alice Chen', 'Engineer', 'Active'] },
+        { id: '2', cells: ['Bob Smith', 'Designer', 'Away'] },
+      ]}
+    />
+  ),
+  'native-select': () => (
+    <Col>
+      <NativeSelect
+        aria-label="Country"
+        placeholder="Choose a country"
+        options={[
+          { value: 'us', label: 'United States' },
+          { value: 'de', label: 'Germany' },
+          { value: 'fr', label: 'France' },
+        ]}
+      />
+      <NativeSelect
+        aria-label="Size"
+        size="sm"
+        options={[
+          { value: 'xs', label: 'Extra small' },
+          { value: 'sm', label: 'Small' },
+          { value: 'md', label: 'Medium' },
+        ]}
+      />
+    </Col>
+  ),
+  search: () => (
+    <Col>
+      <Search placeholder="Search components…" />
+      <Search placeholder="Search files…" size="sm" />
+    </Col>
+  ),
+  field: () => (
+    <Col>
+      <Field label="Username" description="3–20 characters, letters and numbers only">
+        <Input placeholder="your-username" />
+      </Field>
+      <Field label="Email" required>
+        <Input type="email" placeholder="you@example.com" />
+      </Field>
+      <Field label="API key" error="Invalid format — must start with sk-">
+        <Input defaultValue="not-valid" />
+      </Field>
+    </Col>
+  ),
+  'inline-loading': () => (
+    <Col>
+      <InlineLoading status="active" label="Loading data…" />
+      <InlineLoading status="finished" label="Data loaded" />
+      <InlineLoading status="error" label="Failed to load" />
+    </Col>
+  ),
+  'copy-button': () => (
+    <Row>
+      <CopyButton value="npx cascivo add button" />
+      <CopyButton value="npm install @cascivo/core" size="sm" />
+    </Row>
+  ),
+  progress: () => (
+    <Col>
+      <Progress value={65} aria-label="Uploading" />
+      <Progress value={100} variant="success" aria-label="Complete" />
+      <Progress variant="error" aria-label="Failed" />
+      <Progress size="sm" value={40} aria-label="Loading" />
+    </Col>
+  ),
+  'progress-circle': () => (
+    <Row>
+      <ProgressCircle value={75} />
+      <ProgressCircle value={45} size="sm" />
+      <ProgressCircle value={90} size="lg" />
+    </Row>
+  ),
+  'radial-progress': () => (
+    <Row>
+      <RadialProgress value={65}>65%</RadialProgress>
+      <RadialProgress value={90} variant="success" size="sm" />
+      <RadialProgress value={30} variant="error">
+        30%
+      </RadialProgress>
+    </Row>
+  ),
+  'chat-bubble': () => (
+    <Col>
+      <ChatBubble side="start" name="Alice" time="2:14 PM">
+        Hey, have you seen the new cascivo docs?
+      </ChatBubble>
+      <ChatBubble side="end" time="2:15 PM">
+        Yes! The component previews are looking great.
+      </ChatBubble>
+    </Col>
+  ),
+  steps: () => (
+    <Col>
+      <Steps
+        steps={[
+          { label: 'Account', state: 'complete' },
+          { label: 'Profile', state: 'active' },
+          { label: 'Review', state: 'pending' },
+        ]}
+      />
+    </Col>
+  ),
+  filter: () => (
+    <Filter
+      defaultValue={['react']}
+      options={[
+        { value: 'react', label: 'React' },
+        { value: 'vue', label: 'Vue' },
+        { value: 'svelte', label: 'Svelte' },
+        { value: 'angular', label: 'Angular' },
+      ]}
+    />
+  ),
+  timeline: () => (
+    <Timeline
+      items={[
+        { id: '1', title: 'Deployment started', time: '2:00 PM', status: 'complete' },
+        { id: '2', title: 'Tests passed', time: '2:03 PM', status: 'current' },
+        { id: '3', title: 'Deploy to production', status: 'upcoming' },
+      ]}
+    />
+  ),
+  tile: () => (
+    <Row>
+      <Tile value="free">Free plan</Tile>
+      <Tile value="pro" defaultSelected>
+        Pro plan
+      </Tile>
+      <Tile value="team">Team plan</Tile>
+    </Row>
+  ),
+  'menu-button': () => (
+    <MenuButton
+      label="Actions"
+      items={[
+        { id: 'edit', label: 'Edit' },
+        { id: 'duplicate', label: 'Duplicate' },
+        { id: 'delete', label: 'Delete' },
+      ]}
+    />
+  ),
+  'button-group': () => <ButtonGroupDemo />,
+  calendar: () => <CalendarDemo />,
+  carousel: () => <CarouselDemo />,
+  collapsible: () => <CollapsibleDemo />,
+  'color-picker': () => <ColorPickerDemo />,
+  'date-range-picker': () => <DateRangePickerDemo />,
+  swap: () => <SwapDemo />,
+  'toggle-group': () => <ToggleGroupDemo />,
+  'tree-view': () => <TreeViewDemo />,
 }
 
 function HeaderPanelDemo() {
