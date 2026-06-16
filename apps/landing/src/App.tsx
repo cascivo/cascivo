@@ -4,6 +4,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
+import { TechDeepDive } from './sections/TechDeepDive'
 import { StatsBand } from './sections/StatsBand'
 import { SignalsDemo } from './sections/SignalsDemo'
 import { ProofTeasers } from './sections/ProofTeasers'
@@ -65,6 +66,7 @@ function HomePage() {
         <main>
           <Hero />
           <Principles />
+          <TechDeepDive />
           <StatsBand />
           <Suspense fallback={<SectionFallback tall />}>
             <RelayConsole />
