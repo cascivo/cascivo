@@ -255,6 +255,7 @@ code {
 
 .theme-demo-pane--single {
   inline-size: min(28rem, 100%);
+  min-block-size: 22rem;
   padding: var(--cascivo-space-6);
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-lg);
@@ -504,6 +505,11 @@ kbd {
   gap: var(--cascivo-space-5);
 }
 
+.quickstart-prebuilt-steps > div {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
 @media (min-width: 40rem) {
   .quickstart-prebuilt-steps {
     flex-direction: row;
@@ -511,6 +517,7 @@ kbd {
 
   .quickstart-prebuilt-steps > div {
     flex: 1;
+    min-inline-size: 0;
   }
 }
 
@@ -844,6 +851,14 @@ kbd {
   font-weight: var(--cascivo-font-medium);
   /* accent-hover (oklch 0.546) passes 4.5:1 on the card bg; accent (0.623) does not */
   color: var(--cascivo-color-accent-hover);
+}
+
+.proof-chart-wrap {
+  padding-inline-start: 3.5rem;
+}
+
+.proof-chart-wrap svg {
+  overflow: visible;
 }
 
 /* ── Footer mono links ────────────────────────────────── */
@@ -2606,6 +2621,7 @@ kbd {
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-3);
+  min-block-size: 14rem;
 }
 
 .examples-desc--long {
