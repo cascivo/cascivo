@@ -1,5 +1,6 @@
 'use client'
-import { signal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
+import { persistedSignal } from '@cascivo/storage'
 import { t } from '@cascivo/i18n'
 import { ToastProvider } from '@cascivo/react'
 import type { SideNavGroup } from '@cascivo/react'
@@ -29,7 +30,7 @@ import '@cascivo/tokens'
 
 type View = 'projects' | 'deployments' | 'flags'
 
-const currentView = signal<View>('projects')
+const currentView = persistedSignal<View>('deploy-view', 'projects')
 
 export default function App() {
   useSignals()
