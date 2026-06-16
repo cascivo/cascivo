@@ -1,6 +1,6 @@
 {
   "meta": {
-    "date": "2026-06-12",
+    "date": "2026-06-16",
     "cpu": "Intel(R) Core(TM) Ultra 9 185H",
     "cores": 22,
     "memGb": 62,
@@ -8,24 +8,24 @@
     "node": "v24.16.0",
     "chrome": "placeholder",
     "cpuThrottle": 4,
-    "lockfileHash": "a4919632484d",
+    "lockfileHash": "57da3ccdfb54",
     "source": "local"
   },
   "bundle": {
     "apps": {
       "cascade": {
-        "jsGzKb": 67.45,
-        "cssGzKb": 1.99,
-        "totalGzKb": 69.43,
-        "jsRawKb": 214.92,
-        "cssRawKb": 9.64
+        "jsGzKb": 69.74,
+        "cssGzKb": 2.2,
+        "totalGzKb": 71.94,
+        "jsRawKb": 221.66,
+        "cssRawKb": 10.44
       },
       "shadcn": {
         "jsGzKb": 93.07,
-        "cssGzKb": 3.36,
-        "totalGzKb": 96.43,
+        "cssGzKb": 3.43,
+        "totalGzKb": 96.51,
         "jsRawKb": 303.85,
-        "cssRawKb": 13.04
+        "cssRawKb": 14.1
       },
       "carbon": {
         "jsGzKb": 108.72,
@@ -38,104 +38,153 @@
     "matrix": {
       "cascade": {
         "button": {
-          "totalGzKb": 64.86,
-          "incrementalGzKb": 5
+          "totalGzKb": 67.18,
+          "incrementalGzKb": 1.99,
+          "standaloneGzKb": 67.18,
+          "amortizedGzKb": 2.45
         },
         "input": {
-          "totalGzKb": 64.88,
-          "incrementalGzKb": 5.02
+          "totalGzKb": 67.21,
+          "incrementalGzKb": 2.02,
+          "standaloneGzKb": 67.21,
+          "amortizedGzKb": 2.45
         },
         "checkbox": {
-          "totalGzKb": 64.73,
-          "incrementalGzKb": 4.87
+          "totalGzKb": 67.07,
+          "incrementalGzKb": 1.88,
+          "standaloneGzKb": 67.07,
+          "amortizedGzKb": 2.45
         },
         "select": {
-          "totalGzKb": 65.04,
-          "incrementalGzKb": 5.18
+          "totalGzKb": 67.37,
+          "incrementalGzKb": 2.18,
+          "standaloneGzKb": 67.37,
+          "amortizedGzKb": 2.45
         },
         "dialog": {
-          "totalGzKb": 65.12,
-          "incrementalGzKb": 5.26
+          "totalGzKb": 67.42,
+          "incrementalGzKb": 2.23,
+          "standaloneGzKb": 67.42,
+          "amortizedGzKb": 2.45
         },
         "table": {
-          "totalGzKb": 68.1,
-          "incrementalGzKb": 8.24
+          "totalGzKb": 70.59,
+          "incrementalGzKb": 5.4,
+          "standaloneGzKb": 70.59,
+          "amortizedGzKb": 2.45
         },
         "badge": {
-          "totalGzKb": 64.48,
-          "incrementalGzKb": 4.62
+          "totalGzKb": 66.86,
+          "incrementalGzKb": 1.67,
+          "standaloneGzKb": 66.86,
+          "amortizedGzKb": 2.45
         },
         "tabs": {
-          "totalGzKb": 65.16,
-          "incrementalGzKb": 5.3
+          "totalGzKb": 67.4,
+          "incrementalGzKb": 2.21,
+          "standaloneGzKb": 67.4,
+          "amortizedGzKb": 2.45
         }
       },
       "shadcn": {
         "button": {
-          "totalGzKb": 71.09,
-          "incrementalGzKb": 9.86
+          "totalGzKb": 71.17,
+          "incrementalGzKb": 9.87,
+          "standaloneGzKb": 71.17,
+          "amortizedGzKb": 11.79
         },
         "input": {
-          "totalGzKb": 69.93,
-          "incrementalGzKb": 8.7
+          "totalGzKb": 70.01,
+          "incrementalGzKb": 8.71,
+          "standaloneGzKb": 70.01,
+          "amortizedGzKb": 11.79
         },
         "checkbox": {
-          "totalGzKb": 74.07,
-          "incrementalGzKb": 12.84
+          "totalGzKb": 74.15,
+          "incrementalGzKb": 12.85,
+          "standaloneGzKb": 74.15,
+          "amortizedGzKb": 11.79
         },
         "select": {
-          "totalGzKb": 61.23,
-          "incrementalGzKb": 0
+          "totalGzKb": 61.31,
+          "incrementalGzKb": 0.01,
+          "standaloneGzKb": 61.31,
+          "amortizedGzKb": 11.79,
+          "note": "Standalone cost is 61.31 KB but marginal over runtime-preloaded baseline is ~0"
         },
         "dialog": {
-          "totalGzKb": 80.99,
-          "incrementalGzKb": 19.76
+          "totalGzKb": 81.07,
+          "incrementalGzKb": 19.77,
+          "standaloneGzKb": 81.07,
+          "amortizedGzKb": 11.79
         },
         "table": {
-          "totalGzKb": 82.22,
-          "incrementalGzKb": 20.99
+          "totalGzKb": 82.3,
+          "incrementalGzKb": 21,
+          "standaloneGzKb": 82.3,
+          "amortizedGzKb": 11.79
         },
         "badge": {
-          "totalGzKb": 69.89,
-          "incrementalGzKb": 8.66
+          "totalGzKb": 69.97,
+          "incrementalGzKb": 8.67,
+          "standaloneGzKb": 69.97,
+          "amortizedGzKb": 11.79
         },
         "tabs": {
-          "totalGzKb": 61.25,
-          "incrementalGzKb": 0.02
+          "totalGzKb": 74.76,
+          "incrementalGzKb": 13.46,
+          "standaloneGzKb": 74.76,
+          "amortizedGzKb": 11.79
         }
       },
       "carbon": {
         "button": {
           "totalGzKb": 155.62,
-          "incrementalGzKb": 16.73
+          "incrementalGzKb": 16.73,
+          "standaloneGzKb": 155.62,
+          "amortizedGzKb": 23.5
         },
         "input": {
           "totalGzKb": 159.54,
-          "incrementalGzKb": 20.65
+          "incrementalGzKb": 20.65,
+          "standaloneGzKb": 159.54,
+          "amortizedGzKb": 23.5
         },
         "checkbox": {
           "totalGzKb": 158.88,
-          "incrementalGzKb": 19.99
+          "incrementalGzKb": 19.99,
+          "standaloneGzKb": 158.88,
+          "amortizedGzKb": 23.5
         },
         "select": {
           "totalGzKb": 159.47,
-          "incrementalGzKb": 20.58
+          "incrementalGzKb": 20.58,
+          "standaloneGzKb": 159.47,
+          "amortizedGzKb": 23.5
         },
         "dialog": {
           "totalGzKb": 166.98,
-          "incrementalGzKb": 28.09
+          "incrementalGzKb": 28.09,
+          "standaloneGzKb": 166.98,
+          "amortizedGzKb": 23.5
         },
         "table": {
           "totalGzKb": 179.66,
-          "incrementalGzKb": 40.77
+          "incrementalGzKb": 40.77,
+          "standaloneGzKb": 179.66,
+          "amortizedGzKb": 23.5
         },
         "badge": {
           "totalGzKb": 158.33,
-          "incrementalGzKb": 19.44
+          "incrementalGzKb": 19.44,
+          "standaloneGzKb": 158.33,
+          "amortizedGzKb": 23.5
         },
         "tabs": {
           "totalGzKb": 160.67,
-          "incrementalGzKb": 21.78
+          "incrementalGzKb": 21.78,
+          "standaloneGzKb": 160.67,
+          "amortizedGzKb": 23.5
         }
       }
     }
