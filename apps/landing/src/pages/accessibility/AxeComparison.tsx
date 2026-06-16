@@ -48,7 +48,7 @@ export function AxeComparison() {
         <p>
           <strong>Automated coverage ceiling:</strong> axe-core detects approximately 30–40% of WCAG
           issues by design — the tool&apos;s own documentation notes this. A{' '}
-          <code>0 violations</code> result is necessary but not sufficient. Cascivo complements
+          <code>0 violations</code> result is necessary but not sufficient. cascivo complements
           automated testing with:
         </p>
         <ul>

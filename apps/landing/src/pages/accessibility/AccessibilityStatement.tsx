@@ -87,9 +87,9 @@ export function AccessibilityStatement() {
       {/* Legal mapping */}
       <h3 className="a11y-stmt-sub-heading">Legal framework mapping</h3>
       <p className="a11y-disclosure">
-        Cascade targets WCAG 2.2 AA at the component level. All three major frameworks reference
+        cascivo targets WCAG 2.2 AA at the component level. All three major frameworks reference
         WCAG as their technical standard — EAA (effective 28 June 2025) via EN 301 549 Clause 9
-        (WCAG 2.1 AA minimum); US Section 508 via WCAG 2.0 AA. Cascade at 2.2 AA exceeds all three
+        (WCAG 2.1 AA minimum); US Section 508 via WCAG 2.0 AA. cascivo at 2.2 AA exceeds all three
         normative thresholds. Full mapping in <code>docs/specs/legal-mapping.md</code>.
       </p>
       <table className="a11y-stmt-table">
@@ -97,7 +97,7 @@ export function AccessibilityStatement() {
         <thead>
           <tr>
             <th scope="col">Responsibility</th>
-            <th scope="col">Cascade</th>
+            <th scope="col">cascivo</th>
             <th scope="col">Integrator</th>
           </tr>
         </thead>

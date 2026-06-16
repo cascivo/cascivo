@@ -100,6 +100,7 @@ export function A11yMatrix() {
           getRowId={(r) => r.name}
           density="compact"
           stickyHeader
+          pagination={{ pageSize: 10, pageSizeOptions: [10, 25, 50] }}
           title="Keyboard and ARIA matrix"
           description="Role, WCAG level, and keyboard interaction per registry entry, generated from each component.meta.ts."
         />
