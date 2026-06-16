@@ -51,6 +51,7 @@ const ExampleDetailPage = lazy(() =>
   import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
 )
 const OgCard = lazy(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
+const CreatePage = lazy(() => import('./pages/CreatePage').then((m) => ({ default: m.CreatePage })))
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 
 /** Reserved-height placeholder for a lazy section/route (avoids CLS on load). */
@@ -107,6 +108,10 @@ const ROUTES: Record<string, Route> = {
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
+  '/create': {
+    Page: CreatePage,
+    title: ROUTE_HEAD['/create']?.title ?? 'cascivo',
+  },
   // One detail route per demo (/examples/<slug>); titles from ROUTE_HEAD.
   ...Object.fromEntries(
     DEMOS.map((d) => [

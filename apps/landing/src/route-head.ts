@@ -79,6 +79,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Cascade Pulse: an observability dashboard in the shape of Datadog, built with cascivo. Live metrics, a heatmap, alerts and a log stream driven by a real-time simulation — no backend.',
     ogTitle: 'Cascade Pulse — cascivo example',
   },
+  '/create': {
+    title: 'Create a theme — cascivo',
+    description:
+      'Design your cascivo theme in seconds: pick an accent colour, border radius, and font — see real components update live, then copy the CSS.',
+    ogTitle: 'cascivo theme configurator',
+  },
 }
 
 /** Routes that get prerendered + listed in the sitemap (excludes `/` root and `/og`). */
@@ -93,6 +99,7 @@ export const PRERENDER_ROUTES = [
   'examples/flow',
   'examples/track',
   'examples/pulse',
+  'create',
 ] as const
 
 export function canonicalFor(path: string): string {

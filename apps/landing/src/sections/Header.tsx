@@ -13,6 +13,7 @@ const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 const NAV_LINKS = [
   { label: 'Components', href: 'https://docs.cascivo.com' },
   { label: 'Examples', href: '/examples' },
+  { label: 'Create', href: '/create' },
   { label: 'Storybook', href: 'https://storybook.cascivo.com' },
   { label: 'Accessibility', href: '/accessibility' },
   { label: 'Performance', href: '/performance' },
