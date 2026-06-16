@@ -1,0 +1,62 @@
+@layer cascade.component {
+  .dock {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    display: flex;
+    align-items: stretch;
+    background-color: var(--cascivo-color-surface);
+    border-block-start: 1px solid var(--cascivo-border-subtle);
+    padding-block-end: env(safe-area-inset-bottom, 0);
+    z-index: var(--cascivo-z-dock, 40);
+  }
+
+  @media (min-width: 64rem) {
+    .dock {
+      display: none;
+    }
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 0.25rem;
+    padding-block: 0.5rem;
+    padding-inline: 0.25rem;
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cascivo-color-text-muted);
+    text-decoration: none;
+    transition: color 100ms var(--cascivo-ease-out);
+  }
+
+  .item[data-active] {
+    color: var(--cascivo-color-accent);
+  }
+
+  .item:focus-visible {
+    outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+    outline-offset: -2px;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    line-height: 1;
+  }
+
+  .item[data-active] .label {
+    font-weight: 600;
+  }
+}

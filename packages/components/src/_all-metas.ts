@@ -17,6 +17,7 @@ import { meta as contextMenuMeta } from './context-menu/context-menu.meta'
 import { meta as copyButtonMeta } from './copy-button/copy-button.meta'
 import { meta as dataTableMeta } from './data-table/data-table.meta'
 import { meta as datePickerMeta } from './date-picker/date-picker.meta'
+import { meta as dockMeta } from './dock/dock.meta'
 import { meta as dropdownMeta } from './dropdown/dropdown.meta'
 import { meta as editableMeta } from './editable/editable.meta'
 import { meta as emptyStateMeta } from './empty-state/empty-state.meta'
@@ -56,6 +57,7 @@ import { meta as separatorMeta } from './separator/separator.meta'
 import { meta as sheetMeta } from './sheet/sheet.meta'
 import { meta as shellHeaderMeta } from './shell-header/shell-header.meta'
 import { meta as sideNavMeta } from './side-nav/side-nav.meta'
+import { meta as stepsMeta } from './steps/steps.meta'
 import { meta as skeletonMeta } from './skeleton/skeleton.meta'
 import { meta as skipNavMeta } from './skip-nav/skip-nav.meta'
 import { meta as sliderMeta } from './slider/slider.meta'
@@ -93,6 +95,7 @@ export const allMetas: ComponentMeta[] = [
   copyButtonMeta,
   dataTableMeta,
   datePickerMeta,
+  dockMeta,
   dropdownMeta,
   editableMeta,
   emptyStateMeta,
@@ -138,6 +141,7 @@ export const allMetas: ComponentMeta[] = [
   spinnerMeta,
   statMeta,
   statusMeta,
+  stepsMeta,
   switcherMeta,
   tabsMeta,
   tagMeta,

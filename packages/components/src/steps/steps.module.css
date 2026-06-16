@@ -1,0 +1,97 @@
+@layer cascade.component {
+  .steps {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .steps[data-orientation='horizontal'] {
+    flex-direction: row;
+    align-items: center;
+  }
+  .steps[data-orientation='vertical'] {
+    flex-direction: column;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    flex: 1;
+    block-size: 1px;
+    background-color: var(--cascivo-border-default);
+  }
+
+  .steps[data-orientation='vertical'] .step:not(:last-child)::after {
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    inset-block-start: 2rem;
+    inline-size: 1px;
+    block-size: calc(100% - 1.5rem);
+    flex: none;
+  }
+
+  .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--cascivo-radius-full);
+    border: 2px solid var(--cascivo-border-default);
+    background-color: var(--cascivo-color-surface);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cascivo-color-text-muted);
+    flex-shrink: 0;
+    transition:
+      background-color 150ms var(--cascivo-ease-out),
+      border-color 150ms var(--cascivo-ease-out);
+  }
+
+  .step[data-state='active'] .circle {
+    background-color: var(--cascivo-color-accent);
+    border-color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-content);
+  }
+
+  .step[data-state='complete'] .circle {
+    background-color: var(--cascivo-color-success);
+    border-color: var(--cascivo-color-success);
+    color: var(--cascivo-color-success-content);
+  }
+
+  .step[data-state='error'] .circle {
+    background-color: var(--cascivo-color-error);
+    border-color: var(--cascivo-color-error);
+    color: var(--cascivo-color-error-content);
+  }
+
+  .step[data-state='complete']:not(:last-child)::after {
+    background-color: var(--cascivo-color-success);
+  }
+
+  .label {
+    font-size: 0.875rem;
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .step[data-state='active'] .label {
+    color: var(--cascivo-color-text);
+    font-weight: 500;
+  }
+  .step[data-state='complete'] .label {
+    color: var(--cascivo-color-text-subtle);
+  }
+  .step[data-state='error'] .label {
+    color: var(--cascivo-color-error);
+  }
+}
