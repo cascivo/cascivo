@@ -3,34 +3,31 @@ import { useRef } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader } from '@cascivo/components/shell-header'
 import { THEMES, setTheme, theme } from '../theme'
-
-const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+import { currentPath, navigate } from '../router'
 
 const NAV_LINKS = [
   { label: 'Components', href: 'https://docs.cascivo.com' },
-  { label: 'Examples', href: '/examples', active: path.startsWith('/examples') },
+  { label: 'Examples', href: '/examples' },
   { label: 'Storybook', href: 'https://storybook.cascivo.com' },
-  {
-    label: 'Accessibility',
-    href: '/accessibility',
-    active: path.startsWith('/accessibility'),
-  },
-  {
-    label: 'Performance',
-    href: '/performance',
-    active: path.startsWith('/performance'),
-  },
-  {
-    label: 'Guides',
-    href: '/guides',
-    active: path.startsWith('/guides'),
-  },
+  { label: 'Accessibility', href: '/accessibility' },
+  { label: 'Performance', href: '/performance' },
+  { label: 'Guides', href: '/guides' },
   { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
 ]
+
+function isExternalHref(href: string) {
+  return /^https?:\/\//.test(href)
+}
 
 export function Header() {
   useSignals()
   const isNavOpen = useSignal(false)
+
+  // Active detection is reactive: reads currentPath so navigation re-renders it.
+  const navItems = NAV_LINKS.map((link) => ({
+    ...link,
+    active: !isExternalHref(link.href) && currentPath.value.startsWith(link.href),
+  }))
   const drawerRef = useRef<HTMLElement>(null)
   const toggleRef = useRef<HTMLElement | null>(null)
 
@@ -89,7 +86,7 @@ export function Header() {
     <>
       <ShellHeader
         brand={{ name: 'cascivo', href: '/' }}
-        nav={NAV_LINKS}
+        nav={navItems}
         // The landing supplies its own SkipNavLink/SkipNavTarget on every page;
         // disable ShellHeader's built-in skip link so its default #cascade-main
         // target (which the landing doesn't render) can't dangle.
@@ -138,8 +135,8 @@ export function Header() {
         aria-label="Main navigation"
         aria-hidden={!isNavOpen.value}
       >
-        {NAV_LINKS.map((link) => {
-          const isExternal = /^https?:\/\//.test(link.href)
+        {navItems.map((link) => {
+          const isExternal = isExternalHref(link.href)
           return (
             <a
               key={link.href}
@@ -149,6 +146,7 @@ export function Header() {
               {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               onClick={() => {
                 isNavOpen.value = false
+                if (!isExternal) navigate(link.href)
               }}
             >
               {link.label}

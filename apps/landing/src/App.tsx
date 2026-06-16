@@ -1,5 +1,5 @@
 import { type ComponentType, Suspense, lazy } from 'react'
-import { useSignalEffect } from '@cascivo/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
@@ -15,6 +15,7 @@ import { QuickStart } from './sections/QuickStart'
 import { CtaBand } from './sections/CtaBand'
 import { Footer } from './sections/Footer'
 import { initReveal } from './reveal'
+import { currentPath, initRouter } from './router'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
 import { DEMOS } from './pages/examples/data'
@@ -107,10 +108,13 @@ const ROUTES: Record<string, Route> = {
 }
 
 export function App() {
+  useSignals()
   useSignalEffect(() => initReveal())
+  useSignalEffect(() => {
+    initRouter()
+  })
 
-  const pathname =
-    typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/'
+  const pathname = currentPath.value
   const route = ROUTES[pathname]
 
   if (!route) {
