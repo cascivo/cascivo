@@ -1,0 +1,74 @@
+@layer cascade.blocks.marketing-features {
+  .root {
+    padding-block: var(--cascivo-space-20);
+    padding-inline: var(--cascivo-space-6);
+    background: var(--cascivo-color-surface-raised);
+  }
+
+  .header {
+    text-align: center;
+    margin-block-end: var(--cascivo-space-12);
+  }
+
+  .heading {
+    font-size: var(--cascivo-text-3xl);
+    font-weight: var(--cascivo-font-bold);
+    margin-block-end: var(--cascivo-space-3);
+  }
+
+  .subtitle {
+    font-size: var(--cascivo-text-lg);
+    color: var(--cascivo-color-foreground-muted);
+    max-inline-size: 36rem;
+    margin-inline: auto;
+  }
+
+  .grid {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cascivo-space-8);
+    max-inline-size: 72rem;
+    margin-inline: auto;
+  }
+
+  @container (min-inline-size: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (min-inline-size: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+  }
+
+  .cellIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    border-radius: var(--cascivo-radius-md);
+    background: var(--cascivo-color-accent-subtle);
+    font-size: 1.5rem;
+  }
+
+  .cellTitle {
+    font-size: var(--cascivo-text-lg);
+    font-weight: var(--cascivo-font-semibold);
+  }
+
+  .cellDescription {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    line-height: var(--cascivo-leading-relaxed);
+  }
+}
