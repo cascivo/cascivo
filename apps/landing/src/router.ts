@@ -31,6 +31,7 @@ export function initRouter() {
     if (url.origin !== location.origin) return
     if (a.target === '_blank') return
     if (a.hasAttribute('download')) return
+    if (url.pathname.startsWith('/demos/')) return
     e.preventDefault()
     navigate(url.pathname)
   })
