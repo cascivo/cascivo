@@ -37,15 +37,19 @@ const FIXTURE_REGISTRY = {
       dependencies: ['@cascivo/core'],
       tags: [],
     },
+  ],
+  blocks: [
     {
-      name: 'block/users-table-page',
+      name: 'users-table-page',
       type: 'block',
+      displayName: 'Users Table Page',
       description: 'Users table page',
       category: 'display',
       version: '0.0.0',
       files: ['https://example.com/blocks/users-table-page/users-table-page.tsx'],
       dependencies: ['@cascivo/react'],
       tags: [],
+      screenshot: { light: '', dark: '' },
     },
   ],
 }
