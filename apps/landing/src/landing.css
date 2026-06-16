@@ -748,6 +748,68 @@ kbd {
   outline-offset: 2px;
 }
 
+/* ── Sticky header ──────────────────────────────────────── */
+.landing-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--cascivo-z-overlay);
+  background: var(--cascivo-color-surface);
+  border-block-end: 1px solid color-mix(in oklch, var(--cascivo-color-border) 60%, transparent);
+}
+
+/* ── Scroll progress bar ────────────────────────────────── */
+.scroll-progress {
+  position: sticky;
+  top: var(--cascivo-shell-header-block-size, 3.5rem);
+  z-index: calc(var(--cascivo-z-overlay) - 1);
+  block-size: 2px;
+  background: transparent;
+}
+
+.scroll-progress::after {
+  content: '';
+  display: block;
+  block-size: 100%;
+  background: linear-gradient(
+    to right,
+    var(--cascivo-color-accent),
+    var(--cascivo-brand-primary, var(--cascivo-color-accent))
+  );
+  transform: scaleX(var(--scroll-ratio, 0));
+  transform-origin: inline-start;
+  transition: transform 80ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress::after {
+    transition: none;
+  }
+}
+
+/* ── Header icon links ──────────────────────────────────── */
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  color: var(--cascivo-color-text-subtle);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.header-icon-link:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface-raised);
+}
+
+.header-icon-link:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
 /* ── Hero (rewritten v7) ──────────────────────────────── */
 .hero-title {
   margin: 0;
