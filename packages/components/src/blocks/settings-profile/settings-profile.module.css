@@ -1,0 +1,92 @@
+@layer cascade.blocks.settings-profile {
+  .root {
+    background: var(--cascivo-color-surface);
+    min-block-size: 100vh;
+    padding-block-end: 5rem;
+  }
+
+  .header {
+    padding: var(--cascivo-space-8) var(--cascivo-space-8) var(--cascivo-space-6);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .pageTitle {
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+  }
+
+  .pageSubtitle {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    margin-block-start: var(--cascivo-space-1);
+  }
+
+  .body {
+    padding: var(--cascivo-space-8);
+    max-inline-size: 48rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-10);
+  }
+
+  .sectionTitle {
+    font-size: var(--cascivo-text-lg);
+    font-weight: var(--cascivo-font-semibold);
+    margin-block-end: var(--cascivo-space-4);
+    padding-block-end: var(--cascivo-space-3);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-4);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1-5);
+  }
+
+  .label {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .toggleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--cascivo-space-3);
+    border-block-end: 1px solid var(--cascivo-color-border);
+  }
+
+  .toggleRow:last-child {
+    border-block-end: none;
+  }
+
+  .toggleLabel {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .toggleDescription {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+    margin-block-start: var(--cascivo-space-0-5);
+  }
+
+  .footer {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--cascivo-space-3);
+    padding: var(--cascivo-space-4) var(--cascivo-space-8);
+    background: var(--cascivo-color-surface);
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+}
