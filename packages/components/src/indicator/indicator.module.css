@@ -1,0 +1,33 @@
+@layer cascade.component {
+  .indicator {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .overlay {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .indicator[data-placement='top-start'] .overlay {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    transform: translate(-25%, -25%);
+  }
+  .indicator[data-placement='top-end'] .overlay {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    transform: translate(25%, -25%);
+  }
+  .indicator[data-placement='bottom-start'] .overlay {
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    transform: translate(-25%, 25%);
+  }
+  .indicator[data-placement='bottom-end'] .overlay {
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    transform: translate(25%, 25%);
+  }
+}

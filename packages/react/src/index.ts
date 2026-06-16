@@ -121,3 +121,7 @@ export * from '../../components/src/native-select/native-select'
 export * from '../../components/src/code-snippet/code-snippet'
 export * from '../../components/src/steps/steps'
 export * from '../../components/src/tile/tile'
+// v31 T4 layout primitives
+export * from '../../components/src/indicator/indicator'
+export * from '../../components/src/join/join'
+export * from '../../components/src/stack/stack'

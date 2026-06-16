@@ -28,8 +28,10 @@ import { meta as headerMeta } from './header/header.meta'
 import { meta as headerPanelMeta } from './header-panel/header-panel.meta'
 import { meta as headingMeta } from './heading/heading.meta'
 import { meta as hoverCardMeta } from './hover-card/hover-card.meta'
+import { meta as indicatorMeta } from './indicator/indicator.meta'
 import { meta as inputMeta } from './input/input.meta'
 import { meta as inputGroupMeta } from './input-group/input-group.meta'
+import { meta as joinMeta } from './join/join.meta'
 import { meta as kbdMeta } from './kbd/kbd.meta'
 import { meta as linkMeta } from './link/link.meta'
 import { meta as listMeta } from './list/list.meta'
@@ -57,6 +59,7 @@ import { meta as separatorMeta } from './separator/separator.meta'
 import { meta as sheetMeta } from './sheet/sheet.meta'
 import { meta as shellHeaderMeta } from './shell-header/shell-header.meta'
 import { meta as sideNavMeta } from './side-nav/side-nav.meta'
+import { meta as stackMeta } from './stack/stack.meta'
 import { meta as stepsMeta } from './steps/steps.meta'
 import { meta as skeletonMeta } from './skeleton/skeleton.meta'
 import { meta as skipNavMeta } from './skip-nav/skip-nav.meta'
@@ -106,8 +109,10 @@ export const allMetas: ComponentMeta[] = [
   headerPanelMeta,
   headingMeta,
   hoverCardMeta,
+  indicatorMeta,
   inputMeta,
   inputGroupMeta,
+  joinMeta,
   kbdMeta,
   linkMeta,
   listMeta,
@@ -139,6 +144,7 @@ export const allMetas: ComponentMeta[] = [
   skipNavMeta,
   sliderMeta,
   spinnerMeta,
+  stackMeta,
   statMeta,
   statusMeta,
   stepsMeta,

@@ -1,0 +1,16 @@
+@layer cascade.component {
+  .stack {
+    display: grid;
+    grid-template-areas: 'stack';
+    isolation: isolate;
+  }
+
+  .layer {
+    grid-area: stack;
+    transform: translate(
+      calc(var(--cascivo-stack-index, 0) * var(--cascivo-stack-offset, 4px)),
+      calc(var(--cascivo-stack-index, 0) * var(--cascivo-stack-offset, 4px))
+    );
+    z-index: calc(10 - var(--cascivo-stack-index, 0));
+  }
+}

@@ -1,0 +1,43 @@
+@layer cascade.component {
+  .join {
+    display: inline-flex;
+  }
+
+  .join[data-orientation='horizontal'] {
+    flex-direction: row;
+  }
+  .join[data-orientation='vertical'] {
+    flex-direction: column;
+  }
+
+  .join[data-orientation='horizontal'] > :first-child:not(:last-child) {
+    border-start-end-radius: 0 !important;
+    border-end-end-radius: 0 !important;
+  }
+  .join[data-orientation='horizontal'] > :last-child:not(:first-child) {
+    border-start-start-radius: 0 !important;
+    border-end-start-radius: 0 !important;
+  }
+  .join[data-orientation='horizontal'] > :not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
+  }
+
+  .join[data-orientation='vertical'] > :first-child:not(:last-child) {
+    border-end-start-radius: 0 !important;
+    border-end-end-radius: 0 !important;
+  }
+  .join[data-orientation='vertical'] > :last-child:not(:first-child) {
+    border-start-start-radius: 0 !important;
+    border-start-end-radius: 0 !important;
+  }
+  .join[data-orientation='vertical'] > :not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
+  }
+
+  .join[data-orientation='horizontal'] > :not(:first-child) {
+    border-inline-start-width: 0;
+  }
+  .join[data-orientation='vertical'] > :not(:first-child) {
+    border-block-start-width: 0;
+  }
+}
