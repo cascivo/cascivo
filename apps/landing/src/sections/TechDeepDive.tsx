@@ -1,3 +1,5 @@
+import { CodeBlock, type CodeLang } from './highlight'
+
 interface TechBlock {
   id: string
   title: string
@@ -6,6 +8,8 @@ interface TechBlock {
   afterLabel: string
   before: string
   after: string
+  beforeLang: CodeLang
+  afterLang: CodeLang
 }
 
 const BLOCKS: TechBlock[] = [
@@ -18,6 +22,8 @@ const BLOCKS: TechBlock[] = [
       'clash — no !important, no runtime injection.',
     beforeLabel: 'Tailwind / inline styles',
     afterLabel: 'cascivo — @layer',
+    beforeLang: 'css',
+    afterLang: 'css',
     before: `/* Specificity arms race */
 .btn { color: blue; }
 /* utility class must win — no choice */
@@ -41,6 +47,8 @@ const BLOCKS: TechBlock[] = [
       'queries. @container adapts to the container.',
     beforeLabel: 'Media queries (viewport)',
     afterLabel: 'cascivo — @container',
+    beforeLang: 'css',
+    afterLang: 'css',
     before: `/* Responds to viewport width, not component width */
 @media (max-width: 640px) {
   .card { flex-direction: column; }
@@ -63,6 +71,8 @@ const BLOCKS: TechBlock[] = [
       'CSS, with zero runtime cost.',
     beforeLabel: 'JS class-toggling',
     afterLabel: 'cascivo — :has()',
+    beforeLang: 'js',
+    afterLang: 'css',
     before: `// JavaScript required for every visual state
 input.addEventListener('invalid', () => {
   formGroup.classList.add('has-error')
@@ -117,17 +127,13 @@ export function TechDeepDive({ teaser = false }: { teaser?: boolean }) {
                 <figcaption className="tech-code-label tech-code-label--before">
                   {block.beforeLabel}
                 </figcaption>
-                <pre className="tech-pre">
-                  <code>{block.before}</code>
-                </pre>
+                <CodeBlock code={block.before} lang={block.beforeLang} />
               </figure>
               <figure className="tech-code tech-code--after">
                 <figcaption className="tech-code-label tech-code-label--after">
                   {block.afterLabel}
                 </figcaption>
-                <pre className="tech-pre">
-                  <code>{block.after}</code>
-                </pre>
+                <CodeBlock code={block.after} lang={block.afterLang} />
               </figure>
             </div>
           </article>

@@ -289,6 +289,9 @@ code {
   border-radius: var(--cascivo-radius-md);
   overflow: hidden;
   border: 1px solid var(--cascivo-color-border);
+  /* Stretch both panels to equal height (grid row) and let the code fill. */
+  display: flex;
+  flex-direction: column;
 }
 
 .tech-code-label {
@@ -313,6 +316,7 @@ code {
 
 .tech-pre {
   margin: 0;
+  flex: 1;
   padding: var(--cascivo-space-4);
   background: var(--cascivo-color-surface-raised);
   overflow-x: auto;
@@ -324,6 +328,37 @@ code {
 
 .tech-pre code {
   font-family: var(--cascivo-font-mono);
+}
+
+/* ── Syntax highlighting tokens (theme-aware) ───────────── */
+.tech-pre .tok-comment {
+  color: var(--cascivo-color-text-muted);
+  font-style: italic;
+}
+
+.tech-pre .tok-string {
+  color: var(--cascivo-color-success);
+}
+
+.tech-pre .tok-atrule,
+.tech-pre .tok-keyword {
+  color: var(--cascivo-color-accent);
+}
+
+.tech-pre .tok-fn {
+  color: var(--cascivo-color-info);
+}
+
+.tech-pre .tok-number {
+  color: var(--cascivo-color-warning);
+}
+
+.tech-pre .tok-variable {
+  color: var(--cascivo-color-accent-hover);
+}
+
+.tech-pre .tok-punct {
+  color: var(--cascivo-color-text-subtle);
 }
 
 .tech-deep-dive-footer {
