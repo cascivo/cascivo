@@ -34,24 +34,16 @@ const ProofTeasers = lazy(() =>
 const AgentLayer = lazy(() =>
   import('./sections/AgentLayer').then((m) => ({ default: m.AgentLayer })),
 )
-const ThemeDemo = lazy(() =>
-  import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })),
-)
+const ThemeDemo = lazy(() => import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })))
 const ExamplesGallery = lazy(() =>
   import('./sections/ExamplesGallery').then((m) => ({ default: m.ExamplesGallery })),
 )
-const Ecosystem = lazy(() =>
-  import('./sections/Ecosystem').then((m) => ({ default: m.Ecosystem })),
-)
+const Ecosystem = lazy(() => import('./sections/Ecosystem').then((m) => ({ default: m.Ecosystem })))
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
-const CtaBand = lazy(() =>
-  import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })),
-)
-const Footer = lazy(() =>
-  import('./sections/Footer').then((m) => ({ default: m.Footer })),
-)
+const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
+const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
