@@ -16,12 +16,38 @@ const NAV_ITEMS: NavItem[] = [
 export function AppShell() {
   useSignals()
   const sidebarOpen = useSignal(false)
+  const isMobile = useSignal(
+    typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 39.999rem)').matches,
+  )
 
   useSignalEffect(() => {
     document.body.style.overflow = sidebarOpen.value ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
+  })
+
+  useSignalEffect(() => {
+    if (typeof window.matchMedia !== 'function') return
+    const mq = window.matchMedia('(max-width: 39.999rem)')
+    const handler = (e: MediaQueryListEvent) => {
+      isMobile.value = e.matches
+    }
+    isMobile.value = mq.matches
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  })
+
+  useSignalEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && sidebarOpen.value) {
+        sidebarOpen.value = false
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
   })
 
   function toggleSidebar() {
@@ -51,7 +77,11 @@ export function AppShell() {
         <div className={styles.overlay} onClick={closeSidebar} aria-hidden="true" />
       )}
 
-      <aside className={styles.sidebar} data-open={String(sidebarOpen.value)}>
+      <aside
+        className={styles.sidebar}
+        data-open={String(sidebarOpen.value)}
+        aria-hidden={isMobile.value ? !sidebarOpen.value : undefined}
+      >
         <div className={styles.sidebarLogo}>cascivo</div>
         <nav className={styles.nav} aria-label="Main navigation">
           {NAV_ITEMS.map((item) => (
