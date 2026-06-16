@@ -181,10 +181,27 @@ function writePlaceholders() {
 // ── Real capture (Playwright) ───────────────────────────────────────────────
 async function capture() {
   const { chromium } = await import('@playwright/test')
-  const { spawn } = await import('node:child_process')
+  const { spawn, execFileSync } = await import('node:child_process')
+  const { existsSync } = await import('node:fs')
+
+  const landingDist = resolve(root, 'apps/landing/dist')
+  if (!existsSync(landingDist)) {
+    throw new Error(
+      'Landing is not built. Run `pnpm build:landing-demos` from the repo root first.',
+    )
+  }
+
+  // Copy each demo's built dist into landing/dist/demos/<slug>/ so the preview
+  // server can serve them. assemble-demos.mjs does the copy (no --build flag
+  // since example apps are expected to already be built).
+  console.log('[screenshots] assembling demo apps into landing dist…')
+  execFileSync('node', [resolve(root, 'scripts/assemble-demos.mjs')], {
+    cwd: root,
+    stdio: 'inherit',
+  })
 
   const PORT = Number(process.env.SHOT_PORT ?? 4190)
-  // Serve the already-built+assembled landing dist so /demos/<slug>/ is live.
+  // Serve the assembled landing dist so /demos/<slug>/ is live.
   const server = spawn('pnpm', ['exec', 'vp', 'preview', '--port', String(PORT), '--strictPort'], {
     cwd: resolve(root, 'apps/landing'),
     stdio: 'ignore',
@@ -226,6 +243,24 @@ async function capture() {
     server.kill()
   }
 }
+
+// ── Block screenshots ──────────────────────────────────────────────────────
+const BLOCK_NAMES = [
+  'app-shell',
+  'auth-login',
+  'auth-signup',
+  'dashboard-overview',
+  'dashboard-table',
+  'marketing-features',
+  'marketing-hero',
+  'settings-profile',
+]
+
+const BLOCKS_OUT_ROOT = resolve(root, 'apps/landing/public/blocks/screenshots')
+
+// Called from T5 once /blocks/preview/:name route exists in the landing app.
+// Placeholder — implementation goes here when preview route is available.
+async function captureBlocks() {}
 
 const mode = process.argv.includes('--capture') ? 'capture' : 'placeholder'
 if (mode === 'capture') {

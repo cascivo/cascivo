@@ -12,10 +12,24 @@ export interface RegistryComponent {
   meta: { name: string }
 }
 
+export interface BlockRegistryEntry {
+  name: string
+  type: 'block'
+  displayName: string
+  description: string
+  category: string
+  version: string
+  files: string[]
+  dependencies: string[]
+  tags: string[]
+  screenshot: { light: string; dark: string }
+}
+
 export interface Registry {
   version: string
   generatedAt: string
   components: RegistryComponent[]
+  blocks?: BlockRegistryEntry[]
 }
 
 function asStringArray(value: unknown): string[] {
@@ -67,10 +81,40 @@ export function parseRegistry(raw: unknown): Registry {
     return result
   })
 
+  const blocks: BlockRegistryEntry[] = Array.isArray(obj.blocks)
+    ? obj.blocks.flatMap((entry) => {
+        if (typeof entry !== 'object' || entry === null) return []
+        const b = entry as Record<string, unknown>
+        if (typeof b.name !== 'string') return []
+        const rawScreenshot =
+          typeof b.screenshot === 'object' && b.screenshot !== null
+            ? (b.screenshot as Record<string, unknown>)
+            : {}
+        return [
+          {
+            name: b.name,
+            type: 'block' as const,
+            displayName: typeof b.displayName === 'string' ? b.displayName : b.name,
+            description: typeof b.description === 'string' ? b.description : '',
+            category: typeof b.category === 'string' ? b.category : '',
+            version: typeof b.version === 'string' ? b.version : '0.0.0',
+            files: asStringArray(b.files),
+            dependencies: asStringArray(b.dependencies),
+            tags: asStringArray(b.tags),
+            screenshot: {
+              light: typeof rawScreenshot.light === 'string' ? rawScreenshot.light : '',
+              dark: typeof rawScreenshot.dark === 'string' ? rawScreenshot.dark : '',
+            },
+          },
+        ]
+      })
+    : []
+
   return {
     version: typeof obj.version === 'string' ? obj.version : '0.0.0',
     generatedAt: typeof obj.generatedAt === 'string' ? obj.generatedAt : '',
     components,
+    blocks,
   }
 }
 
@@ -93,6 +137,14 @@ export async function fetchRegistry(url: string): Promise<Registry> {
  */
 export function findComponent(registry: Registry, name: string): RegistryComponent | undefined {
   const target = name.toLowerCase()
+
+  // Handle block/ prefix: look up in the blocks array.
+  if (target.startsWith('block/')) {
+    const blockName = target.slice('block/'.length)
+    const block = (registry.blocks ?? []).find((b) => b.name.toLowerCase() === blockName)
+    if (!block) throw new Error(`Block "${blockName}" not found in registry.`)
+    return block as unknown as RegistryComponent
+  }
 
   // 1. Exact full-name match (case-insensitive).
   const exact = registry.components.find((c) => c.name.toLowerCase() === target)

@@ -62,7 +62,7 @@
         "examples": [
           {
             "title": "Single",
-            "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>"
+            "code": "<Accordion type=\"single\" defaultValue=\"a\"><AccordionItem value=\"a\"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>\u2026</AccordionContent></AccordionItem></Accordion>"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -74,8 +74,8 @@
             "Allowing multiple sections open at once (type=\"multiple\")"
           ],
           "whenNotToUse": [
-            "Switching between mutually exclusive, equally important views — use Tabs",
-            "A single show/hide region — a plain disclosure is enough"
+            "Switching between mutually exclusive, equally important views \u2014 use Tabs",
+            "A single show/hide region \u2014 a plain disclosure is enough"
           ],
           "antiPatterns": [
             {
@@ -198,8 +198,8 @@
             "Offering an inline recovery action tied to the message (action prop)"
           ],
           "whenNotToUse": [
-            "Transient confirmation that should auto-dismiss — use Toast",
-            "Blocking the user for a decision — use Modal or AlertDialog"
+            "Transient confirmation that should auto-dismiss \u2014 use Toast",
+            "Blocking the user for a decision \u2014 use Modal or AlertDialog"
           ],
           "antiPatterns": [
             {
@@ -222,7 +222,7 @@
           ],
           "a11yRationale": "role=\"alert\" makes assistive tech announce the message when it appears; the dismiss control is a real button so it is reachable and labeled, and color is paired with an icon/title so meaning is not conveyed by hue alone",
           "content": {
-            "tone": "Direct and specific — state what happened and what to do next",
+            "tone": "Direct and specific \u2014 state what happened and what to do next",
             "notes": "Title is a short summary; body explains. Avoid alarmist all-caps."
           },
           "flexibility": [
@@ -284,18 +284,18 @@
             "Interrupting a flow to force an explicit decision the user must acknowledge"
           ],
           "whenNotToUse": [
-            "Showing non-critical information or forms — use Modal, which supports light-dismiss and arbitrary content",
+            "Showing non-critical information or forms \u2014 use Modal, which supports light-dismiss and arbitrary content",
             "Confirming a low-stakes action where an undoable Toast is friendlier and less interruptive"
           ],
           "antiPatterns": [
             {
               "bad": "Using AlertDialog for a multi-field form or rich content",
               "good": "Use Modal for content; reserve AlertDialog for a title + description + confirm/cancel decision",
-              "why": "AlertDialog only renders a title, description, and two action buttons, and is role=\"alertdialog\" with no light-dismiss — it is built to demand a yes/no answer, not host content"
+              "why": "AlertDialog only renders a title, description, and two action buttons, and is role=\"alertdialog\" with no light-dismiss \u2014 it is built to demand a yes/no answer, not host content"
             },
             {
               "bad": "Adding a backdrop/Escape close to dismiss the dialog without choosing",
-              "why": "It uses popover=\"manual\" so it cannot be light-dismissed by design — closing must go through onConfirm/onCancel so the decision is always explicit"
+              "why": "It uses popover=\"manual\" so it cannot be light-dismissed by design \u2014 closing must go through onConfirm/onCancel so the decision is always explicit"
             }
           ],
           "related": [
@@ -317,14 +317,14 @@
           ],
           "a11yRationale": "Uses role=\"alertdialog\" with aria-modal and labelled/described-by wiring so assistive tech announces it as an interruptive decision; focus moves to the cancel button on open so the safe default is selected, and popover=\"manual\" prevents accidental dismissal that would skip the decision",
           "content": {
-            "tone": "Direct and specific — name the exact consequence",
+            "tone": "Direct and specific \u2014 name the exact consequence",
             "notes": "Title states the action (\"Delete project?\"); description states what is lost and whether it is reversible; confirm label is the verb (\"Delete\"), not \"OK\""
           },
           "flexibility": [
             {
               "area": "dismiss behavior",
               "level": "strict",
-              "note": "No light-dismiss — closing must go through onConfirm/onCancel"
+              "note": "No light-dismiss \u2014 closing must go through onConfirm/onCancel"
             },
             {
               "area": "action labels",
@@ -399,7 +399,7 @@
             "Keeping thumbnails or covers uniform across a grid"
           ],
           "whenNotToUse": [
-            "Content whose height should grow with text — let it size naturally",
+            "Content whose height should grow with text \u2014 let it size naturally",
             "A single fixed-pixel image where width and height are already known"
           ],
           "antiPatterns": [
@@ -514,7 +514,7 @@
             "Compactly identifying authors in lists, comments, and headers"
           ],
           "whenNotToUse": [
-            "Decorative imagery unrelated to identity — use a plain <img>",
+            "Decorative imagery unrelated to identity \u2014 use a plain <img>",
             "A generic icon or logo with no person/entity meaning"
           ],
           "antiPatterns": [
@@ -615,8 +615,8 @@
             "Annotating an element with a count or state that is not interactive"
           ],
           "whenNotToUse": [
-            "A removable or interactive chip (filters, selections) — use Tag",
-            "A standalone system state with a colored dot — use Status"
+            "A removable or interactive chip (filters, selections) \u2014 use Tag",
+            "A standalone system state with a colored dot \u2014 use Status"
           ],
           "antiPatterns": [
             {
@@ -714,8 +714,8 @@
             "Attributing a quote to a person or work via the cite footer"
           ],
           "whenNotToUse": [
-            "Indenting or emphasizing your own non-quoted text — use Text styling",
-            "Inline quotations within a sentence — use a <q> element"
+            "Indenting or emphasizing your own non-quoted text \u2014 use Text styling",
+            "Inline quotations within a sentence \u2014 use a <q> element"
           ],
           "antiPatterns": [
             {
@@ -826,8 +826,8 @@
             "Collapsing deep trails to keep the trail compact (maxVisible)"
           ],
           "whenNotToUse": [
-            "Paging through data records — use Pagination",
-            "Switching between sibling views — use Tabs"
+            "Paging through data records \u2014 use Pagination",
+            "Switching between sibling views \u2014 use Tabs"
           ],
           "antiPatterns": [
             {
@@ -937,7 +937,7 @@
           },
           {
             "title": "Loading",
-            "code": "<Button loading>Saving…</Button>"
+            "code": "<Button loading>Saving\u2026</Button>"
           },
           {
             "title": "Destructive",
@@ -952,14 +952,14 @@
             "Submitting a form or confirming a decision"
           ],
           "whenNotToUse": [
-            "Navigation between pages where a real link is semantically correct — use an anchor",
-            "Toggling a binary setting — use Toggle; persistent selection — use Checkbox/Radio"
+            "Navigation between pages where a real link is semantically correct \u2014 use an anchor",
+            "Toggling a binary setting \u2014 use Toggle; persistent selection \u2014 use Checkbox/Radio"
           ],
           "antiPatterns": [
             {
               "bad": "<Button onClick={() => navigate(\"/x\")}>Home</Button>",
               "good": "<a href=\"/x\">Home</a>",
-              "why": "Buttons are for actions, links for navigation — assistive tech and the browser treat them differently"
+              "why": "Buttons are for actions, links for navigation \u2014 assistive tech and the browser treat them differently"
             }
           ],
           "related": [
@@ -977,7 +977,7 @@
           "a11yRationale": "Renders a native <button> so Enter/Space activation, focus, and role come from the platform; loading state uses aria-busy rather than removing the element so focus is preserved",
           "content": {
             "tone": "Imperative verb-first label",
-            "notes": "Sentence case, ≤3 words; avoid \"Click here\""
+            "notes": "Sentence case, \u22643 words; avoid \"Click here\""
           },
           "flexibility": [
             {
@@ -1074,8 +1074,8 @@
             "Visually grouping buttons that share context without implying mutual exclusivity"
           ],
           "whenNotToUse": [
-            "The buttons represent a single selected value among options — use ToggleGroup",
-            "The actions are unrelated and should read as separate buttons — lay them out with spacing instead"
+            "The buttons represent a single selected value among options \u2014 use ToggleGroup",
+            "The actions are unrelated and should read as separate buttons \u2014 lay them out with spacing instead"
           ],
           "antiPatterns": [
             {
@@ -1265,8 +1265,8 @@
             "As the building block inside a date-picker or date-range-picker popover"
           ],
           "whenNotToUse": [
-            "A compact form field where an inline grid wastes space — use DatePicker (trigger + popover)",
-            "Selecting a contiguous date range — use DateRangePicker, which composes two calendars"
+            "A compact form field where an inline grid wastes space \u2014 use DatePicker (trigger + popover)",
+            "Selecting a contiguous date range \u2014 use DateRangePicker, which composes two calendars"
           ],
           "antiPatterns": [
             {
@@ -1367,8 +1367,8 @@
             "Giving a content cluster elevation to separate it from the page background"
           ],
           "whenNotToUse": [
-            "Pure semantic/structural grouping with no surface — use a <section>",
-            "Wrapping every element in a card — nesting surfaces flattens visual hierarchy"
+            "Pure semantic/structural grouping with no surface \u2014 use a <section>",
+            "Wrapping every element in a card \u2014 nesting surfaces flattens visual hierarchy"
           ],
           "antiPatterns": [
             {
@@ -1384,7 +1384,7 @@
               "reason": "Use a Separator to divide regions inside a card"
             }
           ],
-          "a11yRationale": "role=\"region\" is appropriate only when the card is a meaningful landmark; otherwise treat it as presentational — the visual surface adds no semantics on its own",
+          "a11yRationale": "role=\"region\" is appropriate only when the card is a meaningful landmark; otherwise treat it as presentational \u2014 the visual surface adds no semantics on its own",
           "flexibility": [
             {
               "area": "variant and padding",
@@ -1491,8 +1491,8 @@
             "When horizontal swiping/scrolling is a natural interaction on touch devices"
           ],
           "whenNotToUse": [
-            "Content users must compare side-by-side — show a grid instead",
-            "Critical information that must always be visible — carousels hide most of their content"
+            "Content users must compare side-by-side \u2014 show a grid instead",
+            "Critical information that must always be visible \u2014 carousels hide most of their content"
           ],
           "antiPatterns": [
             {
@@ -1513,7 +1513,7 @@
             {
               "area": "transition",
               "level": "strict",
-              "note": "Paging uses native CSS scroll-snap, not transform math — no custom easing config"
+              "note": "Paging uses native CSS scroll-snap, not transform math \u2014 no custom easing config"
             },
             {
               "area": "slide content",
@@ -1607,8 +1607,8 @@
             "A \"select all\" control that needs an indeterminate (partial) state"
           ],
           "whenNotToUse": [
-            "A binary setting that applies immediately on change — use Toggle",
-            "Choosing exactly one option from a mutually exclusive set — use Radio"
+            "A binary setting that applies immediately on change \u2014 use Toggle",
+            "Choosing exactly one option from a mutually exclusive set \u2014 use Radio"
           ],
           "antiPatterns": [
             {
@@ -1644,7 +1644,7 @@
             {
               "area": "native input props",
               "level": "flexible",
-              "note": "Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through"
+              "note": "Spreads InputHTMLAttributes \u2014 name, value, required, checked, onChange all pass through"
             },
             {
               "area": "token names",
@@ -1733,14 +1733,14 @@
             "Presenting selectable options as larger, scannable click targets rather than a dense checkbox list"
           ],
           "whenNotToUse": [
-            "A simple labelled boolean in a form — use Checkbox",
-            "Choosing exactly one option from a set — use RadioCard or Radio"
+            "A simple labelled boolean in a form \u2014 use Checkbox",
+            "Choosing exactly one option from a set \u2014 use RadioCard or Radio"
           ],
           "antiPatterns": [
             {
               "bad": "Using CheckboxCard for mutually exclusive options",
               "good": "Use RadioCard so only one can be selected",
-              "why": "Each CheckboxCard is an independent native checkbox — nothing enforces a single selection across them"
+              "why": "Each CheckboxCard is an independent native checkbox \u2014 nothing enforces a single selection across them"
             },
             {
               "bad": "Cramming a paragraph of marketing copy into description",
@@ -1843,13 +1843,13 @@
             "Distinguishing literal code from surrounding text with a monospace span"
           ],
           "whenNotToUse": [
-            "Multi-line code blocks with syntax highlighting — use a <pre> block",
-            "Keyboard shortcuts the user should press — use Kbd"
+            "Multi-line code blocks with syntax highlighting \u2014 use a <pre> block",
+            "Keyboard shortcuts the user should press \u2014 use Kbd"
           ],
           "antiPatterns": [
             {
               "bad": "<Code>Press Cmd+K</Code>",
-              "good": "<Kbd>⌘</Kbd> <Kbd>K</Kbd>",
+              "good": "<Kbd>\u2318</Kbd> <Kbd>K</Kbd>",
               "why": "Code marks literal code; key presses are semantically Kbd"
             }
           ],
@@ -1926,8 +1926,8 @@
             "Inline code references inside flowing text (inline variant)"
           ],
           "whenNotToUse": [
-            "An editable code input — use a textarea or code editor",
-            "Long files needing syntax highlighting and folding — use a dedicated viewer"
+            "An editable code input \u2014 use a textarea or code editor",
+            "Long files needing syntax highlighting and folding \u2014 use a dedicated viewer"
           ],
           "antiPatterns": [
             {
@@ -1948,7 +1948,7 @@
             {
               "area": "variant",
               "level": "strict",
-              "note": "inline | single | multi — controls the wrapping element and layout"
+              "note": "inline | single | multi \u2014 controls the wrapping element and layout"
             },
             {
               "area": "copy button",
@@ -2056,8 +2056,8 @@
             "Toggling one region whose state you may want to control externally"
           ],
           "whenNotToUse": [
-            "Several mutually related sections — use Accordion instead",
-            "Transient overlays anchored to a trigger — use Dropdown or Popover"
+            "Several mutually related sections \u2014 use Accordion instead",
+            "Transient overlays anchored to a trigger \u2014 use Dropdown or Popover"
           ],
           "antiPatterns": [
             {
@@ -2190,7 +2190,7 @@
             "Forms that need an optional alpha channel alongside the color"
           ],
           "whenNotToUse": [
-            "Choosing from a small fixed palette only — use a swatch RadioGroup instead",
+            "Choosing from a small fixed palette only \u2014 use a swatch RadioGroup instead",
             "A single accent toggle where a few preset chips suffice"
           ],
           "antiPatterns": [
@@ -2355,15 +2355,15 @@
             "Form fields where the value is one of many known options (country, assignee, repository)"
           ],
           "whenNotToUse": [
-            "Short option lists (≈2–7) where filtering adds no value — use Select or SegmentedControl",
-            "Selecting multiple values — use MultiSelect",
-            "Triggering actions or commands — use Dropdown or CommandMenu"
+            "Short option lists (\u22482\u20137) where filtering adds no value \u2014 use Select or SegmentedControl",
+            "Selecting multiple values \u2014 use MultiSelect",
+            "Triggering actions or commands \u2014 use Dropdown or CommandMenu"
           ],
           "antiPatterns": [
             {
               "bad": "Using Combobox to fire actions like \"Delete\" or \"Export\"",
               "good": "Use Dropdown for actions; Combobox is for picking a value",
-              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onChange semantics — actions belong in a menu"
+              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onChange semantics \u2014 actions belong in a menu"
             },
             {
               "bad": "Setting searchable={false} on a 200-item list",
@@ -2447,7 +2447,7 @@
             "name": "placeholder",
             "type": "string",
             "required": false,
-            "default": "Type a command or search…"
+            "default": "Type a command or search\u2026"
           },
           {
             "name": "emptyLabel",
@@ -2479,7 +2479,7 @@
             "name": "onQueryChange",
             "type": "(query: string) => void",
             "required": false,
-            "description": "Fires on every query keystroke — use to fetch async items"
+            "description": "Fires on every query keystroke \u2014 use to fetch async items"
           },
           {
             "name": "className",
@@ -2508,7 +2508,7 @@
         "examples": [
           {
             "title": "Basic command menu",
-            "code": "<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['⌘', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>"
+            "code": "<CommandMenu\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    {\n      heading: 'Actions',\n      items: [\n        { id: 'new', label: 'New file', shortcut: ['\u2318', 'N'], onSelect: createFile },\n        { id: 'search', label: 'Search docs', keywords: ['find'], onSelect: openSearch },\n      ],\n    },\n  ]}\n/>"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -2520,8 +2520,8 @@
             "Multi-step flows where selecting an item drills into a nested page of further commands"
           ],
           "whenNotToUse": [
-            "Picking a form value from a list — use Combobox",
-            "A small set of actions tied to a specific trigger button — use Dropdown"
+            "Picking a form value from a list \u2014 use Combobox",
+            "A small set of actions tied to a specific trigger button \u2014 use Dropdown"
           ],
           "antiPatterns": [
             {
@@ -2531,7 +2531,7 @@
             },
             {
               "bad": "Items with both onSelect and page set, or neither",
-              "why": "Each item must do exactly one thing — run an action (onSelect) or push a nested page (page)"
+              "why": "Each item must do exactly one thing \u2014 run an action (onSelect) or push a nested page (page)"
             }
           ],
           "related": [
@@ -2644,8 +2644,8 @@
             "Separating a labelled cluster of items from surrounding page content"
           ],
           "whenNotToUse": [
-            "A long, virtualised data set — use a Table or DataList instead",
-            "Plain bulleted prose where the container border adds no meaning — use List"
+            "A long, virtualised data set \u2014 use a Table or DataList instead",
+            "Plain bulleted prose where the container border adds no meaning \u2014 use List"
           ],
           "antiPatterns": [
             {
@@ -2725,8 +2725,8 @@
             "Power-user surfaces where the desktop right-click affordance is expected"
           ],
           "whenNotToUse": [
-            "Primary actions that must be discoverable by all users — right-click is hidden; use a visible Button or Dropdown",
-            "Selecting a value or filtering a list — use Combobox/Select"
+            "Primary actions that must be discoverable by all users \u2014 right-click is hidden; use a visible Button or Dropdown",
+            "Selecting a value or filtering a list \u2014 use Combobox/Select"
           ],
           "antiPatterns": [
             {
@@ -2838,18 +2838,18 @@
         "tags": ["clipboard", "copy", "button", "snippet"],
         "intent": {
           "whenToUse": [
-            "Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links",
+            "Letting users copy a short value to the clipboard \u2014 install commands, API keys, tokens, share links",
             "Inline next to code snippets or read-only fields where copying is the primary affordance"
           ],
           "whenNotToUse": [
-            "Triggering a general action — use Button",
+            "Triggering a general action \u2014 use Button",
             "Copying content the user can already select and edit freely where a copy affordance adds nothing"
           ],
           "antiPatterns": [
             {
               "bad": "Wiring CopyButton to perform a non-clipboard action via onClick",
               "good": "Use Button for arbitrary actions; CopyButton always writes value to the clipboard",
-              "why": "Its click handler is fixed to navigator.clipboard.writeText(value) plus copied feedback — overloading it breaks user expectation"
+              "why": "Its click handler is fixed to navigator.clipboard.writeText(value) plus copied feedback \u2014 overloading it breaks user expectation"
             }
           ],
           "related": [
@@ -2959,8 +2959,8 @@
             "Compact detail panels next to or below a primary subject"
           ],
           "whenNotToUse": [
-            "Editable fields — use form Inputs, not a DataList",
-            "Tabular data with many rows and columns — use a Table"
+            "Editable fields \u2014 use form Inputs, not a DataList",
+            "Tabular data with many rows and columns \u2014 use a Table"
           ],
           "antiPatterns": [
             {
@@ -3172,8 +3172,8 @@
             "Rendering large datasets that benefit from row containment and server-side sort/paging"
           ],
           "whenNotToUse": [
-            "A simple static list of items — use List",
-            "Layout grids of cards or media — use a Card grid, not a data table"
+            "A simple static list of items \u2014 use List",
+            "Layout grids of cards or media \u2014 use a Card grid, not a data table"
           ],
           "antiPatterns": [
             {
@@ -3348,7 +3348,7 @@
             "Date entry that benefits from min/max constraints and locale-aware formatting and week start"
           ],
           "whenNotToUse": [
-            "Selecting a time of day — use TimePicker",
+            "Selecting a time of day \u2014 use TimePicker",
             "Free-form or approximate dates where a plain Input is faster, or a date already known by typing"
           ],
           "antiPatterns": [
@@ -3527,12 +3527,12 @@
         "tags": ["date", "range", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
-            "Selecting a contiguous start–end date range (reporting windows, bookings, filters)",
+            "Selecting a contiguous start\u2013end date range (reporting windows, bookings, filters)",
             "When two months visible at once and hover-preview of the in-between span aid selection"
           ],
           "whenNotToUse": [
-            "Picking a single date — use DatePicker or Calendar",
-            "Selecting many non-contiguous dates — a range picker only models one continuous span"
+            "Picking a single date \u2014 use DatePicker or Calendar",
+            "Selecting many non-contiguous dates \u2014 a range picker only models one continuous span"
           ],
           "antiPatterns": [
             {
@@ -3617,9 +3617,9 @@
             "A controllable open/close panel where the parent owns the state via open/onOpenChange"
           ],
           "whenNotToUse": [
-            "A short yes/no confirmation — use AlertDialog",
-            "Small content anchored to a trigger element — use Popover",
-            "A gesture-driven, swipe-to-dismiss sheet — use Sheet"
+            "A short yes/no confirmation \u2014 use AlertDialog",
+            "Small content anchored to a trigger element \u2014 use Popover",
+            "A gesture-driven, swipe-to-dismiss sheet \u2014 use Sheet"
           ],
           "antiPatterns": [
             {
@@ -3645,7 +3645,7 @@
             {
               "area": "side",
               "level": "strict",
-              "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+              "note": "Limited to start | end | top | bottom \u2014 drives the slide direction and animation"
             },
             {
               "area": "open state",
@@ -3742,14 +3742,14 @@
             "Grouping related commands behind one affordance with optional icons and separators"
           ],
           "whenNotToUse": [
-            "Selecting a persistent value for a form — use Select or Combobox",
-            "A global searchable command palette — use CommandMenu; right-click context actions — use ContextMenu"
+            "Selecting a persistent value for a form \u2014 use Select or Combobox",
+            "A global searchable command palette \u2014 use CommandMenu; right-click context actions \u2014 use ContextMenu"
           ],
           "antiPatterns": [
             {
               "bad": "Using Dropdown to choose a form value and reading the selection as field state",
               "good": "Use Select/Combobox which expose role=\"combobox\" and a controlled value",
-              "why": "Dropdown items are role=\"menuitem\" actions fired via onSelect — there is no selected-value semantics for assistive tech or forms"
+              "why": "Dropdown items are role=\"menuitem\" actions fired via onSelect \u2014 there is no selected-value semantics for assistive tech or forms"
             }
           ],
           "related": [
@@ -3872,14 +3872,14 @@
         "tags": ["form", "editable", "inline", "input", "text"],
         "intent": {
           "whenToUse": [
-            "Editing a single piece of text in place where the value is normally read-only — titles, names, labels",
+            "Editing a single piece of text in place where the value is normally read-only \u2014 titles, names, labels",
             "Keeping the page layout stable: the preview and the edit input occupy the same spot",
             "Letting users opt into editing by clicking, without a separate edit mode or form"
           ],
           "whenNotToUse": [
-            "A field that is always meant to be edited — use Input inside a Form instead",
-            "Multi-line or rich text — this is a single-line input only",
-            "Collecting several related values at once — use a Form with grouped fields"
+            "A field that is always meant to be edited \u2014 use Input inside a Form instead",
+            "Multi-line or rich text \u2014 this is a single-line input only",
+            "Collecting several related values at once \u2014 use a Form with grouped fields"
           ],
           "antiPatterns": [
             {
@@ -3986,7 +3986,7 @@
           },
           {
             "title": "With action",
-            "code": "<EmptyState icon=\"📄\" title=\"No documents yet\" description=\"Create your first document to get started.\" action={<Button>New document</Button>} />"
+            "code": "<EmptyState icon=\"\ud83d\udcc4\" title=\"No documents yet\" description=\"Create your first document to get started.\" action={<Button>New document</Button>} />"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -3998,8 +3998,8 @@
             "Offering an action that resolves the empty condition (action prop)"
           ],
           "whenNotToUse": [
-            "Content is still loading — use Skeleton or Spinner",
-            "An error occurred — use Alert to explain the failure"
+            "Content is still loading \u2014 use Skeleton or Spinner",
+            "An error occurred \u2014 use Alert to explain the failure"
           ],
           "antiPatterns": [
             {
@@ -4022,7 +4022,7 @@
           ],
           "a11yRationale": "Presentational by role; the title carries the meaning as text and the action is a real focusable control, so keyboard and screen-reader users can act on the next step",
           "content": {
-            "tone": "Encouraging and concrete — name the next action",
+            "tone": "Encouraging and concrete \u2014 name the next action",
             "notes": "Title states the situation; description tells the user what to do"
           },
           "flexibility": [
@@ -4136,7 +4136,7 @@
           ],
           "whenNotToUse": [
             "A standalone control that needs no label, description, or error",
-            "Grouping multiple related controls — use a <fieldset> with a <legend>"
+            "Grouping multiple related controls \u2014 use a <fieldset> with a <legend>"
           ],
           "antiPatterns": [
             {
@@ -4147,7 +4147,7 @@
             {
               "bad": "<div><label>Email</label><input aria-invalid /><span>Error</span></div>",
               "good": "<Field label=\"Email\" error=\"Error\"><Input /></Field>",
-              "why": "Hand-wired markup easily drifts: missing ids, no role=\"alert\", mismatched aria-describedby — Field keeps them in sync"
+              "why": "Hand-wired markup easily drifts: missing ids, no role=\"alert\", mismatched aria-describedby \u2014 Field keeps them in sync"
             }
           ],
           "related": [
@@ -4307,14 +4307,14 @@
             "Enforcing client-side accept/maxSize constraints with a callback for rejected files"
           ],
           "whenNotToUse": [
-            "A single short text value — use Input",
-            "Choosing from a fixed set of options rather than supplying a file — use Select or MultiSelect"
+            "A single short text value \u2014 use Input",
+            "Choosing from a fixed set of options rather than supplying a file \u2014 use Select or MultiSelect"
           ],
           "antiPatterns": [
             {
               "bad": "Treating the component as uncontrolled and ignoring onFilesAdded",
               "good": "Track accepted files in state and pass them back via the files prop",
-              "why": "The file list is controlled — without wiring files/onFilesAdded/onRemove nothing renders in the list and status cannot update"
+              "why": "The file list is controlled \u2014 without wiring files/onFilesAdded/onRemove nothing renders in the list and status cannot update"
             },
             {
               "bad": "Relying only on accept/maxSize for security",
@@ -4421,8 +4421,8 @@
             "Tracking per-field touched state and errors via the signal-based store from useForm/createForm"
           ],
           "whenNotToUse": [
-            "A single standalone value with no submission step — render a bare Input",
-            "Inline editing of one read-only value — use Editable"
+            "A single standalone value with no submission step \u2014 render a bare Input",
+            "Inline editing of one read-only value \u2014 use Editable"
           ],
           "antiPatterns": [
             {
@@ -4552,8 +4552,8 @@
             "Keeping the bar visible while scrolling (sticky)"
           ],
           "whenNotToUse": [
-            "Dense console apps with dropdown nav, global icon actions, and a hamburger — use ShellHeader",
-            "Section headings within page content — use Heading"
+            "Dense console apps with dropdown nav, global icon actions, and a hamburger \u2014 use ShellHeader",
+            "Section headings within page content \u2014 use Heading"
           ],
           "antiPatterns": [
             {
@@ -4588,7 +4588,7 @@
     {
       "name": "header-panel",
       "type": "component",
-      "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+      "description": "Non-modal panel anchored below the shell header at the inline-end edge \u2014 hosts notifications, app switcher, user settings",
       "category": "navigation",
       "version": "0.0.0",
       "files": [
@@ -4599,7 +4599,7 @@
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
       "meta": {
         "name": "HeaderPanel",
-        "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+        "description": "Non-modal panel anchored below the shell header at the inline-end edge \u2014 hosts notifications, app switcher, user settings",
         "category": "navigation",
         "states": ["open", "closed"],
         "variants": [],
@@ -4669,8 +4669,8 @@
             "Light-dismiss content that should not block the rest of the app"
           ],
           "whenNotToUse": [
-            "Content that must block interaction until resolved — use Modal",
-            "A small contextual menu attached to a trigger — use Dropdown or Popover"
+            "Content that must block interaction until resolved \u2014 use Modal",
+            "A small contextual menu attached to a trigger \u2014 use Dropdown or Popover"
           ],
           "antiPatterns": [
             {
@@ -4737,7 +4737,7 @@
             "name": "size",
             "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
             "required": false,
-            "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
+            "default": "derived from level (1\u21922xl, 2\u2192xl, 3\u2192lg, 4\u2192md, 5\u2192sm, 6\u2192sm)"
           }
         ],
         "tokens": [
@@ -4780,8 +4780,8 @@
             "Keeping the semantic heading level correct while choosing the visual size independently"
           ],
           "whenNotToUse": [
-            "Emphasizing inline or body text — use Text with a weight",
-            "Long-form rendered content — let Prose style its own headings"
+            "Emphasizing inline or body text \u2014 use Text with a weight",
+            "Long-form rendered content \u2014 let Prose style its own headings"
           ],
           "antiPatterns": [
             {
@@ -4802,7 +4802,7 @@
               "reason": "Prose styles headings inside authored long-form content"
             }
           ],
-          "a11yRationale": "Renders a real <h1>–<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level",
+          "a11yRationale": "Renders a real <h1>\u2013<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level",
           "content": {
             "tone": "Concise, descriptive titles in sentence case",
             "notes": "Each page should have one h1"
@@ -4816,7 +4816,7 @@
             {
               "area": "level sequence",
               "level": "strict",
-              "note": "Levels must not skip — maintain a valid heading hierarchy"
+              "note": "Levels must not skip \u2014 maintain a valid heading hierarchy"
             }
           ]
         }
@@ -4865,9 +4865,9 @@
             "Cases needing an open/close delay so brief mouse passes do not flicker the card"
           ],
           "whenNotToUse": [
-            "Short plain-text hints — use Tooltip",
-            "Content the user must interact with or that should trap focus — use Popover or Modal",
-            "Touch-primary flows where there is no hover — prefer a tap-triggered Popover"
+            "Short plain-text hints \u2014 use Tooltip",
+            "Content the user must interact with or that should trap focus \u2014 use Popover or Modal",
+            "Touch-primary flows where there is no hover \u2014 prefer a tap-triggered Popover"
           ],
           "antiPatterns": [
             {
@@ -5011,8 +5011,8 @@
             "Dense toolbars or table rows where a text label would not fit"
           ],
           "whenNotToUse": [
-            "The action is not universally recognizable by its icon — use a Button with a text label",
-            "Navigating between pages — use an anchor (optionally via asChild)"
+            "The action is not universally recognizable by its icon \u2014 use a Button with a text label",
+            "Navigating between pages \u2014 use an anchor (optionally via asChild)"
           ],
           "antiPatterns": [
             {
@@ -5121,14 +5121,14 @@
         "tags": ["loading", "status", "progress", "feedback", "spinner"],
         "intent": {
           "whenToUse": [
-            "Showing the progress of a single inline action — a Save button that becomes \"Saving… / Saved / Failed\"",
+            "Showing the progress of a single inline action \u2014 a Save button that becomes \"Saving\u2026 / Saved / Failed\"",
             "Communicating async status next to a control without occupying its own block or modal",
             "Reflecting a terminal success or error state that should be announced to assistive tech"
           ],
           "whenNotToUse": [
-            "Page- or section-level loading where layout space is reserved — use Skeleton or Spinner",
-            "Persistent, multi-line messages with recovery actions — use Alert or Notification",
-            "Determinate progress with a known percentage — use a progress bar"
+            "Page- or section-level loading where layout space is reserved \u2014 use Skeleton or Spinner",
+            "Persistent, multi-line messages with recovery actions \u2014 use Alert or Notification",
+            "Determinate progress with a known percentage \u2014 use a progress bar"
           ],
           "antiPatterns": [
             {
@@ -5151,7 +5151,7 @@
           ],
           "a11yRationale": "role=\"status\" with aria-live=\"polite\" announces the label when the status changes; the icon is decorative (aria-hidden) so meaning is carried by the text and color is never the sole signal",
           "content": {
-            "tone": "Terse and present-tense — \"Saving\", \"Saved\", \"Save failed\"",
+            "tone": "Terse and present-tense \u2014 \"Saving\", \"Saved\", \"Save failed\"",
             "notes": "Keep labels to a few words; the inactive status renders no label by default"
           },
           "flexibility": [
@@ -5163,7 +5163,7 @@
             {
               "area": "status semantics",
               "level": "strict",
-              "note": "active must show a spinner, finished a success icon, error an error icon — do not repurpose"
+              "note": "active must show a spinner, finished a success icon, error an error icon \u2014 do not repurpose"
             }
           ]
         }
@@ -5256,9 +5256,9 @@
             "As a field control inside a Form, wired via form.field()"
           ],
           "whenNotToUse": [
-            "Multi-line text — use Textarea",
-            "Choosing from a fixed list of options — use Select, Combobox, or MultiSelect",
-            "Editing one read-only value in place — use Editable"
+            "Multi-line text \u2014 use Textarea",
+            "Choosing from a fixed list of options \u2014 use Select, Combobox, or MultiSelect",
+            "Editing one read-only value in place \u2014 use Editable"
           ],
           "antiPatterns": [
             {
@@ -5363,7 +5363,7 @@
           },
           {
             "title": "With leading icon addon",
-            "code": "<InputGroup><InputGroupAddon><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><circle cx=\"6\" cy=\"6\" r=\"4\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\"/><path d=\"M10 10l3 3\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\"/></svg></InputGroupAddon><Input placeholder=\"Search…\" aria-label=\"Search\" /></InputGroup>"
+            "code": "<InputGroup><InputGroupAddon><svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><circle cx=\"6\" cy=\"6\" r=\"4\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\"/><path d=\"M10 10l3 3\" stroke=\"currentColor\" strokeWidth=\"1.5\" strokeLinecap=\"round\"/></svg></InputGroupAddon><Input placeholder=\"Search\u2026\" aria-label=\"Search\" /></InputGroup>"
           },
           {
             "title": "With trailing unit addon",
@@ -5383,8 +5383,8 @@
             "Grouping adjacent buttons with collapsed shared borders via ButtonGroup"
           ],
           "whenNotToUse": [
-            "A standalone field with no adornment — use Input directly",
-            "Conveying meaning that the user must read via an addon — decorative addons are aria-hidden"
+            "A standalone field with no adornment \u2014 use Input directly",
+            "Conveying meaning that the user must read via an addon \u2014 decorative addons are aria-hidden"
           ],
           "antiPatterns": [
             {
@@ -5496,8 +5496,8 @@
             "Slotting a row onto a real anchor or button via asChild for navigation or selection"
           ],
           "whenNotToUse": [
-            "A full surface with elevation and padding regions — use Card",
-            "Key-value metadata pairs — use DataList"
+            "A full surface with elevation and padding regions \u2014 use Card",
+            "Key-value metadata pairs \u2014 use DataList"
           ],
           "antiPatterns": [
             {
@@ -5576,11 +5576,11 @@
         "examples": [
           {
             "title": "Single key",
-            "code": "<Kbd>⌘</Kbd>"
+            "code": "<Kbd>\u2318</Kbd>"
           },
           {
             "title": "Shortcut",
-            "code": "<span><Kbd>⌘</Kbd> + <Kbd>K</Kbd></span>",
+            "code": "<span><Kbd>\u2318</Kbd> + <Kbd>K</Kbd></span>",
             "description": "Compose multiple keys to show a shortcut"
           },
           {
@@ -5596,8 +5596,8 @@
             "Documenting hotkeys in menus, tooltips, or help text"
           ],
           "whenNotToUse": [
-            "Inline code, commands, or identifiers — use Code",
-            "A short label that is not a key press — use Badge or Text"
+            "Inline code, commands, or identifiers \u2014 use Code",
+            "A short label that is not a key press \u2014 use Badge or Text"
           ],
           "antiPatterns": [
             {
@@ -5722,8 +5722,8 @@
             "Marking a field as required with a visible and screen-reader-announced indicator"
           ],
           "whenNotToUse": [
-            "Labeling a group of controls — use a <fieldset>/<legend> instead",
-            "Static body copy that is not associated with a control — use a plain text element"
+            "Labeling a group of controls \u2014 use a <fieldset>/<legend> instead",
+            "Static body copy that is not associated with a control \u2014 use a plain text element"
           ],
           "antiPatterns": [
             {
@@ -5850,8 +5850,8 @@
             "Linking to an external destination with a clear new-tab indicator (external)"
           ],
           "whenNotToUse": [
-            "Triggering an action or mutation with no destination — use Button",
-            "Submitting a form — use a submit Button"
+            "Triggering an action or mutation with no destination \u2014 use Button",
+            "Submitting a form \u2014 use a submit Button"
           ],
           "antiPatterns": [
             {
@@ -5917,7 +5917,7 @@
             "name": "marker",
             "type": "'disc' | 'decimal' | 'none'",
             "required": false,
-            "default": "derived from as (ul→disc, ol→decimal)"
+            "default": "derived from as (ul\u2192disc, ol\u2192decimal)"
           }
         ],
         "tokens": [
@@ -5957,13 +5957,13 @@
             "Keeping list semantics while hiding visual markers (marker=\"none\")"
           ],
           "whenNotToUse": [
-            "Tabular data with multiple columns — use DataTable",
-            "Interactive navigation items — use SideNav or a menu"
+            "Tabular data with multiple columns \u2014 use DataTable",
+            "Interactive navigation items \u2014 use SideNav or a menu"
           ],
           "antiPatterns": [
             {
               "bad": "A stack of <Text> rows used as a visual list",
-              "good": "<List><ListItem>…</ListItem></List>",
+              "good": "<List><ListItem>\u2026</ListItem></List>",
               "why": "Real list markup lets screen readers announce item count and position"
             }
           ],
@@ -6034,15 +6034,15 @@
             "Grouping related commands with separators behind a single trigger"
           ],
           "whenNotToUse": [
-            "Selecting a persistent value from options — use Select or MultiSelect",
-            "Right-click contextual actions on an element — use ContextMenu",
-            "A single non-list action — use a Button"
+            "Selecting a persistent value from options \u2014 use Select or MultiSelect",
+            "Right-click contextual actions on an element \u2014 use ContextMenu",
+            "A single non-list action \u2014 use a Button"
           ],
           "antiPatterns": [
             {
               "bad": "Using Menu items to pick a form value and showing the choice as selected",
               "good": "Use Select for value selection; Menu items are one-shot actions",
-              "why": "Menu items use role=\"menuitem\" and close on activation — they are not selectable options and do not model a chosen value"
+              "why": "Menu items use role=\"menuitem\" and close on activation \u2014 they are not selectable options and do not model a chosen value"
             }
           ],
           "related": [
@@ -6195,10 +6195,10 @@
             "Action lists that need ArrowUp/ArrowDown roving focus and Enter/Space activation"
           ],
           "whenNotToUse": [
-            "Choosing and persisting a value from options — use Select",
-            "Right-click contextual actions on a target element — use ContextMenu",
-            "A single action with no list — use a plain Button",
-            "Rich interactive content (forms, pickers) rather than a list of commands — use Popover"
+            "Choosing and persisting a value from options \u2014 use Select",
+            "Right-click contextual actions on a target element \u2014 use ContextMenu",
+            "A single action with no list \u2014 use a plain Button",
+            "Rich interactive content (forms, pickers) rather than a list of commands \u2014 use Popover"
           ],
           "antiPatterns": [
             {
@@ -6331,9 +6331,9 @@
             "Desktop-like apps that expose grouped commands across a horizontal bar"
           ],
           "whenNotToUse": [
-            "Site or section navigation between pages or destinations — use NavigationMenu",
-            "A single trigger that opens one menu of actions — use a Menu/Dropdown",
-            "Switching between peer content panels — use Tabs"
+            "Site or section navigation between pages or destinations \u2014 use NavigationMenu",
+            "A single trigger that opens one menu of actions \u2014 use a Menu/Dropdown",
+            "Switching between peer content panels \u2014 use Tabs"
           ],
           "antiPatterns": [
             {
@@ -6448,9 +6448,9 @@
             "Cases needing a modal backdrop, focus trap, and Escape-to-close from the native <dialog>"
           ],
           "whenNotToUse": [
-            "Anchored, non-modal content next to a trigger — use Popover",
-            "A side panel or drawer for secondary content — use Sheet",
-            "A destructive confirmation with a clear yes/no decision — use AlertDialog"
+            "Anchored, non-modal content next to a trigger \u2014 use Popover",
+            "A side panel or drawer for secondary content \u2014 use Sheet",
+            "A destructive confirmation with a clear yes/no decision \u2014 use AlertDialog"
           ],
           "antiPatterns": [
             {
@@ -6583,9 +6583,9 @@
             "Cases needing a compact trigger that summarizes the selected count"
           ],
           "whenNotToUse": [
-            "Choosing exactly one value — use Select",
-            "Allowing free-text entries not in a predefined list — use Combobox or TagsInput",
-            "A handful of always-visible options — use a Checkbox group"
+            "Choosing exactly one value \u2014 use Select",
+            "Allowing free-text entries not in a predefined list \u2014 use Combobox or TagsInput",
+            "A handful of always-visible options \u2014 use a Checkbox group"
           ],
           "antiPatterns": [
             {
@@ -6681,7 +6681,7 @@
             "Pairing with a Field/Label inside a regular HTML form"
           ],
           "whenNotToUse": [
-            "Multi-select, search/typeahead, or rich option rendering — use the custom Select/Combobox",
+            "Multi-select, search/typeahead, or rich option rendering \u2014 use the custom Select/Combobox",
             "A handful of mutually exclusive options where radios read better"
           ],
           "antiPatterns": [
@@ -6780,7 +6780,7 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<NavigationMenu aria-label=\"Main\" items={[{ id: \"home\", label: \"Home\", href: \"/\" }, { id: \"products\", label: \"Products\", content: <ul>…</ul> }]} />"
+            "code": "<NavigationMenu aria-label=\"Main\" items={[{ id: \"home\", label: \"Home\", href: \"/\" }, { id: \"products\", label: \"Products\", content: <ul>\u2026</ul> }]} />"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -6791,9 +6791,9 @@
             "A header nav bar that mixes direct links with rich dropdown panels"
           ],
           "whenNotToUse": [
-            "Application commands and actions grouped under File/Edit/View — use Menubar",
-            "A single trigger opening a list of actions — use a Menu/Dropdown",
-            "Switching between peer content panels in place — use Tabs"
+            "Application commands and actions grouped under File/Edit/View \u2014 use Menubar",
+            "A single trigger opening a list of actions \u2014 use a Menu/Dropdown",
+            "Switching between peer content panels in place \u2014 use Tabs"
           ],
           "antiPatterns": [
             {
@@ -6934,9 +6934,9 @@
             "Communicating outcomes that should persist until the user reads or acts on them"
           ],
           "whenNotToUse": [
-            "Transient, auto-dismissing feedback that floats above the layout — use Toast",
-            "A terse single-line action status next to a control — use InlineLoading",
-            "Blocking the user for a required decision — use Modal or AlertDialog"
+            "Transient, auto-dismissing feedback that floats above the layout \u2014 use Toast",
+            "A terse single-line action status next to a control \u2014 use InlineLoading",
+            "Blocking the user for a required decision \u2014 use Modal or AlertDialog"
           ],
           "antiPatterns": [
             {
@@ -6959,7 +6959,7 @@
           ],
           "a11yRationale": "role=\"alert\" for warning and error so assistive tech announces them assertively, role=\"status\" for info and success; the variant icon is decorative (aria-hidden) and color is always paired with the icon and title, and the dismiss control is a labeled button",
           "content": {
-            "tone": "Clear and outcome-focused — state what happened and the next step",
+            "tone": "Clear and outcome-focused \u2014 state what happened and the next step",
             "notes": "Title summarizes; description adds detail. Put recovery controls in the actions slot, not the title."
           },
           "flexibility": [
@@ -7124,9 +7124,9 @@
             "Inputs where keyboard ArrowUp/ArrowDown stepping speeds up adjustment"
           ],
           "whenNotToUse": [
-            "Free-form or non-numeric text — use Input",
-            "Choosing along a continuous range where the exact number matters less than the relative position — use Slider",
-            "Phone numbers, PINs, or codes that are digit strings rather than quantities — use Input or OtpInput"
+            "Free-form or non-numeric text \u2014 use Input",
+            "Choosing along a continuous range where the exact number matters less than the relative position \u2014 use Slider",
+            "Phone numbers, PINs, or codes that are digit strings rather than quantities \u2014 use Input or OtpInput"
           ],
           "antiPatterns": [
             {
@@ -7249,9 +7249,9 @@
             "Numeric or alphanumeric short codes of a known length"
           ],
           "whenNotToUse": [
-            "Variable-length or free-form text — use Input",
-            "Secret credentials that should be masked — use PasswordInput",
-            "Long codes where per-character boxes add no value over a single field — use Input"
+            "Variable-length or free-form text \u2014 use Input",
+            "Secret credentials that should be masked \u2014 use PasswordInput",
+            "Long codes where per-character boxes add no value over a single field \u2014 use Input"
           ],
           "antiPatterns": [
             {
@@ -7380,9 +7380,9 @@
             "Offering a small set of actions where a destructive option needs visual distinction"
           ],
           "whenNotToUse": [
-            "A primary action that should always be visible — use Button",
-            "Selecting a single value from a set rather than triggering actions — use Select or Dropdown",
-            "New code — this component is deprecated in favor of Menu"
+            "A primary action that should always be visible \u2014 use Button",
+            "Selecting a single value from a set rather than triggering actions \u2014 use Select or Dropdown",
+            "New code \u2014 this component is deprecated in favor of Menu"
           ],
           "antiPatterns": [
             {
@@ -7524,7 +7524,7 @@
           },
           {
             "title": "Custom labels",
-            "code": "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />"
+            "code": "<Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zur\u00fcck', next: 'Weiter' }} />"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -7536,7 +7536,7 @@
             "Pairing with a table or list that loads data in chunks"
           ],
           "whenNotToUse": [
-            "Navigating a content hierarchy — use Breadcrumb",
+            "Navigating a content hierarchy \u2014 use Breadcrumb",
             "Infinite scroll experiences where pages are not exposed"
           ],
           "antiPatterns": [
@@ -7666,8 +7666,8 @@
             "Password creation flows that benefit from inline strength feedback"
           ],
           "whenNotToUse": [
-            "Non-secret text — use Input",
-            "A fixed-length one-time verification code — use OtpInput"
+            "Non-secret text \u2014 use Input",
+            "A fixed-length one-time verification code \u2014 use OtpInput"
           ],
           "antiPatterns": [
             {
@@ -7750,14 +7750,14 @@
             "Lightweight transient panels (forms, pickers, detail cards) that do not need to block the rest of the page"
           ],
           "whenNotToUse": [
-            "A short, non-interactive text hint on hover/focus — use Tooltip",
-            "A task that must capture focus and block interaction with the page — use Modal",
-            "Preview content revealed on hover without a click — use HoverCard"
+            "A short, non-interactive text hint on hover/focus \u2014 use Tooltip",
+            "A task that must capture focus and block interaction with the page \u2014 use Modal",
+            "Preview content revealed on hover without a click \u2014 use HoverCard"
           ],
           "antiPatterns": [
             {
               "bad": "<Tooltip content={<form>...</form>}>",
-              "good": "<Popover><PopoverTrigger>…</PopoverTrigger><PopoverContent><form>…</form></PopoverContent></Popover>",
+              "good": "<Popover><PopoverTrigger>\u2026</PopoverTrigger><PopoverContent><form>\u2026</form></PopoverContent></Popover>",
               "why": "Tooltips are non-interactive and hover-driven; interactive content needs a click-opened dialog popover that users can move focus into"
             }
           ],
@@ -7889,9 +7889,9 @@
             "Reflecting success/error outcome of a tracked operation (status)"
           ],
           "whenNotToUse": [
-            "A compact circular indicator is preferred — use ProgressCircle",
-            "Pure indeterminate spinning with no track — use Spinner",
-            "Stepping through a multi-step flow — use ProgressIndicator"
+            "A compact circular indicator is preferred \u2014 use ProgressCircle",
+            "Pure indeterminate spinning with no track \u2014 use Spinner",
+            "Stepping through a multi-step flow \u2014 use ProgressIndicator"
           ],
           "antiPatterns": [
             {
@@ -7952,7 +7952,7 @@
             "name": "value",
             "type": "number",
             "required": true,
-            "description": "Current value from 0 to max — clamped"
+            "description": "Current value from 0 to max \u2014 clamped"
           },
           {
             "name": "max",
@@ -7971,7 +7971,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Renders the rounded percentage in the center — pairs best with md and lg"
+            "description": "Renders the rounded percentage in the center \u2014 pairs best with md and lg"
           },
           {
             "name": "label",
@@ -8009,9 +8009,9 @@
             "Tracking completion against a custom maximum (max)"
           ],
           "whenNotToUse": [
-            "Indeterminate work with no known value — use Spinner",
-            "Full-width linear progress with a label and helper text — use ProgressBar",
-            "Multi-step flows — use ProgressIndicator"
+            "Indeterminate work with no known value \u2014 use Spinner",
+            "Full-width linear progress with a label and helper text \u2014 use ProgressBar",
+            "Multi-step flows \u2014 use ProgressIndicator"
           ],
           "antiPatterns": [
             {
@@ -8127,8 +8127,8 @@
             "Laying out steps horizontally or vertically with optional descriptions"
           ],
           "whenNotToUse": [
-            "Continuous task progress with a percentage — use ProgressBar or ProgressCircle",
-            "Indeterminate loading — use Spinner"
+            "Continuous task progress with a percentage \u2014 use ProgressBar or ProgressCircle",
+            "Indeterminate loading \u2014 use Spinner"
           ],
           "antiPatterns": [
             {
@@ -8147,7 +8147,7 @@
           "a11yRationale": "role=\"list\" structures the steps in order; the current step is conveyed as text/state rather than color alone, so screen-reader users know where they are in the flow",
           "content": {
             "tone": "Short step labels; descriptions add detail",
-            "notes": "Order matters — steps are read sequentially"
+            "notes": "Order matters \u2014 steps are read sequentially"
           },
           "flexibility": [
             {
@@ -8167,7 +8167,7 @@
     {
       "name": "prose",
       "type": "component",
-      "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+      "description": "Wrapper that styles raw descendant HTML \u2014 headings, lists, code, quotes, tables",
       "category": "display",
       "version": "0.0.0",
       "files": [
@@ -8178,7 +8178,7 @@
       "tags": ["typography", "prose", "content", "markdown", "article"],
       "meta": {
         "name": "Prose",
-        "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+        "description": "Wrapper that styles raw descendant HTML \u2014 headings, lists, code, quotes, tables",
         "category": "display",
         "states": [],
         "variants": [],
@@ -8226,8 +8226,8 @@
             "Getting consistent spacing for headings, lists, code, and quotes in one wrapper"
           ],
           "whenNotToUse": [
-            "Single typographic elements in app UI — use Heading, Text, or List directly",
-            "Interactive component layouts — Prose only styles flow content"
+            "Single typographic elements in app UI \u2014 use Heading, Text, or List directly",
+            "Interactive component layouts \u2014 Prose only styles flow content"
           ],
           "antiPatterns": [
             {
@@ -8243,7 +8243,7 @@
               "reason": "Use Heading/Text directly in app UI; Prose handles authored content"
             }
           ],
-          "a11yRationale": "Adds no roles of its own — it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech",
+          "a11yRationale": "Adds no roles of its own \u2014 it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech",
           "content": {
             "tone": "Long-form editorial; the wrapper does not constrain voice",
             "notes": "Source HTML should be sanitized before dangerouslySetInnerHTML"
@@ -8331,13 +8331,13 @@
         "tags": ["form", "choice", "group"],
         "intent": {
           "whenToUse": [
-            "Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible",
+            "Choosing exactly one option from a small, mutually exclusive set (roughly 2\u20136) where all options should stay visible",
             "Form fields where the choices need plain text labels and a familiar radio affordance"
           ],
           "whenNotToUse": [
-            "Selecting one of many options where showing them all is impractical — use Select",
-            "Each option needs a title plus description or richer layout — use RadioCard",
-            "A compact inline switch between a few views or modes — use SegmentedControl"
+            "Selecting one of many options where showing them all is impractical \u2014 use Select",
+            "Each option needs a title plus description or richer layout \u2014 use RadioCard",
+            "A compact inline switch between a few views or modes \u2014 use SegmentedControl"
           ],
           "antiPatterns": [
             {
@@ -8450,9 +8450,9 @@
             "Selection UIs where a larger, more prominent click target improves clarity over a plain radio"
           ],
           "whenNotToUse": [
-            "Plain text options with no description — use Radio for a lighter footprint",
-            "A compact inline switch between a few modes — use SegmentedControl",
-            "Too many options to render as cards — use Select"
+            "Plain text options with no description \u2014 use Radio for a lighter footprint",
+            "A compact inline switch between a few modes \u2014 use SegmentedControl",
+            "Too many options to render as cards \u2014 use Select"
           ],
           "antiPatterns": [
             {
@@ -8579,13 +8579,13 @@
         "tags": ["form", "rating", "stars", "input", "feedback"],
         "intent": {
           "whenToUse": [
-            "Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)",
+            "Capturing a discrete subjective rating on a small fixed scale (e.g. 1\u20135 stars)",
             "Displaying an existing rating read-only as a compact star summary"
           ],
           "whenNotToUse": [
-            "Choosing along a continuous or large numeric range — use Slider",
-            "Entering an exact bounded number with steppers — use NumberInput",
-            "A non-rating single choice among labeled options — use Radio or SegmentedControl"
+            "Choosing along a continuous or large numeric range \u2014 use Slider",
+            "Entering an exact bounded number with steppers \u2014 use NumberInput",
+            "A non-rating single choice among labeled options \u2014 use Radio or SegmentedControl"
           ],
           "antiPatterns": [
             {
@@ -8664,7 +8664,7 @@
             "name": "ratio",
             "type": "number",
             "required": false,
-            "description": "Controlled ratio (0–1)"
+            "description": "Controlled ratio (0\u20131)"
           },
           {
             "name": "minRatio",
@@ -8716,8 +8716,8 @@
             "Master/detail layouts where one pane may need more room than the default"
           ],
           "whenNotToUse": [
-            "Fixed layouts where the split should never change — use plain flex/grid",
-            "More than two siblings need independent resizing — compose nested splitters instead"
+            "Fixed layouts where the split should never change \u2014 use plain flex/grid",
+            "More than two siblings need independent resizing \u2014 compose nested splitters instead"
           ],
           "antiPatterns": [
             {
@@ -8812,11 +8812,11 @@
         "examples": [
           {
             "title": "Vertical scroll",
-            "code": "<ScrollArea height=\"12rem\">\n  <p>Long content…</p>\n</ScrollArea>"
+            "code": "<ScrollArea height=\"12rem\">\n  <p>Long content\u2026</p>\n</ScrollArea>"
           },
           {
             "title": "Both axes",
-            "code": "<ScrollArea height=\"12rem\" width=\"20rem\" orientation=\"both\">\n  <table>…</table>\n</ScrollArea>"
+            "code": "<ScrollArea height=\"12rem\" width=\"20rem\" orientation=\"both\">\n  <table>\u2026</table>\n</ScrollArea>"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -8828,8 +8828,8 @@
             "Signalling more content with subtle top/bottom scroll shadows"
           ],
           "whenNotToUse": [
-            "Whole-page scrolling — let the document scroll naturally",
-            "Content that should determine its own height — do not cap it"
+            "Whole-page scrolling \u2014 let the document scroll naturally",
+            "Content that should determine its own height \u2014 do not cap it"
           ],
           "antiPatterns": [
             {
@@ -8855,7 +8855,7 @@
             {
               "area": "scroll behaviour",
               "level": "strict",
-              "note": "Relies on native overflow scrolling — never replace with JS scrolling"
+              "note": "Relies on native overflow scrolling \u2014 never replace with JS scrolling"
             }
           ]
         }
@@ -8976,7 +8976,7 @@
           },
           {
             "title": "Large",
-            "code": "<Search size=\"lg\" placeholder=\"Search products…\" />"
+            "code": "<Search size=\"lg\" placeholder=\"Search products\u2026\" />"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -8987,9 +8987,9 @@
             "Free-text search where results update as the user types (debounced) or on Enter"
           ],
           "whenNotToUse": [
-            "General non-search text entry — use Input",
-            "Search that presents an inline list of suggestions/results to pick from — use Combobox",
-            "A bounded numeric value — use NumberInput"
+            "General non-search text entry \u2014 use Input",
+            "Search that presents an inline list of suggestions/results to pick from \u2014 use Combobox",
+            "A bounded numeric value \u2014 use NumberInput"
           ],
           "antiPatterns": [
             {
@@ -9102,13 +9102,13 @@
         "tags": ["form", "toggle", "group", "segmented", "input"],
         "intent": {
           "whenToUse": [
-            "A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges",
+            "A compact inline single choice among a few mutually exclusive options (2\u20135) such as view modes or time ranges",
             "Switching between alternatives where all options should stay visible in a tight horizontal space"
           ],
           "whenNotToUse": [
-            "Switching between full panels of page content — use Tabs",
-            "A single binary on/off state — use Toggle",
-            "More options than comfortably fit inline, or options needing descriptions — use Select or RadioCard"
+            "Switching between full panels of page content \u2014 use Tabs",
+            "A single binary on/off state \u2014 use Toggle",
+            "More options than comfortably fit inline, or options needing descriptions \u2014 use Select or RadioCard"
           ],
           "antiPatterns": [
             {
@@ -9230,7 +9230,7 @@
           },
           {
             "title": "With placeholder",
-            "code": "<Select label=\"Country\" placeholder=\"Choose…\" options={countries} />"
+            "code": "<Select label=\"Country\" placeholder=\"Choose\u2026\" options={countries} />"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -9242,9 +9242,9 @@
             "You want zero-JS reliability and built-in mobile/keyboard handling from a real <select>"
           ],
           "whenNotToUse": [
-            "Users need to filter/search a long list — use Combobox",
-            "Multiple values must be selectable — use MultiSelect",
-            "Triggering actions or commands rather than picking a form value — use Dropdown or Menu"
+            "Users need to filter/search a long list \u2014 use Combobox",
+            "Multiple values must be selectable \u2014 use MultiSelect",
+            "Triggering actions or commands rather than picking a form value \u2014 use Dropdown or Menu"
           ],
           "antiPatterns": [
             {
@@ -9345,8 +9345,8 @@
             "Marking a meaningful thematic break (decorative=false)"
           ],
           "whenNotToUse": [
-            "Adding spacing only — use margin/padding, not a separator",
-            "Bordering a container — use the container border, not a separator"
+            "Adding spacing only \u2014 use margin/padding, not a separator",
+            "Bordering a container \u2014 use the container border, not a separator"
           ],
           "antiPatterns": [
             {
@@ -9421,8 +9421,8 @@
             "Mobile-friendly drawers where a centered modal would feel cramped"
           ],
           "whenNotToUse": [
-            "A short confirmation or focused decision — use Modal or AlertDialog",
-            "Small contextual content anchored to a trigger — use Popover"
+            "A short confirmation or focused decision \u2014 use Modal or AlertDialog",
+            "Small contextual content anchored to a trigger \u2014 use Popover"
           ],
           "antiPatterns": [
             {
@@ -9448,7 +9448,7 @@
             {
               "area": "side",
               "level": "strict",
-              "note": "Limited to start | end | top | bottom — drives the slide direction and animation"
+              "note": "Limited to start | end | top | bottom \u2014 drives the slide direction and animation"
             },
             {
               "area": "body content",
@@ -9559,8 +9559,8 @@
             "Hosting global controls (notifications, switcher, user menu) in one top bar"
           ],
           "whenNotToUse": [
-            "A simple marketing or app top bar — use Header",
-            "In-page section headings — use Heading"
+            "A simple marketing or app top bar \u2014 use Header",
+            "In-page section headings \u2014 use Heading"
           ],
           "antiPatterns": [
             {
@@ -9626,7 +9626,7 @@
             "name": "items",
             "type": "SideNavItem[]",
             "required": true,
-            "description": "{ label, href?, icon?, active?, items? } — items with nested items render as expandable groups"
+            "description": "{ label, href?, icon?, active?, items? } \u2014 items with nested items render as expandable groups"
           },
           {
             "name": "collapsed",
@@ -9732,8 +9732,8 @@
             "Saving space with a collapsible icon rail (collapsed / expandOnHover)"
           ],
           "whenNotToUse": [
-            "Top-level horizontal navigation — use Header or ShellHeader nav",
-            "A transient contextual menu — use Dropdown"
+            "Top-level horizontal navigation \u2014 use Header or ShellHeader nav",
+            "A transient contextual menu \u2014 use Dropdown"
           ],
           "antiPatterns": [
             {
@@ -9846,8 +9846,8 @@
             "Loading larger content regions where shape preview reassures the user"
           ],
           "whenNotToUse": [
-            "Indeterminate work with no known content shape — use Spinner",
-            "A view that is empty rather than loading — use EmptyState"
+            "Indeterminate work with no known content shape \u2014 use Spinner",
+            "A view that is empty rather than loading \u2014 use EmptyState"
           ],
           "antiPatterns": [
             {
@@ -9868,7 +9868,7 @@
               "reason": "Use EmptyState when the result is empty, not loading"
             }
           ],
-          "a11yRationale": "Presentational by role — the placeholder shapes carry no meaning; the surrounding region should expose busy/loading state so assistive tech is not left guessing",
+          "a11yRationale": "Presentational by role \u2014 the placeholder shapes carry no meaning; the surrounding region should expose busy/loading state so assistive tech is not left guessing",
           "flexibility": [
             {
               "area": "variant and dimensions",
@@ -9922,7 +9922,7 @@
             "type": "string",
             "required": false,
             "default": "cascade-skip-target",
-            "description": "SkipNavTarget: anchor id — must match the link targetId"
+            "description": "SkipNavTarget: anchor id \u2014 must match the link targetId"
           }
         ],
         "tokens": [
@@ -9940,7 +9940,7 @@
         "examples": [
           {
             "title": "Default pair",
-            "code": "<><SkipNavLink /><nav>…</nav><SkipNavTarget /><main>…</main></>",
+            "code": "<><SkipNavLink /><nav>\u2026</nav><SkipNavTarget /><main>\u2026</main></>",
             "description": "SkipNavLink must be the first focusable element on the page"
           },
           {
@@ -9957,8 +9957,8 @@
             "Targeting a custom main-content anchor (targetId / matching SkipNavTarget id)"
           ],
           "whenNotToUse": [
-            "General in-page navigation — use anchor links or a table of contents",
-            "Visible persistent navigation — this link is hidden until focused"
+            "General in-page navigation \u2014 use anchor links or a table of contents",
+            "Visible persistent navigation \u2014 this link is hidden until focused"
           ],
           "antiPatterns": [
             {
@@ -10087,8 +10087,8 @@
             "When the bounds (min/max) matter more than entering an exact figure"
           ],
           "whenNotToUse": [
-            "A precise numeric value must be typed — use NumberInput",
-            "Picking a discrete rating on a small scale where stars/icons read better — use RatingGroup"
+            "A precise numeric value must be typed \u2014 use NumberInput",
+            "Picking a discrete rating on a small scale where stars/icons read better \u2014 use RatingGroup"
           ],
           "antiPatterns": [
             {
@@ -10185,8 +10185,8 @@
             "Showing busy state in buttons or compact UI"
           ],
           "whenNotToUse": [
-            "Progress with a known percentage — use ProgressBar or ProgressCircle",
-            "Loading content with a known structure — use Skeleton"
+            "Progress with a known percentage \u2014 use ProgressBar or ProgressCircle",
+            "Loading content with a known structure \u2014 use Skeleton"
           ],
           "antiPatterns": [
             {
@@ -10309,8 +10309,8 @@
             "Annotating a metric with methodology or time-range help text"
           ],
           "whenNotToUse": [
-            "Multiple comparable rows of data — use DataTable",
-            "A non-numeric status label — use Badge or Status"
+            "Multiple comparable rows of data \u2014 use DataTable",
+            "A non-numeric status label \u2014 use Badge or Status"
           ],
           "antiPatterns": [
             {
@@ -10335,7 +10335,7 @@
             {
               "area": "delta and trend",
               "level": "flexible",
-              "note": "Optional — include only when change is meaningful"
+              "note": "Optional \u2014 include only when change is meaningful"
             },
             {
               "area": "token names",
@@ -10377,7 +10377,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Pulses the dot — gated behind prefers-reduced-motion: no-preference"
+            "description": "Pulses the dot \u2014 gated behind prefers-reduced-motion: no-preference"
           }
         ],
         "tokens": [
@@ -10418,8 +10418,8 @@
             "Drawing attention to an active/changing state with an optional pulse"
           ],
           "whenNotToUse": [
-            "A static category or count label — use Badge",
-            "An identity thumbnail with presence — use Avatar with its status prop"
+            "A static category or count label \u2014 use Badge",
+            "An identity thumbnail with presence \u2014 use Avatar with its status prop"
           ],
           "antiPatterns": [
             {
@@ -10547,13 +10547,13 @@
             "Carbon-style structured content where a full data table is heavier than needed"
           ],
           "whenNotToUse": [
-            "Sorting, filtering, pagination, or multi-select over many rows — use DataTable",
-            "Free-form vertical content without column alignment — use List"
+            "Sorting, filtering, pagination, or multi-select over many rows \u2014 use DataTable",
+            "Free-form vertical content without column alignment \u2014 use List"
           ],
           "antiPatterns": [
             {
               "bad": "selectable with multiple rows marked selected",
-              "good": "A single selected id (value/defaultValue) — selection is single-choice",
+              "good": "A single selected id (value/defaultValue) \u2014 selection is single-choice",
               "why": "The selectable variant is a radiogroup; multiple selected rows break the radio semantics"
             }
           ],
@@ -10579,7 +10579,7 @@
             {
               "area": "roles",
               "level": "strict",
-              "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+              "note": "Static uses table semantics; selectable uses radiogroup \u2014 do not mix"
             }
           ]
         }
@@ -10588,7 +10588,7 @@
     {
       "name": "switcher",
       "type": "component",
-      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "description": "App/product switcher list \u2014 lives inside HeaderPanel, renders links with active indicator and optional dividers",
       "category": "navigation",
       "version": "0.0.0",
       "files": [
@@ -10599,7 +10599,7 @@
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
       "meta": {
         "name": "Switcher",
-        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "description": "App/product switcher list \u2014 lives inside HeaderPanel, renders links with active indicator and optional dividers",
         "category": "navigation",
         "states": ["default"],
         "variants": [],
@@ -10652,8 +10652,8 @@
             "Grouping switch targets with dividers and marking the active one"
           ],
           "whenNotToUse": [
-            "Primary in-app navigation — use SideNav",
-            "A small action menu attached to a control — use Dropdown"
+            "Primary in-app navigation \u2014 use SideNav",
+            "A small action menu attached to a control \u2014 use Dropdown"
           ],
           "antiPatterns": [
             {
@@ -10739,7 +10739,7 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<Tabs defaultValue=\"account\"><TabsList><TabsTrigger value=\"account\">Account</TabsTrigger></TabsList><TabsContent value=\"account\">…</TabsContent></Tabs>"
+            "code": "<Tabs defaultValue=\"account\"><TabsList><TabsTrigger value=\"account\">Account</TabsTrigger></TabsList><TabsContent value=\"account\">\u2026</TabsContent></Tabs>"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -10750,9 +10750,9 @@
             "Showing one section at a time when all sections are equally important"
           ],
           "whenNotToUse": [
-            "Stacked sequential content the user reads top to bottom — use Accordion",
-            "Changing a setting or view parameter — use a SegmentedControl",
-            "Navigating between pages — use links"
+            "Stacked sequential content the user reads top to bottom \u2014 use Accordion",
+            "Changing a setting or view parameter \u2014 use a SegmentedControl",
+            "Navigating between pages \u2014 use links"
           ],
           "antiPatterns": [
             {
@@ -10877,8 +10877,8 @@
             "Showing a set of keywords or attributes on an item"
           ],
           "whenNotToUse": [
-            "A static, non-interactive status label — use Badge",
-            "A live system state with a dot — use Status"
+            "A static, non-interactive status label \u2014 use Badge",
+            "A live system state with a dot \u2014 use Status"
           ],
           "antiPatterns": [
             {
@@ -10989,7 +10989,7 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag…\" />"
+            "code": "<TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder=\"Add tag\u2026\" />"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -11001,8 +11001,8 @@
             "You need per-tag validation or a cap on how many entries are allowed"
           ],
           "whenNotToUse": [
-            "Values come from a fixed, known list — use MultiSelect",
-            "Only a single line of free text is needed — use Input"
+            "Values come from a fixed, known list \u2014 use MultiSelect",
+            "Only a single line of free text is needed \u2014 use Input"
           ],
           "antiPatterns": [
             {
@@ -11037,7 +11037,7 @@
             {
               "area": "commit keys",
               "level": "strict",
-              "note": "Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract"
+              "note": "Enter and comma commit a tag; Backspace on empty removes the last \u2014 fixed interaction contract"
             }
           ]
         }
@@ -11129,8 +11129,8 @@
             "Inline emphasis inside flow content (as=\"span\")"
           ],
           "whenNotToUse": [
-            "Section or page titles — use Heading for the document outline",
-            "Long-form authored/markdown content — use Prose"
+            "Section or page titles \u2014 use Heading for the document outline",
+            "Long-form authored/markdown content \u2014 use Prose"
           ],
           "antiPatterns": [
             {
@@ -11238,7 +11238,7 @@
         "examples": [
           {
             "title": "With label",
-            "code": "<Textarea label=\"Message\" placeholder=\"Type here…\" />"
+            "code": "<Textarea label=\"Message\" placeholder=\"Type here\u2026\" />"
           },
           {
             "title": "With error",
@@ -11254,8 +11254,8 @@
             "Form fields that benefit from a visible hint or validation error beneath the control"
           ],
           "whenNotToUse": [
-            "A single short value like a name or email — use Input",
-            "A constrained numeric value — use NumberInput"
+            "A single short value like a name or email \u2014 use Input",
+            "A constrained numeric value \u2014 use NumberInput"
           ],
           "antiPatterns": [
             {
@@ -11341,8 +11341,8 @@
             "A larger touch target than a plain radio or checkbox"
           ],
           "whenNotToUse": [
-            "A simple inline boolean — use Checkbox or Toggle",
-            "A dense list of text-only options — use RadioGroup or a Select"
+            "A simple inline boolean \u2014 use Checkbox or Toggle",
+            "A dense list of text-only options \u2014 use RadioGroup or a Select"
           ],
           "antiPatterns": [
             {
@@ -11499,8 +11499,8 @@
             "A time field that needs a label, hint, error, or min/max bounds"
           ],
           "whenNotToUse": [
-            "Picking a calendar date — use DatePicker",
-            "A free-form or non-time text value — use Input"
+            "Picking a calendar date \u2014 use DatePicker",
+            "A free-form or non-time text value \u2014 use Input"
           ],
           "antiPatterns": [
             {
@@ -11597,8 +11597,8 @@
             "Presenting a chronological history where order is meaningful"
           ],
           "whenNotToUse": [
-            "Interactive multi-step navigation the user controls — use Tabs or a Stepper",
-            "Unordered lists where sequence carries no meaning — use List"
+            "Interactive multi-step navigation the user controls \u2014 use Tabs or a Stepper",
+            "Unordered lists where sequence carries no meaning \u2014 use List"
           ],
           "antiPatterns": [
             {
@@ -11703,8 +11703,8 @@
             "Non-blocking notifications that can stack and disappear on their own"
           ],
           "whenNotToUse": [
-            "A persistent, inline message tied to a specific region of the page — use Alert",
-            "Feedback that requires the user to acknowledge or decide before continuing — use Modal or AlertDialog"
+            "A persistent, inline message tied to a specific region of the page \u2014 use Alert",
+            "Feedback that requires the user to acknowledge or decide before continuing \u2014 use Modal or AlertDialog"
           ],
           "antiPatterns": [
             {
@@ -11734,7 +11734,7 @@
             {
               "area": "variant",
               "level": "strict",
-              "note": "Limited to default | success | warning | destructive — drives color and live-region urgency"
+              "note": "Limited to default | success | warning | destructive \u2014 drives color and live-region urgency"
             },
             {
               "area": "duration",
@@ -11833,8 +11833,8 @@
             "Settings screens where the change applies live without a separate submit"
           ],
           "whenNotToUse": [
-            "Selecting items in a form that is submitted later — use Checkbox",
-            "Choosing one option among several mutually exclusive labels — use SegmentedControl or Radio"
+            "Selecting items in a form that is submitted later \u2014 use Checkbox",
+            "Choosing one option among several mutually exclusive labels \u2014 use SegmentedControl or Radio"
           ],
           "antiPatterns": [
             {
@@ -11981,8 +11981,8 @@
             "Toggling several independent options in a compact segmented control (type=\"multiple\")"
           ],
           "whenNotToUse": [
-            "The options are independent actions, not a selection — use ButtonGroup",
-            "There are many options or they need labels and descriptions — use Radio or Checkbox groups"
+            "The options are independent actions, not a selection \u2014 use ButtonGroup",
+            "There are many options or they need labels and descriptions \u2014 use Radio or Checkbox groups"
           ],
           "antiPatterns": [
             {
@@ -12053,7 +12053,7 @@
             "name": "children",
             "type": "ReactNode",
             "required": true,
-            "description": "The popover content — interactive and selectable"
+            "description": "The popover content \u2014 interactive and selectable"
           },
           {
             "name": "placement",
@@ -12128,10 +12128,10 @@
             "Touch-friendly hint surfaces where hover is unavailable"
           ],
           "whenNotToUse": [
-            "A passive label that should appear on hover/focus without a click — use Tooltip",
-            "A blocking, focus-trapping dialog for a task — use Modal",
-            "Rich forms or pickers anchored to a trigger — use Popover",
-            "A list of one-shot actions behind a button — use MenuButton"
+            "A passive label that should appear on hover/focus without a click \u2014 use Tooltip",
+            "A blocking, focus-trapping dialog for a task \u2014 use Modal",
+            "Rich forms or pickers anchored to a trigger \u2014 use Popover",
+            "A list of one-shot actions behind a button \u2014 use MenuButton"
           ],
           "antiPatterns": [
             {
@@ -12256,9 +12256,9 @@
             "Progressive disclosure of a short hint anchored to a trigger element"
           ],
           "whenNotToUse": [
-            "The content is interactive (links, buttons, inputs) — use Popover",
-            "Richer non-interactive preview content is needed — use HoverCard",
-            "The information is essential and must always be visible — render it inline instead"
+            "The content is interactive (links, buttons, inputs) \u2014 use Popover",
+            "Richer non-interactive preview content is needed \u2014 use HoverCard",
+            "The information is essential and must always be visible \u2014 render it inline instead"
           ],
           "antiPatterns": [
             {
@@ -12286,7 +12286,7 @@
           ],
           "a11yRationale": "The floating element uses role=\"tooltip\" and is linked to the trigger via aria-describedby only while visible; it shows on both hover and keyboard focus so it is reachable without a pointer.",
           "content": {
-            "tone": "Very short, plain phrase — a label or one-line hint",
+            "tone": "Very short, plain phrase \u2014 a label or one-line hint",
             "notes": "No essential-only information; keep it to a few words and avoid full sentences"
           },
           "flexibility": [
@@ -12414,8 +12414,8 @@
             "Navigating deep structures where indentation communicates depth"
           ],
           "whenNotToUse": [
-            "A flat, non-nested list of choices — use List or StructuredList",
-            "A small set of mutually exclusive sections of prose — use Accordion"
+            "A flat, non-nested list of choices \u2014 use List or StructuredList",
+            "A small set of mutually exclusive sections of prose \u2014 use Accordion"
           ],
           "antiPatterns": [
             {
@@ -12441,7 +12441,7 @@
             {
               "area": "selectionMode",
               "level": "flexible",
-              "note": "single vs multi is the consumer’s choice based on the interaction"
+              "note": "single vs multi is the consumer\u2019s choice based on the interaction"
             },
             {
               "area": "keyboard model",
@@ -12510,14 +12510,14 @@
             "Providing off-screen labels for tables, links, or form controls"
           ],
           "whenNotToUse": [
-            "Hiding content from everyone — use hidden or display:none",
-            "Temporarily hiding then revealing UI — use conditional rendering"
+            "Hiding content from everyone \u2014 use hidden or display:none",
+            "Temporarily hiding then revealing UI \u2014 use conditional rendering"
           ],
           "antiPatterns": [
             {
               "bad": "Wrapping decorative content in VisuallyHidden to \"clean up\" the layout",
               "good": "aria-hidden on decorative elements; VisuallyHidden only for content screen readers need",
-              "why": "VisuallyHidden keeps content in the accessibility tree — using it to hide noise pollutes screen-reader output"
+              "why": "VisuallyHidden keeps content in the accessibility tree \u2014 using it to hide noise pollutes screen-reader output"
             }
           ],
           "related": [
@@ -12527,7 +12527,7 @@
               "reason": "SkipNav uses a similar hidden-until-focused technique for skip links"
             }
           ],
-          "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen — assistive tech reads it, sighted users do not see it",
+          "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen \u2014 assistive tech reads it, sighted users do not see it",
           "content": {
             "tone": "Concise supplementary context for screen readers",
             "notes": "Write what a screen-reader user needs that visuals already convey"
@@ -12541,7 +12541,7 @@
             {
               "area": "visibility technique",
               "level": "strict",
-              "note": "Must keep content in the a11y tree — never display:none"
+              "note": "Must keep content in the a11y tree \u2014 never display:none"
             }
           ]
         }
@@ -12638,8 +12638,8 @@
             "You need a bare shell to compose your own navigation into"
           ],
           "whenNotToUse": [
-            "You want opinionated, prewired sidebar navigation — use SidebarApp",
-            "A simple centered content page — use Section or Center"
+            "You want opinionated, prewired sidebar navigation \u2014 use SidebarApp",
+            "A simple centered content page \u2014 use Section or Center"
           ],
           "antiPatterns": [],
           "related": [
@@ -12717,12 +12717,12 @@
         "tags": ["layout", "auth", "login", "page"],
         "intent": {
           "whenToUse": [
-            "Centered card layout for authentication pages — login, register, reset",
+            "Centered card layout for authentication pages \u2014 login, register, reset",
             "Focused single-task pages with an optional logo and minimal chrome"
           ],
           "whenNotToUse": [
-            "General centered content — use Center",
-            "A full app frame after sign-in — use AppShell or SidebarApp"
+            "General centered content \u2014 use Center",
+            "A full app frame after sign-in \u2014 use AppShell or SidebarApp"
           ],
           "antiPatterns": [],
           "related": [
@@ -12745,7 +12745,7 @@
     {
       "name": "layout/auto-grid",
       "type": "layout",
-      "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+      "description": "Media-query-free responsive grid \u2014 columns auto-fill based on available space.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -12756,7 +12756,7 @@
       "tags": ["layout", "grid", "responsive"],
       "meta": {
         "name": "AutoGrid",
-        "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+        "description": "Media-query-free responsive grid \u2014 columns auto-fill based on available space.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -12795,11 +12795,11 @@
         "intent": {
           "whenToUse": [
             "Responsive card or tile grids that auto-fit columns to available width",
-            "Avoiding media queries — tracks wrap based on a minimum track width"
+            "Avoiding media queries \u2014 tracks wrap based on a minimum track width"
           ],
           "whenNotToUse": [
-            "A fixed, known column count — use Grid",
-            "Single-direction stacking — use Stack"
+            "A fixed, known column count \u2014 use Grid",
+            "Single-direction stacking \u2014 use Stack"
           ],
           "antiPatterns": [],
           "related": [
@@ -12862,8 +12862,8 @@
             "Constraining page or section content to a readable measure"
           ],
           "whenNotToUse": [
-            "Stacking children with consistent gaps — use Stack",
-            "Multi-column or grid arrangements — use Columns or Grid"
+            "Stacking children with consistent gaps \u2014 use Stack",
+            "Multi-column or grid arrangements \u2014 use Columns or Grid"
           ],
           "antiPatterns": [],
           "related": [
@@ -12937,8 +12937,8 @@
             "Side-by-side text or content blocks at a fixed column count"
           ],
           "whenNotToUse": [
-            "Card grids that auto-fit to width — use AutoGrid",
-            "Single-direction stacking — use Stack"
+            "Card grids that auto-fit to width \u2014 use AutoGrid",
+            "Single-direction stacking \u2014 use Stack"
           ],
           "antiPatterns": [],
           "related": [
@@ -13018,8 +13018,8 @@
             "Composing KPI tiles and charts into a standard analytics layout"
           ],
           "whenNotToUse": [
-            "A bare app frame without dashboard structure — use AppShell",
-            "A simple form or content page — use Section or SettingsLayout"
+            "A bare app frame without dashboard structure \u2014 use AppShell",
+            "A simple form or content page \u2014 use Section or SettingsLayout"
           ],
           "antiPatterns": [],
           "related": [
@@ -13099,8 +13099,8 @@
             "Arranging cards or tiles that should align in rows and columns"
           ],
           "whenNotToUse": [
-            "Single-direction stacking — use Stack",
-            "Columns that auto-fit to available width — use AutoGrid"
+            "Single-direction stacking \u2014 use Stack",
+            "Columns that auto-fit to available width \u2014 use AutoGrid"
           ],
           "antiPatterns": [],
           "related": [
@@ -13123,7 +13123,7 @@
     {
       "name": "layout/masonry",
       "type": "layout",
-      "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+      "description": "Masonry layout \u2014 native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -13134,7 +13134,7 @@
       "tags": ["layout", "masonry", "gallery"],
       "meta": {
         "name": "Masonry",
-        "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+        "description": "Masonry layout \u2014 native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -13176,8 +13176,8 @@
             "Pinterest-style image or card walls"
           ],
           "whenNotToUse": [
-            "Items that must align in rows — use Grid",
-            "Uniform-height cards — use AutoGrid"
+            "Items that must align in rows \u2014 use Grid",
+            "Uniform-height cards \u2014 use AutoGrid"
           ],
           "antiPatterns": [],
           "related": [
@@ -13277,8 +13277,8 @@
             "Establishing consistent page tops across an application"
           ],
           "whenNotToUse": [
-            "A marketing hero with large media — use Hero",
-            "A full app top bar with navigation — use AppShell"
+            "A marketing hero with large media \u2014 use Hero",
+            "A full app top bar with navigation \u2014 use AppShell"
           ],
           "antiPatterns": [],
           "related": [
@@ -13354,8 +13354,8 @@
             "The default container for stacking content within a page"
           ],
           "whenNotToUse": [
-            "Just centering a single element — use Center",
-            "A marketing band with built-in CTA content — use Cta or Hero"
+            "Just centering a single element \u2014 use Center",
+            "A marketing band with built-in CTA content \u2014 use Cta or Hero"
           ],
           "antiPatterns": [],
           "related": [
@@ -13429,8 +13429,8 @@
             "Account, preferences, or admin pages with sectioned navigation"
           ],
           "whenNotToUse": [
-            "A general resizable two-pane layout — use SplitView",
-            "A full app frame — use AppShell or SidebarApp"
+            "A general resizable two-pane layout \u2014 use SplitView",
+            "A full app frame \u2014 use AppShell or SidebarApp"
           ],
           "antiPatterns": [],
           "related": [
@@ -13498,8 +13498,8 @@
             "Adding deliberate breathing room where margins are awkward"
           ],
           "whenNotToUse": [
-            "Spacing a series of siblings — use Stack with a gap instead",
-            "Arbitrary one-off spacing — prefer token-based gap props"
+            "Spacing a series of siblings \u2014 use Stack with a gap instead",
+            "Arbitrary one-off spacing \u2014 prefer token-based gap props"
           ],
           "antiPatterns": [],
           "related": [
@@ -13550,7 +13550,7 @@
             "name": "defaultRatio",
             "type": "number",
             "required": false,
-            "description": "Initial split ratio (0–1)"
+            "description": "Initial split ratio (0\u20131)"
           },
           {
             "name": "min",
@@ -13592,8 +13592,8 @@
             "Master/detail, editor/preview, or list/content layouts"
           ],
           "whenNotToUse": [
-            "Static two-column content — use Columns",
-            "A full app frame with persistent navigation — use AppShell or SidebarApp"
+            "Static two-column content \u2014 use Columns",
+            "A full app frame with persistent navigation \u2014 use AppShell or SidebarApp"
           ],
           "antiPatterns": [],
           "related": [
@@ -13685,8 +13685,8 @@
             "The default primitive for spacing a small set of elements in one direction"
           ],
           "whenNotToUse": [
-            "Two-dimensional layouts — use Grid",
-            "Responsive auto-wrapping card collections — use AutoGrid"
+            "Two-dimensional layouts \u2014 use Grid",
+            "Responsive auto-wrapping card collections \u2014 use AutoGrid"
           ],
           "antiPatterns": [],
           "related": [
@@ -13766,8 +13766,8 @@
             "Admin or operations consoles needing dense, app-like navigation"
           ],
           "whenNotToUse": [
-            "A simpler sidebar app — use SidebarApp",
-            "A bare shell to fully customise — use AppShell"
+            "A simpler sidebar app \u2014 use SidebarApp",
+            "A bare shell to fully customise \u2014 use AppShell"
           ],
           "antiPatterns": [],
           "related": [
@@ -13827,8 +13827,8 @@
             "Quickly demonstrating or scaffolding an analytics overview"
           ],
           "whenNotToUse": [
-            "You only need the layout frame — use DashboardLayout",
-            "A single metric display — use a Kpi card"
+            "You only need the layout frame \u2014 use DashboardLayout",
+            "A single metric display \u2014 use a Kpi card"
           ],
           "antiPatterns": [],
           "related": [
@@ -13895,8 +13895,8 @@
             "Guiding users to create their first item"
           ],
           "whenNotToUse": [
-            "Data already exists — use DashboardCharts or DashboardLayout",
-            "A generic empty state inside a component — use an inline EmptyState"
+            "Data already exists \u2014 use DashboardCharts or DashboardLayout",
+            "A generic empty state inside a component \u2014 use an inline EmptyState"
           ],
           "antiPatterns": [],
           "related": [
@@ -13958,7 +13958,7 @@
             "Standing up authentication quickly with validation built in"
           ],
           "whenNotToUse": [
-            "You only need the centered auth frame — use AuthLayout",
+            "You only need the centered auth frame \u2014 use AuthLayout",
             "A multi-step signup or onboarding flow"
           ],
           "antiPatterns": [],
@@ -14027,8 +14027,8 @@
             "An inbox or activity panel surfaced from a header bell"
           ],
           "whenNotToUse": [
-            "Transient feedback after an action — use a Toast",
-            "A single inline status message — use an Alert"
+            "Transient feedback after an action \u2014 use a Toast",
+            "A single inline status message \u2014 use an Alert"
           ],
           "antiPatterns": [],
           "related": [
@@ -14084,7 +14084,7 @@
           ],
           "whenNotToUse": [
             "Top-level pages with no hierarchy to express",
-            "You only need the header without breadcrumbs — use PageHeader"
+            "You only need the header without breadcrumbs \u2014 use PageHeader"
           ],
           "antiPatterns": [],
           "related": [
@@ -14146,8 +14146,8 @@
             "Account or preferences pages with a save action"
           ],
           "whenNotToUse": [
-            "You only need the layout frame — use SettingsLayout",
-            "A focused single-field edit — use an inline form"
+            "You only need the layout frame \u2014 use SettingsLayout",
+            "A focused single-field edit \u2014 use an inline form"
           ],
           "antiPatterns": [],
           "related": [
@@ -14202,8 +14202,8 @@
             "Standing up an authenticated app frame quickly"
           ],
           "whenNotToUse": [
-            "You want a bare shell to compose your own nav — use AppShell",
-            "A dashboard-specific layout — use DashboardLayout"
+            "You want a bare shell to compose your own nav \u2014 use AppShell",
+            "A dashboard-specific layout \u2014 use DashboardLayout"
           ],
           "antiPatterns": [],
           "related": [
@@ -14270,8 +14270,8 @@
             "Summarising headline metrics at the top of a dashboard"
           ],
           "whenNotToUse": [
-            "A full charts dashboard — use DashboardCharts",
-            "A single metric — use a Kpi card"
+            "A full charts dashboard \u2014 use DashboardCharts",
+            "A single metric \u2014 use a Kpi card"
           ],
           "antiPatterns": [],
           "related": [
@@ -14344,8 +14344,8 @@
             "Admin list views over a collection of records"
           ],
           "whenNotToUse": [
-            "A read-only data display — use a plain Table",
-            "A dashboard overview — use DashboardCharts"
+            "A read-only data display \u2014 use a plain Table",
+            "A dashboard overview \u2014 use DashboardCharts"
           ],
           "antiPatterns": [],
           "related": [
@@ -14461,7 +14461,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -14498,8 +14498,8 @@
             "Emphasising the total of stacked multi-series values across a range"
           ],
           "whenNotToUse": [
-            "Reading precise individual values — use LineChart",
-            "Comparing discrete categories — use BarChart"
+            "Reading precise individual values \u2014 use LineChart",
+            "Comparing discrete categories \u2014 use BarChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -14611,7 +14611,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -14643,8 +14643,8 @@
             "Showing grouped or stacked multi-series data per category"
           ],
           "whenNotToUse": [
-            "Showing trends over continuous time — use LineChart",
-            "Part-of-whole proportions — use PieChart for ≤5 categories"
+            "Showing trends over continuous time \u2014 use LineChart",
+            "Part-of-whole proportions \u2014 use PieChart for \u22645 categories"
           ],
           "antiPatterns": [],
           "related": [
@@ -14719,7 +14719,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -14751,8 +14751,8 @@
             "Surfacing outliers and skew in statistical data"
           ],
           "whenNotToUse": [
-            "Showing the full shape of a single distribution — use Histogram",
-            "Comparing single aggregate values — use BarChart"
+            "Showing the full shape of a single distribution \u2014 use Histogram",
+            "Comparing single aggregate values \u2014 use BarChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -14832,7 +14832,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -14865,11 +14865,11 @@
         "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
         "intent": {
           "whenToUse": [
-            "Plotting three dimensions at once — x, y, and a size-encoded magnitude",
+            "Plotting three dimensions at once \u2014 x, y, and a size-encoded magnitude",
             "Comparing entities where relative scale matters alongside position"
           ],
           "whenNotToUse": [
-            "Showing only a 2D correlation — use ScatterChart",
+            "Showing only a 2D correlation \u2014 use ScatterChart",
             "Comparing many small magnitudes where size differences are unreadable"
           ],
           "antiPatterns": [],
@@ -14981,8 +14981,8 @@
             "Compact dashboard KPIs where space for a full gauge is limited"
           ],
           "whenNotToUse": [
-            "Displaying a metric without a target or comparative range — use Kpi",
-            "Showing a simple completion or rated value — use Meter"
+            "Displaying a metric without a target or comparative range \u2014 use Kpi",
+            "Showing a simple completion or rated value \u2014 use Meter"
           ],
           "antiPatterns": [],
           "related": [
@@ -15075,7 +15075,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
@@ -15103,8 +15103,8 @@
             "Pairing categorical totals with a continuous trend on a dual y-axis"
           ],
           "whenNotToUse": [
-            "Both metrics share a scale and type — use BarChart or LineChart",
-            "More than two series of differing types — clarity breaks down"
+            "Both metrics share a scale and type \u2014 use BarChart or LineChart",
+            "More than two series of differing types \u2014 clarity breaks down"
           ],
           "antiPatterns": [],
           "related": [
@@ -15179,7 +15179,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
@@ -15202,8 +15202,8 @@
             "Spotting patterns, clusters, or hotspots in dense grid data"
           ],
           "whenNotToUse": [
-            "Reading precise values — color encoding is approximate",
-            "A single-dimension comparison — use BarChart"
+            "Reading precise values \u2014 color encoding is approximate",
+            "A single-dimension comparison \u2014 use BarChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -15222,7 +15222,7 @@
     {
       "name": "chart/histogram",
       "type": "chart",
-      "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+      "description": "Frequency histogram using Freedman\u2013Diaconis binning with hover tooltips.",
       "category": "chart",
       "version": "0.0.0",
       "files": [],
@@ -15230,7 +15230,7 @@
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "meta": {
         "name": "Histogram",
-        "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+        "description": "Frequency histogram using Freedman\u2013Diaconis binning with hover tooltips.",
         "category": "chart",
         "states": [],
         "variants": [],
@@ -15246,7 +15246,7 @@
             "name": "bins",
             "type": "number",
             "required": false,
-            "description": "Explicit bin count (defaults to Freedman–Diaconis)"
+            "description": "Explicit bin count (defaults to Freedman\u2013Diaconis)"
           },
           {
             "name": "title",
@@ -15285,7 +15285,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": ["--cascivo-chart-1"],
@@ -15308,8 +15308,8 @@
             "Revealing the shape, spread, and skew of binned numeric data"
           ],
           "whenNotToUse": [
-            "Comparing discrete labelled categories — use BarChart",
-            "Comparing distribution summaries across groups — use Boxplot"
+            "Comparing discrete labelled categories \u2014 use BarChart",
+            "Comparing distribution summaries across groups \u2014 use Boxplot"
           ],
           "antiPatterns": [],
           "related": [
@@ -15408,8 +15408,8 @@
             "Building dashboard summary tiles with an embedded sparkline trend"
           ],
           "whenNotToUse": [
-            "Showing a value against a target or range — use Bullet or Meter",
-            "Comparing multiple values — use a chart"
+            "Showing a value against a target or range \u2014 use Bullet or Meter",
+            "Comparing multiple values \u2014 use a chart"
           ],
           "antiPatterns": [],
           "related": [
@@ -15539,7 +15539,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -15576,8 +15576,8 @@
             "Comparing the trajectory of multiple series on a shared scale"
           ],
           "whenNotToUse": [
-            "Comparing discrete categories — use BarChart",
-            "Emphasising cumulative volume — use AreaChart"
+            "Comparing discrete categories \u2014 use BarChart",
+            "Emphasising cumulative volume \u2014 use AreaChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -15681,8 +15681,8 @@
             "Surfacing threshold-based status (e.g. CPU, disk, score) as a bar or gauge"
           ],
           "whenNotToUse": [
-            "Showing task completion progress — use a ProgressBar",
-            "Comparing a value against a target with range bands — use Bullet"
+            "Showing task completion progress \u2014 use a ProgressBar",
+            "Comparing a value against a target with range bands \u2014 use Bullet"
           ],
           "antiPatterns": [],
           "related": [
@@ -15768,7 +15768,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -15800,8 +15800,8 @@
             "A single composition at one point in time"
           ],
           "whenNotToUse": [
-            "Comparing precise values or many categories — use BarChart",
-            "Showing change over time — use LineChart or AreaChart"
+            "Comparing precise values or many categories \u2014 use BarChart",
+            "Showing change over time \u2014 use LineChart or AreaChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -15888,7 +15888,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -15920,8 +15920,8 @@
             "Showing a multi-attribute profile or balance at a glance"
           ],
           "whenNotToUse": [
-            "Precise value reading — polar axes distort comparison",
-            "More than a few series — overlapping polygons become unreadable"
+            "Precise value reading \u2014 polar axes distort comparison",
+            "More than a few series \u2014 overlapping polygons become unreadable"
           ],
           "antiPatterns": [],
           "related": [
@@ -16020,7 +16020,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -16057,8 +16057,8 @@
             "Plotting many individual observations across a 2D space"
           ],
           "whenNotToUse": [
-            "Encoding a third magnitude dimension — use BubbleChart",
-            "Showing a trend over ordered time — use LineChart"
+            "Encoding a third magnitude dimension \u2014 use BubbleChart",
+            "Showing a trend over ordered time \u2014 use LineChart"
           ],
           "antiPatterns": [],
           "related": [
@@ -16153,7 +16153,7 @@
             "Conveying direction at a glance where a full chart would be too large"
           ],
           "whenNotToUse": [
-            "Reading precise values or axes are needed — use LineChart",
+            "Reading precise values or axes are needed \u2014 use LineChart",
             "As a standalone primary chart with its own panel"
           ],
           "antiPatterns": [],
@@ -16228,7 +16228,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+            "description": "Marks only \u2014 no axes, grid lines, or legend. For micro/inline charts."
           }
         ],
         "tokens": [
@@ -16260,8 +16260,8 @@
             "Visualising hierarchical magnitude where slice size encodes value"
           ],
           "whenNotToUse": [
-            "Few segments where a simple split reads better — use PieChart for ≤5",
-            "Precise value comparison — area encoding is approximate"
+            "Few segments where a simple split reads better \u2014 use PieChart for \u22645",
+            "Precise value comparison \u2014 area encoding is approximate"
           ],
           "antiPatterns": [],
           "related": [
@@ -16285,7 +16285,7 @@
     {
       "name": "section/cta",
       "type": "section",
-      "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
+      "description": "Call-to-action band \u2014 quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16296,7 +16296,7 @@
       "tags": ["section", "cta", "marketing"],
       "meta": {
         "name": "Cta",
-        "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
+        "description": "Call-to-action band \u2014 quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -16357,8 +16357,8 @@
             "Prompting conversion between or after marketing sections"
           ],
           "whenNotToUse": [
-            "The primary page intro — use Hero",
-            "General content grouping — use Section"
+            "The primary page intro \u2014 use Hero",
+            "General content grouping \u2014 use Section"
           ],
           "antiPatterns": [],
           "related": [
@@ -16381,7 +16381,7 @@
     {
       "name": "section/feature-grid",
       "type": "section",
-      "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+      "description": "Feature section \u2014 AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16392,7 +16392,7 @@
       "tags": ["section", "features", "grid"],
       "meta": {
         "name": "FeatureGrid",
-        "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+        "description": "Feature section \u2014 AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -16450,7 +16450,7 @@
         "examples": [
           {
             "title": "Feature grid (text-only)",
-            "code": "<FeatureGrid\n  title=\"Built for production\"\n  description=\"Everything you need to ship a polished product.\"\n  items={[\n    { title: 'Zero config', description: 'Copy a component and it works — no providers, no wrappers.' },\n    { title: 'Token-first', description: 'Every color, size and radius is a CSS custom property you own.' },\n    { title: 'Signal-driven', description: 'Fine-grained reactivity with @preact/signals-react — zero re-renders.' },\n    { title: 'Accessible by default', description: 'WCAG 2.1 AA, keyboard navigable, logical CSS properties for RTL.' },\n  ]}\n/>",
+            "code": "<FeatureGrid\n  title=\"Built for production\"\n  description=\"Everything you need to ship a polished product.\"\n  items={[\n    { title: 'Zero config', description: 'Copy a component and it works \u2014 no providers, no wrappers.' },\n    { title: 'Token-first', description: 'Every color, size and radius is a CSS custom property you own.' },\n    { title: 'Signal-driven', description: 'Fine-grained reactivity with @preact/signals-react \u2014 zero re-renders.' },\n    { title: 'Accessible by default', description: 'WCAG 2.1 AA, keyboard navigable, logical CSS properties for RTL.' },\n  ]}\n/>",
             "description": "Four-item text-only feature grid with section heading"
           }
         ],
@@ -16462,8 +16462,8 @@
             "Showcasing product capabilities with optional icons and descriptions"
           ],
           "whenNotToUse": [
-            "A single hero message — use Hero",
-            "A bare responsive grid without section framing — use AutoGrid"
+            "A single hero message \u2014 use Hero",
+            "A bare responsive grid without section framing \u2014 use AutoGrid"
           ],
           "antiPatterns": [],
           "related": [
@@ -16486,7 +16486,7 @@
     {
       "name": "section/hero",
       "type": "section",
-      "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+      "description": "Page hero section \u2014 centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16497,7 +16497,7 @@
       "tags": ["section", "hero", "marketing"],
       "meta": {
         "name": "Hero",
-        "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+        "description": "Page hero section \u2014 centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
         "category": "layout",
         "states": [],
         "variants": ["centered", "split"],
@@ -16565,7 +16565,7 @@
         "examples": [
           {
             "title": "Centered hero",
-            "code": "<Hero eyebrow=\"v8 — Assembly Included\" title=\"Ship the dashboard your ops team deserves\" description=\"Cascade gives you charts, layouts and sections — fully composed, copy-paste ready.\" actions={<><Button>Get started</Button><Button variant=\"ghost\">View docs</Button></>} />",
+            "code": "<Hero eyebrow=\"v8 \u2014 Assembly Included\" title=\"Ship the dashboard your ops team deserves\" description=\"Cascade gives you charts, layouts and sections \u2014 fully composed, copy-paste ready.\" actions={<><Button>Get started</Button><Button variant=\"ghost\">View docs</Button></>} />",
             "description": "Single-column hero with eyebrow, headline, description, and CTA buttons"
           },
           {
@@ -16582,8 +16582,8 @@
             "Landing-page tops in centered or split layout"
           ],
           "whenNotToUse": [
-            "An application page top — use PageHeader",
-            "A mid-page conversion prompt — use Cta"
+            "An application page top \u2014 use PageHeader",
+            "A mid-page conversion prompt \u2014 use Cta"
           ],
           "antiPatterns": [],
           "related": [
@@ -16606,7 +16606,7 @@
     {
       "name": "section/media-masonry",
       "type": "section",
-      "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+      "description": "Masonry gallery section \u2014 native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16617,7 +16617,7 @@
       "tags": ["section", "gallery", "masonry"],
       "meta": {
         "name": "MediaMasonry",
-        "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+        "description": "Masonry gallery section \u2014 native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -16627,7 +16627,7 @@
             "name": "children",
             "type": "ReactNode",
             "required": true,
-            "description": "Tile elements (images, cards, quotes) — consumer-provided and self-styled"
+            "description": "Tile elements (images, cards, quotes) \u2014 consumer-provided and self-styled"
           },
           {
             "name": "title",
@@ -16690,8 +16690,8 @@
             "Showcasing images or media tiles of varying heights"
           ],
           "whenNotToUse": [
-            "A bare masonry primitive without section framing — use Masonry",
-            "Uniform-height cards in rows — use AutoGrid"
+            "A bare masonry primitive without section framing \u2014 use Masonry",
+            "Uniform-height cards in rows \u2014 use AutoGrid"
           ],
           "antiPatterns": [],
           "related": [
@@ -16709,7 +16709,7 @@
     {
       "name": "section/page-footer",
       "type": "section",
-      "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+      "description": "Site footer \u2014 AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16720,7 +16720,7 @@
       "tags": ["section", "footer", "navigation"],
       "meta": {
         "name": "PageFooter",
-        "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+        "description": "Site footer \u2014 AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -16775,8 +16775,8 @@
             "Closing marketing or app pages with secondary navigation"
           ],
           "whenNotToUse": [
-            "Primary top navigation — use AppShell or a header",
-            "A conversion prompt — use Cta"
+            "Primary top navigation \u2014 use AppShell or a header",
+            "A conversion prompt \u2014 use Cta"
           ],
           "antiPatterns": [],
           "related": [
@@ -16794,7 +16794,7 @@
     {
       "name": "section/stats-band",
       "type": "section",
-      "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+      "description": "KPI strip \u2014 horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
       "category": "layout",
       "version": "0.0.0",
       "files": [
@@ -16805,7 +16805,7 @@
       "tags": ["section", "stats", "kpi", "charts"],
       "meta": {
         "name": "StatsBand",
-        "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+        "description": "KPI strip \u2014 horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -16844,7 +16844,7 @@
           {
             "title": "KPI band with trends",
             "code": "<StatsBand\n  aria-label=\"Performance metrics\"\n  stats={[\n    { label: 'p99 latency', value: '184 ms', delta: '-12 ms', trend: [210, 205, 198, 192, 184] },\n    { label: 'Error rate', value: '0.12%', delta: '-0.03%', trend: [0.18, 0.16, 0.15, 0.14, 0.12] },\n    { label: 'Uptime', value: '99.98%', trend: [99.95, 99.97, 99.98, 99.99, 99.98] },\n    { label: 'Deploys today', value: '7' },\n  ]}\n/>",
-            "description": "Four KPI cells — three with sparkline trends and signed deltas"
+            "description": "Four KPI cells \u2014 three with sparkline trends and signed deltas"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/charts"],
@@ -16855,8 +16855,8 @@
             "A marketing or dashboard band summarising headline numbers"
           ],
           "whenNotToUse": [
-            "A grid of full stat cards — use StatsCards",
-            "A single metric — use a Kpi card"
+            "A grid of full stat cards \u2014 use StatsCards",
+            "A single metric \u2014 use a Kpi card"
           ],
           "antiPatterns": [],
           "related": [
@@ -16874,6 +16874,152 @@
           "a11yRationale": "Has no visible heading; consumers must supply an aria-label for the band.",
           "flexibility": []
         }
+      }
+    }
+  ],
+  "blocks": [
+    {
+      "name": "app-shell",
+      "type": "block",
+      "displayName": "App Shell",
+      "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
+      "category": "shell",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/app-shell/app-shell.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["shell", "layout", "sidebar", "navigation", "responsive"],
+      "screenshot": {
+        "light": "/blocks/screenshots/app-shell-light.png",
+        "dark": "/blocks/screenshots/app-shell-dark.png"
+      }
+    },
+    {
+      "name": "auth-login",
+      "type": "block",
+      "displayName": "Login Form",
+      "description": "Email + password login with remember-me checkbox and forgot-password link.",
+      "category": "auth",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "login", "form", "email", "password"],
+      "screenshot": {
+        "light": "/blocks/screenshots/auth-login-light.png",
+        "dark": "/blocks/screenshots/auth-login-dark.png"
+      }
+    },
+    {
+      "name": "auth-signup",
+      "type": "block",
+      "displayName": "Sign Up Form",
+      "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
+      "category": "auth",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "signup", "register", "form"],
+      "screenshot": {
+        "light": "/blocks/screenshots/auth-signup-light.png",
+        "dark": "/blocks/screenshots/auth-signup-dark.png"
+      }
+    },
+    {
+      "name": "dashboard-overview",
+      "type": "block",
+      "displayName": "Dashboard Overview",
+      "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
+      "category": "dashboard",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "stats", "kpi", "cards", "overview"],
+      "screenshot": {
+        "light": "/blocks/screenshots/dashboard-overview-light.png",
+        "dark": "/blocks/screenshots/dashboard-overview-dark.png"
+      }
+    },
+    {
+      "name": "dashboard-table",
+      "type": "block",
+      "displayName": "Dashboard Table",
+      "description": "Searchable, sortable, paginated data table with export button.",
+      "category": "dashboard",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "table", "data", "search", "sort", "pagination"],
+      "screenshot": {
+        "light": "/blocks/screenshots/dashboard-table-light.png",
+        "dark": "/blocks/screenshots/dashboard-table-dark.png"
+      }
+    },
+    {
+      "name": "marketing-features",
+      "type": "block",
+      "displayName": "Feature Grid",
+      "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "features", "grid", "icons"],
+      "screenshot": {
+        "light": "/blocks/screenshots/marketing-features-light.png",
+        "dark": "/blocks/screenshots/marketing-features-dark.png"
+      }
+    },
+    {
+      "name": "marketing-hero",
+      "type": "block",
+      "displayName": "Hero Section",
+      "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "hero", "landing", "cta"],
+      "screenshot": {
+        "light": "/blocks/screenshots/marketing-hero-light.png",
+        "dark": "/blocks/screenshots/marketing-hero-dark.png"
+      }
+    },
+    {
+      "name": "settings-profile",
+      "type": "block",
+      "displayName": "Settings \u2014 Profile",
+      "description": "Two-section settings form: personal info fields + preference toggles.",
+      "category": "shell",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["settings", "profile", "form", "toggles", "preferences"],
+      "screenshot": {
+        "light": "/blocks/screenshots/settings-profile-light.png",
+        "dark": "/blocks/screenshots/settings-profile-dark.png"
       }
     }
   ]
