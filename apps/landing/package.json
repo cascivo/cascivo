@@ -5,7 +5,9 @@
   "description": "cascade landing page",
   "type": "module",
   "scripts": {
+    "predev": "node -e \"require('fs').copyFileSync('../../registry.json', 'public/registry.json')\"",
     "dev": "vp dev",
+    "prebuild": "node -e \"require('fs').copyFileSync('../../registry.json', 'public/registry.json')\"",
     "build": "vp build",
     "preview": "vp preview",
     "check": "tsc --noEmit",
