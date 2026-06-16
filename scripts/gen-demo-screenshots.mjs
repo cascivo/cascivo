@@ -26,13 +26,18 @@ const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..')
 const OUT_ROOT = resolve(root, 'apps/landing/public/screenshots')
 
-/** slug → { accent, storageThemeKey } */
+// All five demo apps use @cascivo/example-kit's AppShell, which stores the
+// active theme under a single shared key in the persistedSignal envelope format:
+// { v: 1, value: "<theme>" }. The per-demo themeKey entries were stale.
+const THEME_STORAGE_KEY = 'kit.appShell.theme'
+
+/** slug → { accent } */
 const DEMOS = {
-  deploy: { accent: [0, 112, 243], themeKey: 'deploy.theme' },
-  pay: { accent: [99, 91, 255], themeKey: 'pay.theme' },
-  flow: { accent: [252, 93, 39], themeKey: 'flow.theme' },
-  track: { accent: [94, 106, 210], themeKey: 'track.theme' },
-  pulse: { accent: [99, 44, 166], themeKey: 'pulse.theme' },
+  deploy: { accent: [0, 112, 243] },
+  pay: { accent: [99, 91, 255] },
+  flow: { accent: [252, 93, 39] },
+  track: { accent: [94, 106, 210] },
+  pulse: { accent: [99, 44, 166] },
 }
 
 const VIEWPORTS = {
@@ -210,7 +215,7 @@ async function capture() {
 
   const browser = await chromium.launch()
   try {
-    for (const [slug, { themeKey }] of Object.entries(DEMOS)) {
+    for (const [slug] of Object.entries(DEMOS)) {
       const dir = resolve(OUT_ROOT, slug)
       mkdirSync(dir, { recursive: true })
       for (const theme of THEMES) {
@@ -219,12 +224,18 @@ async function capture() {
             viewport: { width: w, height: h },
             reducedMotion: 'reduce',
             // Seed the demo's persisted theme before first paint.
+            // persistedSignal stores values in an envelope: { v: 1, value: T }.
             storageState: {
               cookies: [],
               origins: [
                 {
                   origin: `http://localhost:${PORT}`,
-                  localStorage: [{ name: themeKey, value: JSON.stringify(theme) }],
+                  localStorage: [
+                    {
+                      name: THEME_STORAGE_KEY,
+                      value: JSON.stringify({ v: 1, value: theme }),
+                    },
+                  ],
                 },
               ],
             },
