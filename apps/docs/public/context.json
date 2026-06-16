@@ -317,6 +317,18 @@
           "note": "Any ReactNode may be a slide; pass via children or the slides array"
         }
       ],
+      "ChatBubble": [
+        {
+          "area": "avatar slot",
+          "level": "flexible",
+          "note": "Accepts any ReactNode — Avatar, initials, icon, or nothing"
+        },
+        {
+          "area": "body content",
+          "level": "flexible",
+          "note": "children accepts rich content including images, links, and formatted text"
+        }
+      ],
       "Checkbox": [
         {
           "area": "native input props",
@@ -517,6 +529,18 @@
           "note": "Display, weekday labels, and week start derive from the locale via Intl"
         }
       ],
+      "Dock": [
+        {
+          "area": "item element",
+          "level": "flexible",
+          "note": "Renders <a> when href is provided, <button> otherwise — no wrapper needed"
+        },
+        {
+          "area": "visibility",
+          "level": "strict",
+          "note": "Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent"
+        }
+      ],
       "Drawer": [
         {
           "area": "side",
@@ -609,6 +633,18 @@
           "note": "Configure freely; rejected files surface through onRejected"
         }
       ],
+      "Filter": [
+        {
+          "area": "variant",
+          "level": "flexible",
+          "note": "pill suits floating filter bars; outline suits embedded filter rows within a bordered container"
+        },
+        {
+          "area": "multi",
+          "level": "flexible",
+          "note": "single-select for mutually exclusive categories; multi for additive facets"
+        }
+      ],
       "Form": [
         {
           "area": "validation strategy",
@@ -691,6 +727,13 @@
           "note": "Any single icon node; consumer owns the icon set"
         }
       ],
+      "Indicator": [
+        {
+          "area": "placement",
+          "level": "flexible",
+          "note": "All four corners are supported; top-end is the most common convention for notification counts"
+        }
+      ],
       "InlineLoading": [
         {
           "area": "label",
@@ -747,6 +790,13 @@
           "area": "compound parts",
           "level": "flexible",
           "note": "Media, content, title, description, and actions are optional and composable"
+        }
+      ],
+      "Join": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "Horizontal and vertical grouping are both supported via the orientation prop"
         }
       ],
       "Kbd": [
@@ -995,6 +1045,18 @@
           "note": "Trigger and panel content are arbitrary children supplied by the consumer"
         }
       ],
+      "Progress": [
+        {
+          "area": "variant",
+          "level": "flexible",
+          "note": "Choose the variant that matches the semantic meaning of the operation"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Colors must resolve to --cascivo-* tokens"
+        }
+      ],
       "ProgressBar": [
         {
           "area": "determinate vs indeterminate",
@@ -1041,6 +1103,18 @@
           "area": "token names",
           "level": "strict",
           "note": "All typography and surface styling resolves to --cascivo-* tokens"
+        }
+      ],
+      "RadialProgress": [
+        {
+          "area": "label",
+          "level": "flexible",
+          "note": "Default is the percentage string; pass children to override with any content"
+        },
+        {
+          "area": "color",
+          "level": "strict",
+          "note": "Color resolves through --cascivo-color-* semantic tokens via data-variant"
         }
       ],
       "Radio": [
@@ -1235,6 +1309,13 @@
           "note": "Radius must resolve to --cascivo-radius-full"
         }
       ],
+      "Stack": [
+        {
+          "area": "offset",
+          "level": "flexible",
+          "note": "The pixel offset is fully configurable; set to 0 for a pure overlap with no shift"
+        }
+      ],
       "Stat": [
         {
           "area": "delta and trend",
@@ -1259,6 +1340,18 @@
           "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
         }
       ],
+      "Steps": [
+        {
+          "area": "step state",
+          "level": "flexible",
+          "note": "Each step can override derived pending/active/complete state via step.state"
+        },
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "Horizontal for top progress bars, vertical for sidebar wizards"
+        }
+      ],
       "StructuredList": [
         {
           "area": "selectable",
@@ -1269,6 +1362,18 @@
           "area": "roles",
           "level": "strict",
           "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+        }
+      ],
+      "Swap": [
+        {
+          "area": "content",
+          "level": "flexible",
+          "note": "on/off slots accept any ReactNode — icons, text, images"
+        },
+        {
+          "area": "animation mode",
+          "level": "flexible",
+          "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
         }
       ],
       "Switcher": [
@@ -2132,6 +2237,55 @@
       "contextUrl": "/context/carousel.md"
     },
     {
+      "name": "ChatBubble",
+      "category": "display",
+      "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
+      "intent": {
+        "whenToUse": [
+          "Chat UIs and messaging features showing conversation history",
+          "Comment threads with a bubble-style layout",
+          "Customer support widgets displaying agent and user messages"
+        ],
+        "whenNotToUse": [
+          "General content cards without a conversational context — use Card",
+          "Inline comments that do not need a bubble visual treatment"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Using ChatBubble for notification cards or feed items",
+            "good": "<Card> or <Alert> for non-conversational content",
+            "why": "ChatBubble implies a back-and-forth conversation; use Card for standalone content pieces"
+          }
+        ],
+        "related": [
+          {
+            "name": "Card",
+            "relationship": "alternative",
+            "reason": "Use for general content display that is not part of a conversation"
+          },
+          {
+            "name": "Avatar",
+            "relationship": "companion",
+            "reason": "Pass an Avatar as the avatar prop to identify the message sender"
+          }
+        ],
+        "a11yRationale": "Pure layout component with role=\"none\". Wrap a list of ChatBubble elements in an element with role=\"log\" and aria-live=\"polite\" to announce new messages to screen readers.",
+        "flexibility": [
+          {
+            "area": "avatar slot",
+            "level": "flexible",
+            "note": "Accepts any ReactNode — Avatar, initials, icon, or nothing"
+          },
+          {
+            "area": "body content",
+            "level": "flexible",
+            "note": "children accepts rich content including images, links, and formatted text"
+          }
+        ]
+      },
+      "contextUrl": "/context/chat-bubble.md"
+    },
+    {
       "name": "Checkbox",
       "category": "inputs",
       "description": "Binary toggle for forms, with indeterminate support",
@@ -2915,6 +3069,55 @@
       "contextUrl": "/context/date-range-picker.md"
     },
     {
+      "name": "Dock",
+      "category": "navigation",
+      "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+      "intent": {
+        "whenToUse": [
+          "Mobile app-shell navigation with 3–5 top-level destinations",
+          "When the primary navigation must be thumb-reachable on small screens"
+        ],
+        "whenNotToUse": [
+          "Desktop navigation — the dock hides at the lg breakpoint (64rem)",
+          "More than 5 items — labels become unreadable and tap targets too small",
+          "Secondary or contextual navigation — use Tabs or SideNav instead"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Putting more than 5 items in the Dock",
+            "good": "Use an overflow menu or drawer for additional destinations",
+            "why": "Tap targets become too small and labels collide on narrow screens"
+          }
+        ],
+        "related": [
+          {
+            "name": "SideNav",
+            "relationship": "alternative",
+            "reason": "SideNav is the desktop equivalent for primary navigation"
+          },
+          {
+            "name": "Tabs",
+            "relationship": "alternative",
+            "reason": "Tabs are for in-page section switching, not app-level navigation"
+          }
+        ],
+        "a11yRationale": "Wrapped in <nav> with aria-label; active item carries aria-current=\"page\"; renders as <a> for href items and <button> for onClick items to preserve native semantics",
+        "flexibility": [
+          {
+            "area": "item element",
+            "level": "flexible",
+            "note": "Renders <a> when href is provided, <button> otherwise — no wrapper needed"
+          },
+          {
+            "area": "visibility",
+            "level": "strict",
+            "note": "Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent"
+          }
+        ]
+      },
+      "contextUrl": "/context/dock.md"
+    },
+    {
       "name": "Drawer",
       "category": "overlay",
       "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
@@ -3255,6 +3458,60 @@
       "contextUrl": "/context/file-uploader.md"
     },
     {
+      "name": "Filter",
+      "category": "inputs",
+      "description": "A group of toggleable pill or outline buttons for filtering content by category",
+      "intent": {
+        "whenToUse": [
+          "Tag or category filtering on listing pages where the active filters must remain visible",
+          "Facet chips that toggle content visibility (e.g. product categories, team labels)"
+        ],
+        "whenNotToUse": [
+          "Navigation between distinct views — use Tabs",
+          "A binary on/off switch — use Toggle",
+          "Form field for selecting a value — use Select or Checkbox"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Filter options={statusOptions} onChange={navigate} />",
+            "good": "<Tabs items={statusTabs} />",
+            "why": "Filter is for narrowing visible content, not routing between views"
+          }
+        ],
+        "related": [
+          {
+            "name": "Tabs",
+            "relationship": "alternative",
+            "reason": "Tabs navigate between views; Filter narrows displayed content"
+          },
+          {
+            "name": "Toggle",
+            "relationship": "alternative",
+            "reason": "Toggle is the binary on/off primitive; Filter handles multi-option sets"
+          },
+          {
+            "name": "Tag",
+            "relationship": "complementary",
+            "reason": "Tag displays the currently active filters as dismissible chips"
+          }
+        ],
+        "a11yRationale": "Wraps buttons in a role=\"group\" so screen readers announce the group label; each button uses aria-pressed to communicate selected state without relying on color alone",
+        "flexibility": [
+          {
+            "area": "variant",
+            "level": "flexible",
+            "note": "pill suits floating filter bars; outline suits embedded filter rows within a bordered container"
+          },
+          {
+            "area": "multi",
+            "level": "flexible",
+            "note": "single-select for mutually exclusive categories; multi for additive facets"
+          }
+        ]
+      },
+      "contextUrl": "/context/filter.md"
+    },
+    {
       "name": "Form",
       "category": "inputs",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
@@ -3561,6 +3818,39 @@
       "contextUrl": "/context/icon-button.md"
     },
     {
+      "name": "Indicator",
+      "category": "layout",
+      "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
+      "intent": {
+        "whenToUse": ["Notification counts on icon buttons", "Status dots on avatars"],
+        "whenNotToUse": [
+          "Inline badges within text — use Badge directly",
+          "Status messages below a field — use a form hint or Alert"
+        ],
+        "related": [
+          {
+            "name": "Badge",
+            "relationship": "contained-by",
+            "reason": "Badge is the most common overlay content placed inside Indicator"
+          },
+          {
+            "name": "Avatar",
+            "relationship": "used-with",
+            "reason": "Indicator is frequently used to attach a status dot to an Avatar"
+          }
+        ],
+        "a11yRationale": "The overlay is marked aria-hidden because it is a visual affordance — the underlying control (button, avatar) carries its own accessible label. Screen-reader users should receive the count or status through the control's accessible name or a live region, not from the overlay div.",
+        "flexibility": [
+          {
+            "area": "placement",
+            "level": "flexible",
+            "note": "All four corners are supported; top-end is the most common convention for notification counts"
+          }
+        ]
+      },
+      "contextUrl": "/context/indicator.md"
+    },
+    {
       "name": "InlineLoading",
       "category": "feedback",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -3780,6 +4070,42 @@
         ]
       },
       "contextUrl": "/context/item.md"
+    },
+    {
+      "name": "Join",
+      "category": "layout",
+      "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+      "intent": {
+        "whenToUse": [
+          "Input + button search groups where the two controls should appear as one unit",
+          "Segmented button rows where buttons share borders"
+        ],
+        "whenNotToUse": [
+          "Independent adjacent buttons that should remain visually separate",
+          "SegmentedControl — it has its own built-in grouping and selection semantics"
+        ],
+        "related": [
+          {
+            "name": "SegmentedControl",
+            "relationship": "alternative",
+            "reason": "SegmentedControl has built-in selection state; Join is purely a layout wrapper"
+          },
+          {
+            "name": "InputGroup",
+            "relationship": "alternative",
+            "reason": "InputGroup handles input + addon joining; Join is the general-purpose grouping primitive"
+          }
+        ],
+        "a11yRationale": "Join is a layout-only container (role=\"none\"). Accessibility semantics belong on the individual child controls — buttons carry their own role, inputs their labels.",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "Horizontal and vertical grouping are both supported via the orientation prop"
+          }
+        ]
+      },
+      "contextUrl": "/context/join.md"
     },
     {
       "name": "Kbd",
@@ -4757,6 +5083,54 @@
       "contextUrl": "/context/popover.md"
     },
     {
+      "name": "Progress",
+      "category": "feedback",
+      "description": "Horizontal bar showing the completion progress of a tracked operation",
+      "intent": {
+        "whenToUse": [
+          "Tracked operations with a known total (file uploads, multi-step imports)",
+          "Showing completion percentage of a long-running task"
+        ],
+        "whenNotToUse": [
+          "Unbounded waits of unknown duration — use Spinner",
+          "Single-action button loading state — use the button's own loading prop"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Progress />",
+            "good": "<Progress aria-label=\"Uploading file…\" />",
+            "why": "Indeterminate progress bars must have an aria-label so screen readers can announce what is loading"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "alternative",
+            "reason": "Spinner is for unbounded waits; Progress is for operations with a known end point"
+          },
+          {
+            "name": "ProgressBar",
+            "relationship": "alternative",
+            "reason": "ProgressBar is the richer compound variant with label and percentage display"
+          }
+        ],
+        "a11yRationale": "Uses the native <progress> element which maps to role=\"progressbar\" automatically; aria-label or aria-labelledby is required for indeterminate state",
+        "flexibility": [
+          {
+            "area": "variant",
+            "level": "flexible",
+            "note": "Choose the variant that matches the semantic meaning of the operation"
+          },
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Colors must resolve to --cascivo-* tokens"
+          }
+        ]
+      },
+      "contextUrl": "/context/progress.md"
+    },
+    {
       "name": "ProgressBar",
       "category": "feedback",
       "description": "Shows determinate or indeterminate progress of a task",
@@ -4951,6 +5325,61 @@
         ]
       },
       "contextUrl": "/context/prose.md"
+    },
+    {
+      "name": "RadialProgress",
+      "category": "feedback",
+      "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
+      "intent": {
+        "whenToUse": [
+          "Dashboard KPI metrics showing completion percentage",
+          "Skill or profile completion meters",
+          "Storage or quota usage displays"
+        ],
+        "whenNotToUse": [
+          "Unknown-length operations where completion is not measurable — use Spinner",
+          "Linear progress where a bar is more readable — use Progress or ProgressBar",
+          "Comparing multiple values against each other — use a chart component"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<RadialProgress value={indeterminate} /> with a fake cycling value",
+            "good": "<Spinner /> for indeterminate loading states",
+            "why": "RadialProgress implies a known completion percentage; fake cycling breaks the semantic contract"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "alternative",
+            "reason": "Use for indeterminate loading where total duration is unknown"
+          },
+          {
+            "name": "Progress",
+            "relationship": "alternative",
+            "reason": "Use when a horizontal bar is more appropriate for the layout"
+          },
+          {
+            "name": "ProgressCircle",
+            "relationship": "sibling",
+            "reason": "Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient"
+          }
+        ],
+        "a11yRationale": "Renders a div with role=\"progressbar\", aria-valuenow (clamped 0–100), aria-valuemin=0, aria-valuemax=100. Provide aria-label when no visible label describes the metric being measured.",
+        "flexibility": [
+          {
+            "area": "label",
+            "level": "flexible",
+            "note": "Default is the percentage string; pass children to override with any content"
+          },
+          {
+            "area": "color",
+            "level": "strict",
+            "note": "Color resolves through --cascivo-color-* semantic tokens via data-variant"
+          }
+        ]
+      },
+      "contextUrl": "/context/radial-progress.md"
     },
     {
       "name": "Radio",
@@ -5746,6 +6175,43 @@
       "contextUrl": "/context/spinner.md"
     },
     {
+      "name": "Stack",
+      "category": "layout",
+      "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
+      "intent": {
+        "whenToUse": [
+          "Card pile UI where depth and layering should be visible",
+          "Overlapping avatar groups",
+          "Notification stack visualisations"
+        ],
+        "whenNotToUse": [
+          "Normal vertical lists — use a flex column or VStack instead",
+          "Independent positioned elements — use CSS position directly"
+        ],
+        "related": [
+          {
+            "name": "Avatar",
+            "relationship": "used-with",
+            "reason": "Overlapping avatar groups are a primary use case for Stack"
+          },
+          {
+            "name": "Card",
+            "relationship": "used-with",
+            "reason": "Card pile visualisations are a common Stack pattern"
+          }
+        ],
+        "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",
+        "flexibility": [
+          {
+            "area": "offset",
+            "level": "flexible",
+            "note": "The pixel offset is fully configurable; set to 0 for a pure overlap with no shift"
+          }
+        ]
+      },
+      "contextUrl": "/context/stack.md"
+    },
+    {
       "name": "Stat",
       "category": "display",
       "description": "Displays a key metric with optional delta, trend direction and help text",
@@ -5847,6 +6313,56 @@
       "contextUrl": "/context/status.md"
     },
     {
+      "name": "Steps",
+      "category": "navigation",
+      "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+      "intent": {
+        "whenToUse": [
+          "Checkout flows where the user moves through a fixed sequence of screens",
+          "Onboarding wizards with a known number of steps",
+          "Multi-step forms where showing overall progress reduces abandonment"
+        ],
+        "whenNotToUse": [
+          "General section navigation — use Tabs instead",
+          "Simple back/next controls without step labels — use Pagination instead",
+          "More than 7 steps where the connector lines become unreadable on mobile"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Using Steps as a replacement for Tabs for non-sequential navigation",
+            "good": "<Tabs> for switching between independent views",
+            "why": "Steps imply a linear sequence and derive complete/pending state from position"
+          }
+        ],
+        "related": [
+          {
+            "name": "Pagination",
+            "relationship": "alternative",
+            "reason": "Pagination is for paged data sets, Steps is for guided task sequences"
+          },
+          {
+            "name": "Tabs",
+            "relationship": "alternative",
+            "reason": "Tabs are for non-sequential section switching, not ordered task flows"
+          }
+        ],
+        "a11yRationale": "Rendered as an ordered list (<ol>) with aria-label; the active item carries aria-current=\"step\" to communicate progress to screen readers",
+        "flexibility": [
+          {
+            "area": "step state",
+            "level": "flexible",
+            "note": "Each step can override derived pending/active/complete state via step.state"
+          },
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "Horizontal for top progress bars, vertical for sidebar wizards"
+          }
+        ]
+      },
+      "contextUrl": "/context/steps.md"
+    },
+    {
       "name": "StructuredList",
       "category": "display",
       "description": "Tabular row list for scannable data, optionally single-selectable",
@@ -5894,6 +6410,56 @@
         ]
       },
       "contextUrl": "/context/structured-list.md"
+    },
+    {
+      "name": "Swap",
+      "category": "inputs",
+      "description": "Animated toggle between two icon/content states with rotate or flip transition",
+      "intent": {
+        "whenToUse": [
+          "Theme toggles where an icon animates between two states (sun/moon)",
+          "Favorite or bookmark toggles that flip between outlined and filled icons",
+          "Any scenario where exactly two icons swap places with a transition"
+        ],
+        "whenNotToUse": [
+          "Form toggles with a visible label — use Toggle",
+          "Checkbox-style inputs that are part of a submitted form — use Checkbox",
+          "When a text label must always be visible alongside the control"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Swap on=\"Enable\" off=\"Disable\" /> (text content)",
+            "good": "<Toggle label=\"Enable notifications\" />",
+            "why": "Swap is designed for icon transitions; for labeled on/off controls use Toggle"
+          }
+        ],
+        "related": [
+          {
+            "name": "Toggle",
+            "relationship": "alternative",
+            "reason": "Use when a visible text label is required alongside the switch control"
+          },
+          {
+            "name": "Checkbox",
+            "relationship": "alternative",
+            "reason": "Use for form selections that are submitted rather than applied immediately"
+          }
+        ],
+        "a11yRationale": "Renders a <button role=\"switch\"> with aria-checked reflecting state. Both on/off slots are aria-hidden so screen readers announce the button state, not the icon content.",
+        "flexibility": [
+          {
+            "area": "content",
+            "level": "flexible",
+            "note": "on/off slots accept any ReactNode — icons, text, images"
+          },
+          {
+            "area": "animation mode",
+            "level": "flexible",
+            "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
+          }
+        ]
+      },
+      "contextUrl": "/context/swap.md"
     },
     {
       "name": "Switcher",

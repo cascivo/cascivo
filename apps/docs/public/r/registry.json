@@ -3950,6 +3950,126 @@
     },
     {
       "schemaVersion": 2,
+      "name": "chat-bubble",
+      "type": "component",
+      "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/chat-bubble/chat-bubble.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/chat-bubble/chat-bubble.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["chat", "message", "conversation", "messaging"],
+      "category": "display",
+      "meta": {
+        "name": "ChatBubble",
+        "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
+        "category": "display",
+        "states": [],
+        "variants": ["start", "end"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "side",
+            "type": "'start' | 'end'",
+            "required": false,
+            "default": "start"
+          },
+          {
+            "name": "avatar",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "time",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-radius-overlay",
+          "--cascivo-radius-indicator"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["chat", "message", "conversation", "messaging"],
+        "intent": {
+          "whenToUse": [
+            "Chat UIs and messaging features showing conversation history",
+            "Comment threads with a bubble-style layout",
+            "Customer support widgets displaying agent and user messages"
+          ],
+          "whenNotToUse": [
+            "General content cards without a conversational context — use Card",
+            "Inline comments that do not need a bubble visual treatment"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Using ChatBubble for notification cards or feed items",
+              "good": "<Card> or <Alert> for non-conversational content",
+              "why": "ChatBubble implies a back-and-forth conversation; use Card for standalone content pieces"
+            }
+          ],
+          "related": [
+            {
+              "name": "Card",
+              "relationship": "alternative",
+              "reason": "Use for general content display that is not part of a conversation"
+            },
+            {
+              "name": "Avatar",
+              "relationship": "companion",
+              "reason": "Pass an Avatar as the avatar prop to identify the message sender"
+            }
+          ],
+          "a11yRationale": "Pure layout component with role=\"none\". Wrap a list of ChatBubble elements in an element with role=\"log\" and aria-live=\"polite\" to announce new messages to screen readers.",
+          "flexibility": [
+            {
+              "area": "avatar slot",
+              "level": "flexible",
+              "note": "Accepts any ReactNode — Avatar, initials, icon, or nothing"
+            },
+            {
+              "area": "body content",
+              "level": "flexible",
+              "note": "children accepts rich content including images, links, and formatted text"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "checkbox",
       "type": "component",
       "description": "Binary toggle for forms, with indeterminate support",
@@ -5945,6 +6065,113 @@
     },
     {
       "schemaVersion": 2,
+      "name": "dock",
+      "type": "component",
+      "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dock/dock.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/dock/dock.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
+      "category": "navigation",
+      "meta": {
+        "name": "Dock",
+        "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+        "category": "navigation",
+        "states": ["default", "active"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "DockItem[]",
+            "required": true,
+            "description": "Navigation items, each with a label, icon, and optional href or onClick"
+          },
+          {
+            "name": "activeIndex",
+            "type": "number",
+            "required": false,
+            "description": "Index of the currently active item (0-based)"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-text-muted",
+          "--cascivo-border-subtle",
+          "--cascivo-ring-width",
+          "--cascivo-ring-color",
+          "--cascivo-ease-out",
+          "--cascivo-target-min-coarse",
+          "--cascivo-z-dock"
+        ],
+        "accessibility": {
+          "role": "navigation",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter"]
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
+        "intent": {
+          "whenToUse": [
+            "Mobile app-shell navigation with 3–5 top-level destinations",
+            "When the primary navigation must be thumb-reachable on small screens"
+          ],
+          "whenNotToUse": [
+            "Desktop navigation — the dock hides at the lg breakpoint (64rem)",
+            "More than 5 items — labels become unreadable and tap targets too small",
+            "Secondary or contextual navigation — use Tabs or SideNav instead"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Putting more than 5 items in the Dock",
+              "good": "Use an overflow menu or drawer for additional destinations",
+              "why": "Tap targets become too small and labels collide on narrow screens"
+            }
+          ],
+          "related": [
+            {
+              "name": "SideNav",
+              "relationship": "alternative",
+              "reason": "SideNav is the desktop equivalent for primary navigation"
+            },
+            {
+              "name": "Tabs",
+              "relationship": "alternative",
+              "reason": "Tabs are for in-page section switching, not app-level navigation"
+            }
+          ],
+          "a11yRationale": "Wrapped in <nav> with aria-label; active item carries aria-current=\"page\"; renders as <a> for href items and <button> for onClick items to preserve native semantics",
+          "flexibility": [
+            {
+              "area": "item element",
+              "level": "flexible",
+              "note": "Renders <a> when href is provided, <button> otherwise — no wrapper needed"
+            },
+            {
+              "area": "visibility",
+              "level": "strict",
+              "note": "Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "drawer",
       "type": "component",
       "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
@@ -6707,6 +6934,139 @@
     },
     {
       "schemaVersion": 2,
+      "name": "filter",
+      "type": "component",
+      "description": "A group of toggleable pill or outline buttons for filtering content by category",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/filter/filter.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/filter/filter.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
+      "category": "inputs",
+      "meta": {
+        "name": "Filter",
+        "description": "A group of toggleable pill or outline buttons for filtering content by category",
+        "category": "inputs",
+        "states": ["default", "selected", "hover", "focus"],
+        "variants": ["pill", "outline"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "options",
+            "type": "FilterOption[]",
+            "required": true,
+            "description": "Array of { label, value } objects to render as filter buttons"
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": false,
+            "description": "Controlled selected values"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string[]",
+            "required": false,
+            "default": "[]",
+            "description": "Initial selected values for uncontrolled use"
+          },
+          {
+            "name": "onChange",
+            "type": "(selected: string[]) => void",
+            "required": false
+          },
+          {
+            "name": "multi",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Allow multiple items to be selected simultaneously"
+          },
+          {
+            "name": "variant",
+            "type": "'pill' | 'outline'",
+            "required": false,
+            "default": "pill"
+          }
+        ],
+        "tokens": [
+          "--cascivo-radius-full",
+          "--cascivo-border-default",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text",
+          "--cascivo-color-active-bg",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-ring-width",
+          "--cascivo-ring-color",
+          "--cascivo-ease-out"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
+        "intent": {
+          "whenToUse": [
+            "Tag or category filtering on listing pages where the active filters must remain visible",
+            "Facet chips that toggle content visibility (e.g. product categories, team labels)"
+          ],
+          "whenNotToUse": [
+            "Navigation between distinct views — use Tabs",
+            "A binary on/off switch — use Toggle",
+            "Form field for selecting a value — use Select or Checkbox"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Filter options={statusOptions} onChange={navigate} />",
+              "good": "<Tabs items={statusTabs} />",
+              "why": "Filter is for narrowing visible content, not routing between views"
+            }
+          ],
+          "related": [
+            {
+              "name": "Tabs",
+              "relationship": "alternative",
+              "reason": "Tabs navigate between views; Filter narrows displayed content"
+            },
+            {
+              "name": "Toggle",
+              "relationship": "alternative",
+              "reason": "Toggle is the binary on/off primitive; Filter handles multi-option sets"
+            },
+            {
+              "name": "Tag",
+              "relationship": "complementary",
+              "reason": "Tag displays the currently active filters as dismissible chips"
+            }
+          ],
+          "a11yRationale": "Wraps buttons in a role=\"group\" so screen readers announce the group label; each button uses aria-pressed to communicate selected state without relying on color alone",
+          "flexibility": [
+            {
+              "area": "variant",
+              "level": "flexible",
+              "note": "pill suits floating filter bars; outline suits embedded filter rows within a bordered container"
+            },
+            {
+              "area": "multi",
+              "level": "flexible",
+              "note": "single-select for mutually exclusive categories; multi for additive facets"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "form",
       "type": "component",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
@@ -7380,6 +7740,92 @@
     },
     {
       "schemaVersion": 2,
+      "name": "indicator",
+      "type": "component",
+      "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/indicator/indicator.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/indicator/indicator.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["badge", "indicator", "overlay", "notification", "layout"],
+      "category": "layout",
+      "meta": {
+        "name": "Indicator",
+        "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "overlay",
+            "type": "React.ReactNode",
+            "required": true,
+            "description": "The element to display at the corner (badge, dot, count)"
+          },
+          {
+            "name": "placement",
+            "type": "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
+            "required": false,
+            "default": "top-end"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["badge", "indicator", "overlay", "notification", "layout"],
+        "intent": {
+          "whenToUse": ["Notification counts on icon buttons", "Status dots on avatars"],
+          "whenNotToUse": [
+            "Inline badges within text — use Badge directly",
+            "Status messages below a field — use a form hint or Alert"
+          ],
+          "related": [
+            {
+              "name": "Badge",
+              "relationship": "contained-by",
+              "reason": "Badge is the most common overlay content placed inside Indicator"
+            },
+            {
+              "name": "Avatar",
+              "relationship": "used-with",
+              "reason": "Indicator is frequently used to attach a status dot to an Avatar"
+            }
+          ],
+          "a11yRationale": "The overlay is marked aria-hidden because it is a visual affordance — the underlying control (button, avatar) carries its own accessible label. Screen-reader users should receive the count or status through the control's accessible name or a live region, not from the overlay div.",
+          "flexibility": [
+            {
+              "area": "placement",
+              "level": "flexible",
+              "note": "All four corners are supported; top-end is the most common convention for notification counts"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "inline-loading",
       "type": "component",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -7826,6 +8272,89 @@
               "area": "compound parts",
               "level": "flexible",
               "note": "Media, content, title, description, and actions are optional and composable"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "join",
+      "type": "component",
+      "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/join/join.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/join/join.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["group", "join", "segmented", "layout"],
+      "category": "layout",
+      "meta": {
+        "name": "Join",
+        "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["group", "join", "segmented", "layout"],
+        "intent": {
+          "whenToUse": [
+            "Input + button search groups where the two controls should appear as one unit",
+            "Segmented button rows where buttons share borders"
+          ],
+          "whenNotToUse": [
+            "Independent adjacent buttons that should remain visually separate",
+            "SegmentedControl — it has its own built-in grouping and selection semantics"
+          ],
+          "related": [
+            {
+              "name": "SegmentedControl",
+              "relationship": "alternative",
+              "reason": "SegmentedControl has built-in selection state; Join is purely a layout wrapper"
+            },
+            {
+              "name": "InputGroup",
+              "relationship": "alternative",
+              "reason": "InputGroup handles input + addon joining; Join is the general-purpose grouping primitive"
+            }
+          ],
+          "a11yRationale": "Join is a layout-only container (role=\"none\"). Accessibility semantics belong on the individual child controls — buttons carry their own role, inputs their labels.",
+          "flexibility": [
+            {
+              "area": "orientation",
+              "level": "flexible",
+              "note": "Horizontal and vertical grouping are both supported via the orientation prop"
             }
           ]
         }
@@ -11169,6 +11698,114 @@
     },
     {
       "schemaVersion": 2,
+      "name": "progress",
+      "type": "component",
+      "description": "Horizontal bar showing the completion progress of a tracked operation",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress/progress.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress/progress.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["progress", "loading", "upload", "bar"],
+      "category": "feedback",
+      "meta": {
+        "name": "Progress",
+        "description": "Horizontal bar showing the completion progress of a tracked operation",
+        "category": "feedback",
+        "states": ["determinate", "indeterminate"],
+        "variants": ["primary", "info", "success", "warning", "error"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": false,
+            "description": "0–100. Omit for indeterminate state."
+          },
+          {
+            "name": "variant",
+            "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
+            "required": false,
+            "default": "primary"
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface-2",
+          "--cascivo-color-primary",
+          "--cascivo-color-info",
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-error",
+          "--cascivo-color-accent",
+          "--cascivo-radius-full",
+          "--cascivo-ease-out"
+        ],
+        "accessibility": {
+          "role": "progressbar",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["progress", "loading", "upload", "bar"],
+        "intent": {
+          "whenToUse": [
+            "Tracked operations with a known total (file uploads, multi-step imports)",
+            "Showing completion percentage of a long-running task"
+          ],
+          "whenNotToUse": [
+            "Unbounded waits of unknown duration — use Spinner",
+            "Single-action button loading state — use the button's own loading prop"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Progress />",
+              "good": "<Progress aria-label=\"Uploading file…\" />",
+              "why": "Indeterminate progress bars must have an aria-label so screen readers can announce what is loading"
+            }
+          ],
+          "related": [
+            {
+              "name": "Spinner",
+              "relationship": "alternative",
+              "reason": "Spinner is for unbounded waits; Progress is for operations with a known end point"
+            },
+            {
+              "name": "ProgressBar",
+              "relationship": "alternative",
+              "reason": "ProgressBar is the richer compound variant with label and percentage display"
+            }
+          ],
+          "a11yRationale": "Uses the native <progress> element which maps to role=\"progressbar\" automatically; aria-label or aria-labelledby is required for indeterminate state",
+          "flexibility": [
+            {
+              "area": "variant",
+              "level": "flexible",
+              "note": "Choose the variant that matches the semantic meaning of the operation"
+            },
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Colors must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "progress-bar",
       "type": "component",
       "description": "Shows determinate or indeterminate progress of a task",
@@ -11606,6 +12243,134 @@
               "area": "token names",
               "level": "strict",
               "note": "All typography and surface styling resolves to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "radial-progress",
+      "type": "component",
+      "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radial-progress/radial-progress.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["progress", "circular", "gauge", "meter", "kpi", "dashboard"],
+      "category": "feedback",
+      "meta": {
+        "name": "RadialProgress",
+        "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
+        "category": "feedback",
+        "states": [],
+        "variants": ["primary", "info", "success", "warning", "error"],
+        "sizes": ["sm", "md", "lg"],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "size",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "variant",
+            "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
+            "required": false,
+            "default": "primary"
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-primary",
+          "--cascivo-color-info",
+          "--cascivo-color-success",
+          "--cascivo-color-warning",
+          "--cascivo-color-error",
+          "--cascivo-color-surface",
+          "--cascivo-color-surface-2",
+          "--cascivo-color-text",
+          "--cascivo-radius-full"
+        ],
+        "accessibility": {
+          "role": "progressbar",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["progress", "circular", "gauge", "meter", "kpi", "dashboard"],
+        "intent": {
+          "whenToUse": [
+            "Dashboard KPI metrics showing completion percentage",
+            "Skill or profile completion meters",
+            "Storage or quota usage displays"
+          ],
+          "whenNotToUse": [
+            "Unknown-length operations where completion is not measurable — use Spinner",
+            "Linear progress where a bar is more readable — use Progress or ProgressBar",
+            "Comparing multiple values against each other — use a chart component"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<RadialProgress value={indeterminate} /> with a fake cycling value",
+              "good": "<Spinner /> for indeterminate loading states",
+              "why": "RadialProgress implies a known completion percentage; fake cycling breaks the semantic contract"
+            }
+          ],
+          "related": [
+            {
+              "name": "Spinner",
+              "relationship": "alternative",
+              "reason": "Use for indeterminate loading where total duration is unknown"
+            },
+            {
+              "name": "Progress",
+              "relationship": "alternative",
+              "reason": "Use when a horizontal bar is more appropriate for the layout"
+            },
+            {
+              "name": "ProgressCircle",
+              "relationship": "sibling",
+              "reason": "Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient"
+            }
+          ],
+          "a11yRationale": "Renders a div with role=\"progressbar\", aria-valuenow (clamped 0–100), aria-valuemin=0, aria-valuemax=100. Provide aria-label when no visible label describes the metric being measured.",
+          "flexibility": [
+            {
+              "area": "label",
+              "level": "flexible",
+              "note": "Default is the percentage string; pass children to override with any content"
+            },
+            {
+              "area": "color",
+              "level": "strict",
+              "note": "Color resolves through --cascivo-color-* semantic tokens via data-variant"
             }
           ]
         }
@@ -14096,6 +14861,91 @@
     },
     {
       "schemaVersion": 2,
+      "name": "stack",
+      "type": "component",
+      "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stack/stack.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/stack/stack.module.css"
+        }
+      ],
+      "dependencies": [],
+      "tags": ["stack", "pile", "overlap", "layout"],
+      "category": "layout",
+      "meta": {
+        "name": "Stack",
+        "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "offset",
+            "type": "number",
+            "required": false,
+            "default": "4",
+            "description": "Pixel offset applied per layer in both axes"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": [],
+        "tags": ["stack", "pile", "overlap", "layout"],
+        "intent": {
+          "whenToUse": [
+            "Card pile UI where depth and layering should be visible",
+            "Overlapping avatar groups",
+            "Notification stack visualisations"
+          ],
+          "whenNotToUse": [
+            "Normal vertical lists — use a flex column or VStack instead",
+            "Independent positioned elements — use CSS position directly"
+          ],
+          "related": [
+            {
+              "name": "Avatar",
+              "relationship": "used-with",
+              "reason": "Overlapping avatar groups are a primary use case for Stack"
+            },
+            {
+              "name": "Card",
+              "relationship": "used-with",
+              "reason": "Card pile visualisations are a common Stack pattern"
+            }
+          ],
+          "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",
+          "flexibility": [
+            {
+              "area": "offset",
+              "level": "flexible",
+              "note": "The pixel offset is fully configurable; set to 0 for a pure overlap with no shift"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "stat",
       "type": "component",
       "description": "Displays a key metric with optional delta, trend direction and help text",
@@ -14316,6 +15166,126 @@
     },
     {
       "schemaVersion": 2,
+      "name": "steps",
+      "type": "component",
+      "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/steps/steps.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/steps/steps.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
+      "category": "navigation",
+      "meta": {
+        "name": "Steps",
+        "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+        "category": "navigation",
+        "states": ["pending", "active", "complete", "error"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "steps",
+            "type": "Step[]",
+            "required": true,
+            "description": "Array of step objects with label and optional explicit state"
+          },
+          {
+            "name": "activeStep",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Index of the currently active step (0-based)"
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "'horizontal'",
+            "description": "Layout direction of the steps"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-color-success",
+          "--cascivo-color-success-content",
+          "--cascivo-color-error",
+          "--cascivo-color-error-content",
+          "--cascivo-color-surface",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text-muted",
+          "--cascivo-border-default",
+          "--cascivo-radius-full",
+          "--cascivo-ease-out"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
+        "intent": {
+          "whenToUse": [
+            "Checkout flows where the user moves through a fixed sequence of screens",
+            "Onboarding wizards with a known number of steps",
+            "Multi-step forms where showing overall progress reduces abandonment"
+          ],
+          "whenNotToUse": [
+            "General section navigation — use Tabs instead",
+            "Simple back/next controls without step labels — use Pagination instead",
+            "More than 7 steps where the connector lines become unreadable on mobile"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Using Steps as a replacement for Tabs for non-sequential navigation",
+              "good": "<Tabs> for switching between independent views",
+              "why": "Steps imply a linear sequence and derive complete/pending state from position"
+            }
+          ],
+          "related": [
+            {
+              "name": "Pagination",
+              "relationship": "alternative",
+              "reason": "Pagination is for paged data sets, Steps is for guided task sequences"
+            },
+            {
+              "name": "Tabs",
+              "relationship": "alternative",
+              "reason": "Tabs are for non-sequential section switching, not ordered task flows"
+            }
+          ],
+          "a11yRationale": "Rendered as an ordered list (<ol>) with aria-label; the active item carries aria-current=\"step\" to communicate progress to screen readers",
+          "flexibility": [
+            {
+              "area": "step state",
+              "level": "flexible",
+              "note": "Each step can override derived pending/active/complete state via step.state"
+            },
+            {
+              "area": "orientation",
+              "level": "flexible",
+              "note": "Horizontal for top progress bars, vertical for sidebar wizards"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "structured-list",
       "type": "component",
       "description": "Tabular row list for scannable data, optionally single-selectable",
@@ -14430,6 +15400,129 @@
               "area": "roles",
               "level": "strict",
               "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "swap",
+      "type": "component",
+      "description": "Animated toggle between two icon/content states with rotate or flip transition",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/swap/swap.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/swap/swap.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
+      "category": "inputs",
+      "meta": {
+        "name": "Swap",
+        "description": "Animated toggle between two icon/content states with rotate or flip transition",
+        "category": "inputs",
+        "states": ["unchecked", "checked"],
+        "variants": ["rotate", "flip"],
+        "sizes": [],
+        "props": [
+          {
+            "name": "on",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "off",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "checked",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "onChange",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "mode",
+            "type": "'rotate' | 'flip'",
+            "required": false,
+            "default": "rotate"
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-ring-width",
+          "--cascivo-ring-color",
+          "--cascivo-radius-control",
+          "--cascivo-ease-out"
+        ],
+        "accessibility": {
+          "role": "switch",
+          "wcag": "2.2-AA",
+          "keyboard": ["Space", "Enter"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
+        "intent": {
+          "whenToUse": [
+            "Theme toggles where an icon animates between two states (sun/moon)",
+            "Favorite or bookmark toggles that flip between outlined and filled icons",
+            "Any scenario where exactly two icons swap places with a transition"
+          ],
+          "whenNotToUse": [
+            "Form toggles with a visible label — use Toggle",
+            "Checkbox-style inputs that are part of a submitted form — use Checkbox",
+            "When a text label must always be visible alongside the control"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Swap on=\"Enable\" off=\"Disable\" /> (text content)",
+              "good": "<Toggle label=\"Enable notifications\" />",
+              "why": "Swap is designed for icon transitions; for labeled on/off controls use Toggle"
+            }
+          ],
+          "related": [
+            {
+              "name": "Toggle",
+              "relationship": "alternative",
+              "reason": "Use when a visible text label is required alongside the switch control"
+            },
+            {
+              "name": "Checkbox",
+              "relationship": "alternative",
+              "reason": "Use for form selections that are submitted rather than applied immediately"
+            }
+          ],
+          "a11yRationale": "Renders a <button role=\"switch\"> with aria-checked reflecting state. Both on/off slots are aria-hidden so screen readers announce the button state, not the icon content.",
+          "flexibility": [
+            {
+              "area": "content",
+              "level": "flexible",
+              "note": "on/off slots accept any ReactNode — icons, text, images"
+            },
+            {
+              "area": "animation mode",
+              "level": "flexible",
+              "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
             }
           ]
         }

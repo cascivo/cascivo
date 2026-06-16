@@ -213,6 +213,18 @@
         "note": "Any ReactNode may be a slide; pass via children or the slides array"
       }
     ],
+    "ChatBubble": [
+      {
+        "area": "avatar slot",
+        "level": "flexible",
+        "note": "Accepts any ReactNode — Avatar, initials, icon, or nothing"
+      },
+      {
+        "area": "body content",
+        "level": "flexible",
+        "note": "children accepts rich content including images, links, and formatted text"
+      }
+    ],
     "Checkbox": [
       {
         "area": "native input props",
@@ -413,6 +425,18 @@
         "note": "Display, weekday labels, and week start derive from the locale via Intl"
       }
     ],
+    "Dock": [
+      {
+        "area": "item element",
+        "level": "flexible",
+        "note": "Renders <a> when href is provided, <button> otherwise — no wrapper needed"
+      },
+      {
+        "area": "visibility",
+        "level": "strict",
+        "note": "Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent"
+      }
+    ],
     "Drawer": [
       {
         "area": "side",
@@ -505,6 +529,18 @@
         "note": "Configure freely; rejected files surface through onRejected"
       }
     ],
+    "Filter": [
+      {
+        "area": "variant",
+        "level": "flexible",
+        "note": "pill suits floating filter bars; outline suits embedded filter rows within a bordered container"
+      },
+      {
+        "area": "multi",
+        "level": "flexible",
+        "note": "single-select for mutually exclusive categories; multi for additive facets"
+      }
+    ],
     "Form": [
       {
         "area": "validation strategy",
@@ -587,6 +623,13 @@
         "note": "Any single icon node; consumer owns the icon set"
       }
     ],
+    "Indicator": [
+      {
+        "area": "placement",
+        "level": "flexible",
+        "note": "All four corners are supported; top-end is the most common convention for notification counts"
+      }
+    ],
     "InlineLoading": [
       {
         "area": "label",
@@ -643,6 +686,13 @@
         "area": "compound parts",
         "level": "flexible",
         "note": "Media, content, title, description, and actions are optional and composable"
+      }
+    ],
+    "Join": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "Horizontal and vertical grouping are both supported via the orientation prop"
       }
     ],
     "Kbd": [
@@ -891,6 +941,18 @@
         "note": "Trigger and panel content are arbitrary children supplied by the consumer"
       }
     ],
+    "Progress": [
+      {
+        "area": "variant",
+        "level": "flexible",
+        "note": "Choose the variant that matches the semantic meaning of the operation"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Colors must resolve to --cascivo-* tokens"
+      }
+    ],
     "ProgressBar": [
       {
         "area": "determinate vs indeterminate",
@@ -937,6 +999,18 @@
         "area": "token names",
         "level": "strict",
         "note": "All typography and surface styling resolves to --cascivo-* tokens"
+      }
+    ],
+    "RadialProgress": [
+      {
+        "area": "label",
+        "level": "flexible",
+        "note": "Default is the percentage string; pass children to override with any content"
+      },
+      {
+        "area": "color",
+        "level": "strict",
+        "note": "Color resolves through --cascivo-color-* semantic tokens via data-variant"
       }
     ],
     "Radio": [
@@ -1131,6 +1205,13 @@
         "note": "Radius must resolve to --cascivo-radius-full"
       }
     ],
+    "Stack": [
+      {
+        "area": "offset",
+        "level": "flexible",
+        "note": "The pixel offset is fully configurable; set to 0 for a pure overlap with no shift"
+      }
+    ],
     "Stat": [
       {
         "area": "delta and trend",
@@ -1155,6 +1236,18 @@
         "note": "State colors must resolve to --cascivo-color-success/warning/error/info"
       }
     ],
+    "Steps": [
+      {
+        "area": "step state",
+        "level": "flexible",
+        "note": "Each step can override derived pending/active/complete state via step.state"
+      },
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "Horizontal for top progress bars, vertical for sidebar wizards"
+      }
+    ],
     "StructuredList": [
       {
         "area": "selectable",
@@ -1165,6 +1258,18 @@
         "area": "roles",
         "level": "strict",
         "note": "Static uses table semantics; selectable uses radiogroup — do not mix"
+      }
+    ],
+    "Swap": [
+      {
+        "area": "content",
+        "level": "flexible",
+        "note": "on/off slots accept any ReactNode — icons, text, images"
+      },
+      {
+        "area": "animation mode",
+        "level": "flexible",
+        "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
       }
     ],
     "Switcher": [
