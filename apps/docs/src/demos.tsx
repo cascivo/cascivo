@@ -1044,7 +1044,7 @@ export const demos: Record<string, () => JSX.Element> = {
   text: () => (
     <Col>
       <Text>Body text at default size — readable at paragraph scale.</Text>
-      <Text size="sm" variant="subtle">
+      <Text size="sm" muted>
         Small subtle text for captions or helper hints.
       </Text>
     </Col>
@@ -1072,7 +1072,7 @@ export const demos: Record<string, () => JSX.Element> = {
   'icon-button': () => (
     <Row>
       <IconButton label="Edit" icon={<Edit size={16} />} />
-      <IconButton label="Add" icon={<Plus size={16} />} variant="secondary" />
+      <IconButton label="Add" icon={<Plus size={16} />} variant="outline" />
       <IconButton label="Settings" icon={<Settings size={16} />} size="sm" />
     </Row>
   ),
