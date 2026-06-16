@@ -2265,7 +2265,7 @@
           },
           {
             "name": "Avatar",
-            "relationship": "companion",
+            "relationship": "pairs-with",
             "reason": "Pass an Avatar as the avatar prop to identify the message sender"
           }
         ],
@@ -3491,7 +3491,7 @@
           },
           {
             "name": "Tag",
-            "relationship": "complementary",
+            "relationship": "pairs-with",
             "reason": "Tag displays the currently active filters as dismissible chips"
           }
         ],
@@ -3835,10 +3835,11 @@
           },
           {
             "name": "Avatar",
-            "relationship": "used-with",
+            "relationship": "pairs-with",
             "reason": "Indicator is frequently used to attach a status dot to an Avatar"
           }
         ],
+        "antiPatterns": [],
         "a11yRationale": "The overlay is marked aria-hidden because it is a visual affordance — the underlying control (button, avatar) carries its own accessible label. Screen-reader users should receive the count or status through the control's accessible name or a live region, not from the overlay div.",
         "flexibility": [
           {
@@ -4096,6 +4097,7 @@
             "reason": "InputGroup handles input + addon joining; Join is the general-purpose grouping primitive"
           }
         ],
+        "antiPatterns": [],
         "a11yRationale": "Join is a layout-only container (role=\"none\"). Accessibility semantics belong on the individual child controls — buttons carry their own role, inputs their labels.",
         "flexibility": [
           {
@@ -5361,7 +5363,7 @@
           },
           {
             "name": "ProgressCircle",
-            "relationship": "sibling",
+            "relationship": "alternative",
             "reason": "Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient"
           }
         ],
@@ -6191,15 +6193,16 @@
         "related": [
           {
             "name": "Avatar",
-            "relationship": "used-with",
+            "relationship": "pairs-with",
             "reason": "Overlapping avatar groups are a primary use case for Stack"
           },
           {
             "name": "Card",
-            "relationship": "used-with",
+            "relationship": "pairs-with",
             "reason": "Card pile visualisations are a common Stack pattern"
           }
         ],
+        "antiPatterns": [],
         "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",
         "flexibility": [
           {

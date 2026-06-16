@@ -27,7 +27,7 @@
 
 - **Spinner** (alternative): Use for indeterminate loading where total duration is unknown
 - **Progress** (alternative): Use when a horizontal bar is more appropriate for the layout
-- **ProgressCircle** (sibling): Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient
+- **ProgressCircle** (alternative): Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient
 
 ## Accessibility rationale
 

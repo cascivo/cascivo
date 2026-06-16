@@ -128,7 +128,7 @@ export const meta: ComponentMeta = {
       },
       {
         name: 'Tag',
-        relationship: 'complementary',
+        relationship: 'pairs-with',
         reason: 'Tag displays the currently active filters as dismissible chips',
       },
     ],

@@ -26,7 +26,7 @@
 
 - **Tabs** (alternative): Tabs navigate between views; Filter narrows displayed content
 - **Toggle** (alternative): Toggle is the binary on/off primitive; Filter handles multi-option sets
-- **Tag** (complementary): Tag displays the currently active filters as dismissible chips
+- **Tag** (pairs-with): Tag displays the currently active filters as dismissible chips
 
 ## Accessibility rationale
 

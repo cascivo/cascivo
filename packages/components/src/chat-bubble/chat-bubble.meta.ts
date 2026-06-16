@@ -74,7 +74,7 @@ export const meta: ComponentMeta = {
       },
       {
         name: 'Avatar',
-        relationship: 'companion',
+        relationship: 'pairs-with',
         reason: 'Pass an Avatar as the avatar prop to identify the message sender',
       },
     ],

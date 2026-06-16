@@ -16,7 +16,7 @@
 ## Related components
 
 - **Badge** (contained-by): Badge is the most common overlay content placed inside Indicator
-- **Avatar** (used-with): Indicator is frequently used to attach a status dot to an Avatar
+- **Avatar** (pairs-with): Indicator is frequently used to attach a status dot to an Avatar
 
 ## Accessibility rationale
 

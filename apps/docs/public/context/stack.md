@@ -16,8 +16,8 @@
 
 ## Related components
 
-- **Avatar** (used-with): Overlapping avatar groups are a primary use case for Stack
-- **Card** (used-with): Card pile visualisations are a common Stack pattern
+- **Avatar** (pairs-with): Overlapping avatar groups are a primary use case for Stack
+- **Card** (pairs-with): Card pile visualisations are a common Stack pattern
 
 ## Accessibility rationale
 

@@ -25,7 +25,7 @@
 ## Related components
 
 - **Card** (alternative): Use for general content display that is not part of a conversation
-- **Avatar** (companion): Pass an Avatar as the avatar prop to identify the message sender
+- **Avatar** (pairs-with): Pass an Avatar as the avatar prop to identify the message sender
 
 ## Accessibility rationale
 

@@ -87,7 +87,7 @@ export const meta: ComponentMeta = {
       },
       {
         name: 'ProgressCircle',
-        relationship: 'sibling',
+        relationship: 'alternative',
         reason:
           'Similar shape but ProgressCircle uses SVG stroke; RadialProgress uses CSS conic-gradient',
       },

@@ -73,6 +73,7 @@ export const meta: ComponentMeta = {
           'InputGroup handles input + addon joining; Join is the general-purpose grouping primitive',
       },
     ],
+    antiPatterns: [],
     a11yRationale:
       'Join is a layout-only container (role="none"). Accessibility semantics belong on the individual child controls — buttons carry their own role, inputs their labels.',
     flexibility: [

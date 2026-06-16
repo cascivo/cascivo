@@ -60,15 +60,16 @@ export const meta: ComponentMeta = {
     related: [
       {
         name: 'Avatar',
-        relationship: 'used-with',
+        relationship: 'pairs-with',
         reason: 'Overlapping avatar groups are a primary use case for Stack',
       },
       {
         name: 'Card',
-        relationship: 'used-with',
+        relationship: 'pairs-with',
         reason: 'Card pile visualisations are a common Stack pattern',
       },
     ],
+    antiPatterns: [],
     a11yRationale:
       'Stack is a layout-only container (role="none"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.',
     flexibility: [

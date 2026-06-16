@@ -85,10 +85,11 @@
         },
         {
           "name": "Avatar",
-          "relationship": "used-with",
+          "relationship": "pairs-with",
           "reason": "Indicator is frequently used to attach a status dot to an Avatar"
         }
       ],
+      "antiPatterns": [],
       "a11yRationale": "The overlay is marked aria-hidden because it is a visual affordance — the underlying control (button, avatar) carries its own accessible label. Screen-reader users should receive the count or status through the control's accessible name or a live region, not from the overlay div.",
       "flexibility": [
         {
