@@ -297,6 +297,7 @@ export function DataTable<Row>({
       data-density={density}
       data-zebra={zebra || undefined}
       data-sticky-header={stickyHeader || undefined}
+      data-paginated={pagination ? true : undefined}
     >
       <span aria-live="polite" className={styles['srOnly']}>
         {selectedSignal.value.length > 0 ? l.itemsSelected(selectedSignal.value.length) : ''}
