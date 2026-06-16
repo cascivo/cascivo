@@ -28,7 +28,6 @@ export function Swap({
 
   function handleClick() {
     const next = !isChecked.value
-    isChecked.value = next
     onChange?.(next)
   }
 
@@ -43,10 +42,10 @@ export function Swap({
       onClick={handleClick}
       {...aria}
     >
-      <span className={styles.on} aria-hidden>
+      <span className={styles.on} aria-hidden="true">
         {on}
       </span>
-      <span className={styles.off} aria-hidden>
+      <span className={styles.off} aria-hidden="true">
         {off}
       </span>
     </button>

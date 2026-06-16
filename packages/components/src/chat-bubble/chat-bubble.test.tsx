@@ -43,8 +43,8 @@ describe('ChatBubble', () => {
   })
 
   it('does not render meta section when neither name nor time provided', () => {
-    render(<ChatBubble>msg</ChatBubble>)
+    const { container } = render(<ChatBubble>msg</ChatBubble>)
     // No name or time elements should appear
-    expect(screen.queryByRole('time')).toBeNull()
+    expect(container.querySelector('time')).toBeNull()
   })
 })

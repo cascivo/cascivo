@@ -30,7 +30,11 @@ export function RadialProgress({
       className={[styles.radialProgress, className].filter(Boolean).join(' ')}
       data-size={size}
       data-variant={variant}
-      style={{ '--cascivo-radial-progress': clamped } as React.CSSProperties}
+      style={
+        { '--cascivo-radial-progress': clamped } as React.CSSProperties & {
+          '--cascivo-radial-progress': number
+        }
+      }
       {...aria}
     >
       <span className={styles.label}>{children ?? `${clamped}%`}</span>
