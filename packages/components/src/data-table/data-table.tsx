@@ -284,6 +284,12 @@ export function DataTable<Row>({
   }
 
   const colCount = columns.length + (selection ? 1 : 0) + (renderExpandedRow ? 1 : 0)
+  // Pad partial pages with a spacer row so the table keeps a constant height —
+  // the pagination controls stay put as the user pages through.
+  const fillerCount =
+    pagination && !virtualized && renderedEntries.length > 0
+      ? Math.max(0, pageSizeSignal.value - renderedEntries.length)
+      : 0
   const titleId = `${baseId}-title`
   const descriptionId = `${baseId}-description`
   const totalRows = filtered.value.length
@@ -509,6 +515,14 @@ export function DataTable<Row>({
               })}
             {!loading && virtualized && vEnd < pageEntries.length && (
               <tr aria-hidden="true" style={{ height: (pageEntries.length - vEnd) * rowHeight }} />
+            )}
+            {fillerCount > 0 && (
+              <tr aria-hidden="true" data-filler-row>
+                <td
+                  colSpan={colCount}
+                  style={{ blockSize: `calc(var(--_row-height) * ${fillerCount})`, padding: 0 }}
+                />
+              </tr>
             )}
           </tbody>
         </table>

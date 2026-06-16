@@ -152,6 +152,11 @@
     text-align: end;
   }
 
+  /* Spacer that pads partial pages to a constant height — no divider line. */
+  .table tbody tr[data-filler-row] td {
+    border-block-end: none;
+  }
+
   /* Sticky header */
   .root[data-sticky-header='true'] .table thead th {
     position: sticky;
