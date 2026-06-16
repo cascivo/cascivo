@@ -1,0 +1,80 @@
+@layer cascade.blocks.auth-signup {
+  .root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 100vh;
+    padding: var(--cascivo-space-6);
+    background: var(--cascivo-color-surface);
+  }
+
+  .card {
+    inline-size: 100%;
+    max-inline-size: 24rem;
+  }
+
+  .heading {
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    text-align: center;
+    margin-block-end: var(--cascivo-space-1);
+  }
+
+  .subheading {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    text-align: center;
+    margin-block-end: var(--cascivo-space-6);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-4);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1-5);
+  }
+
+  .label {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .termsRow {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+  }
+
+  .termsLink {
+    color: var(--cascivo-color-accent);
+    text-decoration: none;
+  }
+
+  .termsLink:hover {
+    text-decoration: underline;
+  }
+
+  .footer {
+    margin-block-start: var(--cascivo-space-2);
+    text-align: center;
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .footerLink {
+    color: var(--cascivo-color-accent);
+    text-decoration: none;
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .footerLink:hover {
+    text-decoration: underline;
+  }
+}
