@@ -12,6 +12,7 @@
     &[data-variant='info'] {
       border-color: color-mix(in oklch, var(--cascivo-color-info) 35%, var(--cascivo-color-border));
       background: color-mix(in oklch, var(--cascivo-color-info) 5%, var(--cascivo-color-bg));
+      color: var(--cascivo-color-info-content);
     }
 
     &[data-variant='info'] .icon,
@@ -26,6 +27,7 @@
         var(--cascivo-color-border)
       );
       background: color-mix(in oklch, var(--cascivo-color-success) 5%, var(--cascivo-color-bg));
+      color: var(--cascivo-color-success-content);
     }
 
     &[data-variant='success'] .icon,
@@ -40,6 +42,7 @@
         var(--cascivo-color-border)
       );
       background: color-mix(in oklch, var(--cascivo-color-warning) 5%, var(--cascivo-color-bg));
+      color: var(--cascivo-color-warning-content);
     }
 
     &[data-variant='warning'] .icon,
@@ -54,6 +57,7 @@
         var(--cascivo-color-border)
       );
       background: color-mix(in oklch, var(--cascivo-color-destructive) 5%, var(--cascivo-color-bg));
+      color: var(--cascivo-color-destructive-content);
     }
 
     &[data-variant='destructive'] .icon,

@@ -73,12 +73,11 @@
     }
 
     &[data-variant='secondary'] {
-      background-color: var(--cascivo-color-surface);
-      color: var(--cascivo-color-text);
-      border-color: var(--cascivo-color-border);
+      background-color: var(--cascivo-color-secondary);
+      color: var(--cascivo-color-secondary-content);
 
       &:hover:not(:disabled) {
-        background-color: var(--cascivo-color-bg-subtle);
+        background-color: var(--cascivo-color-secondary-hover);
       }
     }
 
