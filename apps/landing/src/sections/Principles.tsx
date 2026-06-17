@@ -2,12 +2,12 @@ const PRINCIPLES = [
   {
     title: 'Platform CSS',
     line: '@layer, @container, :has() — no utilities, no runtime styling.',
-    href: '#console',
+    href: '/modern-css',
   },
   {
     title: 'Signals, not re-renders',
-    line: 'Interactions commit once. Counted on this page, not claimed.',
-    href: '#signals',
+    line: 'Interactions commit once. Measured, not claimed.',
+    href: '/performance',
   },
   {
     title: 'Owned code',
@@ -17,7 +17,7 @@ const PRINCIPLES = [
   {
     title: 'Agent-ready',
     line: 'Manifests, MCP, skills, llms.txt. Artifacts, not adjectives.',
-    href: '#agents',
+    href: '/ai',
   },
 ]
 

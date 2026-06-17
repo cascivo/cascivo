@@ -46,9 +46,14 @@ export function StatsBand() {
   if (STATS.length < 2) return null
   return (
     <section className="stats-band" aria-label="By the numbers" data-reveal="">
-      {STATS.map((s) => (
-        <Stat key={s.label} label={s.label} value={s.value} helpText={s.helpText} />
-      ))}
+      <div className="stats-band-row">
+        {STATS.map((s) => (
+          <Stat key={s.label} label={s.label} value={s.value} helpText={s.helpText} />
+        ))}
+      </div>
+      <a className="stats-band-link" href="/performance">
+        See the numbers &rarr;
+      </a>
     </section>
   )
 }

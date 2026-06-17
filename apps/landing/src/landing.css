@@ -797,10 +797,29 @@ kbd {
 .stats-band {
   max-width: 1040px;
   margin-inline: auto;
-  padding: var(--cascivo-space-10) var(--cascivo-space-6);
+  padding: var(--cascivo-space-8) var(--cascivo-space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-4);
+}
+
+.stats-band-row {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--cascivo-space-6);
+}
+
+.stats-band-link {
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+  text-decoration: none;
+}
+
+.stats-band-link:hover {
+  text-decoration: underline;
 }
 
 /* ── Proof teasers ────────────────────────────────────── */
@@ -1888,6 +1907,9 @@ kbd {
   /* Stats band */
   .stats-band {
     padding: var(--cascivo-space-8) var(--cascivo-space-4);
+  }
+
+  .stats-band-row {
     grid-template-columns: repeat(2, 1fr);
   }
 

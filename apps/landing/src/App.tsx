@@ -4,7 +4,6 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
-import { TechDeepDive } from './sections/TechDeepDive'
 import { StatsBand } from './sections/StatsBand'
 import { initReveal } from './reveal'
 import { currentPath, initRouter, navigate } from './router'
@@ -19,26 +18,7 @@ import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
-const RelayConsole = lazy(() =>
-  import('./demo/RelayConsole').then((m) => ({ default: m.RelayConsole })),
-)
-const ChartShowcase = lazy(() =>
-  import('./sections/ChartShowcase').then((m) => ({ default: m.ChartShowcase })),
-)
-const SignalsDemo = lazy(() =>
-  import('./sections/SignalsDemo').then((m) => ({ default: m.SignalsDemo })),
-)
-const ProofTeasers = lazy(() =>
-  import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
-)
-const AgentLayer = lazy(() =>
-  import('./sections/AgentLayer').then((m) => ({ default: m.AgentLayer })),
-)
 const ThemeDemo = lazy(() => import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })))
-const ExamplesGallery = lazy(() =>
-  import('./sections/ExamplesGallery').then((m) => ({ default: m.ExamplesGallery })),
-)
-const Ecosystem = lazy(() => import('./sections/Ecosystem').then((m) => ({ default: m.Ecosystem })))
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
@@ -95,32 +75,10 @@ function HomePage() {
       <SkipNavTarget>
         <main>
           <Hero />
-          <Principles />
-          <TechDeepDive teaser />
           <StatsBand />
-          <Suspense fallback={<SectionFallback tall />}>
-            <RelayConsole />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={600} />}>
-            <SignalsDemo />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={400} />}>
-            <ProofTeasers />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={500} />}>
-            <AgentLayer />
-          </Suspense>
+          <Principles />
           <Suspense fallback={<SectionFallback height={480} />}>
             <ThemeDemo />
-          </Suspense>
-          <Suspense fallback={<SectionFallback tall />}>
-            <ChartShowcase />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={520} />}>
-            <ExamplesGallery />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={360} />}>
-            <Ecosystem />
           </Suspense>
           <Suspense fallback={<SectionFallback height={420} />}>
             <QuickStart />
