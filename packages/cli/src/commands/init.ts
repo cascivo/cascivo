@@ -18,7 +18,7 @@ async function promptTheme(): Promise<ThemeName> {
 }
 
 function configFileContents(theme: ThemeName): string {
-  return `import type { CascadeConfig } from '@cascivo/cli'
+  return `import type { CascadeConfig } from 'cascivo'
 
 const config: CascadeConfig = {
   registry: '${DEFAULT_CONFIG.registry}',

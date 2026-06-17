@@ -85,7 +85,7 @@ export function BrandPage() {
             npm scope: <code>@cascivo/*</code>
           </li>
           <li>
-            CLI: <code>@cascivo/cli</code>, bin <code>cascivo</code>
+            CLI: <code>cascivo</code> (unscoped npm package, <code>npx cascivo init</code>)
           </li>
           <li>
             Domain: <code>cascivo.com</code>

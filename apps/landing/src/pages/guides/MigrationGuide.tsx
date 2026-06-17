@@ -90,7 +90,7 @@ export function MigrationGuide() {
       </div>
 
       <div className="migrate-cta">
-        <CopyCommand command="npx @cascivo/cli init" />
+        <CopyCommand command="npx cascivo init" />
         <a href="/docs" className="migrate-cta-link">
           Full quickstart →
         </a>

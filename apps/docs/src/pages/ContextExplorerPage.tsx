@@ -7,7 +7,7 @@ import {
   type Contract,
   type LiteralFinding,
   type PropFinding,
-} from '@cascivo/cli/audit-ai'
+} from 'cascivo/audit-ai'
 
 // ---------------------------------------------------------------------------
 // Artifact shapes (subset of the generated JSON we render).

@@ -17,7 +17,7 @@ function Introduction() {
           marginBlockEnd: '2rem',
         }}
       >
-        {'npx @cascivo/cli init\nnpx @cascivo/cli add button'}
+        {'npx cascivo init\nnpx cascivo add button'}
       </pre>
 
       <h2>Links</h2>

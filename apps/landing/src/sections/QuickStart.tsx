@@ -3,12 +3,12 @@ import { CopyCommand } from './CopyCommand'
 const STEPS = [
   {
     title: 'Initialize',
-    code: 'npx @cascivo/cli init',
+    code: 'npx cascivo init',
     note: 'Detects your package manager, installs core + tokens, writes cascivo.config.ts.',
   },
   {
     title: 'Add components',
-    code: 'npx @cascivo/cli add button',
+    code: 'npx cascivo add button',
     note: 'Copies the source into src/components/ui — it is your code now.',
   },
   {

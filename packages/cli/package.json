@@ -1,5 +1,5 @@
 {
-  "name": "@cascivo/cli",
+  "name": "cascivo",
   "version": "0.0.0",
   "private": false,
   "description": "CLI — npx cascivo init / add / list / update",
