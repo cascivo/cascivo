@@ -1171,9 +1171,6 @@ importers:
 
   packages/mcp:
     dependencies:
-      '@cascivo/render':
-        specifier: workspace:^
-        version: link:../render
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.29.0(zod@4.4.3)

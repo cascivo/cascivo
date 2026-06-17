@@ -6,19 +6,19 @@
 
 Target state (verified after T5):
 
-| Metric                                                  | Target                          |
-| ------------------------------------------------------- | ------------------------------- |
-| Packages in the npm release set                         | 10 (Tier 1)                     |
-| Tier‑1 packages with full publish metadata              | 10 / 10                         |
-| Tier‑1 packages with a correct `files` allowlist        | 10 / 10                         |
-| Root `LICENSE` file                                     | present                         |
-| Stale `cascade` reference in changesets                 | removed                         |
-| `@cascivo/ai` / `charts` / `render` publishable         | no (`private: true`)            |
-| Release workflow secret `NPM_TOKEN`                     | removed                         |
-| Trusted publishing (OIDC + provenance)                  | configured                      |
-| `pnpm changeset status` lists only Tier‑1               | yes                             |
-| `pnpm pack` tarballs free of `src`/test leaks (JS pkgs) | yes                             |
-| Full CI gate (T5)                                       | passes                          |
+| Metric                                                  | Target               |
+| ------------------------------------------------------- | -------------------- |
+| Packages in the npm release set                         | 10 (Tier 1)          |
+| Tier‑1 packages with full publish metadata              | 10 / 10              |
+| Tier‑1 packages with a correct `files` allowlist        | 10 / 10              |
+| Root `LICENSE` file                                     | present              |
+| Stale `cascade` reference in changesets                 | removed              |
+| `@cascivo/ai` / `charts` / `render` publishable         | no (`private: true`) |
+| Release workflow secret `NPM_TOKEN`                     | removed              |
+| Trusted publishing (OIDC + provenance)                  | configured           |
+| `pnpm changeset status` lists only Tier‑1               | yes                  |
+| `pnpm pack` tarballs free of `src`/test leaks (JS pkgs) | yes                  |
+| Full CI gate (T5)                                       | passes               |
 
 **Architecture:** All work is confined to `package.json` files, `.changeset/`, `.github/workflows/`, and a new root `LICENSE`. No source files under `packages/*/src` or `apps/*` change except (a) the CLI rename rippling into the few files that reference the CLI package name, and (b) regenerated artifacts (`registry.json`, README) if metadata edits propagate. The publish graph is: Tier‑1 packages may only depend on Tier‑1 packages; `workspace:` specifiers are rewritten by `changeset publish` at pack time.
 
@@ -28,13 +28,13 @@ Target state (verified after T5):
 
 ## Tranche Overview
 
-| Tranche | Title                              | Goal                                                                       |
-| ------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| T1      | Release-set lockdown               | Confirm Tier 1; mark `ai`/`charts`/`render` private; verify dep closure     |
-| T2      | Publish metadata + LICENSE         | Per-package publish fields + `files`; root `LICENSE`                         |
-| T3      | Changesets correctness             | Fix stale changeset; apply CLI name decision; validate `changeset status`    |
-| T4      | Trusted-publishing workflow        | Enable `release.yml`; npm upgrade; drop `NPM_TOKEN`; OIDC + provenance; docs  |
-| T5      | Dry-run verification + gate        | `pnpm pack` audit; `changeset version` dry run; full CI gate                 |
+| Tranche | Title                       | Goal                                                                         |
+| ------- | --------------------------- | ---------------------------------------------------------------------------- |
+| T1      | Release-set lockdown        | Confirm Tier 1; mark `ai`/`charts`/`render` private; verify dep closure      |
+| T2      | Publish metadata + LICENSE  | Per-package publish fields + `files`; root `LICENSE`                         |
+| T3      | Changesets correctness      | Fix stale changeset; apply CLI name decision; validate `changeset status`    |
+| T4      | Trusted-publishing workflow | Enable `release.yml`; npm upgrade; drop `NPM_TOKEN`; OIDC + provenance; docs |
+| T5      | Dry-run verification + gate | `pnpm pack` audit; `changeset version` dry run; full CI gate                 |
 
 ---
 
@@ -42,54 +42,54 @@ Target state (verified after T5):
 
 ### T1 — Release-set lockdown
 
-| Action | Path                                                            |
-| ------ | -------------------------------------------------------------- |
-| Modify | `packages/ai/package.json` (`private: true`)                   |
-| Modify | `packages/charts/package.json` (`private: true`)              |
-| Modify | `packages/render/package.json` (`private: true`)             |
+| Action | Path                                                               |
+| ------ | ------------------------------------------------------------------ |
+| Modify | `packages/ai/package.json` (`private: true`)                       |
+| Modify | `packages/charts/package.json` (`private: true`)                   |
+| Modify | `packages/render/package.json` (`private: true`)                   |
 | Verify | every Tier‑1 `package.json` dependency closure (no edits if clean) |
 
 ### T2 — Publish metadata + LICENSE
 
-| Action | Path                                                            |
-| ------ | -------------------------------------------------------------- |
-| Create | `LICENSE`                                                      |
-| Modify | `packages/core/package.json`                                  |
-| Modify | `packages/tokens/package.json`                               |
-| Modify | `packages/themes/package.json`                              |
-| Modify | `packages/icons/package.json`                              |
-| Modify | `packages/i18n/package.json`                              |
-| Modify | `packages/storage/package.json`                          |
-| Modify | `packages/react/package.json`                          |
-| Modify | `packages/mcp/package.json`                          |
-| Modify | `packages/registry/package.json`                  |
-| Modify | `packages/cli/package.json`                      |
+| Action | Path                                                                            |
+| ------ | ------------------------------------------------------------------------------- |
+| Create | `LICENSE`                                                                       |
+| Modify | `packages/core/package.json`                                                    |
+| Modify | `packages/tokens/package.json`                                                  |
+| Modify | `packages/themes/package.json`                                                  |
+| Modify | `packages/icons/package.json`                                                   |
+| Modify | `packages/i18n/package.json`                                                    |
+| Modify | `packages/storage/package.json`                                                 |
+| Modify | `packages/react/package.json`                                                   |
+| Modify | `packages/mcp/package.json`                                                     |
+| Modify | `packages/registry/package.json`                                                |
+| Modify | `packages/cli/package.json`                                                     |
 | Modify | root `package.json` (add `license`, `repository`, `author` to inherit/document) |
 
 ### T3 — Changesets correctness
 
-| Action | Path                                                            |
-| ------ | -------------------------------------------------------------- |
-| Modify | `.changeset/initial-release.md`                               |
-| Modify | `.changeset/config.json` (only if Tier‑2 handled via `ignore`) |
-| Modify | `packages/cli/package.json` (name, bin — if rename chosen)    |
+| Action | Path                                                                                 |
+| ------ | ------------------------------------------------------------------------------------ |
+| Modify | `.changeset/initial-release.md`                                                      |
+| Modify | `.changeset/config.json` (only if Tier‑2 handled via `ignore`)                       |
+| Modify | `packages/cli/package.json` (name, bin — if rename chosen)                           |
 | Modify | files referencing the CLI package name (README, docs, dependents) — if rename chosen |
 
 ### T4 — Trusted-publishing workflow
 
-| Action | Path                                                            |
-| ------ | -------------------------------------------------------------- |
-| Rename | `.github/workflows/release.yml.disabled` → `.github/workflows/release.yml` |
-| Modify | `.github/workflows/release.yml` (npm upgrade, registry-url, drop `NPM_TOKEN`, provenance) |
+| Action | Path                                                                                       |
+| ------ | ------------------------------------------------------------------------------------------ |
+| Rename | `.github/workflows/release.yml.disabled` → `.github/workflows/release.yml`                 |
+| Modify | `.github/workflows/release.yml` (npm upgrade, registry-url, drop `NPM_TOKEN`, provenance)  |
 | Create | `docs/RELEASING.md` (runbook: npmjs.com trusted-publisher setup + first-publish bootstrap) |
 
 ### T5 — Dry-run verification + gate
 
-| Action | Path                                                            |
-| ------ | -------------------------------------------------------------- |
+| Action | Path                                                                     |
+| ------ | ------------------------------------------------------------------------ |
 | Verify | tarball contents per Tier‑1 package (`pnpm pack` / `npm pack --dry-run`) |
-| Verify | `changeset version` dry run (reverted)                         |
-| Verify | `registry.json`, README (regenerated via `pnpm regen`, no manual edits) |
+| Verify | `changeset version` dry run (reverted)                                   |
+| Verify | `registry.json`, README (regenerated via `pnpm regen`, no manual edits)  |
 
 ---
 
@@ -143,4 +143,4 @@ All ten names are unpublished. npm trusted-publisher configuration may require a
 5. Keep the drift gate green: after metadata edits run `pnpm regen && pnpm exec vp check --fix && git diff --exit-code`; commit regenerated artifacts if they changed.
 6. Preserve existing `exports`, `types`, `bin`, `sideEffects`, and build scripts — only add the missing publish fields; do not restructure working exports maps.
 7. Versions stay `0.0.0` in source; the **changeset** drives the first bump (minor → `0.1.0`). Do not hand-edit `version` fields.
-</content>
+   </content>

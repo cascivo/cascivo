@@ -24,7 +24,6 @@
     "test": "vp test"
   },
   "dependencies": {
-    "@cascivo/render": "workspace:^",
     "@modelcontextprotocol/sdk": "catalog:",
     "zod": "catalog:"
   },

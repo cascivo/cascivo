@@ -1,7 +1,7 @@
 {
   "name": "@cascivo/render",
   "version": "0.0.0",
-  "private": false,
+  "private": true,
   "description": "Runtime JSON → UI renderer for cascade",
   "type": "module",
   "types": "./dist/index.d.mts",
