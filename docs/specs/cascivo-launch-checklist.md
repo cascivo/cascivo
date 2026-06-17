@@ -24,7 +24,7 @@ Code prerequisites completed in v15 T1–T4. External steps the owner must perfo
 
 ## Verification (after infra is live)
 
-- [ ] `npx @cascivo/cli add button` fetches a component from `cascivo.com`/registry
+- [ ] `npx cascivo add button` fetches a component from `cascivo.com`/registry
 - [ ] Landing at `cascivo.com` loads with new OG tags
 - [ ] Docs at `docs.cascivo.com` (or `cascivo.com/docs`) load correctly
 - [ ] npm: `pnpm add @cascivo/react` resolves
@@ -33,7 +33,7 @@ Code prerequisites completed in v15 T1–T4. External steps the owner must perfo
 
 - [x] CSS tokens renamed `--cascivo-*` (T2)
 - [x] npm packages renamed `@cascivo/*` (T3)
-- [x] CLI renamed `@cascivo/cli` bin `cascivo` (T4)
+- [x] CLI renamed to unscoped `cascivo` package (T4/v34-T3)
 - [x] Registry URLs point at `urbanisierung/cascivo` (T4)
 - [x] MCP uses `cascivo.com` (T4)
 - [x] Skills renamed `cascivo:*` (T4)

@@ -11,7 +11,7 @@ const PRINCIPLES = [
   },
   {
     title: 'Owned code',
-    line: 'npx @cascivo/cli add copies the source into your repo. It is yours.',
+    line: 'npx cascivo add copies the source into your repo. It is yours.',
     href: '#quickstart',
   },
   {

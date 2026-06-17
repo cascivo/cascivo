@@ -9,7 +9,7 @@
 - Name: **cascivo**
 - Domain: **cascivo.com** (owned)
 - npm namespace: **@cascivo/\*** (scoped only)
-- CLI: **@cascivo/cli**, bin **`cascivo`** (invoked `npx @cascivo/cli init`)
+- CLI: **`cascivo`** (unscoped npm package, invoked `npx cascivo init`)
 
 ### Derivation: cascade-ui → cascivo
 

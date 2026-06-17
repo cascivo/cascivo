@@ -1,8 +1,29 @@
 {
   "name": "@cascivo/icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Optional SVG icon components",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "icons",
+    "react",
+    "signals",
+    "svg"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/icons#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/icons"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
   "types": "./dist/index.d.mts",
@@ -12,6 +33,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack src/index.tsx",

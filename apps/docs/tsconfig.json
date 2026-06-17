@@ -13,7 +13,7 @@
       "react/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
       "preact/jsx-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
       "preact/jsx-dev-runtime": ["./node_modules/preact/jsx-runtime/src/index.d.ts"],
-      "@cascivo/cli/audit-ai": ["../../packages/cli/src/audit-ai/index.ts"],
+      "cascivo/audit-ai": ["../../packages/cli/src/audit-ai/index.ts"],
       "@cascivo/components/button": ["./src/shims/button.d.ts"],
       "@cascivo/components/input": ["./src/shims/input.d.ts"],
       "@cascivo/components/card": ["./src/shims/card.d.ts"],

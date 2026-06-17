@@ -14,7 +14,7 @@ import {
 } from './registry.js'
 import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
-import { validateView } from '@cascivo/render'
+import { validateView } from './validate.js'
 import { scaffoldView } from './scaffold-view.js'
 import { loadTokenCatalog } from './tokens.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
@@ -221,7 +221,8 @@ export function createServer(options: ServerOptions = {}): McpServer {
       },
     },
     ({ config }) => {
-      const result = validateView(config)
+      const componentNames = new Set(registry.components.map((c) => c.meta.name))
+      const result = validateView(config, componentNames)
       return json(result)
     },
   )

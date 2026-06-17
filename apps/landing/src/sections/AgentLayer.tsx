@@ -199,8 +199,8 @@ export function AgentLayer() {
             </blockquote>
             <p className="agent-caption">
               The agent resolves components via MCP, copies owned code via the CLI, and wires up the
-              manifest — the same flow as <code>npx @cascivo/cli add</code>. For simple layouts, it
-              can emit a <code>view.v1.json</code> config that renders directly:
+              manifest — the same flow as <code>npx cascivo add</code>. For simple layouts, it can
+              emit a <code>view.v1.json</code> config that renders directly:
             </p>
             <div className="agent-render-panes">
               <pre
@@ -229,7 +229,7 @@ export function AgentLayer() {
               className="agent-code code-bad"
               tabIndex={0}
             >{`color: #3b82f6;  /* ← hard-coded */`}</pre>
-            <pre className="agent-code" tabIndex={0}>{`npx @cascivo/cli audit --ai src/`}</pre>
+            <pre className="agent-code" tabIndex={0}>{`npx cascivo audit --ai src/`}</pre>
             <pre
               className="agent-code"
               tabIndex={0}

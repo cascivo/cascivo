@@ -1,5 +1,5 @@
-import type { ViewConfig } from '@cascivo/render'
-import { validateView } from '@cascivo/render'
+import type { ViewConfig } from './validate.js'
+import { validateView } from './validate.js'
 import type { Registry } from './registry.js'
 
 interface ScaffoldViewInput {
@@ -79,6 +79,7 @@ export function scaffoldView(
     },
   }
 
-  const { errors } = validateView(config)
+  const validNames = new Set(registry.components.map((c) => c.meta.name))
+  const { errors } = validateView(config, validNames)
   return { config, errors }
 }

@@ -1,8 +1,30 @@
 {
   "name": "@cascivo/storage",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Persisted signals over localStorage/IndexedDB for cascade — SSR-safe",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "indexeddb",
+    "localstorage",
+    "react",
+    "signals",
+    "storage"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/storage#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/storage"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -11,6 +33,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",

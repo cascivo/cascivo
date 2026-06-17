@@ -1,0 +1,56 @@
+# Trusted publishing via npm OIDC — no NPM_TOKEN required.
+# Prerequisites (one-time manual setup):
+#   1. For each Tier-1 package on npmjs.com, go to Settings → Trusted Publisher
+#      and add a GitHub Actions publisher: org=urbanisierung, repo=cascivo,
+#      workflow=release.yml (no environment needed).
+#   2. For the first publish bootstrap, see docs/RELEASING.md.
+# After setup, every merge to main with a staged changeset triggers this workflow.
+# See docs/RELEASING.md for the full release runbook.
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # changesets commits + tags
+      pull-requests: write # the "Version Packages" PR
+      id-token: write # OIDC for npm trusted publishing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version-packages
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

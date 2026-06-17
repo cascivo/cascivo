@@ -6,21 +6,21 @@
 
 Target metrics (measured after T8):
 
-| Metric                                              | Target          |
-| --------------------------------------------------- | --------------- |
-| Re-render demo: visible forms                       | 1               |
-| Re-render demo: live counters                       | 2               |
-| Carousel demo switch                                | cross-fade      |
-| Demo SPAs with back-to-landing link                 | 5 / 5           |
-| Blocks pages with site chrome                       | 2 / 2           |
-| Blocks cards showing a real preview (not green)     | all             |
-| Axe section primitive                               | scorecard       |
-| Perf lens control                                   | SegmentedControl|
-| Perf matrix cells with % delta (where meaningful)   | shadcn + carbon |
-| Latency rows with best/worst marking                | all multi-lib   |
-| Re-renders chart                                    | bars or honest empty |
-| `renders` non-zero in `results.json`                | yes (or hand-off)|
-| Full CI gate (T8)                                   | passes          |
+| Metric                                            | Target               |
+| ------------------------------------------------- | -------------------- |
+| Re-render demo: visible forms                     | 1                    |
+| Re-render demo: live counters                     | 2                    |
+| Carousel demo switch                              | cross-fade           |
+| Demo SPAs with back-to-landing link               | 5 / 5                |
+| Blocks pages with site chrome                     | 2 / 2                |
+| Blocks cards showing a real preview (not green)   | all                  |
+| Axe section primitive                             | scorecard            |
+| Perf lens control                                 | SegmentedControl     |
+| Perf matrix cells with % delta (where meaningful) | shadcn + carbon      |
+| Latency rows with best/worst marking              | all multi-lib        |
+| Re-renders chart                                  | bars or honest empty |
+| `renders` non-zero in `results.json`              | yes (or hand-off)    |
+| Full CI gate (T8)                                 | passes               |
 
 **Architecture:** Every change is local to one section/component plus its CSS. No component-library source changes except consuming the existing `SegmentedControl`. The only cross-package work is T7 (bench harness + regenerated `results.json`). T1, T2, T4, T5, T6 touch `apps/landing` only. T3 touches `apps/examples/kit` and `apps/landing/src/pages/blocks`.
 
@@ -30,16 +30,16 @@ Target metrics (measured after T8):
 
 ## Tranche Overview
 
-| Tranche | Title                              | Goal                                                                       |
-| ------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| T1      | Home — re-render demo              | One form, two live counters, reduced-motion typewriter                     |
-| T2      | Home — carousel cross-fade         | Smooth fade between demos                                                   |
-| T3      | Demos + Blocks chrome              | Mock-banner back-link; Blocks `<Header/>/<Footer/>` + live-preview cards    |
-| T4      | Accessibility scorecard            | Replace axe bar chart with pass/fail status cards                          |
-| T5      | Performance — matrix               | SegmentedControl lens + per-component % deltas                             |
-| T6      | Performance — tables + guard       | Latency best/worst markers + re-renders all-zero graceful state            |
-| T7      | Bench — render data                | Repair commit capture + regenerate `results.json`                          |
-| T8      | Gate                               | Full CI gate                                                               |
+| Tranche | Title                        | Goal                                                                     |
+| ------- | ---------------------------- | ------------------------------------------------------------------------ |
+| T1      | Home — re-render demo        | One form, two live counters, reduced-motion typewriter                   |
+| T2      | Home — carousel cross-fade   | Smooth fade between demos                                                |
+| T3      | Demos + Blocks chrome        | Mock-banner back-link; Blocks `<Header/>/<Footer/>` + live-preview cards |
+| T4      | Accessibility scorecard      | Replace axe bar chart with pass/fail status cards                        |
+| T5      | Performance — matrix         | SegmentedControl lens + per-component % deltas                           |
+| T6      | Performance — tables + guard | Latency best/worst markers + re-renders all-zero graceful state          |
+| T7      | Bench — render data          | Repair commit capture + regenerate `results.json`                        |
+| T8      | Gate                         | Full CI gate                                                             |
 
 ---
 
@@ -47,10 +47,10 @@ Target metrics (measured after T8):
 
 ### T1 — Home re-render demo
 
-| Action | Path                                          |
-| ------ | --------------------------------------------- |
-| Modify | `apps/landing/src/sections/SignalsDemo.tsx`   |
-| Modify | `apps/landing/src/landing.css`                |
+| Action | Path                                        |
+| ------ | ------------------------------------------- |
+| Modify | `apps/landing/src/sections/SignalsDemo.tsx` |
+| Modify | `apps/landing/src/landing.css`              |
 
 ### T2 — Carousel cross-fade
 
@@ -61,48 +61,48 @@ Target metrics (measured after T8):
 
 ### T3 — Demos + Blocks chrome
 
-| Action | Path                                                 |
-| ------ | ---------------------------------------------------- |
-| Modify | `apps/examples/kit/src/app-shell.tsx`                |
-| Modify | `apps/examples/kit/src/app-shell.module.css`         |
-| Modify | `apps/landing/src/pages/blocks/BlocksPage.tsx`       |
-| Modify | `apps/landing/src/pages/blocks/BlockDetailPage.tsx`  |
-| Modify | `apps/landing/src/pages/blocks/blocks.css`           |
+| Action | Path                                                |
+| ------ | --------------------------------------------------- |
+| Modify | `apps/examples/kit/src/app-shell.tsx`               |
+| Modify | `apps/examples/kit/src/app-shell.module.css`        |
+| Modify | `apps/landing/src/pages/blocks/BlocksPage.tsx`      |
+| Modify | `apps/landing/src/pages/blocks/BlockDetailPage.tsx` |
+| Modify | `apps/landing/src/pages/blocks/blocks.css`          |
 
 ### T4 — Accessibility scorecard
 
-| Action | Path                                                      |
-| ------ | --------------------------------------------------------- |
-| Modify | `apps/landing/src/pages/accessibility/AxeComparison.tsx`  |
-| Modify | `apps/landing/src/pages/accessibility/accessibility.css`  |
+| Action | Path                                                     |
+| ------ | -------------------------------------------------------- |
+| Modify | `apps/landing/src/pages/accessibility/AxeComparison.tsx` |
+| Modify | `apps/landing/src/pages/accessibility/accessibility.css` |
 
 ### T5 — Performance matrix
 
-| Action | Path                                       |
-| ------ | ------------------------------------------ |
+| Action | Path                                         |
+| ------ | -------------------------------------------- |
 | Modify | `apps/landing/src/pages/PerformancePage.tsx` |
 | Modify | `apps/landing/src/pages/perf-data.ts`        |
 | Modify | `apps/landing/src/landing.css`               |
 
 ### T6 — Performance tables + guard
 
-| Action | Path                                        |
-| ------ | ------------------------------------------- |
-| Modify | `apps/landing/src/pages/PerformancePage.tsx`|
-| Modify | `apps/landing/src/pages/perf-data.ts`       |
-| Modify | `apps/landing/src/sections/SignalsDemo.tsx` |
-| Modify | `apps/landing/src/landing.css`              |
+| Action | Path                                         |
+| ------ | -------------------------------------------- |
+| Modify | `apps/landing/src/pages/PerformancePage.tsx` |
+| Modify | `apps/landing/src/pages/perf-data.ts`        |
+| Modify | `apps/landing/src/sections/SignalsDemo.tsx`  |
+| Modify | `apps/landing/src/landing.css`               |
 
 ### T7 — Bench render data
 
-| Action | Path                                      |
-| ------ | ----------------------------------------- |
-| Inspect| `apps/bench/app-cascade/src/harness.tsx`  |
-| Inspect| `apps/bench/app-shadcn/src/harness.tsx`   |
-| Inspect| `apps/bench/app-carbon/src/harness.tsx`   |
-| Inspect| `apps/bench/runner/src/renders.ts`        |
-| Modify | harness/runner if a wiring bug is found   |
-| Regen  | `apps/bench/results/results.json`         |
+| Action  | Path                                     |
+| ------- | ---------------------------------------- |
+| Inspect | `apps/bench/app-cascade/src/harness.tsx` |
+| Inspect | `apps/bench/app-shadcn/src/harness.tsx`  |
+| Inspect | `apps/bench/app-carbon/src/harness.tsx`  |
+| Inspect | `apps/bench/runner/src/renders.ts`       |
+| Modify  | harness/runner if a wiring bug is found  |
+| Regen   | `apps/bench/results/results.json`        |
 
 ### T8 — Gate
 
@@ -173,4 +173,4 @@ Two independent fixes (user-confirmed "both"):
 6. Interactive controls keep ≥44px effective tap target under `pointer: coarse`.
 7. T7 must not hand-edit `results.json` — only regenerate it via the bench runner.
 8. Existing copy (axe disclosure, footnotes, methodology links) is preserved unless a defect requires changing it.
-</content>
+   </content>

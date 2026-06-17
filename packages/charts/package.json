@@ -1,6 +1,7 @@
 {
   "name": "@cascivo/charts",
   "version": "0.0.1",
+  "private": true,
   "description": "Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies",
   "type": "module",
   "sideEffects": false,

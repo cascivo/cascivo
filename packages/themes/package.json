@@ -1,10 +1,30 @@
 {
   "name": "@cascivo/themes",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "First-party cascade themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal",
+  "keywords": [
+    "cascivo",
+    "css",
+    "css-theme",
+    "dark-mode",
+    "design-system",
+    "react",
+    "signals",
+    "theme"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/themes#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/themes"
+  },
   "files": [
-    "src"
+    "src/**/*.css",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     "./light": "./src/light.css",
@@ -17,6 +37,10 @@
     "./brutalist": "./src/brutalist.css",
     "./corporate": "./src/corporate.css",
     "./terminal": "./src/terminal.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "echo 'themes: CSS-only, no build'",

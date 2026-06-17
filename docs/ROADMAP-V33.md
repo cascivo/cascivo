@@ -126,16 +126,16 @@ v32 fixed three hard navigation/preview bugs. v33 is a focused **landing-page po
 
 ## Workstreams
 
-| #   | Workstream             | Tranche | Summary                                                                |
-| --- | ---------------------- | ------- | ---------------------------------------------------------------------- |
-| A   | Home — re-render demo  | T1      | One form, dual live counters, reduced-motion typewriter                |
-| B   | Home — carousel        | T2      | Cross-fade demo switch                                                  |
-| C   | Demos + Blocks chrome  | T3      | Mock-banner back-link; Blocks site chrome + live-preview cards          |
-| D   | Accessibility          | T4      | Axe bar chart → pass/fail scorecard                                     |
-| E   | Performance — matrix    | T5      | SegmentedControl lens + per-component % deltas                         |
-| F   | Performance — tables    | T6      | Latency best/worst indicators + re-renders graceful empty state         |
-| G   | Bench — render data     | T7      | Repair commit capture + regenerate `results.json`                       |
-| H   | Gate                   | T8      | Full CI gate                                                            |
+| #   | Workstream            | Tranche | Summary                                                         |
+| --- | --------------------- | ------- | --------------------------------------------------------------- |
+| A   | Home — re-render demo | T1      | One form, dual live counters, reduced-motion typewriter         |
+| B   | Home — carousel       | T2      | Cross-fade demo switch                                          |
+| C   | Demos + Blocks chrome | T3      | Mock-banner back-link; Blocks site chrome + live-preview cards  |
+| D   | Accessibility         | T4      | Axe bar chart → pass/fail scorecard                             |
+| E   | Performance — matrix  | T5      | SegmentedControl lens + per-component % deltas                  |
+| F   | Performance — tables  | T6      | Latency best/worst indicators + re-renders graceful empty state |
+| G   | Bench — render data   | T7      | Repair commit capture + regenerate `results.json`               |
+| H   | Gate                  | T8      | Full CI gate                                                    |
 
 ---
 
@@ -202,4 +202,4 @@ v32 fixed three hard navigation/preview bugs. v33 is a focused **landing-page po
 - [ ] `pnpm test` exits 0.
 - [ ] `pnpm regen && pnpm exec vp check --fix && git diff --exit-code` exits 0.
 - [ ] `pnpm breakpoint:check` exits 0.
-</content>
+      </content>

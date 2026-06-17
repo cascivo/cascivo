@@ -41,13 +41,13 @@ export const MIGRATION = {
       title: 'Initialize',
       detail:
         'Installs core + tokens, writes cascivo.config.ts, and sets up the CSS @layer order — once, at the root.',
-      code: 'npx @cascivo/cli init',
+      code: 'npx cascivo init',
     },
     {
       n: 2,
       title: 'Add the components you need',
       detail: 'Copies the source into your repo. It is your code now — add one or many at a time.',
-      code: 'npx @cascivo/cli add button input dialog',
+      code: 'npx cascivo add button input dialog',
     },
     {
       n: 3,
@@ -78,7 +78,7 @@ export const MIGRATION = {
       title: 'Audit what is left',
       detail:
         'Catches hardcoded color/spacing values, invented props on known components, and raw strings where i18n is expected — in your own codebase.',
-      code: 'npx @cascivo/cli audit --ai ./src',
+      code: 'npx cascivo audit --ai ./src',
     },
   ] satisfies MigrationStep[],
   verdict:
@@ -275,7 +275,7 @@ export const GUIDES_CTA = {
   sub: 'You have the path, the brand controls, the fit, and the answers. Now ship.',
   primary: { label: 'Browse components', href: '/docs' },
   secondary: { label: 'Read the why', href: '/why' },
-  install: 'npx @cascivo/cli init',
+  install: 'npx cascivo init',
 } as const
 
 export interface Boundary {

@@ -1,8 +1,29 @@
 {
   "name": "@cascivo/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Micro-FSM and Preact Signals primitives powering every cascade component",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "fsm",
+    "preact-signals",
+    "react",
+    "signals"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/core#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/core"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
   "types": "./dist/index.d.mts",
@@ -12,6 +33,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",

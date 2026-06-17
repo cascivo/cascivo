@@ -1,11 +1,33 @@
 {
-  "name": "@cascivo/cli",
-  "version": "0.0.0",
+  "name": "cascivo",
+  "version": "0.1.0",
   "private": false,
   "description": "CLI — npx cascivo init / add / list / update",
+  "keywords": [
+    "cascivo",
+    "cli",
+    "css",
+    "design-system",
+    "npx",
+    "react",
+    "signals"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/cli#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/cli"
+  },
   "bin": {
     "cascivo": "./bin/cascivo.mjs"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -14,6 +36,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c)\" && chmod +x dist/index.mjs",

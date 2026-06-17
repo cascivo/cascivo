@@ -39,7 +39,7 @@ export function Hero() {
           GitHub
         </LinkButton>
       </div>
-      <CopyCommand command="npx @cascivo/cli add button" />
+      <CopyCommand command="npx cascivo add button" />
     </section>
   )
 }

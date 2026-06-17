@@ -8,6 +8,6 @@
     "build": "cascivo registry build --in cascivo-registry.json --out public/r"
   },
   "devDependencies": {
-    "@cascivo/cli": "workspace:^"
+    "cascivo": "workspace:^"
   }
 }

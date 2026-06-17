@@ -16,16 +16,16 @@ v34 turns this into a **working, tokenless release pipeline**: decide exactly wh
 
 ## Current State (what exists today)
 
-| Area                | State                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| Changesets CLI      | Installed (`@changesets/cli` ^2.31.0), `.changeset/config.json` present (`access: public`, base `main`) |
-| Root scripts        | `changeset`, `version-packages` (`changeset version && pnpm install`), `release` (`vp run -r build && changeset publish`) |
-| Staged changeset    | `.changeset/initial-release.md` — **stale**: lists `cascade` (does not exist) instead of `@cascivo/cli`, omits `i18n` / `storage` / `registry` |
-| Release workflow    | `.github/workflows/release.yml.disabled` — uses `changesets/action@v1` with **`NPM_TOKEN`** (not trusted publishing) |
-| CI workflow         | `.github/workflows/ci.yml` — PR gate only (`push: main` commented out)                                  |
-| Package metadata    | **No** package has `repository`, `license`, `author`, `homepage`, `bugs`, `keywords`, or `publishConfig`; most lack a `files` allowlist |
-| LICENSE file        | **Missing** at repo root                                                                                |
-| Versions            | Every package is `0.0.0` except `@cascivo/charts` / `@cascivo/search` (`0.0.1`)                         |
+| Area             | State                                                                                                                                          |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Changesets CLI   | Installed (`@changesets/cli` ^2.31.0), `.changeset/config.json` present (`access: public`, base `main`)                                        |
+| Root scripts     | `changeset`, `version-packages` (`changeset version && pnpm install`), `release` (`vp run -r build && changeset publish`)                      |
+| Staged changeset | `.changeset/initial-release.md` — **stale**: lists `cascade` (does not exist) instead of `@cascivo/cli`, omits `i18n` / `storage` / `registry` |
+| Release workflow | `.github/workflows/release.yml.disabled` — uses `changesets/action@v1` with **`NPM_TOKEN`** (not trusted publishing)                           |
+| CI workflow      | `.github/workflows/ci.yml` — PR gate only (`push: main` commented out)                                                                         |
+| Package metadata | **No** package has `repository`, `license`, `author`, `homepage`, `bugs`, `keywords`, or `publishConfig`; most lack a `files` allowlist        |
+| LICENSE file     | **Missing** at repo root                                                                                                                       |
+| Versions         | Every package is `0.0.0` except `@cascivo/charts` / `@cascivo/search` (`0.0.1`)                                                                |
 
 ---
 
@@ -35,23 +35,23 @@ Sixteen packages. Three are already `private: true` (correct — copy-paste / in
 
 ### Tier 1 — Release set (publish to npm)
 
-| Package             | Why it ships                                  | `files` today | Action                          |
-| ------------------- | --------------------------------------------- | ------------- | ------------------------------- |
-| `@cascivo/core`     | Signal/FSM runtime — foundation of everything | _(none)_      | add `files: ["dist"]` + metadata |
-| `@cascivo/tokens`   | CSS design tokens                             | `["src"]` ✓   | metadata only                   |
-| `@cascivo/themes`   | Three+ first-party themes (CSS)               | `["src"]` ✓   | metadata only                   |
-| `@cascivo/icons`    | SVG icon components                           | _(none)_      | add `files: ["dist"]` + metadata |
-| `@cascivo/i18n`     | Runtime **dependency of `@cascivo/react`**    | _(none)_      | add `files: ["dist"]` + metadata |
-| `@cascivo/storage`  | Persisted signals — documented public package | _(none)_      | add `files: ["dist"]` + metadata |
-| `@cascivo/react`    | Prebuilt component distribution               | `["dist"]` ✓  | metadata only                   |
-| `@cascivo/mcp`      | MCP server (bin: `cascade-mcp`)               | `["dist"]` ✓  | metadata only                   |
-| `@cascivo/registry` | Runtime **dependency of the CLI**             | _(none)_      | add `files: ["dist"]` + metadata |
-| CLI (`@cascivo/cli` → see Decision 1) | `npx cascivo init / add / list / update` | _(none)_      | add `files: ["dist","bin"]` + metadata + **name decision** |
+| Package                               | Why it ships                                  | `files` today | Action                                                     |
+| ------------------------------------- | --------------------------------------------- | ------------- | ---------------------------------------------------------- |
+| `@cascivo/core`                       | Signal/FSM runtime — foundation of everything | _(none)_      | add `files: ["dist"]` + metadata                           |
+| `@cascivo/tokens`                     | CSS design tokens                             | `["src"]` ✓   | metadata only                                              |
+| `@cascivo/themes`                     | Three+ first-party themes (CSS)               | `["src"]` ✓   | metadata only                                              |
+| `@cascivo/icons`                      | SVG icon components                           | _(none)_      | add `files: ["dist"]` + metadata                           |
+| `@cascivo/i18n`                       | Runtime **dependency of `@cascivo/react`**    | _(none)_      | add `files: ["dist"]` + metadata                           |
+| `@cascivo/storage`                    | Persisted signals — documented public package | _(none)_      | add `files: ["dist"]` + metadata                           |
+| `@cascivo/react`                      | Prebuilt component distribution               | `["dist"]` ✓  | metadata only                                              |
+| `@cascivo/mcp`                        | MCP server (bin: `cascade-mcp`)               | `["dist"]` ✓  | metadata only                                              |
+| `@cascivo/registry`                   | Runtime **dependency of the CLI**             | _(none)_      | add `files: ["dist"]` + metadata                           |
+| CLI (`@cascivo/cli` → see Decision 1) | `npx cascivo init / add / list / update`      | _(none)_      | add `files: ["dist","bin"]` + metadata + **name decision** |
 
 ### Tier 2 — Hold (mark `private: true` until ready)
 
-| Package           | Current     | Rationale                                                                 |
-| ----------------- | ----------- | ------------------------------------------------------------------------- |
+| Package           | Current      | Rationale                                                                 |
+| ----------------- | ------------ | ------------------------------------------------------------------------- |
 | `@cascivo/ai`     | public 0.0.0 | AI layer is still scaffolding; not part of the documented v1 npm surface  |
 | `@cascivo/charts` | public 0.0.1 | Consumed only internally (landing/docs); not yet a stable public API      |
 | `@cascivo/render` | public 0.0.0 | Internal rendering helper (depends on react+i18n+core); no external story |
@@ -86,7 +86,7 @@ Trusted publishing replaces the `NPM_TOKEN` secret with short-lived OIDC credent
 2. **Workflow permissions:** `id-token: write` (mint OIDC), `contents: write` (changesets tags/commits), `pull-requests: write` (the "Version Packages" PR).
 3. **No `NPM_TOKEN`.** Remove it from the workflow env entirely.
 4. **`registry-url`** on `actions/setup-node` (`https://registry.npmjs.org`) so the runner `.npmrc` points at npm.
-5. **Per-package config on npmjs.com:** each package's *Trusted Publisher* must name `urbanisierung/cascivo`, workflow `release.yml`, and (optionally) an environment. This is a one-time manual step documented in T4.
+5. **Per-package config on npmjs.com:** each package's _Trusted Publisher_ must name `urbanisierung/cascivo`, workflow `release.yml`, and (optionally) an environment. This is a one-time manual step documented in T4.
 6. **First-publish bootstrap:** these names have never been published. If npm requires a package to exist before a trusted publisher can be attached, do a one-time bootstrap publish with a short-lived **granular automation token**, then switch to fully tokenless. T4 documents both paths.
 
 `changeset publish` shells out to `npm publish` per package; with npm ≥ 11.5.1 + OIDC present it mints the token and attaches provenance automatically. `publishConfig.provenance: true` + `NPM_CONFIG_PROVENANCE: true` are added as belt-and-suspenders.
@@ -95,13 +95,13 @@ Trusted publishing replaces the `NPM_TOKEN` secret with short-lived OIDC credent
 
 ## Workstreams
 
-| #   | Workstream                       | Tranche | Summary                                                                 |
-| --- | -------------------------------- | ------- | ---------------------------------------------------------------------- |
-| A   | Release-set lockdown             | T1      | Confirm Tier 1; mark `ai`/`charts`/`render` private; verify dep closure |
-| B   | Publish metadata + LICENSE       | T2      | `repository`/`license`/`author`/`homepage`/`bugs`/`keywords`/`files`/`publishConfig` per Tier‑1 pkg; root `LICENSE` |
-| C   | Changesets correctness           | T3      | Fix stale changeset; CLI name decision; validate config; `changeset status` dry run |
-| D   | Trusted-publishing workflow      | T4      | Enable `release.yml`; npm upgrade; drop `NPM_TOKEN`; OIDC + provenance; npmjs.com setup docs |
-| E   | Dry-run verification + gate      | T5      | `pnpm pack` tarball audit; `changeset version` dry run; full CI gate     |
+| #   | Workstream                  | Tranche | Summary                                                                                                             |
+| --- | --------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| A   | Release-set lockdown        | T1      | Confirm Tier 1; mark `ai`/`charts`/`render` private; verify dep closure                                             |
+| B   | Publish metadata + LICENSE  | T2      | `repository`/`license`/`author`/`homepage`/`bugs`/`keywords`/`files`/`publishConfig` per Tier‑1 pkg; root `LICENSE` |
+| C   | Changesets correctness      | T3      | Fix stale changeset; CLI name decision; validate config; `changeset status` dry run                                 |
+| D   | Trusted-publishing workflow | T4      | Enable `release.yml`; npm upgrade; drop `NPM_TOKEN`; OIDC + provenance; npmjs.com setup docs                        |
+| E   | Dry-run verification + gate | T5      | `pnpm pack` tarball audit; `changeset version` dry run; full CI gate                                                |
 
 ---
 
@@ -158,5 +158,5 @@ Trusted publishing replaces the `NPM_TOKEN` secret with short-lived OIDC credent
 - [ ] `pnpm -r exec npm pack --dry-run` (or `pnpm pack`) for each Tier‑1 package shows the expected tarball contents — `dist`/`src`/`bin` present, no `src` leak from JS packages, no tests/tsconfig.
 - [ ] A throwaway `changeset version` run produces the expected version + changelog diffs (then reverted).
 - [ ] Full CI gate passes: `pnpm exec vp check`, `pnpm build`, `pnpm exec vp run -r check`, `pnpm test`, drift check, `pnpm breakpoint:check`.
-</content>
-</invoke>
+      </content>
+      </invoke>
