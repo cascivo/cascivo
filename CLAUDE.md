@@ -127,7 +127,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → type check → tests → build. Commit any files that `regen` or `--fix` modified alongside your changes.
+This runs: `pnpm regen` → `vp check --fix` → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -135,7 +135,7 @@ To simulate the exact CI environment (cold cache, sequential builds — catches 
 pnpm ready:ci
 ```
 
-This deletes all `dist/` directories and the vp run cache, then runs `pnpm ready` with `VP_RUN_CONCURRENCY_LIMIT=1`. Use before pushing if you've changed build config or added workspace package dependencies.
+This deletes all `dist/` directories and the vp run cache, then runs the `pnpm ready` gates with builds limited to one at a time via the `--concurrency-limit 1` flag (`vp run -r --concurrency-limit 1 build`). Note: the `VP_RUN_CONCURRENCY_LIMIT` env var is documented by vp but unimplemented in the 0.1.24 binary — use the CLI flag, not the env var. Use before pushing if you've changed build config or added workspace package dependencies.
 
 To reproduce individual CI steps:
 
