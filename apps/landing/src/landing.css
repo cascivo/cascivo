@@ -2465,6 +2465,12 @@ kbd {
   box-shadow: var(--cascivo-focus-ring);
 }
 
+@media (pointer: coarse) {
+  .btn {
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  }
+}
+
 .btn-primary {
   background-color: var(--cascivo-color-primary);
   color: var(--cascivo-color-primary-fg);
