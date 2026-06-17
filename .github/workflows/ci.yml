@@ -44,7 +44,7 @@ jobs:
       - name: Build (vp run -r build)
         run: pnpm run build
         env:
-          VP_RUN_CONCURRENCY_LIMIT: '2'
+          VP_RUN_CONCURRENCY_LIMIT: '1'
 
       - name: Bundle budgets
         run: pnpm run audit:bundle

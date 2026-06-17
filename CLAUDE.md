@@ -129,6 +129,14 @@ pnpm ready
 
 This runs: `pnpm regen` → `vp check --fix` → type check → tests → build. Commit any files that `regen` or `--fix` modified alongside your changes.
 
+To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
+
+```sh
+pnpm ready:ci
+```
+
+This deletes all `dist/` directories and the vp run cache, then runs `pnpm ready` with `VP_RUN_CONCURRENCY_LIMIT=1`. Use before pushing if you've changed build config or added workspace package dependencies.
+
 To reproduce individual CI steps:
 
 ```sh

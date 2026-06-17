@@ -34,7 +34,9 @@
     "dev:docs": "vp run @cascivo/docs#dev",
     "dev:landing": "vp run @cascivo/landing#dev",
     "dev:landing:full": "vp run -F @cascivo/example-deploy -F @cascivo/example-pay -F @cascivo/example-flow -F @cascivo/example-track -F @cascivo/example-pulse build && vp run @cascivo/landing#dev",
+    "clean": "find packages apps -maxdepth 3 -name dist -type d -not -path '*/node_modules/*' -exec rm -rf {} + ; vp cache clean",
     "ready": "pnpm regen && vp check --fix && vp run -r check && vp run -r test && vp run -r build",
+    "ready:ci": "pnpm clean && VP_RUN_CONCURRENCY_LIMIT=1 pnpm ready",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "vp run -r build && changeset publish"
