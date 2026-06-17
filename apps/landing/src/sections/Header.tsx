@@ -1,7 +1,7 @@
 'use client'
 import { useRef, type ReactElement } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
-import { ShellHeader } from '@cascivo/components/shell-header'
+import { ShellHeader, type ShellHeaderNavItem } from '@cascivo/components/shell-header'
 import { Tooltip } from '@cascivo/components/tooltip'
 import { setTheme, theme, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
@@ -10,15 +10,23 @@ import { searchOpen } from '../search/state'
 
 const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 
-const NAV_LINKS = [
+type NavLink = { label: string; href: string }
+
+// Slim primary nav (v36): three top-level links. Secondary routes group under a
+// "Resources" menu; every route is also reachable from the footer link map.
+const PRIMARY_LINKS: NavLink[] = [
   { label: 'Components', href: 'https://docs.cascivo.com' },
   { label: 'Examples', href: '/examples' },
+  { label: 'Guides', href: '/guides' },
+]
+
+const RESOURCE_LINKS: NavLink[] = [
   { label: 'Create', href: '/create' },
   { label: 'Blocks', href: '/blocks' },
-  { label: 'Storybook', href: 'https://storybook.cascivo.com' },
   { label: 'Accessibility', href: '/accessibility' },
   { label: 'Performance', href: '/performance' },
-  { label: 'Guides', href: '/guides' },
+  { label: 'Modern CSS', href: '/modern-css' },
+  { label: 'AI', href: '/ai' },
 ]
 
 function isExternalHref(href: string) {
@@ -126,10 +134,15 @@ export function Header() {
   const isNavOpen = useSignal(false)
 
   // Active detection is reactive: reads currentPath so navigation re-renders it.
-  const navItems = NAV_LINKS.map((link) => ({
-    ...link,
-    active: !isExternalHref(link.href) && currentPath.value.startsWith(link.href),
-  }))
+  const isActive = (href: string) => !isExternalHref(href) && currentPath.value.startsWith(href)
+  const navItems: ShellHeaderNavItem[] = [
+    ...PRIMARY_LINKS.map((link) => ({ ...link, active: isActive(link.href) })),
+    {
+      label: 'Resources',
+      items: RESOURCE_LINKS.map((link) => ({ ...link, active: isActive(link.href) })),
+    },
+  ]
+  const drawerLinks = [...PRIMARY_LINKS, ...RESOURCE_LINKS]
   const drawerRef = useRef<HTMLElement>(null)
   const toggleRef = useRef<HTMLElement | null>(null)
   const progressRef = useRef<HTMLDivElement>(null)
@@ -266,14 +279,14 @@ export function Header() {
         aria-label="Main navigation"
         inert={!isNavOpen.value ? true : undefined}
       >
-        {navItems.map((link) => {
+        {drawerLinks.map((link) => {
           const isExternal = isExternalHref(link.href)
           return (
             <a
               key={link.href}
               href={link.href}
               className="mobile-nav-link"
-              aria-current={link.active ? 'page' : undefined}
+              aria-current={isActive(link.href) ? 'page' : undefined}
               {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               onClick={() => {
                 isNavOpen.value = false

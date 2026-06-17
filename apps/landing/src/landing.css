@@ -585,12 +585,6 @@ kbd {
   border-block-start: 1px solid var(--cascivo-color-border);
 }
 
-.quickstart-prebuilt-heading {
-  font-size: var(--cascivo-text-lg);
-  font-weight: var(--cascivo-font-semibold);
-  margin-block-end: var(--cascivo-space-3);
-}
-
 .quickstart-prebuilt-note {
   color: var(--cascivo-color-text-muted);
   margin-block-end: var(--cascivo-space-5);
@@ -844,10 +838,22 @@ kbd {
   border-inline-end: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .principle:hover {
-    background: var(--cascivo-color-bg-subtle);
-  }
+.principle-more {
+  margin-block-start: var(--cascivo-space-3);
+}
+
+.principle-more-text {
+  margin: 0 0 var(--cascivo-space-2);
+}
+
+.principle-more-link {
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+  text-decoration: none;
+}
+
+.principle-more-link:hover {
+  text-decoration: underline;
 }
 
 .principle-title {
