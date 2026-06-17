@@ -134,7 +134,7 @@ export function RelayConsole() {
             <div
               id="console-sidebar"
               className={`console-sidebar${sidebarOpen.value ? ' console-sidebar--open' : ''}`}
-              aria-hidden={!sidebarOpen.value ? true : undefined}
+              inert={!sidebarOpen.value ? true : undefined}
             >
               <SideNav items={navItems} ariaLabel="Relay" defaultCollapsed />
             </div>
