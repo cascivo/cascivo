@@ -23,7 +23,8 @@
     "directory": "packages/themes"
   },
   "files": [
-    "src"
+    "src/**/*.css",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     "./light": "./src/light.css",

@@ -23,7 +23,9 @@
     "directory": "packages/tokens"
   },
   "files": [
-    "src"
+    "src/**/*.css",
+    "src/**/*.ts",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     ".": "./src/index.css",

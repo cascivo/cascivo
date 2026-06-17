@@ -21,9 +21,9 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write        # changesets commits + tags
-      pull-requests: write   # the "Version Packages" PR
-      id-token: write        # OIDC for npm trusted publishing
+      contents: write # changesets commits + tags
+      pull-requests: write # the "Version Packages" PR
+      id-token: write # OIDC for npm trusted publishing
 
     steps:
       - name: Checkout

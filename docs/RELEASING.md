@@ -11,20 +11,21 @@ and [npm Trusted Publishing](https://docs.npmjs.com/generating-provenance-statem
 For each of the ten Tier-1 packages, you must configure a trusted publisher on npmjs.com
 **before** the first automated publish. Go to each package page → Settings → Trusted Publisher:
 
-| Package | npm name |
-|---------|----------|
-| core | @cascivo/core |
-| tokens | @cascivo/tokens |
-| themes | @cascivo/themes |
-| icons | @cascivo/icons |
-| i18n | @cascivo/i18n |
-| storage | @cascivo/storage |
-| react | @cascivo/react |
-| mcp | @cascivo/mcp |
+| Package  | npm name          |
+| -------- | ----------------- |
+| core     | @cascivo/core     |
+| tokens   | @cascivo/tokens   |
+| themes   | @cascivo/themes   |
+| icons    | @cascivo/icons    |
+| i18n     | @cascivo/i18n     |
+| storage  | @cascivo/storage  |
+| react    | @cascivo/react    |
+| mcp      | @cascivo/mcp      |
 | registry | @cascivo/registry |
-| cli | cascivo |
+| cli      | cascivo           |
 
 For each package, add a GitHub Actions trusted publisher with:
+
 - **Organization:** `urbanisierung`
 - **Repository:** `cascivo`
 - **Workflow filename:** `release.yml`
