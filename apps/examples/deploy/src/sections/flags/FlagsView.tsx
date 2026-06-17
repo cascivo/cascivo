@@ -71,8 +71,8 @@ export function FlagsView() {
         <Select
           options={TYPE_OPTIONS}
           value={typeFilter.value}
-          onChange={(v) => {
-            typeFilter.value = v
+          onChange={(e) => {
+            typeFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.flagsFilterLabel)}
         />

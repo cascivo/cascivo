@@ -126,8 +126,8 @@ export function AssetsTable({ onSelect }: Props) {
         <Select
           options={STATUS_OPTIONS}
           value={statusFilterSignal.value}
-          onChange={(v) => {
-            statusFilterSignal.value = v as typeof statusFilterSignal.value
+          onChange={(e) => {
+            statusFilterSignal.value = e.currentTarget.value as typeof statusFilterSignal.value
           }}
           aria-label={t(msg.filterStatus)}
         />

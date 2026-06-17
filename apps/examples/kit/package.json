@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "vp test",
-    "check": "vp check"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@cascivo/core": "workspace:*",
