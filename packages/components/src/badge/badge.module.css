@@ -40,7 +40,7 @@
 
     &[data-variant='warning'] {
       background-color: var(--cascivo-color-warning-subtle);
-      color: var(--cascivo-color-warning-content);
+      color: var(--cascivo-color-warning-foreground);
     }
 
     &[data-variant='destructive'] {
