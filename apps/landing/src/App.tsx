@@ -18,7 +18,7 @@ import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
-const ThemeDemo = lazy(() => import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })))
+const Showcase = lazy(() => import('./sections/Showcase').then((m) => ({ default: m.Showcase })))
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
@@ -78,7 +78,7 @@ function HomePage() {
           <StatsBand />
           <Principles />
           <Suspense fallback={<SectionFallback height={480} />}>
-            <ThemeDemo />
+            <Showcase />
           </Suspense>
           <Suspense fallback={<SectionFallback height={420} />}>
             <QuickStart />

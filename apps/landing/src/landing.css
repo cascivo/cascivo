@@ -274,6 +274,76 @@ main {
   block-size: 1.5rem;
 }
 
+/* ── Signature showcase ───────────────────────────────── */
+.showcase {
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.showcase-tabs {
+  margin-block-start: var(--cascivo-space-6);
+}
+
+/* The showcase tab content frames a single focused region. ThemeDemo carries
+   its own heading/section; teasers fill the same slot. Reserve a min height so
+   switching tabs (or a lazy teaser loading) does not shift the page. */
+.showcase-tabs [role='tabpanel'] {
+  min-block-size: 24rem;
+}
+
+.showcase-teaser {
+  display: grid;
+  gap: var(--cascivo-space-6);
+  align-items: center;
+  padding-block: var(--cascivo-space-4);
+}
+
+.showcase-teaser-media {
+  display: block;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  overflow: hidden;
+  line-height: 0;
+}
+
+.showcase-teaser-media img {
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1280 / 800;
+  object-fit: cover;
+}
+
+.showcase-teaser-body h3 {
+  margin: 0 0 var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xl);
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.showcase-teaser-body p {
+  margin: 0 0 var(--cascivo-space-4);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.showcase-teaser-link {
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent);
+  text-decoration: none;
+}
+
+.showcase-teaser-link:hover {
+  text-decoration: underline;
+}
+
+.showcase-teaser-fallback {
+  min-block-size: 24rem;
+}
+
+@media (min-width: 64rem) {
+  .showcase-teaser {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
 /* ── Theme demo ───────────────────────────────────────── */
 .theme-demo-cycler {
   display: flex;

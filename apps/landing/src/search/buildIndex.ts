@@ -57,7 +57,7 @@ const PAGE_SECTIONS: SearchItem[] = [
     id: 'page-theming',
     title: 'Theming',
     section: 'Home',
-    href: '/#theme-demo',
+    href: '/#showcase',
     type: 'page',
     description: 'Switch between light, dark, and warm themes',
   },
