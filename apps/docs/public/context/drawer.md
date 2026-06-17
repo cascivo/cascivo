@@ -43,8 +43,8 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 
 ## Boundaries
 
-| Area         | Level    | Note                                                         |
-| ------------ | -------- | ------------------------------------------------------------ | --- | --- | ------------------------------------------------- |
-| side         | strict   | Limited to start                                             | end | top | bottom — drives the slide direction and animation |
-| open state   | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen) |
-| body content | flexible | Any children; the consumer owns the panel contents           |
+| Area | Level | Note |
+|------|-------|------|
+| side | strict | Limited to start | end | top | bottom — drives the slide direction and animation |
+| open state | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen) |
+| body content | flexible | Any children; the consumer owns the panel contents |

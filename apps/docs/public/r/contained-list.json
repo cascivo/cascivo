@@ -12,15 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/contained-list/contained-list.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["list", "container", "rows", "group"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "list",
+    "container",
+    "rows",
+    "group"
+  ],
   "category": "display",
   "meta": {
     "name": "ContainedList",
     "description": "Labelled list of rows inside a bordered container",
     "category": "display",
     "states": [],
-    "variants": ["on-page", "disclosed"],
+    "variants": [
+      "on-page",
+      "disclosed"
+    ],
     "sizes": [],
     "props": [
       {
@@ -50,7 +60,11 @@
     "accessibility": {
       "role": "list",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Enter", "Space"]
+      "keyboard": [
+        "Tab",
+        "Enter",
+        "Space"
+      ]
     },
     "examples": [
       {
@@ -62,8 +76,15 @@
         "code": "<ContainedList label=\"Settings\" kind=\"disclosed\">\n  <ContainedListItem asChild>\n    <button type=\"button\" onClick={open}>Profile</button>\n  </ContainedListItem>\n</ContainedList>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["list", "container", "rows", "group"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "list",
+      "container",
+      "rows",
+      "group"
+    ],
     "intent": {
       "whenToUse": [
         "Grouping a short set of related rows under a visible heading in a bordered surface",

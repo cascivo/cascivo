@@ -12,15 +12,32 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["display", "tree", "hierarchy", "navigation", "files"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "display",
+    "tree",
+    "hierarchy",
+    "navigation",
+    "files"
+  ],
   "category": "display",
   "meta": {
     "name": "TreeView",
     "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
     "category": "display",
-    "states": ["default", "expanded", "collapsed", "selected"],
-    "variants": ["single", "multi"],
+    "states": [
+      "default",
+      "expanded",
+      "collapsed",
+      "selected"
+    ],
+    "variants": [
+      "single",
+      "multi"
+    ],
     "sizes": [],
     "props": [
       {
@@ -104,8 +121,17 @@
         "code": "<TreeView selectionMode=\"multi\" items={nodes} onSelectChange={(ids) => set(ids)} />"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["display", "tree", "hierarchy", "navigation", "files"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "display",
+      "tree",
+      "hierarchy",
+      "navigation",
+      "files"
+    ],
     "intent": {
       "whenToUse": [
         "Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)",

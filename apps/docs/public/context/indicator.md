@@ -24,12 +24,12 @@ The overlay is marked aria-hidden because it is a visual affordance — the unde
 
 ## Props
 
-| Name        | Type              | Required  | Default        | Description                                              |
-| ----------- | ----------------- | --------- | -------------- | -------------------------------------------------------- | --- | ------- | --- |
-| `children`  | `React.ReactNode` | Yes       | —              | —                                                        |
-| `overlay`   | `React.ReactNode` | Yes       | —              | The element to display at the corner (badge, dot, count) |
-| `placement` | `'top-start'      | 'top-end' | 'bottom-start' | 'bottom-end'`                                            | No  | top-end | —   |
-| `className` | `string`          | No        | —              | —                                                        |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | Yes | — | — |
+| `overlay` | `React.ReactNode` | Yes | — | The element to display at the corner (badge, dot, count) |
+| `placement` | `'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | No | top-end | — |
+| `className` | `string` | No | — | — |
 
 ## Examples
 
@@ -38,11 +38,7 @@ The overlay is marked aria-hidden because it is a visual affordance — the unde
 Notification count badge on an icon button
 
 ```jsx
-<Indicator overlay={<Badge>3</Badge>}>
-  <Button variant="ghost">
-    <Icon name="bell" />
-  </Button>
-</Indicator>
+<Indicator overlay={<Badge>3</Badge>}><Button variant="ghost"><Icon name="bell" /></Button></Indicator>
 ```
 
 ### Online status
@@ -50,9 +46,7 @@ Notification count badge on an icon button
 Online status dot on an avatar
 
 ```jsx
-<Indicator overlay={<span className="status-dot" />} placement="bottom-end">
-  <Avatar src="/user.jpg" />
-</Indicator>
+<Indicator overlay={<span className="status-dot" />} placement="bottom-end"><Avatar src="/user.jpg" /></Indicator>
 ```
 
 ### Bottom-start placement
@@ -60,13 +54,11 @@ Online status dot on an avatar
 Indicator positioned at the bottom-start corner
 
 ```jsx
-<Indicator overlay={<Badge variant="destructive">!</Badge>} placement="bottom-start">
-  <Card>Content</Card>
-</Indicator>
+<Indicator overlay={<Badge variant="destructive">!</Badge>} placement="bottom-start"><Card>Content</Card></Indicator>
 ```
 
 ## Boundaries
 
-| Area      | Level    | Note                                                                                          |
-| --------- | -------- | --------------------------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | placement | flexible | All four corners are supported; top-end is the most common convention for notification counts |

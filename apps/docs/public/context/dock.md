@@ -33,11 +33,11 @@ Wrapped in <nav> with aria-label; active item carries aria-current="page"; rende
 
 ## Props
 
-| Name          | Type         | Required | Default | Description                                                             |
-| ------------- | ------------ | -------- | ------- | ----------------------------------------------------------------------- |
-| `items`       | `DockItem[]` | Yes      | —       | Navigation items, each with a label, icon, and optional href or onClick |
-| `activeIndex` | `number`     | No       | —       | Index of the currently active item (0-based)                            |
-| `className`   | `string`     | No       | —       | —                                                                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `DockItem[]` | Yes | — | Navigation items, each with a label, icon, and optional href or onClick |
+| `activeIndex` | `number` | No | — | Index of the currently active item (0-based) |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -86,7 +86,7 @@ Link-based dock items for standard navigation
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                    |
-| ------------ | -------- | --------------------------------------------------------------------------------------- |
-| item element | flexible | Renders <a> when href is provided, <button> otherwise — no wrapper needed               |
-| visibility   | strict   | Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent |
+| Area | Level | Note |
+|------|-------|------|
+| item element | flexible | Renders <a> when href is provided, <button> otherwise — no wrapper needed |
+| visibility | strict | Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent |

@@ -12,8 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["layout", "settings", "page"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "layout",
+    "settings",
+    "page"
+  ],
   "category": "layout",
   "meta": {
     "name": "SettingsLayout",
@@ -36,7 +42,9 @@
         "description": "Settings content area"
       }
     ],
-    "tokens": ["--cascivo-space-8"],
+    "tokens": [
+      "--cascivo-space-8"
+    ],
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
@@ -49,8 +57,14 @@
         "description": "Menu + content layout"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["layout", "settings", "page"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "layout",
+      "settings",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "A two-column settings page with a fixed-width menu and fluid content",

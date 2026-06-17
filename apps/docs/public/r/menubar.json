@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menubar/menubar.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["navigation", "menubar", "menu", "application"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "navigation",
+    "menubar",
+    "menu",
+    "application"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Menubar",
     "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
     "category": "navigation",
-    "states": ["closed", "open"],
+    "states": [
+      "closed",
+      "open"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -71,8 +81,15 @@
         "code": "<Menubar aria-label=\"Main\" menus={[{ id: \"file\", label: \"File\", items: [{ id: \"new\", label: \"New\", onSelect: () => {} }] }]} />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["navigation", "menubar", "menu", "application"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "navigation",
+      "menubar",
+      "menu",
+      "application"
+    ],
     "intent": {
       "whenToUse": [
         "A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions",

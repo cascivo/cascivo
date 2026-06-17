@@ -42,15 +42,15 @@ The trigger is a real <button> with aria-expanded reflecting open state and aria
 
 ## Props
 
-| Name           | Type                      | Required | Default | Description                                                   |
-| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------- | ----------- | --------- | -------------- | ------------- | --- | ----- | -------------------------------------------------------- |
-| `trigger`      | `ReactNode`               | Yes      | —       | Trigger content, rendered inside a button (e.g. an info icon) |
-| `children`     | `ReactNode`               | Yes      | —       | The popover content — interactive and selectable              |
-| `placement`    | `'top'                    | 'bottom' | 'left'  | 'right'                                                       | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | No  | 'top' | Side and alignment of the bubble relative to the trigger |
-| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state when uncontrolled                          |
-| `open`         | `boolean`                 | No       | —       | Controlled open state                                         |
-| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change                  |
-| `labels`       | `{ label?: string }`      | No       | —       | Override the trigger accessible name                          |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `trigger` | `ReactNode` | Yes | — | Trigger content, rendered inside a button (e.g. an info icon) |
+| `children` | `ReactNode` | Yes | — | The popover content — interactive and selectable |
+| `placement` | `'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | No | 'top' | Side and alignment of the bubble relative to the trigger |
+| `defaultOpen` | `boolean` | No | false | Initial open state when uncontrolled |
+| `open` | `boolean` | No | — | Controlled open state |
+| `onOpenChange` | `(open: boolean) => void` | No | — | Called whenever the open state should change |
+| `labels` | `{ label?: string }` | No | — | Override the trigger accessible name |
 
 ## Tokens
 
@@ -72,7 +72,9 @@ The trigger is a real <button> with aria-expanded reflecting open state and aria
 An info button that reveals supplementary text on click
 
 ```jsx
-<Toggletip trigger={<InfoIcon />}>Your password must contain at least 12 characters.</Toggletip>
+<Toggletip trigger={<InfoIcon />}>
+  Your password must contain at least 12 characters.
+</Toggletip>
 ```
 
 ### Controlled
@@ -80,15 +82,20 @@ An info button that reveals supplementary text on click
 Drive the open state from the parent
 
 ```jsx
-<Toggletip trigger={<InfoIcon />} open={open} onOpenChange={setOpen} placement="bottom-start">
+<Toggletip
+  trigger={<InfoIcon />}
+  open={open}
+  onOpenChange={setOpen}
+  placement="bottom-start"
+>
   <a href="/docs">Learn more</a>
 </Toggletip>
 ```
 
 ## Boundaries
 
-| Area                 | Level    | Note                                                                         |
-| -------------------- | -------- | ---------------------------------------------------------------------------- |
-| token names          | strict   | Trigger and bubble styling must resolve to the listed --cascivo-\* tokens    |
-| content              | flexible | trigger and children accept arbitrary ReactNode supplied by the consumer     |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Trigger and bubble styling must resolve to the listed --cascivo-* tokens |
+| content | flexible | trigger and children accept arbitrary ReactNode supplied by the consumer |
 | open state ownership | flexible | Use uncontrolled (defaultOpen) or controlled (open + onOpenChange) as needed |

@@ -12,14 +12,25 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["disclosure", "collapse", "expand", "toggle", "show-hide"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "disclosure",
+    "collapse",
+    "expand",
+    "toggle",
+    "show-hide"
+  ],
   "category": "display",
   "meta": {
     "name": "Collapsible",
     "description": "A single disclosure region toggled open and closed by its trigger",
     "category": "display",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -76,7 +87,10 @@
     "accessibility": {
       "role": "region",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space"],
+      "keyboard": [
+        "Enter",
+        "Space"
+      ],
       "apgPattern": "disclosure",
       "forcedColors": true,
       "reducedMotion": true
@@ -91,8 +105,16 @@
         "code": "<Collapsible defaultOpen trigger=\"Details\">\n  <p>Visible initially.</p>\n</Collapsible>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["disclosure", "collapse", "expand", "toggle", "show-hide"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "disclosure",
+      "collapse",
+      "expand",
+      "toggle",
+      "show-hide"
+    ],
     "intent": {
       "whenToUse": [
         "Hiding a single secondary block until the user asks for it",

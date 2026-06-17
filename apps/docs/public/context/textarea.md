@@ -33,14 +33,14 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Props
 
-| Name       | Type      | Required   | Default | Description |
-| ---------- | --------- | ---------- | ------- | ----------- | -------- | --- |
-| `label`    | `string`  | No         | —       | —           |
-| `hint`     | `string`  | No         | —       | —           |
-| `error`    | `string`  | No         | —       | —           |
-| `rows`     | `number`  | No         | 4       | —           |
-| `resize`   | `'none'   | 'vertical' | 'both'` | No          | vertical | —   |
-| `disabled` | `boolean` | No         | false   | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | No | — | — |
+| `hint` | `string` | No | — | — |
+| `error` | `string` | No | — | — |
+| `rows` | `number` | No | 4 | — |
+| `resize` | `'none' | 'vertical' | 'both'` | No | vertical | — |
+| `disabled` | `boolean` | No | false | — |
 
 ## Tokens
 
@@ -67,7 +67,7 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                             |
-| --------------- | -------- | -------------------------------------------------------------------------------- |
-| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
-| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens |
+| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize |

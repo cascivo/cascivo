@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/label/label.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["form", "caption", "accessibility"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "form",
+    "caption",
+    "accessibility"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Label",
     "description": "Accessible caption for a form control",
     "category": "inputs",
-    "states": ["default", "disabled"],
+    "states": [
+      "default",
+      "disabled"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -88,8 +98,15 @@
         "description": "Render the label semantics onto a custom element via Slot."
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["form", "caption", "accessibility"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "form",
+      "caption",
+      "accessibility"
+    ],
     "intent": {
       "whenToUse": [
         "Naming a single form control (input, select, checkbox) so clicking the text focuses it",

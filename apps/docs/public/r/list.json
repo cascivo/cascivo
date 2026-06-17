@@ -12,15 +12,26 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/list/list.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["typography", "list", "ul", "ol"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "typography",
+    "list",
+    "ul",
+    "ol"
+  ],
   "category": "display",
   "meta": {
     "name": "List",
     "description": "Styled unordered or ordered list with ListItem",
     "category": "display",
     "states": [],
-    "variants": ["disc", "decimal", "none"],
+    "variants": [
+      "disc",
+      "decimal",
+      "none"
+    ],
     "sizes": [],
     "props": [
       {
@@ -64,8 +75,15 @@
         "description": "Keeps list semantics without visual markers"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["typography", "list", "ul", "ol"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "typography",
+      "list",
+      "ul",
+      "ol"
+    ],
     "intent": {
       "whenToUse": [
         "Presenting a set of related items as a bulleted or numbered list",

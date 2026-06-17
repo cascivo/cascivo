@@ -21,16 +21,16 @@ npx cascivo add notification
 
 ## Props
 
-| Prop          | Type                   | Required  | Default   | Description |
-| ------------- | ---------------------- | --------- | --------- | ----------- | --- | ------ | --- |
-| `title`       | `ReactNode`            | yes       | —         | —           |
-| `description` | `ReactNode`            | no        | —         | —           |
-| `variant`     | `'info'                | 'success' | 'warning' | 'error'`    | no  | `info` | —   |
-| `dismissible` | `boolean`              | no        | `false`   | —           |
-| `onDismiss`   | `() => void`           | no        | —         | —           |
-| `actions`     | `ReactNode`            | no        | —         | —           |
-| `icon`        | `ReactNode`            | no        | —         | —           |
-| `labels`      | `{ dismiss?: string }` | no        | —         | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `ReactNode` | yes | — | — |
+| `description` | `ReactNode` | no | — | — |
+| `variant` | `'info' | 'success' | 'warning' | 'error'` | no | `info` | — |
+| `dismissible` | `boolean` | no | `false` | — |
+| `onDismiss` | `() => void` | no | — | — |
+| `actions` | `ReactNode` | no | — | — |
+| `icon` | `ReactNode` | no | — | — |
+| `labels` | `{ dismiss?: string }` | no | — | — |
 
 ## Examples
 
@@ -49,12 +49,7 @@ npx cascivo add notification
 ### Actionable
 
 ```tsx
-<Notification
-  variant="error"
-  title="Upload failed"
-  description="The connection dropped."
-  actions={<Button onClick={retry}>Retry</Button>}
-/>
+<Notification variant="error" title="Upload failed" description="The connection dropped." actions={<Button onClick={retry}>Retry</Button>} />
 ```
 
 ## Design tokens

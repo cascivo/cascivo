@@ -26,26 +26,23 @@ npx cascivo add tree-view
 
 ## Props
 
-| Prop               | Type                                                                          | Required           | Default | Description |
-| ------------------ | ----------------------------------------------------------------------------- | ------------------ | ------- | ----------- | --- |
-| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes                | —       | —           |
-| `selectionMode`    | `'single'                                                                     | 'multi'`           | no      | `single`    | —   |
-| `selected`         | `string                                                                       | string[]`          | no      | —           | —   |
-| `defaultSelected`  | `string                                                                       | string[]`          | no      | —           | —   |
-| `onSelectChange`   | `(selected: string                                                            | string[]) => void` | no      | —           | —   |
-| `expanded`         | `string[]`                                                                    | no                 | —       | —           |
-| `defaultExpanded`  | `string[]`                                                                    | no                 | —       | —           |
-| `onExpandedChange` | `(expanded: string[]) => void`                                                | no                 | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | — |
+| `selectionMode` | `'single' | 'multi'` | no | `single` | — |
+| `selected` | `string | string[]` | no | — | — |
+| `defaultSelected` | `string | string[]` | no | — | — |
+| `onSelectChange` | `(selected: string | string[]) => void` | no | — | — |
+| `expanded` | `string[]` | no | — | — |
+| `defaultExpanded` | `string[]` | no | — | — |
+| `onExpandedChange` | `(expanded: string[]) => void` | no | — | — |
 
 ## Examples
 
 ### Single select
 
 ```tsx
-<TreeView
-  defaultExpanded={['src']}
-  items={[{ id: 'src', label: 'src', children: [{ id: 'index', label: 'index.ts' }] }]}
-/>
+<TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />
 ```
 
 ### Multi select

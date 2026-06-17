@@ -30,44 +30,29 @@ npx cascivo add toggle-group
 
 ## Props
 
-| Prop            | Type                                                                              | Required           | Default | Description  |
-| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ------------ | ---- | --- |
-| `type`          | `'single'                                                                         | 'multiple'`        | yes     | —            | —    |
-| `value`         | `string                                                                           | string[]`          | no      | —            | —    |
-| `defaultValue`  | `string                                                                           | string[]`          | no      | —            | —    |
-| `onValueChange` | `(value: string                                                                   | string[]) => void` | no      | —            | —    |
-| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes                | —       | —            |
-| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | no      | `horizontal` | —    |
-| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | no           | `md` | —   |
-| `disabled`      | `boolean`                                                                         | no                 | `false` | —            |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `type` | `'single' | 'multiple'` | yes | — | — |
+| `value` | `string | string[]` | no | — | — |
+| `defaultValue` | `string | string[]` | no | — | — |
+| `onValueChange` | `(value: string | string[]) => void` | no | — | — |
+| `items` | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes | — | — |
+| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `disabled` | `boolean` | no | `false` | — |
 
 ## Examples
 
 ### Single selection
 
 ```tsx
-<ToggleGroup
-  type="single"
-  defaultValue="left"
-  items={[
-    { value: 'left', label: 'Left' },
-    { value: 'center', label: 'Center' },
-    { value: 'right', label: 'Right' },
-  ]}
-/>
+<ToggleGroup type="single" defaultValue="left" items={[{ value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} />
 ```
 
 ### Multiple selection
 
 ```tsx
-<ToggleGroup
-  type="multiple"
-  defaultValue={['bold']}
-  items={[
-    { value: 'bold', label: 'Bold' },
-    { value: 'italic', label: 'Italic' },
-  ]}
-/>
+<ToggleGroup type="multiple" defaultValue={["bold"]} items={[{ value: "bold", label: "Bold" }, { value: "italic", label: "Italic" }]} />
 ```
 
 ## Design tokens

@@ -14,10 +14,10 @@ npx cascivo add layout/settings-layout
 
 ## Props
 
-| Prop       | Type        | Required | Default | Description           |
-| ---------- | ----------- | -------- | ------- | --------------------- |
-| `menu`     | `ReactNode` | yes      | —       | Side navigation menu  |
-| `children` | `ReactNode` | yes      | —       | Settings content area |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `menu` | `ReactNode` | yes | — | Side navigation menu |
+| `children` | `ReactNode` | yes | — | Settings content area |
 
 ## Examples
 
@@ -26,9 +26,7 @@ npx cascivo add layout/settings-layout
 Menu + content layout
 
 ```tsx
-<SettingsLayout menu={<nav>Menu</nav>}>
-  <div>Settings</div>
-</SettingsLayout>
+<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
 ```
 
 ## Design tokens

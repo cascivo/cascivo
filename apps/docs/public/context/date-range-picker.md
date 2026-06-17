@@ -32,19 +32,19 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the po
 
 ## Props
 
-| Name            | Type                                                     | Required | Default | Description                                        |
-| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- | ------------------------- | --------------- |
-| `value`         | `{ start: Date; end: Date }                              | null`    | No      | —                                                  | Controlled selected range |
-| `defaultValue`  | `{ start: Date; end: Date }`                             | No       | —       | Uncontrolled initial range                         |
-| `onValueChange` | `(range: { start: Date; end: Date }) => void`            | No       | —       | Called when a complete range is selected           |
-| `min`           | `Date`                                                   | No       | —       | Earliest selectable date                           |
-| `max`           | `Date`                                                   | No       | —       | Latest selectable date                             |
-| `disabled`      | `(date: Date) => boolean`                                | No       | —       | Predicate to disable individual days               |
-| `presets`       | `{ label: string; range: { start: Date; end: Date } }[]` | No       | —       | Quick-select preset ranges shown in a side column  |
-| `locale`        | `string`                                                 | No       | —       | BCP-47 locale; defaults to the current i18n locale |
-| `placeholder`   | `string`                                                 | No       | —       | Empty-state trigger text                           |
-| `size`          | `'sm'                                                    | 'md'     | 'lg'`   | No                                                 | —                         | Field/grid size |
-| `labels`        | `DateRangePickerLabels`                                  | No       | —       | i18n label overrides                               |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `{ start: Date; end: Date } | null` | No | — | Controlled selected range |
+| `defaultValue` | `{ start: Date; end: Date }` | No | — | Uncontrolled initial range |
+| `onValueChange` | `(range: { start: Date; end: Date }) => void` | No | — | Called when a complete range is selected |
+| `min` | `Date` | No | — | Earliest selectable date |
+| `max` | `Date` | No | — | Latest selectable date |
+| `disabled` | `(date: Date) => boolean` | No | — | Predicate to disable individual days |
+| `presets` | `{ label: string; range: { start: Date; end: Date } }[]` | No | — | Quick-select preset ranges shown in a side column |
+| `locale` | `string` | No | — | BCP-47 locale; defaults to the current i18n locale |
+| `placeholder` | `string` | No | — | Empty-state trigger text |
+| `size` | `'sm' | 'md' | 'lg'` | No | — | Field/grid size |
+| `labels` | `DateRangePickerLabels` | No | — | i18n label overrides |
 
 ## Tokens
 
@@ -68,7 +68,7 @@ Uncontrolled dual-calendar range picker
 Quick-select common ranges
 
 ```jsx
-<DateRangePicker presets={[{ label: 'Last 7 days', range: last7 }]} />
+<DateRangePicker presets={[{ label: "Last 7 days", range: last7 }]} />
 ```
 
 ### Constrained
@@ -81,8 +81,8 @@ Limits the selectable dates
 
 ## Boundaries
 
-| Area       | Level    | Note                                                                                       |
-| ---------- | -------- | ------------------------------------------------------------------------------------------ |
-| range type | strict   | value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC |
-| presets    | flexible | Optional preset ranges render as quick-select buttons in a side column                     |
-| locale     | flexible | Display, weekday labels, and week start derive from the locale via Intl                    |
+| Area | Level | Note |
+|------|-------|------|
+| range type | strict | value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC |
+| presets | flexible | Optional preset ranges render as quick-select buttons in a side column |
+| locale | flexible | Display, weekday labels, and week start derive from the locale via Intl |

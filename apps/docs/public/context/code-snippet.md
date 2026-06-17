@@ -43,7 +43,7 @@ Code is rendered in semantic <code>/<pre>. The copy button is a real button with
 
 ## Boundaries
 
-| Area        | Level    | Note                                                            |
-| ----------- | -------- | --------------------------------------------------------------- | ------ | ------------------------------------------------ |
-| variant     | strict   | inline                                                          | single | multi — controls the wrapping element and layout |
+| Area | Level | Note |
+|------|-------|------|
+| variant | strict | inline | single | multi — controls the wrapping element and layout |
 | copy button | flexible | Shown by default for single/multi; togglable via showCopyButton |

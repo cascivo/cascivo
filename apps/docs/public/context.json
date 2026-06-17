@@ -3822,7 +3822,10 @@
       "category": "layout",
       "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
       "intent": {
-        "whenToUse": ["Notification counts on icon buttons", "Status dots on avatars"],
+        "whenToUse": [
+          "Notification counts on icon buttons",
+          "Status dots on avatars"
+        ],
         "whenNotToUse": [
           "Inline badges within text — use Badge directly",
           "Status messages below a field — use a form hint or Alert"

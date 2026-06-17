@@ -33,12 +33,12 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 ## Props
 
-| Name          | Type                   | Required   | Default | Description |
-| ------------- | ---------------------- | ---------- | ------- | ----------- | --- | --- |
-| `items`       | `NavigationMenuItem[]` | Yes        | —       | —           |
-| `aria-label`  | `string`               | No         | —       | —           |
-| `orientation` | `'horizontal'          | 'vertical' | 'both'` | No          | —   | —   |
-| `className`   | `string`               | No         | —       | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `NavigationMenuItem[]` | Yes | — | — |
+| `aria-label` | `string` | No | — | — |
+| `orientation` | `'horizontal' | 'vertical' | 'both'` | No | — | — |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -55,18 +55,12 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 ### Basic
 
 ```jsx
-<NavigationMenu
-  aria-label="Main"
-  items={[
-    { id: 'home', label: 'Home', href: '/' },
-    { id: 'products', label: 'Products', content: <ul>…</ul> },
-  ]}
-/>
+<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
 ```
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                          |
-| ------------- | -------- | ----------------------------------------------------------------------------- |
-| orientation   | flexible | horizontal (default) or vertical roving navigation                            |
+| Area | Level | Note |
+|------|-------|------|
+| orientation | flexible | horizontal (default) or vertical roving navigation |
 | panel content | flexible | content is arbitrary ReactNode; links without content render as plain anchors |

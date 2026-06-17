@@ -14,11 +14,11 @@ npx cascivo add join
 
 ## Props
 
-| Prop          | Type              | Required    | Default | Description  |
-| ------------- | ----------------- | ----------- | ------- | ------------ | --- |
-| `children`    | `React.ReactNode` | yes         | —       | —            |
-| `orientation` | `'horizontal'     | 'vertical'` | no      | `horizontal` | —   |
-| `className`   | `string`          | no          | —       | —            |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | — |
+| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -27,10 +27,7 @@ npx cascivo add join
 Input and button joined into a single search control
 
 ```tsx
-<Join>
-  <Input placeholder="Search…" />
-  <Button>Go</Button>
-</Join>
+<Join><Input placeholder="Search…" /><Button>Go</Button></Join>
 ```
 
 ### Segmented buttons
@@ -38,11 +35,7 @@ Input and button joined into a single search control
 Segmented button row with no gaps between items
 
 ```tsx
-<Join>
-  <Button variant="secondary">Day</Button>
-  <Button variant="secondary">Week</Button>
-  <Button variant="secondary">Month</Button>
-</Join>
+<Join><Button variant="secondary">Day</Button><Button variant="secondary">Week</Button><Button variant="secondary">Month</Button></Join>
 ```
 
 ### Vertical stack
@@ -50,11 +43,7 @@ Segmented button row with no gaps between items
 Vertically joined button group
 
 ```tsx
-<Join orientation="vertical">
-  <Button>Top</Button>
-  <Button>Middle</Button>
-  <Button>Bottom</Button>
-</Join>
+<Join orientation="vertical"><Button>Top</Button><Button>Middle</Button><Button>Bottom</Button></Join>
 ```
 
 ## Accessibility

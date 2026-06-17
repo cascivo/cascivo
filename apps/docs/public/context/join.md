@@ -24,11 +24,11 @@ Join is a layout-only container (role="none"). Accessibility semantics belong on
 
 ## Props
 
-| Name          | Type              | Required    | Default | Description |
-| ------------- | ----------------- | ----------- | ------- | ----------- | --- |
-| `children`    | `React.ReactNode` | Yes         | —       | —           |
-| `orientation` | `'horizontal'     | 'vertical'` | No      | horizontal  | —   |
-| `className`   | `string`          | No          | —       | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | Yes | — | — |
+| `orientation` | `'horizontal' | 'vertical'` | No | horizontal | — |
+| `className` | `string` | No | — | — |
 
 ## Examples
 
@@ -37,10 +37,7 @@ Join is a layout-only container (role="none"). Accessibility semantics belong on
 Input and button joined into a single search control
 
 ```jsx
-<Join>
-  <Input placeholder="Search…" />
-  <Button>Go</Button>
-</Join>
+<Join><Input placeholder="Search…" /><Button>Go</Button></Join>
 ```
 
 ### Segmented buttons
@@ -48,11 +45,7 @@ Input and button joined into a single search control
 Segmented button row with no gaps between items
 
 ```jsx
-<Join>
-  <Button variant="secondary">Day</Button>
-  <Button variant="secondary">Week</Button>
-  <Button variant="secondary">Month</Button>
-</Join>
+<Join><Button variant="secondary">Day</Button><Button variant="secondary">Week</Button><Button variant="secondary">Month</Button></Join>
 ```
 
 ### Vertical stack
@@ -60,15 +53,11 @@ Segmented button row with no gaps between items
 Vertically joined button group
 
 ```jsx
-<Join orientation="vertical">
-  <Button>Top</Button>
-  <Button>Middle</Button>
-  <Button>Bottom</Button>
-</Join>
+<Join orientation="vertical"><Button>Top</Button><Button>Middle</Button><Button>Bottom</Button></Join>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                         |
-| ----------- | -------- | ---------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | orientation | flexible | Horizontal and vertical grouping are both supported via the orientation prop |

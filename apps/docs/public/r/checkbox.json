@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "toggle", "boolean"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "toggle",
+    "boolean"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Checkbox",
     "description": "Binary toggle for forms, with indeterminate support",
     "category": "inputs",
-    "states": ["unchecked", "checked", "indeterminate"],
+    "states": [
+      "unchecked",
+      "checked",
+      "indeterminate"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -62,7 +72,9 @@
     "accessibility": {
       "role": "checkbox",
       "wcag": "2.2-AA",
-      "keyboard": ["Space"],
+      "keyboard": [
+        "Space"
+      ],
       "apgPattern": "checkbox",
       "reducedMotion": true,
       "forcedColors": true
@@ -77,8 +89,14 @@
         "code": "<Checkbox label=\"Select all\" indeterminate />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "toggle", "boolean"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "toggle",
+      "boolean"
+    ],
     "intent": {
       "whenToUse": [
         "Selecting zero or more options from a list where each choice is independent",

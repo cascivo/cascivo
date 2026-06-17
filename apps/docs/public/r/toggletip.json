@@ -12,14 +12,26 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggletip/toggletip.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["overlay", "toggletip", "info", "popover", "floating"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "overlay",
+    "toggletip",
+    "info",
+    "popover",
+    "floating"
+  ],
   "category": "overlay",
   "meta": {
     "name": "Toggletip",
     "description": "A click-triggered info popover for supplementary, selectable content",
     "category": "overlay",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -83,7 +95,11 @@
     "accessibility": {
       "role": "status",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Space", "Escape"],
+      "keyboard": [
+        "Enter",
+        "Space",
+        "Escape"
+      ],
       "forcedColors": true,
       "reducedMotion": true
     },
@@ -99,8 +115,17 @@
         "code": "<Toggletip\n  trigger={<InfoIcon />}\n  open={open}\n  onOpenChange={setOpen}\n  placement=\"bottom-start\"\n>\n  <a href=\"/docs\">Learn more</a>\n</Toggletip>"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["overlay", "toggletip", "info", "popover", "floating"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "overlay",
+      "toggletip",
+      "info",
+      "popover",
+      "floating"
+    ],
     "intent": {
       "whenToUse": [
         "Revealing brief supplementary information on demand when the user clicks an info affordance",

@@ -20,13 +20,13 @@ npx cascivo add progress-circle
 
 ## Props
 
-| Prop        | Type      | Required | Default | Description                                                              |
-| ----------- | --------- | -------- | ------- | ------------------------------------------------------------------------ | ---- | --- |
-| `value`     | `number`  | yes      | —       | Current value from 0 to max — clamped                                    |
-| `max`       | `number`  | no       | `100`   | —                                                                        |
-| `size`      | `'sm'     | 'md'     | 'lg'`   | no                                                                       | `md` | —   |
-| `showValue` | `boolean` | no       | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
-| `label`     | `string`  | no       | —       | Accessible name announced by screen readers                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | Current value from 0 to max — clamped |
+| `max` | `number` | no | `100` | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `showValue` | `boolean` | no | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
+| `label` | `string` | no | — | Accessible name announced by screen readers |
 
 ## Examples
 

@@ -33,14 +33,14 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 
 ## Props
 
-| Name           | Type                                                       | Required | Default | Description |
-| -------------- | ---------------------------------------------------------- | -------- | ------- | ----------- |
-| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes      | —       | —           |
-| `headers`      | `ReactNode[]`                                              | No       | —       | —           |
-| `selectable`   | `boolean`                                                  | No       | false   | —           |
-| `value`        | `string`                                                   | No       | —       | —           |
-| `defaultValue` | `string`                                                   | No       | —       | —           |
-| `onSelect`     | `(id: string) => void`                                     | No       | —       | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes | — | — |
+| `headers` | `ReactNode[]` | No | — | — |
+| `selectable` | `boolean` | No | false | — |
+| `value` | `string` | No | — | — |
+| `defaultValue` | `string` | No | — | — |
+| `onSelect` | `(id: string) => void` | No | — | — |
 
 ## Tokens
 
@@ -57,26 +57,18 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 ### Static
 
 ```jsx
-<StructuredList headers={['Name', 'Role']} items={[{ id: 'a', cells: ['Ada', 'Engineer'] }]} />
+<StructuredList headers={["Name", "Role"]} items={[{ id: "a", cells: ["Ada", "Engineer"] }]} />
 ```
 
 ### Selectable
 
 ```jsx
-<StructuredList
-  selectable
-  defaultValue="a"
-  items={[
-    { id: 'a', cells: ['Ada'] },
-    { id: 'b', cells: ['Grace'] },
-  ]}
-  onSelect={(id) => set(id)}
-/>
+<StructuredList selectable defaultValue="a" items={[{ id: "a", cells: ["Ada"] }, { id: "b", cells: ["Grace"] }]} onSelect={(id) => set(id)} />
 ```
 
 ## Boundaries
 
-| Area       | Level    | Note                                                                                |
-| ---------- | -------- | ----------------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | selectable | flexible | Toggle selectable based on whether the list is interactive or purely presentational |
-| roles      | strict   | Static uses table semantics; selectable uses radiogroup — do not mix                |
+| roles | strict | Static uses table semantics; selectable uses radiogroup — do not mix |

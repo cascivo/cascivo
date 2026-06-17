@@ -12,16 +12,29 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/data-list/data-list.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["key-value", "description", "metadata", "details"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "key-value",
+    "description",
+    "metadata",
+    "details"
+  ],
   "category": "display",
   "meta": {
     "name": "DataList",
     "description": "Key-value pairs rendered as a description list",
     "category": "display",
     "states": [],
-    "variants": ["horizontal", "vertical"],
-    "sizes": ["sm", "md"],
+    "variants": [
+      "horizontal",
+      "vertical"
+    ],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "items",
@@ -69,8 +82,15 @@
         "code": "<DataList\n  orientation=\"vertical\"\n  dividers\n  items={[{ label: 'Email', value: 'ada@example.com' }]}\n/>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["key-value", "description", "metadata", "details"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "key-value",
+      "description",
+      "metadata",
+      "details"
+    ],
     "intent": {
       "whenToUse": [
         "Displaying read-only key-value metadata (profile fields, record summaries)",

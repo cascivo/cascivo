@@ -14,15 +14,15 @@ npx cascivo add resizable
 
 ## Props
 
-| Prop            | Type                      | Required    | Default | Description            |
-| --------------- | ------------------------- | ----------- | ------- | ---------------------- | --- |
-| `children`      | `ReactNode`               | yes         | —       | Exactly two panes      |
-| `orientation`   | `'horizontal'             | 'vertical'` | no      | `horizontal`           | —   |
-| `defaultRatio`  | `number`                  | no          | `0.5`   | —                      |
-| `ratio`         | `number`                  | no          | —       | Controlled ratio (0–1) |
-| `minRatio`      | `number`                  | no          | `0.1`   | —                      |
-| `maxRatio`      | `number`                  | no          | `0.9`   | —                      |
-| `onRatioChange` | `(ratio: number) => void` | no          | —       | —                      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | yes | — | Exactly two panes |
+| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
+| `defaultRatio` | `number` | no | `0.5` | — |
+| `ratio` | `number` | no | — | Controlled ratio (0–1) |
+| `minRatio` | `number` | no | `0.1` | — |
+| `maxRatio` | `number` | no | `0.9` | — |
+| `onRatioChange` | `(ratio: number) => void` | no | — | — |
 
 ## Examples
 

@@ -14,14 +14,14 @@ npx cascivo add carousel
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description             |
-| --------------- | ------------------------- | -------- | ------- | ----------------------- |
-| `children`      | `ReactNode`               | no       | —       | Slides as children      |
-| `slides`        | `ReactNode[]`             | no       | —       | Slides as an array      |
-| `index`         | `number`                  | no       | —       | Controlled active index |
-| `defaultIndex`  | `number`                  | no       | `0`     | —                       |
-| `onIndexChange` | `(index: number) => void` | no       | —       | —                       |
-| `loop`          | `boolean`                 | no       | `false` | —                       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | no | — | Slides as children |
+| `slides` | `ReactNode[]` | no | — | Slides as an array |
+| `index` | `number` | no | — | Controlled active index |
+| `defaultIndex` | `number` | no | `0` | — |
+| `onIndexChange` | `(index: number) => void` | no | — | — |
+| `loop` | `boolean` | no | `false` | — |
 
 ## Examples
 

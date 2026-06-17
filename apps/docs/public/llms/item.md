@@ -24,11 +24,11 @@ npx cascivo add item
 
 ## Props
 
-| Prop      | Type       | Required | Default | Description |
-| --------- | ---------- | -------- | ------- | ----------- | --- |
-| `asChild` | `boolean`  | no       | `false` | —           |
-| `variant` | `'default' | 'muted'` | no      | `default`   | —   |
-| `size`    | `'sm'      | 'md'`    | no      | `md`        | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `asChild` | `boolean` | no | `false` | — |
+| `variant` | `'default' | 'muted'` | no | `default` | — |
+| `size` | `'sm' | 'md'` | no | `md` | — |
 
 ## Examples
 
@@ -36,16 +36,12 @@ npx cascivo add item
 
 ```tsx
 <Item>
-  <ItemMedia>
-    <Avatar />
-  </ItemMedia>
+  <ItemMedia><Avatar /></ItemMedia>
   <ItemContent>
     <ItemTitle>Ada Lovelace</ItemTitle>
     <ItemDescription>Mathematician</ItemDescription>
   </ItemContent>
-  <ItemActions>
-    <Button size="sm">Edit</Button>
-  </ItemActions>
+  <ItemActions><Button size="sm">Edit</Button></ItemActions>
 </Item>
 ```
 
@@ -54,9 +50,7 @@ npx cascivo add item
 ```tsx
 <Item asChild>
   <a href="/profile">
-    <ItemContent>
-      <ItemTitle>Profile</ItemTitle>
-    </ItemContent>
+    <ItemContent><ItemTitle>Profile</ItemTitle></ItemContent>
   </a>
 </Item>
 ```

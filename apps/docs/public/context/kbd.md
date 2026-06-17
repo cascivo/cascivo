@@ -31,9 +31,9 @@ Renders a native <kbd> element so assistive tech identifies the content as keybo
 
 ## Props
 
-| Name   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | --- |
-| `size` | `'sm' | 'md'`    | No      | md          | —   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' | 'md'` | No | md | — |
 
 ## Tokens
 
@@ -56,9 +56,7 @@ Renders a native <kbd> element so assistive tech identifies the content as keybo
 Compose multiple keys to show a shortcut
 
 ```jsx
-<span>
-  <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
-</span>
+<span><Kbd>⌘</Kbd> + <Kbd>K</Kbd></span>
 ```
 
 ### Small
@@ -69,7 +67,7 @@ Compose multiple keys to show a shortcut
 
 ## Boundaries
 
-| Area        | Level    | Note                                                   |
-| ----------- | -------- | ------------------------------------------------------ |
-| size        | flexible | sm fits inline help; md matches body text              |
-| token names | strict   | Surface and border must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| size | flexible | sm fits inline help; md matches body text |
+| token names | strict | Surface and border must resolve to --cascivo-* tokens |

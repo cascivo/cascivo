@@ -5,8 +5,16 @@
   "description": "Progress meter in bar or gauge variant with threshold coloring.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascivo/charts"],
-  "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+  "dependencies": [
+    "@cascivo/charts"
+  ],
+  "tags": [
+    "chart",
+    "meter",
+    "gauge",
+    "progress",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -14,7 +22,10 @@
     "description": "Progress meter in bar or gauge variant with threshold coloring.",
     "category": "chart",
     "states": [],
-    "variants": ["bar", "gauge"],
+    "variants": [
+      "bar",
+      "gauge"
+    ],
     "sizes": [],
     "props": [
       {
@@ -63,7 +74,9 @@
         "required": false
       }
     ],
-    "tokens": ["--cascivo-chart-1"],
+    "tokens": [
+      "--cascivo-chart-1"
+    ],
     "accessibility": {
       "role": "meter",
       "wcag": "2.1-AA",
@@ -75,8 +88,16 @@
         "code": "import { Meter } from '@cascivo/charts'\n\n<Meter value={72} label=\"CPU usage\" />"
       }
     ],
-    "dependencies": ["@cascivo/charts"],
-    "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
+    "dependencies": [
+      "@cascivo/charts"
+    ],
+    "tags": [
+      "chart",
+      "meter",
+      "gauge",
+      "progress",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Showing a rated or gauged value within a known min/max range",

@@ -33,14 +33,14 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Props
 
-| Name             | Type                         | Required | Default | Description |
-| ---------------- | ---------------------------- | -------- | ------- | ----------- | --- |
-| `checked`        | `boolean`                    | No       | —       | —           |
-| `defaultChecked` | `boolean`                    | No       | false   | —           |
-| `onChange`       | `(checked: boolean) => void` | No       | —       | —           |
-| `label`          | `string`                     | No       | —       | —           |
-| `size`           | `'sm'                        | 'md'`    | No      | md          | —   |
-| `disabled`       | `boolean`                    | No       | false   | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `checked` | `boolean` | No | — | — |
+| `defaultChecked` | `boolean` | No | false | — |
+| `onChange` | `(checked: boolean) => void` | No | — | — |
+| `label` | `string` | No | — | — |
+| `size` | `'sm' | 'md'` | No | md | — |
+| `disabled` | `boolean` | No | false | — |
 
 ## Tokens
 
@@ -66,7 +66,7 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                   |
-| ----------- | -------- | -------------------------------------------------------------------------------------- |
-| token names | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
-| label copy  | flexible | Optional label describing the setting being toggled                                    |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
+| label copy | flexible | Optional label describing the setting being toggled |

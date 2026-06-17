@@ -33,16 +33,16 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                |
-| --------------- | ------------------------- | -------- | ------- | -------------------------- | --- | --- |
-| `value`         | `string`                  | No       | —       | Controlled hex color value |
-| `defaultValue`  | `string`                  | No       | #3b82f6 | —                          |
-| `onValueChange` | `(value: string) => void` | No       | —       | —                          |
-| `presets`       | `string[]`                | No       | —       | Preset swatch colors       |
-| `alpha`         | `boolean`                 | No       | true    | —                          |
-| `label`         | `string`                  | No       | —       | —                          |
-| `disabled`      | `boolean`                 | No       | false   | —                          |
-| `size`          | `'sm'                     | 'md'     | 'lg'`   | No                         | md  | —   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | No | — | Controlled hex color value |
+| `defaultValue` | `string` | No | #3b82f6 | — |
+| `onValueChange` | `(value: string) => void` | No | — | — |
+| `presets` | `string[]` | No | — | Preset swatch colors |
+| `alpha` | `boolean` | No | true | — |
+| `label` | `string` | No | — | — |
+| `disabled` | `boolean` | No | false | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
 
 ## Tokens
 
@@ -65,12 +65,12 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 ### With presets
 
 ```jsx
-<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
+<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                       |
-| ----------- | -------- | -------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | color model | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed |
-| token names | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens       |
+| token names | strict | Surfaces, borders and focus ring must resolve to --cascivo-* tokens |

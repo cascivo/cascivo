@@ -12,14 +12,29 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/steps/steps.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "steps",
+    "wizard",
+    "stepper",
+    "progress",
+    "navigation",
+    "onboarding",
+    "checkout"
+  ],
   "category": "navigation",
   "meta": {
     "name": "Steps",
     "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
     "category": "navigation",
-    "states": ["pending", "active", "complete", "error"],
+    "states": [
+      "pending",
+      "active",
+      "complete",
+      "error"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -86,8 +101,18 @@
         "code": "<Steps\n  steps={[\n    { label: 'Upload' },\n    { label: 'Validate', state: 'error' },\n    { label: 'Process' },\n  ]}\n  activeStep={1}\n/>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "steps",
+      "wizard",
+      "stepper",
+      "progress",
+      "navigation",
+      "onboarding",
+      "checkout"
+    ],
     "intent": {
       "whenToUse": [
         "Checkout flows where the user moves through a fixed sequence of screens",

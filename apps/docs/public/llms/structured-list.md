@@ -24,35 +24,27 @@ npx cascivo add structured-list
 
 ## Props
 
-| Prop           | Type                                                       | Required | Default | Description |
-| -------------- | ---------------------------------------------------------- | -------- | ------- | ----------- |
-| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes      | —       | —           |
-| `headers`      | `ReactNode[]`                                              | no       | —       | —           |
-| `selectable`   | `boolean`                                                  | no       | `false` | —           |
-| `value`        | `string`                                                   | no       | —       | —           |
-| `defaultValue` | `string`                                                   | no       | —       | —           |
-| `onSelect`     | `(id: string) => void`                                     | no       | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | — |
+| `headers` | `ReactNode[]` | no | — | — |
+| `selectable` | `boolean` | no | `false` | — |
+| `value` | `string` | no | — | — |
+| `defaultValue` | `string` | no | — | — |
+| `onSelect` | `(id: string) => void` | no | — | — |
 
 ## Examples
 
 ### Static
 
 ```tsx
-<StructuredList headers={['Name', 'Role']} items={[{ id: 'a', cells: ['Ada', 'Engineer'] }]} />
+<StructuredList headers={["Name", "Role"]} items={[{ id: "a", cells: ["Ada", "Engineer"] }]} />
 ```
 
 ### Selectable
 
 ```tsx
-<StructuredList
-  selectable
-  defaultValue="a"
-  items={[
-    { id: 'a', cells: ['Ada'] },
-    { id: 'b', cells: ['Grace'] },
-  ]}
-  onSelect={(id) => set(id)}
-/>
+<StructuredList selectable defaultValue="a" items={[{ id: "a", cells: ["Ada"] }, { id: "b", cells: ["Grace"] }]} onSelect={(id) => set(id)} />
 ```
 
 ## Design tokens

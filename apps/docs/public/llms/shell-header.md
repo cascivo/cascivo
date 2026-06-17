@@ -18,16 +18,16 @@ npx cascivo add shell-header
 
 ## Props
 
-| Prop                | Type                   | Required   | Default | Description                                            |
-| ------------------- | ---------------------- | ---------- | ------- | ------------------------------------------------------ | ------------------------------------------------- |
-| `brand`             | `ShellHeaderBrand      | ReactNode` | no      | —                                                      | Brand: { prefix?, name, href? } or free-form node |
-| `nav`               | `ShellHeaderNavItem[]` | no         | —       | Top nav: links or dropdown menus ({ label, items })    |
-| `actions`           | `ShellHeaderAction[]`  | no         | —       | Right-aligned global icon actions with aria-pressed    |
-| `end`               | `ReactNode`            | no         | —       | Free-form trailing slot (user menu, theme switcher)    |
-| `onMenuClick`       | `() => void`           | no         | —       | Renders the hamburger button; call shell.toggleSideNav |
-| `menuExpanded`      | `boolean`              | no         | —       | aria-expanded for the hamburger button                 |
-| `skipToContentHref` | `string                | false`     | no      | `'#cascade-main'`                                      | Skip-link target; false disables the link         |
-| `labels`            | `ShellHeaderLabels`    | no         | —       | i18n overrides for built-in strings                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `brand` | `ShellHeaderBrand | ReactNode` | no | — | Brand: { prefix?, name, href? } or free-form node |
+| `nav` | `ShellHeaderNavItem[]` | no | — | Top nav: links or dropdown menus ({ label, items }) |
+| `actions` | `ShellHeaderAction[]` | no | — | Right-aligned global icon actions with aria-pressed |
+| `end` | `ReactNode` | no | — | Free-form trailing slot (user menu, theme switcher) |
+| `onMenuClick` | `() => void` | no | — | Renders the hamburger button; call shell.toggleSideNav |
+| `menuExpanded` | `boolean` | no | — | aria-expanded for the hamburger button |
+| `skipToContentHref` | `string | false` | no | `'#cascade-main'` | Skip-link target; false disables the link |
+| `labels` | `ShellHeaderLabels` | no | — | i18n overrides for built-in strings |
 
 ## Examples
 

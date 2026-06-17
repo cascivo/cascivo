@@ -32,14 +32,14 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description             |
-| --------------- | ------------------------- | -------- | ------- | ----------------------- |
-| `children`      | `ReactNode`               | No       | —       | Slides as children      |
-| `slides`        | `ReactNode[]`             | No       | —       | Slides as an array      |
-| `index`         | `number`                  | No       | —       | Controlled active index |
-| `defaultIndex`  | `number`                  | No       | 0       | —                       |
-| `onIndexChange` | `(index: number) => void` | No       | —       | —                       |
-| `loop`          | `boolean`                 | No       | false   | —                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | No | — | Slides as children |
+| `slides` | `ReactNode[]` | No | — | Slides as an array |
+| `index` | `number` | No | — | Controlled active index |
+| `defaultIndex` | `number` | No | 0 | — |
+| `onIndexChange` | `(index: number) => void` | No | — | — |
+| `loop` | `boolean` | No | false | — |
 
 ## Tokens
 
@@ -70,7 +70,7 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                             |
-| ------------- | -------- | -------------------------------------------------------------------------------- |
-| transition    | strict   | Paging uses native CSS scroll-snap, not transform math — no custom easing config |
-| slide content | flexible | Any ReactNode may be a slide; pass via children or the slides array              |
+| Area | Level | Note |
+|------|-------|------|
+| transition | strict | Paging uses native CSS scroll-snap, not transform math — no custom easing config |
+| slide content | flexible | Any ReactNode may be a slide; pass via children or the slides array |

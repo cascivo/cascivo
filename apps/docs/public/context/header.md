@@ -32,13 +32,13 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 ## Props
 
-| Name        | Type                                                  | Required | Default | Description                                                    |
-| ----------- | ----------------------------------------------------- | -------- | ------- | -------------------------------------------------------------- |
-| `brand`     | `React.ReactNode`                                     | No       | —       | Product name or logo area, typically wraps a link              |
-| `links`     | `{ label: string; href: string; active?: boolean }[]` | No       | —       | Primary navigation links; active link gets aria-current="page" |
-| `actions`   | `React.ReactNode`                                     | No       | —       | Right-aligned slot for buttons or an avatar                    |
-| `sticky`    | `boolean`                                             | No       | false   | —                                                              |
-| `className` | `string`                                              | No       | —       | —                                                              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `brand` | `React.ReactNode` | No | — | Product name or logo area, typically wraps a link |
+| `links` | `{ label: string; href: string; active?: boolean }[]` | No | — | Primary navigation links; active link gets aria-current="page" |
+| `actions` | `React.ReactNode` | No | — | Right-aligned slot for buttons or an avatar |
+| `sticky` | `boolean` | No | false | — |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -73,7 +73,7 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 ## Boundaries
 
-| Area              | Level    | Note                                                             |
-| ----------------- | -------- | ---------------------------------------------------------------- |
-| links and actions | flexible | Brand, links, and actions slots are optional and composable      |
-| token names       | strict   | Surface, border, and z-index must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| links and actions | flexible | Brand, links, and actions slots are optional and composable |
+| token names | strict | Surface, border, and z-index must resolve to --cascivo-* tokens |

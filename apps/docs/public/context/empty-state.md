@@ -33,13 +33,13 @@ Presentational by role; the title carries the meaning as text and the action is 
 
 ## Props
 
-| Name          | Type        | Required | Default | Description |
-| ------------- | ----------- | -------- | ------- | ----------- | --- |
-| `icon`        | `ReactNode` | No       | —       | —           |
-| `title`       | `string`    | Yes      | —       | —           |
-| `description` | `string`    | No       | —       | —           |
-| `action`      | `ReactNode` | No       | —       | —           |
-| `size`        | `'md'       | 'lg'`    | No      | md          | —   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `icon` | `ReactNode` | No | — | — |
+| `title` | `string` | Yes | — | — |
+| `description` | `string` | No | — | — |
+| `action` | `ReactNode` | No | — | — |
+| `size` | `'md' | 'lg'` | No | md | — |
 
 ## Tokens
 
@@ -60,17 +60,12 @@ Presentational by role; the title carries the meaning as text and the action is 
 ### With action
 
 ```jsx
-<EmptyState
-  icon="📄"
-  title="No documents yet"
-  description="Create your first document to get started."
-  action={<Button>New document</Button>}
-/>
+<EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />
 ```
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                    |
-| --------------- | -------- | ----------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | size and action | flexible | Action and icon are optional; size scales for full-page vs in-panel use |
-| token names     | strict   | Text and background colors must resolve to --cascivo-\* tokens          |
+| token names | strict | Text and background colors must resolve to --cascivo-* tokens |

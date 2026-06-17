@@ -12,8 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["progress", "loading", "circle", "feedback"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "progress",
+    "loading",
+    "circle",
+    "feedback"
+  ],
   "category": "feedback",
   "meta": {
     "name": "ProgressCircle",
@@ -21,7 +28,11 @@
     "category": "feedback",
     "states": [],
     "variants": [],
-    "sizes": ["sm", "md", "lg"],
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ],
     "props": [
       {
         "name": "value",
@@ -55,7 +66,11 @@
         "description": "Accessible name announced by screen readers"
       }
     ],
-    "tokens": ["--cascivo-color-border", "--cascivo-color-accent", "--cascivo-color-text"],
+    "tokens": [
+      "--cascivo-color-border",
+      "--cascivo-color-accent",
+      "--cascivo-color-text"
+    ],
     "accessibility": {
       "role": "progressbar",
       "wcag": "2.2-AA",
@@ -75,8 +90,15 @@
         "code": "<ProgressCircle value={3} max={8} label=\"Steps completed\" />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["progress", "loading", "circle", "feedback"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "progress",
+      "loading",
+      "circle",
+      "feedback"
+    ],
     "intent": {
       "whenToUse": [
         "Showing determinate progress compactly as a circular arc",

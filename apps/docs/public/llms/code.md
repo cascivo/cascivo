@@ -19,9 +19,9 @@ npx cascivo add code
 
 ## Props
 
-| Prop   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | --- |
-| `size` | `'sm' | 'md'`    | no      | `md`        | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' | 'md'` | no | `md` | — |
 
 ## Examples
 
@@ -36,9 +36,7 @@ npx cascivo add code
 Sits inline with surrounding text
 
 ```tsx
-<Text>
-  Run <Code>vp check</Code> before committing.
-</Text>
+<Text>Run <Code>vp check</Code> before committing.</Text>
 ```
 
 ### Small

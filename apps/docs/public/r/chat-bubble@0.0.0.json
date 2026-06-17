@@ -13,14 +13,22 @@
     }
   ],
   "dependencies": [],
-  "tags": ["chat", "message", "conversation", "messaging"],
+  "tags": [
+    "chat",
+    "message",
+    "conversation",
+    "messaging"
+  ],
   "category": "display",
   "meta": {
     "name": "ChatBubble",
     "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
     "category": "display",
     "states": [],
-    "variants": ["start", "end"],
+    "variants": [
+      "start",
+      "end"
+    ],
     "sizes": [],
     "props": [
       {
@@ -88,7 +96,12 @@
       }
     ],
     "dependencies": [],
-    "tags": ["chat", "message", "conversation", "messaging"],
+    "tags": [
+      "chat",
+      "message",
+      "conversation",
+      "messaging"
+    ],
     "intent": {
       "whenToUse": [
         "Chat UIs and messaging features showing conversation history",

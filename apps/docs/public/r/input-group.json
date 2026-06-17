@@ -12,8 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/input-group/input-group.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "input", "addon", "group", "layout"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "input",
+    "addon",
+    "group",
+    "layout"
+  ],
   "category": "inputs",
   "meta": {
     "name": "InputGroup",
@@ -68,8 +76,16 @@
         "code": "<ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "input", "addon", "group", "layout"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "input",
+      "addon",
+      "group",
+      "layout"
+    ],
     "intent": {
       "whenToUse": [
         "Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field",

@@ -12,8 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["scroll", "overflow", "scrollbar", "container", "layout"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "scroll",
+    "overflow",
+    "scrollbar",
+    "container",
+    "layout"
+  ],
   "category": "layout",
   "meta": {
     "name": "ScrollArea",
@@ -61,7 +69,14 @@
     "accessibility": {
       "role": "none",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"]
+      "keyboard": [
+        "ArrowUp",
+        "ArrowDown",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End"
+      ]
     },
     "examples": [
       {
@@ -73,8 +88,16 @@
         "code": "<ScrollArea height=\"12rem\" width=\"20rem\" orientation=\"both\">\n  <table>…</table>\n</ScrollArea>"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["scroll", "overflow", "scrollbar", "container", "layout"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "scroll",
+      "overflow",
+      "scrollbar",
+      "container",
+      "layout"
+    ],
     "intent": {
       "whenToUse": [
         "Constraining a region to a fixed height/width with overflow scrolling",

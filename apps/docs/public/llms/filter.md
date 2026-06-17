@@ -26,14 +26,14 @@ npx cascivo add filter
 
 ## Props
 
-| Prop           | Type                           | Required   | Default | Description                                                   |
-| -------------- | ------------------------------ | ---------- | ------- | ------------------------------------------------------------- | --- |
-| `options`      | `FilterOption[]`               | yes        | —       | Array of { label, value } objects to render as filter buttons |
-| `value`        | `string[]`                     | no         | —       | Controlled selected values                                    |
-| `defaultValue` | `string[]`                     | no         | `[]`    | Initial selected values for uncontrolled use                  |
-| `onChange`     | `(selected: string[]) => void` | no         | —       | —                                                             |
-| `multi`        | `boolean`                      | no         | `false` | Allow multiple items to be selected simultaneously            |
-| `variant`      | `'pill'                        | 'outline'` | no      | `pill`                                                        | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
+| `value` | `string[]` | no | — | Controlled selected values |
+| `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
+| `onChange` | `(selected: string[]) => void` | no | — | — |
+| `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
+| `variant` | `'pill' | 'outline'` | no | `pill` | — |
 
 ## Examples
 
@@ -69,10 +69,7 @@ npx cascivo add filter
 ```tsx
 <Filter
   variant="outline"
-  options={[
-    { label: 'React', value: 'react' },
-    { label: 'Vue', value: 'vue' },
-  ]}
+  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
   aria-label="Filter by framework"
 />
 ```

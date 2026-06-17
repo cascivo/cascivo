@@ -5,8 +5,16 @@
   "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": ["@cascivo/charts"],
-  "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+  "dependencies": [
+    "@cascivo/charts"
+  ],
+  "tags": [
+    "chart",
+    "histogram",
+    "distribution",
+    "frequency",
+    "data-viz"
+  ],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -69,7 +77,9 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
-    "tokens": ["--cascivo-chart-1"],
+    "tokens": [
+      "--cascivo-chart-1"
+    ],
     "accessibility": {
       "role": "img",
       "wcag": "2.1-AA",
@@ -81,8 +91,16 @@
         "code": "import { Histogram } from '@cascivo/charts'\n\nconst data = Array.from({length:100}, () => Math.random() * 100)\n<Histogram data={data} title=\"Distribution\" label=\"Value\" />"
       }
     ],
-    "dependencies": ["@cascivo/charts"],
-    "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
+    "dependencies": [
+      "@cascivo/charts"
+    ],
+    "tags": [
+      "chart",
+      "histogram",
+      "distribution",
+      "frequency",
+      "data-viz"
+    ],
     "intent": {
       "whenToUse": [
         "Showing the frequency distribution of a single continuous variable",

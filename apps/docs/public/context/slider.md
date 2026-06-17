@@ -33,15 +33,15 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Props
 
-| Name           | Type      | Required | Default | Description |
-| -------------- | --------- | -------- | ------- | ----------- |
-| `label`        | `string`  | No       | —       | —           |
-| `min`          | `number`  | No       | 0       | —           |
-| `max`          | `number`  | No       | 100     | —           |
-| `step`         | `number`  | No       | 1       | —           |
-| `value`        | `number`  | No       | —       | —           |
-| `defaultValue` | `number`  | No       | —       | —           |
-| `disabled`     | `boolean` | No       | false   | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | No | — | — |
+| `min` | `number` | No | 0 | — |
+| `max` | `number` | No | 100 | — |
+| `step` | `number` | No | 1 | — |
+| `value` | `number` | No | — | — |
+| `defaultValue` | `number` | No | — | — |
+| `disabled` | `boolean` | No | false | — |
 
 ## Tokens
 
@@ -67,7 +67,7 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                   |
-| ------------ | -------- | -------------------------------------------------------------------------------------- |
-| token names  | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
-| min/max/step | flexible | Consumer-defined bounds and increment                                                  |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
+| min/max/step | flexible | Consumer-defined bounds and increment |

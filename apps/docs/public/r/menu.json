@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu/menu.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["overlay", "menu", "dropdown", "floating"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "overlay",
+    "menu",
+    "dropdown",
+    "floating"
+  ],
   "category": "overlay",
   "meta": {
     "name": "Menu",
     "description": "Dropdown menu with keyboard navigation, built on usePopover",
     "category": "overlay",
-    "states": ["open", "closed"],
+    "states": [
+      "open",
+      "closed"
+    ],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -35,11 +45,24 @@
     "accessibility": {
       "role": "menu",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Enter",
+        "Space",
+        "Escape"
+      ]
     },
     "examples": [],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["overlay", "menu", "dropdown", "floating"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "overlay",
+      "menu",
+      "dropdown",
+      "floating"
+    ],
     "intent": {
       "whenToUse": [
         "Presenting a list of actions or commands triggered from a button",

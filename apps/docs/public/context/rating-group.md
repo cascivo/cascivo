@@ -33,15 +33,15 @@ Each star is a <button role="radio"> inside a role="radiogroup" with aria-checke
 
 ## Props
 
-| Name            | Type                  | Required | Default | Description |
-| --------------- | --------------------- | -------- | ------- | ----------- | --- | --- |
-| `value`         | `number`              | Yes      | —       | —           |
-| `onValueChange` | `(v: number) => void` | No       | —       | —           |
-| `max`           | `number`              | No       | 5       | —           |
-| `size`          | `'sm'                 | 'md'     | 'lg'`   | No          | md  | —   |
-| `disabled`      | `boolean`             | No       | false   | —           |
-| `readOnly`      | `boolean`             | No       | false   | —           |
-| `labels`        | `RatingGroupLabels`   | No       | —       | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | — |
+| `onValueChange` | `(v: number) => void` | No | — | — |
+| `max` | `number` | No | 5 | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| `disabled` | `boolean` | No | false | — |
+| `readOnly` | `boolean` | No | false | — |
+| `labels` | `RatingGroupLabels` | No | — | — |
 
 ## Tokens
 
@@ -66,7 +66,7 @@ Each star is a <button role="radio"> inside a role="radiogroup" with aria-checke
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                      |
-| ---------------- | -------- | ------------------------------------------------------------------------- |
-| token names      | strict   | Star styling must resolve to the listed --cascivo-\* tokens               |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Star styling must resolve to the listed --cascivo-* tokens |
 | scale and labels | flexible | max sets the scale and labels.rating customizes the per-star announcement |

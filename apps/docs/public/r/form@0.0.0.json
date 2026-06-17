@@ -12,14 +12,24 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/form/form.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "validation", "signals", "input"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "validation",
+    "signals",
+    "input"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Form",
     "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
     "category": "inputs",
-    "states": ["idle", "submitting"],
+    "states": [
+      "idle",
+      "submitting"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -44,11 +54,16 @@
         "required": false
       }
     ],
-    "tokens": ["--cascivo-space-4"],
+    "tokens": [
+      "--cascivo-space-4"
+    ],
     "accessibility": {
       "role": "form",
       "wcag": "2.2-AA",
-      "keyboard": ["Tab", "Enter"]
+      "keyboard": [
+        "Tab",
+        "Enter"
+      ]
     },
     "examples": [
       {
@@ -56,8 +71,15 @@
         "code": "function Demo() {\n  const form = useForm({\n    initialValues: { email: '' },\n    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },\n  })\n  const email = form.field('email')\n  return (\n    <Form form={form} onValid={console.log}>\n      <Input\n        label=\"Email\"\n        value={email.value}\n        onChange={(e) => email.onChange(e.currentTarget.value)}\n        onBlur={email.onBlur}\n        error={email.error}\n      />\n      <Button type=\"submit\">Save</Button>\n    </Form>\n  )\n}"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "validation", "signals", "input"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "validation",
+      "signals",
+      "input"
+    ],
     "intent": {
       "whenToUse": [
         "Collecting and submitting a set of related field values together",

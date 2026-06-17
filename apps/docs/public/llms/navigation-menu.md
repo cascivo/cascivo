@@ -19,25 +19,19 @@ npx cascivo add navigation-menu
 
 ## Props
 
-| Prop          | Type                   | Required   | Default | Description |
-| ------------- | ---------------------- | ---------- | ------- | ----------- | --- | --- |
-| `items`       | `NavigationMenuItem[]` | yes        | —       | —           |
-| `aria-label`  | `string`               | no         | —       | —           |
-| `orientation` | `'horizontal'          | 'vertical' | 'both'` | no          | —   | —   |
-| `className`   | `string`               | no         | —       | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `NavigationMenuItem[]` | yes | — | — |
+| `aria-label` | `string` | no | — | — |
+| `orientation` | `'horizontal' | 'vertical' | 'both'` | no | — | — |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<NavigationMenu
-  aria-label="Main"
-  items={[
-    { id: 'home', label: 'Home', href: '/' },
-    { id: 'products', label: 'Products', content: <ul>…</ul> },
-  ]}
-/>
+<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
 ```
 
 ## Design tokens

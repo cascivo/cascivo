@@ -30,24 +30,22 @@ npx cascivo add icon-button
 
 ## Props
 
-| Prop       | Type                                         | Required  | Default   | Description |
-| ---------- | -------------------------------------------- | --------- | --------- | ----------- | ------- | --- |
-| `label`    | `string`                                     | yes       | —         | —           |
-| `icon`     | `React.ReactNode`                            | no        | —         | —           |
-| `variant`  | `'ghost'                                     | 'outline' | 'filled'` | no          | `ghost` | —   |
-| `size`     | `'sm'                                        | 'md'      | 'lg'`     | no          | `md`    | —   |
-| `asChild`  | `boolean`                                    | no        | `false`   | —           |
-| `disabled` | `boolean`                                    | no        | `false`   | —           |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | no        | —         | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | yes | — | — |
+| `icon` | `React.ReactNode` | no | — | — |
+| `variant` | `'ghost' | 'outline' | 'filled'` | no | `ghost` | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `asChild` | `boolean` | no | `false` | — |
+| `disabled` | `boolean` | no | `false` | — |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | — |
 
 ## Examples
 
 ### Ghost
 
 ```tsx
-<IconButton label="Settings">
-  <GearIcon />
-</IconButton>
+<IconButton label="Settings"><GearIcon /></IconButton>
 ```
 
 ### Filled
@@ -59,11 +57,7 @@ npx cascivo add icon-button
 ### As link
 
 ```tsx
-<IconButton label="Home" asChild>
-  <a href="/">
-    <HomeIcon />
-  </a>
-</IconButton>
+<IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
 ```
 
 ## Design tokens

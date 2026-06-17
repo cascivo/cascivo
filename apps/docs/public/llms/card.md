@@ -20,10 +20,10 @@ npx cascivo add card
 
 ## Props
 
-| Prop      | Type       | Required   | Default     | Description |
-| --------- | ---------- | ---------- | ----------- | ----------- | --------- | ---- | --- |
-| `variant` | `'default' | 'outlined' | 'elevated'` | no          | `default` | —    |
-| `padding` | `'none'    | 'sm'       | 'md'        | 'lg'`       | no        | `md` | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' | 'outlined' | 'elevated'` | no | `default` | — |
+| `padding` | `'none' | 'sm' | 'md' | 'lg'` | no | `md` | — |
 
 ## Examples
 
@@ -31,9 +31,7 @@ npx cascivo add card
 
 ```tsx
 <Card>
-  <CardHeader>
-    <CardTitle>Title</CardTitle>
-  </CardHeader>
+  <CardHeader><CardTitle>Title</CardTitle></CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 ```

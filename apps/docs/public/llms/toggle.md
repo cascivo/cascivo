@@ -24,14 +24,14 @@ npx cascivo add toggle
 
 ## Props
 
-| Prop             | Type                         | Required | Default | Description |
-| ---------------- | ---------------------------- | -------- | ------- | ----------- | --- |
-| `checked`        | `boolean`                    | no       | —       | —           |
-| `defaultChecked` | `boolean`                    | no       | `false` | —           |
-| `onChange`       | `(checked: boolean) => void` | no       | —       | —           |
-| `label`          | `string`                     | no       | —       | —           |
-| `size`           | `'sm'                        | 'md'`    | no      | `md`        | —   |
-| `disabled`       | `boolean`                    | no       | `false` | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `checked` | `boolean` | no | — | — |
+| `defaultChecked` | `boolean` | no | `false` | — |
+| `onChange` | `(checked: boolean) => void` | no | — | — |
+| `label` | `string` | no | — | — |
+| `size` | `'sm' | 'md'` | no | `md` | — |
+| `disabled` | `boolean` | no | `false` | — |
 
 ## Examples
 

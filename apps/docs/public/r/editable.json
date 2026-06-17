@@ -12,14 +12,26 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/editable/editable.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["form", "editable", "inline", "input", "text"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "form",
+    "editable",
+    "inline",
+    "input",
+    "text"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Editable",
     "description": "Inline click-to-edit text field",
     "category": "inputs",
-    "states": ["preview", "editing", "disabled"],
+    "states": [
+      "preview",
+      "editing",
+      "disabled"
+    ],
     "variants": [],
     "sizes": [],
     "props": [
@@ -69,7 +81,10 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": ["Enter", "Escape"]
+      "keyboard": [
+        "Enter",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -81,8 +96,16 @@
         "code": "<Editable value=\"\" onValueChange={() => {}} placeholder=\"Enter text\" />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["form", "editable", "inline", "input", "text"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "form",
+      "editable",
+      "inline",
+      "input",
+      "text"
+    ],
     "intent": {
       "whenToUse": [
         "Editing a single piece of text in place where the value is normally read-only — titles, names, labels",

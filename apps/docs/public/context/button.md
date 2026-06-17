@@ -32,13 +32,13 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Props
 
-| Name       | Type                                         | Required    | Default | Description    |
-| ---------- | -------------------------------------------- | ----------- | ------- | -------------- | --- | ------- | --- |
-| `variant`  | `'primary'                                   | 'secondary' | 'ghost' | 'destructive'` | No  | primary | —   |
-| `size`     | `'sm'                                        | 'md'        | 'lg'`   | No             | md  | —       |
-| `loading`  | `boolean`                                    | No          | false   | —              |
-| `disabled` | `boolean`                                    | No          | false   | —              |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No          | —       | —              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'primary' | 'secondary' | 'ghost' | 'destructive'` | No | primary | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| `loading` | `boolean` | No | false | — |
+| `disabled` | `boolean` | No | false | — |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | No | — | — |
 
 ## Tokens
 
@@ -72,7 +72,7 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Boundaries
 
-| Area        | Level    | Note                                                               |
-| ----------- | -------- | ------------------------------------------------------------------ |
-| token names | strict   | Visual props must resolve to --cascivo-button-\* / semantic tokens |
-| label copy  | flexible | Free, within tone guidance                                         |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Visual props must resolve to --cascivo-button-* / semantic tokens |
+| label copy | flexible | Free, within tone guidance |

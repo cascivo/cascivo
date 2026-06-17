@@ -33,11 +33,11 @@ npx cascivo add progress
 
 ## Props
 
-| Prop      | Type       | Required | Default   | Description                          |
-| --------- | ---------- | -------- | --------- | ------------------------------------ | -------- | --- | --------- | --- |
-| `value`   | `number`   | no       | —         | 0–100. Omit for indeterminate state. |
-| `variant` | `'primary' | 'info'   | 'success' | 'warning'                            | 'error'` | no  | `primary` | —   |
-| `size`    | `'sm'      | 'md'     | 'lg'`     | no                                   | `md`     | —   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
+| `variant` | `'primary' | 'info' | 'success' | 'warning' | 'error'` | no | `primary` | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
 
 ## Examples
 

@@ -12,15 +12,30 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/swap/swap.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "toggle",
+    "icon",
+    "animate",
+    "switch",
+    "flip",
+    "rotate"
+  ],
   "category": "inputs",
   "meta": {
     "name": "Swap",
     "description": "Animated toggle between two icon/content states with rotate or flip transition",
     "category": "inputs",
-    "states": ["unchecked", "checked"],
-    "variants": ["rotate", "flip"],
+    "states": [
+      "unchecked",
+      "checked"
+    ],
+    "variants": [
+      "rotate",
+      "flip"
+    ],
     "sizes": [],
     "props": [
       {
@@ -70,7 +85,10 @@
     "accessibility": {
       "role": "switch",
       "wcag": "2.2-AA",
-      "keyboard": ["Space", "Enter"]
+      "keyboard": [
+        "Space",
+        "Enter"
+      ]
     },
     "examples": [
       {
@@ -84,8 +102,17 @@
         "description": "Heart icon that flips to filled on activation"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "toggle",
+      "icon",
+      "animate",
+      "switch",
+      "flip",
+      "rotate"
+    ],
     "intent": {
       "whenToUse": [
         "Theme toggles where an icon animates between two states (sun/moon)",

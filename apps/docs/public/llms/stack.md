@@ -14,11 +14,11 @@ npx cascivo add stack
 
 ## Props
 
-| Prop        | Type              | Required | Default | Description                                 |
-| ----------- | ----------------- | -------- | ------- | ------------------------------------------- |
-| `children`  | `React.ReactNode` | yes      | —       | —                                           |
-| `offset`    | `number`          | no       | `4`     | Pixel offset applied per layer in both axes |
-| `className` | `string`          | no       | —       | —                                           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | — |
+| `offset` | `number` | no | `4` | Pixel offset applied per layer in both axes |
+| `className` | `string` | no | — | — |
 
 ## Examples
 
@@ -27,11 +27,7 @@ npx cascivo add stack
 Three cards stacked with a 6px offset to show depth
 
 ```tsx
-<Stack offset={6}>
-  <Card>First</Card>
-  <Card>Second</Card>
-  <Card>Third</Card>
-</Stack>
+<Stack offset={6}><Card>First</Card><Card>Second</Card><Card>Third</Card></Stack>
 ```
 
 ### Tight stack
@@ -39,11 +35,7 @@ Three cards stacked with a 6px offset to show depth
 Overlapping avatar group with minimal offset
 
 ```tsx
-<Stack offset={2}>
-  <Avatar src="/a.jpg" />
-  <Avatar src="/b.jpg" />
-  <Avatar src="/c.jpg" />
-</Stack>
+<Stack offset={2}><Avatar src="/a.jpg" /><Avatar src="/b.jpg" /><Avatar src="/c.jpg" /></Stack>
 ```
 
 ## Accessibility

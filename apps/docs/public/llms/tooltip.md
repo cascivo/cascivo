@@ -19,21 +19,19 @@ npx cascivo add tooltip
 
 ## Props
 
-| Prop        | Type           | Required | Default  | Description                         |
-| ----------- | -------------- | -------- | -------- | ----------------------------------- | --- | ----- | --- |
-| `content`   | `ReactNode`    | yes      | —        | —                                   |
-| `placement` | `'top'         | 'right'  | 'bottom' | 'left'`                             | no  | `top` | —   |
-| `children`  | `ReactElement` | yes      | —        | —                                   |
-| `delay`     | `number`       | no       | `200`    | Milliseconds to wait before showing |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `content` | `ReactNode` | yes | — | — |
+| `placement` | `'top' | 'right' | 'bottom' | 'left'` | no | `top` | — |
+| `children` | `ReactElement` | yes | — | — |
+| `delay` | `number` | no | `200` | Milliseconds to wait before showing |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Tooltip content="Copy to clipboard">
-  <Button>Copy</Button>
-</Tooltip>
+<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>
 ```
 
 ## Design tokens

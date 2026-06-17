@@ -12,15 +12,28 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
-  "tags": ["display", "list", "table", "data"],
+  "dependencies": [
+    "@cascivo/core"
+  ],
+  "tags": [
+    "display",
+    "list",
+    "table",
+    "data"
+  ],
   "category": "display",
   "meta": {
     "name": "StructuredList",
     "description": "Tabular row list for scannable data, optionally single-selectable",
     "category": "display",
-    "states": ["default", "selected"],
-    "variants": ["static", "selectable"],
+    "states": [
+      "default",
+      "selected"
+    ],
+    "variants": [
+      "static",
+      "selectable"
+    ],
     "sizes": [],
     "props": [
       {
@@ -67,7 +80,14 @@
     "accessibility": {
       "role": "table",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space"],
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Home",
+        "End",
+        "Enter",
+        "Space"
+      ],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -81,8 +101,15 @@
         "code": "<StructuredList selectable defaultValue=\"a\" items={[{ id: \"a\", cells: [\"Ada\"] }, { id: \"b\", cells: [\"Grace\"] }]} onSelect={(id) => set(id)} />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
-    "tags": ["display", "list", "table", "data"],
+    "dependencies": [
+      "@cascivo/core"
+    ],
+    "tags": [
+      "display",
+      "list",
+      "table",
+      "data"
+    ],
     "intent": {
       "whenToUse": [
         "Presenting a set of related records in aligned columns the user scans top to bottom",

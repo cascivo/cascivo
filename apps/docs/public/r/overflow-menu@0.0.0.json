@@ -12,16 +12,31 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-  "tags": ["overlay", "menu", "actions", "kebab", "table"],
+  "dependencies": [
+    "@cascivo/core",
+    "@cascivo/i18n"
+  ],
+  "tags": [
+    "overlay",
+    "menu",
+    "actions",
+    "kebab",
+    "table"
+  ],
   "category": "overlay",
   "meta": {
     "name": "OverflowMenu",
     "description": "Kebab icon button revealing a menu of row-level actions",
     "category": "overlay",
-    "states": ["closed", "open"],
+    "states": [
+      "closed",
+      "open"
+    ],
     "variants": [],
-    "sizes": ["sm", "md"],
+    "sizes": [
+      "sm",
+      "md"
+    ],
     "props": [
       {
         "name": "items",
@@ -75,7 +90,15 @@
     "accessibility": {
       "role": "menu",
       "wcag": "2.2-AA",
-      "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
+      "keyboard": [
+        "ArrowDown",
+        "ArrowUp",
+        "Home",
+        "End",
+        "Enter",
+        "Space",
+        "Escape"
+      ]
     },
     "examples": [
       {
@@ -87,8 +110,17 @@
         "code": "<OverflowMenu size=\"sm\" placement=\"bottom-start\" items={items} />"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
-    "tags": ["overlay", "menu", "actions", "kebab", "table"],
+    "dependencies": [
+      "@cascivo/core",
+      "@cascivo/i18n"
+    ],
+    "tags": [
+      "overlay",
+      "menu",
+      "actions",
+      "kebab",
+      "table"
+    ],
     "intent": {
       "whenToUse": [
         "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",

@@ -32,15 +32,15 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 ## Props
 
-| Name            | Type                      | Required    | Default | Description            |
-| --------------- | ------------------------- | ----------- | ------- | ---------------------- | --- |
-| `children`      | `ReactNode`               | Yes         | —       | Exactly two panes      |
-| `orientation`   | `'horizontal'             | 'vertical'` | No      | horizontal             | —   |
-| `defaultRatio`  | `number`                  | No          | 0.5     | —                      |
-| `ratio`         | `number`                  | No          | —       | Controlled ratio (0–1) |
-| `minRatio`      | `number`                  | No          | 0.1     | —                      |
-| `maxRatio`      | `number`                  | No          | 0.9     | —                      |
-| `onRatioChange` | `(ratio: number) => void` | No          | —       | —                      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | Yes | — | Exactly two panes |
+| `orientation` | `'horizontal' | 'vertical'` | No | horizontal | — |
+| `defaultRatio` | `number` | No | 0.5 | — |
+| `ratio` | `number` | No | — | Controlled ratio (0–1) |
+| `minRatio` | `number` | No | 0.1 | — |
+| `maxRatio` | `number` | No | 0.9 | — |
+| `onRatioChange` | `(ratio: number) => void` | No | — | — |
 
 ## Tokens
 
@@ -71,7 +71,7 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                               |
-| ------------- | -------- | ---------------------------------------------------------------------------------- |
-| sizing        | strict   | Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex |
-| min/max ratio | flexible | Consumer-defined clamp range                                                       |
+| Area | Level | Note |
+|------|-------|------|
+| sizing | strict | Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex |
+| min/max ratio | flexible | Consumer-defined clamp range |

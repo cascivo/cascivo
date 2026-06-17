@@ -35,14 +35,14 @@ Renders a div with role="progressbar", aria-valuenow (clamped 0–100), aria-val
 
 ## Props
 
-| Name         | Type              | Required | Default   | Description |
-| ------------ | ----------------- | -------- | --------- | ----------- | -------- | --- | ------- | --- |
-| `value`      | `number`          | Yes      | —         | —           |
-| `size`       | `'sm'             | 'md'     | 'lg'`     | No          | md       | —   |
-| `variant`    | `'primary'        | 'info'   | 'success' | 'warning'   | 'error'` | No  | primary | —   |
-| `children`   | `React.ReactNode` | No       | —         | —           |
-| `aria-label` | `string`          | No       | —         | —           |
-| `className`  | `string`          | No       | —         | —           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | — |
+| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
+| `variant` | `'primary' | 'info' | 'success' | 'warning' | 'error'` | No | primary | — |
+| `children` | `React.ReactNode` | No | — | — |
+| `aria-label` | `string` | No | — | — |
+| `className` | `string` | No | — | — |
 
 ## Tokens
 
@@ -79,14 +79,12 @@ Completed state with success color at large size
 Override the default percentage label with custom content
 
 ```jsx
-<RadialProgress value={45} variant="warning">
-  45 GB
-</RadialProgress>
+<RadialProgress value={45} variant="warning">45 GB</RadialProgress>
 ```
 
 ## Boundaries
 
-| Area  | Level    | Note                                                                         |
-| ----- | -------- | ---------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | label | flexible | Default is the percentage string; pass children to override with any content |
-| color | strict   | Color resolves through --cascivo-color-\* semantic tokens via data-variant   |
+| color | strict | Color resolves through --cascivo-color-* semantic tokens via data-variant |

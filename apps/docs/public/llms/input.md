@@ -26,14 +26,14 @@ npx cascivo add input
 
 ## Props
 
-| Prop          | Type      | Required | Default | Description |
-| ------------- | --------- | -------- | ------- | ----------- | ---- | --- |
-| `label`       | `string`  | no       | —       | —           |
-| `hint`        | `string`  | no       | —       | —           |
-| `error`       | `string`  | no       | —       | —           |
-| `size`        | `'sm'     | 'md'     | 'lg'`   | no          | `md` | —   |
-| `placeholder` | `string`  | no       | —       | —           |
-| `disabled`    | `boolean` | no       | `false` | —           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | — |
+| `hint` | `string` | no | — | — |
+| `error` | `string` | no | — | — |
+| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| `placeholder` | `string` | no | — | — |
+| `disabled` | `boolean` | no | `false` | — |
 
 ## Examples
 
