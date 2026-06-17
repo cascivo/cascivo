@@ -39,23 +39,23 @@ expanders, `NavigationMenu` / `Menu` for the slimmed nav.
 
 `HomePage` in `apps/landing/src/App.tsx` renders, in order:
 
-| #   | Section            | One-line content                                              | Weight  |
-| --- | ------------------ | ------------------------------------------------------------- | ------- |
-| 1   | `Hero`             | Headline + `npx cascivo add button` + GitHub CTA              | eager   |
-| 2   | `Principles`       | 4 value cards: Platform CSS · Signals · Owned code · Agent-ready | eager   |
-| 3   | `TechDeepDive` (teaser) | `@layer` / `@container` / `:has()` modern-CSS deep dive   | eager   |
-| 4   | `StatsBand`        | "By the numbers" metric band                                  | eager   |
-| 5   | `RelayConsole`     | Full interactive "real app" demo (incidents/relay dashboard)  | lazy    |
-| 6   | `SignalsDemo`      | "Count the re-renders" signal vs React benchmark              | lazy    |
-| 7   | `ProofTeasers`     | "Numbers, not adjectives" — bundle-size chart vs shadcn/Carbon | lazy    |
-| 8   | `AgentLayer`       | "AI-native, not AI-aware" — manifest / MCP / skills story      | lazy    |
-| 9   | `ThemeDemo`        | "One form, ten personalities" — live theme switcher           | lazy    |
-| 10  | `ChartShowcase`    | "17 chart types. CVD-safe. Keyboard-first."                   | lazy    |
-| 11  | `ExamplesGallery`  | "Drive it, don't read about it" — featured-component carousel | lazy    |
-| 12  | `Ecosystem`        | "Everything you need, nothing you don't" — package map        | lazy    |
-| 13  | `QuickStart`       | "Up and running in three steps" (+ prebuilt option)           | lazy    |
-| 14  | `CtaBand`          | "Own your UI." closing CTA                                     | lazy    |
-| —   | `Footer`           | Footer links                                                  | lazy    |
+| #   | Section                 | One-line content                                                 | Weight |
+| --- | ----------------------- | ---------------------------------------------------------------- | ------ |
+| 1   | `Hero`                  | Headline + `npx cascivo add button` + GitHub CTA                 | eager  |
+| 2   | `Principles`            | 4 value cards: Platform CSS · Signals · Owned code · Agent-ready | eager  |
+| 3   | `TechDeepDive` (teaser) | `@layer` / `@container` / `:has()` modern-CSS deep dive          | eager  |
+| 4   | `StatsBand`             | "By the numbers" metric band                                     | eager  |
+| 5   | `RelayConsole`          | Full interactive "real app" demo (incidents/relay dashboard)     | lazy   |
+| 6   | `SignalsDemo`           | "Count the re-renders" signal vs React benchmark                 | lazy   |
+| 7   | `ProofTeasers`          | "Numbers, not adjectives" — bundle-size chart vs shadcn/Carbon   | lazy   |
+| 8   | `AgentLayer`            | "AI-native, not AI-aware" — manifest / MCP / skills story        | lazy   |
+| 9   | `ThemeDemo`             | "One form, ten personalities" — live theme switcher              | lazy   |
+| 10  | `ChartShowcase`         | "17 chart types. CVD-safe. Keyboard-first."                      | lazy   |
+| 11  | `ExamplesGallery`       | "Drive it, don't read about it" — featured-component carousel    | lazy   |
+| 12  | `Ecosystem`             | "Everything you need, nothing you don't" — package map           | lazy   |
+| 13  | `QuickStart`            | "Up and running in three steps" (+ prebuilt option)              | lazy   |
+| 14  | `CtaBand`               | "Own your UI." closing CTA                                       | lazy   |
+| —   | `Footer`                | Footer links                                                     | lazy   |
 
 Existing dedicated routes (already built, reachable from nav): `/accessibility`, `/performance`,
 `/guides`, `/modern-css`, `/examples` (+ `/examples/:slug`), `/create`, `/blocks` (+ `/blocks/:name`,
@@ -76,20 +76,20 @@ self-contained demos that each deserve a focused page, not a scroll-by. The nav 
 Patterns distilled from Linear, shadcn/ui, Apple, Vercel, and Stripe (all cited as the target by the
 maintainer), to adapt rather than copy:
 
-| Pattern                          | Seen on                | Adaptation for cascivo                                                                 |
-| -------------------------------- | ---------------------- | ------------------------------------------------------------------------------------- |
-| **One message above the fold**   | Linear, Apple          | Hero = headline + one-line subhead + 2 CTAs + copy command + **one** product visual.  |
-| **3–6 focused "why" beats**      | Linear, Stripe         | Keep `Principles` (4 cards) as the single "why" block; each card expands for depth.    |
-| **One signature interactive moment** | Apple, Linear      | Collapse five demo sections into **one** tabbed showcase container.                    |
-| **Thin proof strip, not a wall** | Vercel, Stripe         | `StatsBand` condensed to a single quiet metric strip; full proof lives on `/performance`. |
-| **Generous whitespace, short copy** | Apple, shadcn       | Cut section count ~14 → ~7; shorten body copy; rely on links for depth.                |
-| **Depth behind nav + footer**    | shadcn, Vercel         | Slim top nav to ~4 primary links; secondary routes grouped in a menu + footer.        |
-| **Progressive disclosure**       | Stripe docs, Linear    | `Collapsible`/`Accordion` "Learn more" expanders so nothing is deleted, only folded.   |
-| **Fast, obvious primary CTA**    | all                    | "Get started" + copy command reachable in the hero and again at the closing band.     |
+| Pattern                              | Seen on             | Adaptation for cascivo                                                                    |
+| ------------------------------------ | ------------------- | ----------------------------------------------------------------------------------------- |
+| **One message above the fold**       | Linear, Apple       | Hero = headline + one-line subhead + 2 CTAs + copy command + **one** product visual.      |
+| **3–6 focused "why" beats**          | Linear, Stripe      | Keep `Principles` (4 cards) as the single "why" block; each card expands for depth.       |
+| **One signature interactive moment** | Apple, Linear       | Collapse five demo sections into **one** tabbed showcase container.                       |
+| **Thin proof strip, not a wall**     | Vercel, Stripe      | `StatsBand` condensed to a single quiet metric strip; full proof lives on `/performance`. |
+| **Generous whitespace, short copy**  | Apple, shadcn       | Cut section count ~14 → ~7; shorten body copy; rely on links for depth.                   |
+| **Depth behind nav + footer**        | shadcn, Vercel      | Slim top nav to ~4 primary links; secondary routes grouped in a menu + footer.            |
+| **Progressive disclosure**           | Stripe docs, Linear | `Collapsible`/`Accordion` "Learn more" expanders so nothing is deleted, only folded.      |
+| **Fast, obvious primary CTA**        | all                 | "Get started" + copy command reachable in the hero and again at the closing band.         |
 
 The redesign **adapts** these — it does not clone any single site. cascivo's differentiators
-(CSS-native, signals, owned code, AI-first) stay front and center; the changes are about *editing*
-and *sequencing*, not removing the substance.
+(CSS-native, signals, owned code, AI-first) stay front and center; the changes are about _editing_
+and _sequencing_, not removing the substance.
 
 ---
 
@@ -97,36 +97,36 @@ and *sequencing*, not removing the substance.
 
 ~7 blocks, in order:
 
-| #   | Block               | Source today                         | Notes                                                         |
-| --- | ------------------- | ------------------------------------ | ------------------------------------------------------------- |
-| 1   | **Hero** (minimal)  | `Hero` (redesigned)                  | Headline + subhead + 2 CTAs + copy command + one visual.      |
-| 2   | **Proof strip**     | `StatsBand` (condensed)              | Single quiet metric row; links to `/performance`.             |
-| 3   | **Why cascivo**     | `Principles` (4 cards + expanders)   | Each card `Collapsible`-expands; "deep dive" links out.       |
-| 4   | **Signature showcase** | `ThemeDemo` + tabs (consolidated) | One `Tabs` container; default tab = theme playground.         |
-| 5   | **Quick start**     | `QuickStart` (condensed)             | Three steps; "prebuilt option" behind a `Collapsible`.        |
-| 6   | **Closing CTA**     | `CtaBand`                            | Unchanged intent; primary CTA + copy command.                 |
-| —   | **Footer**          | `Footer` (expanded link map)         | Absorbs `Ecosystem` package links as a footer column.         |
+| #   | Block                  | Source today                       | Notes                                                    |
+| --- | ---------------------- | ---------------------------------- | -------------------------------------------------------- |
+| 1   | **Hero** (minimal)     | `Hero` (redesigned)                | Headline + subhead + 2 CTAs + copy command + one visual. |
+| 2   | **Proof strip**        | `StatsBand` (condensed)            | Single quiet metric row; links to `/performance`.        |
+| 3   | **Why cascivo**        | `Principles` (4 cards + expanders) | Each card `Collapsible`-expands; "deep dive" links out.  |
+| 4   | **Signature showcase** | `ThemeDemo` + tabs (consolidated)  | One `Tabs` container; default tab = theme playground.    |
+| 5   | **Quick start**        | `QuickStart` (condensed)           | Three steps; "prebuilt option" behind a `Collapsible`.   |
+| 6   | **Closing CTA**        | `CtaBand`                          | Unchanged intent; primary CTA + copy command.            |
+| —   | **Footer**             | `Footer` (expanded link map)       | Absorbs `Ecosystem` package links as a footer column.    |
 
 ---
 
 ## Relocation map — every current section has a destination (zero loss)
 
-| Current home section | Disposition                         | New home                                                                 |
-| -------------------- | ----------------------------------- | ------------------------------------------------------------------------ |
-| `Hero`               | **Keep** — redesigned (T3)          | home                                                                      |
-| `Principles`         | **Keep** — condensed + expanders    | home                                                                      |
-| `StatsBand`          | **Keep** — condensed proof strip    | home                                                                      |
-| `QuickStart`         | **Keep** — condensed                | home                                                                      |
-| `CtaBand`            | **Keep**                            | home                                                                      |
-| `ThemeDemo`          | **Keep** — becomes showcase default tab | home (showcase)                                                       |
-| `TechDeepDive`       | **Relocate** — full version exists  | `/modern-css` (existing page); remove home teaser, link from Principles  |
-| `SignalsDemo`        | **Relocate**                        | `/performance` (existing page)                                           |
-| `ProofTeasers`       | **Relocate**                        | `/performance` (existing page)                                          |
-| `ChartShowcase`      | **Relocate**                        | `/examples` (existing page) as a featured section; teaser tab in showcase |
-| `RelayConsole`       | **Relocate**                        | `/examples` (existing page) / its example detail; teaser tab in showcase |
-| `AgentLayer`         | **Relocate** — **new page**         | `/ai` (NEW dedicated page)                                               |
-| `ExamplesGallery`    | **Relocate** — keep compact teaser  | `/examples` (existing); home links out from showcase                     |
-| `Ecosystem`          | **Relocate**                        | `/guides` (existing) **and** Footer link column                          |
+| Current home section | Disposition                             | New home                                                                  |
+| -------------------- | --------------------------------------- | ------------------------------------------------------------------------- |
+| `Hero`               | **Keep** — redesigned (T3)              | home                                                                      |
+| `Principles`         | **Keep** — condensed + expanders        | home                                                                      |
+| `StatsBand`          | **Keep** — condensed proof strip        | home                                                                      |
+| `QuickStart`         | **Keep** — condensed                    | home                                                                      |
+| `CtaBand`            | **Keep**                                | home                                                                      |
+| `ThemeDemo`          | **Keep** — becomes showcase default tab | home (showcase)                                                           |
+| `TechDeepDive`       | **Relocate** — full version exists      | `/modern-css` (existing page); remove home teaser, link from Principles   |
+| `SignalsDemo`        | **Relocate**                            | `/performance` (existing page)                                            |
+| `ProofTeasers`       | **Relocate**                            | `/performance` (existing page)                                            |
+| `ChartShowcase`      | **Relocate**                            | `/examples` (existing page) as a featured section; teaser tab in showcase |
+| `RelayConsole`       | **Relocate**                            | `/examples` (existing page) / its example detail; teaser tab in showcase  |
+| `AgentLayer`         | **Relocate** — **new page**             | `/ai` (NEW dedicated page)                                                |
+| `ExamplesGallery`    | **Relocate** — keep compact teaser      | `/examples` (existing); home links out from showcase                      |
+| `Ecosystem`          | **Relocate**                            | `/guides` (existing) **and** Footer link column                           |
 
 No section is deleted. Each relocation is verified to render on its destination page (T1) **before**
 it is removed from `HomePage` (T2).
@@ -146,14 +146,14 @@ Current 8 top-level links → **4 primary + grouped secondary**:
 
 ## Workstreams
 
-| #   | Workstream                          | Tranche | Summary                                                                              |
-| --- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------ |
-| A   | Content relocation (zero loss)      | T1      | Build `/ai`; move 5 sections to `/ai` `/performance` `/examples`; routes/nav/SEO/search |
-| B   | Minimal home composition            | T2      | Rebuild `HomePage` to the ~7-block set; drop relocated imports; keep redirects/anchors |
-| C   | Hero redesign (above the fold)      | T3      | Tighten hero to one message, 2 CTAs, copy command, one visual; Linear/Apple spacing  |
-| D   | Signature showcase (consolidation)  | T4      | One `Tabs` showcase (theme / charts / relay teasers) replacing five demo sections     |
-| E   | Progressive disclosure              | T5      | `Collapsible`/`Accordion` expanders on Principles + Quick Start; nav "Resources" menu |
-| F   | Responsive + SEO/search + gate      | T6      | Mobile sweep, prerender titles, OG, redirects, drift + breakpoint + full CI gate      |
+| #   | Workstream                         | Tranche | Summary                                                                                 |
+| --- | ---------------------------------- | ------- | --------------------------------------------------------------------------------------- |
+| A   | Content relocation (zero loss)     | T1      | Build `/ai`; move 5 sections to `/ai` `/performance` `/examples`; routes/nav/SEO/search |
+| B   | Minimal home composition           | T2      | Rebuild `HomePage` to the ~7-block set; drop relocated imports; keep redirects/anchors  |
+| C   | Hero redesign (above the fold)     | T3      | Tighten hero to one message, 2 CTAs, copy command, one visual; Linear/Apple spacing     |
+| D   | Signature showcase (consolidation) | T4      | One `Tabs` showcase (theme / charts / relay teasers) replacing five demo sections       |
+| E   | Progressive disclosure             | T5      | `Collapsible`/`Accordion` expanders on Principles + Quick Start; nav "Resources" menu   |
+| F   | Responsive + SEO/search + gate     | T6      | Mobile sweep, prerender titles, OG, redirects, drift + breakpoint + full CI gate        |
 
 ---
 
@@ -187,7 +187,7 @@ Current 8 top-level links → **4 primary + grouped secondary**:
 5. **Responsive by default.** Pass the mobile-overflow + touch-target sweep at 320/360/390/414; no
    off-scale breakpoint literals (`pnpm breakpoint:check`). Never `display:none` content away —
    relocate to disclosure instead.
-6. **Performance budget must not regress.** The home initial JS/LCP should *improve* (fewer eager
+6. **Performance budget must not regress.** The home initial JS/LCP should _improve_ (fewer eager
    sections); keep heavy showcase tabs lazy. Verify against the perf gate.
 7. **SEO/links integrity.** Update `ROUTE_HEAD`, `seo.ts`, the search index (`buildIndex.ts`),
    sitemap, and any in-page anchor links so relocated content stays discoverable and no internal

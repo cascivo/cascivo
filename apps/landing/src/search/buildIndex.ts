@@ -38,6 +38,14 @@ const PAGE_SECTIONS: SearchItem[] = [
   { id: 'page-guides', title: 'Guides', section: 'Landing', href: '/guides', type: 'page' },
   { id: 'page-examples', title: 'Examples', section: 'Landing', href: '/examples', type: 'page' },
   {
+    id: 'page-ai',
+    title: 'AI layer',
+    section: 'Landing',
+    href: '/ai',
+    type: 'page',
+    description: 'Manifests, MCP server, skills, and llms.txt — the AI-first layer',
+  },
+  {
     id: 'page-quickstart',
     title: 'Quick Start',
     section: 'Home',
@@ -56,8 +64,8 @@ const PAGE_SECTIONS: SearchItem[] = [
   {
     id: 'page-charts',
     title: 'Charts',
-    section: 'Home',
-    href: '/#charts',
+    section: 'Landing',
+    href: '/examples#charts',
     type: 'page',
     description: 'Data visualisation built with cascivo',
   },

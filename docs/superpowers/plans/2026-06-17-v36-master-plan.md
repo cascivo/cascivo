@@ -10,17 +10,17 @@ own components. Landing app only — no `@cascivo/*` package, component, token, 
 
 Target state (verified after T6):
 
-| Metric                                             | Today          | Target                          |
-| -------------------------------------------------- | -------------- | ------------------------------- |
-| Home `<main>` sections                             | 14 + footer    | ~6 + footer                     |
-| Heavy demo sections on home                        | 5              | 0 standalone (1 tabbed showcase) |
-| Top-level nav links                                | 8              | 4 primary + grouped "Resources" |
-| Dedicated pages                                    | 9 routes       | 10 routes (+`/ai`)              |
-| Relocated sections with a verified destination     | n/a            | 5 / 5                           |
-| Content deleted (not relocated)                    | n/a            | 0                               |
-| Home initial JS / LCP                              | baseline       | not regressed (ideally better)  |
-| Mobile sweep (320/360/390/414) + breakpoint:check  | passing        | passing                         |
-| Full CI gate                                       | passing        | passing                         |
+| Metric                                            | Today       | Target                           |
+| ------------------------------------------------- | ----------- | -------------------------------- |
+| Home `<main>` sections                            | 14 + footer | ~6 + footer                      |
+| Heavy demo sections on home                       | 5           | 0 standalone (1 tabbed showcase) |
+| Top-level nav links                               | 8           | 4 primary + grouped "Resources"  |
+| Dedicated pages                                   | 9 routes    | 10 routes (+`/ai`)               |
+| Relocated sections with a verified destination    | n/a         | 5 / 5                            |
+| Content deleted (not relocated)                   | n/a         | 0                                |
+| Home initial JS / LCP                             | baseline    | not regressed (ideally better)   |
+| Mobile sweep (320/360/390/414) + breakpoint:check | passing     | passing                          |
+| Full CI gate                                      | passing     | passing                          |
 
 **Architecture:** All work is confined to `apps/landing/**`. The home composition lives in
 `apps/landing/src/App.tsx` (`HomePage`); sections are `apps/landing/src/sections/*`; dedicated pages are
@@ -39,14 +39,14 @@ themselves. New UI controls (tabs, collapsibles, grouped nav) are composed from
 
 ## Tranche Overview
 
-| Tranche | Title                          | Goal                                                                                  |
-| ------- | ------------------------------ | ------------------------------------------------------------------------------------- |
+| Tranche | Title                          | Goal                                                                                                                   |
+| ------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
 | T1      | Content relocation (zero loss) | Build `/ai`; move 5 sections to `/ai` `/performance` `/examples` + footer; wire routes/nav/SEO/search. Home unchanged. |
-| T2      | Minimal home composition       | Rebuild `HomePage` to the ~6-block set; remove relocated imports; fix anchors.        |
-| T3      | Hero redesign                  | One-message hero: headline + subhead + 2 CTAs + copy command + one visual.            |
-| T4      | Signature showcase             | One `Tabs` showcase replacing the five demo sections; lazy non-default tabs.          |
-| T5      | Progressive disclosure         | `Collapsible`/`Accordion` expanders on Principles + Quick Start; nav "Resources" menu. |
-| T6      | Responsive + SEO/search + gate | Mobile sweep, prerender titles, OG, redirects, drift + breakpoint + full CI gate.     |
+| T2      | Minimal home composition       | Rebuild `HomePage` to the ~6-block set; remove relocated imports; fix anchors.                                         |
+| T3      | Hero redesign                  | One-message hero: headline + subhead + 2 CTAs + copy command + one visual.                                             |
+| T4      | Signature showcase             | One `Tabs` showcase replacing the five demo sections; lazy non-default tabs.                                           |
+| T5      | Progressive disclosure         | `Collapsible`/`Accordion` expanders on Principles + Quick Start; nav "Resources" menu.                                 |
+| T6      | Responsive + SEO/search + gate | Mobile sweep, prerender titles, OG, redirects, drift + breakpoint + full CI gate.                                      |
 
 Ordering rationale: **relocate before trimming** (T1 → T2) guarantees no content is lost mid-flight.
 Hero (T3), showcase (T4), and disclosure (T5) layer onto the already-minimal shell. T6 reconciles all
@@ -58,60 +58,60 @@ cross-cutting concerns (SEO, search, responsive, perf) and runs the gate.
 
 ### T1 — Content relocation (zero loss)
 
-| Action | Path                                                                                  |
-| ------ | ------------------------------------------------------------------------------------- |
-| Create | `apps/landing/src/pages/AiPage.tsx` (hosts relocated `AgentLayer` + supporting copy)  |
-| Modify | `apps/landing/src/sections/AgentLayer.tsx` (export reused by `/ai`; keep as section)  |
-| Modify | `apps/landing/src/pages/PerformancePage.tsx` (add `SignalsDemo` + `ProofTeasers`)     |
+| Action | Path                                                                                     |
+| ------ | ---------------------------------------------------------------------------------------- |
+| Create | `apps/landing/src/pages/AiPage.tsx` (hosts relocated `AgentLayer` + supporting copy)     |
+| Modify | `apps/landing/src/sections/AgentLayer.tsx` (export reused by `/ai`; keep as section)     |
+| Modify | `apps/landing/src/pages/PerformancePage.tsx` (add `SignalsDemo` + `ProofTeasers`)        |
 | Modify | `apps/landing/src/pages/ExamplesPage.tsx` (add `ChartShowcase` + relay/examples teasers) |
-| Modify | `apps/landing/src/pages/GuidesPage.tsx` (absorb `Ecosystem` content/links)            |
-| Modify | `apps/landing/src/App.tsx` (register `/ai` route + lazy import)                        |
-| Modify | `apps/landing/src/router.ts` (no change expected; verify pathname handling)           |
-| Modify | `apps/landing/src/route-head.ts` (title/desc for `/ai`)                               |
-| Modify | `apps/landing/src/seo.ts` (SEO for `/ai`)                                              |
-| Modify | `apps/landing/src/search/buildIndex.ts` (index `/ai`; re-point moved-section entries) |
-| Modify | sitemap source (wherever routes are enumerated for prerender/sitemap)                 |
-| Modify | `apps/landing/src/sections/Footer.tsx` (add secondary-route + ecosystem link column)  |
+| Modify | `apps/landing/src/pages/GuidesPage.tsx` (absorb `Ecosystem` content/links)               |
+| Modify | `apps/landing/src/App.tsx` (register `/ai` route + lazy import)                          |
+| Modify | `apps/landing/src/router.ts` (no change expected; verify pathname handling)              |
+| Modify | `apps/landing/src/route-head.ts` (title/desc for `/ai`)                                  |
+| Modify | `apps/landing/src/seo.ts` (SEO for `/ai`)                                                |
+| Modify | `apps/landing/src/search/buildIndex.ts` (index `/ai`; re-point moved-section entries)    |
+| Modify | sitemap source (wherever routes are enumerated for prerender/sitemap)                    |
+| Modify | `apps/landing/src/sections/Footer.tsx` (add secondary-route + ecosystem link column)     |
 
 ### T2 — Minimal home composition
 
-| Action | Path                                                                              |
-| ------ | --------------------------------------------------------------------------------- |
+| Action | Path                                                                                       |
+| ------ | ------------------------------------------------------------------------------------------ |
 | Modify | `apps/landing/src/App.tsx` (`HomePage` → trimmed section set; drop relocated lazy imports) |
-| Modify | `apps/landing/src/sections/StatsBand.tsx` (condense to a thin proof strip)         |
-| Verify | no dead imports / unused lazy chunks; no broken in-page anchors                    |
+| Modify | `apps/landing/src/sections/StatsBand.tsx` (condense to a thin proof strip)                 |
+| Verify | no dead imports / unused lazy chunks; no broken in-page anchors                            |
 
 ### T3 — Hero redesign
 
-| Action | Path                                                          |
-| ------ | ------------------------------------------------------------- |
+| Action | Path                                                            |
+| ------ | --------------------------------------------------------------- |
 | Modify | `apps/landing/src/sections/Hero.tsx` (minimal one-message hero) |
-| Modify | `apps/landing/src/landing.css` (hero spacing/typography)       |
+| Modify | `apps/landing/src/landing.css` (hero spacing/typography)        |
 
 ### T4 — Signature showcase
 
-| Action | Path                                                                                  |
-| ------ | ------------------------------------------------------------------------------------- |
+| Action | Path                                                                                     |
+| ------ | ---------------------------------------------------------------------------------------- |
 | Create | `apps/landing/src/sections/Showcase.tsx` (one `Tabs` container; theme/charts/relay tabs) |
-| Modify | `apps/landing/src/App.tsx` (`HomePage` renders `Showcase` in place of `ThemeDemo`)     |
-| Modify | `apps/landing/src/landing.css` (showcase layout)                                       |
+| Modify | `apps/landing/src/App.tsx` (`HomePage` renders `Showcase` in place of `ThemeDemo`)       |
+| Modify | `apps/landing/src/landing.css` (showcase layout)                                         |
 
 ### T5 — Progressive disclosure
 
-| Action | Path                                                                          |
-| ------ | ----------------------------------------------------------------------------- |
-| Modify | `apps/landing/src/sections/Principles.tsx` (per-card `Collapsible` "Learn more") |
+| Action | Path                                                                              |
+| ------ | --------------------------------------------------------------------------------- |
+| Modify | `apps/landing/src/sections/Principles.tsx` (per-card `Collapsible` "Learn more")  |
 | Modify | `apps/landing/src/sections/QuickStart.tsx` (prebuilt option behind `Collapsible`) |
-| Modify | `apps/landing/src/sections/Header.tsx` (slim nav; "Resources" `NavigationMenu`)  |
-| Modify | `apps/landing/src/landing.css` (disclosure/nav styles)                          |
+| Modify | `apps/landing/src/sections/Header.tsx` (slim nav; "Resources" `NavigationMenu`)   |
+| Modify | `apps/landing/src/landing.css` (disclosure/nav styles)                            |
 
 ### T6 — Responsive + SEO/search + gate
 
-| Action | Path                                                                  |
-| ------ | --------------------------------------------------------------------- |
-| Verify | `route-head.ts`, `seo.ts`, sitemap, `buildIndex.ts` reflect new IA    |
-| Modify | `apps/landing/src/sections/OgCard.tsx` (if home/AI titles changed)    |
-| Verify | mobile sweep, `pnpm breakpoint:check`, perf gate, drift gate, tests   |
+| Action | Path                                                                |
+| ------ | ------------------------------------------------------------------- |
+| Verify | `route-head.ts`, `seo.ts`, sitemap, `buildIndex.ts` reflect new IA  |
+| Modify | `apps/landing/src/sections/OgCard.tsx` (if home/AI titles changed)  |
+| Verify | mobile sweep, `pnpm breakpoint:check`, perf gate, drift gate, tests |
 
 ---
 
@@ -166,7 +166,7 @@ commit does a section exist nowhere. The relocation map in `ROADMAP-V36.md` is t
 
 ### Decision 7 — Performance posture (firm)
 
-Trimming the home should *reduce* eager work. Keep the showcase's non-default tabs lazy (`React.lazy` +
+Trimming the home should _reduce_ eager work. Keep the showcase's non-default tabs lazy (`React.lazy` +
 `Suspense`, as the home sections are today). The hero LCP element stays eager. T6 verifies home initial
 JS and LCP are not regressed against the current baseline via the existing perf gate.
 
@@ -191,4 +191,4 @@ JS and LCP are not regressed against the current baseline via the existing perf 
 9. Keep the drift gate green: after each tranche run
    `pnpm regen && pnpm exec vp check --fix && git diff --exit-code`; commit regenerated artifacts.
 10. Preserve existing demo internals — `RelayConsole`, `SignalsDemo`, `ProofTeasers`, `ChartShowcase`,
-    `ThemeDemo`, `Ecosystem` move as-is; only their *host* (page vs home) and surrounding chrome change.
+    `ThemeDemo`, `Ecosystem` move as-is; only their _host_ (page vs home) and surrounding chrome change.

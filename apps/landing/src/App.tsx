@@ -59,6 +59,7 @@ const ModernCssPage = lazy(() =>
 const ExamplesPage = lazy(() =>
   import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
 )
+const AiPage = lazy(() => import('./pages/AiPage').then((m) => ({ default: m.AiPage })))
 const ExampleDetailPage = lazy(() =>
   import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
 )
@@ -150,6 +151,7 @@ const ROUTES: Record<string, Route> = {
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
+  '/ai': { Page: AiPage, title: ROUTE_HEAD['/ai']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
   '/create': {
     Page: CreatePage,
