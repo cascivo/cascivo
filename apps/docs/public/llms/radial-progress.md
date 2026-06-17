@@ -28,14 +28,14 @@ npx cascivo add radial-progress
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | yes | — | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `variant` | `'primary' | 'info' | 'success' | 'warning' | 'error'` | no | `primary` | — |
-| `children` | `React.ReactNode` | no | — | — |
-| `aria-label` | `string` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop         | Type              | Required | Default   | Description |
+| ------------ | ----------------- | -------- | --------- | ----------- | -------- | --- | --------- | --- |
+| `value`      | `number`          | yes      | —         | —           |
+| `size`       | `'sm'             | 'md'     | 'lg'`     | no          | `md`     | —   |
+| `variant`    | `'primary'        | 'info'   | 'success' | 'warning'   | 'error'` | no  | `primary` | —   |
+| `children`   | `React.ReactNode` | no       | —         | —           |
+| `aria-label` | `string`          | no       | —         | —           |
+| `className`  | `string`          | no       | —         | —           |
 
 ## Examples
 
@@ -60,7 +60,9 @@ Completed state with success color at large size
 Override the default percentage label with custom content
 
 ```tsx
-<RadialProgress value={45} variant="warning">45 GB</RadialProgress>
+<RadialProgress value={45} variant="warning">
+  45 GB
+</RadialProgress>
 ```
 
 ## Design tokens

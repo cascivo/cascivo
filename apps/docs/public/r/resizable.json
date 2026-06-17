@@ -12,17 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/resizable/resizable.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "splitter",
-    "panes",
-    "layout",
-    "resize",
-    "divider"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["splitter", "panes", "layout", "resize", "divider"],
   "category": "layout",
   "meta": {
     "name": "Resizable",
@@ -83,14 +74,7 @@
     "accessibility": {
       "role": "separator",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
-        "Home",
-        "End"
-      ],
+      "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"],
       "apgPattern": "windowsplitter",
       "forcedColors": true
     },
@@ -104,17 +88,8 @@
         "code": "<Resizable orientation=\"vertical\" defaultRatio={0.3} minRatio={0.2} maxRatio={0.8}>\n  <Toolbar />\n  <Canvas />\n</Resizable>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "splitter",
-      "panes",
-      "layout",
-      "resize",
-      "divider"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["splitter", "panes", "layout", "resize", "divider"],
     "intent": {
       "whenToUse": [
         "Letting users reallocate space between two adjacent regions, e.g. an editor and a preview",

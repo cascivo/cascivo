@@ -12,28 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/status/status.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "status",
-    "indicator",
-    "dot",
-    "badge"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["status", "indicator", "dot", "badge"],
   "category": "display",
   "meta": {
     "name": "Status",
     "description": "Colored dot with a label communicating the state of a system or entity",
     "category": "display",
     "states": [],
-    "variants": [
-      "success",
-      "warning",
-      "error",
-      "info",
-      "neutral"
-    ],
+    "variants": ["success", "warning", "error", "info", "neutral"],
     "sizes": [],
     "props": [
       {
@@ -79,15 +66,8 @@
         "description": "The pulse animation respects prefers-reduced-motion"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "status",
-      "indicator",
-      "dot",
-      "badge"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["status", "indicator", "dot", "badge"],
     "intent": {
       "whenToUse": [
         "Communicating the live state of a system or entity (operational, deploying, down)",

@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/kbd/kbd.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "keyboard",
-    "shortcut",
-    "hotkey"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["keyboard", "shortcut", "hotkey"],
   "category": "display",
   "meta": {
     "name": "Kbd",
@@ -27,10 +21,7 @@
     "category": "display",
     "states": [],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md"
-    ],
+    "sizes": ["sm", "md"],
     "props": [
       {
         "name": "size",
@@ -66,14 +57,8 @@
         "code": "<Kbd size=\"sm\">Esc</Kbd>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "keyboard",
-      "shortcut",
-      "hotkey"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["keyboard", "shortcut", "hotkey"],
     "intent": {
       "whenToUse": [
         "Showing a keyboard key or shortcut the user should press",

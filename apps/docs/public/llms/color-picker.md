@@ -20,16 +20,16 @@ npx cascivo add color-picker
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | no | — | Controlled hex color value |
-| `defaultValue` | `string` | no | `#3b82f6` | — |
-| `onValueChange` | `(value: string) => void` | no | — | — |
-| `presets` | `string[]` | no | — | Preset swatch colors |
-| `alpha` | `boolean` | no | `true` | — |
-| `label` | `string` | no | — | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
+| Prop            | Type                      | Required | Default   | Description                |
+| --------------- | ------------------------- | -------- | --------- | -------------------------- | ---- | --- |
+| `value`         | `string`                  | no       | —         | Controlled hex color value |
+| `defaultValue`  | `string`                  | no       | `#3b82f6` | —                          |
+| `onValueChange` | `(value: string) => void` | no       | —         | —                          |
+| `presets`       | `string[]`                | no       | —         | Preset swatch colors       |
+| `alpha`         | `boolean`                 | no       | `true`    | —                          |
+| `label`         | `string`                  | no       | —         | —                          |
+| `disabled`      | `boolean`                 | no       | `false`   | —                          |
+| `size`          | `'sm'                     | 'md'     | 'lg'`     | no                         | `md` | —   |
 
 ## Examples
 
@@ -42,7 +42,7 @@ npx cascivo add color-picker
 ### With presets
 
 ```tsx
-<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
+<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
 ```
 
 ## Design tokens

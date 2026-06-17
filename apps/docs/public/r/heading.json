@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/heading/heading.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "typography",
-    "heading",
-    "title"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["typography", "heading", "title"],
   "category": "display",
   "meta": {
     "name": "Heading",
@@ -27,13 +21,7 @@
     "category": "display",
     "states": [],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg",
-      "xl",
-      "2xl"
-    ],
+    "sizes": ["sm", "md", "lg", "xl", "2xl"],
     "props": [
       {
         "name": "level",
@@ -80,14 +68,8 @@
         "description": "Keep the document outline correct while controlling the visual scale"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "typography",
-      "heading",
-      "title"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["typography", "heading", "title"],
     "intent": {
       "whenToUse": [
         "Titling a page or section as part of the document outline",

@@ -43,15 +43,15 @@ The trigger is a real <button> exposing aria-haspopup="menu", aria-expanded refl
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `ReactNode` | Yes | — | Trigger button content |
-| `items` | `MenuButtonItem[]` | Yes | — | Action items: { id, label, onSelect?, disabled? } |
-| `variant` | `'primary' | 'secondary' | 'ghost'` | No | 'secondary' | Trigger visual variant |
-| `size` | `'sm' | 'md' | 'lg'` | No | 'md' | Trigger size |
-| `disabled` | `boolean` | No | false | Disables the trigger |
-| `align` | `'start' | 'end'` | No | 'start' | Aligns the menu to the start or end edge of the trigger |
-| `labels` | `{ open?: string }` | No | — | Override the trigger accessible name |
+| Name       | Type                | Required    | Default  | Description                                       |
+| ---------- | ------------------- | ----------- | -------- | ------------------------------------------------- | ------------------------------------------------------- | ---------------------- |
+| `label`    | `ReactNode`         | Yes         | —        | Trigger button content                            |
+| `items`    | `MenuButtonItem[]`  | Yes         | —        | Action items: { id, label, onSelect?, disabled? } |
+| `variant`  | `'primary'          | 'secondary' | 'ghost'` | No                                                | 'secondary'                                             | Trigger visual variant |
+| `size`     | `'sm'               | 'md'        | 'lg'`    | No                                                | 'md'                                                    | Trigger size           |
+| `disabled` | `boolean`           | No          | false    | Disables the trigger                              |
+| `align`    | `'start'            | 'end'`      | No       | 'start'                                           | Aligns the menu to the start or end edge of the trigger |
+| `labels`   | `{ open?: string }` | No          | —        | Override the trigger accessible name              |
 
 ## Tokens
 
@@ -105,8 +105,8 @@ Aligns the menu to the trigger end edge
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Trigger and menu styling must resolve to the listed --cascivo-* tokens |
-| item content | flexible | Each item label accepts arbitrary ReactNode; onSelect defines the action |
-| trigger appearance | flexible | variant and size choose among the standard button looks and dimensions |
+| Area               | Level    | Note                                                                     |
+| ------------------ | -------- | ------------------------------------------------------------------------ |
+| token names        | strict   | Trigger and menu styling must resolve to the listed --cascivo-\* tokens  |
+| item content       | flexible | Each item label accepts arbitrary ReactNode; onSelect defines the action |
+| trigger appearance | flexible | variant and size choose among the standard button looks and dimensions   |

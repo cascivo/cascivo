@@ -32,16 +32,16 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `type` | `'single' | 'multiple'` | Yes | — | — |
-| `value` | `string | string[]` | No | — | — |
-| `defaultValue` | `string | string[]` | No | — | — |
-| `onValueChange` | `(value: string | string[]) => void` | No | — | — |
-| `items` | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes | — | — |
-| `orientation` | `'horizontal' | 'vertical'` | No | horizontal | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `disabled` | `boolean` | No | false | — |
+| Name            | Type                                                                              | Required           | Default | Description |
+| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ----------- | --- | --- |
+| `type`          | `'single'                                                                         | 'multiple'`        | Yes     | —           | —   |
+| `value`         | `string                                                                           | string[]`          | No      | —           | —   |
+| `defaultValue`  | `string                                                                           | string[]`          | No      | —           | —   |
+| `onValueChange` | `(value: string                                                                   | string[]) => void` | No      | —           | —   |
+| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes                | —       | —           |
+| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | No      | horizontal  | —   |
+| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | No          | md  | —   |
+| `disabled`      | `boolean`                                                                         | No                 | false   | —           |
 
 ## Tokens
 
@@ -61,18 +61,33 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 ### Single selection
 
 ```jsx
-<ToggleGroup type="single" defaultValue="left" items={[{ value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} />
+<ToggleGroup
+  type="single"
+  defaultValue="left"
+  items={[
+    { value: 'left', label: 'Left' },
+    { value: 'center', label: 'Center' },
+    { value: 'right', label: 'Right' },
+  ]}
+/>
 ```
 
 ### Multiple selection
 
 ```jsx
-<ToggleGroup type="multiple" defaultValue={["bold"]} items={[{ value: "bold", label: "Bold" }, { value: "italic", label: "Italic" }]} />
+<ToggleGroup
+  type="multiple"
+  defaultValue={['bold']}
+  items={[
+    { value: 'bold', label: 'Bold' },
+    { value: 'italic', label: 'Italic' },
+  ]}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Item height must resolve to --cascivo-control-height-* to align with other controls |
-| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set |
+| Area         | Level    | Note                                                                                 |
+| ------------ | -------- | ------------------------------------------------------------------------------------ |
+| token names  | strict   | Item height must resolve to --cascivo-control-height-\* to align with other controls |
+| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set             |

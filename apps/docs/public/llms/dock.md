@@ -19,11 +19,11 @@ npx cascivo add dock
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `DockItem[]` | yes | — | Navigation items, each with a label, icon, and optional href or onClick |
-| `activeIndex` | `number` | no | — | Index of the currently active item (0-based) |
-| `className` | `string` | no | — | — |
+| Prop          | Type         | Required | Default | Description                                                             |
+| ------------- | ------------ | -------- | ------- | ----------------------------------------------------------------------- |
+| `items`       | `DockItem[]` | yes      | —       | Navigation items, each with a label, icon, and optional href or onClick |
+| `activeIndex` | `number`     | no       | —       | Index of the currently active item (0-based)                            |
+| `className`   | `string`     | no       | —       | —                                                                       |
 
 ## Examples
 

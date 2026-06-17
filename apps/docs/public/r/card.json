@@ -12,25 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/card/card.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "container",
-    "layout",
-    "surface"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["container", "layout", "surface"],
   "category": "display",
   "meta": {
     "name": "Card",
     "description": "Container for grouping related content",
     "category": "display",
     "states": [],
-    "variants": [
-      "default",
-      "outlined",
-      "elevated"
-    ],
+    "variants": ["default", "outlined", "elevated"],
     "sizes": [],
     "props": [
       {
@@ -63,14 +53,8 @@
         "code": "<Card>\n  <CardHeader><CardTitle>Title</CardTitle></CardHeader>\n  <CardContent>Content here</CardContent>\n</Card>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "container",
-      "layout",
-      "surface"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["container", "layout", "surface"],
     "intent": {
       "whenToUse": [
         "Grouping related content into a visually distinct surface with border/shadow",

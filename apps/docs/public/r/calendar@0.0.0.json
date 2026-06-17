@@ -12,35 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/calendar/calendar.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "calendar",
-    "date",
-    "month",
-    "grid",
-    "picker",
-    "input"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["calendar", "date", "month", "grid", "picker", "input"],
   "category": "inputs",
   "meta": {
     "name": "Calendar",
     "description": "An accessible standalone month-grid date picker.",
     "category": "inputs",
-    "states": [
-      "default",
-      "selected",
-      "today",
-      "disabled"
-    ],
+    "states": ["default", "selected", "today", "disabled"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -163,18 +144,8 @@
         "description": "Predicate disables individual days"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "calendar",
-      "date",
-      "month",
-      "grid",
-      "picker",
-      "input"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["calendar", "date", "month", "grid", "picker", "input"],
     "intent": {
       "whenToUse": [
         "Showing an always-visible month grid for picking a single date (inline, not a popover)",

@@ -12,36 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "navigation",
-    "menu",
-    "actions",
-    "dropdown",
-    "floating"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
   "category": "navigation",
   "meta": {
     "name": "MenuButton",
     "description": "A button that opens an anchored action menu of one-shot commands",
     "category": "navigation",
-    "states": [
-      "open",
-      "closed"
-    ],
-    "variants": [
-      "primary",
-      "secondary",
-      "ghost"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "states": ["open", "closed"],
+    "variants": ["primary", "secondary", "ghost"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "label",
@@ -109,14 +89,7 @@
     "accessibility": {
       "role": "menu",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowDown",
-        "ArrowUp",
-        "Enter",
-        "Space",
-        "Escape",
-        "Tab"
-      ],
+      "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape", "Tab"],
       "apgPattern": "menu-button",
       "forcedColors": true,
       "reducedMotion": true
@@ -133,17 +106,8 @@
         "code": "<MenuButton\n  label=\"Create\"\n  variant=\"primary\"\n  align=\"end\"\n  items={[\n    { id: 'doc', label: 'New document', onSelect: createDoc },\n    { id: 'folder', label: 'New folder', onSelect: createFolder },\n  ]}\n/>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "navigation",
-      "menu",
-      "actions",
-      "dropdown",
-      "floating"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
     "intent": {
       "whenToUse": [
         "Exposing a small set of one-shot actions behind a single labeled button",

@@ -25,11 +25,11 @@ Stack is a layout-only container (role="none"). Each child must carry its own ac
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | Yes | — | — |
-| `offset` | `number` | No | 4 | Pixel offset applied per layer in both axes |
-| `className` | `string` | No | — | — |
+| Name        | Type              | Required | Default | Description                                 |
+| ----------- | ----------------- | -------- | ------- | ------------------------------------------- |
+| `children`  | `React.ReactNode` | Yes      | —       | —                                           |
+| `offset`    | `number`          | No       | 4       | Pixel offset applied per layer in both axes |
+| `className` | `string`          | No       | —       | —                                           |
 
 ## Examples
 
@@ -38,7 +38,11 @@ Stack is a layout-only container (role="none"). Each child must carry its own ac
 Three cards stacked with a 6px offset to show depth
 
 ```jsx
-<Stack offset={6}><Card>First</Card><Card>Second</Card><Card>Third</Card></Stack>
+<Stack offset={6}>
+  <Card>First</Card>
+  <Card>Second</Card>
+  <Card>Third</Card>
+</Stack>
 ```
 
 ### Tight stack
@@ -46,11 +50,15 @@ Three cards stacked with a 6px offset to show depth
 Overlapping avatar group with minimal offset
 
 ```jsx
-<Stack offset={2}><Avatar src="/a.jpg" /><Avatar src="/b.jpg" /><Avatar src="/c.jpg" /></Stack>
+<Stack offset={2}>
+  <Avatar src="/a.jpg" />
+  <Avatar src="/b.jpg" />
+  <Avatar src="/c.jpg" />
+</Stack>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area   | Level    | Note                                                                              |
+| ------ | -------- | --------------------------------------------------------------------------------- |
 | offset | flexible | The pixel offset is fully configurable; set to 0 for a pure overlap with no shift |

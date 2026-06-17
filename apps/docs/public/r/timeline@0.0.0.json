@@ -12,30 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/timeline/timeline.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "timeline",
-    "steps",
-    "history",
-    "progress",
-    "events"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["timeline", "steps", "history", "progress", "events"],
   "category": "display",
   "meta": {
     "name": "Timeline",
     "description": "Ordered sequence of events with status markers and a connector line",
     "category": "display",
-    "states": [
-      "complete",
-      "current",
-      "upcoming"
-    ],
-    "variants": [
-      "vertical",
-      "horizontal"
-    ],
+    "states": ["complete", "current", "upcoming"],
+    "variants": ["vertical", "horizontal"],
     "sizes": [],
     "props": [
       {
@@ -69,16 +54,8 @@
         "code": "<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:00', status: 'complete' },\n    { id: '2', title: 'Shipped', time: '12:30', status: 'current' },\n    { id: '3', title: 'Delivered', status: 'upcoming' },\n  ]}\n/>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "timeline",
-      "steps",
-      "history",
-      "progress",
-      "events"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["timeline", "steps", "history", "progress", "events"],
     "intent": {
       "whenToUse": [
         "Showing an ordered sequence of events over time (activity feeds, order tracking)",

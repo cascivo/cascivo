@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/grid/grid.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "grid",
-    "columns"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "grid", "columns"],
   "category": "layout",
   "meta": {
     "name": "Grid",
@@ -48,9 +42,7 @@
         "description": "GridItem: column span count"
       }
     ],
-    "tokens": [
-      "--cascivo-space-*"
-    ],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
@@ -63,14 +55,8 @@
         "description": "3-column grid with spanning item"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "grid",
-      "columns"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "grid", "columns"],
     "intent": {
       "whenToUse": [
         "Two-dimensional layouts with an explicit column count",

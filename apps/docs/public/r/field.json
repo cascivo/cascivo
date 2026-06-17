@@ -12,25 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/field/field.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "form",
-    "layout",
-    "validation",
-    "accessibility"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["form", "layout", "validation", "accessibility"],
   "category": "inputs",
   "meta": {
     "name": "Field",
     "description": "Form-field wrapper composing label, control, description, and error",
     "category": "inputs",
-    "states": [
-      "default",
-      "disabled",
-      "invalid"
-    ],
+    "states": ["default", "disabled", "invalid"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -101,15 +90,8 @@
         "description": "Sets aria-invalid on the control and announces the error via role=\"alert\"."
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "form",
-      "layout",
-      "validation",
-      "accessibility"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["form", "layout", "validation", "accessibility"],
     "intent": {
       "whenToUse": [
         "Pairing a single control with its label, helper text, and validation message",

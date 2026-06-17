@@ -14,10 +14,10 @@ npx cascivo add separator
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
-| `decorative` | `boolean` | no | `false` | When true, the separator is purely visual and hidden from assistive tech |
+| Prop          | Type          | Required    | Default | Description                                                              |
+| ------------- | ------------- | ----------- | ------- | ------------------------------------------------------------------------ | --- |
+| `orientation` | `'horizontal' | 'vertical'` | no      | `horizontal`                                                             | —   |
+| `decorative`  | `boolean`     | no          | `false` | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Examples
 

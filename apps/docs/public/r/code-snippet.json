@@ -12,31 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "display",
-    "code",
-    "snippet",
-    "copy",
-    "pre"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["display", "code", "snippet", "copy", "pre"],
   "category": "display",
   "meta": {
     "name": "CodeSnippet",
     "description": "Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting",
     "category": "display",
-    "states": [
-      "idle",
-      "copied"
-    ],
-    "variants": [
-      "inline",
-      "single",
-      "multi"
-    ],
+    "states": ["idle", "copied"],
+    "variants": ["inline", "single", "multi"],
     "sizes": [],
     "props": [],
     "tokens": [
@@ -52,23 +36,11 @@
     "accessibility": {
       "role": "group",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Enter",
-        "Space"
-      ]
+      "keyboard": ["Enter", "Space"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "display",
-      "code",
-      "snippet",
-      "copy",
-      "pre"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["display", "code", "snippet", "copy", "pre"],
     "intent": {
       "whenToUse": [
         "Showing a command, token, or path the user is expected to copy",

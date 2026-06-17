@@ -25,10 +25,10 @@ npx cascivo add timeline
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" | "current" | "upcoming" }[]` | yes | — | — |
-| `orientation` | `'vertical' | 'horizontal'` | no | `vertical` | — |
+| Prop          | Type                                                                                                           | Required      | Default         | Description |
+| ------------- | -------------------------------------------------------------------------------------------------------------- | ------------- | --------------- | ----------- | --- | --- |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" | "current"     | "upcoming" }[]` | yes         | —   | —   |
+| `orientation` | `'vertical'                                                                                                    | 'horizontal'` | no              | `vertical`  | —   |
 
 ## Examples
 

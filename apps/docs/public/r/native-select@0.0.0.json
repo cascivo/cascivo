@@ -12,33 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/native-select/native-select.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "inputs",
-    "select",
-    "native",
-    "form",
-    "dropdown"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["inputs", "select", "native", "form", "dropdown"],
   "category": "inputs",
   "meta": {
     "name": "NativeSelect",
     "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
     "category": "inputs",
-    "states": [
-      "default",
-      "focus",
-      "disabled",
-      "invalid"
-    ],
+    "states": ["default", "focus", "disabled", "invalid"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [],
     "tokens": [
       "--cascivo-color-surface",
@@ -53,26 +36,11 @@
     "accessibility": {
       "role": "combobox",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowUp",
-        "ArrowDown",
-        "Enter",
-        "Space",
-        "Home",
-        "End"
-      ]
+      "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Space", "Home", "End"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "inputs",
-      "select",
-      "native",
-      "form",
-      "dropdown"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["inputs", "select", "native", "form", "dropdown"],
     "intent": {
       "whenToUse": [
         "A standard single-choice dropdown where native behavior and form integration matter most",

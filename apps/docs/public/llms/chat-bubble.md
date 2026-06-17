@@ -19,14 +19,14 @@ npx cascivo add chat-bubble
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | yes | — | — |
-| `side` | `'start' | 'end'` | no | `start` | — |
-| `avatar` | `React.ReactNode` | no | — | — |
-| `name` | `string` | no | — | — |
-| `time` | `string` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop        | Type              | Required | Default | Description |
+| ----------- | ----------------- | -------- | ------- | ----------- | --- |
+| `children`  | `React.ReactNode` | yes      | —       | —           |
+| `side`      | `'start'          | 'end'`   | no      | `start`     | —   |
+| `avatar`    | `React.ReactNode` | no       | —       | —           |
+| `name`      | `string`          | no       | —       | —           |
+| `time`      | `string`          | no       | —       | —           |
+| `className` | `string`          | no       | —       | —           |
 
 ## Examples
 
@@ -35,7 +35,9 @@ npx cascivo add chat-bubble
 Message from another user, aligned to the start
 
 ```tsx
-<ChatBubble side="start" name="Alice" time="10:42 AM">Hey, how are you?</ChatBubble>
+<ChatBubble side="start" name="Alice" time="10:42 AM">
+  Hey, how are you?
+</ChatBubble>
 ```
 
 ### Outgoing message
@@ -43,7 +45,9 @@ Message from another user, aligned to the start
 Current user message, aligned to the end with accent background
 
 ```tsx
-<ChatBubble side="end" time="10:43 AM">Doing great, thanks!</ChatBubble>
+<ChatBubble side="end" time="10:43 AM">
+  Doing great, thanks!
+</ChatBubble>
 ```
 
 ### With avatar
@@ -51,7 +55,9 @@ Current user message, aligned to the end with accent background
 Message with an avatar beside the bubble
 
 ```tsx
-<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">See you tomorrow!</ChatBubble>
+<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">
+  See you tomorrow!
+</ChatBubble>
 ```
 
 ## Design tokens

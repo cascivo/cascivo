@@ -33,16 +33,16 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes | — | — |
-| `selectionMode` | `'single' | 'multi'` | No | single | — |
-| `selected` | `string | string[]` | No | — | — |
-| `defaultSelected` | `string | string[]` | No | — | — |
-| `onSelectChange` | `(selected: string | string[]) => void` | No | — | — |
-| `expanded` | `string[]` | No | — | — |
-| `defaultExpanded` | `string[]` | No | — | — |
-| `onExpandedChange` | `(expanded: string[]) => void` | No | — | — |
+| Name               | Type                                                                          | Required           | Default | Description |
+| ------------------ | ----------------------------------------------------------------------------- | ------------------ | ------- | ----------- | --- |
+| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes                | —       | —           |
+| `selectionMode`    | `'single'                                                                     | 'multi'`           | No      | single      | —   |
+| `selected`         | `string                                                                       | string[]`          | No      | —           | —   |
+| `defaultSelected`  | `string                                                                       | string[]`          | No      | —           | —   |
+| `onSelectChange`   | `(selected: string                                                            | string[]) => void` | No      | —           | —   |
+| `expanded`         | `string[]`                                                                    | No                 | —       | —           |
+| `defaultExpanded`  | `string[]`                                                                    | No                 | —       | —           |
+| `onExpandedChange` | `(expanded: string[]) => void`                                                | No                 | —       | —           |
 
 ## Tokens
 
@@ -61,7 +61,10 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 ### Single select
 
 ```jsx
-<TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />
+<TreeView
+  defaultExpanded={['src']}
+  items={[{ id: 'src', label: 'src', children: [{ id: 'index', label: 'index.ts' }] }]}
+/>
 ```
 
 ### Multi select
@@ -72,8 +75,8 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| selectionMode | flexible | single vs multi is the consumer’s choice based on the interaction |
-| keyboard model | strict | Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped |
-| indent token | flexible | Per-level indent is driven by --cascivo-tree-indent and may be overridden |
+| Area           | Level    | Note                                                                                     |
+| -------------- | -------- | ---------------------------------------------------------------------------------------- |
+| selectionMode  | flexible | single vs multi is the consumer’s choice based on the interaction                        |
+| keyboard model | strict   | Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped |
+| indent token   | flexible | Per-level indent is driven by --cascivo-tree-indent and may be overridden                |

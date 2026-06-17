@@ -33,11 +33,11 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menus` | `MenubarMenu[]` | Yes | — | — |
-| `aria-label` | `string` | Yes | — | — |
-| `className` | `string` | No | — | — |
+| Name         | Type            | Required | Default | Description |
+| ------------ | --------------- | -------- | ------- | ----------- |
+| `menus`      | `MenubarMenu[]` | Yes      | —       | —           |
+| `aria-label` | `string`        | Yes      | —       | —           |
+| `className`  | `string`        | No       | —       | —           |
 
 ## Tokens
 
@@ -54,12 +54,15 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 ### Basic
 
 ```jsx
-<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
+<Menubar
+  aria-label="Main"
+  menus={[{ id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] }]}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area         | Level  | Note                                                                               |
+| ------------ | ------ | ---------------------------------------------------------------------------------- |
 | menu content | strict | Menus are described by data (menus prop) so roles and keyboard wiring stay correct |
-| token names | strict | Surface, borders, and focus ring must resolve to --cascivo-* tokens |
+| token names  | strict | Surface, borders, and focus ring must resolve to --cascivo-\* tokens               |

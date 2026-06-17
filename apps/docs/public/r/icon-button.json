@@ -12,33 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "action",
-    "icon",
-    "compact",
-    "toolbar"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["action", "icon", "compact", "toolbar"],
   "category": "inputs",
   "meta": {
     "name": "IconButton",
     "description": "Square, icon-only button with a required accessible label",
     "category": "inputs",
-    "states": [
-      "idle"
-    ],
-    "variants": [
-      "ghost",
-      "outline",
-      "filled"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "states": ["idle"],
+    "variants": ["ghost", "outline", "filled"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "label",
@@ -96,10 +79,7 @@
     "accessibility": {
       "role": "button",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Enter",
-        "Space"
-      ],
+      "keyboard": ["Enter", "Space"],
       "apgPattern": "button",
       "forcedColors": true
     },
@@ -117,15 +97,8 @@
         "code": "<IconButton label=\"Home\" asChild><a href=\"/\"><HomeIcon /></a></IconButton>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "action",
-      "icon",
-      "compact",
-      "toolbar"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["action", "icon", "compact", "toolbar"],
     "intent": {
       "whenToUse": [
         "A compact, recognizable action where an icon alone communicates intent (close, edit, more)",

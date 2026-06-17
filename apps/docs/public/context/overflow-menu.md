@@ -34,15 +34,15 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes | — | — |
-| `onSelect` | `(value: string) => void` | No | — | — |
-| `placement` | `'bottom-start' | 'bottom-end'` | No | bottom-end | — |
-| `ariaLabel` | `string` | No | More actions | — |
-| `size` | `'sm' | 'md'` | No | md | — |
-| `disabled` | `boolean` | No | false | — |
-| `className` | `string` | No | — | — |
+| Name        | Type                                                                                              | Required      | Default      | Description |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | ------------ | ----------- | --- |
+| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes           | —            | —           |
+| `onSelect`  | `(value: string) => void`                                                                         | No            | —            | —           |
+| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | No           | bottom-end  | —   |
+| `ariaLabel` | `string`                                                                                          | No            | More actions | —           |
+| `size`      | `'sm'                                                                                             | 'md'`         | No           | md          | —   |
+| `disabled`  | `boolean`                                                                                         | No            | false        | —           |
+| `className` | `string`                                                                                          | No            | —            | —           |
 
 ## Tokens
 
@@ -59,7 +59,13 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 ### Row actions
 
 ```jsx
-<OverflowMenu items={[{ label: "Edit", value: "edit" }, { label: "Delete", value: "delete", destructive: true }]} onSelect={handle} />
+<OverflowMenu
+  items={[
+    { label: 'Edit', value: 'edit' },
+    { label: 'Delete', value: 'delete', destructive: true },
+  ]}
+  onSelect={handle}
+/>
 ```
 
 ### Small, start-aligned
@@ -70,7 +76,7 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Trigger and item styling must resolve to the listed --cascivo-* tokens |
-| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context |
+| Area                | Level    | Note                                                                    |
+| ------------------- | -------- | ----------------------------------------------------------------------- |
+| token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-\* tokens |
+| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context            |

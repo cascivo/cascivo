@@ -32,14 +32,14 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' | 'vertical'` | No | horizontal | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `roving` | `boolean` | No | false | — |
-| `loop` | `boolean` | No | false | — |
-| `aria-label` | `string` | No | — | — |
-| `aria-labelledby` | `string` | No | — | — |
+| Name              | Type          | Required    | Default | Description |
+| ----------------- | ------------- | ----------- | ------- | ----------- | --- | --- |
+| `orientation`     | `'horizontal' | 'vertical'` | No      | horizontal  | —   |
+| `size`            | `'sm'         | 'md'        | 'lg'`   | No          | md  | —   |
+| `roving`          | `boolean`     | No          | false   | —           |
+| `loop`            | `boolean`     | No          | false   | —           |
+| `aria-label`      | `string`      | No          | —       | —           |
+| `aria-labelledby` | `string`      | No          | —       | —           |
 
 ## Tokens
 
@@ -51,18 +51,25 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 ### Joined actions
 
 ```jsx
-<ButtonGroup aria-label="Text alignment"><Button>Left</Button><Button>Center</Button><Button>Right</Button></ButtonGroup>
+<ButtonGroup aria-label="Text alignment">
+  <Button>Left</Button>
+  <Button>Center</Button>
+  <Button>Right</Button>
+</ButtonGroup>
 ```
 
 ### Vertical with roving focus
 
 ```jsx
-<ButtonGroup orientation="vertical" roving aria-label="View"><Button>List</Button><Button>Grid</Button></ButtonGroup>
+<ButtonGroup orientation="vertical" roving aria-label="View">
+  <Button>List</Button>
+  <Button>Grid</Button>
+</ButtonGroup>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons |
-| children | flexible | Any focusable controls (Button, IconButton, links) may be grouped |
+| Area        | Level    | Note                                                                                                               |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| token names | strict   | Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons |
+| children    | flexible | Any focusable controls (Button, IconButton, links) may be grouped                                                  |

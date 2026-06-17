@@ -13,32 +13,15 @@
     }
   ],
   "dependencies": [],
-  "tags": [
-    "progress",
-    "circular",
-    "gauge",
-    "meter",
-    "kpi",
-    "dashboard"
-  ],
+  "tags": ["progress", "circular", "gauge", "meter", "kpi", "dashboard"],
   "category": "feedback",
   "meta": {
     "name": "RadialProgress",
     "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
     "category": "feedback",
     "states": [],
-    "variants": [
-      "primary",
-      "info",
-      "success",
-      "warning",
-      "error"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "variants": ["primary", "info", "success", "warning", "error"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -107,14 +90,7 @@
       }
     ],
     "dependencies": [],
-    "tags": [
-      "progress",
-      "circular",
-      "gauge",
-      "meter",
-      "kpi",
-      "dashboard"
-    ],
+    "tags": ["progress", "circular", "gauge", "meter", "kpi", "dashboard"],
     "intent": {
       "whenToUse": [
         "Dashboard KPI metrics showing completion percentage",

@@ -19,14 +19,14 @@ npx cascivo add header-panel
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | yes | — | Controlled open state |
-| `onClose` | `() => void` | yes | — | Called on close button click or light-dismiss |
-| `label` | `string` | yes | — | Accessible label for the region (shown as header title) |
-| `children` | `ReactNode` | yes | — | — |
-| `labels` | `HeaderPanelLabels` | no | — | i18n overrides |
-| `className` | `string` | no | — | — |
+| Prop        | Type                | Required | Default | Description                                             |
+| ----------- | ------------------- | -------- | ------- | ------------------------------------------------------- |
+| `open`      | `boolean`           | yes      | —       | Controlled open state                                   |
+| `onClose`   | `() => void`        | yes      | —       | Called on close button click or light-dismiss           |
+| `label`     | `string`            | yes      | —       | Accessible label for the region (shown as header title) |
+| `children`  | `ReactNode`         | yes      | —       | —                                                       |
+| `labels`    | `HeaderPanelLabels` | no       | —       | i18n overrides                                          |
+| `className` | `string`            | no       | —       | —                                                       |
 
 ## Examples
 

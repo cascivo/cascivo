@@ -14,12 +14,12 @@ npx cascivo add scroll-area
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `height` | `string` | no | — | Max block size of the container (any CSS length) |
-| `width` | `string` | no | — | Max inline size of the container (any CSS length) |
-| `orientation` | `'vertical' | 'horizontal' | 'both'` | no | `vertical` | Which axes may scroll |
-| `children` | `ReactNode` | no | — | Scrollable content |
+| Prop          | Type        | Required     | Default | Description                                       |
+| ------------- | ----------- | ------------ | ------- | ------------------------------------------------- | ---------- | --------------------- |
+| `height`      | `string`    | no           | —       | Max block size of the container (any CSS length)  |
+| `width`       | `string`    | no           | —       | Max inline size of the container (any CSS length) |
+| `orientation` | `'vertical' | 'horizontal' | 'both'` | no                                                | `vertical` | Which axes may scroll |
+| `children`    | `ReactNode` | no           | —       | Scrollable content                                |
 
 ## Examples
 

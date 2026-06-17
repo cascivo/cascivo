@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "dashboard",
-    "page"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "dashboard", "page"],
   "category": "layout",
   "meta": {
     "name": "DashboardLayout",
@@ -48,10 +42,7 @@
         "description": "Optional aside panel (20rem)"
       }
     ],
-    "tokens": [
-      "--cascivo-space-4",
-      "--cascivo-space-6"
-    ],
+    "tokens": ["--cascivo-space-4", "--cascivo-space-6"],
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
@@ -64,14 +55,8 @@
         "description": "Stats + main layout"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "dashboard",
-      "page"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "dashboard", "page"],
     "intent": {
       "whenToUse": [
         "A dashboard page with a stats strip, main content area, and optional aside",

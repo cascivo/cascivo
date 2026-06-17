@@ -9,16 +9,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
     }
   ],
-  "dependencies": [
-    "@cascivo/react",
-    "layout/app-shell"
-  ],
-  "tags": [
-    "block",
-    "sidebar",
-    "navigation",
-    "app-shell"
-  ],
+  "dependencies": ["@cascivo/react", "layout/app-shell"],
+  "tags": ["block", "sidebar", "navigation", "app-shell"],
   "category": "display",
   "meta": {
     "name": "SidebarApp",
@@ -41,16 +33,8 @@
         "description": "App with sidebar navigation"
       }
     ],
-    "dependencies": [
-      "@cascivo/react",
-      "layout/app-shell"
-    ],
-    "tags": [
-      "block",
-      "sidebar",
-      "navigation",
-      "app-shell"
-    ],
+    "dependencies": ["@cascivo/react", "layout/app-shell"],
+    "tags": ["block", "sidebar", "navigation", "app-shell"],
     "intent": {
       "whenToUse": [
         "A ready-made app shell with opinionated collapsible sidebar and top header",

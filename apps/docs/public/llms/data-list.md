@@ -24,12 +24,12 @@ npx cascivo add data-list
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | — |
-| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
-| `dividers` | `boolean` | no | `false` | — |
-| `size` | `'sm' | 'md'` | no | `md` | — |
+| Prop          | Type                                                    | Required    | Default | Description  |
+| ------------- | ------------------------------------------------------- | ----------- | ------- | ------------ | --- |
+| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes         | —       | —            |
+| `orientation` | `'horizontal'                                           | 'vertical'` | no      | `horizontal` | —   |
+| `dividers`    | `boolean`                                               | no          | `false` | —            |
+| `size`        | `'sm'                                                   | 'md'`       | no      | `md`         | —   |
 
 ## Examples
 
@@ -47,11 +47,7 @@ npx cascivo add data-list
 ### Vertical with dividers
 
 ```tsx
-<DataList
-  orientation="vertical"
-  dividers
-  items={[{ label: 'Email', value: 'ada@example.com' }]}
-/>
+<DataList orientation="vertical" dividers items={[{ label: 'Email', value: 'ada@example.com' }]} />
 ```
 
 ## Design tokens

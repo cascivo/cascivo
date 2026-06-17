@@ -32,12 +32,12 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | Yes | — | — |
-| `orientation` | `'horizontal' | 'vertical'` | No | horizontal | — |
-| `dividers` | `boolean` | No | false | — |
-| `size` | `'sm' | 'md'` | No | md | — |
+| Name          | Type                                                    | Required    | Default | Description |
+| ------------- | ------------------------------------------------------- | ----------- | ------- | ----------- | --- |
+| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | Yes         | —       | —           |
+| `orientation` | `'horizontal'                                           | 'vertical'` | No      | horizontal  | —   |
+| `dividers`    | `boolean`                                               | No          | false   | —           |
+| `size`        | `'sm'                                                   | 'md'`       | No      | md          | —   |
 
 ## Tokens
 
@@ -63,16 +63,12 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
 ### Vertical with dividers
 
 ```jsx
-<DataList
-  orientation="vertical"
-  dividers
-  items={[{ label: 'Email', value: 'ada@example.com' }]}
-/>
+<DataList orientation="vertical" dividers items={[{ label: 'Email', value: 'ada@example.com' }]} />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area                 | Level    | Note                                                                        |
+| -------------------- | -------- | --------------------------------------------------------------------------- |
 | orientation and size | flexible | horizontal for wide panels, vertical for narrow columns; size tunes density |
-| dl semantics | strict | Always renders dl/dt/dd; do not substitute generic elements |
+| dl semantics         | strict   | Always renders dl/dt/dd; do not substitute generic elements                 |

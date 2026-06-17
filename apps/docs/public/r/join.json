@@ -13,12 +13,7 @@
     }
   ],
   "dependencies": [],
-  "tags": [
-    "group",
-    "join",
-    "segmented",
-    "layout"
-  ],
+  "tags": ["group", "join", "segmented", "layout"],
   "category": "layout",
   "meta": {
     "name": "Join",
@@ -69,12 +64,7 @@
       }
     ],
     "dependencies": [],
-    "tags": [
-      "group",
-      "join",
-      "segmented",
-      "layout"
-    ],
+    "tags": ["group", "join", "segmented", "layout"],
     "intent": {
       "whenToUse": [
         "Input + button search groups where the two controls should appear as one unit",

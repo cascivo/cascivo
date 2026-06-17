@@ -19,14 +19,14 @@ npx cascivo add label
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `htmlFor` | `string` | no | — | — |
-| `asChild` | `boolean` | no | `false` | — |
-| `required` | `boolean` | no | `false` | — |
-| `disabled` | `boolean` | no | `false` | — |
-| `children` | `ReactNode` | yes | — | — |
-| `labels` | `{ required?: string }` | no | — | — |
+| Prop       | Type                    | Required | Default | Description |
+| ---------- | ----------------------- | -------- | ------- | ----------- |
+| `htmlFor`  | `string`                | no       | —       | —           |
+| `asChild`  | `boolean`               | no       | `false` | —           |
+| `required` | `boolean`               | no       | `false` | —           |
+| `disabled` | `boolean`               | no       | `false` | —           |
+| `children` | `ReactNode`             | yes      | —       | —           |
+| `labels`   | `{ required?: string }` | no       | —       | —           |
 
 ## Examples
 
@@ -39,7 +39,9 @@ npx cascivo add label
 ### Required
 
 ```tsx
-<Label htmlFor="email" required>Email</Label>
+<Label htmlFor="email" required>
+  Email
+</Label>
 ```
 
 ### asChild
@@ -47,7 +49,9 @@ npx cascivo add label
 Render the label semantics onto a custom element via Slot.
 
 ```tsx
-<Label asChild htmlFor="email"><span>Email</span></Label>
+<Label asChild htmlFor="email">
+  <span>Email</span>
+</Label>
 ```
 
 ## Design tokens

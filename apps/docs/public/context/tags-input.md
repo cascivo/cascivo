@@ -33,14 +33,14 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string[]` | Yes | — | — |
-| `onValueChange` | `(v: string[]) => void` | Yes | — | — |
-| `placeholder` | `string` | No | — | — |
-| `validate` | `(tag: string) => boolean` | No | — | — |
-| `max` | `number` | No | — | — |
-| `disabled` | `boolean` | No | false | — |
+| Name            | Type                       | Required | Default | Description |
+| --------------- | -------------------------- | -------- | ------- | ----------- |
+| `value`         | `string[]`                 | Yes      | —       | —           |
+| `onValueChange` | `(v: string[]) => void`    | Yes      | —       | —           |
+| `placeholder`   | `string`                   | No       | —       | —           |
+| `validate`      | `(tag: string) => boolean` | No       | —       | —           |
+| `max`           | `number`                   | No       | —       | —           |
+| `disabled`      | `boolean`                  | No       | false   | —           |
 
 ## Tokens
 
@@ -63,7 +63,7 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| tag values | flexible | Free text, optionally constrained by the validate predicate and max count |
-| commit keys | strict | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |
+| Area        | Level    | Note                                                                                           |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------- |
+| tag values  | flexible | Free text, optionally constrained by the validate predicate and max count                      |
+| commit keys | strict   | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |

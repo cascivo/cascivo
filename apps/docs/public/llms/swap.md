@@ -24,15 +24,15 @@ npx cascivo add swap
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `on` | `React.ReactNode` | yes | — | — |
-| `off` | `React.ReactNode` | yes | — | — |
-| `checked` | `boolean` | no | `false` | — |
-| `onChange` | `(checked: boolean) => void` | no | — | — |
-| `mode` | `'rotate' | 'flip'` | no | `rotate` | — |
-| `aria-label` | `string` | no | — | — |
-| `className` | `string` | no | — | — |
+| Prop         | Type                         | Required | Default | Description |
+| ------------ | ---------------------------- | -------- | ------- | ----------- | --- |
+| `on`         | `React.ReactNode`            | yes      | —       | —           |
+| `off`        | `React.ReactNode`            | yes      | —       | —           |
+| `checked`    | `boolean`                    | no       | `false` | —           |
+| `onChange`   | `(checked: boolean) => void` | no       | —       | —           |
+| `mode`       | `'rotate'                    | 'flip'`  | no      | `rotate`    | —   |
+| `aria-label` | `string`                     | no       | —       | —           |
+| `className`  | `string`                     | no       | —       | —           |
 
 ## Examples
 

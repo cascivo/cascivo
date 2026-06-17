@@ -30,14 +30,14 @@ npx cascivo add progress-bar
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | no | — | Current value from 0 to max; omit for an indeterminate bar |
-| `max` | `number` | no | `100` | — |
-| `label` | `string` | no | — | Visible label above the track, wired via aria-labelledby |
-| `helperText` | `string` | no | — | — |
-| `size` | `'sm' | 'md'` | no | `md` | — |
-| `status` | `'active' | 'success' | 'error'` | no | `active` | success/error tint the fill and show a glyph next to the label |
+| Prop         | Type      | Required  | Default  | Description                                                |
+| ------------ | --------- | --------- | -------- | ---------------------------------------------------------- | -------- | -------------------------------------------------------------- |
+| `value`      | `number`  | no        | —        | Current value from 0 to max; omit for an indeterminate bar |
+| `max`        | `number`  | no        | `100`    | —                                                          |
+| `label`      | `string`  | no        | —        | Visible label above the track, wired via aria-labelledby   |
+| `helperText` | `string`  | no        | —        | —                                                          |
+| `size`       | `'sm'     | 'md'`     | no       | `md`                                                       | —        |
+| `status`     | `'active' | 'success' | 'error'` | no                                                         | `active` | success/error tint the fill and show a glyph next to the label |
 
 ## Examples
 

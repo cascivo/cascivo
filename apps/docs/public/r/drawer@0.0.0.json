@@ -12,26 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/drawer/drawer.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "overlay",
-    "drawer",
-    "panel",
-    "slide",
-    "dialog"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
   "category": "overlay",
   "meta": {
     "name": "Drawer",
     "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
     "category": "overlay",
-    "states": [
-      "open",
-      "closed"
-    ],
+    "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -46,24 +34,11 @@
     "accessibility": {
       "role": "dialog",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Escape",
-        "Tab",
-        "Shift+Tab"
-      ]
+      "keyboard": ["Escape", "Tab", "Shift+Tab"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "overlay",
-      "drawer",
-      "panel",
-      "slide",
-      "dialog"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
     "intent": {
       "whenToUse": [
         "A side or edge panel for navigation, filters, or detail views that needs full-height space",

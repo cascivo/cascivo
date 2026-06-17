@@ -12,31 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/text/text.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "typography",
-    "text",
-    "paragraph",
-    "body"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["typography", "text", "paragraph", "body"],
   "category": "display",
   "meta": {
     "name": "Text",
     "description": "Body text with size, weight, and muted variants",
     "category": "display",
     "states": [],
-    "variants": [
-      "normal",
-      "medium",
-      "semibold"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "variants": ["normal", "medium", "semibold"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "as",
@@ -95,15 +80,8 @@
         "description": "Use as=\"span\" inside other flow content"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "typography",
-      "text",
-      "paragraph",
-      "body"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["typography", "text", "paragraph", "body"],
     "intent": {
       "whenToUse": [
         "Rendering body copy, paragraphs, and inline text in app UI",

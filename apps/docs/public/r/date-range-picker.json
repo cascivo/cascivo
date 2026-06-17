@@ -12,35 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n",
-    "Calendar"
-  ],
-  "tags": [
-    "date",
-    "range",
-    "calendar",
-    "picker",
-    "input",
-    "form"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+  "tags": ["date", "range", "calendar", "picker", "input", "form"],
   "category": "inputs",
   "meta": {
     "name": "DateRangePicker",
     "description": "A dual-calendar picker for selecting a contiguous date range.",
     "category": "inputs",
-    "states": [
-      "default",
-      "open",
-      "selecting"
-    ],
+    "states": ["default", "open", "selecting"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -149,19 +130,8 @@
         "description": "Limits the selectable dates"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n",
-      "Calendar"
-    ],
-    "tags": [
-      "date",
-      "range",
-      "calendar",
-      "picker",
-      "input",
-      "form"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+    "tags": ["date", "range", "calendar", "picker", "input", "form"],
     "intent": {
       "whenToUse": [
         "Selecting a contiguous start–end date range (reporting windows, bookings, filters)",

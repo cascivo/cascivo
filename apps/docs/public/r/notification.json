@@ -12,29 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/notification/notification.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "notification",
-    "banner",
-    "message",
-    "feedback",
-    "actionable"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["notification", "banner", "message", "feedback", "actionable"],
   "category": "feedback",
   "meta": {
     "name": "Notification",
     "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
     "category": "feedback",
     "states": [],
-    "variants": [
-      "info",
-      "success",
-      "warning",
-      "error"
-    ],
+    "variants": ["info", "success", "warning", "error"],
     "sizes": [],
     "props": [
       {
@@ -112,17 +98,8 @@
         "code": "<Notification variant=\"error\" title=\"Upload failed\" description=\"The connection dropped.\" actions={<Button onClick={retry}>Retry</Button>} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "notification",
-      "banner",
-      "message",
-      "feedback",
-      "actionable"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["notification", "banner", "message", "feedback", "actionable"],
     "intent": {
       "whenToUse": [
         "Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)",

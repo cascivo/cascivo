@@ -34,16 +34,16 @@ role="alert" for warning and error so assistive tech announces them assertively,
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `ReactNode` | Yes | — | — |
-| `description` | `ReactNode` | No | — | — |
-| `variant` | `'info' | 'success' | 'warning' | 'error'` | No | info | — |
-| `dismissible` | `boolean` | No | false | — |
-| `onDismiss` | `() => void` | No | — | — |
-| `actions` | `ReactNode` | No | — | — |
-| `icon` | `ReactNode` | No | — | — |
-| `labels` | `{ dismiss?: string }` | No | — | — |
+| Name          | Type                   | Required  | Default   | Description |
+| ------------- | ---------------------- | --------- | --------- | ----------- | --- | ---- | --- |
+| `title`       | `ReactNode`            | Yes       | —         | —           |
+| `description` | `ReactNode`            | No        | —         | —           |
+| `variant`     | `'info'                | 'success' | 'warning' | 'error'`    | No  | info | —   |
+| `dismissible` | `boolean`              | No        | false     | —           |
+| `onDismiss`   | `() => void`           | No        | —         | —           |
+| `actions`     | `ReactNode`            | No        | —         | —           |
+| `icon`        | `ReactNode`            | No        | —         | —           |
+| `labels`      | `{ dismiss?: string }` | No        | —         | —           |
 
 ## Tokens
 
@@ -74,13 +74,18 @@ role="alert" for warning and error so assistive tech announces them assertively,
 ### Actionable
 
 ```jsx
-<Notification variant="error" title="Upload failed" description="The connection dropped." actions={<Button onClick={retry}>Retry</Button>} />
+<Notification
+  variant="error"
+  title="Upload failed"
+  description="The connection dropped."
+  actions={<Button onClick={retry}>Retry</Button>}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| icon | flexible | A variant-appropriate icon is supplied by default; override with the icon prop |
-| actions | flexible | Any ReactNode (typically Buttons) can fill the actions slot |
-| role mapping | strict | warning/error must use role="alert"; info/success use role="status" |
+| Area         | Level    | Note                                                                           |
+| ------------ | -------- | ------------------------------------------------------------------------------ |
+| icon         | flexible | A variant-appropriate icon is supplied by default; override with the icon prop |
+| actions      | flexible | Any ReactNode (typically Buttons) can fill the actions slot                    |
+| role mapping | strict   | warning/error must use role="alert"; info/success use role="status"            |

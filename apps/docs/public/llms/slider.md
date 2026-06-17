@@ -14,15 +14,15 @@ npx cascivo add slider
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | — |
-| `min` | `number` | no | `0` | — |
-| `max` | `number` | no | `100` | — |
-| `step` | `number` | no | `1` | — |
-| `value` | `number` | no | — | — |
-| `defaultValue` | `number` | no | — | — |
-| `disabled` | `boolean` | no | `false` | — |
+| Prop           | Type      | Required | Default | Description |
+| -------------- | --------- | -------- | ------- | ----------- |
+| `label`        | `string`  | no       | —       | —           |
+| `min`          | `number`  | no       | `0`     | —           |
+| `max`          | `number`  | no       | `100`   | —           |
+| `step`         | `number`  | no       | `1`     | —           |
+| `value`        | `number`  | no       | —       | —           |
+| `defaultValue` | `number`  | no       | —       | —           |
+| `disabled`     | `boolean` | no       | `false` | —           |
 
 ## Examples
 

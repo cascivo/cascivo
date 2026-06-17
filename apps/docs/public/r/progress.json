@@ -12,36 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/progress/progress.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "progress",
-    "loading",
-    "upload",
-    "bar"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["progress", "loading", "upload", "bar"],
   "category": "feedback",
   "meta": {
     "name": "Progress",
     "description": "Horizontal bar showing the completion progress of a tracked operation",
     "category": "feedback",
-    "states": [
-      "determinate",
-      "indeterminate"
-    ],
-    "variants": [
-      "primary",
-      "info",
-      "success",
-      "warning",
-      "error"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "states": ["determinate", "indeterminate"],
+    "variants": ["primary", "info", "success", "warning", "error"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -97,15 +77,8 @@
         "code": "<Progress value={40} size=\"sm\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "progress",
-      "loading",
-      "upload",
-      "bar"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["progress", "loading", "upload", "bar"],
     "intent": {
       "whenToUse": [
         "Tracked operations with a known total (file uploads, multi-step imports)",

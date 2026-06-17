@@ -12,24 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "navigation",
-    "menu",
-    "flyout",
-    "site-nav"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["navigation", "menu", "flyout", "site-nav"],
   "category": "navigation",
   "meta": {
     "name": "NavigationMenu",
     "description": "Site navigation bar with links and dropdown flyout panels",
     "category": "navigation",
-    "states": [
-      "closed",
-      "open"
-    ],
+    "states": ["closed", "open"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -66,14 +56,7 @@
     "accessibility": {
       "role": "navigation",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowLeft",
-        "ArrowRight",
-        "Home",
-        "End",
-        "Enter",
-        "Escape"
-      ],
+      "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Escape"],
       "apgPattern": "disclosure",
       "reducedMotion": true,
       "forcedColors": true
@@ -84,15 +67,8 @@
         "code": "<NavigationMenu aria-label=\"Main\" items={[{ id: \"home\", label: \"Home\", href: \"/\" }, { id: \"products\", label: \"Products\", content: <ul>…</ul> }]} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "navigation",
-      "menu",
-      "flyout",
-      "site-nav"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["navigation", "menu", "flyout", "site-nav"],
     "intent": {
       "whenToUse": [
         "Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links",

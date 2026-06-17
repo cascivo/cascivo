@@ -5,16 +5,8 @@
   "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
   "version": "0.0.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/charts"
-  ],
-  "tags": [
-    "chart",
-    "radar",
-    "spider",
-    "polar",
-    "data-viz"
-  ],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "radar", "spider", "polar", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
   "meta": {
@@ -98,16 +90,8 @@
         "code": "import { Radar } from '@cascivo/charts'\n\nconst axes = ['Speed','Power','Range','Efficiency','Cost']\nconst series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]\n<Radar axes={axes} series={series} title=\"Model comparison\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/charts"
-    ],
-    "tags": [
-      "chart",
-      "radar",
-      "spider",
-      "polar",
-      "data-viz"
-    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "radar", "spider", "polar", "data-viz"],
     "intent": {
       "whenToUse": [
         "Comparing several entities across the same set of quantitative dimensions",

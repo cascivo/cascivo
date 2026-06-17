@@ -44,8 +44,8 @@ Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked refle
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| selectable | strict | single (radio, select-only) | multi (checkbox, toggle) |
+| Area           | Level    | Note                                                             |
+| -------------- | -------- | ---------------------------------------------------------------- | ------------------------ |
+| selectable     | strict   | single (radio, select-only)                                      | multi (checkbox, toggle) |
 | selected state | flexible | Controlled (selected/onSelect) or uncontrolled (defaultSelected) |
-| element | flexible | asChild renders onto a custom element via Slot |
+| element        | flexible | asChild renders onto a custom element via Slot                   |

@@ -24,27 +24,34 @@ npx cascivo add button-group
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' | 'vertical'` | no | `horizontal` | — |
-| `size` | `'sm' | 'md' | 'lg'` | no | `md` | — |
-| `roving` | `boolean` | no | `false` | — |
-| `loop` | `boolean` | no | `false` | — |
-| `aria-label` | `string` | no | — | — |
-| `aria-labelledby` | `string` | no | — | — |
+| Prop              | Type          | Required    | Default | Description  |
+| ----------------- | ------------- | ----------- | ------- | ------------ | ---- | --- |
+| `orientation`     | `'horizontal' | 'vertical'` | no      | `horizontal` | —    |
+| `size`            | `'sm'         | 'md'        | 'lg'`   | no           | `md` | —   |
+| `roving`          | `boolean`     | no          | `false` | —            |
+| `loop`            | `boolean`     | no          | `false` | —            |
+| `aria-label`      | `string`      | no          | —       | —            |
+| `aria-labelledby` | `string`      | no          | —       | —            |
 
 ## Examples
 
 ### Joined actions
 
 ```tsx
-<ButtonGroup aria-label="Text alignment"><Button>Left</Button><Button>Center</Button><Button>Right</Button></ButtonGroup>
+<ButtonGroup aria-label="Text alignment">
+  <Button>Left</Button>
+  <Button>Center</Button>
+  <Button>Right</Button>
+</ButtonGroup>
 ```
 
 ### Vertical with roving focus
 
 ```tsx
-<ButtonGroup orientation="vertical" roving aria-label="View"><Button>List</Button><Button>Grid</Button></ButtonGroup>
+<ButtonGroup orientation="vertical" roving aria-label="View">
+  <Button>List</Button>
+  <Button>Grid</Button>
+</ButtonGroup>
 ```
 
 ## Design tokens

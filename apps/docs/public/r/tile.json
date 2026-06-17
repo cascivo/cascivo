@@ -12,31 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/tile/tile.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "inputs",
-    "tile",
-    "card",
-    "selectable",
-    "choice"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["inputs", "tile", "card", "selectable", "choice"],
   "category": "inputs",
   "meta": {
     "name": "Tile",
     "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
     "category": "inputs",
-    "states": [
-      "default",
-      "selected",
-      "focus",
-      "disabled"
-    ],
-    "variants": [
-      "single",
-      "multi"
-    ],
+    "states": ["default", "selected", "focus", "disabled"],
+    "variants": ["single", "multi"],
     "sizes": [],
     "props": [],
     "tokens": [
@@ -52,22 +36,11 @@
     "accessibility": {
       "role": "radio",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Enter",
-        "Space"
-      ]
+      "keyboard": ["Enter", "Space"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "inputs",
-      "tile",
-      "card",
-      "selectable",
-      "choice"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["inputs", "tile", "card", "selectable", "choice"],
     "intent": {
       "whenToUse": [
         "A visually rich, clickable choice card in a single- or multi-select group",

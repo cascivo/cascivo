@@ -19,11 +19,11 @@ npx cascivo add contained-list
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `ReactNode` | yes | — | — |
-| `kind` | `'on-page' | 'disclosed'` | no | `on-page` | — |
-| `action` | `ReactNode` | no | — | — |
+| Prop     | Type        | Required     | Default | Description |
+| -------- | ----------- | ------------ | ------- | ----------- | --- |
+| `label`  | `ReactNode` | yes          | —       | —           |
+| `kind`   | `'on-page'  | 'disclosed'` | no      | `on-page`   | —   |
+| `action` | `ReactNode` | no           | —       | —           |
 
 ## Examples
 
@@ -41,7 +41,9 @@ npx cascivo add contained-list
 ```tsx
 <ContainedList label="Settings" kind="disclosed">
   <ContainedListItem asChild>
-    <button type="button" onClick={open}>Profile</button>
+    <button type="button" onClick={open}>
+      Profile
+    </button>
   </ContainedListItem>
 </ContainedList>
 ```

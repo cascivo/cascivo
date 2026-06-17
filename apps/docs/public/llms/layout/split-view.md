@@ -14,14 +14,14 @@ npx cascivo add layout/split-view
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `start` | `ReactNode` | yes | — | Left pane content |
-| `end` | `ReactNode` | yes | — | Right pane content |
-| `defaultRatio` | `number` | no | — | Initial split ratio (0–1) |
-| `min` | `number` | no | — | Minimum ratio for start pane |
-| `max` | `number` | no | — | Maximum ratio for start pane |
-| `aria-label` | `string` | no | — | Label for the separator |
+| Prop           | Type        | Required | Default | Description                  |
+| -------------- | ----------- | -------- | ------- | ---------------------------- |
+| `start`        | `ReactNode` | yes      | —       | Left pane content            |
+| `end`          | `ReactNode` | yes      | —       | Right pane content           |
+| `defaultRatio` | `number`    | no       | —       | Initial split ratio (0–1)    |
+| `min`          | `number`    | no       | —       | Minimum ratio for start pane |
+| `max`          | `number`    | no       | —       | Maximum ratio for start pane |
+| `aria-label`   | `string`    | no       | —       | Label for the separator      |
 
 ## Examples
 

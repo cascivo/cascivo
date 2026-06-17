@@ -12,24 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/popover/popover.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "overlay",
-    "floating",
-    "anchor",
-    "popover"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["overlay", "floating", "anchor", "popover"],
   "category": "overlay",
   "meta": {
     "name": "Popover",
     "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
     "category": "overlay",
-    "states": [
-      "open",
-      "closed"
-    ],
+    "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
     "props": [],
@@ -44,20 +34,11 @@
     "accessibility": {
       "role": "dialog",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Escape"
-      ]
+      "keyboard": ["Escape"]
     },
     "examples": [],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "overlay",
-      "floating",
-      "anchor",
-      "popover"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["overlay", "floating", "anchor", "popover"],
     "intent": {
       "whenToUse": [
         "Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking",

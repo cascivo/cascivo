@@ -38,14 +38,14 @@ Renders a native <label> so the platform handles click-to-focus and accessible n
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `htmlFor` | `string` | No | — | — |
-| `asChild` | `boolean` | No | false | — |
-| `required` | `boolean` | No | false | — |
-| `disabled` | `boolean` | No | false | — |
-| `children` | `ReactNode` | Yes | — | — |
-| `labels` | `{ required?: string }` | No | — | — |
+| Name       | Type                    | Required | Default | Description |
+| ---------- | ----------------------- | -------- | ------- | ----------- |
+| `htmlFor`  | `string`                | No       | —       | —           |
+| `asChild`  | `boolean`               | No       | false   | —           |
+| `required` | `boolean`               | No       | false   | —           |
+| `disabled` | `boolean`               | No       | false   | —           |
+| `children` | `ReactNode`             | Yes      | —       | —           |
+| `labels`   | `{ required?: string }` | No       | —       | —           |
 
 ## Tokens
 
@@ -69,7 +69,9 @@ Renders a native <label> so the platform handles click-to-focus and accessible n
 ### Required
 
 ```jsx
-<Label htmlFor="email" required>Email</Label>
+<Label htmlFor="email" required>
+  Email
+</Label>
 ```
 
 ### asChild
@@ -77,12 +79,14 @@ Renders a native <label> so the platform handles click-to-focus and accessible n
 Render the label semantics onto a custom element via Slot.
 
 ```jsx
-<Label asChild htmlFor="email"><span>Email</span></Label>
+<Label asChild htmlFor="email">
+  <span>Email</span>
+</Label>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Colors and type must resolve to --cascivo-* semantic tokens |
-| label copy | flexible | Free, within tone guidance |
+| Area        | Level    | Note                                                         |
+| ----------- | -------- | ------------------------------------------------------------ |
+| token names | strict   | Colors and type must resolve to --cascivo-\* semantic tokens |
+| label copy  | flexible | Free, within tone guidance                                   |

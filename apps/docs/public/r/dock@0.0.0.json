@@ -13,23 +13,13 @@
     }
   ],
   "dependencies": [],
-  "tags": [
-    "dock",
-    "tab-bar",
-    "bottom-nav",
-    "mobile",
-    "navigation",
-    "app-shell"
-  ],
+  "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
   "category": "navigation",
   "meta": {
     "name": "Dock",
     "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
     "category": "navigation",
-    "states": [
-      "default",
-      "active"
-    ],
+    "states": ["default", "active"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -65,10 +55,7 @@
     "accessibility": {
       "role": "navigation",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Enter"
-      ]
+      "keyboard": ["Tab", "Enter"]
     },
     "examples": [
       {
@@ -83,14 +70,7 @@
       }
     ],
     "dependencies": [],
-    "tags": [
-      "dock",
-      "tab-bar",
-      "bottom-nav",
-      "mobile",
-      "navigation",
-      "app-shell"
-    ],
+    "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
     "intent": {
       "whenToUse": [
         "Mobile app-shell navigation with 3–5 top-level destinations",

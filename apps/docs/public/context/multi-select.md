@@ -35,14 +35,14 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `MultiSelectOption[]` | Yes | — | — |
-| `value` | `string[]` | Yes | — | — |
-| `onValueChange` | `(v: string[]) => void` | Yes | — | — |
-| `placeholder` | `string` | No | — | — |
-| `disabled` | `boolean` | No | false | — |
-| `labels` | `MultiSelectLabels` | No | — | — |
+| Name            | Type                    | Required | Default | Description |
+| --------------- | ----------------------- | -------- | ------- | ----------- |
+| `options`       | `MultiSelectOption[]`   | Yes      | —       | —           |
+| `value`         | `string[]`              | Yes      | —       | —           |
+| `onValueChange` | `(v: string[]) => void` | Yes      | —       | —           |
+| `placeholder`   | `string`                | No       | —       | —           |
+| `disabled`      | `boolean`               | No       | false   | —           |
+| `labels`        | `MultiSelectLabels`     | No       | —       | —           |
 
 ## Tokens
 
@@ -60,13 +60,20 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 ### Basic
 
 ```jsx
-<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
+<MultiSelect
+  options={[
+    { label: 'One', value: '1' },
+    { label: 'Two', value: '2' },
+  ]}
+  value={[]}
+  onValueChange={() => {}}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens |
-| labels | flexible | placeholder, selected(count), search, and noResults are overridable |
-| options | flexible | Caller supplies the option list and may mark individual options disabled |
+| Area        | Level    | Note                                                                                                           |
+| ----------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-\* tokens |
+| labels      | flexible | placeholder, selected(count), search, and noResults are overridable                                            |
+| options     | flexible | Caller supplies the option list and may mark individual options disabled                                       |

@@ -14,12 +14,12 @@ npx cascivo add indicator
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | yes | — | — |
-| `overlay` | `React.ReactNode` | yes | — | The element to display at the corner (badge, dot, count) |
-| `placement` | `'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | no | `top-end` | — |
-| `className` | `string` | no | — | — |
+| Prop        | Type              | Required  | Default        | Description                                              |
+| ----------- | ----------------- | --------- | -------------- | -------------------------------------------------------- | --- | --------- | --- |
+| `children`  | `React.ReactNode` | yes       | —              | —                                                        |
+| `overlay`   | `React.ReactNode` | yes       | —              | The element to display at the corner (badge, dot, count) |
+| `placement` | `'top-start'      | 'top-end' | 'bottom-start' | 'bottom-end'`                                            | no  | `top-end` | —   |
+| `className` | `string`          | no        | —              | —                                                        |
 
 ## Examples
 
@@ -28,7 +28,11 @@ npx cascivo add indicator
 Notification count badge on an icon button
 
 ```tsx
-<Indicator overlay={<Badge>3</Badge>}><Button variant="ghost"><Icon name="bell" /></Button></Indicator>
+<Indicator overlay={<Badge>3</Badge>}>
+  <Button variant="ghost">
+    <Icon name="bell" />
+  </Button>
+</Indicator>
 ```
 
 ### Online status
@@ -36,7 +40,9 @@ Notification count badge on an icon button
 Online status dot on an avatar
 
 ```tsx
-<Indicator overlay={<span className="status-dot" />} placement="bottom-end"><Avatar src="/user.jpg" /></Indicator>
+<Indicator overlay={<span className="status-dot" />} placement="bottom-end">
+  <Avatar src="/user.jpg" />
+</Indicator>
 ```
 
 ### Bottom-start placement
@@ -44,7 +50,9 @@ Online status dot on an avatar
 Indicator positioned at the bottom-start corner
 
 ```tsx
-<Indicator overlay={<Badge variant="destructive">!</Badge>} placement="bottom-start"><Card>Content</Card></Indicator>
+<Indicator overlay={<Badge variant="destructive">!</Badge>} placement="bottom-start">
+  <Card>Content</Card>
+</Indicator>
 ```
 
 ## Accessibility

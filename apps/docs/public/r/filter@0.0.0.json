@@ -12,32 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/filter/filter.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "filter",
-    "chip",
-    "tag",
-    "pill",
-    "facet",
-    "category"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
   "category": "inputs",
   "meta": {
     "name": "Filter",
     "description": "A group of toggleable pill or outline buttons for filtering content by category",
     "category": "inputs",
-    "states": [
-      "default",
-      "selected",
-      "hover",
-      "focus"
-    ],
-    "variants": [
-      "pill",
-      "outline"
-    ],
+    "states": ["default", "selected", "hover", "focus"],
+    "variants": ["pill", "outline"],
     "sizes": [],
     "props": [
       {
@@ -93,11 +76,7 @@
     "accessibility": {
       "role": "group",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab",
-        "Enter",
-        "Space"
-      ]
+      "keyboard": ["Tab", "Enter", "Space"]
     },
     "examples": [
       {
@@ -113,17 +92,8 @@
         "code": "<Filter\n  variant=\"outline\"\n  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}\n  aria-label=\"Filter by framework\"\n/>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "filter",
-      "chip",
-      "tag",
-      "pill",
-      "facet",
-      "category"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
     "intent": {
       "whenToUse": [
         "Tag or category filtering on listing pages where the active filters must remain visible",

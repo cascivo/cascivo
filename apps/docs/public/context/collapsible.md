@@ -32,14 +32,14 @@ The trigger is a native button exposing aria-expanded and aria-controls; the reg
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | No | — | Controlled open state |
-| `defaultOpen` | `boolean` | No | false | Initial open state for uncontrolled use |
-| `onOpenChange` | `(open: boolean) => void` | No | — | Called whenever the open state should change |
-| `trigger` | `ReactNode` | Yes | — | Content rendered inside the built-in trigger button |
-| `disabled` | `boolean` | No | false | Disables the trigger button |
-| `children` | `ReactNode` | No | — | Content of the collapsible region |
+| Name           | Type                      | Required | Default | Description                                         |
+| -------------- | ------------------------- | -------- | ------- | --------------------------------------------------- |
+| `open`         | `boolean`                 | No       | —       | Controlled open state                               |
+| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state for uncontrolled use             |
+| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change        |
+| `trigger`      | `ReactNode`               | Yes      | —       | Content rendered inside the built-in trigger button |
+| `disabled`     | `boolean`                 | No       | false   | Disables the trigger button                         |
+| `children`     | `ReactNode`               | No       | —       | Content of the collapsible region                   |
 
 ## Tokens
 
@@ -73,7 +73,7 @@ The trigger is a native button exposing aria-expanded and aria-controls; the reg
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| open state | flexible | Controlled or uncontrolled via open / defaultOpen |
-| trigger markup | strict | Always rendered as a native button for keyboard and a11y correctness |
+| Area           | Level    | Note                                                                 |
+| -------------- | -------- | -------------------------------------------------------------------- |
+| open state     | flexible | Controlled or uncontrolled via open / defaultOpen                    |
+| trigger markup | strict   | Always rendered as a native button for keyboard and a11y correctness |

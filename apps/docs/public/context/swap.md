@@ -34,15 +34,15 @@ Renders a <button role="switch"> with aria-checked reflecting state. Both on/off
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `on` | `React.ReactNode` | Yes | — | — |
-| `off` | `React.ReactNode` | Yes | — | — |
-| `checked` | `boolean` | No | false | — |
-| `onChange` | `(checked: boolean) => void` | No | — | — |
-| `mode` | `'rotate' | 'flip'` | No | rotate | — |
-| `aria-label` | `string` | No | — | — |
-| `className` | `string` | No | — | — |
+| Name         | Type                         | Required | Default | Description |
+| ------------ | ---------------------------- | -------- | ------- | ----------- | --- |
+| `on`         | `React.ReactNode`            | Yes      | —       | —           |
+| `off`        | `React.ReactNode`            | Yes      | —       | —           |
+| `checked`    | `boolean`                    | No       | false   | —           |
+| `onChange`   | `(checked: boolean) => void` | No       | —       | —           |
+| `mode`       | `'rotate'                    | 'flip'`  | No      | rotate      | —   |
+| `aria-label` | `string`                     | No       | —       | —           |
+| `className`  | `string`                     | No       | —       | —           |
 
 ## Tokens
 
@@ -71,7 +71,7 @@ Heart icon that flips to filled on activation
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| content | flexible | on/off slots accept any ReactNode — icons, text, images |
+| Area           | Level    | Note                                                                        |
+| -------------- | -------- | --------------------------------------------------------------------------- |
+| content        | flexible | on/off slots accept any ReactNode — icons, text, images                     |
 | animation mode | flexible | rotate (default) or flip — choose based on the visual metaphor of the icons |

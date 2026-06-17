@@ -33,11 +33,11 @@ Item is presentational by default; the slotted element determines the role and f
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `asChild` | `boolean` | No | false | — |
-| `variant` | `'default' | 'muted'` | No | default | — |
-| `size` | `'sm' | 'md'` | No | md | — |
+| Name      | Type       | Required | Default | Description |
+| --------- | ---------- | -------- | ------- | ----------- | --- |
+| `asChild` | `boolean`  | No       | false   | —           |
+| `variant` | `'default' | 'muted'` | No      | default     | —   |
+| `size`    | `'sm'      | 'md'`    | No      | md          | —   |
 
 ## Tokens
 
@@ -53,12 +53,16 @@ Item is presentational by default; the slotted element determines the role and f
 
 ```jsx
 <Item>
-  <ItemMedia><Avatar /></ItemMedia>
+  <ItemMedia>
+    <Avatar />
+  </ItemMedia>
   <ItemContent>
     <ItemTitle>Ada Lovelace</ItemTitle>
     <ItemDescription>Mathematician</ItemDescription>
   </ItemContent>
-  <ItemActions><Button size="sm">Edit</Button></ItemActions>
+  <ItemActions>
+    <Button size="sm">Edit</Button>
+  </ItemActions>
 </Item>
 ```
 
@@ -67,14 +71,16 @@ Item is presentational by default; the slotted element determines the role and f
 ```jsx
 <Item asChild>
   <a href="/profile">
-    <ItemContent><ItemTitle>Profile</ItemTitle></ItemContent>
+    <ItemContent>
+      <ItemTitle>Profile</ItemTitle>
+    </ItemContent>
   </a>
 </Item>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant and size | flexible | Tune density and emphasis to match the surrounding list |
-| compound parts | flexible | Media, content, title, description, and actions are optional and composable |
+| Area             | Level    | Note                                                                        |
+| ---------------- | -------- | --------------------------------------------------------------------------- |
+| variant and size | flexible | Tune density and emphasis to match the surrounding list                     |
+| compound parts   | flexible | Media, content, title, description, and actions are optional and composable |

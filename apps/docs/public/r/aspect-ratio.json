@@ -12,16 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "ratio",
-    "image",
-    "video",
-    "responsive"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "ratio", "image", "video", "responsive"],
   "category": "layout",
   "meta": {
     "name": "AspectRatio",
@@ -45,9 +37,7 @@
         "description": "Content to fill the ratio box (typically an image, video, or iframe)"
       }
     ],
-    "tokens": [
-      "--cascivo-aspect-ratio"
-    ],
+    "tokens": ["--cascivo-aspect-ratio"],
     "accessibility": {
       "role": "none",
       "wcag": "2.2-AA",
@@ -63,16 +53,8 @@
         "code": "<AspectRatio ratio={1}>\n  <img src=\"/avatar.jpg\" alt=\"Avatar\" />\n</AspectRatio>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "ratio",
-      "image",
-      "video",
-      "responsive"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "ratio", "image", "video", "responsive"],
     "intent": {
       "whenToUse": [
         "Reserving a stable box for media that loads asynchronously, avoiding layout shift",

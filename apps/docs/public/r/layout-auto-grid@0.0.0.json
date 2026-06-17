@@ -12,14 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "layout",
-    "grid",
-    "responsive"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "grid", "responsive"],
   "category": "layout",
   "meta": {
     "name": "AutoGrid",
@@ -44,9 +38,7 @@
         "description": "Spacing token step"
       }
     ],
-    "tokens": [
-      "--cascivo-space-*"
-    ],
+    "tokens": ["--cascivo-space-*"],
     "accessibility": {
       "role": "generic",
       "wcag": "2.1-AA",
@@ -59,14 +51,8 @@
         "description": "Items fill available space and wrap when narrower than 12rem"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "layout",
-      "grid",
-      "responsive"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "grid", "responsive"],
     "intent": {
       "whenToUse": [
         "Responsive card or tile grids that auto-fit columns to available width",

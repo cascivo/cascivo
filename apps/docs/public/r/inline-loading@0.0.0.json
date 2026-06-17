@@ -12,28 +12,14 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/inline-loading/inline-loading.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "loading",
-    "status",
-    "progress",
-    "feedback",
-    "spinner"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["loading", "status", "progress", "feedback", "spinner"],
   "category": "feedback",
   "meta": {
     "name": "InlineLoading",
     "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
     "category": "feedback",
-    "states": [
-      "inactive",
-      "active",
-      "finished",
-      "error"
-    ],
+    "states": ["inactive", "active", "finished", "error"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -81,17 +67,8 @@
         "code": "<InlineLoading status=\"error\" label=\"Save failed\" />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "loading",
-      "status",
-      "progress",
-      "feedback",
-      "spinner"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["loading", "status", "progress", "feedback", "spinner"],
     "intent": {
       "whenToUse": [
         "Showing the progress of a single inline action — a Save button that becomes \"Saving… / Saved / Failed\"",

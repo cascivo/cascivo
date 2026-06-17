@@ -12,31 +12,15 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toast/toast.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "overlay",
-    "notification",
-    "feedback"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["overlay", "notification", "feedback"],
   "category": "overlay",
   "meta": {
     "name": "Toast",
     "description": "Transient notification surfaced via the useToast hook",
     "category": "overlay",
-    "states": [
-      "visible",
-      "dismissing",
-      "gone"
-    ],
-    "variants": [
-      "default",
-      "success",
-      "warning",
-      "destructive"
-    ],
+    "states": ["visible", "dismissing", "gone"],
+    "variants": ["default", "success", "warning", "destructive"],
     "sizes": [],
     "props": [
       {
@@ -73,9 +57,7 @@
     "accessibility": {
       "role": "status",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "Tab"
-      ],
+      "keyboard": ["Tab"],
       "reducedMotion": true,
       "forcedColors": true
     },
@@ -85,15 +67,8 @@
         "code": "const { toast } = useToast()\ntoast({ title: \"Saved\", variant: \"success\" })"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "overlay",
-      "notification",
-      "feedback"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["overlay", "notification", "feedback"],
     "intent": {
       "whenToUse": [
         "Confirming that a background or just-completed action succeeded or failed (e.g. \"Saved\")",

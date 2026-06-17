@@ -14,9 +14,9 @@ npx cascivo add layout/center
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `maxWidth` | `string` | no | — | CSS max-width value |
+| Prop       | Type     | Required | Default | Description         |
+| ---------- | -------- | -------- | ------- | ------------------- |
+| `maxWidth` | `string` | no       | —       | CSS max-width value |
 
 ## Examples
 
@@ -25,7 +25,9 @@ npx cascivo add layout/center
 Centered container with custom max-width
 
 ```tsx
-<Center maxWidth="60rem"><p>Content</p></Center>
+<Center maxWidth="60rem">
+  <p>Content</p>
+</Center>
 ```
 
 ## Design tokens

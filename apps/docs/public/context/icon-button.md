@@ -32,15 +32,15 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | Yes | — | — |
-| `icon` | `React.ReactNode` | No | — | — |
-| `variant` | `'ghost' | 'outline' | 'filled'` | No | ghost | — |
-| `size` | `'sm' | 'md' | 'lg'` | No | md | — |
-| `asChild` | `boolean` | No | false | — |
-| `disabled` | `boolean` | No | false | — |
-| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | No | — | — |
+| Name       | Type                                         | Required  | Default   | Description |
+| ---------- | -------------------------------------------- | --------- | --------- | ----------- | ----- | --- |
+| `label`    | `string`                                     | Yes       | —         | —           |
+| `icon`     | `React.ReactNode`                            | No        | —         | —           |
+| `variant`  | `'ghost'                                     | 'outline' | 'filled'` | No          | ghost | —   |
+| `size`     | `'sm'                                        | 'md'      | 'lg'`     | No          | md    | —   |
+| `asChild`  | `boolean`                                    | No        | false     | —           |
+| `disabled` | `boolean`                                    | No        | false     | —           |
+| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No        | —         | —           |
 
 ## Tokens
 
@@ -61,7 +61,9 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 ### Ghost
 
 ```jsx
-<IconButton label="Settings"><GearIcon /></IconButton>
+<IconButton label="Settings">
+  <GearIcon />
+</IconButton>
 ```
 
 ### Filled
@@ -73,12 +75,16 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 ### As link
 
 ```jsx
-<IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
+<IconButton label="Home" asChild>
+  <a href="/">
+    <HomeIcon />
+  </a>
+</IconButton>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls |
-| icon choice | flexible | Any single icon node; consumer owns the icon set |
+| Area        | Level    | Note                                                                                                  |
+| ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| token names | strict   | Sizing must resolve to --cascivo-control-height-\* so it stays square and aligned with other controls |
+| icon choice | flexible | Any single icon node; consumer owns the icon set                                                      |

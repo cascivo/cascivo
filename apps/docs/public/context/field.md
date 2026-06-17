@@ -38,15 +38,15 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `ReactNode` | No | — | — |
-| `description` | `ReactNode` | No | — | — |
-| `error` | `ReactNode` | No | — | — |
-| `required` | `boolean` | No | false | — |
-| `disabled` | `boolean` | No | false | — |
-| `id` | `string` | No | — | — |
-| `children` | `ReactElement` | Yes | — | — |
+| Name          | Type           | Required | Default | Description |
+| ------------- | -------------- | -------- | ------- | ----------- |
+| `label`       | `ReactNode`    | No       | —       | —           |
+| `description` | `ReactNode`    | No       | —       | —           |
+| `error`       | `ReactNode`    | No       | —       | —           |
+| `required`    | `boolean`      | No       | false   | —           |
+| `disabled`    | `boolean`      | No       | false   | —           |
+| `id`          | `string`       | No       | —       | —           |
+| `children`    | `ReactElement` | Yes      | —       | —           |
 
 ## Tokens
 
@@ -62,13 +62,17 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 ### Basic
 
 ```jsx
-<Field label="Email"><Input type="email" /></Field>
+<Field label="Email">
+  <Input type="email" />
+</Field>
 ```
 
 ### With description
 
 ```jsx
-<Field label="Email" description="We never share it."><Input /></Field>
+<Field label="Email" description="We never share it.">
+  <Input />
+</Field>
 ```
 
 ### With error
@@ -76,12 +80,14 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 Sets aria-invalid on the control and announces the error via role="alert".
 
 ```jsx
-<Field label="Email" error="Email is required" required><Input /></Field>
+<Field label="Email" error="Email is required" required>
+  <Input />
+</Field>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Spacing and color must resolve to --cascivo-* semantic tokens |
-| control element | flexible | Any single element accepting id/aria-* props can be the child control |
+| Area            | Level    | Note                                                                   |
+| --------------- | -------- | ---------------------------------------------------------------------- |
+| token names     | strict   | Spacing and color must resolve to --cascivo-\* semantic tokens         |
+| control element | flexible | Any single element accepting id/aria-\* props can be the child control |

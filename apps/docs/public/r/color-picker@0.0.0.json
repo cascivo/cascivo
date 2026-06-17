@@ -12,18 +12,8 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core",
-    "@cascivo/i18n"
-  ],
-  "tags": [
-    "color",
-    "input",
-    "form",
-    "picker",
-    "hue",
-    "alpha"
-  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["color", "input", "form", "picker", "hue", "alpha"],
   "category": "inputs",
   "meta": {
     "name": "ColorPicker",
@@ -31,11 +21,7 @@
     "category": "inputs",
     "states": [],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "value",
@@ -96,12 +82,7 @@
     "accessibility": {
       "role": "slider",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown"
-      ],
+      "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"],
       "forcedColors": true
     },
     "examples": [
@@ -114,18 +95,8 @@
         "code": "<ColorPicker presets={[\"#ef4444\", \"#3b82f6\", \"#10b981\"]} alpha={false} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core",
-      "@cascivo/i18n"
-    ],
-    "tags": [
-      "color",
-      "input",
-      "form",
-      "picker",
-      "hue",
-      "alpha"
-    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["color", "input", "form", "picker", "hue", "alpha"],
     "intent": {
       "whenToUse": [
         "Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control",

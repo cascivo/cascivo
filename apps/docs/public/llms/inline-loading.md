@@ -21,11 +21,11 @@ npx cascivo add inline-loading
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `status` | `'inactive' | 'active' | 'finished' | 'error'` | yes | — | — |
-| `label` | `ReactNode` | no | — | — |
-| `labels` | `{ active?: string; finished?: string; error?: string }` | no | — | — |
+| Prop     | Type                                                     | Required | Default    | Description |
+| -------- | -------------------------------------------------------- | -------- | ---------- | ----------- | --- | --- | --- |
+| `status` | `'inactive'                                              | 'active' | 'finished' | 'error'`    | yes | —   | —   |
+| `label`  | `ReactNode`                                              | no       | —          | —           |
+| `labels` | `{ active?: string; finished?: string; error?: string }` | no       | —          | —           |
 
 ## Examples
 

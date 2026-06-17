@@ -44,7 +44,7 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| options | flexible | Pass an options array or raw <option> children |
-| value | flexible | Controlled (value/onChange) or uncontrolled (defaultValue) |
+| Area    | Level    | Note                                                       |
+| ------- | -------- | ---------------------------------------------------------- |
+| options | flexible | Pass an options array or raw <option> children             |
+| value   | flexible | Controlled (value/onChange) or uncontrolled (defaultValue) |

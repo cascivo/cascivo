@@ -12,33 +12,16 @@
       "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/toggle-group/toggle-group.module.css"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "selection",
-    "segmented",
-    "toolbar",
-    "choice"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["selection", "segmented", "toolbar", "choice"],
   "category": "inputs",
   "meta": {
     "name": "ToggleGroup",
     "description": "A set of toggle buttons for single or multiple selection",
     "category": "inputs",
-    "states": [
-      "on",
-      "off"
-    ],
-    "variants": [
-      "single",
-      "multiple"
-    ],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "states": ["on", "off"],
+    "variants": ["single", "multiple"],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "type",
@@ -122,15 +105,8 @@
         "code": "<ToggleGroup type=\"multiple\" defaultValue={[\"bold\"]} items={[{ value: \"bold\", label: \"Bold\" }, { value: \"italic\", label: \"Italic\" }]} />"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "selection",
-      "segmented",
-      "toolbar",
-      "choice"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["selection", "segmented", "toolbar", "choice"],
     "intent": {
       "whenToUse": [
         "Choosing one value from a small, mutually exclusive set that should stay visible (type=\"single\")",

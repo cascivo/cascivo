@@ -19,18 +19,21 @@ npx cascivo add menubar
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menus` | `MenubarMenu[]` | yes | — | — |
-| `aria-label` | `string` | yes | — | — |
-| `className` | `string` | no | — | — |
+| Prop         | Type            | Required | Default | Description |
+| ------------ | --------------- | -------- | ------- | ----------- |
+| `menus`      | `MenubarMenu[]` | yes      | —       | —           |
+| `aria-label` | `string`        | yes      | —       | —           |
+| `className`  | `string`        | no       | —       | —           |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
+<Menubar
+  aria-label="Main"
+  menus={[{ id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] }]}
+/>
 ```
 
 ## Design tokens
