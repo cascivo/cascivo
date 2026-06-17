@@ -53,22 +53,26 @@ pnpm changeset version
 git add -A
 git commit -m "chore: version packages 0.1.0"
 
-# 4. Create a granular automation token on npmjs.com:
-#      npmjs.com → Account Settings → Access Tokens → Generate New Token
-#      Type: Granular Access Token
-#      Scopes: Read and write (publish)
-#      Expiration: 1 day
-#      Packages: all packages (or list each @cascivo/* + cascivo explicitly)
+# 4. Authenticate with npm (pick one):
 #
-#    Copy the token value — you will never see it again.
+#    Option A — browser login (simplest, no token management):
+npm login
+#    This opens a browser window, you approve the login, and credentials
+#    are stored in ~/.npmrc. Nothing to create or delete.
+#
+#    Option B — granular automation token (CI-style, no browser):
+#      npmjs.com → Account Settings → Access Tokens → Generate New Token
+#      Type: Granular Access Token, Scopes: Read and write, Expiration: 1 day
+#    Then pass it inline:
+#      NODE_AUTH_TOKEN=<token> pnpm changeset publish
+#    Delete the token on npmjs.com immediately after.
 
-# 5. Publish all Tier-1 packages in one command.
+# 5. Publish all Tier-1 packages in one command (after Option A login above).
 #    changeset publish handles workspace:^ → real version rewriting,
 #    publishes in dependency order, and skips private packages.
-#    Pass the token via env — do NOT commit it anywhere.
-NODE_AUTH_TOKEN=<paste-token-here> pnpm changeset publish
+pnpm changeset publish
 
-# 6. Immediately delete the token on npmjs.com (Account Settings → Access Tokens).
+# 6. (Only if you used Option B) Delete the token on npmjs.com.
 
 # 7. Push the version-bump commit and the new git tags that changeset publish created.
 git push --follow-tags
