@@ -3,12 +3,35 @@
   "version": "0.0.0",
   "private": false,
   "description": "Three-level CSS design tokens (primitive → semantic → component)",
+  "keywords": [
+    "cascivo",
+    "css",
+    "css-custom-properties",
+    "css-tokens",
+    "design-system",
+    "design-tokens",
+    "react",
+    "signals"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/tokens#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/tokens"
+  },
   "files": [
     "src"
   ],
   "exports": {
     ".": "./src/index.css",
     "./screens": "./src/screens.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "echo 'tokens: CSS-only, no build'",

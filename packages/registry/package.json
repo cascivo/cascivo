@@ -3,6 +3,27 @@
   "version": "0.0.0",
   "private": false,
   "description": "Registry schema v2 types, validation, and static build for the cascade ecosystem",
+  "keywords": [
+    "cascivo",
+    "components",
+    "css",
+    "design-system",
+    "react",
+    "registry",
+    "signals"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/registry#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/registry"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -11,6 +32,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",

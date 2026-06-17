@@ -3,6 +3,25 @@
   "version": "0.0.0",
   "private": false,
   "description": "Prebuilt cascade design system components — use without copying source",
+  "keywords": [
+    "cascivo",
+    "components",
+    "css",
+    "design-system",
+    "react",
+    "react-components",
+    "signals",
+    "ui"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/react#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/react"
+  },
   "files": [
     "dist"
   ],
@@ -18,6 +37,10 @@
       "default": "./dist/index.js"
     },
     "./styles.css": "./dist/cascade.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp build && tsc -p tsconfig.build.json && node scripts/flatten-types.mjs",

@@ -8,12 +8,6 @@
 
 Accessible, signal-driven chart library for cascade — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all ten themes.
 
-## Install
-
-```sh
-pnpm add @cascivo/charts
-```
-
 ---
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT

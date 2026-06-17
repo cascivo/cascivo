@@ -2,6 +2,12 @@
   "name": "@cascivo/monorepo",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git"
+  },
   "type": "module",
   "scripts": {
     "build": "vp run -r build",

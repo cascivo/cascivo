@@ -3,6 +3,28 @@
   "version": "0.0.0",
   "private": false,
   "description": "Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "i18n",
+    "internationalization",
+    "intl",
+    "react",
+    "signals"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/i18n#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/i18n"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -11,6 +33,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",
