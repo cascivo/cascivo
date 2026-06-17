@@ -29,7 +29,7 @@
 
     &[data-variant='secondary'] {
       background-color: var(--cascivo-color-bg-subtle);
-      color: var(--cascivo-color-text-subtle);
+      color: var(--cascivo-color-text);
       border-color: var(--cascivo-color-border);
     }
 
