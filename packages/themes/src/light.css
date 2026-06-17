@@ -64,6 +64,7 @@
     /* Foreground-safe variants: darker for text on light backgrounds (WCAG AA ≥4.5:1) */
     --cascivo-color-success-foreground: oklch(0.45 0.14 145);
     --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
+    --cascivo-color-destructive-foreground: oklch(0.448 0.17 22);
 
     /* ── Radius — one knob; semantic scale derives in tokens ── */
     --cascivo-radius-base: 0.375rem; /* 6px */

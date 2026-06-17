@@ -28,15 +28,25 @@
   ],
   "exports": {
     "./light": "./src/light.css",
+    "./light.css": "./src/light.css",
     "./dark": "./src/dark.css",
+    "./dark.css": "./src/dark.css",
     "./warm": "./src/warm.css",
+    "./warm.css": "./src/warm.css",
     "./flat": "./src/flat.css",
+    "./flat.css": "./src/flat.css",
     "./minimal": "./src/minimal.css",
+    "./minimal.css": "./src/minimal.css",
     "./midnight": "./src/midnight.css",
+    "./midnight.css": "./src/midnight.css",
     "./pastel": "./src/pastel.css",
+    "./pastel.css": "./src/pastel.css",
     "./brutalist": "./src/brutalist.css",
+    "./brutalist.css": "./src/brutalist.css",
     "./corporate": "./src/corporate.css",
-    "./terminal": "./src/terminal.css"
+    "./corporate.css": "./src/corporate.css",
+    "./terminal": "./src/terminal.css",
+    "./terminal.css": "./src/terminal.css"
   },
   "publishConfig": {
     "access": "public",

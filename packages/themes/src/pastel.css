@@ -60,6 +60,7 @@
     --cascivo-color-info-subtle: oklch(0.96 0.04 350);
     --cascivo-color-success-foreground: oklch(0.46 0.13 165);
     --cascivo-color-warning-foreground: oklch(0.5 0.13 75);
+    --cascivo-color-destructive-foreground: oklch(0.448 0.17 22);
 
     /* ── Radius — 16px pill ──────────────────────────── */
     --cascivo-radius-base: 1rem;

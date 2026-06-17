@@ -264,7 +264,7 @@ export function Header() {
         id="mobile-nav-drawer"
         className={`mobile-nav-drawer${isNavOpen.value ? ' mobile-nav-drawer--open' : ''}`}
         aria-label="Main navigation"
-        aria-hidden={!isNavOpen.value}
+        inert={!isNavOpen.value ? true : undefined}
       >
         {navItems.map((link) => {
           const isExternal = isExternalHref(link.href)

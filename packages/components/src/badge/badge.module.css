@@ -29,23 +29,23 @@
 
     &[data-variant='secondary'] {
       background-color: var(--cascivo-color-bg-subtle);
-      color: var(--cascivo-color-text-subtle);
+      color: var(--cascivo-color-text);
       border-color: var(--cascivo-color-border);
     }
 
     &[data-variant='success'] {
       background-color: var(--cascivo-color-success-subtle);
-      color: var(--cascivo-color-success-content);
+      color: var(--cascivo-color-success-foreground);
     }
 
     &[data-variant='warning'] {
       background-color: var(--cascivo-color-warning-subtle);
-      color: var(--cascivo-color-warning-content);
+      color: var(--cascivo-color-warning-foreground);
     }
 
     &[data-variant='destructive'] {
       background-color: var(--cascivo-color-destructive-subtle);
-      color: var(--cascivo-color-destructive-content);
+      color: var(--cascivo-color-destructive-foreground);
     }
 
     &[data-variant='primary'] {

@@ -54,6 +54,7 @@
     /* Foreground-safe variants: bright for text on dark backgrounds (WCAG AA ≥4.5:1) */
     --cascivo-color-success-foreground: oklch(0.72 0.13 145);
     --cascivo-color-warning-foreground: oklch(0.82 0.13 75);
+    --cascivo-color-destructive-foreground: oklch(0.85 0.12 22);
 
     /* ── Primary — inverted monochrome ── */
     --cascivo-color-primary: oklch(0.922 0 0);

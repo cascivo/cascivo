@@ -10,7 +10,7 @@ import {
 import { extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { imagetools } from 'vite-imagetools'
-import { type Plugin, defineConfig } from 'vite-plus'
+import { type Plugin, defineConfig, transformWithEsbuild } from 'vite-plus'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/route-head'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -207,8 +207,96 @@ function serveExampleDemos(): Plugin {
   }
 }
 
+/**
+ * Minify landing.css post-build via esbuild.
+ *
+ * Vite only minifies CSS that enters the build through the JS module graph. The
+ * landing.css file is referenced directly from index.html via a <link> tag with
+ * media="print" (non-blocking load trick), which causes Vite to treat it as a
+ * plain file asset — copying it verbatim, comments and whitespace intact.
+ * This plugin post-processes the emitted asset to apply esbuild CSS minification.
+ */
+function minifyLandingCss(): Plugin {
+  return {
+    name: 'cascade:minify-landing-css',
+    apply: 'build',
+    async closeBundle() {
+      // landing.css is a plain static asset (referenced via <link media="print"> in
+      // index.html), so Vite copies it verbatim without CSS minification. Post-process
+      // the written file here to apply esbuild CSS minification.
+      const distAssets = resolve(__dirname, 'dist/assets')
+      if (!existsSync(distAssets)) return
+      const files = readdirSync(distAssets).filter(
+        (f) => f.startsWith('landing-') && f.endsWith('.css'),
+      )
+      for (const file of files) {
+        const filePath = resolve(distAssets, file)
+        const source = readFileSync(filePath, 'utf8')
+        const result = await transformWithEsbuild(
+          source,
+          file,
+          { loader: 'css', minify: true },
+          undefined,
+          undefined,
+          undefined,
+          true, // suppress deprecation warning; transformWithOxc doesn't support CSS
+        )
+        writeFileSync(filePath, result.code, 'utf8')
+      }
+    },
+  }
+}
+
+/**
+ * Remove the render-blocking <link rel="stylesheet"> for spinner CSS from the
+ * built HTML. The spinner CSS is inlined in index.html (roadmap v35 T4), so the
+ * emitted <link> is redundant and would re-block rendering.
+ */
+function removeSpinnerLink(): Plugin {
+  return {
+    name: 'cascade:remove-spinner-link',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace(/<link[^>]*\/assets\/spinner-[^>]*\.css[^>]*>/g, '')
+    },
+  }
+}
+
+/**
+ * Emit <link rel="preload" as="style"> for the main index CSS chunk so the
+ * browser can fetch it in parallel with JS parsing (roadmap v35 T4).
+ */
+function preloadMainCss(): Plugin {
+  return {
+    name: 'cascade:preload-main-css',
+    apply: 'build',
+    transformIndexHtml(html, ctx) {
+      if (!ctx.bundle) return html
+      const cssChunk = Object.keys(ctx.bundle).find(
+        (k) => k.startsWith('assets/index-') && k.endsWith('.css'),
+      )
+      if (!cssChunk) return html
+      const href = `/${cssChunk}`
+      const preload = `<link rel="preload" as="style" href="${href}">`
+      return html.replace('</head>', `  ${preload}\n  </head>`)
+    },
+  }
+}
+
+// Source maps: not enabled for public deployment — doubles JS transfer and exposes source.
+// For production debugging, upload to an error monitoring service (Sentry/Datadog) instead.
+// To enable locally: add build: { sourcemap: true } (do not commit).
 export default defineConfig({
-  plugins: [imagetools(), injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
+  plugins: [
+    imagetools(),
+    injectCounts(),
+    prerenderHeads(),
+    benchData(),
+    serveExampleDemos(),
+    minifyLandingCss(),
+    removeSpinnerLink(),
+    preloadMainCss(),
+  ],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),

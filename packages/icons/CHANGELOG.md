@@ -5,7 +5,6 @@
 ### Minor Changes
 
 - b23575c: Initial public release of the cascivo design system. Includes:
-
   - `@cascivo/core` — signal/FSM runtime (Preact Signals integration)
   - `@cascivo/tokens` — CSS design tokens (primitive → semantic → component)
   - `@cascivo/themes` — light, dark, and warm first-party themes

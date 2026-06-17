@@ -4,16 +4,16 @@
  */
 
 /* Import tokens + all ten themes (switching + scoped containers) */
-@import '@cascivo/themes/light';
-@import '@cascivo/themes/dark';
-@import '@cascivo/themes/warm';
-@import '@cascivo/themes/flat';
-@import '@cascivo/themes/minimal';
-@import '@cascivo/themes/midnight';
-@import '@cascivo/themes/pastel';
-@import '@cascivo/themes/brutalist';
-@import '@cascivo/themes/corporate';
-@import '@cascivo/themes/terminal';
+@import '@cascivo/themes/light.css';
+@import '@cascivo/themes/dark.css';
+@import '@cascivo/themes/warm.css';
+@import '@cascivo/themes/flat.css';
+@import '@cascivo/themes/minimal.css';
+@import '@cascivo/themes/midnight.css';
+@import '@cascivo/themes/pastel.css';
+@import '@cascivo/themes/brutalist.css';
+@import '@cascivo/themes/corporate.css';
+@import '@cascivo/themes/terminal.css';
 
 /* ── Cross-document view transitions ─────────────────── */
 @view-transition {
