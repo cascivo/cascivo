@@ -121,31 +121,47 @@ Before finishing any task, verify:
 
 **All gates below must pass before committing.** No exceptions. If any fails, fix it before pushing — do not commit broken state.
 
-Run these commands to reproduce CI locally:
+Run the single command that covers everything:
 
 ```sh
-# 1. Format + lint (mirrors CI "Format + lint" step)
+pnpm ready
+```
+
+This runs: `pnpm regen` → `vp check --fix` → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+
+To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
+
+```sh
+pnpm ready:ci
+```
+
+This deletes all `dist/` directories and the vp run cache, then runs the `pnpm ready` gates with builds limited to one at a time via the `--concurrency-limit 1` flag (`vp run -r --concurrency-limit 1 build`). Note: the `VP_RUN_CONCURRENCY_LIMIT` env var is documented by vp but unimplemented in the 0.1.24 binary — use the CLI flag, not the env var. Use before pushing if you've changed build config or added workspace package dependencies.
+
+To reproduce individual CI steps:
+
+```sh
+# Format + lint (mirrors CI "Format + lint" step)
 pnpm exec vp check
 
-# 2. Build all packages (mirrors CI "Build" step)
+# Build all packages (mirrors CI "Build" step)
 pnpm build
 
-# 3. Type check all packages (mirrors CI "Type check" step)
+# Type check all packages (mirrors CI "Type check" step)
 pnpm exec vp run -r check
 
-# 4. Tests (mirrors CI "Test" step)
+# Tests (mirrors CI "Test" step)
 pnpm test
 
-# 5. Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
+# Drift check — regenerate and confirm no diff (mirrors CI "drift" job)
 pnpm regen
 pnpm exec vp check --fix
 git diff --exit-code
 
-# 6. Breakpoint literal check (off-scale @media/@container widths)
+# Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
 ```
 
-All six must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
+All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
 ### Workspace package aliases — keep in sync
 

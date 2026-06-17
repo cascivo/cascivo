@@ -42,7 +42,7 @@ jobs:
         run: pnpm run demos:storage:check
 
       - name: Build (vp run -r build)
-        run: pnpm run build
+        run: pnpm exec vp run -r --concurrency-limit 1 build
 
       - name: Bundle budgets
         run: pnpm run audit:bundle

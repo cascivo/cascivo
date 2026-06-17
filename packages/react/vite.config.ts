@@ -9,7 +9,13 @@ export default defineConfig({
       cssFileName: 'cascivo',
     },
     rollupOptions: {
-      external: [/^react($|\/)/, /^react-dom($|\/)/, '@preact/signals-react', '@cascivo/core'],
+      external: [
+        /^react($|\/)/,
+        /^react-dom($|\/)/,
+        '@preact/signals-react',
+        '@cascivo/core',
+        '@cascivo/i18n',
+      ],
       output: {
         // Components are client components; preserve the directive for RSC consumers.
         banner: "'use client';",

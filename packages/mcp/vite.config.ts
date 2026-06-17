@@ -9,7 +9,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // Keep runtime deps external — they are declared in package.json.
-      external: [/^node:/, /^@modelcontextprotocol\//, 'zod'],
+      external: [/^node:/, /^@modelcontextprotocol\//, /^@cascivo\//, 'zod'],
     },
   },
   test: {

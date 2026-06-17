@@ -76,40 +76,40 @@ export function Deployments() {
         <Select
           options={DATE_OPTIONS}
           value={dateRangeFilter.value}
-          onChange={(v) => {
-            dateRangeFilter.value = v
+          onChange={(e) => {
+            dateRangeFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.deplFilterDateLabel)}
         />
         <Select
           options={AUTHOR_OPTIONS}
           value={authorFilter.value}
-          onChange={(v) => {
-            authorFilter.value = v
+          onChange={(e) => {
+            authorFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.deplFilterAuthorsLabel)}
         />
         <Select
           options={ENV_OPTIONS}
           value={envFilter.value}
-          onChange={(v) => {
-            envFilter.value = v
+          onChange={(e) => {
+            envFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.deplFilterEnvsLabel)}
         />
         <Select
           options={REPO_OPTIONS}
           value={repoFilter.value}
-          onChange={(v) => {
-            repoFilter.value = v
+          onChange={(e) => {
+            repoFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.deplFilterReposLabel)}
         />
         <Select
           options={STATUS_OPTIONS}
           value={statusFilter.value}
-          onChange={(v) => {
-            statusFilter.value = v
+          onChange={(e) => {
+            statusFilter.value = e.currentTarget.value
           }}
           aria-label={t(deployMsg.deplFilterStatusLabel)}
         />

@@ -49,7 +49,7 @@ export function IssueRow({ issue, index }: Props) {
       <span className={styles['spacer']} />
       {assignee ? (
         <Tooltip content={assignee.name}>
-          <Avatar name={assignee.name} size="sm" />
+          <Avatar fallback={assignee.name} size="sm" />
         </Tooltip>
       ) : (
         <span className={styles['avatarPlaceholder']} />

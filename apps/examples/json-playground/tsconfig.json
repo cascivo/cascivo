@@ -2,9 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "paths": {
-      "@cascivo/react": ["../../../packages/react/src/index.ts"]
-    }
+    "paths": {}
   },
   "include": [
     "src",

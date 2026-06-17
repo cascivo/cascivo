@@ -8,7 +8,7 @@
     "build": "vp build",
     "preview": "vp preview",
     "test": "vp test",
-    "check": "vp check"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@cascivo/core": "workspace:*",

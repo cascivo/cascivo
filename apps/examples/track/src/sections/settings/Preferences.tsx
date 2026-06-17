@@ -2,7 +2,7 @@
 import { useSignal, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { Input, Toggle, Select, RadioGroup, Radio } from '@cascivo/react'
-import { setAppTheme, getAppTheme } from '@cascivo/example-kit'
+import { setAppTheme, getAppTheme, type AppShellTheme } from '@cascivo/example-kit'
 import { msg } from '../../i18n'
 import styles from './Preferences.module.css'
 
@@ -30,7 +30,7 @@ export function Preferences() {
   const ctrlEnter = useSignal(false)
   const desktopNotif = useSignal(false)
   const autoAssign = useSignal(true)
-  const currentTheme = useSignal<'dark' | 'light'>(getAppTheme())
+  const currentTheme = useSignal<AppShellTheme>(getAppTheme())
 
   return (
     <div className={styles['root']}>

@@ -1,5 +1,5 @@
-import type { ViewConfig } from '../../render/src/types.js'
-import { validateView } from '../../render/src/validate.js'
+import type { ViewConfig } from '@cascivo/render'
+import { validateView } from '@cascivo/render'
 import type { Registry } from './registry.js'
 
 interface ScaffoldViewInput {

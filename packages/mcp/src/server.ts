@@ -14,7 +14,7 @@ import {
 } from './registry.js'
 import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
-import { validateView } from '../../render/src/validate.js'
+import { validateView } from '@cascivo/render'
 import { scaffoldView } from './scaffold-view.js'
 import { loadTokenCatalog } from './tokens.js'
 import { loadContext, loadComponentMarkdown } from './context.js'

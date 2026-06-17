@@ -84,8 +84,8 @@ export function AppShell({
         }
         sideNav={
           <SideNav
-            groups={navGroups}
-            items={navItems}
+            {...(navGroups ? { groups: navGroups } : {})}
+            {...(navItems ? { items: navItems } : {})}
             collapsed={shellState.sideNavCollapsed.value}
             onCollapsedChange={(c) => {
               shellState.sideNavCollapsed.value = c

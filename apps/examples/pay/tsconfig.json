@@ -7,7 +7,6 @@
       "@cascivo/core": ["../../../packages/core/src/index.ts"],
       "@cascivo/i18n": ["../../../packages/i18n/src/index.ts"],
       "@cascivo/storage": ["../../../packages/storage/src/index.ts"],
-      "@cascivo/react": ["../../../packages/react/src/index.ts"],
       "@cascivo/icons": ["../../../packages/icons/src/index.tsx"],
       "@cascivo/charts": ["../../../packages/charts/src/index.ts"],
       "@cascivo/example-kit": ["../kit/src/index.ts"]
@@ -15,8 +14,8 @@
   },
   "include": [
     "src",
-    "test",
     "../../../packages/components/src/css-modules.d.ts",
     "../../../packages/react/src/css-modules.d.ts"
-  ]
+  ],
+  "exclude": ["test", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }
