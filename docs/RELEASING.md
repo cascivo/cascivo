@@ -33,21 +33,59 @@ For each package, add a GitHub Actions trusted publisher with:
 
 ### 2. First-publish bootstrap
 
-All ten package names are unpublished. npm may require a package to exist before
-a trusted publisher can be attached. If so, perform a one-time bootstrap:
+All ten package names are unpublished. npm requires a package to exist before
+a trusted publisher can be attached, so the very first publish must be done
+manually with a short-lived token.
 
-1. Create a short-lived **granular automation token** on npmjs.com (scope: publish
-   only, expiry: 1 day).
-2. For each package: `npm publish --access public` (from the repo root after
-   `pnpm build` and `pnpm changeset version`).
-3. Immediately delete the token after the bootstrap publish.
-4. Configure the trusted publisher for each package as described above.
+#### Step-by-step
 
-From the second release onward, the workflow publishes tokenlessly via OIDC.
+```bash
+# 1. Build all packages (dist/ must exist before publishing)
+pnpm build
 
-If npm allows pre-creation trusted-publisher configuration for new packages
-(check the npmjs.com UI — this capability may be added), you can skip the
-bootstrap entirely and proceed directly to Step 1.
+# 2. Bump versions and generate CHANGELOGs from the staged changeset
+#    This consumes .changeset/initial-release.md and writes version 0.1.0
+#    into each Tier-1 package.json.
+pnpm changeset version
+
+# 3. Commit the version bump (do not skip — changesets publish reads
+#    package.json versions to determine what to push to the registry)
+git add -A
+git commit -m "chore: version packages 0.1.0"
+
+# 4. Create a granular automation token on npmjs.com:
+#      npmjs.com → Account Settings → Access Tokens → Generate New Token
+#      Type: Granular Access Token
+#      Scopes: Read and write (publish)
+#      Expiration: 1 day
+#      Packages: all packages (or list each @cascivo/* + cascivo explicitly)
+#
+#    Copy the token value — you will never see it again.
+
+# 5. Publish all Tier-1 packages in one command.
+#    changeset publish handles workspace:^ → real version rewriting,
+#    publishes in dependency order, and skips private packages.
+#    Pass the token via env — do NOT commit it anywhere.
+NODE_AUTH_TOKEN=<paste-token-here> pnpm changeset publish
+
+# 6. Immediately delete the token on npmjs.com (Account Settings → Access Tokens).
+
+# 7. Push the version-bump commit and the new git tags that changeset publish created.
+git push --follow-tags
+```
+
+#### After the bootstrap
+
+For each of the ten packages that are now live on npm:
+
+1. Go to `npmjs.com/package/<pkg-name>` → **Settings** → **Trusted Publisher**.
+2. Add a GitHub Actions publisher: org `urbanisierung`, repo `cascivo`, workflow `release.yml`.
+
+From the second release onward the workflow publishes tokenlessly via OIDC — no token needed.
+
+> **Note:** If npmjs.com adds support for pre-creation trusted-publisher configuration
+> (where you can attach a publisher before a package exists), you can skip the bootstrap
+> entirely. Check the npmjs.com UI before starting.
 
 ## Steady-state release flow
 
