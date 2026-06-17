@@ -708,6 +708,48 @@
         }
       }
     </style>
+    <!-- Spinner CSS inlined to eliminate render-blocking <link> (roadmap v35 T4).
+         This is the minified output of packages/components/src/spinner/spinner.module.css.
+         Hash-locked to the current build; regenerate if the spinner component changes:
+         pnpm exec vp run @cascivo/landing#build && cat apps/landing/dist/assets/spinner-*.css -->
+    <style>
+      @layer cascade.component {
+        ._spinner_4whgp_2 {
+          box-sizing: border-box;
+          border-style: solid;
+          border-color: currentColor;
+          border-radius: var(--cascivo-radius-full);
+          border-block-start-color: #0000;
+          animation: 0.6s linear infinite _cascade-spin_4whgp_1;
+          display: inline-block;
+        }
+        ._spinner_4whgp_2[data-size='sm'] {
+          border-width: 2px;
+          width: 1rem;
+          height: 1rem;
+        }
+        ._spinner_4whgp_2[data-size='md'] {
+          border-width: 2px;
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+        ._spinner_4whgp_2[data-size='lg'] {
+          border-width: 3px;
+          width: 2rem;
+          height: 2rem;
+        }
+        @keyframes _cascade-spin_4whgp_1 {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          ._spinner_4whgp_2 {
+            animation-duration: 1.5s;
+          }
+        }
+      }
+    </style>
     <link rel="stylesheet" href="/src/landing.css" media="print" onload="this.media = 'all'" />
     <noscript><link rel="stylesheet" href="/src/landing.css" /></noscript>
   </head>

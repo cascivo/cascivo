@@ -207,8 +207,52 @@ function serveExampleDemos(): Plugin {
   }
 }
 
+/**
+ * Remove the render-blocking <link rel="stylesheet"> for spinner CSS from the
+ * built HTML. The spinner CSS is inlined in index.html (roadmap v35 T4), so the
+ * emitted <link> is redundant and would re-block rendering.
+ */
+function removeSpinnerLink(): Plugin {
+  return {
+    name: 'cascade:remove-spinner-link',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace(/<link[^>]*\/assets\/spinner-[^>]*\.css[^>]*>/g, '')
+    },
+  }
+}
+
+/**
+ * Emit <link rel="preload" as="style"> for the main index CSS chunk so the
+ * browser can fetch it in parallel with JS parsing (roadmap v35 T4).
+ */
+function preloadMainCss(): Plugin {
+  return {
+    name: 'cascade:preload-main-css',
+    apply: 'build',
+    transformIndexHtml(html, ctx) {
+      if (!ctx.bundle) return html
+      const cssChunk = Object.keys(ctx.bundle).find(
+        (k) => k.startsWith('assets/index-') && k.endsWith('.css'),
+      )
+      if (!cssChunk) return html
+      const href = `/${cssChunk}`
+      const preload = `<link rel="preload" as="style" href="${href}">`
+      return html.replace('</head>', `  ${preload}\n  </head>`)
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [imagetools(), injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
+  plugins: [
+    imagetools(),
+    injectCounts(),
+    prerenderHeads(),
+    benchData(),
+    serveExampleDemos(),
+    removeSpinnerLink(),
+    preloadMainCss(),
+  ],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
