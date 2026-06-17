@@ -35,7 +35,7 @@
 
     &[data-variant='success'] {
       background-color: var(--cascivo-color-success-subtle);
-      color: var(--cascivo-color-success-content);
+      color: var(--cascivo-color-success-foreground);
     }
 
     &[data-variant='warning'] {
@@ -45,7 +45,7 @@
 
     &[data-variant='destructive'] {
       background-color: var(--cascivo-color-destructive-subtle);
-      color: var(--cascivo-color-destructive-content);
+      color: var(--cascivo-color-destructive-foreground);
     }
 
     &[data-variant='primary'] {

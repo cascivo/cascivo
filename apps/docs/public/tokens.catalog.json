@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-17",
-  "count": 224,
+  "count": 225,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1642,6 +1642,14 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.5 0.14 75)",
+      "resolvesPerTheme": true
+    },
+    {
+      "name": "--cascivo-color-destructive-foreground",
+      "value": "oklch(0.448 0.17 22)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.448 0.17 22)",
       "resolvesPerTheme": true
     },
     {
