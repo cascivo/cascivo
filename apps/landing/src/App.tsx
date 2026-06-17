@@ -6,7 +6,7 @@ import { Hero } from './sections/Hero'
 import { Principles } from './sections/Principles'
 import { StatsBand } from './sections/StatsBand'
 import { initReveal } from './reveal'
-import { currentPath, initRouter, navigate } from './router'
+import { currentPath, initRouter, navigate, scrollToHash } from './router'
 const SearchDialog = lazy(() =>
   import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
 )
@@ -143,9 +143,7 @@ function navigateToResult(href: string) {
     const path = href.slice(0, hashIndex) || '/'
     const hash = href.slice(hashIndex)
     navigate(path)
-    requestAnimationFrame(() => {
-      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
-    })
+    scrollToHash(hash)
     return
   }
   navigate(href)

@@ -49,7 +49,7 @@ const PAGE_SECTIONS: SearchItem[] = [
     id: 'page-quickstart',
     title: 'Quick Start',
     section: 'Home',
-    href: '/#quick-start',
+    href: '/#quickstart',
     type: 'page',
     description: 'Get up and running in three steps',
   },
