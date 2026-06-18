@@ -521,11 +521,14 @@
       /* ── Hero ─────────────────────────────────────────────── */
       .hero {
         max-width: 60rem;
+        /* One clear moment per screen: the hero fills the viewport and centres. */
+        min-block-size: 82vh;
         margin-inline: auto;
-        padding: var(--cascivo-space-20) var(--cascivo-space-6) var(--cascivo-space-12);
+        padding: var(--cascivo-space-16) var(--cascivo-space-6) var(--cascivo-space-12);
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: var(--cascivo-space-5);
         text-align: center;
       }
@@ -664,7 +667,7 @@
 
       .marquee-row {
         display: flex;
-        gap: var(--cascivo-space-4);
+        gap: 0;
         width: max-content;
         will-change: transform;
       }
@@ -684,6 +687,9 @@
 
       .marquee-tile {
         flex: 0 0 auto;
+        /* Spacing lives on the tile (not row gap) so the duplicated track is an
+           exact 2× of one set — translateX(-50%) then loops with no seam. */
+        margin-inline-end: var(--cascivo-space-4);
         display: flex;
         align-items: center;
         min-block-size: 4.5rem;

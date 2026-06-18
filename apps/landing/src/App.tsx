@@ -4,8 +4,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { ComponentMarquee } from './sections/ComponentMarquee'
-import { Principles } from './sections/Principles'
-import { StatsBand } from './sections/StatsBand'
+import { AdvantageCarousel } from './sections/AdvantageCarousel'
 import { initReveal } from './reveal'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
 const SearchDialog = lazy(() =>
@@ -19,7 +18,6 @@ import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
-const Showcase = lazy(() => import('./sections/Showcase').then((m) => ({ default: m.Showcase })))
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
@@ -77,11 +75,7 @@ function HomePage() {
         <main>
           <Hero />
           <ComponentMarquee />
-          <StatsBand />
-          <Principles />
-          <Suspense fallback={<SectionFallback height={480} />}>
-            <Showcase />
-          </Suspense>
+          <AdvantageCarousel />
           <Suspense fallback={<SectionFallback height={420} />}>
             <QuickStart />
           </Suspense>

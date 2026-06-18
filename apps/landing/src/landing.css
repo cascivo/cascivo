@@ -67,6 +67,14 @@ main {
   padding: var(--cascivo-space-12) var(--cascivo-space-6);
 }
 
+/* Home Quick Start gets a full viewport moment like the other home sections. */
+#quickstart {
+  min-block-size: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .section h2 {
   margin: 0 0 var(--cascivo-space-2);
   font-size: clamp(1.375rem, 3vw + 0.5rem, 1.75rem);
@@ -274,135 +282,201 @@ main {
   block-size: 1.5rem;
 }
 
-/* ── Signature showcase ───────────────────────────────── */
-.showcase {
-  max-width: 960px;
+/* ── Advantages carousel ──────────────────────────────── */
+.advantages {
+  max-width: 64rem;
+  /* One idea per screen — the carousel owns the viewport and centres. */
+  min-block-size: 82vh;
   margin-inline: auto;
+  padding-block: var(--cascivo-space-12);
+  padding-inline: var(--cascivo-space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.showcase-tabs {
-  margin-block-start: var(--cascivo-space-6);
+.adv-tabs {
+  gap: var(--cascivo-space-8);
 }
 
-/* The showcase tab content frames a single focused region. ThemeDemo carries
-   its own heading/section; teasers fill the same slot. Reserve a min height so
-   switching tabs (or a lazy teaser loading) does not shift the page. */
-.showcase-tabs [role='tabpanel'] {
-  min-block-size: 24rem;
-}
-
-.showcase-teaser {
+/* Card row replaces the Tabs underline bar. */
+.adv-cards {
   display: grid;
-  gap: var(--cascivo-space-6);
-  align-items: center;
-  padding-block: var(--cascivo-space-4);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--cascivo-space-3);
+  border-block-end: none;
+  overflow: visible;
 }
 
-.showcase-teaser-media {
-  display: block;
+.adv-card {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  text-align: start;
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-lg);
-  overflow: hidden;
-  line-height: 0;
+  background-color: var(--cascivo-color-surface);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
 
-.showcase-teaser-media img {
-  inline-size: 100%;
-  block-size: auto;
-  aspect-ratio: 1280 / 800;
-  object-fit: cover;
+/* Kill the Tabs underline pseudo-element. */
+.adv-card::after {
+  content: none;
 }
 
-.showcase-teaser-body h3 {
-  margin: 0 0 var(--cascivo-space-2);
-  font-size: var(--cascivo-text-xl);
+.adv-card[data-state='active'] {
+  border-color: var(--cascivo-color-accent);
+  background-color: var(--cascivo-color-bg);
+}
+
+.adv-card-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--cascivo-radius-md);
+  background-color: var(--cascivo-color-bg-subtle);
+  color: var(--cascivo-color-accent);
+}
+
+.adv-card-icon svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+
+.adv-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.adv-card-title {
   font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
 }
 
-.showcase-teaser-body p {
-  margin: 0 0 var(--cascivo-space-4);
+.adv-card-tagline {
+  font-size: var(--cascivo-text-xs);
   color: var(--cascivo-color-text-subtle);
 }
 
-.showcase-teaser-link {
+.adv-panel {
+  display: grid;
+  gap: var(--cascivo-space-6);
+  align-items: center;
+  padding-block: var(--cascivo-space-2);
+  min-block-size: 18rem;
+}
+
+.adv-copy h3 {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-2xl);
+  font-weight: var(--cascivo-font-bold);
+  letter-spacing: var(--cascivo-tracking-tight);
+}
+
+.adv-copy p {
+  margin: 0 0 var(--cascivo-space-4);
+  color: var(--cascivo-color-text-subtle);
+  max-inline-size: 42ch;
+}
+
+.adv-link {
   font-weight: var(--cascivo-font-medium);
   color: var(--cascivo-color-accent);
   text-decoration: none;
 }
 
-.showcase-teaser-link:hover {
+.adv-link:hover {
   text-decoration: underline;
 }
 
-.showcase-teaser-fallback {
-  min-block-size: 24rem;
+.adv-code {
+  margin: 0;
+  padding: var(--cascivo-space-5);
+  overflow-x: auto;
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-sm);
+  line-height: var(--cascivo-leading-relaxed);
+  color: var(--cascivo-color-text);
+  background-color: var(--cascivo-color-bg-subtle);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+}
+
+.adv-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-8);
+  text-align: center;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-bg-subtle);
+}
+
+.adv-bignum {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: var(--cascivo-font-bold);
+  line-height: 1;
+  color: var(--cascivo-color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.adv-bignum-label {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.adv-themes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--cascivo-space-3);
+}
+
+.adv-theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-4);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background-color: var(--cascivo-color-bg);
+  color: var(--cascivo-color-text);
+}
+
+.adv-theme-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adv-theme-name {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  text-transform: capitalize;
 }
 
 @media (min-width: 64rem) {
-  .showcase-teaser {
-    grid-template-columns: 1.2fr 1fr;
+  .adv-cards {
+    grid-template-columns: repeat(5, 1fr);
   }
-}
 
-/* ── Theme demo ───────────────────────────────────────── */
-.theme-demo-cycler {
-  display: flex;
-  justify-content: center;
-  margin-block: var(--cascivo-space-6);
-}
+  .adv-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.theme-demo-pane--single {
-  inline-size: min(28rem, 100%);
-  min-block-size: 22rem;
-  padding: var(--cascivo-space-6);
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-lg);
-  background-color: var(--cascivo-color-bg);
-  color: var(--cascivo-color-text);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease;
-}
-
-.theme-demo-dots {
-  display: flex;
-  justify-content: center;
-  gap: var(--cascivo-space-2);
-  flex-wrap: wrap;
-  margin-block-start: var(--cascivo-space-4);
-}
-
-.theme-demo-dot {
-  inline-size: 0.625rem;
-  block-size: 0.625rem;
-  padding: 1.0625rem;
-  background-clip: content-box;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background-color: var(--cascivo-color-border);
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.theme-demo-dot[data-state='active'] {
-  background-color: var(--cascivo-color-accent);
-  transform: scale(1.3);
-}
-
-.theme-demo-label {
-  margin-block-end: var(--cascivo-space-3);
-  font-family: var(--cascivo-font-mono);
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text);
-}
-
-.theme-demo-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-4);
+  .adv-panel {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--cascivo-space-10);
+  }
 }
 
 /* ── Chart Showcase ───────────────────────────────────── */
@@ -802,100 +876,6 @@ kbd {
 
 .copy-command code {
   white-space: nowrap;
-}
-
-/* ── Principles strip ─────────────────────────────────── */
-.principles {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-block: 1px solid var(--cascivo-color-border);
-}
-
-@media (max-width: 56rem) {
-  .principles {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 32rem) {
-  .principles {
-    grid-template-columns: 1fr;
-  }
-}
-
-.principle {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-1);
-  padding: var(--cascivo-space-5) var(--cascivo-space-6);
-  border-inline-end: 1px solid var(--cascivo-color-border);
-  text-decoration: none;
-  color: var(--cascivo-color-text);
-  transition: background-color 150ms;
-}
-
-.principle:last-child {
-  border-inline-end: none;
-}
-
-.principle-more {
-  margin-block-start: var(--cascivo-space-3);
-}
-
-.principle-more-text {
-  margin: 0 0 var(--cascivo-space-2);
-}
-
-.principle-more-link {
-  font-weight: var(--cascivo-font-medium);
-  color: var(--cascivo-color-accent);
-  text-decoration: none;
-}
-
-.principle-more-link:hover {
-  text-decoration: underline;
-}
-
-.principle-title {
-  font-family: var(--cascivo-font-mono);
-  font-size: var(--cascivo-text-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--cascivo-color-text);
-}
-
-.principle-line {
-  font-size: var(--cascivo-text-sm);
-  color: var(--cascivo-color-text);
-}
-
-/* ── Stats band ───────────────────────────────────────── */
-.stats-band {
-  max-width: 1040px;
-  margin-inline: auto;
-  padding: var(--cascivo-space-8) var(--cascivo-space-6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--cascivo-space-4);
-}
-
-.stats-band-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--cascivo-space-6);
-}
-
-.stats-band-link {
-  font-size: var(--cascivo-text-sm);
-  font-weight: var(--cascivo-font-medium);
-  color: var(--cascivo-color-accent);
-  text-decoration: none;
-}
-
-.stats-band-link:hover {
-  text-decoration: underline;
 }
 
 /* ── Proof teasers ────────────────────────────────────── */
@@ -1978,15 +1958,6 @@ kbd {
   /* Agents */
   .agents {
     padding: var(--cascivo-space-8) var(--cascivo-space-4);
-  }
-
-  /* Stats band */
-  .stats-band {
-    padding: var(--cascivo-space-8) var(--cascivo-space-4);
-  }
-
-  .stats-band-row {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   /* Agent code: overflow-x scroll */
