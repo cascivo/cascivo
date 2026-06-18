@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-button",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "copy-button/copy-button.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignal, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { ButtonHTMLAttributes } from 'react'\nimport styles from './copy-button.module.css'\n\nexport interface CopyButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {\n  /** The text written to the clipboard on click. */\n  value: string\n  size?: 'sm' | 'md'\n  labels?: { copy?: string; copied?: string }\n}\n\nexport function CopyButton({ value, size = 'md', labels, className, ...props }: CopyButtonProps) {\n  useSignals()\n  const copied = useSignal(false)\n  const copyLabel = labels?.copy ?? t(builtin.copyButton.copy)\n  const copiedLabel = labels?.copied ?? t(builtin.copyButton.copied)\n\n  const handleClick = () => {\n    void navigator.clipboard.writeText(value)\n    copied.value = true\n    setTimeout(() => {\n      copied.value = false\n    }, 2000)\n  }\n\n  return (\n    <button\n      type=\"button\"\n      aria-label={copied.value ? copiedLabel : copyLabel}\n      data-state={copied.value ? 'copied' : 'idle'}\n      data-size={size}\n      className={cn(styles['copyButton'], className as string | undefined)}\n      onClick={handleClick}\n      {...props}\n    >\n      {copied.value ? (\n        <svg aria-hidden=\"true\" viewBox=\"0 0 16 16\" className={styles['icon']}>\n          <path\n            d=\"M13.5 4.5 6 12 2.5 8.5\"\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeWidth=\"1.5\"\n            strokeLinecap=\"round\"\n            strokeLinejoin=\"round\"\n          />\n        </svg>\n      ) : (\n        <svg aria-hidden=\"true\" viewBox=\"0 0 16 16\" className={styles['icon']}>\n          <rect\n            x=\"5.5\"\n            y=\"5.5\"\n            width=\"8\"\n            height=\"8\"\n            rx=\"1.5\"\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeWidth=\"1.5\"\n          />\n          <path\n            d=\"M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1\"\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeWidth=\"1.5\"\n          />\n        </svg>\n      )}\n    </button>\n  )\n}\n"
+    },
+    {
+      "path": "copy-button/copy-button.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .copyButton {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    background-color: var(--cascivo-color-surface);\n    color: var(--cascivo-color-text-subtle);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-control);\n    cursor: pointer;\n    transition:\n      color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover {\n      background-color: var(--cascivo-color-bg-subtle);\n      color: var(--cascivo-color-text);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    &:disabled {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n\n    &[data-state='copied'] {\n      color: var(--cascivo-color-success);\n    }\n\n    &[data-size='sm'] {\n      inline-size: var(--cascivo-control-height-sm);\n      block-size: var(--cascivo-control-height-sm);\n    }\n\n    &[data-size='md'] {\n      inline-size: var(--cascivo-control-height-md);\n      block-size: var(--cascivo-control-height-md);\n    }\n  }\n\n  .icon {\n    inline-size: 1rem;\n    block-size: 1rem;\n  }\n}\n"
+    }
+  ],
+  "description": "Icon button that copies a value to the clipboard with copied feedback",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

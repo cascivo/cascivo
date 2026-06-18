@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-masonry",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-masonry/masonry.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './masonry.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface MasonryProps extends HTMLAttributes<HTMLDivElement> {\n  cols?: number\n  gap?: SpaceStep\n  className?: string | undefined\n}\n\nexport function Masonry({ cols = 3, gap = 4, className, style, ...props }: MasonryProps) {\n  return (\n    <div\n      className={cn(styles['masonry'], className)}\n      style={{\n        ['--_cols' as string]: String(cols),\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(style as CSSProperties | undefined),\n      }}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-masonry/masonry.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  /* Fallback: CSS multi-columns. Items flow column-major (top-to-bottom per column). */\n  .masonry {\n    column-count: var(--_cols, 3);\n    column-gap: var(--_gap, var(--cascivo-space-4));\n  }\n\n  .masonry > * {\n    break-inside: avoid;\n    margin-block-end: var(--_gap, var(--cascivo-space-4));\n  }\n\n  /* Native masonry — grid-template-rows syntax (Firefox / spec baseline). */\n  @supports (grid-template-rows: masonry) {\n    .masonry {\n      display: grid;\n      column-count: initial;\n      grid-template-columns: repeat(var(--_cols, 3), minmax(0, 1fr));\n      grid-template-rows: masonry;\n      gap: var(--_gap, var(--cascivo-space-4));\n    }\n\n    .masonry > * {\n      margin-block-end: 0;\n    }\n  }\n\n  /* Native masonry — display syntax (WebKit/Chrome lineage, in-flux spec). */\n  @supports (display: masonry) {\n    .masonry {\n      display: masonry;\n      column-count: initial;\n      masonry-template-tracks: repeat(var(--_cols, 3), minmax(0, 1fr));\n      gap: var(--_gap, var(--cascivo-space-4));\n    }\n\n    .masonry > * {\n      margin-block-end: 0;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

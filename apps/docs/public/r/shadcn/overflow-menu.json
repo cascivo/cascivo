@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "overflow-menu",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "overflow-menu/overflow-menu.tsx",
+      "type": "registry:component",
+      "content": "/**\n * @deprecated OverflowMenu is deprecated. Use Menu from @cascivo/components/menu instead.\n * OverflowMenu is kept for registry compatibility and will be removed in v4.\n */\n'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { ReactNode } from 'react'\nimport { Dropdown, type DropdownItem } from '../dropdown/dropdown'\nimport styles from './overflow-menu.module.css'\n\nexport interface OverflowMenuItem {\n  label: string\n  value: string\n  icon?: ReactNode\n  disabled?: boolean\n  destructive?: boolean\n}\n\nexport interface OverflowMenuProps {\n  items: OverflowMenuItem[]\n  onSelect?: (value: string) => void\n  placement?: 'bottom-start' | 'bottom-end'\n  ariaLabel?: string\n  size?: 'sm' | 'md'\n  disabled?: boolean\n  className?: string\n}\n\nfunction KebabIcon() {\n  return (\n    <svg viewBox=\"0 0 16 16\" width=\"16\" height=\"16\" fill=\"currentColor\" aria-hidden=\"true\">\n      <circle cx=\"8\" cy=\"3\" r=\"1.5\" />\n      <circle cx=\"8\" cy=\"8\" r=\"1.5\" />\n      <circle cx=\"8\" cy=\"13\" r=\"1.5\" />\n    </svg>\n  )\n}\n\nexport function OverflowMenu({\n  items,\n  onSelect,\n  placement = 'bottom-end',\n  ariaLabel,\n  size = 'md',\n  disabled = false,\n  className,\n}: OverflowMenuProps) {\n  useSignals()\n  const resolvedAriaLabel = ariaLabel ?? t(builtin.overflowMenu.trigger)\n  // Map to Dropdown's item shape. Destructive items carry a hidden marker span\n  // inside the icon slot so CSS can target them via :has().\n  const dropdownItems: DropdownItem[] = items.map((item) => {\n    const mapped: DropdownItem = { label: item.label, value: item.value }\n    if (item.disabled !== undefined) mapped.disabled = item.disabled\n    if (item.destructive) {\n      mapped.icon = (\n        <>\n          {item.icon}\n          <span className={styles['destructive-flag']} aria-hidden=\"true\" />\n        </>\n      )\n    } else if (item.icon !== undefined) {\n      mapped.icon = item.icon\n    }\n    return mapped\n  })\n\n  return (\n    <div className={cn(styles['root'], className)}>\n      <Dropdown\n        items={dropdownItems}\n        onSelect={(value) => onSelect?.(value)}\n        placement={placement}\n        trigger={\n          <button\n            type=\"button\"\n            className={styles['trigger']}\n            data-size={size}\n            disabled={disabled}\n            aria-label={resolvedAriaLabel}\n          >\n            <KebabIcon />\n          </button>\n        }\n      />\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "overflow-menu/overflow-menu.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    display: inline-flex;\n  }\n\n  .trigger {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0;\n    color: var(--cascivo-color-text-muted);\n    background-color: transparent;\n    border: 1px solid transparent;\n    border-radius: var(--cascivo-radius-control);\n    cursor: pointer;\n    transition:\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &[data-size='sm'] {\n      inline-size: 2rem;\n      block-size: 2rem;\n    }\n\n    &[data-size='md'] {\n      inline-size: 2.5rem;\n      block-size: 2.5rem;\n    }\n\n    &:hover:not(:disabled) {\n      color: var(--cascivo-color-text);\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    &:disabled {\n      opacity: 0.5;\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n  }\n\n  /* Invisible marker rendered into the icon slot of destructive items. */\n  .destructive-flag {\n    display: none;\n  }\n\n  .root [role='menuitem']:has(.destructive-flag) {\n    color: var(--cascivo-color-destructive);\n\n    &:hover:not(:disabled),\n    &:focus-visible {\n      background-color: var(--cascivo-color-destructive-subtle);\n    }\n\n    /* Dropdown's icon wrapper sets a muted color; make it follow the item. */\n    > span {\n      color: inherit;\n    }\n  }\n\n  /* Hide the icon wrapper when it only contains the marker (no real icon),\n     so destructive items without icons align with the other items. */\n  .root [role='menuitem'] > span:has(> .destructive-flag:only-child) {\n    display: none;\n  }\n}\n"
+    }
+  ],
+  "description": "Kebab icon button revealing a menu of row-level actions",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["overlay"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

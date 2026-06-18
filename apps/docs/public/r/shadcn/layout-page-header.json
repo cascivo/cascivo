@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-page-header",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-page-header/page-header.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './page-header.module.css'\n\nexport interface PageHeaderProps {\n  title: string\n  description?: string\n  breadcrumb?: ReactNode\n  actions?: ReactNode\n  className?: string\n}\n\nexport function PageHeader({\n  title,\n  description,\n  breadcrumb,\n  actions,\n  className,\n}: PageHeaderProps) {\n  return (\n    <header className={cn(styles['header'], className)}>\n      {breadcrumb && <div className={styles['breadcrumb']}>{breadcrumb}</div>}\n      <div className={styles['row']}>\n        <h1 className={styles['title']}>{title}</h1>\n        {actions && <div className={styles['actions']}>{actions}</div>}\n      </div>\n      {description && <p className={styles['description']}>{description}</p>}\n    </header>\n  )\n}\n"
+    },
+    {
+      "path": "layout-page-header/page-header.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n  }\n\n  .breadcrumb {\n    color: var(--cascivo-color-text-muted);\n  }\n\n  .row {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: var(--cascivo-space-4);\n    flex-wrap: wrap;\n  }\n\n  .title {\n    margin: 0;\n    font-size: var(--cascivo-font-size-2xl, 1.5rem);\n    font-weight: var(--cascivo-font-weight-bold, 700);\n    color: var(--cascivo-color-text);\n    line-height: 1.2;\n  }\n\n  .actions {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    flex-shrink: 0;\n  }\n\n  .description {\n    margin: 0;\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-font-size-sm);\n  }\n}\n"
+    }
+  ],
+  "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

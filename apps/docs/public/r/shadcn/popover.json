@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "popover/popover.tsx",
+      "type": "registry:component",
+      "content": "'use client'\n\nimport { createContext, type ReactNode } from 'react'\nimport { useSignals } from '@cascivo/core'\nimport { usePopover, type UsePopoverOptions, type UsePopoverReturn } from './use-popover'\nimport styles from './popover.module.css'\n\nconst PopoverContext = createContext<UsePopoverReturn | null>(null)\n\nexport interface PopoverProps extends UsePopoverOptions {\n  children: ReactNode\n}\n\nexport function Popover({ children, ...options }: PopoverProps) {\n  const popover = usePopover(options)\n  return <PopoverContext.Provider value={popover}>{children}</PopoverContext.Provider>\n}\n\nexport interface PopoverTriggerProps {\n  children: ReactNode\n  asChild?: boolean\n}\n\nexport function PopoverTrigger({ children }: PopoverTriggerProps) {\n  useSignals()\n  return (\n    <PopoverContext.Consumer>\n      {(ctx) => {\n        if (!ctx) throw new Error('PopoverTrigger must be used inside <Popover>')\n        const { triggerRef, toggle, anchorName, isOpen } = ctx\n        return (\n          <button\n            ref={triggerRef as React.RefObject<HTMLButtonElement>}\n            type=\"button\"\n            aria-expanded={isOpen.value}\n            aria-haspopup=\"dialog\"\n            style={{ anchorName } as React.CSSProperties}\n            onClick={toggle}\n            className={styles.trigger}\n          >\n            {children}\n          </button>\n        )\n      }}\n    </PopoverContext.Consumer>\n  )\n}\n\nexport interface PopoverContentProps {\n  children: ReactNode\n  className?: string\n}\n\nexport function PopoverContent({ children, className }: PopoverContentProps) {\n  useSignals()\n  return (\n    <PopoverContext.Consumer>\n      {(ctx) => {\n        if (!ctx) throw new Error('PopoverContent must be used inside <Popover>')\n        const { popoverRef, anchorName, isOpen } = ctx\n        return (\n          <div\n            ref={popoverRef as React.RefObject<HTMLDivElement>}\n            // eslint-disable-next-line @typescript-eslint/ban-ts-comment\n            // @ts-ignore — popover is a valid HTML attribute not yet in React types\n            popover=\"auto\"\n            role=\"dialog\"\n            data-state={isOpen.value ? 'open' : 'closed'}\n            style={{ positionAnchor: anchorName } as React.CSSProperties}\n            className={[styles.content, className].filter(Boolean).join(' ')}\n          >\n            {children}\n          </div>\n        )\n      }}\n    </PopoverContext.Consumer>\n  )\n}\n"
+    },
+    {
+      "path": "popover/popover.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .trigger {\n    /* Trigger inherits button styles from the consuming component */\n  }\n\n  .content {\n    position: fixed;\n    inset: auto;\n    margin: 0;\n    padding: var(--cascivo-space-3);\n    background: var(--cascivo-color-surface);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-overlay);\n    box-shadow: var(--cascivo-shadow-md);\n\n    /* CSS Anchor Positioning — supported browsers */\n    @supports (anchor-name: --a) {\n      position-try-fallbacks:\n        flip-block,\n        flip-inline,\n        flip-block flip-inline;\n      inset-block-start: anchor(end);\n      inset-inline-start: anchor(start);\n    }\n\n    /* Enter animation */\n    opacity: 1;\n    translate: 0 0;\n    transition:\n      opacity var(--cascivo-motion-enter),\n      translate var(--cascivo-motion-enter),\n      display var(--cascivo-motion-enter) allow-discrete,\n      overlay var(--cascivo-motion-enter) allow-discrete;\n\n    @starting-style {\n      opacity: 0;\n      translate: 0 calc(-1 * var(--cascivo-space-2));\n    }\n\n    &[data-state='closed'] {\n      opacity: 0;\n      translate: 0 calc(-1 * var(--cascivo-space-2));\n      transition:\n        opacity var(--cascivo-motion-exit),\n        translate var(--cascivo-motion-exit),\n        display var(--cascivo-motion-exit) allow-discrete,\n        overlay var(--cascivo-motion-exit) allow-discrete;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["overlay"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

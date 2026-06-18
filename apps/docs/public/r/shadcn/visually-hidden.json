@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "visually-hidden",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "visually-hidden/visually-hidden.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport styles from './visually-hidden.module.css'\n\nexport interface VisuallyHiddenProps extends HTMLAttributes<HTMLSpanElement> {\n  children: ReactNode\n}\n\nexport function VisuallyHidden({ children, className, ...props }: VisuallyHiddenProps) {\n  return (\n    <span className={cn(styles['visuallyHidden'], className)} {...props}>\n      {children}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "visually-hidden/visually-hidden.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .visuallyHidden {\n    position: absolute;\n    inline-size: 1px;\n    block-size: 1px;\n    padding: 0;\n    margin: -1px;\n    overflow: hidden;\n    clip-path: inset(50%);\n    white-space: nowrap;\n    border: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Hides content visually while keeping it available to screen readers",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

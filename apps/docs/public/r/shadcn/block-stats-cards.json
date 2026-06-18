@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-stats-cards",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-stats-cards/stats-cards.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Badge, Card, CardContent, CardHeader, CardTitle } from '@cascivo/react'\n\ninterface Stat {\n  label: string\n  value: string\n  delta?: string\n  trend?: 'up' | 'down' | 'neutral'\n}\n\nconst demoStats: Stat[] = [\n  { label: 'Total users', value: '12,483', delta: '+12%', trend: 'up' },\n  { label: 'Revenue', value: '$48,290', delta: '+8.4%', trend: 'up' },\n  { label: 'Active sessions', value: '1,042', delta: '-3%', trend: 'down' },\n  { label: 'Uptime', value: '99.98%', delta: '+0.1%', trend: 'neutral' },\n]\n\nfunction trendVariant(trend: Stat['trend']): 'success' | 'destructive' | 'secondary' {\n  if (trend === 'up') return 'success'\n  if (trend === 'down') return 'destructive'\n  return 'secondary'\n}\n\nexport interface StatsCardsProps {\n  stats?: Stat[]\n}\n\nexport function StatsCards({ stats = demoStats }: StatsCardsProps) {\n  return (\n    <div\n      style={{\n        display: 'grid',\n        gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',\n        gap: '1rem',\n      }}\n    >\n      {stats.map((stat) => (\n        <Card key={stat.label}>\n          <CardHeader>\n            <CardTitle>{stat.label}</CardTitle>\n          </CardHeader>\n          <CardContent>\n            <div style={{ fontSize: '2rem', fontWeight: 700 }}>{stat.value}</div>\n            {stat.delta && <Badge variant={trendVariant(stat.trend)}>{stat.delta}</Badge>}\n          </CardContent>\n        </Card>\n      ))}\n    </div>\n  )\n}\n"
+    }
+  ],
+  "description": "Grid of KPI stat cards with trend badges.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

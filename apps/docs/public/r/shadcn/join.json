@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "join",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "join/join.tsx",
+      "type": "registry:component",
+      "content": "import styles from './join.module.css'\n\nexport type JoinOrientation = 'horizontal' | 'vertical'\n\nexport interface JoinProps {\n  children: React.ReactNode\n  orientation?: JoinOrientation\n  className?: string\n}\n\nexport function Join({ children, orientation = 'horizontal', className }: JoinProps) {\n  return (\n    <div\n      className={[styles.join, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n    >\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "join/join.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .join {\n    display: inline-flex;\n  }\n\n  .join[data-orientation='horizontal'] {\n    flex-direction: row;\n  }\n  .join[data-orientation='vertical'] {\n    flex-direction: column;\n  }\n\n  .join[data-orientation='horizontal'] > :first-child:not(:last-child) {\n    border-start-end-radius: 0 !important;\n    border-end-end-radius: 0 !important;\n  }\n  .join[data-orientation='horizontal'] > :last-child:not(:first-child) {\n    border-start-start-radius: 0 !important;\n    border-end-start-radius: 0 !important;\n  }\n  .join[data-orientation='horizontal'] > :not(:first-child):not(:last-child) {\n    border-radius: 0 !important;\n  }\n\n  .join[data-orientation='vertical'] > :first-child:not(:last-child) {\n    border-end-start-radius: 0 !important;\n    border-end-end-radius: 0 !important;\n  }\n  .join[data-orientation='vertical'] > :last-child:not(:first-child) {\n    border-start-start-radius: 0 !important;\n    border-start-end-radius: 0 !important;\n  }\n  .join[data-orientation='vertical'] > :not(:first-child):not(:last-child) {\n    border-radius: 0 !important;\n  }\n\n  .join[data-orientation='horizontal'] > :not(:first-child) {\n    border-inline-start-width: 0;\n  }\n  .join[data-orientation='vertical'] > :not(:first-child) {\n    border-block-start-width: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

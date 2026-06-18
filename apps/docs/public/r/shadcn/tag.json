@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tag",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "tag/tag.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { HTMLAttributes } from 'react'\nimport styles from './tag.module.css'\n\nexport interface TagProps extends HTMLAttributes<HTMLSpanElement> {\n  variant?: 'default' | 'info' | 'success' | 'warning' | 'error'\n  size?: 'sm' | 'md'\n  onDismiss?: () => void\n  dismissLabel?: string\n}\n\nexport function Tag({\n  variant = 'default',\n  size = 'md',\n  onDismiss,\n  dismissLabel,\n  className,\n  children,\n  ...props\n}: TagProps) {\n  useSignals()\n  const resolvedDismissLabel = dismissLabel ?? t(builtin.tag.dismiss)\n  return (\n    <span\n      data-variant={variant}\n      data-size={size}\n      className={cn(styles['tag'], className)}\n      {...props}\n    >\n      {children}\n      {onDismiss && (\n        <button\n          type=\"button\"\n          className={styles['dismiss']}\n          aria-label={resolvedDismissLabel}\n          onClick={onDismiss}\n        >\n          ✕\n        </button>\n      )}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "tag/tag.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .tag {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-1);\n    font-family: var(--cascivo-font-sans);\n    font-weight: var(--cascivo-font-medium);\n    border-radius: var(--cascivo-radius-badge);\n    white-space: nowrap;\n\n    &[data-size='sm'] {\n      padding-inline: var(--cascivo-space-2);\n      padding-block: var(--cascivo-space-1);\n      font-size: var(--cascivo-text-xs);\n      line-height: 1;\n    }\n\n    &[data-size='md'] {\n      padding-inline: var(--cascivo-space-3);\n      padding-block: var(--cascivo-space-1);\n      font-size: var(--cascivo-text-xs);\n      line-height: var(--cascivo-leading-normal);\n    }\n\n    &[data-variant='default'] {\n      background-color: var(--cascivo-color-bg-subtle);\n      color: var(--cascivo-color-text-subtle);\n    }\n\n    &[data-variant='info'] {\n      background-color: var(--cascivo-color-info-subtle);\n      color: var(--cascivo-color-info);\n    }\n\n    &[data-variant='success'] {\n      background-color: var(--cascivo-color-success-subtle);\n      color: var(--cascivo-color-success);\n    }\n\n    &[data-variant='warning'] {\n      background-color: var(--cascivo-color-warning-subtle);\n      color: var(--cascivo-color-warning);\n    }\n\n    &[data-variant='error'] {\n      background-color: var(--cascivo-color-destructive-subtle);\n      color: var(--cascivo-color-destructive);\n    }\n  }\n\n  .dismiss {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0;\n    margin-inline-end: calc(-1 * var(--cascivo-space-1));\n    border: none;\n    background: transparent;\n    color: currentColor;\n    font-size: inherit;\n    line-height: 1;\n    cursor: pointer;\n    border-radius: var(--cascivo-radius-full);\n    opacity: 0.7;\n    transition: opacity var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover {\n      opacity: 1;\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n      opacity: 1;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Compact chip for labeling, categorizing, or filtering content",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-bubble-chart",
+  "type": "registry:component",
+  "files": [],
+  "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

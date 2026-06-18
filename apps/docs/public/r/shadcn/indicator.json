@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "indicator",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "indicator/indicator.tsx",
+      "type": "registry:component",
+      "content": "import styles from './indicator.module.css'\n\nexport type IndicatorPlacement = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'\n\nexport interface IndicatorProps {\n  children: React.ReactNode\n  overlay: React.ReactNode\n  placement?: IndicatorPlacement\n  className?: string\n}\n\nexport function Indicator({ children, overlay, placement = 'top-end', className }: IndicatorProps) {\n  return (\n    <div\n      className={[styles.indicator, className].filter(Boolean).join(' ')}\n      data-placement={placement}\n    >\n      {children}\n      <div className={styles.overlay} aria-hidden>\n        {overlay}\n      </div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "indicator/indicator.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .indicator {\n    position: relative;\n    display: inline-flex;\n  }\n\n  .overlay {\n    position: absolute;\n    z-index: 1;\n    pointer-events: none;\n  }\n\n  .indicator[data-placement='top-start'] .overlay {\n    inset-block-start: 0;\n    inset-inline-start: 0;\n    transform: translate(-25%, -25%);\n  }\n  .indicator[data-placement='top-end'] .overlay {\n    inset-block-start: 0;\n    inset-inline-end: 0;\n    transform: translate(25%, -25%);\n  }\n  .indicator[data-placement='bottom-start'] .overlay {\n    inset-block-end: 0;\n    inset-inline-start: 0;\n    transform: translate(-25%, 25%);\n  }\n  .indicator[data-placement='bottom-end'] .overlay {\n    inset-block-end: 0;\n    inset-inline-end: 0;\n    transform: translate(25%, 25%);\n  }\n}\n"
+    }
+  ],
+  "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

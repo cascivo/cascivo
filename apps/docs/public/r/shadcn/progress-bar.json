@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress-bar",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "progress-bar/progress-bar.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties } from 'react'\nimport styles from './progress-bar.module.css'\n\nexport interface ProgressBarProps {\n  /** Current value from 0 to max. Omit for an indeterminate bar. */\n  value?: number\n  max?: number\n  label?: string\n  helperText?: string\n  size?: 'sm' | 'md'\n  status?: 'active' | 'success' | 'error'\n  className?: string\n}\n\nexport function ProgressBar({\n  value,\n  max = 100,\n  label,\n  helperText,\n  size = 'md',\n  status = 'active',\n  className,\n}: ProgressBarProps) {\n  const indeterminate = value === undefined\n  const clamped = indeterminate ? 0 : Math.min(Math.max(value, 0), max)\n  const percent = max > 0 ? (clamped / max) * 100 : 0\n  const labelId = label ? `cascade-progress-${label.toLowerCase().replace(/\\s+/g, '-')}` : undefined\n  const glyph = status === 'success' ? '✓' : status === 'error' ? '✕' : null\n\n  return (\n    <div\n      data-status={status}\n      data-size={size}\n      data-state={indeterminate ? 'indeterminate' : undefined}\n      className={cn(styles['progress'], className)}\n    >\n      {label && (\n        <span id={labelId} className={styles['label']}>\n          {label}\n          {glyph && (\n            <span className={styles['glyph']} aria-hidden=\"true\">\n              {glyph}\n            </span>\n          )}\n        </span>\n      )}\n      <div\n        role=\"progressbar\"\n        aria-valuemin={0}\n        aria-valuemax={max}\n        aria-valuenow={indeterminate ? undefined : clamped}\n        aria-labelledby={labelId}\n        className={styles['track']}\n      >\n        <div\n          className={styles['fill']}\n          style={\n            indeterminate\n              ? undefined\n              : ({ '--cascivo-progress-value': `${percent}%` } as CSSProperties)\n          }\n        />\n      </div>\n      {helperText && <span className={styles['helper']}>{helperText}</span>}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "progress-bar/progress-bar.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .progress {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    font-family: var(--cascivo-font-sans);\n\n    &[data-status='success'] {\n      .fill {\n        background-color: var(--cascivo-color-success);\n      }\n\n      .glyph {\n        color: var(--cascivo-color-success);\n      }\n    }\n\n    &[data-status='error'] {\n      .fill {\n        background-color: var(--cascivo-color-destructive);\n      }\n\n      .glyph {\n        color: var(--cascivo-color-destructive);\n      }\n    }\n\n    &[data-size='sm'] .track {\n      block-size: var(--cascivo-space-1);\n    }\n\n    &[data-size='md'] .track {\n      block-size: var(--cascivo-space-2);\n    }\n\n    &[data-state='indeterminate'] .fill {\n      inline-size: 40%;\n      transition: none;\n      /* Continuous sweep — literal duration; reduced motion slows it below. */\n      animation: cascade-progress-sweep 1.4s var(--cascivo-ease-in-out) infinite;\n    }\n  }\n\n  .label {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-1);\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-tight);\n  }\n\n  .glyph {\n    font-size: var(--cascivo-text-xs);\n    line-height: 1;\n  }\n\n  .track {\n    position: relative;\n    overflow: hidden;\n    inline-size: 100%;\n    background-color: var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-full);\n  }\n\n  .fill {\n    position: absolute;\n    inset-block: 0;\n    inset-inline-start: 0;\n    inline-size: var(--cascivo-progress-value, 0%);\n    background-color: var(--cascivo-color-accent);\n    border-radius: var(--cascivo-radius-full);\n    transition: inline-size var(--cascivo-motion-enter);\n  }\n\n  .helper {\n    font-size: var(--cascivo-text-xs);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-tight);\n  }\n\n  @keyframes cascade-progress-sweep {\n    from {\n      inset-inline-start: -40%;\n    }\n\n    to {\n      inset-inline-start: 100%;\n    }\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .progress[data-state='indeterminate'] .fill {\n      animation-duration: 4s;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Shows determinate or indeterminate progress of a task",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["feedback"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

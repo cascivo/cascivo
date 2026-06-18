@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "segmented-control",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "segmented-control/segmented-control.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './segmented-control.module.css'\n\nexport interface SegmentedControlOption {\n  label: string\n  value: string\n  disabled?: boolean\n}\n\nexport interface SegmentedControlProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {\n  options: SegmentedControlOption[]\n  value: string\n  onValueChange: (v: string) => void\n  size?: 'sm' | 'md' | 'lg'\n  disabled?: boolean\n}\n\nexport function SegmentedControl({\n  options,\n  value,\n  onValueChange,\n  size = 'md',\n  disabled = false,\n  className,\n  ...props\n}: SegmentedControlProps) {\n  function handleKeyDown(e: React.KeyboardEvent<HTMLButtonElement>, index: number) {\n    const enabledOptions = options.filter((o) => !o.disabled)\n    const currentEnabled = enabledOptions.findIndex((o) => o.value === options[index]?.value)\n    if (e.key === 'ArrowRight') {\n      e.preventDefault()\n      const next = enabledOptions[(currentEnabled + 1) % enabledOptions.length]\n      if (next) onValueChange(next.value)\n    } else if (e.key === 'ArrowLeft') {\n      e.preventDefault()\n      const prev =\n        enabledOptions[(currentEnabled - 1 + enabledOptions.length) % enabledOptions.length]\n      if (prev) onValueChange(prev.value)\n    }\n  }\n\n  return (\n    <div\n      role=\"group\"\n      className={cn(styles['wrapper'], className)}\n      data-size={size}\n      data-disabled={disabled ? '' : undefined}\n      {...props}\n    >\n      {options.map((opt, i) => (\n        <button\n          key={opt.value}\n          type=\"button\"\n          role=\"radio\"\n          aria-checked={opt.value === value}\n          data-selected={opt.value === value ? '' : undefined}\n          data-size={size}\n          className={styles['segment']}\n          disabled={disabled || opt.disabled}\n          onClick={() => {\n            if (!opt.disabled) onValueChange(opt.value)\n          }}\n          onKeyDown={(e) => handleKeyDown(e, i)}\n        >\n          {opt.label}\n        </button>\n      ))}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "segmented-control/segmented-control.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .wrapper {\n    display: inline-flex;\n    gap: var(--cascivo-space-1);\n    padding: var(--cascivo-space-1);\n    background-color: var(--cascivo-color-bg-subtle);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-control);\n\n    &[data-size='sm'] {\n      --_seg-h: 1.75rem;\n      --_seg-font: var(--cascivo-text-xs);\n      --_seg-px: var(--cascivo-space-2);\n    }\n\n    &[data-size='md'] {\n      --_seg-h: 2.25rem;\n      --_seg-font: var(--cascivo-text-sm);\n      --_seg-px: var(--cascivo-space-3);\n    }\n\n    &[data-size='lg'] {\n      --_seg-h: 2.75rem;\n      --_seg-font: var(--cascivo-text-base);\n      --_seg-px: var(--cascivo-space-4);\n    }\n\n    &[data-disabled] {\n      opacity: 0.5;\n    }\n  }\n\n  .segment {\n    height: var(--_seg-h, 2.25rem);\n    padding-inline: var(--_seg-px, var(--cascivo-space-3));\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--_seg-font, var(--cascivo-text-sm));\n    font-weight: var(--cascivo-font-medium);\n    color: var(--cascivo-color-text-subtle);\n    background: none;\n    border: none;\n    border-radius: var(--cascivo-radius-item);\n    cursor: pointer;\n    transition:\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      color var(--cascivo-duration-150) var(--cascivo-ease-out);\n    white-space: nowrap;\n\n    &:hover:not(:disabled):not([data-selected]) {\n      color: var(--cascivo-color-text);\n      background-color: rgb(from var(--cascivo-color-text) r g b / 0.05);\n    }\n\n    &:focus-visible {\n      outline: 2px solid var(--cascivo-color-accent);\n      outline-offset: 1px;\n    }\n\n    &[data-selected] {\n      color: var(--cascivo-color-text);\n      background-color: var(--cascivo-color-surface);\n      box-shadow: var(--cascivo-shadow-sm);\n    }\n\n    &:disabled {\n      cursor: not-allowed;\n      opacity: 0.5;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Mutually exclusive toggle group",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

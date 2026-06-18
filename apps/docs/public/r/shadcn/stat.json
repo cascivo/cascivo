@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stat",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "stat/stat.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './stat.module.css'\n\nexport interface StatProps extends HTMLAttributes<HTMLDivElement> {\n  label: string\n  value: string | number\n  delta?: string\n  trend?: 'up' | 'down' | 'flat'\n  helpText?: string\n}\n\nexport function Stat({\n  label,\n  value,\n  delta,\n  trend = 'flat',\n  helpText,\n  className,\n  ...props\n}: StatProps) {\n  return (\n    <div className={cn(styles['stat'], className as string | undefined)} {...props}>\n      <span className={styles['label']}>{label}</span>\n      <span className={styles['value']}>{value}</span>\n      {delta && (\n        <span data-trend={trend} className={styles['delta']}>\n          <span aria-hidden=\"true\" className={styles['arrow']}>\n            {trend === 'up' ? '▲' : trend === 'down' ? '▼' : '–'}\n          </span>\n          {delta}\n        </span>\n      )}\n      {helpText && <span className={styles['help']}>{helpText}</span>}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "stat/stat.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .stat {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    font-family: var(--cascivo-font-sans);\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-tight);\n  }\n\n  .value {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-tight);\n    font-variant-numeric: tabular-nums;\n  }\n\n  .delta {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-1);\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    font-variant-numeric: tabular-nums;\n\n    &[data-trend='up'] {\n      color: var(--cascivo-color-success);\n    }\n\n    &[data-trend='down'] {\n      color: var(--cascivo-color-destructive);\n    }\n\n    &[data-trend='flat'] {\n      color: var(--cascivo-color-text-subtle);\n    }\n  }\n\n  .arrow {\n    font-size: var(--cascivo-text-xs);\n    line-height: 1;\n  }\n\n  .help {\n    font-size: var(--cascivo-text-xs);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-tight);\n  }\n}\n"
+    }
+  ],
+  "description": "Displays a key metric with optional delta, trend direction and help text",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

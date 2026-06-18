@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "card/card.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './card.module.css'\n\nexport interface CardProps extends HTMLAttributes<HTMLDivElement> {\n  variant?: 'default' | 'outlined' | 'elevated'\n  padding?: 'none' | 'sm' | 'md' | 'lg'\n}\n\nexport function Card({\n  variant = 'default',\n  padding = 'md',\n  className,\n  children,\n  ...props\n}: CardProps) {\n  return (\n    <div\n      data-variant={variant}\n      data-padding={padding}\n      className={cn(styles['card'], className)}\n      {...props}\n    >\n      {children}\n    </div>\n  )\n}\n\nexport interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function CardHeader({ className, children, ...props }: CardHeaderProps) {\n  return (\n    <div className={cn(styles['header'], className)} {...props}>\n      {children}\n    </div>\n  )\n}\n\nexport interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}\n\nexport function CardTitle({ className, children, ...props }: CardTitleProps) {\n  return (\n    <h3 className={cn(styles['title'], className)} {...props}>\n      {children}\n    </h3>\n  )\n}\n\nexport interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function CardContent({ className, children, ...props }: CardContentProps) {\n  return (\n    <div className={cn(styles['content'], className)} {...props}>\n      {children}\n    </div>\n  )\n}\n\nexport interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function CardFooter({ className, children, ...props }: CardFooterProps) {\n  return (\n    <div className={cn(styles['footer'], className)} {...props}>\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "card/card.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .card {\n    background-color: var(--cascivo-color-surface);\n    border-radius: var(--cascivo-radius-surface);\n    overflow: hidden;\n    padding: var(--_card-p, 0);\n\n    &[data-padding='none'] {\n      --_card-p: 0;\n    }\n    &[data-padding='sm'] {\n      --_card-p: var(--cascivo-space-4);\n    }\n    &[data-padding='md'] {\n      --_card-p: var(--cascivo-space-6);\n    }\n    &[data-padding='lg'] {\n      --_card-p: var(--cascivo-space-8);\n    }\n\n    &[data-variant='default'] {\n      border: 1px solid var(--cascivo-color-border);\n    }\n\n    &[data-variant='outlined'] {\n      border: 1.5px solid var(--cascivo-color-border-strong);\n    }\n\n    &[data-variant='elevated'] {\n      border: none;\n      box-shadow: var(--cascivo-shadow-md);\n    }\n  }\n\n  .header {\n    padding: var(--_card-p, var(--cascivo-space-6));\n    padding-block-end: 0;\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n  }\n\n  .title {\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-lg);\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-tight);\n    margin: 0;\n  }\n\n  .content {\n    padding: var(--_card-p, var(--cascivo-space-6));\n    color: var(--cascivo-color-text-subtle);\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    line-height: var(--cascivo-leading-relaxed);\n  }\n\n  .footer {\n    padding: var(--_card-p, var(--cascivo-space-6));\n    padding-block-start: 0;\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n  }\n}\n"
+    }
+  ],
+  "description": "Container for grouping related content",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

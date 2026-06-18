@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "text",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "text/text.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './text.module.css'\n\nexport interface TextProps extends HTMLAttributes<HTMLElement> {\n  as?: 'p' | 'span' | 'div'\n  size?: 'sm' | 'md' | 'lg'\n  weight?: 'normal' | 'medium' | 'semibold'\n  muted?: boolean\n}\n\nexport function Text({\n  as: Tag = 'p',\n  size = 'md',\n  weight = 'normal',\n  muted = false,\n  className,\n  children,\n  ...props\n}: TextProps) {\n  return (\n    <Tag\n      data-size={size}\n      data-weight={weight}\n      data-muted={muted ? '' : undefined}\n      className={cn(styles['text'], className as string | undefined)}\n      {...(props as Record<string, unknown>)}\n    >\n      {children}\n    </Tag>\n  )\n}\n"
+    },
+    {
+      "path": "text/text.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .text {\n    margin: 0;\n    font-family: var(--cascivo-font-sans);\n    line-height: var(--cascivo-leading-normal);\n    color: var(--cascivo-color-text);\n\n    &[data-size='sm'] {\n      font-size: var(--cascivo-text-sm);\n    }\n\n    &[data-size='md'] {\n      font-size: var(--cascivo-text-base);\n    }\n\n    &[data-size='lg'] {\n      font-size: var(--cascivo-text-lg);\n    }\n\n    &[data-weight='normal'] {\n      font-weight: var(--cascivo-font-normal);\n    }\n\n    &[data-weight='medium'] {\n      font-weight: var(--cascivo-font-medium);\n    }\n\n    &[data-weight='semibold'] {\n      font-weight: var(--cascivo-font-semibold);\n    }\n\n    &[data-muted] {\n      color: var(--cascivo-color-text-subtle);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Body text with size, weight, and muted variants",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

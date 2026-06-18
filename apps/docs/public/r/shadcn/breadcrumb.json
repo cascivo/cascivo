@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "breadcrumb",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "breadcrumb/breadcrumb.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport styles from './breadcrumb.module.css'\n\nexport interface BreadcrumbItem {\n  label: string\n  href?: string\n}\n\nexport interface BreadcrumbProps {\n  items: BreadcrumbItem[]\n  maxVisible?: number\n  className?: string\n  /** Accessible label for the nav landmark */\n  ariaLabel?: string\n}\n\nexport function Breadcrumb({ items, maxVisible, className, ariaLabel }: BreadcrumbProps) {\n  useSignals()\n  const resolvedAriaLabel = ariaLabel ?? t(builtin.breadcrumb.nav)\n  let visible = items\n  const first = items[0]\n  if (first !== undefined && maxVisible !== undefined && items.length > maxVisible) {\n    visible = [first, { label: '…' }, ...items.slice(items.length - (maxVisible - 2))]\n  }\n\n  return (\n    <nav aria-label={resolvedAriaLabel} className={cn(styles['breadcrumb'], className)}>\n      <ol>\n        {visible.map((item, index) => {\n          const isLast = index === visible.length - 1\n          return (\n            <li key={`${index}-${item.label}`}>\n              {isLast ? (\n                <span aria-current=\"page\">{item.label}</span>\n              ) : item.href !== undefined ? (\n                <a href={item.href}>{item.label}</a>\n              ) : (\n                <span>{item.label}</span>\n              )}\n            </li>\n          )\n        })}\n      </ol>\n    </nav>\n  )\n}\n"
+    },
+    {
+      "path": "breadcrumb/breadcrumb.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .breadcrumb {\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    line-height: var(--cascivo-leading-normal);\n\n    & ol {\n      display: flex;\n      flex-wrap: wrap;\n      align-items: center;\n      gap: var(--cascivo-space-2);\n      margin: 0;\n      padding: 0;\n      list-style: none;\n    }\n\n    & li {\n      display: inline-flex;\n      align-items: center;\n      gap: var(--cascivo-space-2);\n      color: var(--cascivo-color-text-muted);\n    }\n\n    /* Separator — alt text '' keeps it out of the accessibility tree */\n    & li + li::before {\n      content: '/' / '';\n      color: var(--cascivo-color-text-subtle);\n    }\n\n    & a {\n      color: var(--cascivo-color-text-muted);\n      text-decoration: none;\n      border-radius: var(--cascivo-radius-item);\n      transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n      &:hover {\n        color: var(--cascivo-color-text);\n        text-decoration: underline;\n      }\n\n      &:focus-visible {\n        outline: none;\n        box-shadow: var(--cascivo-focus-ring);\n      }\n    }\n\n    & [aria-current='page'] {\n      color: var(--cascivo-color-text);\n      font-weight: var(--cascivo-font-medium);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Shows the current page location within a navigation hierarchy",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["navigation"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

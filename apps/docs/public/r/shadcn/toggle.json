@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "toggle/toggle.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, createMachine, useMachine, useSignals } from '@cascivo/core'\nimport type { ButtonHTMLAttributes } from 'react'\nimport styles from './toggle.module.css'\n\nexport interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {\n  checked?: boolean\n  defaultChecked?: boolean\n  onChange?: (checked: boolean) => void\n  label?: string\n  size?: 'sm' | 'md'\n}\n\nexport function Toggle({\n  checked,\n  defaultChecked = false,\n  onChange,\n  label,\n  size = 'md',\n  className,\n  disabled,\n  ...props\n}: ToggleProps) {\n  useSignals()\n  const machine = createMachine({\n    initial: defaultChecked ? ('on' as const) : ('off' as const),\n    states: {\n      off: { on: { TOGGLE: 'on' } },\n      on: { on: { TOGGLE: 'off' } },\n    },\n  })\n  const [state, send] = useMachine(machine)\n\n  const isControlled = checked !== undefined\n  const isOn = isControlled ? checked : state.value === 'on'\n\n  const handleClick = () => {\n    if (!isControlled) send('TOGGLE')\n    onChange?.(!isOn)\n  }\n\n  return (\n    <button\n      type=\"button\"\n      role=\"switch\"\n      aria-checked={isOn}\n      data-state={isOn ? 'on' : 'off'}\n      data-size={size}\n      disabled={disabled}\n      className={cn(styles['toggle'], className)}\n      onClick={handleClick}\n      {...props}\n    >\n      <span className={styles['track']} aria-hidden=\"true\">\n        <span className={styles['thumb']} />\n      </span>\n      {label && <span className={styles['label']}>{label}</span>}\n    </button>\n  )\n}\n"
+    },
+    {
+      "path": "toggle/toggle.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .toggle {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    padding: 0;\n    background: none;\n    border: none;\n    font-family: var(--cascivo-font-sans);\n    cursor: pointer;\n\n    &[data-size='sm'] {\n      --_track-w: 1.75rem;\n      --_track-h: 1rem;\n      --_thumb: 0.75rem;\n    }\n    &[data-size='md'] {\n      --_track-w: 2.25rem;\n      --_track-h: 1.25rem;\n      --_thumb: 1rem;\n    }\n\n    &:disabled {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n\n    &:focus-visible {\n      outline: none;\n    }\n  }\n\n  .track {\n    display: inline-flex;\n    align-items: center;\n    flex-shrink: 0;\n    inline-size: var(--_track-w);\n    block-size: var(--_track-h);\n    padding: 2px;\n    border-radius: var(--cascivo-radius-full);\n    background-color: var(--cascivo-color-border-strong);\n    transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    .toggle[data-state='on'] & {\n      background-color: var(--cascivo-color-accent);\n    }\n\n    .toggle:focus-visible & {\n      box-shadow: var(--cascivo-focus-ring);\n    }\n  }\n\n  .thumb {\n    inline-size: var(--_thumb);\n    block-size: var(--_thumb);\n    border-radius: var(--cascivo-radius-full);\n    background-color: var(--cascivo-color-surface);\n    box-shadow: var(--cascivo-shadow-sm);\n    transition: translate var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    .toggle[data-state='on'] & {\n      translate: calc(var(--_track-w) - var(--_thumb) - 4px) 0;\n    }\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-snug);\n  }\n\n  /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */\n  @media (pointer: coarse) {\n    .toggle {\n      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);\n    }\n  }\n}\n\n@media (forced-colors: active) {\n  .track {\n    border: 1px solid ButtonText;\n  }\n\n  .toggle[data-state='on'] .track {\n    border-color: Highlight;\n    background-color: Highlight;\n  }\n\n  .toggle:focus-visible .track {\n    outline: 2px solid Highlight;\n    outline-offset: 2px;\n  }\n}\n"
+    }
+  ],
+  "description": "On/off switch built as an accessible button",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-media-masonry",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "section-media-masonry/media-masonry.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { Masonry } from '../../masonry/masonry'\nimport { Section } from '../../section/section'\nimport styles from './media-masonry.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface MediaMasonryProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {\n  title?: ReactNode\n  description?: ReactNode\n  headingLevel?: 1 | 2 | 3\n  cols?: number\n  gap?: SpaceStep\n  children: ReactNode\n  className?: string | undefined\n}\n\nexport function MediaMasonry({\n  title,\n  description,\n  headingLevel = 2,\n  cols = 3,\n  gap = 4,\n  className,\n  children,\n  ...props\n}: MediaMasonryProps) {\n  const Heading = `h${headingLevel}` as const\n  return (\n    <Section width=\"wide\" className={cn(styles['media-masonry'], className)} {...props}>\n      {(title || description) && (\n        <div className={styles['header']}>\n          {title && <Heading className={styles['title']}>{title}</Heading>}\n          {description && <p className={styles['description']}>{description}</p>}\n        </div>\n      )}\n      <Masonry cols={cols} gap={gap}>\n        {children}\n      </Masonry>\n    </Section>\n  )\n}\n"
+    },
+    {
+      "path": "section-media-masonry/media-masonry.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .title {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    text-wrap: balance;\n    margin: 0;\n  }\n\n  .description {\n    font-size: var(--cascivo-text-base);\n    color: var(--cascivo-text-secondary);\n    max-inline-size: 60ch;\n    margin: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "section",
+      "version": "0.0.0"
+    }
+  }
+}

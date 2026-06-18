@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-spacer",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-spacer/spacer.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './spacer.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface SpacerProps extends HTMLAttributes<HTMLDivElement> {\n  size?: SpaceStep\n}\n\nexport function Spacer({ size = 4, className, style, ...props }: SpacerProps) {\n  return (\n    <div\n      role=\"none\"\n      className={cn(styles['spacer'], className)}\n      style={{ ['--_spacer-size' as string]: `var(--cascivo-space-${size})`, ...style }}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-spacer/spacer.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .spacer {\n    block-size: var(--_spacer-size, var(--cascivo-space-4));\n    flex-shrink: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Fixed-height spacing block using design token steps.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

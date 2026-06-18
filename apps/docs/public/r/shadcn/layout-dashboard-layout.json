@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-dashboard-layout",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-dashboard-layout/dashboard-layout.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './dashboard-layout.module.css'\n\nexport interface DashboardLayoutProps {\n  stats?: ReactNode\n  main: ReactNode\n  aside?: ReactNode\n  className?: string | undefined\n}\n\nexport function DashboardLayout({ stats, main, aside, className }: DashboardLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      {stats && <div className={styles['stats']}>{stats}</div>}\n      <div className={styles['body']}>\n        <div className={styles['main']}>{main}</div>\n        {aside && <div className={styles['aside']}>{aside}</div>}\n      </div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "layout-dashboard-layout/dashboard-layout.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .layout {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-6);\n    container-type: inline-size;\n  }\n\n  .stats {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));\n    gap: var(--cascivo-space-4);\n  }\n\n  .body {\n    display: grid;\n    grid-template-columns: minmax(0, 1fr) 20rem;\n    gap: var(--cascivo-space-6);\n    align-items: start;\n\n    @container (max-width: 56rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n\n  .main {\n    min-inline-size: 0;\n  }\n\n  .aside {\n    min-inline-size: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "swap",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "swap/swap.tsx",
+      "type": "registry:component",
+      "content": "import { useSignal, useSignals } from '@cascivo/core'\nimport styles from './swap.module.css'\n\nexport type SwapMode = 'rotate' | 'flip'\n\nexport interface SwapProps {\n  on: React.ReactNode\n  off: React.ReactNode\n  checked?: boolean\n  onChange?: (checked: boolean) => void\n  mode?: SwapMode\n  'aria-label'?: string\n  className?: string\n}\n\nexport function Swap({\n  on,\n  off,\n  checked = false,\n  onChange,\n  mode = 'rotate',\n  className,\n  ...aria\n}: SwapProps) {\n  useSignals()\n  const isChecked = useSignal(checked)\n  isChecked.value = checked\n\n  function handleClick() {\n    const next = !isChecked.value\n    onChange?.(next)\n  }\n\n  return (\n    <button\n      type=\"button\"\n      role=\"switch\"\n      aria-checked={isChecked.value}\n      className={[styles.swap, className].filter(Boolean).join(' ')}\n      data-checked={isChecked.value || undefined}\n      data-mode={mode}\n      onClick={handleClick}\n      {...aria}\n    >\n      <span className={styles.on} aria-hidden=\"true\">\n        {on}\n      </span>\n      <span className={styles.off} aria-hidden=\"true\">\n        {off}\n      </span>\n    </button>\n  )\n}\n"
+    },
+    {
+      "path": "swap/swap.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .swap {\n    display: inline-grid;\n    grid-template-areas: 'swap';\n    background: none;\n    border: none;\n    padding: 0;\n    cursor: pointer;\n    position: relative;\n    overflow: hidden;\n  }\n\n  .swap:focus-visible {\n    outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);\n    outline-offset: 2px;\n    border-radius: var(--cascivo-radius-control);\n  }\n\n  .on,\n  .off {\n    grid-area: swap;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition-property: transform, opacity;\n    transition-duration: 200ms;\n    transition-timing-function: var(--cascivo-ease-out);\n  }\n\n  .swap[data-mode='rotate'] .on {\n    transform: rotate(0deg);\n    opacity: 1;\n  }\n  .swap[data-mode='rotate'] .off {\n    transform: rotate(-90deg);\n    opacity: 0;\n  }\n  .swap[data-mode='rotate'][data-checked] .on {\n    transform: rotate(90deg);\n    opacity: 0;\n  }\n  .swap[data-mode='rotate'][data-checked] .off {\n    transform: rotate(0deg);\n    opacity: 1;\n  }\n\n  .swap[data-mode='flip'] .on {\n    transform: rotateY(0deg);\n    opacity: 1;\n  }\n  .swap[data-mode='flip'] .off {\n    transform: rotateY(180deg);\n    opacity: 0;\n  }\n  .swap[data-mode='flip'][data-checked] .on {\n    transform: rotateY(-180deg);\n    opacity: 0;\n  }\n  .swap[data-mode='flip'][data-checked] .off {\n    transform: rotateY(0deg);\n    opacity: 1;\n  }\n}\n"
+    }
+  ],
+  "description": "Animated toggle between two icon/content states with rotate or flip transition",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

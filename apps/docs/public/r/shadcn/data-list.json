@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-list",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "data-list/data-list.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport styles from './data-list.module.css'\n\nexport interface DataListItem {\n  id?: string\n  label: ReactNode\n  value: ReactNode\n}\n\nexport interface DataListProps extends HTMLAttributes<HTMLDListElement> {\n  items: DataListItem[]\n  orientation?: 'horizontal' | 'vertical'\n  dividers?: boolean\n  size?: 'sm' | 'md'\n}\n\nexport function DataList({\n  items,\n  orientation = 'horizontal',\n  dividers = false,\n  size = 'md',\n  className,\n  ...props\n}: DataListProps) {\n  return (\n    <dl\n      data-orientation={orientation}\n      data-size={size}\n      data-dividers={dividers ? '' : undefined}\n      className={cn(styles['list'], className as string | undefined)}\n      {...props}\n    >\n      {items.map((item, i) => (\n        <div key={item.id ?? i} className={styles['row']}>\n          <dt className={styles['term']}>{item.label}</dt>\n          <dd className={styles['detail']}>{item.value}</dd>\n        </div>\n      ))}\n    </dl>\n  )\n}\n"
+    },
+    {
+      "path": "data-list/data-list.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .list {\n    margin: 0;\n    font-family: var(--cascivo-font-sans);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-normal);\n\n    &[data-size='sm'] {\n      font-size: var(--cascivo-text-xs);\n      --_row-gap: var(--cascivo-space-2);\n      --_pair-gap: var(--cascivo-space-2);\n    }\n\n    &[data-size='md'] {\n      font-size: var(--cascivo-text-sm);\n      --_row-gap: var(--cascivo-space-3);\n      --_pair-gap: var(--cascivo-space-4);\n    }\n  }\n\n  .row {\n    display: grid;\n    gap: var(--_pair-gap);\n    padding-block: var(--_row-gap);\n  }\n\n  .list[data-orientation='horizontal'] .row {\n    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);\n    align-items: baseline;\n  }\n\n  .list[data-orientation='vertical'] .row {\n    grid-template-columns: 1fr;\n    gap: var(--cascivo-space-1);\n  }\n\n  .list[data-dividers] .row {\n    border-block-end: 1px solid var(--cascivo-color-border);\n  }\n\n  .list[data-dividers] .row:last-child {\n    border-block-end: none;\n  }\n\n  .term {\n    margin: 0;\n    color: var(--cascivo-color-text-subtle);\n    font-weight: var(--cascivo-font-medium);\n  }\n\n  .detail {\n    margin: 0;\n    margin-inline-start: 0;\n    color: var(--cascivo-color-text);\n  }\n}\n\n@media (forced-colors: active) {\n  .list[data-dividers] .row {\n    border-block-end: 1px solid CanvasText;\n  }\n}\n"
+    }
+  ],
+  "description": "Key-value pairs rendered as a description list",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

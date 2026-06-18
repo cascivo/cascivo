@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-hero",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "section-hero/hero.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { Section } from '../../section/section'\nimport styles from './hero.module.css'\n\ntype HeadingLevel = 1 | 2 | 3\n\nexport interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {\n  variant?: 'centered' | 'split'\n  /** Small mono line above the title. */\n  eyebrow?: ReactNode\n  title: ReactNode\n  description?: ReactNode\n  /** Buttons/links rendered in a row under the description. */\n  actions?: ReactNode\n  /** Right-hand slot in the split variant (image, demo, code). */\n  media?: ReactNode\n  headingLevel?: HeadingLevel\n  className?: string | undefined\n}\n\nexport function Hero({\n  variant = 'centered',\n  eyebrow,\n  title,\n  description,\n  actions,\n  media,\n  headingLevel = 1,\n  className,\n  ...props\n}: HeroProps) {\n  const Heading = `h${headingLevel}` as const\n  return (\n    <Section className={cn(styles['hero'], className)} data-variant={variant} {...props}>\n      <div className={styles['copy']}>\n        {eyebrow && <p className={styles['eyebrow']}>{eyebrow}</p>}\n        <Heading className={styles['title']}>{title}</Heading>\n        {description && <p className={styles['description']}>{description}</p>}\n        {actions && <div className={styles['actions']}>{actions}</div>}\n      </div>\n      {variant === 'split' && media && <div className={styles['media']}>{media}</div>}\n    </Section>\n  )\n}\n"
+    },
+    {
+      "path": "section-hero/hero.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  /* centered: single column, text centered */\n  .hero[data-variant='centered'] .copy {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    text-align: center;\n    gap: var(--cascivo-space-4);\n  }\n\n  /* split: two-column grid */\n  .hero[data-variant='split'] {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: var(--cascivo-space-10);\n    align-items: center;\n\n    @container (max-inline-size: 48rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n\n  .hero[data-variant='split'] .copy {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-4);\n  }\n\n  .eyebrow {\n    font-size: var(--cascivo-text-sm);\n    font-family: var(--cascivo-font-mono);\n    color: var(--cascivo-text-secondary);\n    margin: 0;\n  }\n\n  .title {\n    font-size: var(--cascivo-text-4xl);\n    font-weight: var(--cascivo-font-bold);\n    text-wrap: balance;\n    margin: 0;\n  }\n\n  .description {\n    font-size: var(--cascivo-text-lg);\n    color: var(--cascivo-text-secondary);\n    max-inline-size: 60ch;\n    margin: 0;\n  }\n\n  .hero[data-variant='centered'] .description {\n    margin-inline: auto;\n  }\n\n  .actions {\n    display: flex;\n    flex-wrap: wrap;\n    gap: var(--cascivo-space-3);\n  }\n\n  .hero[data-variant='centered'] .actions {\n    justify-content: center;\n  }\n\n  .media {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n}\n"
+    }
+  ],
+  "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "section",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "status",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "status/status.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './status.module.css'\n\nexport interface StatusProps extends HTMLAttributes<HTMLSpanElement> {\n  status?: 'success' | 'warning' | 'error' | 'info' | 'neutral'\n  /** Pulses the dot — only when the user allows motion. */\n  pulse?: boolean\n}\n\nexport function Status({\n  status = 'neutral',\n  pulse = false,\n  className,\n  children,\n  ...props\n}: StatusProps) {\n  return (\n    <span\n      data-status={status}\n      data-pulse={pulse ? '' : undefined}\n      className={cn(styles['status'], className as string | undefined)}\n      {...props}\n    >\n      <span aria-hidden=\"true\" className={styles['dot']} />\n      {children}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "status/status.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .status {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-tight);\n\n    &[data-status='success'] .dot {\n      background-color: var(--cascivo-color-success);\n    }\n\n    &[data-status='warning'] .dot {\n      background-color: var(--cascivo-color-warning);\n    }\n\n    &[data-status='error'] .dot {\n      background-color: var(--cascivo-color-error);\n    }\n\n    &[data-status='info'] .dot {\n      background-color: var(--cascivo-color-info);\n    }\n\n    &[data-status='neutral'] .dot {\n      background-color: var(--cascivo-color-text-muted);\n    }\n  }\n\n  .dot {\n    inline-size: 0.5rem;\n    block-size: 0.5rem;\n    border-radius: var(--cascivo-radius-full);\n    flex-shrink: 0;\n  }\n\n  @media (prefers-reduced-motion: no-preference) {\n    .status[data-pulse] .dot {\n      animation: cascade-status-pulse 2s var(--cascivo-ease-in-out) infinite;\n    }\n  }\n\n  @keyframes cascade-status-pulse {\n    0%,\n    100% {\n      opacity: 1;\n    }\n\n    50% {\n      opacity: 0.4;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Colored dot with a label communicating the state of a system or entity",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

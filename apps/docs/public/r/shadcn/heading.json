@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "heading",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "heading/heading.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './heading.module.css'\n\nexport type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6\nexport type HeadingSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl'\n\nconst DERIVED_SIZE: Record<HeadingLevel, HeadingSize> = {\n  1: '2xl',\n  2: 'xl',\n  3: 'lg',\n  4: 'md',\n  5: 'sm',\n  6: 'sm',\n}\n\nexport interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {\n  level?: HeadingLevel\n  size?: HeadingSize\n}\n\nexport function Heading({ level = 2, size, className, children, ...props }: HeadingProps) {\n  const Tag = `h${level}` as const\n  return (\n    <Tag\n      data-size={size ?? DERIVED_SIZE[level]}\n      className={cn(styles['heading'], className as string | undefined)}\n      {...props}\n    >\n      {children}\n    </Tag>\n  )\n}\n"
+    },
+    {
+      "path": "heading/heading.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .heading {\n    margin: 0;\n    font-family: var(--cascivo-font-display);\n    font-weight: var(--cascivo-font-semibold);\n    line-height: var(--cascivo-leading-tight);\n    color: var(--cascivo-color-text);\n    text-wrap: balance;\n\n    &[data-size='sm'] {\n      font-size: var(--cascivo-text-base);\n    }\n\n    &[data-size='md'] {\n      font-size: var(--cascivo-text-lg);\n    }\n\n    &[data-size='lg'] {\n      font-size: var(--cascivo-text-xl);\n    }\n\n    &[data-size='xl'] {\n      font-size: var(--cascivo-text-2xl);\n      letter-spacing: var(--cascivo-tracking-tight);\n    }\n\n    &[data-size='2xl'] {\n      font-size: var(--cascivo-text-3xl);\n      letter-spacing: var(--cascivo-tracking-tight);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Section heading with semantic level decoupled from visual size",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

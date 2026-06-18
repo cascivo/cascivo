@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kbd",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "kbd/kbd.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './kbd.module.css'\n\nexport interface KbdProps extends HTMLAttributes<HTMLElement> {\n  size?: 'sm' | 'md'\n}\n\nexport function Kbd({ size = 'md', className, children, ...props }: KbdProps) {\n  return (\n    <kbd data-size={size} className={cn(styles['kbd'], className)} {...props}>\n      {children}\n    </kbd>\n  )\n}\n"
+    },
+    {
+      "path": "kbd/kbd.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .kbd {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    font-family: var(--cascivo-font-mono);\n    font-weight: var(--cascivo-font-medium);\n    line-height: 1;\n    color: var(--cascivo-color-text-subtle);\n    background-color: var(--cascivo-color-surface-raised);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-indicator);\n    box-shadow: inset 0 -1px 0 var(--cascivo-color-border-strong);\n    white-space: nowrap;\n\n    &[data-size='sm'] {\n      min-inline-size: 1.25rem;\n      padding-block: var(--cascivo-space-0);\n      padding-inline: var(--cascivo-space-1);\n      font-size: var(--cascivo-text-xs);\n      block-size: 1.25rem;\n    }\n\n    &[data-size='md'] {\n      min-inline-size: 1.5rem;\n      padding-block: var(--cascivo-space-1);\n      padding-inline: var(--cascivo-space-2);\n      font-size: var(--cascivo-text-sm);\n      block-size: 1.5rem;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Displays a keyboard key or shortcut",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

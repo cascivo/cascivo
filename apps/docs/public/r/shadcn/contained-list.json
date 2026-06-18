@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "contained-list",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "contained-list/contained-list.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, Slot } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport styles from './contained-list.module.css'\n\nexport interface ContainedListProps extends HTMLAttributes<HTMLDivElement> {\n  label: ReactNode\n  kind?: 'on-page' | 'disclosed'\n  action?: ReactNode\n}\n\nexport function ContainedList({\n  label,\n  kind = 'on-page',\n  action,\n  className,\n  children,\n  ...props\n}: ContainedListProps) {\n  return (\n    <div\n      data-kind={kind}\n      className={cn(styles['root'], className as string | undefined)}\n      {...props}\n    >\n      <div className={styles['header']}>\n        <h3 className={styles['label']}>{label}</h3>\n        {action ? <div className={styles['action']}>{action}</div> : null}\n      </div>\n      <ul className={styles['list']}>{children}</ul>\n    </div>\n  )\n}\n\nexport interface ContainedListItemProps extends HTMLAttributes<HTMLDivElement> {\n  asChild?: boolean\n}\n\nexport function ContainedListItem({\n  asChild = false,\n  onClick,\n  className,\n  children,\n  ...props\n}: ContainedListItemProps) {\n  const interactive = asChild || typeof onClick === 'function'\n  const Comp = asChild ? Slot : 'div'\n  return (\n    <li className={styles['item']} data-interactive={interactive ? '' : undefined}>\n      <Comp\n        className={cn(styles['itemContent'], className as string | undefined)}\n        onClick={onClick}\n        {...(props as Record<string, unknown>)}\n      >\n        {children}\n      </Comp>\n    </li>\n  )\n}\n"
+    },
+    {
+      "path": "contained-list/contained-list.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    font-family: var(--cascivo-font-sans);\n    color: var(--cascivo-color-text);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-surface);\n    overflow: hidden;\n    background-color: var(--cascivo-color-surface);\n  }\n\n  .header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: var(--cascivo-space-3);\n    padding-inline: var(--cascivo-space-4);\n    padding-block: var(--cascivo-space-3);\n  }\n\n  .root[data-kind='disclosed'] .header {\n    background-color: var(--cascivo-color-bg-subtle);\n    border-block-end: 1px solid var(--cascivo-color-border);\n  }\n\n  .label {\n    margin: 0;\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-semibold);\n    line-height: var(--cascivo-leading-tight);\n    color: var(--cascivo-color-text);\n  }\n\n  .action {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n  }\n\n  .list {\n    margin: 0;\n    padding: 0;\n    list-style: none;\n  }\n\n  .item {\n    border-block-start: 1px solid var(--cascivo-color-border);\n  }\n\n  .list > .item:first-child {\n    border-block-start: none;\n  }\n\n  .root[data-kind='disclosed'] .list > .item:first-child {\n    border-block-start: none;\n  }\n\n  .itemContent {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-3);\n    inline-size: 100%;\n    box-sizing: border-box;\n    padding-inline: var(--cascivo-space-4);\n    padding-block: var(--cascivo-space-3);\n    font: inherit;\n    color: inherit;\n    text-align: start;\n    text-decoration: none;\n  }\n\n  .item[data-interactive] .itemContent {\n    cursor: pointer;\n    background-color: transparent;\n    border: none;\n    transition: background-color var(--cascivo-duration-150) var(--cascivo-ease-out);\n  }\n\n  .item[data-interactive] .itemContent:hover {\n    background-color: var(--cascivo-color-bg-subtle);\n  }\n\n  .item[data-interactive] .itemContent:focus-visible {\n    outline: none;\n    box-shadow: var(--cascivo-focus-ring);\n  }\n}\n\n@media (forced-colors: active) {\n  .root {\n    border: 1px solid CanvasText;\n  }\n}\n"
+    }
+  ],
+  "description": "Labelled list of rows inside a bordered container",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

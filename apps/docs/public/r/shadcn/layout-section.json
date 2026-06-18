@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-section",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-section/section.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './section.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface SectionProps extends HTMLAttributes<HTMLElement> {\n  /** Max inline size of the inner content wrapper. */\n  width?: 'content' | 'wide' | 'full'\n  /** Internal stack gap between child elements. */\n  gap?: SpaceStep\n  className?: string | undefined\n}\n\nexport function Section({\n  width = 'content',\n  gap = 8,\n  className,\n  style,\n  children,\n  ...props\n}: SectionProps) {\n  const maxInlineSize = width === 'content' ? '72rem' : width === 'wide' ? '90rem' : 'none'\n  return (\n    <section\n      className={cn(styles['section'], className)}\n      style={{\n        ['--_max' as string]: maxInlineSize,\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(style as CSSProperties | undefined),\n      }}\n      {...props}\n    >\n      <div className={styles['inner']}>{children}</div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "layout-section/section.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .section {\n    padding-block: var(--cascivo-space-12);\n    padding-inline: var(--cascivo-space-4);\n    container-type: inline-size;\n  }\n\n  .inner {\n    max-inline-size: var(--_max, 72rem);\n    margin-inline: auto;\n    display: flex;\n    flex-direction: column;\n    gap: var(--_gap, var(--cascivo-space-8));\n  }\n}\n"
+    }
+  ],
+  "description": "Page-section shell with block padding, centered inner width, and stack gap.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox-card",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "checkbox-card/checkbox-card.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { InputHTMLAttributes, ReactNode } from 'react'\nimport styles from './checkbox-card.module.css'\n\nexport interface CheckboxCardProps extends Omit<\n  InputHTMLAttributes<HTMLInputElement>,\n  'title' | 'onChange'\n> {\n  title: ReactNode\n  description?: ReactNode\n  onCheckedChange?: (checked: boolean) => void\n  className?: string | undefined\n}\n\nexport function CheckboxCard({\n  title,\n  description,\n  checked,\n  defaultChecked,\n  disabled,\n  onCheckedChange,\n  className,\n  ...props\n}: CheckboxCardProps) {\n  return (\n    <label className={cn(styles['card'], className)} data-disabled={disabled || undefined}>\n      <input\n        type=\"checkbox\"\n        className={styles['input']}\n        disabled={disabled}\n        {...(checked !== undefined ? { checked } : { defaultChecked })}\n        onChange={(e) => onCheckedChange?.(e.currentTarget.checked)}\n        {...props}\n      />\n      <span className={styles['glyph']} aria-hidden=\"true\">\n        <svg viewBox=\"0 0 12 12\" className={styles['check']}>\n          <path d=\"M2.5 6.5 5 9l4.5-5.5\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"1.5\" />\n        </svg>\n      </span>\n      <span className={styles['body']}>\n        <span className={styles['title']}>{title}</span>\n        {description && <span className={styles['description']}>{description}</span>}\n      </span>\n    </label>\n  )\n}\n"
+    },
+    {
+      "path": "checkbox-card/checkbox-card.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .card {\n    display: flex;\n    gap: var(--cascivo-space-3);\n    align-items: flex-start;\n    padding: var(--cascivo-space-4);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-surface);\n    background: var(--cascivo-color-bg);\n    cursor: pointer;\n    transition:\n      border-color 120ms ease,\n      background-color 120ms ease;\n  }\n\n  .card:hover:not([data-disabled]) {\n    border-color: var(--cascivo-color-border-strong);\n  }\n\n  .card:has(input:checked) {\n    border-color: var(--cascivo-color-accent);\n    background: color-mix(in oklch, var(--cascivo-color-accent) 4%, var(--cascivo-color-bg));\n  }\n\n  .card:has(input:focus-visible) {\n    box-shadow: var(--cascivo-focus-ring);\n  }\n\n  .card[data-disabled] {\n    opacity: 0.5;\n    cursor: not-allowed;\n  }\n\n  .input {\n    position: absolute;\n    inline-size: 1px;\n    block-size: 1px;\n    overflow: hidden;\n    clip-path: inset(50%);\n    white-space: nowrap;\n  }\n\n  .glyph {\n    flex: none;\n    inline-size: 1rem;\n    block-size: 1rem;\n    margin-block-start: 2px;\n    display: grid;\n    place-items: center;\n    border: 1px solid var(--cascivo-color-border-strong);\n    border-radius: var(--cascivo-radius-indicator);\n    color: transparent;\n    transition: all 120ms ease;\n  }\n\n  .card:has(input:checked) .glyph {\n    border-color: var(--cascivo-color-accent);\n    background: var(--cascivo-color-accent);\n    color: var(--cascivo-color-accent-foreground, oklch(1 0 0));\n  }\n\n  .check {\n    inline-size: 0.75rem;\n    block-size: 0.75rem;\n  }\n\n  .body {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n  }\n\n  .title {\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    color: var(--cascivo-color-text);\n  }\n\n  .description {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text-subtle);\n  }\n}\n"
+    }
+  ],
+  "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}
