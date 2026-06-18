@@ -165,4 +165,18 @@ export const PRESETS: Preset[] = [
       presetId: 'cyberpunk',
     },
   },
+  {
+    id: 'arcade',
+    label: 'Arcade',
+    swatchBg: 'oklch(0.96 0.008 250)',
+    swatchAccent: 'oklch(0.55 0.22 27)',
+    config: {
+      baseMode: 'light',
+      accentHue: 27,
+      accentChroma: 0.22,
+      radiusBase: 0,
+      fontFamily: 'mono',
+      presetId: 'arcade',
+    },
+  },
 ]
