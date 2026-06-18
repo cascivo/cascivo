@@ -1,7 +1,7 @@
 # cascivo — Roadmap v37: Migration Hardening — Fix the boringtools Migration Feedback
 
 **Last updated:** 2026-06-18
-**Status:** 🚧 Planning
+**Status:** ✅ Shipped (T1–T7)
 **Plan documents:** `docs/superpowers/plans/2026-06-18-v37-master-plan.md` + tranches 1–7
 **Source:** `docs/feedback-from-boringtools-migration.md`
 
@@ -129,43 +129,43 @@ Each item below was reproduced in this repo before planning (file:line evidence 
 
 ### T1 — Unblock: export fix + rename
 
-- [ ] `@cascivo/react` `exports["./styles.css"]` resolves to the emitted CSS; a fresh strict-bundler consumer imports `@cascivo/react/styles.css` with no patch.
-- [ ] All shipped `@layer cascade.*` renamed to `@layer cascivo.*` (119 component modules + every theme + tokens); JS strings, JSDoc, and package `description`s say cascivo.
-- [ ] A brand-guard check fails if `cascade` reappears in layer names / descriptions / shipped JSDoc; CHANGELOG + `CSS-LAYERS-PITFALL.md` note the breaking layer rename.
-- [ ] `pnpm ready` green; build + tests pass.
+- [x] `@cascivo/react` `exports["./styles.css"]` resolves to the emitted CSS; a fresh strict-bundler consumer imports `@cascivo/react/styles.css` with no patch.
+- [x] All shipped `@layer cascade.*` renamed to `@layer cascivo.*` (119 component modules + every theme + tokens); JS strings, JSDoc, and package `description`s say cascivo.
+- [x] A brand-guard check fails if `cascade` reappears in layer names / descriptions / shipped JSDoc; CHANGELOG + `CSS-LAYERS-PITFALL.md` note the breaking layer rename.
+- [x] `pnpm ready` green; build + tests pass.
 
 ### T2 — Theming path + base layer
 
-- [ ] An "all themes" bundle (e.g. `@cascivo/themes/all`) and a documented single-import path exist; `@cascivo/tokens` is loaded **once** even with light+dark (guarded import or tokens-once pattern).
-- [ ] A `@layer cascivo.base` applies `font-family: var(--cascivo-font-sans)` + sane `line-height`/`color` to `html`/`body`; plain markup next to a component renders in the sans stack, not serif.
-- [ ] Layer ordering (`cascivo.base` < `cascivo.theme` < `cascivo.component`) is documented for consumers; existing themes/components still render unchanged.
+- [x] An "all themes" bundle (e.g. `@cascivo/themes/all`) and a documented single-import path exist; `@cascivo/tokens` is loaded **once** even with light+dark (guarded import or tokens-once pattern).
+- [x] A `@layer cascivo.base` applies `font-family: var(--cascivo-font-sans)` + sane `line-height`/`color` to `html`/`body`; plain markup next to a component renders in the sans stack, not serif.
+- [x] Layer ordering (`cascivo.base` < `cascivo.theme` < `cascivo.component`) is documented for consumers; existing themes/components still render unchanged.
 
 ### T3 — Token canonicalization + manifest
 
-- [ ] A `tokens.json` manifest enumerates every `--cascivo-*` token with role + value + canonical/alias flag; generated and drift-checked.
-- [ ] A generated `.d.ts` exposes the token names as a union for autocomplete; a docs table marks canonical names and flags aliases.
-- [ ] No tokens removed (non-breaking); aliases explicitly documented as aliases.
+- [x] A `tokens.json` manifest enumerates every `--cascivo-*` token with role + value + canonical/alias flag; generated and drift-checked.
+- [x] A generated `.d.ts` exposes the token names as a union for autocomplete; a docs table marks canonical names and flags aliases.
+- [x] No tokens removed (non-breaking); aliases explicitly documented as aliases.
 
 ### T4 — Flattened published types
 
-- [ ] Published `@cascivo/react` `.d.ts` no longer reference `packages/.../src`; "Go to definition" resolves within the published surface.
-- [ ] `flatten-types` runs in the build and is verified by a test/check that greps the emitted `dist/**/*.d.ts` for leaked source paths.
+- [x] Published `@cascivo/react` `.d.ts` no longer reference `packages/.../src`; "Go to definition" resolves within the published surface.
+- [x] `flatten-types` runs in the build and is verified by a test/check that greps the emitted `dist/**/*.d.ts` for leaked source paths.
 
 ### T5 — AppShell layout + SideNav polish
 
-- [ ] An `AppShell` component wires `ShellHeader` + `SideNav` + content into one sticky-header, full-height-nav, single-scroll-container layout with the burger↔nav toggle bound.
-- [ ] Show/hide is animated (reusing `--cascivo-motion-*`), honors `prefers-reduced-motion`, and toggles `inert` + manages focus so the hidden nav leaves the tab order; full-hide and rail collapse coexist.
-- [ ] `SideNav`'s `min-block-size:100%` is replaced with a constraint that lets its own `overflow:hidden auto` fire (long nav scrolls internally instead of overflowing). No `useState`/`useEffect`; mobile sweep passes.
+- [x] An `AppShell` component wires `ShellHeader` + `SideNav` + content into one sticky-header, full-height-nav, single-scroll-container layout with the burger↔nav toggle bound.
+- [x] Show/hide is animated (reusing `--cascivo-motion-*`), honors `prefers-reduced-motion`, and toggles `inert` + manages focus so the hidden nav leaves the tab order; full-hide and rail collapse coexist.
+- [x] `SideNav`'s `min-block-size:100%` is replaced with a constraint that lets its own `overflow:hidden auto` fire (long nav scrolls internally instead of overflowing). No `useState`/`useEffect`; mobile sweep passes.
 
 ### T6 — Docs: README + index + migration
 
-- [ ] `@cascivo/react` README ships a quickstart (correct `styles.css` + theme imports) and is verified present in the published tarball (`npm pack` contents).
-- [ ] A categorized component index ("what exists") is generated from the manifests/registry and surfaced in the README + docs.
-- [ ] A shadcn→cascivo migration page maps variant/prop differences (e.g. Button `default/outline` → `primary/secondary`, no `outline`).
-- [ ] Full CI gate passes: `pnpm exec vp check`, `pnpm build`, `pnpm exec vp run -r check`, `pnpm test`, drift check, `pnpm breakpoint:check`, brand guard.
+- [x] `@cascivo/react` README ships a quickstart (correct `styles.css` + theme imports) and is verified present in the published tarball (`npm pack` contents).
+- [x] A categorized component index ("what exists") is generated from the manifests/registry and surfaced in the README + docs.
+- [x] A shadcn→cascivo migration page maps variant/prop differences (e.g. Button `default/outline` → `primary/secondary`, no `outline`).
+- [x] Full CI gate passes: `pnpm exec vp check`, `pnpm build`, `pnpm exec vp run -r check`, `pnpm test`, drift check, `pnpm breakpoint:check`, brand guard.
 
 ### T7 — Consumer hand-off guide
 
-- [ ] `docs/v37-CONSUMER-CHANGES.md` exists and is self-contained (a downstream project can act on it without this repo).
-- [ ] Each of the 13 feedback items has a "what cascivo changed" + "what to do on your side" section tied to a real T1–T6 change.
-- [ ] Includes a copy-pasteable upgrade checklist + the minimum package versions; every snippet verified against the shipped artifacts.
+- [x] `docs/v37-CONSUMER-CHANGES.md` exists and is self-contained (a downstream project can act on it without this repo).
+- [x] Each of the 13 feedback items has a "what cascivo changed" + "what to do on your side" section tied to a real T1–T6 change.
+- [x] Includes a copy-pasteable upgrade checklist + the minimum package versions; every snippet verified against the shipped artifacts.
