@@ -1,0 +1,55 @@
+@layer cascivo.component {
+  .toc {
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-snug);
+
+    & ol {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* Indent by heading level: level 2 is the base, each deeper level steps in. */
+    & li {
+      padding-inline-start: calc((var(--toc-level, 2) - 2) * var(--cascivo-space-3));
+    }
+
+    & a {
+      display: block;
+      padding-block: var(--cascivo-space-1);
+      padding-inline: var(--cascivo-space-2);
+      color: var(--cascivo-color-text-muted);
+      text-decoration: none;
+      border-inline-start: 2px solid transparent;
+      transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+      &:hover {
+        color: var(--cascivo-color-text);
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: var(--cascivo-focus-ring);
+        border-radius: var(--cascivo-radius-sm);
+      }
+    }
+
+    & a[aria-current='location'] {
+      color: var(--cascivo-color-accent);
+      border-inline-start-color: var(--cascivo-color-accent);
+      font-weight: var(--cascivo-font-medium);
+    }
+
+    /* Touch: keep tap targets ≥44px on coarse pointers without affecting desktop. */
+    @media (pointer: coarse) {
+      & a {
+        display: flex;
+        align-items: center;
+        min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      }
+    }
+  }
+}

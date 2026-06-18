@@ -1397,6 +1397,18 @@
         "note": "Consumer can tune auto-dismiss timing (default 5000ms)"
       }
     ],
+    "Toc": [
+      {
+        "area": "activeId",
+        "level": "flexible",
+        "note": "Control the highlight externally, or omit it for built-in scroll-spy"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Colors, focus ring, and touch target must resolve to --cascivo-* tokens"
+      }
+    ],
     "Toggle": [
       {
         "area": "token names",

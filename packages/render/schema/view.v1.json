@@ -236,6 +236,7 @@
             "TimePicker",
             "Timeline",
             "Toast",
+            "Toc",
             "Toggle",
             "ToggleGroup",
             "Toggletip",
@@ -3717,6 +3718,32 @@
                   }
                 },
                 "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Toc"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "activeId": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items"]
               }
             }
           }

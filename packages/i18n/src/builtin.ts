@@ -42,6 +42,9 @@ export const builtin = {
   breadcrumb: defineMessages('cascade.breadcrumb', {
     nav: 'Breadcrumb',
   }),
+  toc: defineMessages('cascade.toc', {
+    nav: 'On this page',
+  }),
   datePicker: defineMessages('cascade.datePicker', {
     placeholder: 'Select a date',
     previousMonth: 'Previous month',
@@ -423,4 +426,7 @@ defineCatalog(builtin.dateRangePicker, 'de', {
 })
 defineCatalog(builtin.toggletip, 'de', {
   label: 'Weitere Informationen',
+})
+defineCatalog(builtin.toc, 'de', {
+  nav: 'Auf dieser Seite',
 })
