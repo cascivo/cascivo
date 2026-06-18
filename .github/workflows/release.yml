@@ -13,6 +13,13 @@ on:
   push:
     branches:
       - main
+    # Only run when something publishable changes. A changeset-driven release
+    # always touches `.changeset/**` (the changeset file, then its removal in the
+    # Version PR) and `packages/**` (version bumps + CHANGELOGs). Docs-only or
+    # app-only pushes never publish, so they should not start a release.
+    paths:
+      - 'packages/**'
+      - '.changeset/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
