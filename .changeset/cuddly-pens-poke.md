@@ -1,6 +1,6 @@
 ---
-"@cascivo/themes": patch
-"cascivo": patch
+'@cascivo/themes': patch
+'cascivo': patch
 ---
 
 Cyperpunk theme
