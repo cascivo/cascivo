@@ -1,6 +1,7 @@
 /* cascivo — Light Theme */
 /* Minimal/sharp, neutral grays, clean lines */
 
+/* Self-imports tokens for standalone use; deduped by URL when combined (see ./all.css). */
 @import '@cascivo/tokens';
 
 @layer cascivo.theme {

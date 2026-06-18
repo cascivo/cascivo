@@ -1,0 +1,23 @@
+/* cascivo — Base Layer */
+/* The one rule that activates the shipped font token (#6): applies
+   --cascivo-font-sans + a sane line-height/color/background to the document
+   root so plain consumer markup (headings, raw text, prose pages) renders in
+   the sans stack instead of falling back to the browser serif default.
+
+   This is NOT a full reset — it is the minimal base every consumer who imports
+   a theme should get for free. It lives in @layer cascivo.base, which sits
+   BELOW cascivo.theme and cascivo.component, so themes and components (and any
+   unlayered consumer CSS) always win.
+
+   Uses the canonical color tokens (foreground/background). Those are defined by
+   the themes, and --cascivo-font-sans by @cascivo/tokens; pair this with a theme
+   (or import @cascivo/themes/all). */
+
+@layer cascivo.base {
+  html {
+    font-family: var(--cascivo-font-sans);
+    line-height: var(--cascivo-leading-normal, 1.5);
+    color: var(--cascivo-color-foreground);
+    background-color: var(--cascivo-color-background);
+  }
+}

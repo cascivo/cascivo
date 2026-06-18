@@ -27,6 +27,10 @@
     "!src/**/*.test.ts"
   ],
   "exports": {
+    "./all": "./src/all.css",
+    "./all.css": "./src/all.css",
+    "./base": "./src/base.css",
+    "./base.css": "./src/base.css",
     "./light": "./src/light.css",
     "./light.css": "./src/light.css",
     "./dark": "./src/dark.css",

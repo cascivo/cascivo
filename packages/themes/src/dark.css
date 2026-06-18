@@ -1,6 +1,7 @@
 /* cascivo — Dark Theme */
 /* Bold/editorial, high contrast, developer-cool */
 
+/* Self-imports tokens for standalone use; deduped by URL when combined (see ./all.css). */
 @import '@cascivo/tokens';
 
 @layer cascivo.theme {
