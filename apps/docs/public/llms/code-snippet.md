@@ -1,6 +1,6 @@
 # CodeSnippet
 
-Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting
+Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
 
 ## Install
 
@@ -51,4 +51,4 @@ _No props._
 
 ## Tags
 
-display, code, snippet, copy, pre
+display, code, snippet, copy, pre, syntax-highlighting, terminal, bash, css, js, ts

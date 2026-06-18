@@ -1,7 +1,7 @@
 # CodeSnippet
 
 **Category:** display  
-**Description:** Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting
+**Description:** Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
 
 ## When to use
 
@@ -12,7 +12,7 @@
 ## When NOT to use
 
 - An editable code input — use a textarea or code editor
-- Long files needing syntax highlighting and folding — use a dedicated viewer
+- Whole source files needing folding, diagnostics, or many languages — use a dedicated viewer; the built-in highlighter is a presentational scan for bash/css/js/ts only
 
 ## Anti-patterns
 
