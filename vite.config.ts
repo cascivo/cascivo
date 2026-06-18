@@ -5,11 +5,12 @@ export default defineConfig({
     cache: true,
   },
   lint: {
-    ignorePatterns: ['dist/**', 'node_modules/**', '*.d.ts', 'pnpm-lock.yaml'],
+    ignorePatterns: ['dist/**', 'node_modules/**', '*.d.ts', 'pnpm-lock.yaml', 'docs/**'],
   },
   fmt: {
     semi: false,
     singleQuote: true,
+    ignorePatterns: ['docs/**'],
   },
   staged: {
     '*': 'vp check --fix',
