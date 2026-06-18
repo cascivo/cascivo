@@ -1,24 +1,33 @@
 'use client'
 import { useRef, type ReactElement } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
-import { ShellHeader } from '@cascivo/components/shell-header'
+import { ShellHeader, type ShellHeaderNavItem } from '@cascivo/components/shell-header'
 import { Tooltip } from '@cascivo/components/tooltip'
 import { setTheme, theme, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
+import { peek } from '../peek'
 
 const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 
-const NAV_LINKS = [
+type NavLink = { label: string; href: string }
+
+// Slim primary nav (v36): three top-level links. Secondary routes group under a
+// "Resources" menu; every route is also reachable from the footer link map.
+const PRIMARY_LINKS: NavLink[] = [
   { label: 'Components', href: 'https://docs.cascivo.com' },
   { label: 'Examples', href: '/examples' },
+  { label: 'Guides', href: '/guides' },
+]
+
+const RESOURCE_LINKS: NavLink[] = [
   { label: 'Create', href: '/create' },
   { label: 'Blocks', href: '/blocks' },
-  { label: 'Storybook', href: 'https://storybook.cascivo.com' },
   { label: 'Accessibility', href: '/accessibility' },
   { label: 'Performance', href: '/performance' },
-  { label: 'Guides', href: '/guides' },
+  { label: 'Modern CSS', href: '/modern-css' },
+  { label: 'AI', href: '/ai' },
 ]
 
 function isExternalHref(href: string) {
@@ -106,6 +115,26 @@ const THEME_ICONS: Record<string, () => ReactElement> = {
   warm: WarmIcon,
 }
 
+function EyeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
+
 function GitHubIcon() {
   return (
     <svg
@@ -126,10 +155,15 @@ export function Header() {
   const isNavOpen = useSignal(false)
 
   // Active detection is reactive: reads currentPath so navigation re-renders it.
-  const navItems = NAV_LINKS.map((link) => ({
-    ...link,
-    active: !isExternalHref(link.href) && currentPath.value.startsWith(link.href),
-  }))
+  const isActive = (href: string) => !isExternalHref(href) && currentPath.value.startsWith(href)
+  const navItems: ShellHeaderNavItem[] = [
+    ...PRIMARY_LINKS.map((link) => ({ ...link, active: isActive(link.href) })),
+    {
+      label: 'Resources',
+      items: RESOURCE_LINKS.map((link) => ({ ...link, active: isActive(link.href) })),
+    },
+  ]
+  const drawerLinks = [...PRIMARY_LINKS, ...RESOURCE_LINKS]
   const drawerRef = useRef<HTMLElement>(null)
   const toggleRef = useRef<HTMLElement | null>(null)
   const progressRef = useRef<HTMLDivElement>(null)
@@ -217,6 +251,28 @@ export function Header() {
         menuExpanded={isNavOpen.value}
         end={
           <>
+            {currentPath.value === '/' && (
+              <Tooltip
+                content={peek.value ? 'Back to the page' : 'Peek at the components'}
+                placement="bottom"
+              >
+                <button
+                  type="button"
+                  className="header-peek-toggle"
+                  aria-pressed={peek.value}
+                  aria-label={
+                    peek.value
+                      ? 'Hide the components and show the page'
+                      : 'Peek at the components behind the page'
+                  }
+                  onClick={() => {
+                    peek.value = !peek.value
+                  }}
+                >
+                  <EyeIcon />
+                </button>
+              </Tooltip>
+            )}
             <Tooltip content={`Theme: ${theme.value}`} placement="bottom">
               <button
                 type="button"
@@ -266,14 +322,14 @@ export function Header() {
         aria-label="Main navigation"
         inert={!isNavOpen.value ? true : undefined}
       >
-        {navItems.map((link) => {
+        {drawerLinks.map((link) => {
           const isExternal = isExternalHref(link.href)
           return (
             <a
               key={link.href}
               href={link.href}
               className="mobile-nav-link"
-              aria-current={link.active ? 'page' : undefined}
+              aria-current={isActive(link.href) ? 'page' : undefined}
               {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               onClick={() => {
                 isNavOpen.value = false

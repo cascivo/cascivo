@@ -6,6 +6,8 @@ import { Stat } from '@cascivo/components/stat'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
+import { SignalsDemo } from '../sections/SignalsDemo'
+import { ProofTeasers } from '../sections/ProofTeasers'
 import {
   bench,
   bestCompetitor,
@@ -39,7 +41,9 @@ export function PerformancePage() {
           <MatrixSection />
           <LatencySection />
           <RendersSection />
+          <SignalsDemo />
           <LighthouseSection />
+          <ProofTeasers />
           <MethodologySection />
         </main>
       </SkipNavTarget>

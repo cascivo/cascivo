@@ -98,7 +98,7 @@ New MCP tools:
 - [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
 - [checkbox-card](/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
 - [code](/llms/code.md) — Inline code span for identifiers, commands, and short snippets
-- [code-snippet](/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting
+- [code-snippet](/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
 - [collapsible](/llms/collapsible.md) — A single disclosure region toggled open and closed by its trigger
 - [color-picker](/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
 - [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
@@ -373,4 +373,4 @@ New MCP tools:
 - [TreeView](/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-17 from registry v0.0.0_
+_Generated: 2026-06-18 from registry v0.0.0_

@@ -38,4 +38,41 @@ describe('CodeSnippet', () => {
       expect(screen.getByRole('button', { name: /copied/i })).toBeInTheDocument()
     })
   })
+
+  describe('syntax highlighting', () => {
+    it('tokenizes css keywords, variables, and numbers into data-tok spans', () => {
+      const { container } = render(
+        <CodeSnippet variant="multi" language="css" code={'.a { --x: 8rem; }'} />,
+      )
+      expect(container.querySelector("[data-tok='variable']")?.textContent).toBe('--x')
+      expect(container.querySelector("[data-tok='number']")?.textContent).toBe('8rem')
+      // The full code is still present and copyable verbatim.
+      expect(container.querySelector('code')?.textContent).toBe('.a { --x: 8rem; }')
+    })
+
+    it('highlights a ts string and keeps plain runs as bare spans', () => {
+      const { container } = render(
+        <CodeSnippet variant="multi" language="ts" code={"const name = 'Button'"} />,
+      )
+      expect(container.querySelector("[data-tok='keyword']")?.textContent).toBe('const')
+      expect(container.querySelector("[data-tok='string']")?.textContent).toBe("'Button'")
+    })
+
+    it('does not highlight inline code', () => {
+      const { container } = render(<CodeSnippet variant="inline" language="ts" code="const x" />)
+      expect(container.querySelector('[data-tok]')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('terminal', () => {
+    it('renders window chrome with a title and marks the prompt token', () => {
+      const { container } = render(
+        <CodeSnippet variant="multi" terminal language="bash" title="zsh" code={'$ npx cascivo'} />,
+      )
+      expect(container.querySelector("[data-terminal='']")).toBeInTheDocument()
+      expect(screen.getByText('zsh')).toBeInTheDocument()
+      expect(container.querySelector("[data-tok='prompt']")?.textContent).toBe('$')
+      expect(container.querySelector("[data-tok='keyword']")?.textContent).toBe('npx')
+    })
+  })
 })

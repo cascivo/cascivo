@@ -26,14 +26,33 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
     ],
   },
   {
+    label: 'Explore',
+    links: [
+      { label: 'Guides', href: '/guides' },
+      { label: 'Create a theme', href: '/create' },
+      { label: 'Blocks', href: '/blocks' },
+      { label: 'AI layer', href: '/ai' },
+      { label: 'Accessibility', href: '/accessibility' },
+      { label: 'Performance', href: '/performance' },
+      { label: 'Modern CSS', href: '/modern-css' },
+    ],
+  },
+  {
     label: 'Proof',
     links: [
       { label: 'Why cascivo', href: 'https://docs.cascivo.com/why' },
-      { label: 'Modern CSS', href: '/modern-css' },
-      { label: 'Accessibility', href: '/accessibility' },
-      { label: 'Performance', href: '/performance' },
       { label: 'Benchmarks', href: '/docs/benchmarks' },
       { label: 'Methodology', href: `${REPO}/blob/main/apps/bench/METHODOLOGY.md` },
+    ],
+  },
+  {
+    label: 'Ecosystem',
+    links: [
+      { label: '@cascivo/charts', href: 'https://cascivo.dev/charts', mono: true },
+      { label: '@cascivo/layouts', href: 'https://cascivo.dev/layouts', mono: true },
+      { label: '@cascivo/i18n', href: `${REPO}/tree/main/packages/i18n`, mono: true },
+      { label: '@cascivo/icons', href: `${REPO}/tree/main/packages/icons`, mono: true },
+      { label: '@cascivo/storage', href: `${REPO}/tree/main/packages/storage`, mono: true },
     ],
   },
   {

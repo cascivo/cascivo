@@ -8,6 +8,7 @@ import { UseCaseScenarios } from './guides/UseCaseScenarios'
 import { WhenNotToUse } from './guides/WhenNotToUse'
 import { GuidesFaq } from './guides/GuidesFaq'
 import { GuidesCta } from './guides/GuidesCta'
+import { Ecosystem } from '../sections/Ecosystem'
 
 export function GuidesPage() {
   return (
@@ -20,6 +21,7 @@ export function GuidesPage() {
           <MigrationGuide />
           <BrandCustomization />
           <UseCaseScenarios />
+          <Ecosystem />
           <WhenNotToUse />
           <GuidesFaq />
           <GuidesCta />

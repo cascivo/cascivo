@@ -1,6 +1,8 @@
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
+import { ChartShowcase } from '../sections/ChartShowcase'
+import { RelayConsole } from '../demo/RelayConsole'
 import { DEMOS } from './examples/data'
 
 export function ExamplesPage() {
@@ -66,6 +68,10 @@ export function ExamplesPage() {
               ))}
             </ul>
           </section>
+
+          <RelayConsole />
+
+          <ChartShowcase />
         </main>
       </SkipNavTarget>
       <Footer />

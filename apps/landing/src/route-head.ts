@@ -79,6 +79,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Cascade Pulse: an observability dashboard in the shape of Datadog, built with cascivo. Live metrics, a heatmap, alerts and a log stream driven by a real-time simulation — no backend.',
     ogTitle: 'Cascade Pulse — cascivo example',
   },
+  '/ai': {
+    title: 'AI layer — cascivo',
+    description:
+      'cascivo is AI-first: every component ships a machine-readable manifest that powers an MCP server, Claude Code skills, and llms.txt. Connect the MCP server, let your agent read every manifest, build real UI, and audit it with cascivo audit --ai.',
+    ogTitle: 'cascivo AI layer',
+  },
   '/create': {
     title: 'Create a theme — cascivo',
     description:
@@ -105,6 +111,7 @@ export const PRERENDER_ROUTES = [
   'examples/flow',
   'examples/track',
   'examples/pulse',
+  'ai',
   'create',
   'blocks',
 ] as const

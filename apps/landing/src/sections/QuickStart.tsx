@@ -1,26 +1,28 @@
+import { Collapsible } from '@cascivo/components/collapsible'
 import { CopyCommand } from './CopyCommand'
 
 const STEPS = [
   {
     title: 'Initialize',
     code: 'npx cascivo init',
-    note: 'Detects your package manager, installs core + tokens, writes cascivo.config.ts.',
+    note: 'Detects your package manager and writes the config.',
   },
   {
     title: 'Add components',
     code: 'npx cascivo add button',
-    note: 'Copies the source into src/components/ui — it is your code now.',
+    note: 'Copies the source into your repo — it is yours now.',
   },
   {
     title: 'Use them',
     code: "import { Button } from './components/ui/button/button'",
-    note: 'No provider, no wrapper, no configuration. Just import and render.',
+    note: 'No provider, no wrapper. Just import and render.',
   },
 ]
 
 export function QuickStart() {
   return (
     <section className="section" id="quickstart" data-reveal="">
+      <p className="flow-eyebrow">Quick start</p>
       <h2>Up and running in three steps</h2>
       <div className="quickstart">
         {STEPS.map((step, i) => (
@@ -35,10 +37,10 @@ export function QuickStart() {
         ))}
       </div>
 
-      <div className="quickstart-prebuilt" aria-label="Prebuilt option">
-        <h3 className="quickstart-prebuilt-heading">
-          Or use components directly from npm — no copy needed
-        </h3>
+      <Collapsible
+        className="quickstart-prebuilt"
+        trigger="Or use components directly from npm — no copy needed"
+      >
         <p className="quickstart-prebuilt-note">
           <code>@cascivo/react</code> ships a prebuilt distribution of all components. Install once
           and import anywhere. You don&apos;t own the source, but there&apos;s no setup and no copy
@@ -58,7 +60,7 @@ export function QuickStart() {
             </p>
           </div>
         </div>
-      </div>
+      </Collapsible>
     </section>
   )
 }

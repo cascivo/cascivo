@@ -23,6 +23,28 @@ export function navigate(href: string) {
   }
 }
 
+/**
+ * Scroll to an in-page anchor, tolerating lazy-rendered routes: the target may
+ * not exist on the first frame (the destination page is a lazy chunk), so retry
+ * across a few animation frames before giving up.
+ */
+export function scrollToHash(hash: string, attempts = 20) {
+  if (!hash || hash === '#') return
+  let el: Element | null = null
+  try {
+    el = document.querySelector(hash)
+  } catch {
+    return
+  }
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+    return
+  }
+  if (attempts > 0) {
+    requestAnimationFrame(() => scrollToHash(hash, attempts - 1))
+  }
+}
+
 export function initRouter() {
   document.addEventListener('click', (e) => {
     const a = (e.target as Element | null)?.closest('a')
@@ -33,6 +55,15 @@ export function initRouter() {
     if (a.hasAttribute('download')) return
     if (url.pathname.startsWith('/demos/')) return
     e.preventDefault()
+    if (url.hash) {
+      if (normPath(url.pathname) === currentPath.value) {
+        history.pushState(null, '', url.pathname + url.hash)
+      } else {
+        navigate(url.pathname + url.hash)
+      }
+      scrollToHash(url.hash)
+      return
+    }
     navigate(url.pathname)
   })
 

@@ -3,11 +3,11 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
-import { Principles } from './sections/Principles'
-import { TechDeepDive } from './sections/TechDeepDive'
-import { StatsBand } from './sections/StatsBand'
+import { AdvantageCarousel } from './sections/AdvantageCarousel'
+import { SectionNav } from './sections/SectionNav'
 import { initReveal } from './reveal'
-import { currentPath, initRouter, navigate } from './router'
+import { peek } from './peek'
+import { currentPath, initRouter, navigate, scrollToHash } from './router'
 const SearchDialog = lazy(() =>
   import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
 )
@@ -19,26 +19,11 @@ import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
-const RelayConsole = lazy(() =>
-  import('./demo/RelayConsole').then((m) => ({ default: m.RelayConsole })),
+// The component backdrop is decorative; lazy so its ~two-dozen demos never
+// weigh on the initial paint.
+const ComponentField = lazy(() =>
+  import('./sections/ComponentField').then((m) => ({ default: m.ComponentField })),
 )
-const ChartShowcase = lazy(() =>
-  import('./sections/ChartShowcase').then((m) => ({ default: m.ChartShowcase })),
-)
-const SignalsDemo = lazy(() =>
-  import('./sections/SignalsDemo').then((m) => ({ default: m.SignalsDemo })),
-)
-const ProofTeasers = lazy(() =>
-  import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
-)
-const AgentLayer = lazy(() =>
-  import('./sections/AgentLayer').then((m) => ({ default: m.AgentLayer })),
-)
-const ThemeDemo = lazy(() => import('./sections/ThemeDemo').then((m) => ({ default: m.ThemeDemo })))
-const ExamplesGallery = lazy(() =>
-  import('./sections/ExamplesGallery').then((m) => ({ default: m.ExamplesGallery })),
-)
-const Ecosystem = lazy(() => import('./sections/Ecosystem').then((m) => ({ default: m.Ecosystem })))
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
@@ -59,6 +44,7 @@ const ModernCssPage = lazy(() =>
 const ExamplesPage = lazy(() =>
   import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
 )
+const AiPage = lazy(() => import('./pages/AiPage').then((m) => ({ default: m.AiPage })))
 const ExampleDetailPage = lazy(() =>
   import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
 )
@@ -89,49 +75,32 @@ function SectionFallback({ tall = false, height }: { tall?: boolean; height?: nu
 function HomePage() {
   return (
     <>
+      <Suspense fallback={null}>
+        <ComponentField />
+      </Suspense>
       <SkipNavLink />
       <Header />
-      <SkipNavTarget>
-        <main>
-          <Hero />
-          <Principles />
-          <TechDeepDive teaser />
-          <StatsBand />
-          <Suspense fallback={<SectionFallback tall />}>
-            <RelayConsole />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={600} />}>
-            <SignalsDemo />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={400} />}>
-            <ProofTeasers />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={500} />}>
-            <AgentLayer />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={480} />}>
-            <ThemeDemo />
-          </Suspense>
-          <Suspense fallback={<SectionFallback tall />}>
-            <ChartShowcase />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={520} />}>
-            <ExamplesGallery />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={360} />}>
-            <Ecosystem />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={420} />}>
-            <QuickStart />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={180} />}>
-            <CtaBand />
-          </Suspense>
-        </main>
-      </SkipNavTarget>
-      <Suspense fallback={<SectionFallback height={260} />}>
-        <Footer />
-      </Suspense>
+      <SectionNav />
+      <div className="home-sheet">
+        <SkipNavTarget>
+          <main>
+            <Hero />
+            <hr className="flow-divider" />
+            <AdvantageCarousel />
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={420} />}>
+              <QuickStart />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={180} />}>
+              <CtaBand />
+            </Suspense>
+          </main>
+        </SkipNavTarget>
+        <Suspense fallback={<SectionFallback height={260} />}>
+          <Footer />
+        </Suspense>
+      </div>
     </>
   )
 }
@@ -150,6 +119,7 @@ const ROUTES: Record<string, Route> = {
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
+  '/ai': { Page: AiPage, title: ROUTE_HEAD['/ai']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
   '/create': {
     Page: CreatePage,
@@ -183,9 +153,7 @@ function navigateToResult(href: string) {
     const path = href.slice(0, hashIndex) || '/'
     const hash = href.slice(hashIndex)
     navigate(path)
-    requestAnimationFrame(() => {
-      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
-    })
+    scrollToHash(hash)
     return
   }
   navigate(href)
@@ -200,6 +168,14 @@ export function App() {
   useSignalEffect(() => initReveal())
   useSignalEffect(() => {
     initRouter()
+  })
+
+  // Drive the home "peek" gimmick via a root attribute the CSS reacts to.
+  // Reset and gate on the home route so it can never strand another page.
+  useSignalEffect(() => {
+    const home = currentPath.value === '/'
+    if (!home && peek.value) peek.value = false
+    document.documentElement.toggleAttribute('data-peek', home && peek.value)
   })
 
   // CMD+K / Ctrl+K opens the search dialog.
