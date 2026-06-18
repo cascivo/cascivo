@@ -116,4 +116,100 @@
     --cascivo-color-secondary-hover: oklch(0.84 0.14 200);
     --cascivo-color-secondary-subtle: oklch(0.78 0.16 200 / 0.15);
   }
+
+  /* ── Opt-in signature effects ───────────────────────── */
+  /* These never fire unless a consumer opts in via a marker class, so arbitrary */
+  /* components stay calm. Each declares its static look first, then layers the   */
+  /* animation as enhancement; all are disabled under prefers-reduced-motion.     */
+
+  /* Scanline / CRT overlay */
+  [data-theme='cyberpunk'] .cascivo-cyber-scanline {
+    position: relative;
+  }
+  [data-theme='cyberpunk'] .cascivo-cyber-scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      oklch(0.78 0.16 200 / 0.08) 0,
+      oklch(0.78 0.16 200 / 0.08) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: screen;
+    animation: cascivo-cyber-scanline 8s linear infinite;
+  }
+
+  /* Glitch / RGB-split on hover or focus */
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch {
+    text-shadow:
+      -1px 0 oklch(0.7 0.25 330 / 0.6),
+      1px 0 oklch(0.78 0.16 200 / 0.6);
+  }
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch:hover,
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch:focus-visible {
+    animation: cascivo-cyber-glitch var(--cascivo-duration-300) steps(2, jump-end) infinite;
+  }
+
+  /* Neon flicker — failing-sign atmosphere */
+  [data-theme='cyberpunk'] .cascivo-cyber-flicker {
+    text-shadow: 0 0 8px oklch(0.7 0.25 330 / 0.7);
+    animation: cascivo-cyber-flicker 6s steps(20, jump-none) infinite;
+  }
+
+  @keyframes cascivo-cyber-scanline {
+    from {
+      background-position-y: 0;
+    }
+    to {
+      background-position-y: 3px;
+    }
+  }
+
+  @keyframes cascivo-cyber-glitch {
+    0%,
+    100% {
+      transform: translateX(0);
+      text-shadow:
+        -1px 0 oklch(0.7 0.25 330 / 0.6),
+        1px 0 oklch(0.78 0.16 200 / 0.6);
+    }
+    50% {
+      transform: translateX(1px);
+      text-shadow:
+        1px 0 oklch(0.7 0.25 330 / 0.8),
+        -1px 0 oklch(0.78 0.16 200 / 0.8);
+    }
+  }
+
+  @keyframes cascivo-cyber-flicker {
+    0%,
+    18%,
+    22%,
+    25%,
+    53%,
+    57%,
+    100% {
+      opacity: 1;
+      text-shadow: 0 0 8px oklch(0.7 0.25 330 / 0.7);
+    }
+    20%,
+    24%,
+    55% {
+      opacity: 0.5;
+      text-shadow: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-theme='cyberpunk'] .cascivo-cyber-scanline::after,
+    [data-theme='cyberpunk'] .cascivo-cyber-glitch:hover,
+    [data-theme='cyberpunk'] .cascivo-cyber-glitch:focus-visible,
+    [data-theme='cyberpunk'] .cascivo-cyber-flicker {
+      animation: none;
+    }
+  }
 }
