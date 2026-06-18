@@ -1,5 +1,11 @@
 # cascivo
 
+## 0.1.1
+
+### Patch Changes
+
+- 0903bd6: Cyperpunk theme
+
 ## 0.1.0
 
 ### Minor Changes
