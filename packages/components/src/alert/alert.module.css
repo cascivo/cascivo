@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .alert {
     display: flex;
     gap: var(--cascivo-space-3);

@@ -341,6 +341,130 @@
       }
     },
     {
+      "name": "app-shell",
+      "type": "component",
+      "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+      "category": "layout",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
+      "meta": {
+        "name": "AppShell",
+        "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+        "category": "layout",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "header",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle."
+          },
+          {
+            "name": "nav",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Side navigation (typically a SideNav). Fills full height and scrolls internally."
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Main content, rendered inside the single scroll container."
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional footer pinned below the content area."
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "description": "Controlled nav open/visible state. Omit for uncontrolled."
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false,
+            "description": "Initial open state when uncontrolled. Defaults open on desktop, closed on small screens."
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "description": "Fired when the nav requests open/close (burger, Escape, scrim)."
+          }
+        ],
+        "tokens": [
+          "--cascivo-shell-aside-inline-size",
+          "--cascivo-shell-panel-inline-size",
+          "--cascivo-motion-emphasis",
+          "--cascivo-z-raised",
+          "--cascivo-z-overlay",
+          "--cascivo-color-foreground",
+          "--cascivo-color-background"
+        ],
+        "accessibility": {
+          "role": "none",
+          "wcag": "2.2-AA",
+          "keyboard": ["Escape"]
+        },
+        "examples": [
+          {
+            "title": "Header + SideNav + content",
+            "code": "<AppShell\n  header={<ShellHeader brand={{ name: 'Acme' }} />}\n  nav={<SideNav items={items} />}\n>\n  <h1>Dashboard</h1>\n</AppShell>",
+            "description": "The burger in ShellHeader toggles the SideNav automatically."
+          },
+          {
+            "title": "Controlled open",
+            "code": "<AppShell header={header} nav={nav} open={open.value} onOpenChange={(v) => (open.value = v)}>\n  …\n</AppShell>"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
+        "intent": {
+          "whenToUse": [
+            "Building an application screen with a persistent header and side navigation",
+            "You want the header burger to toggle the side nav with an animated, accessible show/hide out of the box",
+            "You need one scroll container (the main area) with a fixed header and full-height nav"
+          ],
+          "whenNotToUse": [
+            "Marketing/document pages where the whole page should scroll — use a plain Header instead",
+            "A single, always-visible sidebar with no toggle — compose SideNav directly"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Animating the nav collapse with grid-template-columns: 1fr → 0fr on an auto-width sidebar",
+              "good": "AppShell animates an explicit inline-size (desktop) / transform (mobile drawer)",
+              "why": "fr units have no definite size to resolve against on a shrink-to-fit flex item, so the track never animates"
+            }
+          ],
+          "related": [
+            {
+              "name": "ShellHeader",
+              "relationship": "pairs-with",
+              "reason": "Provides the top bar and burger AppShell binds to the nav"
+            },
+            {
+              "name": "SideNav",
+              "relationship": "pairs-with",
+              "reason": "The side navigation AppShell lays out full-height"
+            }
+          ],
+          "a11yRationale": "The hidden nav uses transform/inline-size + inert (never display:none alone), so it stays in the a11y tree and is keyboard-reachable when open while leaving the tab order when closed; Escape and a scrim close the mobile drawer and focus returns to the toggle.",
+          "flexibility": []
+        }
+      }
+    },
+    {
       "name": "aspect-ratio",
       "type": "component",
       "description": "Constrains content to a fixed width-to-height ratio",

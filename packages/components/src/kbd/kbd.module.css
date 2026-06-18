@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .kbd {
     display: inline-flex;
     align-items: center;

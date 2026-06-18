@@ -1,9 +1,9 @@
-/* Cascade — Terminal Theme */
+/* cascivo — Terminal Theme */
 /* Developer/CLI, phosphor green on near-black, zero radius, green glow */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='terminal'] {
     color-scheme: dark;
 

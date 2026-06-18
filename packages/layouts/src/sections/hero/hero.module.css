@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   /* centered: single column, text centered */
   .hero[data-variant='centered'] .copy {
     display: flex;

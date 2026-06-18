@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .stats-band {
     padding-block: var(--cascivo-space-8);
     padding-inline: var(--cascivo-space-4);

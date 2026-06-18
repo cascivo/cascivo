@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .trigger {
     display: inline-flex;
     align-items: center;

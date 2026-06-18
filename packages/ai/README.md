@@ -2,7 +2,7 @@
 
 # @cascivo/ai
 
-> AI-native components for cascade — StreamingText, AiLabel, Terminal, AiChat
+> AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

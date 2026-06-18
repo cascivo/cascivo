@@ -2,7 +2,7 @@
 
 # @cascivo/storage
 
-> Persisted signals over localStorage/IndexedDB for cascade — SSR-safe
+> Persisted signals over localStorage/IndexedDB for cascivo — SSR-safe
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

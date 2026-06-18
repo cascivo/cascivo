@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .prose {
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-base);

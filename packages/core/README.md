@@ -2,7 +2,7 @@
 
 # @cascivo/core
 
-> Micro-FSM and Preact Signals primitives powering every cascade component
+> Micro-FSM and Preact Signals primitives powering every cascivo component
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

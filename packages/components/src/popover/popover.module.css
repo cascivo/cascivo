@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .trigger {
     /* Trigger inherits button styles from the consuming component */
   }

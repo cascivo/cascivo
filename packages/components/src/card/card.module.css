@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .card {
     background-color: var(--cascivo-color-surface);
     border-radius: var(--cascivo-radius-surface);

@@ -1,9 +1,9 @@
-/* Cascade — Minimal Theme */
+/* cascivo — Minimal Theme */
 /* Very subtle shadows, rounder radius, near-invisible borders, monochrome accent */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='minimal'] {
     color-scheme: light;
 

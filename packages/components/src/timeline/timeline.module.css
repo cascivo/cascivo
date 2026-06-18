@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .list {
     --_marker-size: 0.875rem;
     --_track: var(--cascivo-color-border);

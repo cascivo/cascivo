@@ -1,8 +1,8 @@
 /* packages/tokens/src/index.css */
-/* Cascade Design System — Primitive Tokens */
+/* cascivo Design System — Primitive Tokens */
 /* These are raw values. Never use directly in components. Use semantic tokens. */
 
-@layer cascade.tokens {
+@layer cascivo.tokens {
   :root {
     /* ── Color Primitives ─────────────────────────────── */
 

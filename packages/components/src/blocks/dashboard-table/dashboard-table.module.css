@@ -1,4 +1,4 @@
-@layer cascade.blocks.dashboard-table {
+@layer cascivo.blocks.dashboard-table {
   .root {
     padding: var(--cascivo-space-8);
     background: var(--cascivo-color-surface);

@@ -2,7 +2,7 @@
   "name": "@cascivo/react",
   "version": "0.1.0",
   "private": false,
-  "description": "Prebuilt cascade design system components — use without copying source",
+  "description": "Prebuilt cascivo design system components — use without copying source",
   "keywords": [
     "cascivo",
     "components",
@@ -36,14 +36,14 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./dist/cascade.css"
+    "./styles.css": "./dist/cascivo.css"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "scripts": {
-    "build": "vp build && tsc -p tsconfig.build.json && node scripts/flatten-types.mjs",
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },

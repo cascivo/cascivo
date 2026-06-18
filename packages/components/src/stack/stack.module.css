@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .stack {
     display: grid;
     grid-template-areas: 'stack';

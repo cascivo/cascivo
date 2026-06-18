@@ -2,7 +2,7 @@
 
 # @cascivo/i18n
 
-> Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade
+> Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascivo
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

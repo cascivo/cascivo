@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   /* Background/color/font on the layouts AppShell shell — it has none by default */
   .shell {
     background: var(--cascivo-color-bg);

@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .picker {
     display: flex;
     flex-direction: column;

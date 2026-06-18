@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .avatar {
     position: relative;
     display: inline-flex;

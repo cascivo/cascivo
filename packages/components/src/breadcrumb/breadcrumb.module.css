@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .breadcrumb {
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-sm);

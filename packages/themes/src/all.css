@@ -1,0 +1,18 @@
+/* cascivo — All-in-one theming bundle */
+/* The single-import path for the common light + dark setup (#3):
+
+     @import '@cascivo/themes/all';
+
+   It loads @cascivo/tokens exactly ONCE (here), then the base layer, then the
+   light and dark themes (each scoped by [data-theme]). The per-theme files
+   below also self-import @cascivo/tokens for standalone use; bundlers and
+   browsers dedupe the identical @import URL, so tokens are still emitted once.
+
+   Layer order (first appearance, lowest → highest priority):
+     cascivo.tokens  <  cascivo.base  <  cascivo.theme  ( <  cascivo.component )
+   Component CSS (@cascivo/react/styles.css) adds cascivo.component on top. */
+
+@import '@cascivo/tokens';
+@import './base.css';
+@import './light.css';
+@import './dark.css';

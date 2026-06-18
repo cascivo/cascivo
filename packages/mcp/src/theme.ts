@@ -18,14 +18,14 @@ function lighten(color: string, amount: number): string {
 }
 
 /**
- * Generate a custom cascade theme as CSS. Maps the three input colors onto the
+ * Generate a custom cascivo theme as CSS. Maps the three input colors onto the
  * semantic token layer; component tokens inherit automatically.
  */
 export function generateThemeCss(colors: ThemeColors, name = 'custom'): string {
   const { primary, neutral, accent } = colors
-  return `/* Cascade — Generated theme: ${name} */
+  return `/* cascivo — Generated theme: ${name} */
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='${name}'] {
     color-scheme: light;
 

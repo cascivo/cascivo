@@ -33,4 +33,4 @@ playwright-report/
 .superpowers/
 cascade.lock
 
-tmp
+tmppackages/*/.types-tmp/

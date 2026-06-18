@@ -2,7 +2,7 @@
 
 # @cascivo/registry
 
-> Registry schema v2 types, validation, and static build for the cascade ecosystem
+> Registry schema v2 types, validation, and static build for the cascivo ecosystem
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

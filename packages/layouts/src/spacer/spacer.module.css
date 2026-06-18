@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .spacer {
     block-size: var(--_spacer-size, var(--cascivo-space-4));
     flex-shrink: 0;

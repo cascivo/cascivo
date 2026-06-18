@@ -2,7 +2,7 @@
   "name": "@cascivo/storage",
   "version": "0.1.0",
   "private": false,
-  "description": "Persisted signals over localStorage/IndexedDB for cascade — SSR-safe",
+  "description": "Persisted signals over localStorage/IndexedDB for cascivo — SSR-safe",
   "keywords": [
     "cascivo",
     "css",

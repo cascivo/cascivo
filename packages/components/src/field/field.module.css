@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .field {
     display: grid;
     gap: var(--cascivo-space-2);

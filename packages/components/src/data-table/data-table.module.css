@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .root {
     --_row-height: 3rem;
     display: flex;

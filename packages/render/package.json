@@ -2,7 +2,7 @@
   "name": "@cascivo/render",
   "version": "0.0.0",
   "private": true,
-  "description": "Runtime JSON → UI renderer for cascade",
+  "description": "Runtime JSON → UI renderer for cascivo",
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {

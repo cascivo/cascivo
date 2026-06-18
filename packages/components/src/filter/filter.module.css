@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .filter {
     display: flex;
     flex-wrap: wrap;

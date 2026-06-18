@@ -1,9 +1,9 @@
-/* Cascade — Flat Theme */
+/* cascivo — Flat Theme */
 /* Zero shadows, zero radius, high-contrast borders, vivid green accent */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='flat'] {
     color-scheme: light;
 

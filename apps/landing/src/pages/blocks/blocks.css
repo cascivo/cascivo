@@ -1,4 +1,4 @@
-@layer cascade.blocks {
+@layer cascivo.blocks {
   .blocks-page {
     padding-block: var(--cascivo-space-16);
     padding-inline: var(--cascivo-space-6);

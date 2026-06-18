@@ -1,7 +1,7 @@
 /**
- * @cascivo/react — the prebuilt distribution of every cascade component.
+ * @cascivo/react — the prebuilt distribution of every cascivo component.
  *
- * For users who want to consume cascade as a normal library instead of
+ * For users who want to consume cascivo as a normal library instead of
  * copy-pasting source via the CLI. Bundles all components + their CSS
  * (import '@cascivo/react/styles.css').
  */
@@ -125,6 +125,8 @@ export * from '../../components/src/tile/tile'
 export * from '../../components/src/indicator/indicator'
 export * from '../../components/src/join/join'
 export * from '../../components/src/stack/stack'
+// v37 T5 — app shell layout (sticky header + full-height nav + single scroll container)
+export * from '../../components/src/app-shell/app-shell'
 // v31 T5 interaction patterns
 export * from '../../components/src/chat-bubble/chat-bubble'
 export * from '../../components/src/radial-progress/radial-progress'

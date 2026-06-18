@@ -1,4 +1,4 @@
-@layer cascade.blocks.settings-profile {
+@layer cascivo.blocks.settings-profile {
   .root {
     background: var(--cascivo-color-surface);
     min-block-size: 100vh;

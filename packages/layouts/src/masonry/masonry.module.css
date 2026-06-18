@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   /* Fallback: CSS multi-columns. Items flow column-major (top-to-bottom per column). */
   .masonry {
     column-count: var(--_cols, 3);

@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .calendar {
     --cascivo-calendar-bg: var(--cascivo-color-surface);
     --cascivo-calendar-radius: var(--cascivo-radius-overlay);

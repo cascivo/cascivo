@@ -2,7 +2,7 @@
 
 # @cascivo/themes
 
-> First-party cascade themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal
+> First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

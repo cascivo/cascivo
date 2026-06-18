@@ -1,9 +1,9 @@
-/* Cascade — Midnight Theme */
+/* cascivo — Midnight Theme */
 /* Premium dark, deep indigo-black, violet accent, soft colored glow */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='midnight'] {
     color-scheme: dark;
 

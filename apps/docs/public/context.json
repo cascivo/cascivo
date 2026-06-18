@@ -1761,6 +1761,44 @@
       "contextUrl": "/context/alert-dialog.md"
     },
     {
+      "name": "AppShell",
+      "category": "layout",
+      "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+      "intent": {
+        "whenToUse": [
+          "Building an application screen with a persistent header and side navigation",
+          "You want the header burger to toggle the side nav with an animated, accessible show/hide out of the box",
+          "You need one scroll container (the main area) with a fixed header and full-height nav"
+        ],
+        "whenNotToUse": [
+          "Marketing/document pages where the whole page should scroll — use a plain Header instead",
+          "A single, always-visible sidebar with no toggle — compose SideNav directly"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Animating the nav collapse with grid-template-columns: 1fr → 0fr on an auto-width sidebar",
+            "good": "AppShell animates an explicit inline-size (desktop) / transform (mobile drawer)",
+            "why": "fr units have no definite size to resolve against on a shrink-to-fit flex item, so the track never animates"
+          }
+        ],
+        "related": [
+          {
+            "name": "ShellHeader",
+            "relationship": "pairs-with",
+            "reason": "Provides the top bar and burger AppShell binds to the nav"
+          },
+          {
+            "name": "SideNav",
+            "relationship": "pairs-with",
+            "reason": "The side navigation AppShell lays out full-height"
+          }
+        ],
+        "a11yRationale": "The hidden nav uses transform/inline-size + inert (never display:none alone), so it stays in the a11y tree and is keyboard-reachable when open while leaving the tab order when closed; Escape and a scrim close the mobile drawer and focus returns to the toggle.",
+        "flexibility": []
+      },
+      "contextUrl": "/context/app-shell.md"
+    },
+    {
       "name": "AspectRatio",
       "category": "layout",
       "description": "Constrains content to a fixed width-to-height ratio",

@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .accordion {
     display: flex;
     flex-direction: column;

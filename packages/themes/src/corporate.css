@@ -1,9 +1,9 @@
-/* Cascade — Corporate Theme */
+/* cascivo — Corporate Theme */
 /* Enterprise/data-dense, crisp 2px radius, conservative blue, tight hairlines */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='corporate'] {
     color-scheme: light;
 

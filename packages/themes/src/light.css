@@ -1,9 +1,10 @@
-/* Cascade — Light Theme */
+/* cascivo — Light Theme */
 /* Minimal/sharp, neutral grays, clean lines */
 
+/* Self-imports tokens for standalone use; deduped by URL when combined (see ./all.css). */
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='light'],
   :root:not([data-theme]) {
     color-scheme: light;

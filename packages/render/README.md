@@ -2,7 +2,7 @@
 
 # @cascivo/render
 
-> Runtime JSON → UI renderer for cascade
+> Runtime JSON → UI renderer for cascivo
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

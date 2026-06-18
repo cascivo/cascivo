@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .buttonGroup {
     display: inline-flex;
     --_radius: var(--cascivo-button-radius, var(--cascivo-radius-control));

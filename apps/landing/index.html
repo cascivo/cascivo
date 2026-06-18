@@ -57,10 +57,10 @@
       /* Critical CSS — above the fold */
 
       /* ── Layer order ─────────────────────────────────────── */
-      @layer cascade.tokens, cascade.functions, cascade.theme;
+      @layer cascivo.tokens, cascivo.functions, cascivo.theme;
 
       /* ── Primitive tokens (:root) ─────────────────────────── */
-      @layer cascade.tokens {
+      @layer cascivo.tokens {
         :root {
           --cascivo-gray-0: oklch(1 0 0);
           --cascivo-gray-50: oklch(0.985 0.002 264);
@@ -252,7 +252,7 @@
       }
 
       /* ── CSS @function helpers ────────────────────────────── */
-      @layer cascade.functions {
+      @layer cascivo.functions {
         @function --cascivo-step(--n <number>, --base: 0.25rem) {
           result: calc(var(--base) * var(--n));
         }
@@ -262,7 +262,7 @@
       }
 
       /* ── Light theme (default; page ships data-theme="light") ── */
-      @layer cascade.theme {
+      @layer cascivo.theme {
         [data-theme='light'],
         :root:not([data-theme]) {
           color-scheme: light;
@@ -828,7 +828,7 @@
          Hash-locked to the current build; regenerate if the spinner component changes:
          pnpm exec vp run @cascivo/landing#build && cat apps/landing/dist/assets/spinner-*.css -->
     <style>
-      @layer cascade.component {
+      @layer cascivo.component {
         ._spinner_4whgp_2 {
           box-sizing: border-box;
           border-style: solid;

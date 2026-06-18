@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .split {
     display: grid;
     grid-template-columns: minmax(0, calc(var(--_split-ratio, 0.3) * 100%)) auto minmax(0, 1fr);

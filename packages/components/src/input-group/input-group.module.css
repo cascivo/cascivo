@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .input-group {
     display: flex;
     align-items: stretch;
