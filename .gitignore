@@ -34,3 +34,4 @@ playwright-report/
 cascade.lock
 
 tmppackages/*/.types-tmp/
+tmp
