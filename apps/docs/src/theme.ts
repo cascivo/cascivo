@@ -12,6 +12,7 @@ export type Theme =
   | 'brutalist'
   | 'corporate'
   | 'terminal'
+  | 'cyberpunk'
 
 export const THEMES: Theme[] = [
   'light',
@@ -24,6 +25,7 @@ export const THEMES: Theme[] = [
   'brutalist',
   'corporate',
   'terminal',
+  'cyberpunk',
 ]
 
 const STORAGE_KEY = 'cascade-theme'
@@ -40,7 +42,8 @@ if (
   legacy === 'pastel' ||
   legacy === 'brutalist' ||
   legacy === 'corporate' ||
-  legacy === 'terminal'
+  legacy === 'terminal' ||
+  legacy === 'cyberpunk'
 ) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, value: legacy }))
 }

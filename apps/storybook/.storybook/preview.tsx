@@ -12,6 +12,7 @@ import '@cascivo/themes/pastel'
 import '@cascivo/themes/brutalist'
 import '@cascivo/themes/corporate'
 import '@cascivo/themes/terminal'
+import '@cascivo/themes/cyberpunk'
 
 const withFrame: Decorator = (Story, context) => {
   if (context.parameters['layout'] === 'fullscreen') return <Story />
@@ -39,6 +40,7 @@ const preview: Preview = {
         brutalist: 'brutalist',
         corporate: 'corporate',
         terminal: 'terminal',
+        cyberpunk: 'cyberpunk',
       },
       defaultTheme: 'light',
       attributeName: 'data-theme',

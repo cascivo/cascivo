@@ -1,4 +1,4 @@
-/* Import tokens + all ten themes (theme switching via data-theme) */
+/* Import tokens + all eleven themes (theme switching via data-theme) */
 @import '@cascivo/themes/light';
 @import '@cascivo/themes/dark';
 @import '@cascivo/themes/warm';
@@ -9,6 +9,7 @@
 @import '@cascivo/themes/brutalist';
 @import '@cascivo/themes/corporate';
 @import '@cascivo/themes/terminal';
+@import '@cascivo/themes/cyberpunk';
 
 *,
 *::before,
