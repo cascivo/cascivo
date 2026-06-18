@@ -681,25 +681,52 @@
         transition: opacity 450ms ease;
       }
 
+      /* Masonry-style columns: tiles flow top-to-bottom with varied heights.
+         Balanced columns overflow 100vh and are clipped, so the field always
+         fills the viewport. Fewer columns as the screen narrows. */
       .bg-field-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-        gap: var(--cascivo-space-4);
-        padding: var(--cascivo-space-5);
-        min-block-size: 100vh;
-        align-content: start;
+        columns: 2;
+        column-gap: var(--cascivo-space-4);
+        padding: var(--cascivo-space-4);
       }
 
       .bg-field-tile {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-block-size: 5rem;
+        break-inside: avoid;
+        margin-block-end: var(--cascivo-space-4);
         padding: var(--cascivo-space-4);
         border: 1px solid var(--cascivo-color-border);
         border-radius: var(--cascivo-radius-lg);
         background: var(--cascivo-color-bg);
         color: var(--cascivo-color-text);
+      }
+
+      /* Cycle a few heights so the columns read as masonry, not a grid. */
+      .bg-field-tile:nth-child(4n) {
+        min-block-size: 9rem;
+      }
+      .bg-field-tile:nth-child(4n + 1) {
+        min-block-size: 5.5rem;
+      }
+      .bg-field-tile:nth-child(4n + 2) {
+        min-block-size: 11rem;
+      }
+      .bg-field-tile:nth-child(4n + 3) {
+        min-block-size: 7rem;
+      }
+
+      @media (min-width: 40rem) {
+        .bg-field-grid {
+          columns: 3;
+        }
+      }
+
+      @media (min-width: 64rem) {
+        .bg-field-grid {
+          columns: 4;
+        }
       }
 
       /* Peek on: sharpen the field, drop the scrim, fade the page away. */

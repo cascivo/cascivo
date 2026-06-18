@@ -82,8 +82,9 @@ const THEMES = [
   'brutalist',
 ] as const
 
-// Doubled so the grid fills tall viewports when the field is revealed.
-const FIELD = [...TILES, ...TILES]
+// Tripled so the (balanced) columns always overflow and fill the viewport,
+// even on tall displays; the overflow is clipped by the fixed field.
+const FIELD = [...TILES, ...TILES, ...TILES]
 
 export function ComponentField() {
   return (
