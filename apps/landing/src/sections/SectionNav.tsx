@@ -27,7 +27,7 @@ export function SectionNav() {
     const update = () => {
       frame = 0
       const center = window.innerHeight / 2
-      let current = ids[0]
+      let current: string = SECTIONS[0].id
       for (const id of ids) {
         const el = document.getElementById(id)
         if (el && el.getBoundingClientRect().top - center <= 0) current = id
