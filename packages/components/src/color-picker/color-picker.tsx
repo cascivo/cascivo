@@ -254,7 +254,14 @@ export function ColorPicker({
           value={Math.round(hsl.h)}
           disabled={disabled}
           aria-label={resolved.hue}
-          onChange={(e) => commit({ h: Number((e.target as HTMLInputElement).value), s: hsl.s, l: hsl.l, a: hsl.a })}
+          onChange={(e) =>
+            commit({
+              h: Number((e.target as HTMLInputElement).value),
+              s: hsl.s,
+              l: hsl.l,
+              a: hsl.a,
+            })
+          }
         />
 
         {alpha && (
@@ -273,7 +280,14 @@ export function ColorPicker({
               disabled={disabled}
               aria-label={resolved.alpha}
               style={{ '--cascivo-color-picker-solid': swatch } as Record<string, string>}
-              onChange={(e) => commit({ h: hsl.h, s: hsl.s, l: hsl.l, a: Number((e.target as HTMLInputElement).value) })}
+              onChange={(e) =>
+                commit({
+                  h: hsl.h,
+                  s: hsl.s,
+                  l: hsl.l,
+                  a: Number((e.target as HTMLInputElement).value),
+                })
+              }
             />
           </>
         )}

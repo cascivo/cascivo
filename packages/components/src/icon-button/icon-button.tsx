@@ -27,7 +27,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       data-variant={variant}
       className={cn(styles['iconButton'], className as string | undefined)}
       ref={ref as never}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children ?? icon}
     </Comp>

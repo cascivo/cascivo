@@ -23,7 +23,7 @@ export function Item({
       data-variant={variant}
       data-size={size}
       className={cn(styles['item'], className as string | undefined)}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children}
     </Comp>

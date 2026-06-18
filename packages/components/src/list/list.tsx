@@ -13,7 +13,7 @@ export function List({ as: Tag = 'ul', marker, className, children, ...props }: 
     <Tag
       data-marker={marker ?? (Tag === 'ol' ? 'decimal' : 'disc')}
       className={cn(styles['list'], className as string | undefined)}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children}
     </Tag>
