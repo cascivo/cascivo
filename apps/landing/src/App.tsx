@@ -79,21 +79,23 @@ function HomePage() {
       </Suspense>
       <SkipNavLink />
       <Header />
-      <SkipNavTarget>
-        <main>
-          <Hero />
-          <AdvantageCarousel />
-          <Suspense fallback={<SectionFallback height={420} />}>
-            <QuickStart />
-          </Suspense>
-          <Suspense fallback={<SectionFallback height={180} />}>
-            <CtaBand />
-          </Suspense>
-        </main>
-      </SkipNavTarget>
-      <Suspense fallback={<SectionFallback height={260} />}>
-        <Footer />
-      </Suspense>
+      <div className="home-sheet">
+        <SkipNavTarget>
+          <main>
+            <Hero />
+            <AdvantageCarousel />
+            <Suspense fallback={<SectionFallback height={420} />}>
+              <QuickStart />
+            </Suspense>
+            <Suspense fallback={<SectionFallback height={180} />}>
+              <CtaBand />
+            </Suspense>
+          </main>
+        </SkipNavTarget>
+        <Suspense fallback={<SectionFallback height={260} />}>
+          <Footer />
+        </Suspense>
+      </div>
     </>
   )
 }
