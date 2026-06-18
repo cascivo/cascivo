@@ -1,7 +1,7 @@
 # cascivo — Roadmap v39: RetroUI Study — Adopt the Genuinely-Missing Pieces
 
 **Last updated:** 2026-06-18
-**Status:** 📝 Planned (T1–T5)
+**Status:** ✅ Shipped (T1–T5)
 **Plan documents:** `docs/superpowers/plans/2026-06-18-v39-master-plan.md` + tranches 1–5
 **Builds on:** the theme system (v15/v23/v38, `docs/THEME-PROPOSALS.md`), the component registry +
 CLI (`registry.json`, `packages/registry`, `packages/cli`), and the block compositions added in
@@ -220,53 +220,53 @@ Why these five, and why in this order:
 
 ### T1 — Per-theme font theming
 
-- [ ] `--cascivo-font-display` added to `packages/tokens/src/index.css` (sane default = `--cascivo-font-sans`),
+- [x] `--cascivo-font-display` added to `packages/tokens/src/index.css` (sane default = `--cascivo-font-sans`),
       and `--cascivo-font-{sans,mono,display}` documented as **per-theme overridable**.
-- [ ] All **12** theme files declare the font token(s) parity requires; `parity.test.ts` passes (identical
+- [x] All **12** theme files declare the font token(s) parity requires; `parity.test.ts` passes (identical
       `--cascivo-*` set, no missing/extra keys).
-- [ ] At least one existing theme demonstrates a per-theme override (e.g. `terminal`/`brutalist` set a
+- [x] At least one existing theme demonstrates a per-theme override (e.g. `terminal`/`brutalist` set a
       mono/grotesk `--cascivo-font-display`/`-sans`), proving the mechanism end-to-end.
-- [ ] `docs/THEME-PROPOSALS.md` "Open questions" updated: per-theme fonts moved from "deferred" to "shipped",
+- [x] `docs/THEME-PROPOSALS.md` "Open questions" updated: per-theme fonts moved from "deferred" to "shipped",
       with the RetroUI motivation noted.
-- [ ] `pnpm exec vp run @cascivo/themes#test` + `vp check` green.
+- [x] `pnpm exec vp run @cascivo/themes#test` + `vp check` green.
 
 ### T2 — `arcade` retro theme
 
-- [ ] `packages/themes/src/arcade.css` exists (scoped `[data-theme='arcade']`, `@layer cascivo.theme`):
+- [x] `packages/themes/src/arcade.css` exists (scoped `[data-theme='arcade']`, `@layer cascivo.theme`):
       limited bright retro palette, blocky pixel borders, hard shadows, pixel **display** font via T1.
-- [ ] `parity.test.ts` + `chart-palette.test.ts` include `arcade` and pass (CVD-safe ramp).
-- [ ] Opt-in, theme-scoped pixel/CRT effects (e.g. pixel-corner edges, scanline) each have a static
+- [x] `parity.test.ts` + `chart-palette.test.ts` include `arcade` and pass (CVD-safe ramp).
+- [x] Opt-in, theme-scoped pixel/CRT effects (e.g. pixel-corner edges, scanline) each have a static
       fallback and are disabled under `prefers-reduced-motion: reduce`; `fallback:check` + `breakpoint:check` pass.
-- [ ] Registered **everywhere**: themes `package.json`/`all.css`/`README`, both tests, CLI, Storybook, docs
+- [x] Registered **everywhere**: themes `package.json`/`all.css`/`README`, both tests, CLI, Storybook, docs
       (`theme.ts`+`app.css`+refs), landing `theme.ts` + `ComponentField` array + `Features` copy/count +
       `landing.css` + `/create` preset. A grep for `arcade` confirms full coverage.
 
 ### T3 — Table of Contents (`toc`) component
 
-- [ ] `packages/components/src/toc/` ships `toc.tsx` + `toc.module.css` + `toc.meta.ts` + `toc.test.tsx`.
-- [ ] Signal-driven: controlled `items` prop renders a `<nav>` of links; active item tracked via
+- [x] `packages/components/src/toc/` ships `toc.tsx` + `toc.module.css` + `toc.meta.ts` + `toc.test.tsx`.
+- [x] Signal-driven: controlled `items` prop renders a `<nav>` of links; active item tracked via
       `useSignal` + `useSignalEffect`-driven `IntersectionObserver` (no `useState`/`useEffect`). Optional
       `useTocFromRegion(ref)` helper derives items from headings in a container.
-- [ ] Keyboard-navigable, WCAG AA, i18n-defaulted label; manifest complete; exported from
+- [x] Keyboard-navigable, WCAG AA, i18n-defaulted label; manifest complete; exported from
       `packages/react/src/index.ts`; appears in `registry.json` after `pnpm regen`.
-- [ ] `pnpm exec vp run @cascivo/components#test` green for `toc`.
+- [x] `pnpm exec vp run @cascivo/components#test` green for `toc`.
 
 ### T4 — shadcn-registry-compatible export
 
-- [ ] A new emitter in `packages/registry` produces shadcn-schema items (`registry:component`) per
+- [x] A new emitter in `packages/registry` produces shadcn-schema items (`registry:component`) per
       component and a per-component `/r/<name>.json`, derived from the existing cascivo registry (no change
       to cascivo's own `registry.json` schema).
-- [ ] Output validates against the shadcn registry item schema; a smoke test asserts a sample item's shape
+- [x] Output validates against the shadcn registry item schema; a smoke test asserts a sample item's shape
       (name, type, dependencies, files).
-- [ ] CSS-native caveats documented (CSS Modules + `@cascivo/themes` import, not Tailwind); a docs section
+- [x] CSS-native caveats documented (CSS Modules + `@cascivo/themes` import, not Tailwind); a docs section
       shows `npx shadcn add <url>/r/button.json`.
-- [ ] `pnpm exec vp run @cascivo/registry#test` green.
+- [x] `pnpm exec vp run @cascivo/registry#test` green.
 
 ### T5 — Blocks expansion + docs & final gate
 
-- [ ] A small set of **reuse-only** blocks added under `packages/components/src/blocks` (e.g. `pricing`,
+- [x] A small set of **reuse-only** blocks added under `packages/components/src/blocks` (e.g. `pricing`,
       `site-footer`, `faq`, `testimonials`/`stats`), each composing existing components only, with manifests.
-- [ ] This roadmap + the four feature areas documented (THEME-PROPOSALS for fonts/arcade; a registry-interop
+- [x] This roadmap + the four feature areas documented (THEME-PROPOSALS for fonts/arcade; a registry-interop
       doc; component docs for `toc`).
-- [ ] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
+- [x] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
       `pnpm test`, `breakpoint:check`, `fallback:check`, `brand:check`.

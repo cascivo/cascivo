@@ -18448,6 +18448,24 @@
       }
     },
     {
+      "name": "faq",
+      "type": "block",
+      "displayName": "FAQ Accordion",
+      "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/faq/faq.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/faq/faq.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "faq", "accordion", "questions"],
+      "screenshot": {
+        "light": "/blocks/screenshots/faq-light.png",
+        "dark": "/blocks/screenshots/faq-dark.png"
+      }
+    },
+    {
       "name": "marketing-features",
       "type": "block",
       "displayName": "Feature Grid",
@@ -18484,6 +18502,24 @@
       }
     },
     {
+      "name": "pricing",
+      "type": "block",
+      "displayName": "Pricing Tiers",
+      "description": "Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/pricing/pricing.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/pricing/pricing.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "pricing", "plans", "cards"],
+      "screenshot": {
+        "light": "/blocks/screenshots/pricing-light.png",
+        "dark": "/blocks/screenshots/pricing-dark.png"
+      }
+    },
+    {
       "name": "settings-profile",
       "type": "block",
       "displayName": "Settings — Profile",
@@ -18499,6 +18535,42 @@
       "screenshot": {
         "light": "/blocks/screenshots/settings-profile-light.png",
         "dark": "/blocks/screenshots/settings-profile-dark.png"
+      }
+    },
+    {
+      "name": "site-footer",
+      "type": "block",
+      "displayName": "Site Footer",
+      "description": "Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/site-footer/site-footer.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/site-footer/site-footer.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "footer", "navigation", "links"],
+      "screenshot": {
+        "light": "/blocks/screenshots/site-footer-light.png",
+        "dark": "/blocks/screenshots/site-footer-dark.png"
+      }
+    },
+    {
+      "name": "testimonials",
+      "type": "block",
+      "displayName": "Testimonials",
+      "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
+      "category": "marketing",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/testimonials/testimonials.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/testimonials/testimonials.module.css"
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "testimonials", "social-proof", "cards"],
+      "screenshot": {
+        "light": "/blocks/screenshots/testimonials-light.png",
+        "dark": "/blocks/screenshots/testimonials-dark.png"
       }
     }
   ]
