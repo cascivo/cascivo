@@ -52,10 +52,11 @@ radius/shadow/border space.
 | `brutalist` | light  | **0px**         | **hard offset** `4px 4px 0`   | **2px solid black**     | acid yellow       | bold editorial (vs flat's _no_ shadow) |
 | `corporate` | light  | **2px**         | tight, minimal                | crisp cool hairline     | conservative blue | enterprise / data-dense (Carbon-like)  |
 | `terminal`  | dark   | **0px**         | none / green glow on overlays | hairline phosphor green | phosphor green    | developer / CLI                        |
+| `cyberpunk` | dark   | **0px**         | **hard offset + neon glow**   | thick neon magenta      | magenta + cyan    | brutalism × cyberpunk (added in v38)   |
 
-Resulting radius spread across all 10: `0` (flat, brutalist, terminal) · `2px`
-(corporate) · `6px` (light, dark) · `8px` (warm) · `10px` (midnight) · `12px`
-(minimal) · `16px` (pastel). Scheme split: 7 light / 3 dark.
+Resulting radius spread across all 11: `0` (flat, brutalist, terminal, cyberpunk) ·
+`2px` (corporate) · `6px` (light, dark) · `8px` (warm) · `10px` (midnight) · `12px`
+(minimal) · `16px` (pastel). Scheme split: 7 light / 4 dark.
 
 ---
 
@@ -140,6 +141,32 @@ A second dark theme that's unmistakably different from `midnight` and `dark`.
 - Focus ring: green glow, 2px
 - **Font note**: ideally monospace — same caveat as `brutalist`.
 
+### 6. `cyberpunk` — brutalism × cyberpunk (added in v38)
+
+Neo-brutalist structure (zero radius, thick borders, hard offset shadows) fused with a
+dark cyberpunk palette: near-black blue-violet base, neon magenta primary, electric cyan
+secondary, glow-tinted hard shadows. A third zero-radius dark theme, unmistakably louder
+than `terminal` and `dark`.
+
+- `color-scheme: dark`
+- Background `oklch(0.16 0.03 285)` (near-black blue-violet), surface stepped lighter
+- Text `oklch(0.95 0.03 320)`, muted `oklch(0.7 0.05 300)`, text-on-accent near-black
+- Accent neon magenta `oklch(0.7 0.25 330)`; secondary/info electric cyan `oklch(0.78 0.16 200)`
+- `--cascivo-radius-base: 0` everywhere
+- Borders: thick neon magenta (`oklch(0.6 0.2 320 / 60%)`, strong brighter)
+- Shadows: hard offset tinted with neon glow — `md: 4px 4px 0 oklch(0.7 0.25 330)`,
+  overlay adds a cyan offset + soft magenta glow. No soft drop shadow.
+- Focus ring: neon cyan, 3px, with offset
+- **Animations (CSS-only, opt-in)**: three theme-scoped effects ship behind marker classes —
+  `.cascivo-cyber-scanline` (CRT overlay), `.cascivo-cyber-glitch` (RGB-split on hover/focus),
+  `.cascivo-cyber-flicker` (neon flicker). Each declares a static resting look first and is
+  disabled under `prefers-reduced-motion`. They never fire unless a consumer opts in.
+- **Font note**: inherits `--cascivo-font-sans` — same caveat as `brutalist`/`terminal`.
+- **Motion note**: an ambient "hard-snap" motion-character override was considered but **not**
+  shipped — `--cascivo-motion-*` is a global `@cascivo/tokens` contract, and per-theme motion
+  tokens would force a parity change across all themes (see "Open questions"). The opt-in
+  effects deliver the brutalist animation read without that.
+
 ---
 
 ## Implementation surface (per new theme)
@@ -180,10 +207,10 @@ checks pass.
 
 ## Open questions / decisions needed before implementing
 
-1. **Font theming.** `brutalist` and `terminal` want non-default (mono/grotesk)
-   fonts, but `--cascivo-font-sans`/`-mono` live in `tokens/index.css :root`, not
-   in themes. Options: (a) keep fonts global, skip per-theme fonts; (b) add font
-   tokens to _all 10_ themes to satisfy parity. Recommendation: **(a) for now** —
+1. **Font theming.** `brutalist`, `terminal`, and `cyberpunk` want non-default
+   (mono/grotesk) fonts, but `--cascivo-font-sans`/`-mono` live in `tokens/index.css
+   :root`, not in themes. Options: (a) keep fonts global, skip per-theme fonts; (b) add
+   font tokens to _all 11_ themes to satisfy parity. Recommendation: **(a) for now** —
    convey personality through radius/shadow/border/color; revisit fonts as a
    separate "themeable typography" change.
 2. **Density theming.** Same situation for `corporate`'s tighter density
