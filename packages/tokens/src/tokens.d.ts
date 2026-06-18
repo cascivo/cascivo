@@ -99,6 +99,7 @@ export type CascivoToken =
   | '--cascivo-ease-out'
   | '--cascivo-focus-ring'
   | '--cascivo-font-bold'
+  | '--cascivo-font-display'
   | '--cascivo-font-medium'
   | '--cascivo-font-mono'
   | '--cascivo-font-normal'

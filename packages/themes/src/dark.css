@@ -8,6 +8,9 @@
   [data-theme='dark'] {
     color-scheme: dark;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.145 0.005 250);
     --cascivo-color-surface: oklch(0.185 0.007 250);

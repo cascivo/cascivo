@@ -1,7 +1,7 @@
 @layer cascivo.component {
   .heading {
     margin: 0;
-    font-family: var(--cascivo-font-sans);
+    font-family: var(--cascivo-font-display);
     font-weight: var(--cascivo-font-semibold);
     line-height: var(--cascivo-leading-tight);
     color: var(--cascivo-color-text);

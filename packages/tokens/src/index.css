@@ -97,6 +97,11 @@
     --cascivo-font-sans:
       ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --cascivo-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    /* Display = the headline/brand face a theme may override (terminal, brutalist,
+       arcade …). Defaults to the sans stack, so themes that do not override it look
+       unchanged. sans/mono remain the body/code defaults. Per-theme overrides live in
+       each theme file (declared in all themes to satisfy token parity). */
+    --cascivo-font-display: var(--cascivo-font-sans);
 
     --cascivo-text-xs: 0.75rem; /* 12px */
     --cascivo-text-sm: 0.875rem; /* 14px */

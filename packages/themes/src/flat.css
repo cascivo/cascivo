@@ -7,6 +7,9 @@
   [data-theme='flat'] {
     color-scheme: light;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(1 0 0);
     --cascivo-color-surface: oklch(0.97 0 0);

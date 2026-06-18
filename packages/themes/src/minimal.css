@@ -7,6 +7,9 @@
   [data-theme='minimal'] {
     color-scheme: light;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface — warm off-white ─────────────────────── */
     --cascivo-color-background: oklch(0.98 0.005 80);
     --cascivo-color-surface: oklch(0.965 0.006 80);

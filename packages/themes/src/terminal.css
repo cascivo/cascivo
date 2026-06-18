@@ -7,6 +7,9 @@
   [data-theme='terminal'] {
     color-scheme: dark;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-mono);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.17 0.01 150);
     --cascivo-color-surface: oklch(0.21 0.012 150);
