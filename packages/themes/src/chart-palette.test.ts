@@ -111,6 +111,7 @@ const THEMES = [
   'brutalist',
   'corporate',
   'terminal',
+  'cyberpunk',
 ] as const
 
 // WCAG non-text minimum contrast (3:1) is used here rather than the text minimum (4.5:1)
@@ -133,6 +134,7 @@ const BG_FALLBACK: Record<string, [number, number, number]> = {
   midnight: [0.16, 0.02, 280],
   terminal: [0.17, 0.01, 150],
   brutalist: [0.97, 0.02, 95],
+  cyberpunk: [0.16, 0.03, 285],
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -186,7 +188,7 @@ function themeBackground(themeName: string): RGB {
 // ── Tests ──────────────────────────────────────────────────────────────────────
 
 describe('chart palette', () => {
-  describe('presence — all 10 themes define chart-1 through chart-8', () => {
+  describe('presence — all 11 themes define chart-1 through chart-8', () => {
     for (const theme of THEMES) {
       it(`${theme}: defines --cascivo-chart-1 through --cascivo-chart-8`, () => {
         const tokens = parseChartTokens(theme)

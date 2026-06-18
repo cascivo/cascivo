@@ -14,6 +14,7 @@ const themeFiles = [
   'brutalist',
   'corporate',
   'terminal',
+  'cyberpunk',
 ].map((n) => `${n}.css`)
 
 function tokenKeys(file: string): Set<string> {

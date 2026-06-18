@@ -2,7 +2,7 @@
   "name": "@cascivo/themes",
   "version": "0.2.0",
   "private": false,
-  "description": "First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal",
+  "description": "First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk",
   "keywords": [
     "cascivo",
     "css",
@@ -50,7 +50,9 @@
     "./corporate": "./src/corporate.css",
     "./corporate.css": "./src/corporate.css",
     "./terminal": "./src/terminal.css",
-    "./terminal.css": "./src/terminal.css"
+    "./terminal.css": "./src/terminal.css",
+    "./cyberpunk": "./src/cyberpunk.css",
+    "./cyberpunk.css": "./src/cyberpunk.css"
   },
   "publishConfig": {
     "access": "public",
