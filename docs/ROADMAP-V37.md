@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-06-18
 **Status:** 🚧 Planning
-**Plan documents:** `docs/superpowers/plans/2026-06-18-v37-master-plan.md` + tranches 1–6
+**Plan documents:** `docs/superpowers/plans/2026-06-18-v37-master-plan.md` + tranches 1–7
 **Source:** `docs/feedback-from-boringtools-migration.md`
 
 ---
@@ -74,6 +74,7 @@ Each item below was reproduced in this repo before planning (file:line evidence 
 | D   | Flattened published types          | T4      | Verify/fix `flatten-types`; published `.d.ts` no longer expose `packages/.../src`         |
 | E   | AppShell layout + SideNav polish   | T5      | `AppShell` (sticky/full-height/animated toggle, `inert`/focus); reconcile rail vs full-hide |
 | F   | Docs: README + index + migration   | T6      | Quickstart, component index/cheat sheet, shadcn→cascivo map; verify README ships; full gate |
+| G   | Consumer hand-off guide             | T7      | Generate `docs/v37-CONSUMER-CHANGES.md` — what changed + what to do, for a downstream project |
 
 ---
 
@@ -162,3 +163,9 @@ Each item below was reproduced in this repo before planning (file:line evidence 
 - [ ] A categorized component index ("what exists") is generated from the manifests/registry and surfaced in the README + docs.
 - [ ] A shadcn→cascivo migration page maps variant/prop differences (e.g. Button `default/outline` → `primary/secondary`, no `outline`).
 - [ ] Full CI gate passes: `pnpm exec vp check`, `pnpm build`, `pnpm exec vp run -r check`, `pnpm test`, drift check, `pnpm breakpoint:check`, brand guard.
+
+### T7 — Consumer hand-off guide
+
+- [ ] `docs/v37-CONSUMER-CHANGES.md` exists and is self-contained (a downstream project can act on it without this repo).
+- [ ] Each of the 13 feedback items has a "what cascivo changed" + "what to do on your side" section tied to a real T1–T6 change.
+- [ ] Includes a copy-pasteable upgrade checklist + the minimum package versions; every snippet verified against the shipped artifacts.

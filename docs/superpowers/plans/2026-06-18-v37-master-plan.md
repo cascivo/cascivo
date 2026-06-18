@@ -61,13 +61,15 @@ no `useState`/`useEffect`, progressive-enhancement CSS); generated artifacts via
 | T4      | Flattened published types          | Verify/fix `flatten-types`; add a check that published `.d.ts` expose no `packages/.../src`.               |
 | T5      | AppShell layout + SideNav polish   | Ship `AppShell` (sticky/full-height/animated toggle, `inert`/focus); fix `min-block-size`; reconcile rail. |
 | T6      | Docs: README + index + migration   | Quickstart, generated component index, shadcn→cascivo map; verify README ships; full gate + brand guard.   |
+| T7      | Consumer hand-off guide            | Generate `docs/v37-CONSUMER-CHANGES.md` — a self-contained upgrade guide a downstream project can act on.   |
 
 Ordering rationale: **unblock first** (T1 removes the patch every strict-bundler consumer needs and
 finishes the rename that caused it). T2 and the packaging-DX tranches (T3 token manifest, T4 flat
 types) are independent and could parallelize, but are sequenced T2→T3→T4 to keep one reviewable change
 per tranche. T5 (AppShell) is the largest net-new component work and depends on the rename (T1) and the
 motion/base conventions (T2). T6 documents everything the prior tranches produced and runs the final
-gate.
+gate. **T7 runs last** — it can only describe real, shipped changes, so the hand-off guide is written
+after T1–T6 have merged.
 
 ---
 
@@ -138,6 +140,12 @@ gate.
 | Create | `docs/MIGRATING-FROM-SHADCN.md` (variant/prop mapping table) + docs-app page                    |
 | Verify | `npm pack` tarball includes README; component index renders in docs app                         |
 | Verify | full gate (`pnpm ready` / `pnpm ready:ci`), `pnpm breakpoint:check`, brand guard                |
+
+### T7 — Consumer hand-off guide
+
+| Action | Path                                                                                            |
+| ------ | ----------------------------------------------------------------------------------------------- |
+| Create | `docs/v37-CONSUMER-CHANGES.md` (per-issue "what changed / what to do" + upgrade checklist)       |
 
 ---
 
