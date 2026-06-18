@@ -1,0 +1,128 @@
+@layer cascivo.component {
+  /* Outer: one viewport-tall, non-scrolling flex column. The header is pinned
+     (first, non-growing row); the body holds the only scroll container. */
+  .shell {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    block-size: 100vh; /* fallback for browsers without dvh */
+    block-size: 100dvh;
+    overflow: hidden;
+    font-family: var(--cascivo-font-sans);
+    color: var(--cascivo-color-foreground);
+    background-color: var(--cascivo-color-background);
+  }
+
+  .header {
+    flex: 0 0 auto;
+    z-index: var(--cascivo-z-raised);
+  }
+
+  .body {
+    position: relative; /* anchors the mobile drawer + scrim */
+    flex: 1 1 auto;
+    min-block-size: 0; /* let children own the scroll instead of growing the row */
+    display: flex;
+  }
+
+  /* Base (mobile-first, < lg): the nav is an off-canvas drawer that slides in
+     over the content. It never uses display:none, so it stays in the a11y tree
+     and is reachable when open; `inert` (set in JS when closed) removes it from
+     the tab order. */
+  .navWrapper {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: var(--cascivo-z-overlay);
+    block-size: 100%;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: transform var(--cascivo-motion-emphasis);
+  }
+
+  .navWrapper[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  /* RTL: the drawer enters from the inline-end side. */
+  :dir(rtl) .navWrapper {
+    transform: translateX(100%);
+  }
+
+  :dir(rtl) .navWrapper[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  /* navInner is pinned to the nav's own width so, while the wrapper width
+     animates to 0 (desktop), the contents clip/slide rather than reflow. */
+  .navInner {
+    display: flex;
+    block-size: 100%;
+    inline-size: var(--cascivo-shell-panel-inline-size, 20rem);
+  }
+
+  .navInner > * {
+    flex: 1 1 auto;
+    min-block-size: 0;
+  }
+
+  /* Scrim: only visible behind the open drawer on small screens. */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: var(--cascivo-z-dropdown);
+    background-color: oklch(0 0 0 / 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--cascivo-motion-emphasis),
+      visibility var(--cascivo-motion-emphasis);
+  }
+
+  .scrim[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .main {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow-y: auto; /* the single scroll container */
+  }
+
+  .footer {
+    flex: 0 0 auto;
+  }
+
+  /* Desktop (>= lg, 64rem): the nav becomes an in-flow column. Full-hide
+     animates the wrapper's inline-size between its open width and 0 (explicit
+     lengths — never the grid 1fr→0fr trick, which silently fails on an
+     auto-width flex item). The pinned navInner clips as the wrapper closes. */
+  @media (min-width: 64rem) {
+    .navWrapper {
+      position: static;
+      z-index: auto;
+      inline-size: var(--cascivo-shell-aside-inline-size, 18rem);
+      transform: none;
+      transition: inline-size var(--cascivo-motion-emphasis);
+    }
+
+    .navWrapper[data-open='false'] {
+      inline-size: 0;
+    }
+
+    .navInner {
+      inline-size: var(--cascivo-shell-aside-inline-size, 18rem);
+    }
+
+    :dir(rtl) .navWrapper,
+    :dir(rtl) .navWrapper[data-open='true'] {
+      transform: none;
+    }
+
+    /* No scrim on desktop — the sidebar sits beside the content. */
+    .scrim {
+      display: none;
+    }
+  }
+}

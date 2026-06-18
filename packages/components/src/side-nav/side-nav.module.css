@@ -4,7 +4,12 @@
     display: flex;
     flex-direction: column;
     inline-size: var(--cascivo-sidenav-inline-size, 16rem);
-    min-block-size: 100%;
+    /* Fill a height-constrained parent and cap at it so the internal
+       overflow:hidden auto below actually fires — a long nav scrolls inside the
+       rail instead of growing past the parent and hiding its bottom entries.
+       Was min-block-size:100% (#11), a *min* that defeats the internal scroll. */
+    block-size: 100%;
+    max-block-size: 100%;
     padding: var(--cascivo-space-2);
     font-family: var(--cascivo-font-sans);
     background-color: var(--cascivo-sidenav-bg, var(--cascivo-color-surface));

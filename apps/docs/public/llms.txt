@@ -58,6 +58,7 @@ New MCP tools:
 - [accordion](/llms/accordion.md) — Vertically stacked, collapsible content sections
 - [alert](/llms/alert.md) — Highlights a short, important message inline
 - [alert-dialog](/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
+- [app-shell](/llms/app-shell.md) — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
 - [aspect-ratio](/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio
 - [avatar](/llms/avatar.md) — Displays a user image with initials fallback
 - [badge](/llms/badge.md) — Small status label or category indicator
@@ -218,6 +219,7 @@ New MCP tools:
 - [Accordion](/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
 - [Alert](/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
 - [AlertDialog](/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
+- [AppShell](/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
 - [AspectRatio](/context/aspect-ratio.md) — Use when: Reserving a stable box for media that loads asynchronously, avoiding layout shift
 - [Avatar](/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
 - [Badge](/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
