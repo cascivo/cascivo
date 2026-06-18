@@ -24,7 +24,7 @@ export function Text({
       data-size={size}
       data-weight={weight}
       data-muted={muted ? '' : undefined}
-      className={cn(styles['text'], className)}
+      className={cn(styles['text'], className as string | undefined)}
       {...props}
     >
       {children}

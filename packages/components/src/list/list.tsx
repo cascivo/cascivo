@@ -12,7 +12,7 @@ export function List({ as: Tag = 'ul', marker, className, children, ...props }: 
   return (
     <Tag
       data-marker={marker ?? (Tag === 'ol' ? 'decimal' : 'disc')}
-      className={cn(styles['list'], className)}
+      className={cn(styles['list'], className as string | undefined)}
       {...props}
     >
       {children}
@@ -24,7 +24,7 @@ export type ListItemProps = LiHTMLAttributes<HTMLLIElement>
 
 export function ListItem({ className, children, ...props }: ListItemProps) {
   return (
-    <li className={cn(styles['item'], className)} {...props}>
+    <li className={cn(styles['item'], className as string | undefined)} {...props}>
       {children}
     </li>
   )
