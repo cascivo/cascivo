@@ -4,6 +4,7 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
 import { Badge } from '@cascivo/components/badge'
 import { Button } from '@cascivo/components/button'
+import { CodeSnippet } from '@cascivo/components/code-snippet'
 import { Download, Layers, Sun, Terminal, Zap } from '@cascivo/icons'
 import bench from 'virtual:bench'
 
@@ -22,8 +23,12 @@ interface Advantage {
 function CssPanel() {
   return (
     <>
-      <pre className="adv-code" tabIndex={0}>
-        <code>{`@layer base, components, utilities;
+      <CodeSnippet
+        className="adv-code"
+        variant="multi"
+        language="css"
+        showCopyButton={false}
+        code={`@layer base, components, utilities;
 
 .card {
   container-type: inline-size;
@@ -31,8 +36,8 @@ function CssPanel() {
 
 .card:has(img) {
   grid-template-columns: 8rem 1fr;
-}`}</code>
-      </pre>
+}`}
+      />
       <div className="adv-copy">
         <h3>Modern CSS, zero runtime</h3>
         <p>
@@ -105,14 +110,19 @@ function ThemesPanel() {
 function OwnedPanel() {
   return (
     <>
-      <pre className="adv-code" tabIndex={0}>
-        <code>{`$ npx cascivo add button
+      <CodeSnippet
+        className="adv-code"
+        variant="multi"
+        language="bash"
+        terminal
+        title="bash"
+        code={`$ npx cascivo add button
 
   ✓ components/ui/button/button.tsx
   ✓ components/ui/button/button.module.css
 
-  it's yours now — edit it, fork it, keep it`}</code>
-      </pre>
+  it's yours now — edit it, fork it, keep it`}
+      />
       <div className="adv-copy">
         <h3>Copy it in, it&rsquo;s yours</h3>
         <p>
@@ -131,14 +141,18 @@ function OwnedPanel() {
 function AiPanel() {
   return (
     <>
-      <pre className="adv-code" tabIndex={0}>
-        <code>{`{
-  "name": "Button",
-  "variants": ["primary", "secondary", "ghost"],
-  "props": [{ "name": "size", "type": "sm | md | lg" }],
-  "a11y": { "role": "button", "wcag": "AA" }
-}`}</code>
-      </pre>
+      <CodeSnippet
+        className="adv-code"
+        variant="multi"
+        language="ts"
+        showCopyButton={false}
+        code={`export const meta = {
+  name: 'Button',
+  variants: ['primary', 'secondary', 'ghost'],
+  props: [{ name: 'size', type: 'sm | md | lg' }],
+  a11y: { role: 'button', wcag: 'AA' },
+}`}
+      />
       <div className="adv-copy">
         <h3>Manifests your agent reads</h3>
         <p>

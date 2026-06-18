@@ -7,6 +7,7 @@ import { setTheme, theme, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
+import { peek } from '../peek'
 
 const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
 
@@ -112,6 +113,26 @@ const THEME_ICONS: Record<string, () => ReactElement> = {
   light: SunIcon,
   dark: MoonIcon,
   warm: WarmIcon,
+}
+
+function EyeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
 }
 
 function GitHubIcon() {
@@ -230,6 +251,28 @@ export function Header() {
         menuExpanded={isNavOpen.value}
         end={
           <>
+            {currentPath.value === '/' && (
+              <Tooltip
+                content={peek.value ? 'Back to the page' : 'Peek at the components'}
+                placement="bottom"
+              >
+                <button
+                  type="button"
+                  className="header-peek-toggle"
+                  aria-pressed={peek.value}
+                  aria-label={
+                    peek.value
+                      ? 'Hide the components and show the page'
+                      : 'Peek at the components behind the page'
+                  }
+                  onClick={() => {
+                    peek.value = !peek.value
+                  }}
+                >
+                  <EyeIcon />
+                </button>
+              </Tooltip>
+            )}
             <Tooltip content={`Theme: ${theme.value}`} placement="bottom">
               <button
                 type="button"

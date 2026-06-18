@@ -7,18 +7,22 @@ import { Checkbox } from '@cascivo/components/checkbox'
 import { Input } from '@cascivo/components/input'
 import { Kbd } from '@cascivo/components/kbd'
 import { ProgressBar } from '@cascivo/components/progress-bar'
+import { ProgressCircle } from '@cascivo/components/progress-circle'
 import { RatingGroup } from '@cascivo/components/rating-group'
 import { Select } from '@cascivo/components/select'
+import { Skeleton } from '@cascivo/components/skeleton'
 import { Slider } from '@cascivo/components/slider'
+import { Spinner } from '@cascivo/components/spinner'
+import { Stat } from '@cascivo/components/stat'
 import { Status } from '@cascivo/components/status'
 import { Tag } from '@cascivo/components/tag'
 import { Toggle } from '@cascivo/components/toggle'
-import { VisuallyHidden } from '@cascivo/components/visually-hidden'
 
-// Each tile renders a real component in a different theme — the river shows the
-// library's breadth and its theming in one glance, no prose required. The whole
-// strip is decorative (inert): the controls move, so they must never take focus.
-const ROW_ONE: ReactNode[] = [
+// A field of real components used as the page backdrop: blurred and muted by
+// default so the foreground reads, revealed in full by the navbar "peek" toggle.
+// The whole layer is decorative (aria-hidden + inert) — it is never in the tab
+// order or the accessibility tree, even when revealed.
+const TILES: ReactNode[] = [
   <Button key="btn">Deploy</Button>,
   <Badge key="badge" variant="success">
     Passing
@@ -30,9 +34,6 @@ const ROW_ONE: ReactNode[] = [
     design-system
   </Tag>,
   <Kbd key="kbd">⌘K</Kbd>,
-]
-
-const ROW_TWO: ReactNode[] = [
   <Input key="input" label="Email" placeholder="you@studio.com" />,
   <Select
     key="select"
@@ -52,6 +53,20 @@ const ROW_TWO: ReactNode[] = [
     Grouped content
   </Card>,
   <Checkbox key="check" label="Auto-merge" defaultChecked />,
+  <Button key="btn2" variant="secondary">
+    View logs
+  </Button>,
+  <Badge key="badge2" variant="warning">
+    In review
+  </Badge>,
+  <Stat key="stat" label="Revenue · 24h" value="$48.2k" />,
+  <ProgressCircle key="ring" value={72} showValue />,
+  <Spinner key="spinner" />,
+  <Skeleton key="skeleton" lines={3} width="9rem" />,
+  <Tag key="tag2">v2.1.0</Tag>,
+  <Badge key="badge3" variant="outline">
+    RSC-ready
+  </Badge>,
 ]
 
 const THEMES = [
@@ -67,30 +82,20 @@ const THEMES = [
   'brutalist',
 ] as const
 
-function Row({ tiles, direction }: { tiles: ReactNode[]; direction: 'ltr' | 'rtl' }) {
-  // Duplicate the tiles so the -50% translate loops seamlessly.
-  const doubled = [...tiles, ...tiles]
-  return (
-    <div className={`marquee-row marquee-row--${direction}`}>
-      {doubled.map((tile, i) => (
-        <div key={i} className="marquee-tile" data-theme={THEMES[i % THEMES.length]}>
-          {tile}
-        </div>
-      ))}
-    </div>
-  )
-}
+// Doubled so the grid fills tall viewports when the field is revealed.
+const FIELD = [...TILES, ...TILES]
 
-export function ComponentMarquee() {
+export function ComponentField() {
   return (
-    <section className="marquee-section" aria-label="Component library preview">
-      <VisuallyHidden>
-        <h2>A live sample of the component library, rendered across ten themes.</h2>
-      </VisuallyHidden>
-      <div className="marquee" inert>
-        <Row tiles={ROW_ONE} direction="ltr" />
-        <Row tiles={ROW_TWO} direction="rtl" />
+    <div className="bg-field" aria-hidden="true" inert>
+      <div className="bg-field-grid">
+        {FIELD.map((tile, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={i} className="bg-field-tile" data-theme={THEMES[i % THEMES.length]}>
+            {tile}
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   )
 }

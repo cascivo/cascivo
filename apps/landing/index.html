@@ -381,7 +381,8 @@
       }
 
       /* ── Theme cycle button ───────────────────────────────── */
-      .header-theme-cycle {
+      .header-theme-cycle,
+      .header-peek-toggle {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -397,14 +398,22 @@
           background 150ms ease;
       }
 
-      .header-theme-cycle:hover {
+      .header-theme-cycle:hover,
+      .header-peek-toggle:hover {
         color: var(--cascivo-color-text);
         background: var(--cascivo-color-surface-raised);
       }
 
-      .header-theme-cycle:focus-visible {
+      .header-theme-cycle:focus-visible,
+      .header-peek-toggle:focus-visible {
         outline: 2px solid var(--cascivo-color-accent);
         outline-offset: 2px;
+      }
+
+      /* Lit state when the peek view is active. */
+      .header-peek-toggle[aria-pressed='true'] {
+        color: var(--cascivo-color-text-on-accent);
+        background: var(--cascivo-color-accent);
       }
 
       /* ── Header icon links ────────────────────────────────── */
@@ -650,82 +659,80 @@
         text-wrap: balance;
       }
 
-      /* ── Component marquee — full-bleed river of real, themed components ─── */
-      .marquee-section {
-        margin-block: var(--cascivo-space-4) var(--cascivo-space-12);
+      /* ── Component backdrop field + "peek" gimmick ────────── */
+      /* A field of real components sits behind the page: blurred + muted by
+         default so the content reads, sharpened (and the content hidden) when
+         the navbar "peek" toggle is on. */
+      .bg-field {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
         overflow: hidden;
+        filter: blur(7px);
+        transition: filter 450ms ease;
       }
 
-      .marquee {
-        display: flex;
-        flex-direction: column;
+      .bg-field::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--cascivo-color-bg);
+        opacity: 0.8;
+        transition: opacity 450ms ease;
+      }
+
+      .bg-field-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
         gap: var(--cascivo-space-4);
-        /* Fade the strip into the page at both edges instead of a hard cut. */
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        padding: var(--cascivo-space-5);
+        min-block-size: 100vh;
+        align-content: start;
       }
 
-      .marquee-row {
-        display: flex;
-        gap: 0;
-        width: max-content;
-        will-change: transform;
-      }
-
-      .marquee-row--ltr {
-        animation: marquee-ltr 60s linear infinite;
-      }
-
-      .marquee-row--rtl {
-        animation: marquee-rtl 72s linear infinite;
-      }
-
-      /* Pause when a visitor hovers, so they can read a tile. */
-      .marquee:hover .marquee-row {
-        animation-play-state: paused;
-      }
-
-      .marquee-tile {
-        flex: 0 0 auto;
-        /* Spacing lives on the tile (not row gap) so the duplicated track is an
-           exact 2× of one set — translateX(-50%) then loops with no seam. */
-        margin-inline-end: var(--cascivo-space-4);
+      .bg-field-tile {
         display: flex;
         align-items: center;
-        min-block-size: 4.5rem;
-        padding: var(--cascivo-space-4) var(--cascivo-space-5);
+        justify-content: center;
+        min-block-size: 5rem;
+        padding: var(--cascivo-space-4);
         border: 1px solid var(--cascivo-color-border);
         border-radius: var(--cascivo-radius-lg);
-        background-color: var(--cascivo-color-bg);
+        background: var(--cascivo-color-bg);
         color: var(--cascivo-color-text);
       }
 
-      @keyframes marquee-ltr {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
+      /* Peek on: sharpen the field, drop the scrim, fade the page away. */
+      [data-peek] .bg-field {
+        filter: none;
       }
 
-      @keyframes marquee-rtl {
-        from {
-          transform: translateX(-50%);
-        }
-        to {
-          transform: translateX(0);
-        }
+      [data-peek] .bg-field::after {
+        opacity: 0;
       }
 
-      /* Respect reduced-motion: freeze the strip and let it scroll by hand. */
+      main,
+      footer {
+        transition: opacity 350ms ease;
+      }
+
+      [data-peek] main,
+      [data-peek] footer,
+      [data-peek] .scroll-progress {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition:
+          opacity 350ms ease,
+          visibility 0s 350ms;
+      }
+
       @media (prefers-reduced-motion: reduce) {
-        .marquee {
-          overflow-x: auto;
-        }
-
-        .marquee-row {
-          animation: none;
+        .bg-field,
+        .bg-field::after,
+        main,
+        footer {
+          transition: none;
         }
       }
 

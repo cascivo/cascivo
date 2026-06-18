@@ -3,7 +3,7 @@ import type { ComponentMeta } from '@cascivo/core'
 export const meta: ComponentMeta = {
   name: 'CodeSnippet',
   description:
-    'Displays code (inline, single-line, or multi-line) with an optional copy button; no syntax highlighting',
+    'Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look',
   category: 'display',
   states: ['idle', 'copied'],
   variants: ['inline', 'single', 'multi'],
@@ -26,7 +26,19 @@ export const meta: ComponentMeta = {
   },
   examples: [],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
-  tags: ['display', 'code', 'snippet', 'copy', 'pre'],
+  tags: [
+    'display',
+    'code',
+    'snippet',
+    'copy',
+    'pre',
+    'syntax-highlighting',
+    'terminal',
+    'bash',
+    'css',
+    'js',
+    'ts',
+  ],
   intent: {
     whenToUse: [
       'Showing a command, token, or path the user is expected to copy',
@@ -35,7 +47,7 @@ export const meta: ComponentMeta = {
     ],
     whenNotToUse: [
       'An editable code input — use a textarea or code editor',
-      'Long files needing syntax highlighting and folding — use a dedicated viewer',
+      'Whole source files needing folding, diagnostics, or many languages — use a dedicated viewer; the built-in highlighter is a presentational scan for bash/css/js/ts only',
     ],
     antiPatterns: [
       {

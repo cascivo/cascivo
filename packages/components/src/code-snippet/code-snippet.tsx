@@ -1,14 +1,29 @@
 'use client'
 import { cn, useClipboard, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
+import { type CodeLang, tokenize } from './highlight'
 import styles from './code-snippet.module.css'
+
+export type { CodeLang }
 
 export interface CodeSnippetProps {
   /** The code to display (and copy). */
   code: string
   /** inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>. */
   variant?: 'inline' | 'single' | 'multi'
-  /** Show line numbers (multi only). */
+  /**
+   * Enables lightweight, dependency-free syntax highlighting for the block
+   * variants. Omit for plain text. Inline code is never highlighted.
+   */
+  language?: CodeLang
+  /**
+   * Renders terminal-window chrome (a title bar with traffic-light dots). Pair
+   * with `language="bash"` for a shell transcript. Block variants only.
+   */
+  terminal?: boolean
+  /** Optional label shown in the terminal title bar. */
+  title?: string
+  /** Show line numbers (multi only; ignored when `language` is set). */
   showLineNumbers?: boolean
   /** Show the copy-to-clipboard button. Defaults true for single/multi, false for inline. */
   showCopyButton?: boolean
@@ -16,14 +31,38 @@ export interface CodeSnippetProps {
   className?: string
 }
 
+/** Syntax-highlighted `<code>` body — one span per token, coloured via `data-tok`. */
+function Highlighted({ code, language }: { code: string; language: CodeLang }) {
+  return (
+    <code className={styles['code']}>
+      {tokenize(code, language).map((tok, i) =>
+        tok.type === 'text' ? (
+          // eslint-disable-next-line react/no-array-index-key
+          <span key={i}>{tok.value}</span>
+        ) : (
+          // eslint-disable-next-line react/no-array-index-key
+          <span key={i} data-tok={tok.type}>
+            {tok.value}
+          </span>
+        ),
+      )}
+    </code>
+  )
+}
+
 /**
- * Plain code display (no syntax highlighting). `inline` renders a `<code>` chip in flowing text;
- * `single` a horizontally scrolling one-liner; `multi` a block with optional line numbers. An
- * optional copy button uses `useClipboard` to copy the raw `code`.
+ * Code display with optional, dependency-free syntax highlighting. `inline`
+ * renders a `<code>` chip in flowing text; `single` a horizontally scrolling
+ * one-liner; `multi` a block with optional line numbers. Pass `language` to
+ * colour bash/css/js/ts, and `terminal` for shell-window chrome. An optional
+ * copy button uses `useClipboard` to copy the raw `code`.
  */
 export function CodeSnippet({
   code,
   variant = 'single',
+  language,
+  terminal = false,
+  title,
   showLineNumbers,
   showCopyButton,
   labels,
@@ -87,11 +126,26 @@ export function CodeSnippet({
   }
 
   const lines = code.split('\n')
+  const withNumbers = variant === 'multi' && showLineNumbers && !language
 
   return (
-    <div className={cn(styles['root'], className)} data-variant={variant}>
+    <div
+      className={cn(styles['root'], className)}
+      data-variant={variant}
+      data-terminal={terminal ? '' : undefined}
+    >
+      {terminal && (
+        <div className={styles['bar']} aria-hidden="true">
+          <span className={styles['dots']}>
+            <span className={styles['dot']} />
+            <span className={styles['dot']} />
+            <span className={styles['dot']} />
+          </span>
+          {title && <span className={styles['title']}>{title}</span>}
+        </div>
+      )}
       <pre className={styles['pre']}>
-        {variant === 'multi' && showLineNumbers ? (
+        {withNumbers ? (
           <code className={styles['code']}>
             {lines.map((line, i) => (
               // eslint-disable-next-line react/no-array-index-key
@@ -103,6 +157,8 @@ export function CodeSnippet({
               </span>
             ))}
           </code>
+        ) : language ? (
+          <Highlighted code={code} language={language} />
         ) : (
           <code className={styles['code']}>{code}</code>
         )}

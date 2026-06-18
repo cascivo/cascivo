@@ -3,9 +3,9 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
-import { ComponentMarquee } from './sections/ComponentMarquee'
 import { AdvantageCarousel } from './sections/AdvantageCarousel'
 import { initReveal } from './reveal'
+import { peek } from './peek'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
 const SearchDialog = lazy(() =>
   import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
@@ -18,6 +18,11 @@ import { DEMOS } from './pages/examples/data'
 
 // Heavy below-the-fold home sections — split into their own chunks so the
 // initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
+// The component backdrop is decorative; lazy so its ~two-dozen demos never
+// weigh on the initial paint.
+const ComponentField = lazy(() =>
+  import('./sections/ComponentField').then((m) => ({ default: m.ComponentField })),
+)
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
@@ -69,12 +74,14 @@ function SectionFallback({ tall = false, height }: { tall?: boolean; height?: nu
 function HomePage() {
   return (
     <>
+      <Suspense fallback={null}>
+        <ComponentField />
+      </Suspense>
       <SkipNavLink />
       <Header />
       <SkipNavTarget>
         <main>
           <Hero />
-          <ComponentMarquee />
           <AdvantageCarousel />
           <Suspense fallback={<SectionFallback height={420} />}>
             <QuickStart />
@@ -154,6 +161,14 @@ export function App() {
   useSignalEffect(() => initReveal())
   useSignalEffect(() => {
     initRouter()
+  })
+
+  // Drive the home "peek" gimmick via a root attribute the CSS reacts to.
+  // Reset and gate on the home route so it can never strand another page.
+  useSignalEffect(() => {
+    const home = currentPath.value === '/'
+    if (!home && peek.value) peek.value = false
+    document.documentElement.toggleAttribute('data-peek', home && peek.value)
   })
 
   // CMD+K / Ctrl+K opens the search dialog.

@@ -397,17 +397,9 @@ main {
   text-decoration: underline;
 }
 
+/* CodeSnippet brings its own block styling; just let it shrink inside the grid. */
 .adv-code {
-  margin: 0;
-  padding: var(--cascivo-space-5);
-  overflow-x: auto;
-  font-family: var(--cascivo-font-mono);
-  font-size: var(--cascivo-text-sm);
-  line-height: var(--cascivo-leading-relaxed);
-  color: var(--cascivo-color-text);
-  background-color: var(--cascivo-color-bg-subtle);
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-lg);
+  min-inline-size: 0;
 }
 
 .adv-figure {
