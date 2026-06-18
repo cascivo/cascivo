@@ -154,10 +154,23 @@
     animation: cascivo-cyber-glitch var(--cascivo-duration-300) steps(2, jump-end) infinite;
   }
 
-  /* Neon flicker — failing-sign atmosphere */
+  /* Neon flicker — broken-sign buzz.
+     A stack of text-shadows builds the neon-tube glow (tight bright core + wide
+     colored halo); the keyframes hold that glow for long stretches, then cut it
+     to nothing at a few irregular, close-together stops so it reads as failing
+     electrics — a sign that flickers "sometimes" rather than blinking on a beat.
+     The base rule is the steady, fully-lit fallback (used when the animation is
+     unsupported or disabled by reduced-motion). */
   [data-theme='cyberpunk'] .cascivo-cyber-flicker {
-    text-shadow: 0 0 8px oklch(0.7 0.25 330 / 0.7);
-    animation: cascivo-cyber-flicker 6s steps(20, jump-none) infinite;
+    color: oklch(0.97 0.04 330);
+    text-shadow:
+      0 0 4px oklch(0.98 0.02 330),
+      0 0 11px oklch(0.95 0.05 330),
+      0 0 19px oklch(0.9 0.12 330),
+      0 0 40px oklch(0.7 0.25 330),
+      0 0 75px oklch(0.7 0.25 330),
+      0 0 110px oklch(0.7 0.25 330);
+    animation: cascivo-cyber-flicker 4s linear infinite;
   }
 
   @keyframes cascivo-cyber-scanline {
@@ -187,19 +200,25 @@
 
   @keyframes cascivo-cyber-flicker {
     0%,
-    18%,
-    22%,
-    25%,
-    53%,
+    19%,
+    21%,
+    55%,
     57%,
+    62%,
     100% {
-      opacity: 1;
-      text-shadow: 0 0 8px oklch(0.7 0.25 330 / 0.7);
+      color: oklch(0.97 0.04 330);
+      text-shadow:
+        0 0 4px oklch(0.98 0.02 330),
+        0 0 11px oklch(0.95 0.05 330),
+        0 0 19px oklch(0.9 0.12 330),
+        0 0 40px oklch(0.7 0.25 330),
+        0 0 75px oklch(0.7 0.25 330),
+        0 0 110px oklch(0.7 0.25 330);
     }
     20%,
-    24%,
-    55% {
-      opacity: 0.5;
+    56%,
+    60% {
+      color: oklch(0.5 0.1 330);
       text-shadow: none;
     }
   }
