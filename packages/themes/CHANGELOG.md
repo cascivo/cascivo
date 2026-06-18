@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.2.1
+
+### Patch Changes
+
+- 0903bd6: Cyperpunk theme
+
 ## 0.2.0
 
 ### Minor Changes
