@@ -10,7 +10,7 @@ const PAGES = [
 ]
 
 for (const width of WIDTHS) {
-  for (const { path, name } of PAGES) {
+  for (const { path } of PAGES) {
     test(`docs ${path}: zero horizontal overflow at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 812 })
       await page.goto(path)

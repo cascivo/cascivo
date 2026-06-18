@@ -210,7 +210,7 @@ describe('chart palette', () => {
           let color: RGB
           try {
             color = parseOklch(raw)
-          } catch (e) {
+          } catch {
             failures.push(`chart-${i}: cannot parse "${raw}"`)
             continue
           }
@@ -242,7 +242,7 @@ describe('chart palette', () => {
           try {
             colorA = parseOklch(rawA)
             colorB = parseOklch(rawB)
-          } catch (e) {
+          } catch {
             failures.push(`chart-${i}/chart-${i + 1}: parse error`)
             continue
           }

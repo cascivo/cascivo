@@ -36,14 +36,6 @@ const fixtureBundle: ContextBundle = {
   ],
 }
 
-function makeFetch(bundle: ContextBundle): (url: string) => Promise<Response> {
-  return () =>
-    Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(bundle),
-    } as Response)
-}
-
 function makeFailFetch(status: number): (url: string) => Promise<Response> {
   return () =>
     Promise.resolve({

@@ -70,8 +70,6 @@ export function Combobox({
   const inputId = id ?? (label ? `cascade-combobox-${baseId}` : `cascade-combobox-${baseId}`)
   const listboxId = `${baseId}-listbox`
   const inputRef = useRef<HTMLInputElement>(null)
-  const listRef = useRef<HTMLDivElement>(null)
-
   const resolvedPlaceholder = labels?.placeholder ?? t(builtin.combobox.placeholder)
   const resolvedEmpty = labels?.empty ?? t(builtin.combobox.empty)
   const resolvedClear = labels?.clear ?? t(builtin.combobox.clear)

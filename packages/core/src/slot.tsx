@@ -50,8 +50,8 @@ export const Slot = forwardRef<unknown, SlotProps>(function Slot(props, forwarde
     childProps['className'] as string | undefined,
   )
   merged['style'] = {
-    ...((slotStyle as CSSProperties | undefined) ?? {}),
-    ...((childProps['style'] as CSSProperties | undefined) ?? {}),
+    ...(slotStyle as CSSProperties | undefined),
+    ...(childProps['style'] as CSSProperties | undefined),
   }
   // React 19 exposes ref as a regular prop; React 18 keeps it on the element. Prefer props.ref to
   // avoid touching the deprecated `element.ref` getter when it isn't needed.

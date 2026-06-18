@@ -255,24 +255,6 @@ async function capture() {
   }
 }
 
-// ── Block screenshots ──────────────────────────────────────────────────────
-const BLOCK_NAMES = [
-  'app-shell',
-  'auth-login',
-  'auth-signup',
-  'dashboard-overview',
-  'dashboard-table',
-  'marketing-features',
-  'marketing-hero',
-  'settings-profile',
-]
-
-const BLOCKS_OUT_ROOT = resolve(root, 'apps/landing/public/blocks/screenshots')
-
-// Called from T5 once /blocks/preview/:name route exists in the landing app.
-// Placeholder — implementation goes here when preview route is available.
-async function captureBlocks() {}
-
 const mode = process.argv.includes('--capture') ? 'capture' : 'placeholder'
 if (mode === 'capture') {
   try {

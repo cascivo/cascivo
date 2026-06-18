@@ -22,7 +22,7 @@ function expandEnv(str: string, env: NodeJS.ProcessEnv = process.env): string {
   })
 }
 
-export function parseAddress(spec: string, env: NodeJS.ProcessEnv = process.env): ParsedAddress {
+export function parseAddress(spec: string, _env: NodeJS.ProcessEnv = process.env): ParsedAddress {
   if (
     spec.startsWith('http://') ||
     spec.startsWith('https://') ||

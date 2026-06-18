@@ -84,7 +84,7 @@ export function arcPath(
 
 export function stackSeries(series: readonly (readonly number[])[]): [number, number][][] {
   const length = series[0]?.length ?? 0
-  const totals = new Array<number>(length).fill(0)
+  const totals = Array.from({ length }, () => 0)
   return series.map((values) =>
     values.map((value, i) => {
       const y0 = totals[i]!

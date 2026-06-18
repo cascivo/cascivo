@@ -16,7 +16,6 @@ import {
   fmtInt,
   fmtKb,
   fmtMs,
-  LATENCY_SPOTLIGHT,
   latencyRows,
   latencySpotlightSeries,
   LIB_LABELS,

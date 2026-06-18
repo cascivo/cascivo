@@ -1,10 +1,9 @@
-import { createHash } from 'node:crypto'
 import type { CascadeConfig } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
 import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
-import { parseAddress, resolveClosure } from '../utils/resolve.js'
+import { resolveClosure } from '../utils/resolve.js'
 import { resolveFromDirectory } from '../utils/directory.js'
 import type { RegistryItem } from '@cascivo/registry'
 
