@@ -22,6 +22,7 @@ const STEPS = [
 export function QuickStart() {
   return (
     <section className="section" id="quickstart" data-reveal="">
+      <p className="flow-eyebrow">Quick start</p>
       <h2>Up and running in three steps</h2>
       <div className="quickstart">
         {STEPS.map((step, i) => (

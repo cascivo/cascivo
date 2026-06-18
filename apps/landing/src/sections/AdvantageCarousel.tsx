@@ -245,6 +245,10 @@ export function AdvantageCarousel() {
         paused.value = false
       }}
     >
+      <div className="flow-header">
+        <p className="flow-eyebrow">Why cascivo</p>
+        <h2 className="flow-title">Five reasons it feels different</h2>
+      </div>
       <Tabs
         value={active.value}
         onValueChange={(v) => {

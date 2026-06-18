@@ -4,6 +4,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { AdvantageCarousel } from './sections/AdvantageCarousel'
+import { SectionNav } from './sections/SectionNav'
 import { initReveal } from './reveal'
 import { peek } from './peek'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
@@ -79,14 +80,18 @@ function HomePage() {
       </Suspense>
       <SkipNavLink />
       <Header />
+      <SectionNav />
       <div className="home-sheet">
         <SkipNavTarget>
           <main>
             <Hero />
+            <hr className="flow-divider" />
             <AdvantageCarousel />
+            <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
             </Suspense>
+            <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={180} />}>
               <CtaBand />
             </Suspense>

@@ -4,7 +4,7 @@ import { LinkButton } from './LinkButton'
 
 export function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" id="hero">
       <Badge variant="outline">{__CASCIVO_COMPONENT_COUNT__}+ components · 10 themes · MIT</Badge>
       <h1 className="hero-title">
         Native to the web. <span className="hero-title-accent">Fluent in agent.</span>

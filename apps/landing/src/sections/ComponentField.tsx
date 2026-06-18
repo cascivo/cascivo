@@ -1,17 +1,25 @@
 import type { ReactNode } from 'react'
+import { Alert } from '@cascivo/components/alert'
 import { Avatar } from '@cascivo/components/avatar'
 import { Badge } from '@cascivo/components/badge'
 import { Button } from '@cascivo/components/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 import { Checkbox } from '@cascivo/components/checkbox'
 import { Input } from '@cascivo/components/input'
+import { Kbd } from '@cascivo/components/kbd'
+import { Pagination } from '@cascivo/components/pagination'
 import { ProgressBar } from '@cascivo/components/progress-bar'
 import { RatingGroup } from '@cascivo/components/rating-group'
+import { SegmentedControl } from '@cascivo/components/segmented-control'
 import { Select } from '@cascivo/components/select'
+import { Slider } from '@cascivo/components/slider'
 import { Stat } from '@cascivo/components/stat'
+import { Status } from '@cascivo/components/status'
+import { Steps } from '@cascivo/components/steps'
+import { Tag } from '@cascivo/components/tag'
 import { Toggle } from '@cascivo/components/toggle'
 import { Textarea } from '@cascivo/components/textarea'
-import { AreaChart, BarChart, Kpi, LineChart } from '@cascivo/charts'
+import { AreaChart, BarChart, Kpi, LineChart, PieChart } from '@cascivo/charts'
 
 // The page backdrop: real, composed UI cards — forms, charts, lists, settings —
 // the way a design system shows itself off. Blurred + muted by default, revealed
@@ -360,22 +368,310 @@ function CookieSettings() {
   )
 }
 
+function PlanToggle() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Billing</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <SegmentedControl
+            value="yearly"
+            onValueChange={() => {}}
+            options={[
+              { label: 'Monthly', value: 'monthly' },
+              { label: 'Yearly', value: 'yearly' },
+            ]}
+          />
+          <div>
+            <span className="bgc-price">$16</span>
+            <span className="bgc-muted"> / mo · billed yearly</span>
+          </div>
+          <Button>Choose plan</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Alerts() {
+  return (
+    <Card>
+      <CardContent>
+        <div className="bgc-stack">
+          <Alert variant="success" title="Payment received">
+            Your invoice for June is settled.
+          </Alert>
+          <Alert variant="warning" title="Storage almost full">
+            92% of 10 GB used.
+          </Alert>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Checkout() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Checkout</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Steps
+            steps={[
+              { label: 'Cart', state: 'complete' },
+              { label: 'Shipping', state: 'active' },
+              { label: 'Payment', state: 'pending' },
+            ]}
+          />
+          <Button>Continue to payment</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Traffic() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Traffic sources</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <PieChart
+          donut
+          title="Traffic sources"
+          height={150}
+          data={[
+            { id: 'direct', label: 'Direct', value: 48 },
+            { id: 'search', label: 'Search', value: 32 },
+            { id: 'social', label: 'Social', value: 20 },
+          ]}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function Filters() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Active filters</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-tags">
+          <Tag variant="info">status: open</Tag>
+          <Tag>label: bug</Tag>
+          <Tag variant="success">priority: high</Tag>
+          <Tag>assignee: ada</Tag>
+          <Badge variant="outline">+2</Badge>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Collaborators() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Shared with</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <div className="bgc-avatars">
+            {['AL', 'AT', 'GH', 'KJ'].map((a) => (
+              <Avatar key={a} fallback={a} size="sm" />
+            ))}
+            <span className="bgc-muted">+3 more</span>
+          </div>
+          <Button variant="secondary">Invite people</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function DeviceSettings() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Display</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Slider label="Brightness" defaultValue={72} />
+          <Slider label="Contrast" defaultValue={48} />
+          <div className="bgc-row">
+            <span>Night mode</span>
+            <Toggle defaultChecked />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SystemStatus() {
+  const rows: Array<[string, 'success' | 'warning' | 'error']> = [
+    ['API', 'success'],
+    ['Database', 'success'],
+    ['Webhooks', 'warning'],
+    ['CDN', 'success'],
+  ]
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>System status</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {rows.map(([name, s]) => (
+            <div key={name} className="bgc-row">
+              <span>{name}</span>
+              <Status status={s}>{s === 'success' ? 'Operational' : 'Degraded'}</Status>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SocialLogin() {
+  return (
+    <Card variant="elevated">
+      <CardHeader>
+        <CardTitle>Welcome back</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Button variant="secondary">Continue with Google</Button>
+          <Button variant="secondary">Continue with GitHub</Button>
+          <span className="bgc-muted">or</span>
+          <Input label="Work email" placeholder="you@company.com" />
+          <Button>Continue with email</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function CommandSearch() {
+  const results = ['Create new project', 'Invite teammate', 'Open settings']
+  return (
+    <Card>
+      <CardContent>
+        <div className="bgc-stack">
+          <div className="bgc-row">
+            <Input placeholder="Type a command…" />
+            <Kbd>⌘K</Kbd>
+          </div>
+          {results.map((r) => (
+            <div key={r} className="bgc-row-tight bgc-muted">
+              <Badge variant="outline" size="sm">
+                ⏎
+              </Badge>
+              {r}
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Inbox() {
+  const msgs = [
+    { who: 'Ada', text: 'Shipped the new theme', unread: true, initials: 'AL' },
+    { who: 'Alan', text: 'Re: benchmark results', unread: false, initials: 'AT' },
+    { who: 'Grace', text: 'Compiler review ready', unread: true, initials: 'GH' },
+  ]
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Inbox</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {msgs.map((m) => (
+            <div key={m.who} className="bgc-row">
+              <div className="bgc-row-tight">
+                <Avatar fallback={m.initials} size="sm" />
+                <span>
+                  {m.who} · <span className="bgc-muted">{m.text}</span>
+                </span>
+              </div>
+              {m.unread && <Badge variant="success" size="sm" />}
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Orders() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Recent orders</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {[
+            ['#1043', 'Paid'],
+            ['#1042', 'Pending'],
+            ['#1041', 'Paid'],
+          ].map(([id, st]) => (
+            <div key={id} className="bgc-row">
+              <span>{id}</span>
+              <Badge variant={st === 'Paid' ? 'success' : 'warning'} size="sm">
+                {st}
+              </Badge>
+            </div>
+          ))}
+          <Pagination page={2} pageSize={10} totalItems={48} onPageChange={() => {}} />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Interleaved so charts, forms, and lists alternate down each column. Distinct
+// cards only — no card repeats, so the revealed field reads as a real gallery.
 const TILES: ReactNode[] = [
   <SignIn key="signin" />,
   <RevenueArea key="area" />,
   <Team key="team" />,
-  <Upgrade key="upgrade" />,
+  <PlanToggle key="plan" />,
   <Notifications key="notif" />,
-  <CostLine key="line" />,
+  <Traffic key="traffic" />,
   <CreateAccount key="create" />,
   <RevenueKpi key="kpi" />,
-  <Onboarding key="onboard" />,
+  <SystemStatus key="status" />,
   <OrdersBar key="bar" />,
-  <Profile key="profile" />,
+  <Collaborators key="collab" />,
   <Review key="review" />,
   <StatsGrid key="stats" />,
-  <PaymentMethod key="pay" />,
+  <CommandSearch key="cmd" />,
   <CookieSettings key="cookie" />,
+  <CostLine key="line" />,
+  <Upgrade key="upgrade" />,
+  <Checkout key="checkout" />,
+  <Profile key="profile" />,
+  <Alerts key="alerts" />,
+  <Onboarding key="onboard" />,
+  <DeviceSettings key="device" />,
+  <PaymentMethod key="pay" />,
+  <Inbox key="inbox" />,
+  <SocialLogin key="social" />,
+  <Filters key="filters" />,
+  <Orders key="orders" />,
 ]
 
 const THEMES = [
@@ -391,9 +687,9 @@ const THEMES = [
   'brutalist',
 ] as const
 
-// Doubled so the (balanced) columns overflow and fill tall viewports; repeats
-// land in different themes, so a card reads as "same UI, another skin".
-const FIELD = [...TILES, ...TILES]
+// 27 distinct cards is enough that the balanced columns overflow and fill the
+// viewport; the overflow is clipped by the fixed field.
+const FIELD = TILES
 
 export function ComponentField() {
   return (
