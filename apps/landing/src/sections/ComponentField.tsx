@@ -687,6 +687,7 @@ const THEMES = [
   'corporate',
   'terminal',
   'brutalist',
+  'cyberpunk',
 ] as const
 
 // 27 distinct cards is enough that the balanced columns overflow and fill the
