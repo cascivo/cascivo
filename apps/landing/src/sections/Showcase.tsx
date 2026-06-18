@@ -21,8 +21,7 @@ export function Showcase() {
     <section className="showcase section" id="showcase" aria-label="Live showcase" data-reveal="">
       <h2>One library. Every surface.</h2>
       <p className="section-sub">
-        Beautiful by default, restyled in a token swap, and ready for real apps and data viz. Switch
-        tabs to see the same components do different jobs.
+        One token swap restyles everything. Same components, different jobs.
       </p>
       <Tabs defaultValue="themes" className="showcase-tabs">
         <TabsList aria-label="Showcase views">

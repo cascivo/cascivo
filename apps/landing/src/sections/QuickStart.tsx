@@ -5,17 +5,17 @@ const STEPS = [
   {
     title: 'Initialize',
     code: 'npx cascivo init',
-    note: 'Detects your package manager, installs core + tokens, writes cascivo.config.ts.',
+    note: 'Detects your package manager and writes the config.',
   },
   {
     title: 'Add components',
     code: 'npx cascivo add button',
-    note: 'Copies the source into src/components/ui — it is your code now.',
+    note: 'Copies the source into your repo — it is yours now.',
   },
   {
     title: 'Use them',
     code: "import { Button } from './components/ui/button/button'",
-    note: 'No provider, no wrapper, no configuration. Just import and render.',
+    note: 'No provider, no wrapper. Just import and render.',
   },
 ]
 

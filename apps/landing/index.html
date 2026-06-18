@@ -520,20 +520,14 @@
 
       /* ── Hero ─────────────────────────────────────────────── */
       .hero {
-        max-width: 1080px;
+        max-width: 60rem;
         margin-inline: auto;
-        padding: var(--cascivo-space-20) var(--cascivo-space-6) var(--cascivo-space-16);
-        display: grid;
-        gap: var(--cascivo-space-10);
-        align-items: center;
-      }
-
-      .hero-copy {
+        padding: var(--cascivo-space-20) var(--cascivo-space-6) var(--cascivo-space-12);
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: var(--cascivo-space-5);
-        text-align: start;
+        text-align: center;
       }
 
       .hero h1 {
@@ -560,7 +554,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: var(--cascivo-space-3);
-        justify-content: flex-start;
+        justify-content: center;
       }
 
       .hero-stage-wrap {
@@ -647,64 +641,85 @@
 
       .hero-sub {
         margin: 0;
-        max-width: min(100%, 36rem);
+        max-width: min(100%, 34rem);
         font-size: var(--cascivo-text-lg);
         color: var(--cascivo-color-text-subtle);
-        text-wrap: pretty;
+        text-wrap: balance;
       }
 
-      /* One static product visual (decorative, paints instantly, no JS, no CLS). */
-      .hero-visual {
-        display: flex;
-        justify-content: center;
+      /* ── Component marquee — full-bleed river of real, themed components ─── */
+      .marquee-section {
+        margin-block: var(--cascivo-space-4) var(--cascivo-space-12);
+        overflow: hidden;
       }
 
-      .hero-preview-card {
-        inline-size: min(100%, 22rem);
+      .marquee {
         display: flex;
         flex-direction: column;
         gap: var(--cascivo-space-4);
-        padding: var(--cascivo-space-6);
-        border: 1px solid var(--cascivo-color-border);
-        border-radius: var(--cascivo-radius-lg);
-        background-color: var(--cascivo-color-surface);
-        box-shadow: var(--cascivo-shadow-lg, 0 12px 32px rgb(0 0 0 / 0.08));
+        /* Fade the strip into the page at both edges instead of a hard cut. */
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
       }
 
-      .hero-preview-head {
+      .marquee-row {
+        display: flex;
+        gap: var(--cascivo-space-4);
+        width: max-content;
+        will-change: transform;
+      }
+
+      .marquee-row--ltr {
+        animation: marquee-ltr 60s linear infinite;
+      }
+
+      .marquee-row--rtl {
+        animation: marquee-rtl 72s linear infinite;
+      }
+
+      /* Pause when a visitor hovers, so they can read a tile. */
+      .marquee:hover .marquee-row {
+        animation-play-state: paused;
+      }
+
+      .marquee-tile {
+        flex: 0 0 auto;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-      }
-
-      .hero-preview-dots {
-        display: inline-flex;
-        gap: var(--cascivo-space-1);
-      }
-
-      .hero-preview-dot {
-        inline-size: 0.75rem;
-        block-size: 0.75rem;
-        border-radius: var(--cascivo-radius-full);
-      }
-
-      .hero-preview-label {
-        font-size: var(--cascivo-text-sm);
-        font-weight: var(--cascivo-font-semibold);
+        min-block-size: 4.5rem;
+        padding: var(--cascivo-space-4) var(--cascivo-space-5);
+        border: 1px solid var(--cascivo-color-border);
+        border-radius: var(--cascivo-radius-lg);
+        background-color: var(--cascivo-color-bg);
         color: var(--cascivo-color-text);
       }
 
-      .hero-preview-field {
-        block-size: 2.25rem;
-        border: 1px solid var(--cascivo-color-border);
-        border-radius: var(--cascivo-radius-control, var(--cascivo-radius-md));
-        background-color: var(--cascivo-color-bg-subtle);
+      @keyframes marquee-ltr {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
       }
 
-      @media (min-width: 64rem) {
-        .hero {
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: var(--cascivo-space-12);
+      @keyframes marquee-rtl {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      /* Respect reduced-motion: freeze the strip and let it scroll by hand. */
+      @media (prefers-reduced-motion: reduce) {
+        .marquee {
+          overflow-x: auto;
+        }
+
+        .marquee-row {
+          animation: none;
         }
       }
 

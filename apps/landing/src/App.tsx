@@ -3,6 +3,7 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
+import { ComponentMarquee } from './sections/ComponentMarquee'
 import { Principles } from './sections/Principles'
 import { StatsBand } from './sections/StatsBand'
 import { initReveal } from './reveal'
@@ -75,6 +76,7 @@ function HomePage() {
       <SkipNavTarget>
         <main>
           <Hero />
+          <ComponentMarquee />
           <StatsBand />
           <Principles />
           <Suspense fallback={<SectionFallback height={480} />}>
