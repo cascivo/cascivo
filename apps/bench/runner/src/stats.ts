@@ -27,7 +27,7 @@ export function mannWhitneyU(a: number[], b: number[]): { u: number; p: number }
   const all = [...a.map((v) => [v, 0] as const), ...b.map((v) => [v, 1] as const)].sort(
     (x, y) => x[0] - y[0],
   )
-  const ranks = new Array<number>(all.length)
+  const ranks = Array.from({ length: all.length }, () => 0)
   let i = 0
   while (i < all.length) {
     let j = i

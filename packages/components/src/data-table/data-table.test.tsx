@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
@@ -140,9 +140,7 @@ describe('DataTable', () => {
   })
 
   it('loading renders shimmer rows', () => {
-    const { container } = render(
-      <DataTable columns={columns} rows={[]} getRowId={(p) => p.id} loading />,
-    )
+    render(<DataTable columns={columns} rows={[]} getRowId={(p) => p.id} loading />)
     expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
   })
 

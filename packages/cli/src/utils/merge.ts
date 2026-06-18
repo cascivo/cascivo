@@ -6,7 +6,7 @@ export interface MergeResult {
 function lcs(a: string[], b: string[]): number[][] {
   const m = a.length
   const n = b.length
-  const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0) as number[])
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array.from({ length: n + 1 }, () => 0))
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       dp[i]![j] =
@@ -74,13 +74,11 @@ export function merge(base: string, local: string, upstream: string): MergeResul
   const upstreamLines = upstream.split('\n')
 
   const localChunks = diff(baseLines, localLines)
-  const upstreamChunks = diff(baseLines, upstreamLines)
 
   const localMap = new Map<string, string[]>()
   const upstreamMap = new Map<string, string[]>()
 
   let li = 0
-  let ui = 0
 
   for (const c of localChunks) {
     if (c.type === 'left') {

@@ -57,7 +57,7 @@ export function Field({
   if (disabled || children.props.disabled) controlProps.disabled = true
 
   const control = isValidElement(children)
-    ? cloneElement(Children.only(children), controlProps)
+    ? cloneElement(Children.only(children) as ReactElement<typeof controlProps>, controlProps)
     : children
 
   return (

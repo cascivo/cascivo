@@ -7,7 +7,7 @@ export type ProseProps = HTMLAttributes<HTMLDivElement>
 
 export function Prose({ className, children, ...props }: ProseProps) {
   return (
-    <div className={cn(styles['prose'], className)} {...props}>
+    <div className={cn(styles['prose'], className as string | undefined)} {...props}>
       {children}
     </div>
   )

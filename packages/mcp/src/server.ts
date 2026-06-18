@@ -59,7 +59,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
       inputSchema: {},
     },
     async () => {
-      const [directory] = await Promise.all([fetchDirectory(fetchFn)])
+      const directory = await fetchDirectory(fetchFn)
       const env = getEnvRegistries()
       const entries = mergeRegistries(directory, env)
       return json(

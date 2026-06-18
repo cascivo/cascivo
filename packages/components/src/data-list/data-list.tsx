@@ -29,7 +29,7 @@ export function DataList({
       data-orientation={orientation}
       data-size={size}
       data-dividers={dividers ? '' : undefined}
-      className={cn(styles['list'], className)}
+      className={cn(styles['list'], className as string | undefined)}
       {...props}
     >
       {items.map((item, i) => (

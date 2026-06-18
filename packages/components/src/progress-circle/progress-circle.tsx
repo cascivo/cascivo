@@ -38,7 +38,7 @@ export function ProgressCircle({
       aria-valuenow={clamped}
       aria-label={label}
       data-size={size}
-      className={cn(styles['progressCircle'], className)}
+      className={cn(styles['progressCircle'], className as string | undefined)}
       {...props}
     >
       <svg viewBox="0 0 48 48" aria-hidden="true" className={styles['svg']}>

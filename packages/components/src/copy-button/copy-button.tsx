@@ -31,7 +31,7 @@ export function CopyButton({ value, size = 'md', labels, className, ...props }: 
       aria-label={copied.value ? copiedLabel : copyLabel}
       data-state={copied.value ? 'copied' : 'idle'}
       data-size={size}
-      className={cn(styles['copyButton'], className)}
+      className={cn(styles['copyButton'], className as string | undefined)}
       onClick={handleClick}
       {...props}
     >

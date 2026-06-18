@@ -88,19 +88,6 @@ describe('add command (integration)', () => {
     await rm(tmpDir, { recursive: true, force: true })
   })
 
-  function config(outputDir = 'components') {
-    return {
-      registry: 'https://example.com/registry.json',
-      outputDir,
-      // resolveOutputPath uses process.cwd() by default; we override via cwd
-      // by temporarily changing process.cwd — instead we pass outputDir as an
-      // absolute path so the join lands in tmpDir.
-      get _tmpDir() {
-        return tmpDir
-      },
-    }
-  }
-
   const baseConfig = (outputDir: string) => ({
     registry: 'https://example.com/registry.json',
     outputDir,

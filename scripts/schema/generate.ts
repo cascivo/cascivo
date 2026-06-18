@@ -108,13 +108,14 @@ const componentBranches = registry.components.map((entry) => {
       properties: { component: { const: name } },
       required: ['component'],
     },
-    then: {
-      properties: {
-        props: {
-          type: 'object',
-          properties: props,
-          ...(required.length > 0 ? { required } : {}),
-        },
+  }
+  // eslint-disable-next-line unicorn/no-thenable -- JSON Schema uses 'then' as a standard keyword
+  branch['then'] = {
+    properties: {
+      props: {
+        type: 'object',
+        properties: props,
+        ...(required.length > 0 ? { required } : {}),
       },
     },
   }
