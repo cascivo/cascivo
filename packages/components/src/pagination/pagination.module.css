@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .pagination {
     container-type: inline-size;
     display: flex;

@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .copyButton {
     display: inline-flex;
     align-items: center;

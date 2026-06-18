@@ -2,7 +2,7 @@
 
 # @cascivo/mcp
 
-> MCP server exposing the cascade component registry to AI agents
+> MCP server exposing the cascivo component registry to AI agents
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

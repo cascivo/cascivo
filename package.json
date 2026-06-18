@@ -27,6 +27,7 @@
     "apg:check": "node --experimental-strip-types --test scripts/checks/apg.test.ts",
     "screens:check": "node --experimental-strip-types --test packages/tokens/src/screens.test.ts",
     "breakpoint:check": "node --experimental-strip-types --test scripts/checks/breakpoint.test.ts",
+    "brand:check": "node scripts/brand-guard.mjs",
     "demos:storage:check": "node --experimental-strip-types --test scripts/checks/demo-storage-keys.test.ts",
     "llms:generate": "node scripts/llms/generate.ts",
     "registry:generate": "node scripts/registry/generate.ts",
@@ -41,8 +42,8 @@
     "dev:landing": "vp run @cascivo/landing#dev",
     "dev:landing:full": "vp run -F @cascivo/example-deploy -F @cascivo/example-pay -F @cascivo/example-flow -F @cascivo/example-track -F @cascivo/example-pulse build && vp run @cascivo/landing#dev",
     "clean": "find packages apps -maxdepth 3 -name dist -type d -not -path '*/node_modules/*' -exec rm -rf {} + ; vp cache clean",
-    "ready": "pnpm regen && vp check --fix && vp run -r build && vp run -r check && vp run -r test",
-    "ready:ci": "pnpm clean && pnpm regen && vp check --fix && vp run -r --concurrency-limit 1 build && vp run -r check && vp run -r test",
+    "ready": "pnpm regen && vp check --fix && pnpm brand:check && vp run -r build && vp run -r check && vp run -r test",
+    "ready:ci": "pnpm clean && pnpm regen && vp check --fix && pnpm brand:check && vp run -r --concurrency-limit 1 build && vp run -r check && vp run -r test",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "vp run -r build && changeset publish"

@@ -1331,7 +1331,7 @@ kbd {
 }
 
 /* ── On-call card ─────────────────────────────────────── */
-/* Un-layered → wins over @layer cascade.component rules */
+/* Un-layered → wins over @layer cascivo.component rules */
 .oncall-card {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .progressCircle {
     position: relative;
     display: inline-grid;

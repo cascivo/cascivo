@@ -1,4 +1,4 @@
-@layer cascade.blocks.app-shell {
+@layer cascivo.blocks.app-shell {
   /* Mobile-first base — single column, sidebar is off-screen slide-over */
   .root {
     display: grid;

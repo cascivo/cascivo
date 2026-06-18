@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .link {
     color: var(--cascivo-link-color, var(--cascivo-color-accent));
     cursor: pointer;

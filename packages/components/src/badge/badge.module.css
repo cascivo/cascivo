@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .badge {
     display: inline-flex;
     align-items: center;

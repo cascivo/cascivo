@@ -2,7 +2,7 @@
   "name": "@cascivo/i18n",
   "version": "0.1.0",
   "private": false,
-  "description": "Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascade",
+  "description": "Signal-driven locale store, typed message catalogs, and Intl-based formatting for cascivo",
   "keywords": [
     "cascivo",
     "css",

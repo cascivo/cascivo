@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .spinner {
     display: inline-block;
     box-sizing: border-box;

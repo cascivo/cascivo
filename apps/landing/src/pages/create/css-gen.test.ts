@@ -5,7 +5,7 @@ import { DEFAULT_CONFIG } from './store'
 describe('configToCSS', () => {
   it('returns a string containing the layer declaration', () => {
     const css = configToCSS(DEFAULT_CONFIG)
-    expect(css).toContain('@layer cascade.theme')
+    expect(css).toContain('@layer cascivo.theme')
     expect(css).toContain('[data-theme="create-custom"]')
   })
 

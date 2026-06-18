@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .root {
     background: oklch(0.12 0.01 250);
     color: oklch(0.9 0.02 145);

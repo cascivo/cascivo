@@ -2,7 +2,7 @@
   "name": "@cascivo/ai",
   "version": "0.0.0",
   "private": true,
-  "description": "AI-native components for cascade — StreamingText, AiLabel, Terminal, AiChat",
+  "description": "AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat",
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {

@@ -32,6 +32,9 @@ jobs:
       - name: Format + lint (vp check)
         run: pnpm exec vp check
 
+      - name: Brand guard (no cascade→cascivo regression)
+        run: pnpm run brand:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

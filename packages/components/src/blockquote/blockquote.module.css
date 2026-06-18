@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .blockquote {
     margin: 0;
     border-inline-start: 3px solid var(--cascivo-color-border-strong);

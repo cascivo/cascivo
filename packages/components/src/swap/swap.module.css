@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .swap {
     display: inline-grid;
     grid-template-areas: 'swap';

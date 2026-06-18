@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .layout {
     display: grid;
     grid-template-columns: 14rem minmax(0, 1fr);

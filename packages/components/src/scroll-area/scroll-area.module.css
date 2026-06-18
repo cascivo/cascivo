@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .root {
     max-block-size: var(--cascivo-scroll-area-height, none);
     max-inline-size: var(--cascivo-scroll-area-width, none);

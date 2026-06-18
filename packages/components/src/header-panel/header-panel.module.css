@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .panel {
     position: fixed;
     inset-block-start: var(--cascivo-shell-header-block-size, 3rem);

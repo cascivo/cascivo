@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   /* ── Main content area ──────────────────────────── */
   .content {
     padding: var(--cascivo-space-6);

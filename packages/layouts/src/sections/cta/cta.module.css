@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .cta {
     border-block: 1px solid var(--cascivo-color-border);
     background-color: var(--cascivo-surface-subtle);

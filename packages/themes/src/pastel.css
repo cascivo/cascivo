@@ -1,9 +1,9 @@
-/* Cascade — Pastel Theme */
+/* cascivo — Pastel Theme */
 /* Playful/consumer, soft candy palette, pill controls, diffuse shadows */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='pastel'] {
     color-scheme: light;
 

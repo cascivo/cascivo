@@ -122,7 +122,7 @@ export function configToCSS(config: ThemeConfig, previewMode = false): string {
     `/* @import '@cascivo/themes/${config.baseMode}.css'; */`,
     `/* @import './theme.css'; */`,
     ``,
-    `@layer cascade.theme {`,
+    `@layer cascivo.theme {`,
     `  [data-theme="create-custom"] {`,
   ]
 

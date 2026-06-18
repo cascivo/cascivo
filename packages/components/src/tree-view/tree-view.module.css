@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .tree {
     --cascivo-tree-indent: var(--cascivo-space-5);
     list-style: none;

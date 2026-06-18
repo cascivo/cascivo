@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .steps {
     display: flex;
     gap: 0;

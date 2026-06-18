@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .stack {
     display: flex;
     gap: var(--_stack-gap, var(--cascivo-space-4));

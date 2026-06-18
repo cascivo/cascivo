@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .section {
     padding-block: var(--cascivo-space-12);
     padding-inline: var(--cascivo-space-4);

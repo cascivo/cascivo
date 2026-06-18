@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .columns {
     display: grid;
     grid-template-columns: repeat(var(--_cols, 2), minmax(0, 1fr));

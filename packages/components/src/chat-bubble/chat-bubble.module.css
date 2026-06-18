@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .bubble {
     display: flex;
     align-items: flex-end;

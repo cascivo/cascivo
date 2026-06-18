@@ -1,9 +1,9 @@
-/* Cascade — Brutalist Theme */
+/* cascivo — Brutalist Theme */
 /* Neo-brutalism: cream background, zero radius, thick borders, hard offset shadows */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='brutalist'] {
     color-scheme: light;
 

@@ -1,9 +1,9 @@
-/* Cascade — Dark Theme */
+/* cascivo — Dark Theme */
 /* Bold/editorial, high contrast, developer-cool */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='dark'] {
     color-scheme: dark;
 

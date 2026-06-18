@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .visuallyHidden {
     position: absolute;
     inline-size: 1px;

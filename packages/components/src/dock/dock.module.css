@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .dock {
     position: fixed;
     inset-block-end: 0;

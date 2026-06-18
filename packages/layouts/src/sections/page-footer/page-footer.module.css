@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .page-footer {
     padding-block: var(--cascivo-space-10);
     padding-inline: var(--cascivo-space-4);

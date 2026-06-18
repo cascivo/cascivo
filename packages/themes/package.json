@@ -2,7 +2,7 @@
   "name": "@cascivo/themes",
   "version": "0.1.0",
   "private": false,
-  "description": "First-party cascade themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal",
+  "description": "First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal",
   "keywords": [
     "cascivo",
     "css",

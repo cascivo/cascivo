@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .indicator {
     --_marker-size: 2rem;
     --_connector-thickness: 2px;

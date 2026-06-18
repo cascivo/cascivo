@@ -2,7 +2,7 @@
 
 # @cascivo/react
 
-> Prebuilt cascade design system components — use without copying source
+> Prebuilt cascivo design system components — use without copying source
 
 [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
 

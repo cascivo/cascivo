@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .uploader {
     display: flex;
     flex-direction: column;

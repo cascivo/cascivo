@@ -1,4 +1,4 @@
-@layer cascade.blocks.marketing-hero {
+@layer cascivo.blocks.marketing-hero {
   .root {
     padding-block: var(--cascivo-space-24);
     padding-inline: var(--cascivo-space-6);

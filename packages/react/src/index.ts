@@ -1,7 +1,7 @@
 /**
- * @cascivo/react — the prebuilt distribution of every cascade component.
+ * @cascivo/react — the prebuilt distribution of every cascivo component.
  *
- * For users who want to consume cascade as a normal library instead of
+ * For users who want to consume cascivo as a normal library instead of
  * copy-pasting source via the CLI. Bundles all components + their CSS
  * (import '@cascivo/react/styles.css').
  */

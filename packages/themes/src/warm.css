@@ -1,9 +1,9 @@
-/* Cascade — Warm Theme */
+/* cascivo — Warm Theme */
 /* Organic/approachable, warm neutrals, rounded */
 
 @import '@cascivo/tokens';
 
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='warm'] {
     color-scheme: light;
 

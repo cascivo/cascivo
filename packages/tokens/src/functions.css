@@ -15,7 +15,7 @@
  * - No variable-spreading (not yet supported).
  */
 
-@layer cascade.functions {
+@layer cascivo.functions {
   @function --cascivo-step(--n <number>, --base: 0.25rem) {
     result: calc(var(--base) * var(--n));
   }

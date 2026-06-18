@@ -1,8 +1,32 @@
 # CSS `@layer` Pitfall in Example Apps
 
+> **Renamed from `cascade.*` in v37.** All shipped layers are now under the
+> `cascivo.*` namespace (`cascivo.base`, `cascivo.theme`, `cascivo.component`, …).
+> Any consumer that referenced the old `@layer cascade.*` names in their own
+> `@layer` ordering **must update them to `cascivo.*`**. This was a deliberate
+> breaking change (the brand is `cascivo`, not `cascade`) — see the package
+> CHANGELOGs.
+
+## Recommended layer ordering
+
+cascivo ships three layers, ordered lowest-priority → highest:
+
+```
+cascivo.base   < cascivo.theme   < cascivo.component
+```
+
+- `cascivo.base` — the base reset (`font-family`, `line-height`, `color` on
+  `html`/`body`), shipped by `@cascivo/themes`.
+- `cascivo.theme` — semantic token values per `[data-theme]`.
+- `cascivo.component` — component styles.
+
+**Unlayered** author CSS beats **all** cascivo layers regardless of specificity,
+so a consumer's plain (unlayered) stylesheet always wins. To override cascivo
+from *within* a layer, declare a layer ordered after `cascivo.component`.
+
 ## The Problem
 
-Components define all their padding, spacing, and sizing inside `@layer cascade.component`. A global reset like `* { padding: 0; margin: 0 }` written **outside** any layer is **unlayered author CSS**, which beats ALL layered styles regardless of specificity or source order.
+Components define all their padding, spacing, and sizing inside `@layer cascivo.component`. A global reset like `* { padding: 0; margin: 0 }` written **outside** any layer is **unlayered author CSS**, which beats ALL layered styles regardless of specificity or source order.
 
 Result: every component's padding is zeroed out. Buttons render at 14px height with no padding.
 
@@ -13,8 +37,8 @@ Declare the layer order **before any CSS loads** and wrap the reset inside the l
 ```html
 <!-- index.html -->
 <style>
-  @layer cascade.reset, cascade.tokens, cascade.component, cascade.example, cascade.theme;
-  @layer cascade.reset {
+  @layer cascivo.reset, cascivo.tokens, cascivo.base, cascivo.component, cascivo.example, cascivo.theme;
+  @layer cascivo.reset {
     *,
     *::before,
     *::after {

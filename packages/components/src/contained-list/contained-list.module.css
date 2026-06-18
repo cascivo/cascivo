@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .root {
     font-family: var(--cascivo-font-sans);
     color: var(--cascivo-color-text);

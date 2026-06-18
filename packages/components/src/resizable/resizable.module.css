@@ -1,4 +1,4 @@
-@layer cascade.component {
+@layer cascivo.component {
   .resizable {
     display: flex;
     inline-size: 100%;
