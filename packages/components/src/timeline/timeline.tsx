@@ -19,7 +19,7 @@ export interface TimelineProps extends HTMLAttributes<HTMLOListElement> {
 
 export function Timeline({ items, orientation = 'vertical', className, ...props }: TimelineProps) {
   return (
-    <ol data-orientation={orientation} className={cn(styles['list'], className)} {...props}>
+    <ol data-orientation={orientation} className={cn(styles['list'], className as string | undefined)} {...props}>
       {items.map((item) => (
         <li
           key={item.id}

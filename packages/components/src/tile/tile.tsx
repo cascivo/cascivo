@@ -52,7 +52,7 @@ export function Tile({
     setSelected(selectable === 'multi' ? !isSelected.value : true)
   }
 
-  const handleKeyDown = (e: KeyboardEvent): void => {
+  const handleKeyDown = (e: KeyboardEvent<Element>): void => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault()
       toggle()

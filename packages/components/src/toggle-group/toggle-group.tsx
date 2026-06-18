@@ -73,7 +73,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function
       role={type === 'single' ? 'radiogroup' : 'group'}
       data-orientation={orientation}
       data-size={size}
-      className={cn(styles['toggleGroup'], className)}
+      className={cn(styles['toggleGroup'], className as string | undefined)}
       ref={ref}
       {...props}
     >
@@ -82,7 +82,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function
         const itemDisabled = disabled || item.disabled
         const { ref: itemRef, ...rovingProps } = roving.getItemProps(index)
         const ariaProps =
-          type === 'single' ? { role: 'radio', 'aria-checked': on } : { 'aria-pressed': on }
+          type === 'single' ? { role: 'radio' as const, 'aria-checked': on } : { 'aria-pressed': on }
         return (
           <button
             key={item.value}

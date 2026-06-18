@@ -9,7 +9,7 @@ export interface CodeProps extends HTMLAttributes<HTMLElement> {
 
 export function Code({ size = 'md', className, children, ...props }: CodeProps) {
   return (
-    <code data-size={size} className={cn(styles['code'], className)} {...props}>
+    <code data-size={size} className={cn(styles['code'], className as string | undefined)} {...props}>
       {children}
     </code>
   )

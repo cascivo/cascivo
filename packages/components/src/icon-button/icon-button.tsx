@@ -25,8 +25,8 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-label={label}
       data-size={size}
       data-variant={variant}
-      className={cn(styles['iconButton'], className)}
-      ref={ref}
+      className={cn(styles['iconButton'], className as string | undefined)}
+      ref={ref as never}
       {...props}
     >
       {children ?? icon}

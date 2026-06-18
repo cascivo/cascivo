@@ -25,7 +25,7 @@ export function Heading({ level = 2, size, className, children, ...props }: Head
   return (
     <Tag
       data-size={size ?? DERIVED_SIZE[level]}
-      className={cn(styles['heading'], className)}
+      className={cn(styles['heading'], className as string | undefined)}
       {...props}
     >
       {children}

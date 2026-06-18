@@ -43,7 +43,7 @@ export function NativeSelect({
 
   return (
     <div
-      className={cn(styles['root'], className)}
+      className={cn(styles['root'], className as string | undefined)}
       data-size={size}
       data-invalid={invalid || undefined}
     >
