@@ -43,7 +43,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp build && tsc -p tsconfig.build.json && node scripts/flatten-types.mjs",
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },
