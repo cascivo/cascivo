@@ -1,0 +1,234 @@
+/* cascivo — Cyberpunk Theme */
+/* Brutalism × cyberpunk: near-black base, neon magenta/cyan, zero radius, hard glow shadows */
+
+@import '@cascivo/tokens';
+
+@layer cascivo.theme {
+  [data-theme='cyberpunk'] {
+    color-scheme: dark;
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascivo-color-background: oklch(0.16 0.03 285);
+    --cascivo-color-surface: oklch(0.2 0.035 285);
+    --cascivo-color-surface-2: oklch(0.25 0.04 285);
+    --cascivo-color-bg: var(--cascivo-color-background);
+    --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+    --cascivo-color-surface-raised: var(--cascivo-color-surface-2);
+    --cascivo-color-surface-overlay: var(--cascivo-color-surface);
+    --cascivo-color-border: oklch(0.6 0.2 320 / 60%);
+    --cascivo-color-border-strong: oklch(0.72 0.22 330 / 85%);
+    --cascivo-border-subtle: oklch(0.45 0.12 300 / 50%);
+    --cascivo-border-default: oklch(0.6 0.2 320 / 60%);
+    --cascivo-border-strong: oklch(0.72 0.22 330 / 85%);
+
+    /* ── Text ─────────────────────────────────────────── */
+    --cascivo-color-foreground: oklch(0.95 0.03 320);
+    --cascivo-color-foreground-muted: oklch(0.7 0.05 300);
+    --cascivo-color-text: var(--cascivo-color-foreground);
+    --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
+    --cascivo-color-text-muted: oklch(0.55 0.05 300);
+    --cascivo-color-text-on-accent: oklch(0.16 0.03 285);
+    --cascivo-color-text-on-destructive: oklch(0.16 0.03 285);
+
+    /* ── Accent — neon magenta ───────────────────────── */
+    --cascivo-color-accent: oklch(0.7 0.25 330);
+    --cascivo-color-accent-foreground: oklch(0.16 0.03 285);
+    --cascivo-color-accent-hover: oklch(0.76 0.23 330);
+    --cascivo-color-accent-active: oklch(0.82 0.2 330);
+    --cascivo-color-accent-subtle: oklch(0.7 0.25 330 / 0.12);
+    --cascivo-color-accent-muted: oklch(0.7 0.25 330 / 0.22);
+
+    /* ── Primary — accent-mapped ─────────────────────── */
+    --cascivo-color-primary: var(--cascivo-color-accent);
+    --cascivo-color-primary-fg: oklch(0.16 0.03 285);
+    --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
+    --cascivo-color-primary-active: var(--cascivo-color-accent-active);
+    --cascivo-color-active-bg: oklch(0.7 0.25 330 / 0.12);
+
+    /* ── Destructive — neon red ───────────────────────── */
+    --cascivo-color-destructive: oklch(0.65 0.25 18);
+    --cascivo-color-destructive-hover: oklch(0.72 0.22 18);
+    --cascivo-color-destructive-subtle: oklch(0.65 0.25 18 / 0.12);
+
+    /* ── Semantic status colors ───────────────────────── */
+    --cascivo-color-error: oklch(0.65 0.25 18);
+    --cascivo-color-warning: oklch(0.82 0.17 75);
+    --cascivo-color-success: oklch(0.82 0.2 150);
+    --cascivo-color-success-subtle: oklch(0.82 0.2 150 / 0.12);
+    --cascivo-color-warning-subtle: oklch(0.82 0.17 75 / 0.12);
+    --cascivo-color-info: oklch(0.78 0.16 200);
+    --cascivo-color-info-subtle: oklch(0.78 0.16 200 / 0.12);
+    --cascivo-color-success-foreground: oklch(0.82 0.2 150);
+    --cascivo-color-warning-foreground: oklch(0.82 0.17 75);
+    --cascivo-color-destructive-foreground: oklch(0.78 0.18 18);
+
+    /* ── Radius — zero ───────────────────────────────── */
+    --cascivo-radius-base: 0;
+    --cascivo-radius-control: 0;
+    --cascivo-radius-surface: 0;
+    --cascivo-radius-indicator: 0;
+    --cascivo-radius-full: 0;
+    --cascivo-radius-component: 0;
+    --cascivo-radius-button: 0;
+    --cascivo-radius-input: 0;
+    --cascivo-radius-card: 0;
+    --cascivo-radius-badge: 0;
+    --cascivo-radius-modal: 0;
+
+    /* ── Shadows — hard offset, neon glow ────────────── */
+    --cascivo-shadow-xs: 1px 1px 0 oklch(0.7 0.25 330);
+    --cascivo-shadow-sm: 2px 2px 0 oklch(0.7 0.25 330);
+    --cascivo-shadow-md: 4px 4px 0 oklch(0.7 0.25 330);
+    --cascivo-shadow-overlay: 6px 6px 0 oklch(0.78 0.16 200), 0 0 24px oklch(0.7 0.25 330 / 0.4);
+    --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
+
+    /* ── Focus ring — neon cyan ──────────────────────── */
+    --cascivo-ring-width: 3px;
+    --cascivo-ring-offset: 2px;
+    --cascivo-ring-color: oklch(0.78 0.16 200);
+    --cascivo-color-focus-ring: oklch(0.78 0.16 200);
+    --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
+
+    /* ── Chart overrides ─────────────────────────────── */
+    --cascivo-chart-1: oklch(0.82 0.14 75);
+    --cascivo-chart-2: oklch(0.82 0.11 180);
+    --cascivo-chart-3: oklch(0.78 0.15 150);
+    --cascivo-chart-4: oklch(0.96 0.14 110);
+    --cascivo-chart-5: oklch(0.72 0.12 200);
+    --cascivo-chart-6: oklch(0.72 0.15 50);
+    --cascivo-chart-7: oklch(0.75 0.1 340);
+    --cascivo-chart-8: oklch(0.78 0.03 160);
+    --cascivo-chart-grid: oklch(0.4 0.1 300 / 40%);
+    --cascivo-chart-axis: oklch(0.65 0.06 300);
+
+    /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
+    --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
+    --cascivo-color-accent-content: var(--cascivo-color-text-on-accent);
+    --cascivo-color-destructive-content: var(--cascivo-color-text-on-destructive);
+    --cascivo-color-info-content: oklch(0.16 0.03 285);
+    --cascivo-color-success-content: oklch(0.16 0.03 285);
+    --cascivo-color-warning-content: oklch(0.145 0 0);
+    --cascivo-color-error-content: oklch(0.16 0.03 285);
+
+    /* ── Secondary color role — electric cyan ────────── */
+    --cascivo-color-secondary: oklch(0.78 0.16 200);
+    --cascivo-color-secondary-content: oklch(0.16 0.03 285);
+    --cascivo-color-secondary-hover: oklch(0.84 0.14 200);
+    --cascivo-color-secondary-subtle: oklch(0.78 0.16 200 / 0.15);
+  }
+
+  /* ── Opt-in signature effects ───────────────────────── */
+  /* These never fire unless a consumer opts in via a marker class, so arbitrary */
+  /* components stay calm. Each declares its static look first, then layers the   */
+  /* animation as enhancement; all are disabled under prefers-reduced-motion.     */
+
+  /* Scanline / CRT overlay */
+  [data-theme='cyberpunk'] .cascivo-cyber-scanline {
+    position: relative;
+  }
+  [data-theme='cyberpunk'] .cascivo-cyber-scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      oklch(0.78 0.16 200 / 0.08) 0,
+      oklch(0.78 0.16 200 / 0.08) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: screen;
+    animation: cascivo-cyber-scanline 8s linear infinite;
+  }
+
+  /* Glitch / RGB-split on hover or focus */
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch {
+    text-shadow:
+      -1px 0 oklch(0.7 0.25 330 / 0.6),
+      1px 0 oklch(0.78 0.16 200 / 0.6);
+  }
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch:hover,
+  [data-theme='cyberpunk'] .cascivo-cyber-glitch:focus-visible {
+    animation: cascivo-cyber-glitch var(--cascivo-duration-300) steps(2, jump-end) infinite;
+  }
+
+  /* Neon flicker — broken-sign buzz.
+     A stack of text-shadows builds the neon-tube glow (tight bright core + wide
+     colored halo); the keyframes hold that glow for long stretches, then cut it
+     to nothing at a few irregular, close-together stops so it reads as failing
+     electrics — a sign that flickers "sometimes" rather than blinking on a beat.
+     The base rule is the steady, fully-lit fallback (used when the animation is
+     unsupported or disabled by reduced-motion). */
+  [data-theme='cyberpunk'] .cascivo-cyber-flicker {
+    color: oklch(0.97 0.04 330);
+    text-shadow:
+      0 0 4px oklch(0.98 0.02 330),
+      0 0 11px oklch(0.95 0.05 330),
+      0 0 19px oklch(0.9 0.12 330),
+      0 0 40px oklch(0.7 0.25 330),
+      0 0 75px oklch(0.7 0.25 330),
+      0 0 110px oklch(0.7 0.25 330);
+    animation: cascivo-cyber-flicker 4s linear infinite;
+  }
+
+  @keyframes cascivo-cyber-scanline {
+    from {
+      background-position-y: 0;
+    }
+    to {
+      background-position-y: 3px;
+    }
+  }
+
+  @keyframes cascivo-cyber-glitch {
+    0%,
+    100% {
+      transform: translateX(0);
+      text-shadow:
+        -1px 0 oklch(0.7 0.25 330 / 0.6),
+        1px 0 oklch(0.78 0.16 200 / 0.6);
+    }
+    50% {
+      transform: translateX(1px);
+      text-shadow:
+        1px 0 oklch(0.7 0.25 330 / 0.8),
+        -1px 0 oklch(0.78 0.16 200 / 0.8);
+    }
+  }
+
+  @keyframes cascivo-cyber-flicker {
+    0%,
+    19%,
+    21%,
+    55%,
+    57%,
+    62%,
+    100% {
+      color: oklch(0.97 0.04 330);
+      text-shadow:
+        0 0 4px oklch(0.98 0.02 330),
+        0 0 11px oklch(0.95 0.05 330),
+        0 0 19px oklch(0.9 0.12 330),
+        0 0 40px oklch(0.7 0.25 330),
+        0 0 75px oklch(0.7 0.25 330),
+        0 0 110px oklch(0.7 0.25 330);
+    }
+    20%,
+    56%,
+    60% {
+      color: oklch(0.5 0.1 330);
+      text-shadow: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-theme='cyberpunk'] .cascivo-cyber-scanline::after,
+    [data-theme='cyberpunk'] .cascivo-cyber-glitch:hover,
+    [data-theme='cyberpunk'] .cascivo-cyber-glitch:focus-visible,
+    [data-theme='cyberpunk'] .cascivo-cyber-flicker {
+      animation: none;
+    }
+  }
+}

@@ -15,7 +15,7 @@ import { Treemap } from '@cascivo/charts'
 import { Radar } from '@cascivo/charts'
 import { Bullet } from '@cascivo/charts'
 
-// Palette gallery — all 10 themes, 8-series BarChart (one slot per Okabe-Ito color)
+// Palette gallery — all 11 themes, 8-series BarChart (one slot per Okabe-Ito color)
 const PALETTE_THEMES = [
   'light',
   'dark',
@@ -27,6 +27,7 @@ const PALETTE_THEMES = [
   'brutalist',
   'corporate',
   'terminal',
+  'cyberpunk',
 ] as const
 
 const PALETTE_DEMO_DATA = [
@@ -590,7 +591,7 @@ export function ChartsPage() {
       <section class="doc-section">
         <h2>Chart Palette Gallery</h2>
         <p>
-          Same data, all 10 themes — receipt for CVD-safe per-theme palettes. Eight series map to
+          Same data, all 11 themes — receipt for CVD-safe per-theme palettes. Eight series map to
           chart color slots 1–8 (Okabe-Ito base, theme-adjusted).{' '}
           <a href="/docs/specs/chart-palette.md">docs/specs/chart-palette.md</a>
         </p>

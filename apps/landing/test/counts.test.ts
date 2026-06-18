@@ -6,7 +6,7 @@
  * component/theme numbers can never silently rot. This test pins that contract:
  *   - index.html uses the injection placeholders, not a hardcoded number.
  *   - no stale literal ("97+", "five themes") survives.
- *   - the theme count equals the number of theme CSS files (the "10 themes"
+ *   - the theme count equals the number of theme CSS files (the "eleven themes"
  *     literal used in page copy must match source).
  *
  * Run via `vp run -r test` (the landing `test` script).
@@ -27,8 +27,14 @@ function componentCount(): number {
   return registry.components.length
 }
 
+// `all.css` (the light+dark bundle) and `base.css` (the typography reset) are not
+// user-facing themes — exclude them so the count tracks selectable themes only.
+const NON_THEME_CSS = new Set(['all.css', 'base.css'])
+
 function themeCount(): number {
-  return readdirSync(resolve(root, 'packages/themes/src')).filter((f) => f.endsWith('.css')).length
+  return readdirSync(resolve(root, 'packages/themes/src')).filter(
+    (f) => f.endsWith('.css') && !NON_THEME_CSS.has(f),
+  ).length
 }
 
 test('index.html injects counts via placeholders (no hardcoded headline numbers)', () => {
@@ -39,8 +45,12 @@ test('index.html injects counts via placeholders (no hardcoded headline numbers)
   assert.doesNotMatch(html, /five themes/i, 'stale "five themes" must be gone')
 })
 
-test('theme count matches the "10 themes" copy used across the page', () => {
-  assert.equal(themeCount(), 10, 'theme CSS file count changed — update the "10 themes" page copy')
+test('theme count matches the "eleven themes" copy used across the page', () => {
+  assert.equal(
+    themeCount(),
+    11,
+    'theme CSS file count changed — update the "eleven themes" page copy',
+  )
 })
 
 test('registry has a non-trivial component count', () => {

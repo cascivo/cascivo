@@ -151,4 +151,18 @@ export const PRESETS: Preset[] = [
       presetId: 'terminal',
     },
   },
+  {
+    id: 'cyberpunk',
+    label: 'Cyberpunk',
+    swatchBg: 'oklch(0.16 0.03 285)',
+    swatchAccent: 'oklch(0.7 0.25 330)',
+    config: {
+      baseMode: 'dark',
+      accentHue: 330,
+      accentChroma: 0.25,
+      radiusBase: 0,
+      fontFamily: 'system',
+      presetId: 'cyberpunk',
+    },
+  },
 ]
