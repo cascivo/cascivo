@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useSignals } from '@cascivo/core'
 import { Alert } from '@cascivo/components/alert'
 import { Avatar } from '@cascivo/components/avatar'
 import { Badge } from '@cascivo/components/badge'
@@ -20,6 +21,7 @@ import { Tag } from '@cascivo/components/tag'
 import { Toggle } from '@cascivo/components/toggle'
 import { Textarea } from '@cascivo/components/textarea'
 import { AreaChart, BarChart, Kpi, LineChart, PieChart } from '@cascivo/charts'
+import { peek } from '../peek'
 
 // The page backdrop: real, composed UI cards — forms, charts, lists, settings —
 // the way a design system shows itself off. Blurred + muted by default, revealed
@@ -692,8 +694,17 @@ const THEMES = [
 const FIELD = TILES
 
 export function ComponentField() {
+  useSignals()
+  // Decorative + inert as a blurred backdrop; on peek it becomes the content the
+  // visitor is exploring, so drop inert/aria-hidden — that also makes it
+  // scrollable (inert blocks scrolling), letting every card be reached.
+  const revealed = peek.value
   return (
-    <div className="bg-field" aria-hidden="true" inert>
+    <div
+      className="bg-field"
+      aria-hidden={revealed ? undefined : true}
+      inert={revealed ? undefined : true}
+    >
       <div className="bg-field-grid">
         {FIELD.map((tile, i) => (
           // eslint-disable-next-line react/no-array-index-key

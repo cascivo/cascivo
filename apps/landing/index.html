@@ -697,10 +697,11 @@
       }
 
       /* Masonry-style columns: tiles flow top-to-bottom with varied heights.
-         Balanced columns overflow 100vh and are clipped, so the field always
-         fills the viewport. Fewer columns as the screen narrows. */
+         One column on phones (full-width, readable); more as the screen widens.
+         In the blurred default state the field is clipped to the viewport; on
+         peek it scrolls so every card is reachable (see [data-peek] below). */
       .bg-field-grid {
-        columns: 2;
+        columns: 1;
         column-gap: var(--cascivo-space-4);
         padding: var(--cascivo-space-4);
       }
@@ -711,6 +712,12 @@
         break-inside: avoid;
         margin-block-end: var(--cascivo-space-4);
         color: var(--cascivo-color-text);
+      }
+
+      @media (min-width: 30rem) {
+        .bg-field-grid {
+          columns: 2;
+        }
       }
 
       @media (min-width: 40rem) {
@@ -725,9 +732,21 @@
         }
       }
 
-      /* Peek on: sharpen the field, drop the scrim, fade the page away. */
+      /* Peek on: sharpen the field, drop the scrim, fade the page away, and let
+         the field scroll so all cards are reachable (not just the first screen).
+         Lock the page so only the field scrolls. */
+      [data-peek] {
+        overflow: hidden;
+      }
+
       [data-peek] .bg-field {
         filter: none;
+        /* Above the (hidden) content so it is the scroll/pointer target, but
+           below the sticky header so the toggle stays clickable. */
+        z-index: 2;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
       }
 
       [data-peek] .bg-field::after {
