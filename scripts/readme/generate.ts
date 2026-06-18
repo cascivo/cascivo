@@ -56,7 +56,9 @@ function buildReadme(dir: string, pkg: Pkg, isRoot: boolean): string {
   if (installable) {
     sections.push('## Install', '', '```sh', `pnpm add ${pkg.name}`, '```', '')
   }
-  if (isRoot || pkg.name === '@cascivo/react' || pkg.name === '@cascivo/components') {
+  // @cascivo/react embeds a categorized component index in its body
+  // (scripts/readme/component-index.mjs); root + components get the flat table.
+  if (isRoot || pkg.name === '@cascivo/components') {
     sections.push(componentsTable())
   }
   sections.push(FOOTER)

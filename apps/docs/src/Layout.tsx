@@ -58,6 +58,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     { label: 'Context Explorer', href: '/context', icon: <Eye size={16} /> },
     { label: 'Why cascivo', href: '/why', icon: <Check size={16} /> },
     { label: 'Parity', href: '/parity', icon: <Grid size={16} /> },
+    { label: 'Migrating from shadcn', href: '/migrating', icon: <Grid size={16} /> },
     { label: 'Brand', href: '/brand', icon: <Eye size={16} /> },
     { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
     { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },

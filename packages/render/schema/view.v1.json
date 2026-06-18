@@ -90,6 +90,7 @@
             "Alert",
             "AlertDialog",
             "AppShell",
+            "AppShell",
             "AreaChart",
             "AspectRatio",
             "AuthLayout",
@@ -354,6 +355,48 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AppShell"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "header": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "nav": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "footer": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["header", "children"]
               }
             }
           }
