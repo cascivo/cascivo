@@ -43,7 +43,7 @@ export function Home() {
     <article class="doc-page">
       <header class="doc-head">
         <div class="doc-eyebrow">cascivo</div>
-        <h1>The CSS-native, signal-driven, AI-first design system</h1>
+        <h1 class="cascivo-cyber-flicker">The CSS-native, signal-driven, AI-first design system</h1>
         <p class="doc-lede">
           {components.length} owned components. Copy-paste via CLI, styled with modern CSS, driven
           by Preact Signals, documented for agents.
