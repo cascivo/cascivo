@@ -25,11 +25,16 @@
   "files": [
     "src/**/*.css",
     "src/**/*.ts",
+    "tokens.json",
     "!src/**/*.test.ts"
   ],
   "exports": {
     ".": "./src/index.css",
-    "./screens": "./src/screens.ts"
+    "./screens": "./src/screens.ts",
+    "./tokens.json": "./tokens.json",
+    "./tokens": {
+      "types": "./src/tokens.d.ts"
+    }
   },
   "publishConfig": {
     "access": "public",
