@@ -343,6 +343,18 @@
         "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
       }
     ],
+    "Comparison": [
+      {
+        "area": "orientation",
+        "level": "flexible",
+        "note": "Horizontal or vertical depending on the content"
+      },
+      {
+        "area": "label",
+        "level": "strict",
+        "note": "Provide a label (or rely on the i18n default) so the slider is named"
+      }
+    ],
     "ContainedList": [
       {
         "area": "kind",
@@ -1025,6 +1037,18 @@
         "note": "All typography and surface styling resolves to --cascivo-* tokens"
       }
     ],
+    "QrCode": [
+      {
+        "area": "errorCorrection",
+        "level": "flexible",
+        "note": "Raise to Q/H when the code may be printed small or partially obscured"
+      },
+      {
+        "area": "colors",
+        "level": "flexible",
+        "note": "Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable"
+      }
+    ],
     "RadialProgress": [
       {
         "area": "label",
@@ -1071,6 +1095,18 @@
         "area": "scale and labels",
         "level": "flexible",
         "note": "max sets the scale and labels.rating customizes the per-star announcement"
+      }
+    ],
+    "RelativeTime": [
+      {
+        "area": "format",
+        "level": "flexible",
+        "note": "Pass Intl.RelativeTimeFormat options (e.g. numeric: \"auto\") to tune the wording"
+      },
+      {
+        "area": "sync",
+        "level": "flexible",
+        "note": "Disable ticking for static contexts or long-past dates"
       }
     ],
     "Resizable": [

@@ -1,0 +1,7 @@
+@layer cascivo.component {
+  .relativeTime {
+    display: inline;
+    color: inherit;
+    font: inherit;
+  }
+}

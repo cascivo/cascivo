@@ -46,7 +46,7 @@
     "clean": "find packages apps -maxdepth 3 -name dist -type d -not -path '*/node_modules/*' -exec rm -rf {} + ; vp cache clean",
     "ready": "pnpm regen && vp check --fix && pnpm brand:check && vp run -r build && vp run -r check && vp run -r test",
     "ready:ci": "pnpm clean && pnpm regen && vp check --fix && pnpm brand:check && vp run -r --concurrency-limit 1 build && vp run -r check && vp run -r test",
-    "changeset": "changeset",
+    "changeset": "changeset && pnpm check:fix",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile",
     "build:release": "vp run -F @cascivo/core -F @cascivo/i18n -F @cascivo/icons -F @cascivo/mcp -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F cascivo build",
     "release": "pnpm build:release && changeset publish"

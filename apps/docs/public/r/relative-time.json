@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 2,
+  "name": "relative-time",
+  "type": "component",
+  "description": "Displays a date as a localized phrase relative to now, auto-updating",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/relative-time/relative-time.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["time", "date", "relative", "i18n", "display"],
+  "category": "display",
+  "meta": {
+    "name": "RelativeTime",
+    "description": "Displays a date as a localized phrase relative to now, auto-updating",
+    "category": "display",
+    "states": ["default"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "date",
+        "type": "Date | number | string",
+        "required": true
+      },
+      {
+        "name": "sync",
+        "type": "boolean",
+        "required": false,
+        "default": "true"
+      },
+      {
+        "name": "now",
+        "type": "number",
+        "required": false,
+        "description": "Override \"now\" (ms); disables the interval"
+      },
+      {
+        "name": "format",
+        "type": "Intl.RelativeTimeFormatOptions",
+        "required": false
+      }
+    ],
+    "tokens": [],
+    "accessibility": {
+      "role": "time",
+      "wcag": "2.2-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<RelativeTime date={post.createdAt} />"
+      },
+      {
+        "title": "Natural language",
+        "code": "<RelativeTime date={date} format={{ numeric: \"auto\" }} />"
+      },
+      {
+        "title": "Static (no ticking)",
+        "code": "<RelativeTime date={date} sync={false} />"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "tags": ["time", "date", "relative", "i18n", "display"],
+    "intent": {
+      "whenToUse": [
+        "Showing how long ago something happened in human terms (\"3 minutes ago\")",
+        "Timestamps in feeds, comments, and activity logs where recency matters more than precision",
+        "Anywhere a self-updating relative time is friendlier than an absolute date"
+      ],
+      "whenNotToUse": [
+        "Precise timestamps in tables or audit logs — use formatDate for an exact, sortable value",
+        "Dates far in the past/future where \"2 years ago\" is less useful than the actual date"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<RelativeTime date={date} /> as the only representation of a legal/audit timestamp",
+          "good": "<time>{formatDate(date)}</time> for exact records; RelativeTime for casual recency",
+          "why": "Relative phrases lose precision; the exact date belongs in records (RelativeTime still exposes it via title/datetime)"
+        }
+      ],
+      "related": [
+        {
+          "name": "Stat",
+          "relationship": "pairs-with",
+          "reason": "Use alongside Stat to timestamp a metric’s last update"
+        }
+      ],
+      "a11yRationale": "Renders a native <time> element with a machine-readable datetime and the absolute date in the title, so the precise instant is available even though the visible text is relative",
+      "flexibility": [
+        {
+          "area": "format",
+          "level": "flexible",
+          "note": "Pass Intl.RelativeTimeFormat options (e.g. numeric: \"auto\") to tune the wording"
+        },
+        {
+          "area": "sync",
+          "level": "flexible",
+          "note": "Disable ticking for static contexts or long-past dates"
+        }
+      ]
+    }
+  }
+}

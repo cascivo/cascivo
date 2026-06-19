@@ -447,6 +447,18 @@
           "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
         }
       ],
+      "Comparison": [
+        {
+          "area": "orientation",
+          "level": "flexible",
+          "note": "Horizontal or vertical depending on the content"
+        },
+        {
+          "area": "label",
+          "level": "strict",
+          "note": "Provide a label (or rely on the i18n default) so the slider is named"
+        }
+      ],
       "ContainedList": [
         {
           "area": "kind",
@@ -1129,6 +1141,18 @@
           "note": "All typography and surface styling resolves to --cascivo-* tokens"
         }
       ],
+      "QrCode": [
+        {
+          "area": "errorCorrection",
+          "level": "flexible",
+          "note": "Raise to Q/H when the code may be printed small or partially obscured"
+        },
+        {
+          "area": "colors",
+          "level": "flexible",
+          "note": "Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable"
+        }
+      ],
       "RadialProgress": [
         {
           "area": "label",
@@ -1175,6 +1199,18 @@
           "area": "scale and labels",
           "level": "flexible",
           "note": "max sets the scale and labels.rating customizes the per-star announcement"
+        }
+      ],
+      "RelativeTime": [
+        {
+          "area": "format",
+          "level": "flexible",
+          "note": "Pass Intl.RelativeTimeFormat options (e.g. numeric: \"auto\") to tune the wording"
+        },
+        {
+          "area": "sync",
+          "level": "flexible",
+          "note": "Disable ticking for static contexts or long-past dates"
         }
       ],
       "Resizable": [
@@ -2849,6 +2885,56 @@
         ]
       },
       "contextUrl": "/context/command-menu.md"
+    },
+    {
+      "name": "Comparison",
+      "category": "display",
+      "description": "Reveals the difference between two layers with a draggable divider",
+      "intent": {
+        "whenToUse": [
+          "Showing the difference between two versions of similar content (before/after edits, original vs processed)",
+          "Letting users interactively reveal one image or panel over another",
+          "Side-by-side visual demos where a draggable divider is clearer than two static images"
+        ],
+        "whenNotToUse": [
+          "Comparing more than two items — use a layout or table instead",
+          "Non-visual data comparison — use a table or chart",
+          "Static side-by-side images with no need for an interactive reveal"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Comparison before={<Before />} after={<After />} /> with no label",
+            "good": "<Comparison label=\"Reveal edited photo\" before={<Before />} after={<After />} />",
+            "why": "The divider is a slider; without a label assistive tech announces an unnamed control"
+          }
+        ],
+        "related": [
+          {
+            "name": "Slider",
+            "relationship": "alternative",
+            "reason": "Use Slider for selecting a numeric value rather than revealing layered content"
+          },
+          {
+            "name": "Carousel",
+            "relationship": "alternative",
+            "reason": "Use Carousel to step through more than two pieces of content"
+          }
+        ],
+        "a11yRationale": "The divider is a role=\"slider\" with aria-valuemin/max/now and full keyboard support (Arrow/Home/End/PageUp/PageDown); aria-orientation reflects the axis so the value and direction are conveyed without sight",
+        "flexibility": [
+          {
+            "area": "orientation",
+            "level": "flexible",
+            "note": "Horizontal or vertical depending on the content"
+          },
+          {
+            "area": "label",
+            "level": "strict",
+            "note": "Provide a label (or rely on the i18n default) so the slider is named"
+          }
+        ]
+      },
+      "contextUrl": "/context/comparison.md"
     },
     {
       "name": "ContainedList",
@@ -5513,6 +5599,50 @@
       "contextUrl": "/context/prose.md"
     },
     {
+      "name": "QrCode",
+      "category": "display",
+      "description": "Encodes a URL or short text into a scannable SVG QR code",
+      "intent": {
+        "whenToUse": [
+          "Letting users scan a URL, contact, or short token with a phone camera",
+          "Bridging print or screen to a digital destination",
+          "Sharing a link where typing it would be error-prone"
+        ],
+        "whenNotToUse": [
+          "Encoding long or sensitive payloads — QR codes are public and capacity-limited",
+          "Where a plain, copyable link or button is more accessible"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<QrCode value={veryLongString} />",
+            "good": "<QrCode value=\"https://cascivo.dev/s/abc\" />",
+            "why": "Long payloads force a dense, hard-to-scan code; encode a short URL that redirects instead"
+          }
+        ],
+        "related": [
+          {
+            "name": "CopyButton",
+            "relationship": "pairs-with",
+            "reason": "Offer a copyable link alongside the QR code for non-camera contexts"
+          }
+        ],
+        "a11yRationale": "Rendered as role=\"img\" with an accessible label so screen-reader users know a QR code is present; the underlying link should also be available as text since a QR code is not operable by assistive tech",
+        "flexibility": [
+          {
+            "area": "errorCorrection",
+            "level": "flexible",
+            "note": "Raise to Q/H when the code may be printed small or partially obscured"
+          },
+          {
+            "area": "colors",
+            "level": "flexible",
+            "note": "Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable"
+          }
+        ]
+      },
+      "contextUrl": "/context/qr-code.md"
+    },
+    {
       "name": "RadialProgress",
       "category": "feedback",
       "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
@@ -5723,6 +5853,50 @@
         ]
       },
       "contextUrl": "/context/rating-group.md"
+    },
+    {
+      "name": "RelativeTime",
+      "category": "display",
+      "description": "Displays a date as a localized phrase relative to now, auto-updating",
+      "intent": {
+        "whenToUse": [
+          "Showing how long ago something happened in human terms (\"3 minutes ago\")",
+          "Timestamps in feeds, comments, and activity logs where recency matters more than precision",
+          "Anywhere a self-updating relative time is friendlier than an absolute date"
+        ],
+        "whenNotToUse": [
+          "Precise timestamps in tables or audit logs — use formatDate for an exact, sortable value",
+          "Dates far in the past/future where \"2 years ago\" is less useful than the actual date"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<RelativeTime date={date} /> as the only representation of a legal/audit timestamp",
+            "good": "<time>{formatDate(date)}</time> for exact records; RelativeTime for casual recency",
+            "why": "Relative phrases lose precision; the exact date belongs in records (RelativeTime still exposes it via title/datetime)"
+          }
+        ],
+        "related": [
+          {
+            "name": "Stat",
+            "relationship": "pairs-with",
+            "reason": "Use alongside Stat to timestamp a metric’s last update"
+          }
+        ],
+        "a11yRationale": "Renders a native <time> element with a machine-readable datetime and the absolute date in the title, so the precise instant is available even though the visible text is relative",
+        "flexibility": [
+          {
+            "area": "format",
+            "level": "flexible",
+            "note": "Pass Intl.RelativeTimeFormat options (e.g. numeric: \"auto\") to tune the wording"
+          },
+          {
+            "area": "sync",
+            "level": "flexible",
+            "note": "Disable ticking for static contexts or long-past dates"
+          }
+        ]
+      },
+      "contextUrl": "/context/relative-time.md"
     },
     {
       "name": "Resizable",

@@ -53,6 +53,19 @@ export { useInfiniteScroll } from './infinite-scroll.ts'
 export type { UseInfiniteScrollOptions, UseInfiniteScrollReturn } from './infinite-scroll.ts'
 export { useDraggable } from './draggable.ts'
 export type { DragOffset, UseDraggableOptions, UseDraggableReturn } from './draggable.ts'
+export { useResizeObserver } from './resize-observer.ts'
+export type {
+  ElementSize,
+  UseResizeObserverOptions,
+  UseResizeObserverReturn,
+} from './resize-observer.ts'
+export { useMutationObserver } from './mutation-observer.ts'
+export type { UseMutationObserverReturn } from './mutation-observer.ts'
+export { useIntersectionObserver } from './intersection-observer.ts'
+export type {
+  UseIntersectionObserverOptions,
+  UseIntersectionObserverReturn,
+} from './intersection-observer.ts'
 export { DismissableLayer } from './dismissable-layer.tsx'
 export type { DismissableLayerProps } from './dismissable-layer.tsx'
 export { useRovingFocus } from './roving-focus.ts'

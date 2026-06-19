@@ -1,6 +1,7 @@
 export { createLocale, currentLocale } from './locale'
 export type { LocaleStore } from './locale'
 export { defineCatalog, defineMessages, t, translateKey } from './messages'
-export { formatDate, formatList, formatNumber, formatRelativeTime } from './format'
+export { formatBytes, formatDate, formatList, formatNumber, formatRelativeTime } from './format'
+export type { FormatBytesOptions } from './format'
 export { builtin } from './builtin'
 export type { Message, MessageValue, PluralForms } from './types'

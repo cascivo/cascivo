@@ -220,6 +220,12 @@ export const builtin = {
   avatarGroup: defineMessages('cascade.avatarGroup', {
     more: '{count} more',
   }),
+  comparison: defineMessages('cascade.comparison', {
+    label: 'Comparison slider',
+  }),
+  qrCode: defineMessages('cascade.qrCode', {
+    label: 'QR code',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -435,4 +441,10 @@ defineCatalog(builtin.toc, 'de', {
 })
 defineCatalog(builtin.avatarGroup, 'de', {
   more: '{count} weitere',
+})
+defineCatalog(builtin.comparison, 'de', {
+  label: 'Vergleichsregler',
+})
+defineCatalog(builtin.qrCode, 'de', {
+  label: 'QR-Code',
 })

@@ -121,6 +121,7 @@
             "ComboChart",
             "Combobox",
             "CommandMenu",
+            "Comparison",
             "ConsoleApp",
             "ContainedList",
             "ContextMenu",
@@ -193,11 +194,13 @@
             "ProgressCircle",
             "ProgressIndicator",
             "Prose",
+            "QrCode",
             "Radar",
             "RadialProgress",
             "Radio",
             "RadioCard",
             "RatingGroup",
+            "RelativeTime",
             "Resizable",
             "ScatterChart",
             "ScrollArea",
@@ -1076,6 +1079,50 @@
                   }
                 },
                 "required": ["open", "onOpenChange", "groups"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Comparison"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "after": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "before": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "position": {
+                    "type": "number"
+                  },
+                  "defaultPosition": {
+                    "type": "number"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": ["horizontal", "vertical"]
+                  },
+                  "keyboardStep": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["after", "before"]
               }
             }
           }
@@ -2741,6 +2788,48 @@
           "if": {
             "properties": {
               "component": {
+                "const": "QrCode"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "errorCorrection": {
+                    "type": "string",
+                    "enum": ["L", "M", "Q", "H"]
+                  },
+                  "radius": {
+                    "type": "string"
+                  },
+                  "fill": {
+                    "type": "string"
+                  },
+                  "background": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "RadialProgress"
               }
             },
@@ -2876,6 +2965,36 @@
                   }
                 },
                 "required": ["value"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "RelativeTime"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "enum": ["Date", "number", "string"]
+                  },
+                  "sync": {
+                    "type": "boolean"
+                  },
+                  "now": {
+                    "type": "number"
+                  }
+                },
+                "required": ["date"]
               }
             }
           }

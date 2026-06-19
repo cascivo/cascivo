@@ -105,6 +105,7 @@ New MCP tools:
 - [color-picker](/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
 - [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
 - [command-menu](/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
+- [comparison](/llms/comparison.md) — Reveals the difference between two layers with a draggable divider
 - [contained-list](/llms/contained-list.md) — Labelled list of rows inside a bordered container
 - [context-menu](/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
 - [copy-button](/llms/copy-button.md) — Icon button that copies a value to the clipboard with copied feedback
@@ -170,10 +171,12 @@ New MCP tools:
 - [progress-circle](/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
 - [progress-indicator](/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
 - [prose](/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
+- [qr-code](/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code
 - [radial-progress](/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
 - [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
+- [relative-time](/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating
 - [resizable](/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
 - [scroll-area](/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows
 - [search](/llms/search.md) — Search input with debounced search callback and clear button
@@ -270,6 +273,7 @@ New MCP tools:
 - [ColorPicker](/context/color-picker.md) — Use when: Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control
 - [Combobox](/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
 - [CommandMenu](/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
+- [Comparison](/context/comparison.md) — Use when: Showing the difference between two versions of similar content (before/after edits, original vs processed)
 - [ContainedList](/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
 - [ContextMenu](/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
 - [CopyButton](/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
@@ -335,10 +339,12 @@ New MCP tools:
 - [ProgressCircle](/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
 - [ProgressIndicator](/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
 - [Prose](/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [QrCode](/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
 - [RadialProgress](/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
 - [Radio](/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
 - [RadioCard](/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
 - [RatingGroup](/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
+- [RelativeTime](/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
 - [Resizable](/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
 - [ScrollArea](/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
 - [Search](/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch

@@ -1028,6 +1028,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "comparison",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "comparison/comparison.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "comparison/comparison.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Reveals the difference between two layers with a draggable divider",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "contained-list",
       "type": "registry:component",
       "files": [
@@ -2585,6 +2609,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "qr-code",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "qr-code/qr-code.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "qr-code/qr-code.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Encodes a URL or short text into a scannable SVG QR code",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "radial-progress",
       "type": "registry:component",
       "files": [
@@ -2671,6 +2719,30 @@
       "description": "Star rating input with accessible radio group pattern",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "relative-time",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "relative-time/relative-time.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "relative-time/relative-time.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Displays a date as a localized phrase relative to now, auto-updating",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
