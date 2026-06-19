@@ -623,6 +623,18 @@
         "note": "Any single icon node; consumer owns the icon set"
       }
     ],
+    "Image": [
+      {
+        "area": "radius",
+        "level": "flexible",
+        "note": "Pick the corner radius that matches the surrounding surface"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Radius and placeholder colors must resolve to --cascivo-* tokens"
+      }
+    ],
     "Indicator": [
       {
         "area": "placement",

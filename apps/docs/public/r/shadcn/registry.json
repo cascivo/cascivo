@@ -1507,6 +1507,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "image",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "image/image.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "image/image.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "indicator",
       "type": "registry:component",
       "files": [

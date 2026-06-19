@@ -81,7 +81,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 
 ## Component index
 
-159 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+160 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -144,6 +144,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 - **EmptyDashboard** — Dashboard page showing an empty state with a call-to-action button.
 - **EmptyState** — Placeholder for views that have no data to display
 - **Heading** — Section heading with semantic level decoupled from visual size
+- **Image** — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - **Item** — Generic content row primitive with media, content, and action regions
 - **Kbd** — Displays a keyboard key or shortcut
 - **List** — Styled unordered or ordered list with ListItem

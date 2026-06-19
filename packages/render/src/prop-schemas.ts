@@ -1740,6 +1740,53 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  Image: [
+    {
+      name: 'src',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'alt',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'fallbackSrc',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['string', 'number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['string', 'number'],
+    },
+    {
+      name: 'radius',
+      required: false,
+      enum: ['none', 'sm', 'md', 'lg', 'full'],
+    },
+    {
+      name: 'zoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'removeWrapper',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'isBlurred',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Indicator: [
     {
       name: 'children',

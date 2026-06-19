@@ -151,6 +151,7 @@
             "Histogram",
             "HoverCard",
             "IconButton",
+            "Image",
             "Indicator",
             "InlineLoading",
             "Input",
@@ -1730,6 +1731,55 @@
                   }
                 },
                 "required": ["label"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Image"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string"
+                  },
+                  "alt": {
+                    "type": "string"
+                  },
+                  "fallbackSrc": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "string",
+                    "enum": ["string", "number"]
+                  },
+                  "height": {
+                    "type": "string",
+                    "enum": ["string", "number"]
+                  },
+                  "radius": {
+                    "type": "string",
+                    "enum": ["none", "sm", "md", "lg", "full"]
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "removeWrapper": {
+                    "type": "boolean"
+                  },
+                  "isBlurred": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }

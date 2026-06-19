@@ -29,6 +29,7 @@ import { meta as headerMeta } from './header/header.meta'
 import { meta as headerPanelMeta } from './header-panel/header-panel.meta'
 import { meta as headingMeta } from './heading/heading.meta'
 import { meta as hoverCardMeta } from './hover-card/hover-card.meta'
+import { meta as imageMeta } from './image/image.meta'
 import { meta as indicatorMeta } from './indicator/indicator.meta'
 import { meta as inputMeta } from './input/input.meta'
 import { meta as inputGroupMeta } from './input-group/input-group.meta'
@@ -114,6 +115,7 @@ export const allMetas: ComponentMeta[] = [
   headerPanelMeta,
   headingMeta,
   hoverCardMeta,
+  imageMeta,
   indicatorMeta,
   inputMeta,
   inputGroupMeta,

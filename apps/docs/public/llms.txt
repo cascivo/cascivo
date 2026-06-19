@@ -125,6 +125,7 @@ New MCP tools:
 - [heading](/llms/heading.md) — Section heading with semantic level decoupled from visual size
 - [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
 - [icon-button](/llms/icon-button.md) — Square, icon-only button with a required accessible label
+- [image](/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - [indicator](/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child
 - [inline-loading](/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
@@ -287,6 +288,7 @@ New MCP tools:
 - [Heading](/context/heading.md) — Use when: Titling a page or section as part of the document outline
 - [HoverCard](/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
 - [IconButton](/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
+- [Image](/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
 - [Indicator](/context/indicator.md) — Use when: Notification counts on icon buttons
 - [InlineLoading](/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
