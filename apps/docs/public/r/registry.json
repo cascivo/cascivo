@@ -1772,7 +1772,8 @@
           "--cascivo-color-text-on-accent",
           "--cascivo-color-destructive",
           "--cascivo-radius-button",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-disabled-opacity"
         ],
         "accessibility": {
           "role": "button",
@@ -10770,6 +10771,13 @@
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "draggable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Allow dragging the dialog by its header"
           }
         ],
         "tokens": [
@@ -13317,6 +13325,13 @@
             "required": false,
             "default": "vertical",
             "description": "Which axes may scroll"
+          },
+          {
+            "name": "edges",
+            "type": "'shadow' | 'mask' | 'none'",
+            "required": false,
+            "default": "shadow",
+            "description": "Edge affordance: box-shadow, a mask-image fade, or none"
           },
           {
             "name": "children",

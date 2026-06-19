@@ -7,6 +7,10 @@
   [data-theme='brutalist'] {
     color-scheme: light;
 
+    /* ── Interaction state (HeroUI parity) ── */
+    --cascivo-disabled-opacity: 0.6;
+    --cascivo-hover-opacity: 0.85;
+
     /* ── Typography ───────────── */
     --cascivo-font-display: 'Arial Black', 'Helvetica Neue', ui-sans-serif, sans-serif;
 

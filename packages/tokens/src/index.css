@@ -144,6 +144,10 @@
     --cascivo-radius-overlay: calc(var(--cascivo-radius-base) * 2); /* ~12px modals/popovers */
     --cascivo-radius-indicator: calc(var(--cascivo-radius-base) / 2);
 
+    /* ── Interaction state opacity (HeroUI layout-token parity; themes may retune) ── */
+    --cascivo-disabled-opacity: 0.5;
+    --cascivo-hover-opacity: 0.8;
+
     /* ── Shadows — rationed: surfaces flat/xs, floating layers get ONE soft shadow ── */
     --cascivo-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
     --cascivo-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);

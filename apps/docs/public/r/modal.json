@@ -49,6 +49,13 @@
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
+      },
+      {
+        "name": "draggable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Allow dragging the dialog by its header"
       }
     ],
     "tokens": [

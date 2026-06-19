@@ -35,4 +35,17 @@ describe('theme token parity', () => {
       expect(extra, `${file} defines tokens missing from ${first}`).toEqual([])
     }
   })
+
+  it('every theme declares the interaction-state opacity tokens', () => {
+    for (const file of themeFiles) {
+      const keys = tokenKeys(file)
+      expect(
+        keys.has('--cascivo-disabled-opacity'),
+        `${file} missing --cascivo-disabled-opacity`,
+      ).toBe(true)
+      expect(keys.has('--cascivo-hover-opacity'), `${file} missing --cascivo-hover-opacity`).toBe(
+        true,
+      )
+    }
+  })
 })

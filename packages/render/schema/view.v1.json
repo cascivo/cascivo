@@ -2232,6 +2232,9 @@
                   "size": {
                     "type": "string",
                     "enum": ["sm", "md", "lg"]
+                  },
+                  "draggable": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -2940,6 +2943,10 @@
                   "orientation": {
                     "type": "string",
                     "enum": ["vertical", "horizontal", "both"]
+                  },
+                  "edges": {
+                    "type": "string",
+                    "enum": ["shadow", "mask", "none"]
                   },
                   "children": {
                     "type": "string",

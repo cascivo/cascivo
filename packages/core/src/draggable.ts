@@ -46,13 +46,13 @@ export function useDraggable(options: UseDraggableOptions = {}): UseDraggableRet
 
   useSignalEffect(() => {
     const isDisabled = disabled.value
-    const handle = handleRef.current
-    if (isDisabled || typeof window === 'undefined' || !handle) return
+    if (isDisabled || typeof window === 'undefined') return
 
     let startX = 0
     let startY = 0
     let baseX = 0
     let baseY = 0
+    let activeHandle: HTMLElement | null = null
 
     const onMove = (event: PointerEvent): void => {
       const axis = axisRef.current
@@ -62,13 +62,21 @@ export function useDraggable(options: UseDraggableOptions = {}): UseDraggableRet
     }
     const onUp = (event: PointerEvent): void => {
       isDragging.value = false
-      handle.releasePointerCapture?.(event.pointerId)
+      activeHandle?.releasePointerCapture?.(event.pointerId)
+      activeHandle = null
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)
       onDragEndRef.current?.(offset.value)
     }
+    // Listen on the window and resolve the handle lazily, so the handle element
+    // need not be attached when this effect first runs — it may live deep inside
+    // a portal/overlay whose ref commits after this hook's owner.
     const onDown = (event: PointerEvent): void => {
+      const handle = handleRef.current
+      const target = event.target
+      if (!handle || !(target instanceof Node) || !handle.contains(target)) return
+      activeHandle = handle
       startX = event.clientX
       startY = event.clientY
       baseX = offset.value.x
@@ -80,9 +88,9 @@ export function useDraggable(options: UseDraggableOptions = {}): UseDraggableRet
       window.addEventListener('pointercancel', onUp)
     }
 
-    handle.addEventListener('pointerdown', onDown)
+    window.addEventListener('pointerdown', onDown)
     return () => {
-      handle.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointerdown', onDown)
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)

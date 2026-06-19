@@ -2267,6 +2267,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       enum: ['sm', 'md', 'lg'],
     },
+    {
+      name: 'draggable',
+      required: false,
+      primitives: ['boolean'],
+    },
   ],
   MultiSelect: [
     {
@@ -3021,6 +3026,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'orientation',
       required: false,
       enum: ['vertical', 'horizontal', 'both'],
+    },
+    {
+      name: 'edges',
+      required: false,
+      enum: ['shadow', 'mask', 'none'],
     },
     {
       name: 'children',

@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-19",
-  "count": 226,
+  "count": 228,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -858,6 +858,22 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) / 2)",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-disabled-opacity",
+      "value": "0.5",
+      "layer": "semantic",
+      "group": "disabled",
+      "resolvedDefault": "0.5",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-hover-opacity",
+      "value": "0.8",
+      "layer": "semantic",
+      "group": "hover",
+      "resolvedDefault": "0.8",
       "resolvesPerTheme": false
     },
     {

@@ -33,10 +33,11 @@ Native overflow keeps the container keyboard-scrollable and focusable per browse
 ## Props
 
 | Name          | Type        | Required     | Default | Description                                       |
-| ------------- | ----------- | ------------ | ------- | ------------------------------------------------- | -------- | --------------------- |
+| ------------- | ----------- | ------------ | ------- | ------------------------------------------------- | -------- | ------------------------------------------------------- |
 | `height`      | `string`    | No           | —       | Max block size of the container (any CSS length)  |
 | `width`       | `string`    | No           | —       | Max inline size of the container (any CSS length) |
-| `orientation` | `'vertical' | 'horizontal' | 'both'` | No                                                | vertical | Which axes may scroll |
+| `orientation` | `'vertical' | 'horizontal' | 'both'` | No                                                | vertical | Which axes may scroll                                   |
+| `edges`       | `'shadow'   | 'mask'       | 'none'` | No                                                | shadow   | Edge affordance: box-shadow, a mask-image fade, or none |
 | `children`    | `ReactNode` | No           | —       | Scrollable content                                |
 
 ## Tokens

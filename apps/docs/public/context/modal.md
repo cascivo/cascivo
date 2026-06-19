@@ -35,13 +35,14 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Props
 
-| Name          | Type         | Required | Default | Description |
-| ------------- | ------------ | -------- | ------- | ----------- | --- | --- |
-| `open`        | `boolean`    | No       | false   | —           |
-| `onClose`     | `() => void` | No       | —       | —           |
-| `title`       | `string`     | No       | —       | —           |
-| `description` | `string`     | No       | —       | —           |
-| `size`        | `'sm'        | 'md'     | 'lg'`   | No          | md  | —   |
+| Name          | Type         | Required | Default | Description                             |
+| ------------- | ------------ | -------- | ------- | --------------------------------------- | --- | --- |
+| `open`        | `boolean`    | No       | false   | —                                       |
+| `onClose`     | `() => void` | No       | —       | —                                       |
+| `title`       | `string`     | No       | —       | —                                       |
+| `description` | `string`     | No       | —       | —                                       |
+| `size`        | `'sm'        | 'md'     | 'lg'`   | No                                      | md  | —   |
+| `draggable`   | `boolean`    | No       | false   | Allow dragging the dialog by its header |
 
 ## Tokens
 

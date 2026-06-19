@@ -303,3 +303,10 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-screen-md`** | `40rem` |  |
 | **`--cascivo-screen-sm`** | `30rem` |  |
 | **`--cascivo-screen-xl`** | `80rem` |  |
+
+## other
+
+| Token | Value | Notes |
+| ----- | ----- | ----- |
+| **`--cascivo-disabled-opacity`** | `0.5` |  |
+| **`--cascivo-hover-opacity`** | `0.8` |  |
