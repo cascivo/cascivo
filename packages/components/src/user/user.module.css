@@ -1,0 +1,39 @@
+@layer cascivo.component {
+  .user {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    min-inline-size: 0;
+    font-family: var(--cascivo-font-sans);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+    line-height: var(--cascivo-leading-snug, 1.3);
+  }
+
+  .name {
+    color: var(--cascivo-color-text);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .description {
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    margin-inline-start: var(--cascivo-space-2);
+  }
+}

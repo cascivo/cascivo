@@ -1,7 +1,7 @@
 # cascivo — Roadmap v40: OpenUI Study — Make Agent-Generated UI Reliable (Bounded Vocabulary + Conformance)
 
 **Last updated:** 2026-06-19
-**Status:** 🟡 Planned (T1–T2 core; T3 optional)
+**Status:** 🟢 Core shipped (T1 + T2). T3 (`cvl`) deliberately **not built** — the optional positioning bet was not taken; deferred with the streaming/interop items below.
 **Plan documents:** `docs/superpowers/plans/2026-06-19-v40-master-plan.md` + tranches 1–3
 **Builds on:** the existing — and **dogfooded** — generative-UI stack: `@cascivo/render` (`ViewConfig` JSON
 + `CascadeView`, `packages/render`), surfaced on the landing page (`apps/landing/src/sections/AgentLayer.tsx`,
@@ -192,22 +192,27 @@ root) for AI tools to discover. (And note **[wandb/openui](https://github.com/wa
 
 ### T1 — Library-derived prompt + grammar generation (core)
 
-- [ ] A generator (in `@cascivo/mcp` and/or `@cascivo/render`) produces, from the manifests, a **system
+- [x] A generator (in `@cascivo/mcp` and/or `@cascivo/render`) produces, from the manifests, a **system
       prompt** + an **allowed-vocabulary grammar** (components → props → enums/sizes/variants) describing how
-      to emit valid **`ViewConfig` JSON** bounded to cascivo's real components.
-- [ ] Bounded: a test asserts every component/prop/enum it references exists in the registry/manifests.
-- [ ] Exposed to agents (a new MCP tool or an extension of `scaffold_*`); documented.
-- [ ] `pnpm exec vp run @cascivo/mcp#test` green.
+      to emit valid **`ViewConfig` JSON** bounded to cascivo's real components. → `packages/mcp/src/{grammar,prompt}.ts`
+- [x] Bounded: a test asserts every component/prop/enum it references exists in the registry/manifests. → `grammar.test.ts`
+- [x] Exposed to agents (a new MCP tool or an extension of `scaffold_*`); documented. → `get_view_grammar` tool + `scaffold_view` grammar context
+- [x] `pnpm exec vp run @cascivo/mcp#test` green.
 
 ### T2 — Deep conformance validation (core)
 
-- [ ] `validateView` validates node **props against manifest types/enums** (unknown prop with Levenshtein
+- [x] `validateView` validates node **props against manifest types/enums** (unknown prop with Levenshtein
       "did you mean", type mismatch, out-of-enum) with actionable `{ path, message }` errors; existing checks
-      unchanged.
-- [ ] Tests cover: unknown prop, bad enum value, type mismatch, and a valid view (no errors).
-- [ ] `pnpm exec vp run @cascivo/render#test` green (existing `validate.test.ts` still passes).
+      unchanged. → `packages/render/src/validate.ts` + generated `prop-schemas.ts`
+- [x] Tests cover: unknown prop, bad enum value, type mismatch, and a valid view (no errors). → `validate.conformance.test.ts`
+- [x] `pnpm exec vp run @cascivo/render#test` green (existing `validate.test.ts` still passes).
 
-### T3 — `cvl` compact DSL (optional)
+### T3 — `cvl` compact DSL (optional) — **not built**
+
+Deliberately skipped. The token saving is real but only bites at volume, and the renderer is a showcase, not
+a metered path — so the only justification was positioning, weighed against a hand-written DSL + parser to
+maintain in lockstep with `ViewConfig` forever. That bet was **not** taken; T1's prompt keeps a marked
+extension point (`packages/mcp/src/prompt.ts`) so `cvl` can be added later without rework.
 
 - [ ] `packages/render/src/lang/` ships `encode(config): string` / `parse(src): { config, errors }`,
       exported from `@cascivo/render`; lossless round-trip on every fixture; a recorded token-saving benchmark.
@@ -216,9 +221,9 @@ root) for AI tools to discover. (And note **[wandb/openui](https://github.com/wa
 
 ### Roadmap close-out
 
-- [ ] This roadmap + the prompt/grammar (T1) and conformance (T2) documented (READMEs + a docs section);
+- [x] This roadmap + the prompt/grammar (T1) and conformance (T2) documented (READMEs + a docs section);
       "Deferred / revisit when" section records streaming + `openui.json` interop with trigger conditions.
-- [ ] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
+- [x] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
       `pnpm test`, `breakpoint:check`, `fallback:check`, `brand:check`.
 
 ---

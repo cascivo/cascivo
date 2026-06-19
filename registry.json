@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "generatedAt": "2026-06-18",
+  "generatedAt": "2026-06-19",
   "components": [
     {
       "name": "accordion",
@@ -672,6 +672,128 @@
       }
     },
     {
+      "name": "avatar-group",
+      "type": "component",
+      "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar-group/avatar-group.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "tags": ["avatar", "group", "stack", "overflow", "display"],
+      "meta": {
+        "name": "AvatarGroup",
+        "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+        "category": "display",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Cap the number of visible avatars"
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "required": false,
+            "description": "Override the total count used for the +N chip"
+          },
+          {
+            "name": "spacing",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "isGrid",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "labels",
+            "type": "AvatarGroupLabels",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-text-muted",
+          "--cascivo-space-2",
+          "--cascivo-text-xs"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<AvatarGroup><Avatar fallback=\"A\" /><Avatar fallback=\"B\" /><Avatar fallback=\"C\" /></AvatarGroup>"
+          },
+          {
+            "title": "With max",
+            "code": "<AvatarGroup max={3}>{users.map((u) => <Avatar key={u.id} src={u.src} alt={u.name} />)}</AvatarGroup>"
+          },
+          {
+            "title": "Grid",
+            "code": "<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "tags": ["avatar", "group", "stack", "overflow", "display"],
+        "intent": {
+          "whenToUse": [
+            "Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)",
+            "Capping a long list of avatars with a +N overflow chip",
+            "A facepile in a card header, table cell, or activity row"
+          ],
+          "whenNotToUse": [
+            "A single identity with a name — use User or Avatar",
+            "A selectable list of people — use a list/menu with checkboxes"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<AvatarGroup>{hundredsOfAvatars}</AvatarGroup> with no max",
+              "good": "<AvatarGroup max={5} total={120}>{avatars}</AvatarGroup>",
+              "why": "Without a max the row grows unbounded; a cap plus total keeps it compact and accurate"
+            }
+          ],
+          "related": [
+            {
+              "name": "Avatar",
+              "relationship": "contains",
+              "reason": "AvatarGroup arranges Avatar children and adds an overflow chip"
+            },
+            {
+              "name": "User",
+              "relationship": "alternative",
+              "reason": "Use User for a single labelled identity row"
+            }
+          ],
+          "a11yRationale": "The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label (\"{count} more\") so the hidden count is announced, not conveyed by the chip text alone",
+          "flexibility": [
+            {
+              "area": "spacing",
+              "level": "flexible",
+              "note": "Pick the overlap that fits the surrounding density"
+            },
+            {
+              "area": "overflow label",
+              "level": "strict",
+              "note": "The +N label must come from i18n (builtin.avatarGroup.more or a labels override)"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "badge",
       "type": "component",
       "description": "Small status label or category indicator",
@@ -1065,7 +1187,8 @@
           "--cascivo-color-text-on-accent",
           "--cascivo-color-destructive",
           "--cascivo-radius-button",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-disabled-opacity"
         ],
         "accessibility": {
           "role": "button",
@@ -5608,6 +5731,159 @@
       }
     },
     {
+      "name": "image",
+      "type": "component",
+      "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/image/image.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/image/image.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["image", "media", "display", "loading"],
+      "meta": {
+        "name": "Image",
+        "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
+        "category": "display",
+        "states": ["loading", "loaded", "error"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "src",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "alt",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "fallbackSrc",
+            "type": "string",
+            "required": false,
+            "description": "Image shown if src fails to load"
+          },
+          {
+            "name": "width",
+            "type": "string | number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "string | number",
+            "required": false
+          },
+          {
+            "name": "radius",
+            "type": "'none' | 'sm' | 'md' | 'lg' | 'full'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "zoom",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "removeWrapper",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Render a bare <img> with no wrapper, placeholder, or zoom"
+          },
+          {
+            "name": "isBlurred",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-radius-none",
+          "--cascivo-radius-sm",
+          "--cascivo-radius-md",
+          "--cascivo-radius-lg",
+          "--cascivo-radius-full",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-border",
+          "--cascivo-space-12"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Image src=\"/photo.jpg\" alt=\"A photo\" width={320} height={240} />"
+          },
+          {
+            "title": "With fallback",
+            "code": "<Image src=\"/broken.jpg\" fallbackSrc=\"/placeholder.jpg\" alt=\"A photo\" />"
+          },
+          {
+            "title": "Blurred placeholder",
+            "code": "<Image src=\"/photo.jpg\" alt=\"A photo\" isBlurred />"
+          },
+          {
+            "title": "Hover zoom",
+            "code": "<Image src=\"/photo.jpg\" alt=\"A photo\" zoom />"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["image", "media", "display", "loading"],
+        "intent": {
+          "whenToUse": [
+            "Displaying a content image that should show a placeholder while loading and degrade gracefully on error",
+            "Photos, thumbnails, or media that benefit from a blur-up placeholder or hover zoom",
+            "Any image where a broken src should fall back rather than show a broken-image icon"
+          ],
+          "whenNotToUse": [
+            "Identity thumbnails for a person or entity — use Avatar",
+            "Purely decorative shapes or a fixed-ratio layout box with no load behavior — use AspectRatio"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Image src=\"/photo.jpg\" /> with no alt",
+              "good": "<Image src=\"/photo.jpg\" alt=\"Sunset over the bay\" />",
+              "why": "Without alt the image is invisible to assistive tech; pass an empty alt only for decorative images"
+            }
+          ],
+          "related": [
+            {
+              "name": "Avatar",
+              "relationship": "alternative",
+              "reason": "Use Avatar for identity thumbnails with an initials fallback"
+            },
+            {
+              "name": "AspectRatio",
+              "relationship": "alternative",
+              "reason": "Use AspectRatio for a ratio box that does not own image load behavior"
+            }
+          ],
+          "a11yRationale": "role=\"img\" with alt names the image; on error it shows a fallback image or neutral box so layout survives; the blur-up and zoom transitions are disabled under prefers-reduced-motion",
+          "flexibility": [
+            {
+              "area": "radius",
+              "level": "flexible",
+              "note": "Pick the corner radius that matches the surrounding surface"
+            },
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Radius and placeholder colors must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "indicator",
       "type": "component",
       "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
@@ -7163,6 +7439,13 @@
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "draggable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Allow dragging the dialog by its header"
           }
         ],
         "tokens": [
@@ -9793,6 +10076,13 @@
             "required": false,
             "default": "vertical",
             "description": "Which axes may scroll"
+          },
+          {
+            "name": "edges",
+            "type": "'shadow' | 'mask' | 'none'",
+            "required": false,
+            "default": "shadow",
+            "description": "Edge affordance: box-shadow, a mask-image fade, or none"
           },
           {
             "name": "children",
@@ -13931,6 +14221,112 @@
               "area": "indent token",
               "level": "flexible",
               "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "user",
+      "type": "component",
+      "description": "Identity composite: an avatar with a name, description, and optional action slot",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/user/user.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/user/user.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "tags": ["user", "avatar", "identity", "display"],
+      "meta": {
+        "name": "User",
+        "description": "Identity composite: an avatar with a name, description, and optional action slot",
+        "category": "display",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "name",
+            "type": "ReactNode",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
+            "name": "avatarProps",
+            "type": "AvatarProps",
+            "required": false,
+            "description": "Forwarded to the composed <Avatar>"
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-space-3",
+          "--cascivo-text-sm",
+          "--cascivo-text-xs"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<User name=\"Jane Doe\" description=\"jane@acme.com\" avatarProps={{ src: \"/jane.jpg\", alt: \"Jane Doe\" }} />"
+          },
+          {
+            "title": "With action",
+            "code": "<User name=\"Jane Doe\" description=\"Admin\"><IconButton aria-label=\"More\" /></User>"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "tags": ["user", "avatar", "identity", "display"],
+        "intent": {
+          "whenToUse": [
+            "Showing a person with their name and a secondary line (email, role) next to an avatar",
+            "Identity rows inside menus, tables, navbars, and account switchers",
+            "A compact, labelled identity primitive too granular for a page-section block"
+          ],
+          "whenNotToUse": [
+            "Just an image with no name/description — use Avatar directly",
+            "A full profile card with rich content — compose a Card instead"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<User name=\"\" avatarProps={{ src: \"/jane.jpg\" }} />",
+              "good": "<User name=\"Jane Doe\" avatarProps={{ src: \"/jane.jpg\", alt: \"Jane Doe\" }} />",
+              "why": "The name is the accessible identity label; an empty name leaves the avatar unlabelled"
+            }
+          ],
+          "related": [
+            {
+              "name": "Avatar",
+              "relationship": "contains",
+              "reason": "User wraps Avatar and forwards avatarProps to it"
+            },
+            {
+              "name": "AvatarGroup",
+              "relationship": "alternative",
+              "reason": "Use AvatarGroup to show several identities as an overlapping stack"
+            }
+          ],
+          "a11yRationale": "The composite is a labelled group; the name provides the accessible identity and the avatar carries its own role=\"img\"/alt — no redundant roles",
+          "flexibility": [
+            {
+              "area": "description",
+              "level": "flexible",
+              "note": "Any ReactNode — email, role, or a status line"
+            },
+            {
+              "area": "token names",
+              "level": "strict",
+              "note": "Name and description colors must resolve to --cascivo-* tokens"
             }
           ]
         }

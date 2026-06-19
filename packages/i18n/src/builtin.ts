@@ -217,6 +217,9 @@ export const builtin = {
   toggletip: defineMessages('cascade.toggletip', {
     label: 'More information',
   }),
+  avatarGroup: defineMessages('cascade.avatarGroup', {
+    more: '{count} more',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -429,4 +432,7 @@ defineCatalog(builtin.toggletip, 'de', {
 })
 defineCatalog(builtin.toc, 'de', {
   nav: 'Auf dieser Seite',
+})
+defineCatalog(builtin.avatarGroup, 'de', {
+  more: '{count} weitere',
 })

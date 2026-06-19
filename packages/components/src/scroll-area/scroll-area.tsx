@@ -10,6 +10,8 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   width?: string
   /** Which axes may scroll. */
   orientation?: 'vertical' | 'horizontal' | 'both'
+  /** Edge affordance: box-shadow (default), a mask-image fade (HeroUI ScrollShadow), or none. */
+  edges?: 'shadow' | 'mask' | 'none'
   children?: ReactNode
 }
 
@@ -17,6 +19,7 @@ export function ScrollArea({
   height,
   width,
   orientation = 'vertical',
+  edges = 'shadow',
   className,
   style,
   children,
@@ -59,6 +62,7 @@ export function ScrollArea({
     <div
       ref={nodeRef}
       data-orientation={orientation}
+      data-edges={edges}
       className={cn(styles['root'], className)}
       style={sizeStyle}
       {...props}

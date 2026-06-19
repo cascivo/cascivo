@@ -7,6 +7,10 @@
   [data-theme='cyberpunk'] {
     color-scheme: dark;
 
+    /* ── Interaction state (HeroUI parity) ── */
+    --cascivo-disabled-opacity: 0.55;
+    --cascivo-hover-opacity: 0.75;
+
     /* ── Typography ───────────── */
     --cascivo-font-display: var(--cascivo-font-sans);
 

@@ -7,6 +7,10 @@
   [data-theme='arcade'] {
     color-scheme: light;
 
+    /* ── Interaction state (HeroUI parity) ── */
+    --cascivo-disabled-opacity: 0.5;
+    --cascivo-hover-opacity: 0.8;
+
     /* ── Typography — pixel display face ──────────── */
     --cascivo-font-display: 'Press Start 2P', 'Courier New', ui-monospace, monospace;
 

@@ -34,4 +34,18 @@ describe('ScrollArea', () => {
     expect(node.style.getPropertyValue('--cascivo-scroll-area-height')).toBe('10rem')
     expect(node.style.getPropertyValue('--cascivo-scroll-area-width')).toBe('20rem')
   })
+
+  it('defaults to the shadow edge affordance', () => {
+    render(<ScrollArea data-testid="sa">Content</ScrollArea>)
+    expect(screen.getByTestId('sa')).toHaveAttribute('data-edges', 'shadow')
+  })
+
+  it('reflects the mask edge variant on a data attribute', () => {
+    render(
+      <ScrollArea edges="mask" data-testid="sa">
+        Content
+      </ScrollArea>,
+    )
+    expect(screen.getByTestId('sa')).toHaveAttribute('data-edges', 'mask')
+  })
 })

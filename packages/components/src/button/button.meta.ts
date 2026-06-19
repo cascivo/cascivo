@@ -27,6 +27,7 @@ export const meta: ComponentMeta = {
     '--cascivo-color-destructive',
     '--cascivo-radius-button',
     '--cascivo-focus-ring',
+    '--cascivo-disabled-opacity',
   ],
   accessibility: {
     role: 'button',

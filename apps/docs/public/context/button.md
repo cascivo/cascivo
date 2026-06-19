@@ -49,6 +49,7 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 - `--cascivo-color-destructive`
 - `--cascivo-radius-button`
 - `--cascivo-focus-ring`
+- `--cascivo-disabled-opacity`
 
 ## Examples
 

@@ -13,6 +13,13 @@ export const meta: ComponentMeta = {
     { name: 'title', type: 'string', required: false },
     { name: 'description', type: 'string', required: false },
     { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'draggable',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Allow dragging the dialog by its header',
+    },
   ],
   tokens: [
     '--cascivo-color-surface-overlay',

@@ -60,7 +60,8 @@
       "--cascivo-color-text-on-accent",
       "--cascivo-color-destructive",
       "--cascivo-radius-button",
-      "--cascivo-focus-ring"
+      "--cascivo-focus-ring",
+      "--cascivo-disabled-opacity"
     ],
     "accessibility": {
       "role": "button",

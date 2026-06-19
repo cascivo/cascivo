@@ -10,6 +10,15 @@ export type { ServerOptions } from './server.js'
 export { generateThemeCss, type ThemeColors } from './theme.js'
 export { scaffoldPage, type ScaffoldOptions } from './scaffold.js'
 export {
+  buildGrammar,
+  formatGrammar,
+  parseEnum,
+  type GrammarComponent,
+  type GrammarProp,
+  type ViewGrammar,
+} from './grammar.js'
+export { buildGenerationPrompt, type GenerationPromptOptions } from './prompt.js'
+export {
   getComponent,
   listComponents,
   loadRegistry,

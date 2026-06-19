@@ -34,6 +34,15 @@ Every theme overrides the semantic layer. The available levers:
 - **Borders**: `--cascivo-border-{subtle,default,strong}` width is fixed in
   components, but color/weight perception is driven by these tokens.
 - **Focus ring**: `--cascivo-ring-{width,offset,color}` — thickness, offset, glow.
+- **Interaction-state opacity**: `--cascivo-disabled-opacity` (default `0.5`) and
+  `--cascivo-hover-opacity` (default `0.8`) — adopted from HeroUI's layout tokens
+  (v41). Components route their `:disabled`/`:hover` opacity through these so a
+  theme can retune state intensity (e.g. high-contrast themes raise the disabled
+  opacity for legibility). Live in `packages/tokens` (`:root` default) and **all
+  12** theme files for parity; `button`'s `:disabled` is wired through the token
+  as the reference. HeroUI's other layout tokens (`radius`, `borderWidth`,
+  `boxShadow`, `dividerWeight`) were already covered by cascivo's existing
+  one-knob radius + border/shadow tokens, so only these two were added.
 - **Color scheme**: `color-scheme: light | dark`.
 
 > **Constraint — token parity.** `parity.test.ts` requires every theme to define

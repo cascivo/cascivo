@@ -85,6 +85,19 @@
     border-block-end: 1px solid var(--cascivo-color-border);
   }
 
+  /* Opt-in draggable: translate the dialog by the pointer offset; grab the header. */
+  .dialog[data-draggable] {
+    translate: var(--modal-x, 0) var(--modal-y, 0);
+  }
+  .dialog[data-draggable] .header {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+  .dialog[data-draggable] .header:active {
+    cursor: grabbing;
+  }
+
   .title {
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-lg);

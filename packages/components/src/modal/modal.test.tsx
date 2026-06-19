@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Modal } from './modal'
 
@@ -12,10 +12,40 @@ HTMLDialogElement.prototype.close = vi.fn(function (this: HTMLDialogElement) {
   this.dispatchEvent(new Event('close'))
 })
 
+function drag(target: EventTarget, type: string, x: number, y: number): void {
+  act(() => {
+    target.dispatchEvent(new MouseEvent(type, { clientX: x, clientY: y, bubbles: true }))
+  })
+}
+
 describe('Modal', () => {
   it('renders title when open', () => {
     render(<Modal open title="Test Modal" />)
     expect(screen.getByText('Test Modal')).toBeInTheDocument()
+  })
+
+  it('drags the dialog by its header when draggable', () => {
+    render(<Modal open title="Draggable" draggable />)
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveAttribute('data-draggable')
+    const header = screen.getByText('Draggable').parentElement as HTMLElement
+
+    drag(header, 'pointerdown', 100, 100)
+    drag(window, 'pointermove', 130, 120)
+    drag(window, 'pointerup', 130, 120)
+
+    expect(dialog.style.getPropertyValue('--modal-x')).toBe('30px')
+    expect(dialog.style.getPropertyValue('--modal-y')).toBe('20px')
+  })
+
+  it('attaches no drag offset when not draggable', () => {
+    render(<Modal open title="Static" />)
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).not.toHaveAttribute('data-draggable')
+    const header = screen.getByText('Static').parentElement as HTMLElement
+    drag(header, 'pointerdown', 0, 0)
+    drag(window, 'pointermove', 40, 40)
+    expect(dialog.style.getPropertyValue('--modal-x')).toBe('')
   })
 
   it('renders description', () => {

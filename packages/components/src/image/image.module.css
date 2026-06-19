@@ -1,0 +1,108 @@
+@layer cascivo.component {
+  .wrapper {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    overflow: hidden;
+    line-height: 0;
+    border-radius: var(--cascivo-radius-md);
+    background-color: var(--cascivo-color-bg-subtle);
+
+    &[data-radius='none'] {
+      border-radius: var(--cascivo-radius-none);
+    }
+    &[data-radius='sm'] {
+      border-radius: var(--cascivo-radius-sm);
+    }
+    &[data-radius='md'] {
+      border-radius: var(--cascivo-radius-md);
+    }
+    &[data-radius='lg'] {
+      border-radius: var(--cascivo-radius-lg);
+    }
+    &[data-radius='full'] {
+      border-radius: var(--cascivo-radius-full);
+    }
+  }
+
+  .image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    opacity: 1; /* static fallback — visible without the fade */
+  }
+
+  /* Fade the image in once it has loaded (hidden behind the placeholder while loading). */
+  .wrapper[data-state='loading'] .image {
+    opacity: 0;
+  }
+  .wrapper[data-state='loaded'] .image,
+  .wrapper[data-state='error'] .image {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .placeholder {
+    position: absolute;
+    inset: 0;
+    background-color: var(--cascivo-color-border);
+    background-image: linear-gradient(
+      90deg,
+      var(--cascivo-color-border) 25%,
+      var(--cascivo-color-bg-subtle) 50%,
+      var(--cascivo-color-border) 75%
+    );
+    background-size: 200% 100%;
+    animation: cascade-image-shimmer 1.5s linear infinite;
+  }
+
+  /* Blur-up: soften the placeholder while the real image streams in. */
+  .wrapper[data-blurred] .placeholder {
+    filter: blur(0.5rem);
+  }
+
+  .fallback {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    min-inline-size: var(--cascivo-space-12);
+    min-block-size: var(--cascivo-space-12);
+    background-color: var(--cascivo-color-bg-subtle);
+  }
+
+  /* Optional hover zoom. */
+  .wrapper[data-zoom] .image {
+    transform: scale(1); /* static fallback */
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+  .wrapper[data-zoom]:hover .image {
+    transform: scale(1.05);
+  }
+
+  @keyframes cascade-image-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .placeholder {
+      animation: none;
+      background-image: none;
+    }
+    .wrapper[data-state='loaded'] .image,
+    .wrapper[data-state='error'] .image,
+    .wrapper[data-zoom] .image,
+    .wrapper[data-zoom]:hover .image {
+      transition: none;
+      transform: none;
+    }
+  }
+}

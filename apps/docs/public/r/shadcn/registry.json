@@ -148,6 +148,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "avatar-group",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "avatar-group/avatar-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "avatar-group/avatar-group.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "badge",
       "type": "registry:component",
       "files": [
@@ -1498,6 +1522,30 @@
       "description": "Square, icon-only button with a required accessible label",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "image",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "image/image.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "image/image.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -3605,6 +3653,30 @@
       ],
       "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "user",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "user/user.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "user/user.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Identity composite: an avatar with a name, description, and optional action slot",
+      "dependencies": ["@cascivo/core", "@cascivo/components"],
       "categories": ["display"],
       "meta": {
         "cascivo": {

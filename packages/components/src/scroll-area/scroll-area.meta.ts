@@ -28,6 +28,13 @@ export const meta: ComponentMeta = {
       description: 'Which axes may scroll',
     },
     {
+      name: 'edges',
+      type: "'shadow' | 'mask' | 'none'",
+      required: false,
+      default: 'shadow',
+      description: 'Edge affordance: box-shadow, a mask-image fade, or none',
+    },
+    {
       name: 'children',
       type: 'ReactNode',
       required: false,

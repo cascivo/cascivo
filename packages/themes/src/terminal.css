@@ -7,6 +7,10 @@
   [data-theme='terminal'] {
     color-scheme: dark;
 
+    /* ── Interaction state (HeroUI parity) ── */
+    --cascivo-disabled-opacity: 0.5;
+    --cascivo-hover-opacity: 0.75;
+
     /* ── Typography ───────────── */
     --cascivo-font-display: var(--cascivo-font-mono);
 

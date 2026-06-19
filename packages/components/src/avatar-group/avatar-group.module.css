@@ -1,0 +1,39 @@
+@layer cascivo.component {
+  .group {
+    display: inline-flex;
+    align-items: center;
+
+    /* Overlapping row: each avatar after the first slides under the previous,
+       with a ring (matched to the surface) to keep them visually separate. */
+    & > * {
+      box-shadow: 0 0 0 2px var(--cascivo-color-surface);
+    }
+
+    &:not([data-grid]) > *:not(:first-child) {
+      margin-inline-start: var(--overlap, -0.5rem);
+    }
+
+    &[data-spacing='sm'] {
+      --overlap: -0.25rem;
+    }
+    &[data-spacing='md'] {
+      --overlap: -0.5rem;
+    }
+    &[data-spacing='lg'] {
+      --overlap: -0.75rem;
+    }
+
+    /* Grid mode: wrap into rows with positive gaps, no overlap. */
+    &[data-grid] {
+      display: inline-grid;
+      grid-template-columns: repeat(auto-fit, minmax(0, max-content));
+      gap: var(--cascivo-space-2);
+    }
+  }
+
+  .overflow {
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+  }
+}

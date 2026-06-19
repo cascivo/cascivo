@@ -41,7 +41,18 @@
     flex-direction: column;
     background: var(--cascivo-color-surface);
     box-shadow: var(--cascivo-shadow-overlay);
-    transition: translate var(--cascivo-motion-enter);
+    /* `translate` drives the slide in/out; `transform` carries the drag offset so
+       the two compose without fighting. */
+    transform: none; /* static fallback */
+    transform: translate(var(--_drawer-drag-x, 0), var(--_drawer-drag-y, 0));
+    transition:
+      translate var(--cascivo-motion-enter),
+      transform var(--cascivo-motion-exit);
+
+    /* While dragging, follow the pointer with no transition lag. */
+    &[data-dragging] {
+      transition: none;
+    }
 
     .overlay[data-state='closed'] & {
       transition: translate var(--cascivo-motion-exit);
@@ -176,5 +187,11 @@
     padding: var(--cascivo-space-6);
     overflow-y: auto;
     flex: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel {
+      transition: none;
+    }
   }
 }

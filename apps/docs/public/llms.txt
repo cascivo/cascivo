@@ -61,6 +61,7 @@ New MCP tools:
 - [app-shell](/llms/app-shell.md) — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
 - [aspect-ratio](/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio
 - [avatar](/llms/avatar.md) — Displays a user image with initials fallback
+- [avatar-group](/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
 - [badge](/llms/badge.md) — Small status label or category indicator
 - [block/console-app](/llms/block/console-app.md) — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.
 - [block/dashboard-charts](/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
@@ -125,6 +126,7 @@ New MCP tools:
 - [heading](/llms/heading.md) — Section heading with semantic level decoupled from visual size
 - [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
 - [icon-button](/llms/icon-button.md) — Square, icon-only button with a required accessible label
+- [image](/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - [indicator](/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child
 - [inline-loading](/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
 - [input](/llms/input.md) — Text input field with optional label, hint, and error state
@@ -213,6 +215,7 @@ New MCP tools:
 - [toggletip](/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content
 - [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
 - [tree-view](/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection
+- [user](/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot
 - [visually-hidden](/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
 
 ## Component intent summaries
@@ -223,6 +226,7 @@ New MCP tools:
 - [AppShell](/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
 - [AspectRatio](/context/aspect-ratio.md) — Use when: Reserving a stable box for media that loads asynchronously, avoiding layout shift
 - [Avatar](/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
+- [AvatarGroup](/context/avatar-group.md) — Use when: Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)
 - [Badge](/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
 - [ConsoleApp](/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
 - [DashboardCharts](/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
@@ -287,6 +291,7 @@ New MCP tools:
 - [Heading](/context/heading.md) — Use when: Titling a page or section as part of the document outline
 - [HoverCard](/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
 - [IconButton](/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
+- [Image](/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
 - [Indicator](/context/indicator.md) — Use when: Notification counts on icon buttons
 - [InlineLoading](/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
@@ -375,6 +380,7 @@ New MCP tools:
 - [Toggletip](/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
 - [Tooltip](/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
 - [TreeView](/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
+- [User](/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-18 from registry v0.0.0_
+_Generated: 2026-06-19 from registry v0.0.0_

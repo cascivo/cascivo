@@ -7,12 +7,16 @@ import {
   Portal,
   Presence,
   useControllableSignal,
+  useDraggable,
   useScrollLock,
   useSignals,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, type CSSProperties, type ReactNode } from 'react'
+import { useId, type CSSProperties, type ReactNode, type Ref } from 'react'
 import styles from './drawer.module.css'
+
+/** Drag distance (px) past which a swipe dismisses the drawer. */
+const SWIPE_DISMISS_THRESHOLD = 80
 
 export interface DrawerProps {
   /** Controlled open state. */
@@ -32,6 +36,8 @@ export interface DrawerProps {
   children?: ReactNode
   labels?: { close?: string }
   className?: string
+  /** Allow dragging the header toward its edge to dismiss (opt-in; CSS translate, no animation library). */
+  swipeToDismiss?: boolean
 }
 
 /**
@@ -51,6 +57,7 @@ export function Drawer({
   children,
   labels,
   className,
+  swipeToDismiss = false,
 }: DrawerProps) {
   useSignals()
   const [isOpen, setOpen] = useControllableSignal<boolean>({
@@ -61,9 +68,34 @@ export function Drawer({
 
   useScrollLock(isOpen)
 
+  // Drag-to-dismiss: constrain to the panel's edge axis; past a threshold in the
+  // dismiss direction, close via the existing onOpenChange path; otherwise snap back.
+  const dragAxis = side === 'top' || side === 'bottom' ? 'y' : 'x'
+  const { handleRef, offset, isDragging, reset } = useDraggable({
+    isDisabled: !swipeToDismiss,
+    axis: dragAxis,
+    onDragEnd: (o) => {
+      const dist = dragAxis === 'y' ? o.y : o.x
+      const dismiss =
+        (side === 'end' && dist > SWIPE_DISMISS_THRESHOLD) ||
+        (side === 'start' && dist < -SWIPE_DISMISS_THRESHOLD) ||
+        (side === 'bottom' && dist > SWIPE_DISMISS_THRESHOLD) ||
+        (side === 'top' && dist < -SWIPE_DISMISS_THRESHOLD)
+      reset()
+      if (dismiss) setOpen(false)
+    },
+  })
+
   const titleId = useId()
   const descId = useId()
   const closeLabel = labels?.close ?? t(builtin.drawer.close)
+
+  const panelStyle: CSSProperties = {
+    ...(size ? { '--_drawer-size': size } : {}),
+    ...(swipeToDismiss
+      ? { '--_drawer-drag-x': `${offset.value.x}px`, '--_drawer-drag-y': `${offset.value.y}px` }
+      : {}),
+  } as CSSProperties
 
   return (
     <Portal>
@@ -77,11 +109,15 @@ export function Drawer({
                 aria-labelledby={title ? titleId : undefined}
                 aria-describedby={description ? descId : undefined}
                 data-side={side}
+                data-dragging={swipeToDismiss && isDragging.value ? '' : undefined}
                 className={cn(styles['panel'], className)}
-                style={size ? ({ '--_drawer-size': size } as CSSProperties) : undefined}
+                style={panelStyle}
               >
                 {(title || description) && (
-                  <div className={styles['header']}>
+                  <div
+                    className={styles['header']}
+                    ref={swipeToDismiss ? (handleRef as Ref<HTMLDivElement>) : undefined}
+                  >
                     <div className={styles['heading']}>
                       {title && (
                         <h2 id={titleId} className={styles['title']}>

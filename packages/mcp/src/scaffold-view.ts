@@ -1,6 +1,7 @@
 import type { ViewConfig } from './validate.js'
 import { validateView } from './validate.js'
 import type { Registry } from './registry.js'
+import { buildGrammar, formatGrammar } from './grammar.js'
 
 interface ScaffoldViewInput {
   description: string
@@ -63,6 +64,8 @@ export function scaffoldView(
 ): {
   config: ViewConfig
   errors: { path: string; message: string }[]
+  /** Bound-vocabulary grammar (v40 T1) for the scaffolded components, so a caller gets both a starter scaffold and the allowed props/enums to refine it. */
+  grammar: string
 } {
   const layout = pickLayout(input.description)
   const componentNames = pickComponents(input.description, registry, input.components)
@@ -81,5 +84,6 @@ export function scaffoldView(
 
   const validNames = new Set(registry.components.map((c) => c.meta.name))
   const { errors } = validateView(config, validNames)
-  return { config, errors }
+  const grammar = formatGrammar(buildGrammar(registry, componentNames))
+  return { config, errors, grammar }
 }

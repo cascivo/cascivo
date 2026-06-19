@@ -1,0 +1,95 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'AvatarGroup',
+  description: 'Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip',
+  category: 'display',
+  states: ['default'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      description: 'Cap the number of visible avatars',
+    },
+    {
+      name: 'total',
+      type: 'number',
+      required: false,
+      description: 'Override the total count used for the +N chip',
+    },
+    { name: 'spacing', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    { name: 'isGrid', type: 'boolean', required: false, default: 'false' },
+    { name: 'labels', type: 'AvatarGroupLabels', required: false },
+  ],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-text-muted',
+    '--cascivo-space-2',
+    '--cascivo-text-xs',
+  ],
+  accessibility: {
+    role: 'group',
+    wcag: '2.2-AA',
+    keyboard: [],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: '<AvatarGroup><Avatar fallback="A" /><Avatar fallback="B" /><Avatar fallback="C" /></AvatarGroup>',
+    },
+    {
+      title: 'With max',
+      code: '<AvatarGroup max={3}>{users.map((u) => <Avatar key={u.id} src={u.src} alt={u.name} />)}</AvatarGroup>',
+    },
+    { title: 'Grid', code: '<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>' },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/components'],
+  tags: ['avatar', 'group', 'stack', 'overflow', 'display'],
+  intent: {
+    whenToUse: [
+      'Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)',
+      'Capping a long list of avatars with a +N overflow chip',
+      'A facepile in a card header, table cell, or activity row',
+    ],
+    whenNotToUse: [
+      'A single identity with a name — use User or Avatar',
+      'A selectable list of people — use a list/menu with checkboxes',
+    ],
+    antiPatterns: [
+      {
+        bad: '<AvatarGroup>{hundredsOfAvatars}</AvatarGroup> with no max',
+        good: '<AvatarGroup max={5} total={120}>{avatars}</AvatarGroup>',
+        why: 'Without a max the row grows unbounded; a cap plus total keeps it compact and accurate',
+      },
+    ],
+    related: [
+      {
+        name: 'Avatar',
+        relationship: 'contains',
+        reason: 'AvatarGroup arranges Avatar children and adds an overflow chip',
+      },
+      {
+        name: 'User',
+        relationship: 'alternative',
+        reason: 'Use User for a single labelled identity row',
+      },
+    ],
+    a11yRationale:
+      'The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label ("{count} more") so the hidden count is announced, not conveyed by the chip text alone',
+    flexibility: [
+      {
+        area: 'spacing',
+        level: 'flexible',
+        note: 'Pick the overlap that fits the surrounding density',
+      },
+      {
+        area: 'overflow label',
+        level: 'strict',
+        note: 'The +N label must come from i18n (builtin.avatarGroup.more or a labels override)',
+      },
+    ],
+  },
+}
