@@ -1,0 +1,5 @@
+---
+'@cascivo/themes': patch
+---
+
+Improvements
