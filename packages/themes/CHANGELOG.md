@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.2.2
+
+### Patch Changes
+
+- e8758f2: Improvements
+
 ## 0.2.1
 
 ### Patch Changes
