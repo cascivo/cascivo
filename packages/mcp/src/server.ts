@@ -16,6 +16,8 @@ import { generateThemeCss } from './theme.js'
 import { scaffoldPage } from './scaffold.js'
 import { validateView } from './validate.js'
 import { scaffoldView } from './scaffold-view.js'
+import { buildGrammar, formatGrammar } from './grammar.js'
+import { buildGenerationPrompt } from './prompt.js'
 import { loadTokenCatalog } from './tokens.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
 import { selectComponent } from './select.js'
@@ -239,14 +241,37 @@ export function createServer(options: ServerOptions = {}): McpServer {
       },
     },
     ({ description, components }) => {
-      const { config, errors } = scaffoldView(
+      const { config, errors, grammar } = scaffoldView(
         { description, ...(components ? { components } : {}) },
         registry,
       )
       if (errors.length > 0) {
-        return json({ valid: false, errors, config })
+        return json({ valid: false, errors, config, grammar })
       }
-      return json({ valid: true, config })
+      return json({ valid: true, config, grammar })
+    },
+  )
+
+  server.registerTool(
+    'get_view_grammar',
+    {
+      title: 'Get view grammar',
+      description:
+        "Get the bound-vocabulary grammar + system prompt for generating valid ViewConfig JSON, derived from the component manifests. Use this to constrain an LLM to cascivo's real components, props, and enum values (anti-hallucination). Optionally scope to a subset of components.",
+      inputSchema: {
+        components: z
+          .array(z.string())
+          .optional()
+          .describe('Scope the vocabulary to these component names. Omit for the full registry.'),
+      },
+    },
+    ({ components }) => {
+      const grammar = buildGrammar(registry, components)
+      return json({
+        grammar: formatGrammar(grammar),
+        prompt: buildGenerationPrompt(registry, components ? { components } : {}),
+        components: grammar.components,
+      })
     },
   )
 
