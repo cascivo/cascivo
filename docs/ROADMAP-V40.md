@@ -1,47 +1,42 @@
-# cascivo — Roadmap v40: OpenUI Study — Adopt Generative-UI Token-Efficiency, Grammar & Streaming
+# cascivo — Roadmap v40: OpenUI Study — Make Agent-Generated UI Reliable (Bounded Vocabulary + Conformance)
 
 **Last updated:** 2026-06-19
-**Status:** 🟡 Planned (T1–T5)
-**Plan documents:** `docs/superpowers/plans/2026-06-19-v40-master-plan.md` + tranches 1–5
-**Builds on:** the existing generative-UI stack — `@cascivo/render` (`ViewConfig` JSON + `CascadeView`,
-`packages/render`), `@cascivo/ai` (StreamingText / AiChat / Terminal, `packages/ai`), the
-`component.meta.ts` manifests feeding `@cascivo/mcp` (`packages/mcp`, incl. `scaffold-view.ts`), and
-`registry.json` / `packages/registry`.
+**Status:** 🟡 Planned (T1–T2 core; T3 optional)
+**Plan documents:** `docs/superpowers/plans/2026-06-19-v40-master-plan.md` + tranches 1–3
+**Builds on:** the existing — and **dogfooded** — generative-UI stack: `@cascivo/render` (`ViewConfig` JSON
++ `CascadeView`, `packages/render`), surfaced on the landing page (`apps/landing/src/sections/AgentLayer.tsx`,
+`JsonPlayground.tsx`), the docs playground (`apps/docs/src/pages/PlaygroundPage.tsx`), the CLI
+(`packages/cli/src/commands/generate.ts`), and six example apps. Plus `component.meta.ts` manifests feeding
+`@cascivo/mcp` (incl. `scaffold-view.ts`) and `registry.json`.
 
 ---
 
 ## Why this roadmap exists
 
 The brief was to **study [OpenUI](https://openui.com) — "The Open Standard for Generative UI"
-([thesysdev/openui](https://github.com/thesysdev/openui))** and find concepts, UX/DX/AI ideas worth
-adopting into cascivo.
+([thesysdev/openui](https://github.com/thesysdev/openui))** and find concepts/UX/DX/AI ideas worth adopting
+into cascivo.
 
 The honest headline from the study: **cascivo already has the AI-first foundation OpenUI assumes a design
-system lacks.** cascivo ships `component.meta.ts` manifests, an MCP server, a `registry.json`, auto-docs,
-AI-native components (`@cascivo/ai`), **and a runtime JSON→UI renderer** (`@cascivo/render`: a `ViewConfig`
-JSON tree rendered by `CascadeView`, validated against the registry). So v40 is deliberately **not** a
-"build generative UI from scratch" roadmap — that layer exists.
+system lacks** — manifests, an MCP server, a registry, AI components (`@cascivo/ai`), **and a runtime
+JSON→UI renderer** (`@cascivo/render`: `ViewConfig` JSON rendered by `CascadeView`). The renderer is not an
+experiment — it is a **flagship demo** on the landing page (marketed as "perfect for AI agents"), in the
+docs playground, the CLI, and example apps. So v40 is **not** about building generative UI from scratch.
 
-What OpenUI genuinely innovates is the set of things it builds **on top of** a JSON renderer, and those are
-exactly the gaps in cascivo's current stack:
+**The scope was deliberately trimmed after a value review** (see the decision log below). The original study
+surfaced five adoptable ideas; on reflection only the two that improve **reliability of agent-generated UI**
+clear the "Simplicity First / nothing speculative" bar as core work. The rest is either an optional
+positioning play (one) or deferred until a real use case exists (two).
 
-1. A **compact, streaming-first serialization** that is ~50–67% more token-efficient than JSON. cascivo's
-   `ViewConfig` is the verbose JSON tree OpenUI Lang set out to beat.
-2. **Library-derived prompt/grammar generation** that bounds an LLM's output vocabulary to real
-   components/props/enums (prevents hallucination). cascivo's `scaffoldView` is a keyword matcher, not an
-   LLM-grammar generator.
-3. **Streaming / progressive rendering** — paint the skeleton before the full document arrives. `CascadeView`
-   needs a complete `ViewConfig`.
-4. **Deep conformance validation** against the component schema. cascivo's `validateView` checks component
-   names + `$data`/`$actions` ref prefixes, but **not** prop types/enums.
-5. A **public interop spec** — a standard, framework-agnostic descriptor (cf. the sibling "OpenUI =
-   AI-Native Specification for UIs" `openui.yaml` idea, [ctate/openui](https://github.com/ctate/openui)) so
-   the OpenUI ecosystem and external AI tools can consume cascivo. cascivo's `registry.json` is its own
-   schema only.
+The single biggest added value is this: **turn the manifests into a bound vocabulary so an LLM cannot go
+off-rails.** That moves the existing `AgentLayer` demo from "renders whatever JSON it's handed, errors when
+wrong" to "the model is structurally prevented from inventing components, props, or enum values." For a
+product whose entire thesis is *AI-first design system*, **reliability of agent generation is the moat —
+more than token savings or streaming polish.** And it is nearly free, because the manifests already encode
+everything the grammar needs.
 
-This document records the full study so the decision **not** to rebuild the renderer is auditable, then
-scopes the five adoptable workstreams — each filtered through cascivo's principles (CSS-native,
-signal-driven, owned code, AI-first; no new heavy deps).
+This document records the full study (so the deferral decisions are auditable), then scopes the trimmed
+roadmap.
 
 ---
 
@@ -52,90 +47,74 @@ framework** in three layers:
 
 | Layer                | What it is                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
-| **OpenUI Lang**      | A compact, **streaming-first DSL** for model-generated UI — line-oriented `identifier = Expression`, `root = Stack([...])`, component calls (`Table(cols, rows)`), arrays/objects/primitives, data binding, interactions |
-| **Component library**| Components defined with **Zod** schemas; a **system prompt is generated from the library** so the model can only emit registered components/props (a *bound vocabulary* that suppresses hallucination); validated against JSON Schema |
-| **React runtime**    | A **streaming parser** (`@openuidev/lang-core`) + **React renderer** (`@openuidev/react-lang`) that maps parsed elements to the library's components and paints **progressively** as the model streams; a CLI (`@openuidev/cli`) and ready-made chat UIs |
-
-**The headline claim:** OpenUI Lang is **up to 67% fewer tokens than equivalent JSON** (benchmarked at
-0°C, GPT-5.2, `tiktoken`, 7 scenarios): **52.8%** vs Vercel's JSON-Render, **51.7%** vs Thesys C1 JSON
-trees. The mechanism is the line-oriented DSL: the same employee table is ~148 tokens in OpenUI Lang vs
-several hundred in a JSON tree. Streaming + a bound vocabulary are the other two pillars.
+| **OpenUI Lang**      | A compact, **streaming-first DSL** for model-generated UI — line-oriented `identifier = Expression`, `root = Stack([...])`, component calls, primitives/arrays/objects, data binding, interactions. Claimed **up to 67% fewer tokens than JSON** (52.8% vs Vercel JSON-Render; 0°C, GPT-5.2, `tiktoken`, 7 scenarios) |
+| **Component library**| Components defined with schemas; a **system prompt is generated from the library** so the model can only emit registered components/props — a *bound vocabulary* that suppresses hallucination; validated against JSON Schema |
+| **React runtime**    | A **streaming parser** + **React renderer** that paints **progressively** as the model streams; a CLI + ready-made chat UIs |
 
 A sibling project also named **OpenUI** ([ctate/openui](https://github.com/ctate/openui), "AI-Native
-Specification for UIs") proposes an **OpenAPI-for-components** file — an `openui.yaml`/`openui.json` at repo
-root listing components, props (`type`/`enum`/`default`/`required`), and examples for AI tools to discover
-and consume. It informs the **interop** workstream (T5).
+Specification for UIs") proposes an **OpenAPI-for-components** file (`openui.yaml`/`openui.json` at repo
+root) for AI tools to discover. (And note **[wandb/openui](https://github.com/wandb/openui)** — an unrelated
+"describe-and-render" playground; mentioned only to disambiguate.)
 
-> Not to be confused with **[wandb/openui](https://github.com/wandb/openui)** — a *different* tool
-> ("describe UI → render live in the browser → export to React/Svelte/Web Components", LiteLLM
-> multi-provider). That is a playground product, not a standard; noted only to disambiguate.
+### Concept map: OpenUI → cascivo
 
-### Concept map: OpenUI → cascivo (what already exists)
-
-| OpenUI concept                              | cascivo today                                                                 | Gap? |
-| ------------------------------------------- | ----------------------------------------------------------------------------- | ---- |
-| Render tree → live UI                       | `@cascivo/render` `ViewConfig` + `CascadeView`                                 | ✅ covered |
-| Component library / schema                  | `component.meta.ts` manifests + `registry.json` + `componentMap`              | ✅ covered |
-| AI components (chat, streaming text)        | `@cascivo/ai` `AiChat` / `StreamingText` / `Terminal`                          | ✅ covered |
-| MCP / agent tooling                         | `@cascivo/mcp` (`list_components`, `get_component`, `scaffold_*`, …)           | ✅ covered (OpenUI has none) |
-| Data binding / actions in the tree          | `bind: $data.*` / `events: $actions.*` in `ComponentNode`                      | ✅ covered |
-| **Token-efficient compact DSL** (vs JSON)   | **— none —** `ViewConfig` is verbose JSON                                      | ⬅ **gap (T1)** |
-| **System-prompt / grammar from the library**| `scaffoldView` is a *keyword* matcher, not an LLM-grammar/prompt generator     | ⬅ **gap (T2)** |
-| **Streaming / progressive render**          | `CascadeView` needs a *complete* `ViewConfig`                                  | ⬅ **gap (T3)** |
-| **Deep conformance validation** (props/enums)| `validateView` checks names + ref prefixes only — not prop types/enums         | ⬅ **gap (T4)** |
-| **Public interop spec** (`openui.*` / std)  | `registry.json` is cascivo's own schema only                                  | ⬅ **gap (T5)** |
-
-**Conclusion:** the generative-UI *renderer* already exists. The five net-new things are the
-**efficiency / grammar / streaming / conformance / interop** layers OpenUI built on top of one.
+| OpenUI concept                              | cascivo today                                                       | Verdict |
+| ------------------------------------------- | ------------------------------------------------------------------- | ------- |
+| Render tree → live UI                       | `@cascivo/render` `ViewConfig` + `CascadeView` (dogfooded)          | ✅ already have |
+| Component library / schema                  | `component.meta.ts` manifests + `registry.json` + `componentMap`    | ✅ already have |
+| AI components (chat, streaming text)        | `@cascivo/ai` `AiChat` / `StreamingText` / `Terminal`               | ✅ already have |
+| MCP / agent tooling                         | `@cascivo/mcp` (OpenUI has none)                                    | ✅ already have |
+| Data binding / actions                      | `bind: $data.*` / `events: $actions.*` in `ComponentNode`          | ✅ already have |
+| **System-prompt / grammar from the library**| `scaffoldView` is a *keyword* matcher, not a bound vocabulary       | ⬅ **adopt — T1 (core)** |
+| **Deep conformance validation** (props/enums)| `validateView` checks names + ref prefixes only, not props          | ⬅ **adopt — T2 (core)** |
+| **Token-efficient compact DSL** (vs JSON)   | `ViewConfig` is verbose JSON                                        | 🟡 **optional — T3** |
+| **Streaming / progressive render**          | `CascadeView` needs a complete config                              | ⏸ **deferred** |
+| **Public interop spec** (`openui.*`)        | `registry.json` is cascivo's own schema only                       | ⏸ **deferred** |
 
 ### Explicitly rejected (does not fit cascivo)
 
-- **OpenUI's React runtime + built-in component libraries + chat UI** — cascivo has its own ~140 components
-  and `@cascivo/ai` (`AiChat`, `StreamingText`). Importing OpenUI's runtime would duplicate and contradict
-  "owned code." **Not adopted** (same posture as v39 rejecting Base UI).
-- **LiteLLM / multi-provider proxy** — cascivo is a design system, not an LLM gateway; it defaults to
-  Claude. Provider routing is out of scope. **Not adopted.**
-- **Zod as a schema dependency** — cascivo validates with its own JSON Schema (`packages/render/schema/`)
-  + `validate.ts`; the dependency policy keeps runtime deps minimal. v40 extends the existing validator
-  rather than adopting Zod. **Not adopted.**
-- **A `wandb/openui`-style hosted "describe-and-render" product** — overlaps cascivo's docs + skills; out of
-  scope as a product. (A small **docs playground** that drives the *existing* renderer is noted as optional
-  in T5, not core.)
+- **OpenUI's React runtime + component libraries + chat UI** — cascivo owns ~140 components + `@cascivo/ai`.
+  Importing OpenUI's runtime would duplicate and contradict "owned code." (Same posture as v39 rejecting
+  Base UI.)
+- **LiteLLM / multi-provider proxy** — cascivo is a design system, not an LLM gateway; defaults to Claude.
+- **Zod as a schema dependency** — cascivo validates with its own JSON Schema + `validate.ts`; the
+  dependency policy keeps runtime deps minimal. v40 extends the existing validator instead.
 
 ---
 
-## What *is* worth adopting (the five workstreams)
+## What's worth adopting (trimmed)
 
-| #   | Workstream                                       | Tranche | Origin in OpenUI                                                | Category |
-| --- | ------------------------------------------------ | ------- | -------------------------------------------------------------- | -------- |
-| A   | **Cascade View Language (`cvl`)** — compact DSL ↔ `ViewConfig` | T1 | OpenUI Lang's line-oriented, token-efficient DSL              | AI / DX |
-| B   | **Library-derived prompt + grammar generator**   | T2      | "System-prompt generation from the library" (bound vocabulary) | AI |
-| C   | **Streaming / progressive rendering**            | T3      | OpenUI's streaming parser + progressive React renderer         | AI / UX |
-| D   | **Deep conformance validation** (props/enums)    | T4      | OpenUI's schema-validated, hallucination-resistant output      | AI / correctness |
-| E   | **`openui.json` interop export** + docs & gate   | T5      | The "AI-Native Specification for UIs" (`openui.yaml`) sibling  | DX / interop |
+| #   | Workstream                                       | Tranche | Status   | Category | Why this tier |
+| --- | ------------------------------------------------ | ------- | -------- | -------- | ------------- |
+| A   | **Library-derived prompt + grammar** (bound vocabulary) | T1 | **core** | AI | Highest leverage, nearly free (manifests exist), directly hardens the flagship demo |
+| B   | **Deep conformance validation** (props/enums)    | T2      | **core** | AI / correctness | Closes a real hole; the enforcement backstop for T1 |
+| C   | **`cvl` compact DSL** ↔ `ViewConfig`             | T3      | optional | DX / positioning | Real differentiator *story*, but permanent maintenance cost; build only as a deliberate bet |
+| —   | Streaming / progressive rendering                | —       | deferred | UX | Demo polish; needs a real live-streaming use case (and ideally T3) first |
+| —   | `openui.json` interop export                      | —       | deferred | interop | OpenUI ecosystem is brand-new — exporting to an audience that barely exists yet |
 
-Why these five, and why in this order:
+### Why T1 + T2 are the core (and the rest is not)
 
-1. **T1 — `cvl` (the wire format, foundation).** Define a compact, line-oriented serialization that
-   round-trips losslessly with the existing `ViewConfig` JSON, plus a **token-count benchmark** proving the
-   savings on cascivo's own views. This is the literal lesson of OpenUI Lang and the foundation T2/T3 build
-   on. It's purely additive — `ViewConfig` JSON stays the canonical in-memory form; `cvl` is the
-   over-the-wire / LLM-output form.
-2. **T2 — Prompt + grammar generation.** Generate, from the `component.meta.ts` manifests, the **system
-   prompt + grammar** an LLM needs to emit valid `cvl` bounded to cascivo's real components, props, enums,
-   sizes, and variants. Upgrades today's keyword-matching `scaffoldView` into a true bound-vocabulary
-   generator. Depends on T1 (it must describe the `cvl` format).
-3. **T3 — Streaming / progressive rendering.** A signal-driven streaming parser (partial/invalid-tolerant)
-   + a `CascadeView` mode that paints regions/nodes as they arrive — "skeleton before the full document."
-   Reuses `@cascivo/ai` streaming idioms; obeys the reactivity rules (`useSignalEffect`, no `useEffect`).
-   Depends on T1's parser.
-4. **T4 — Deep conformance validation.** Extend `validateView` to check prop **types and enums** against the
-   manifests (today it only checks component existence + ref prefixes), and make the `cvl` parser tolerant
-   of partial/invalid streamed input. Hardens both T1 and T3.
-5. **T5 — Interop export + docs + gate.** Emit a standard, framework-agnostic `openui.json` (the AI-native
-   spec) from the manifests/registry so the OpenUI ecosystem and external AI tools can discover cascivo —
-   additive interop, like v39's shadcn-registry emitter. Then document the whole roadmap and run the full
-   gate + drift.
+1. **T1 — prompt + grammar from manifests (the real value).** OpenUI's anti-hallucination mechanism is a
+   system prompt generated from the component library so the model emits only registered components/props.
+   cascivo's `scaffoldView` is a keyword matcher. Deriving a **bound-vocabulary prompt + grammar** from
+   `component.meta.ts` makes every agent generation valid-by-construction and always in sync with the
+   components. It targets the **JSON `ViewConfig`** format that already ships and is dogfooded — no new wire
+   format required. This is the cheapest, most on-thesis change with the largest reliability payoff.
+2. **T2 — deep conformance validation (the backstop).** Today `validateView` checks that a component exists
+   and that `bind`/`events` use the right prefixes — but **not** prop names, types, or enum values, so a
+   model can emit a real component with invented props and it renders silently. Validating props against the
+   manifests closes that hole and enforces what T1 asks the model to do.
+3. **T3 — `cvl` (optional, positioning).** OpenUI Lang's ~50–67% token saving over JSON is real, but token
+   *cost* only bites at volume — and the renderer is today a **showcase**, not a metered production path. So
+   `cvl` is not justified on cost; it is justified (if at all) as a **benchmarkable differentiator story**
+   ("our generative-UI format is ~50% cheaper than JSON") that upgrades the landing pitch. Weighed against
+   it: a hand-written DSL + parser + grammar to keep in lockstep with `ViewConfig` **forever**. Build it
+   only as a deliberate strategic bet; it is sequenced last and may be cut cleanly.
+4. **Deferred — streaming + interop.** Streaming/progressive render is genuine UX polish but only pays off
+   with a real live-streaming product (which doesn't exist yet) and is most useful atop `cvl`. The
+   `openui.json` interop export is cheap and additive, but unlike v39's shadcn interop (huge install base),
+   the OpenUI ecosystem is immature — there's little to consume it. Both are recorded in "Deferred /
+   revisit when" with clear trigger conditions, not built now.
 
 ---
 
@@ -143,142 +122,112 @@ Why these five, and why in this order:
 
 | Area                       | State                                                                                                       |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Render schema              | `@cascivo/render` `ViewConfig` = `{ view: { layout?, regions: Record<string, ComponentNode[]> } }`; node = `{ component, props?, bind?, events?, children? }` (`packages/render/src/types.ts`); JSON Schema at `packages/render/schema/view.v1.json` |
-| Renderer                   | `CascadeView` (`packages/render/src/cascade-view.tsx`) maps nodes via `component-map.ts`; **needs a complete config** |
-| Validation                 | `validateView(config)` (`packages/render/src/validate.ts`) — checks `component in componentMap` (with Levenshtein "did you mean"), `$data.`/`$actions.` ref prefixes, recurses children. **No prop type/enum checks.** |
-| Scaffold                   | `scaffoldView(input, registry)` (`packages/mcp/src/scaffold-view.ts`) — **keyword** layout/component picker; not an LLM grammar/prompt |
-| AI components              | `@cascivo/ai`: `StreamingText`, `AiChat`, `Terminal`, `AiLabel` (`packages/ai/src/index.ts`)               |
-| MCP                        | `@cascivo/mcp` server (`list_components`, `get_component`, `create_theme`, `scaffold_*`, `add_to_project`)  |
-| Manifests                  | `component.meta.ts` per component (name, props w/ type/enum/default, variants, sizes, …) → MCP/docs/registry |
-| Registry / distribution    | `registry.json` (cascivo's own schema), `packages/registry/src/build.ts`; shadcn-interop emitter added v39  |
-| Compact DSL                | **None** — `ViewConfig` JSON only                                                                           |
-| Streaming render           | **None** — `CascadeView` is one-shot                                                                        |
-| Public interop spec        | **None** beyond cascivo's own `registry.json` (+ v39 shadcn `/r/<name>.json`)                               |
+| Render schema              | `ViewConfig = { $schema?, version?: 1, view: { layout?, regions: Record<string, ComponentNode[]> } }`; node = `{ component, props?, bind?: $data.*, events?: $actions.*, children? }` (`packages/render/src/types.ts`); JSON Schema at `packages/render/schema/view.v1.json` |
+| Renderer (dogfooded)       | `CascadeView` (`packages/render/src/cascade-view.tsx`) → landing `AgentLayer`/`JsonPlayground`, docs `PlaygroundPage`, CLI `generate`, 6 example apps |
+| Validation                 | `validateView(config)` (`packages/render/src/validate.ts`) — `component in componentMap` (Levenshtein "did you mean"), `$data.`/`$actions.` prefixes, recurses children. **No prop type/enum checks.** |
+| Scaffold (current "AI")    | `scaffoldView(input, registry)` (`packages/mcp/src/scaffold-view.ts`) — **keyword** layout/component picker; not an LLM grammar/prompt |
+| Manifests                  | `component.meta.ts` per component (props w/ type/enum/default, variants, sizes) → MCP/docs/registry        |
+| AI components / MCP        | `@cascivo/ai` (`StreamingText`, `AiChat`, …); `@cascivo/mcp` server tools                                   |
+| Compact DSL / streaming    | **None** — `ViewConfig` JSON only; `CascadeView` is one-shot                                                |
 
 ---
 
-## Target state (after v40)
+## Target state (after v40 core, T1–T2)
 
-| Concern                          | Today                                  | Target                                                                              |
-| -------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
-| Render wire format               | verbose `ViewConfig` JSON only         | `cvl` compact DSL ↔ `ViewConfig` (lossless round-trip) + token benchmark (~≥40% fewer) |
-| LLM output guidance              | keyword scaffolder                     | prompt + grammar generated from manifests (bound vocabulary, valid-`cvl`-by-construction) |
-| Rendering                        | one-shot (complete config)             | optional streaming/progressive render (skeleton-first), signal-driven                |
-| Validation                       | names + ref prefixes                   | + prop **type/enum** conformance against manifests; partial/invalid-tolerant parse  |
-| Interop                          | cascivo registry (+ shadcn `/r/*`)     | standard `openui.json` AI-native spec emitted from manifests (additive)             |
-| Docs                             | —                                      | OpenUI study recorded; `cvl` + prompt-gen + streaming + interop documented           |
-| Full CI gate (`pnpm ready`)      | green                                  | green                                                                                |
+| Concern                          | Today                                  | Target (T1–T2)                                                          |
+| -------------------------------- | -------------------------------------- | ---------------------------------------------------------------------- |
+| LLM output guidance              | keyword scaffolder                     | prompt + grammar generated from manifests (bound vocabulary, valid-by-construction `ViewConfig`) |
+| Validation                       | names + ref prefixes                   | + prop **type/enum** conformance against manifests (unknown prop, type mismatch, out-of-enum) |
+| Flagship demo reliability        | renders any JSON; silent on bad props  | model bounded to real API; bad props caught with actionable errors     |
+| Docs                             | —                                      | OpenUI study recorded; prompt/grammar + conformance documented; deferred items logged with triggers |
+| Full CI gate (`pnpm ready`)      | green                                  | green                                                                  |
+
+(If T3 ships: `cvl` ↔ `ViewConfig` lossless round-trip + a recorded token-saving benchmark.)
 
 ---
 
-## Key open decisions (recommendations in the master plan)
+## Key decisions (recommendations in the master plan)
 
-1. **Build a compact DSL at all, or keep JSON?** _Recommendation: **build `cvl`**, but keep `ViewConfig`
-   JSON as the canonical in-memory form._ OpenUI Lang's 50–67% token saving is real and directly lowers LLM
-   cost/latency for every generated view; the DSL is purely a serialization (encode/parse) over the schema
-   cascivo already has. Risk is low because round-trip is lossless and JSON stays authoritative. Rejected
-   alternative: do nothing (leaves cascivo paying the JSON token tax that OpenUI exists to remove).
-2. **Where does `cvl` live — new package or submodule?** _Recommendation: a **submodule** under
-   `packages/render/src/lang/` (exported from `@cascivo/render`), not a new `@cascivo/lang` package._ It
-   compiles to/from `ViewConfig`, so it belongs with the schema; a new package would add workspace-alias
-   maintenance (CLAUDE.md "workspace package aliases — keep in sync") for no benefit. `@cascivo/lang`
-   rejected on Simplicity-First grounds.
-3. **Name + extension.** _Recommendation: **Cascade View Language**, abbreviated **`cvl`**, files `.cvl`._
-   Matches `CascadeView`/`ViewConfig`; short and greppable. Alternatives `cv`/`casc`/`cascade-lang`
-   rejected (ambiguous or verbose).
-4. **Grammar fidelity for T2.** _Recommendation: generate a **prompt + a machine grammar** (the allowed
-   component/prop/enum surface) from the manifests, not free prose._ A bound vocabulary is OpenUI's
-   anti-hallucination mechanism; deriving it from `component.meta.ts` keeps it always in sync. Optional
-   stretch: emit a formal grammar artifact for constrained decoding — flagged, not required.
-5. **Streaming scope for T3.** _Recommendation: a **progressive `CascadeView` mode** that renders complete
-   nodes as they parse, with a skeleton/placeholder for in-flight nodes._ Signal-driven
-   (`useSignal`/`useSignalEffect`, never `useEffect`), partial-tolerant. Do **not** attempt mid-prop partial
-   rendering (paint a node only once it parses cleanly). Full token-by-token character streaming of text
-   leaves can reuse `@cascivo/ai` `StreamingText`.
-6. **Interop spec shape for T5.** _Recommendation: emit a standard `openui.json` (and/or `.yaml`) **from the
-   manifests/registry**, additive, alongside the existing outputs — do **not** change `registry.json`._ Same
-   posture as v39's shadcn emitter: pure interop, zero blast radius. Document discovery (root-level file)
-   and the CSS-native caveats (cascivo ships CSS Modules + `@cascivo/themes`, not Tailwind).
-7. **Validation: extend, don't adopt Zod.** _Recommendation: **extend `validateView`** to read prop
-   types/enums from the manifests and validate node props against them._ Keeps the no-extra-deps policy;
-   reuses the existing Levenshtein "did you mean" UX for prop names too.
+1. **Trim to reliability-first.** _Recommendation: ship **T1 + T2** as core; treat **T3 (`cvl`)** as an
+   optional, separately-justified bet; **defer** streaming and `openui.json` interop._ The reliability work
+   captures ~80% of the value for ~40% of the surface area and is squarely in line with "Simplicity First."
+2. **T1 targets JSON `ViewConfig`, not a new format.** _Recommendation: generate the prompt + grammar for the
+   format that already ships and is dogfooded._ It needs no `cvl`; if `cvl` (T3) lands later, the prompt
+   gains an optional `cvl` section. Keeps T1 valuable on its own.
+3. **Grammar fidelity.** _Recommendation: generate a **prompt + a machine-checkable allowed-vocabulary**
+   (components → props → enums/sizes/variants) from the manifests, not free prose._ A test asserts every
+   referenced name exists in the registry, so it can never drift from the components.
+4. **Conformance by extending the validator, no Zod.** _Recommendation: extend `validateView` to validate
+   props against manifest types/enums, reusing the Levenshtein "did you mean" UX for prop names._ Keeps the
+   no-extra-deps policy. Do not weaken existing checks.
+5. **`cvl` (if built) is additive; JSON stays canonical.** _Recommendation: a submodule under
+   `packages/render/src/lang/` (exported from `@cascivo/render`), lossless `encode`/`parse` round-trip,
+   `ViewConfig` JSON unchanged; name **Cascade View Language / `cvl` / `.cvl`**._ A new `@cascivo/lang`
+   package is rejected (workspace-alias maintenance for no benefit).
+6. **Deferred items get trigger conditions, not silence.** _Recommendation: record streaming and interop in a
+   "Deferred / revisit when" section so the decision is explicit and reversible_ (e.g. "build streaming when a
+   product streams LLM-generated views to end users"; "emit `openui.json` when a consumer/tool in the OpenUI
+   ecosystem actually requests it").
 
 ---
 
 ## Cross-cutting rules
 
-1. **Owned code, no heavy deps.** Adopt ideas, not OpenUI's stack. No OpenUI runtime, no LiteLLM, no Zod.
-   `cvl` and the validator are hand-written over cascivo's existing schema; the streaming renderer uses
-   `@cascivo/core` signals + `@cascivo/ai` idioms.
-2. **`ViewConfig` JSON stays canonical.** `cvl` is additive serialization; the in-memory form, the JSON
-   Schema (`view.v1.json`), and `CascadeView`'s contract are unchanged. Round-trip
-   (`parse(encode(config)) === config`) is a hard test.
-3. **Reactivity rules apply.** Any new TSX (streaming renderer) obeys CLAUDE.md: no
-   `useState`/`useEffect`/`useContext`/`useReducer`; `useSignal*` + `useRef` only; `useSignals()` when
-   reading signals during render in React apps; DOM side effects via `useSignalEffect`.
-4. **Interop is additive.** The `openui.json` emitter is net-new output; `registry.json`'s own schema and
-   the v39 shadcn output are untouched.
-5. **AI-first discipline.** The prompt/grammar generator and the interop spec both derive from
-   `component.meta.ts` so they never drift from the components; `pnpm regen` refreshes generated artifacts.
-6. **Generated artifacts stay in sync.** `pnpm regen` after wiring; the drift gate
+1. **Owned code, no heavy deps.** No OpenUI runtime, no LiteLLM, no Zod. The generator and the validator are
+   hand-written over cascivo's existing manifests/schema.
+2. **`ViewConfig` JSON is canonical and unchanged.** T1/T2 operate on it directly; `view.v1.json` and
+   `CascadeView`'s contract are untouched. If T3 lands, `cvl` is additive serialization with a lossless
+   round-trip as a hard test.
+3. **Derived-from-manifests.** T1's grammar/prompt and T2's conformance both read `component.meta.ts` so they
+   never drift; a test asserts every name they reference exists in the registry.
+4. **Validation never throws on bad input.** `validateView` returns structured `{ path, message }` errors so
+   untrusted LLM output degrades gracefully (the existing `CascadeView onInvalid` contract is preserved).
+5. **Generated artifacts stay in sync.** `pnpm regen` after wiring; the drift gate
    (`pnpm regen && pnpm exec vp check --fix && git diff --exit-code`) green and committed; `pnpm ready`
-   green before each commit. No off-scale breakpoint literals (`breakpoint:check`); CSS `@function`/`if()`
-   only with static fallbacks (`fallback:check`).
+   green before each commit.
 
 ---
 
 ## Definition of Done
 
-### T1 — Cascade View Language (`cvl`) — compact DSL ↔ `ViewConfig`
-
-- [ ] `packages/render/src/lang/` ships `encode(config: ViewConfig): string`, `parse(src: string): ViewConfig`,
-      and types, exported from `@cascivo/render`.
-- [ ] Round-trip is lossless on every cascivo example view: `parse(encode(config))` deep-equals `config`
-      (property-style test over fixtures incl. `bind`/`events`/`children`/`$t` translation refs).
-- [ ] A token-count benchmark (using a tokenizer or a documented proxy) shows `cvl` is materially smaller
-      than the JSON for the sample views; the number is recorded in the README.
-- [ ] `pnpm exec vp run @cascivo/render#test` green.
-
-### T2 — Library-derived prompt + grammar generation
+### T1 — Library-derived prompt + grammar generation (core)
 
 - [ ] A generator (in `@cascivo/mcp` and/or `@cascivo/render`) produces, from the manifests, a **system
-      prompt** + the **allowed-vocabulary grammar** (components → props → enums/sizes/variants) describing how
-      to emit valid `cvl`.
-- [ ] Output is bounded: every component/prop/enum it mentions exists in the registry; a test asserts the
-      generated grammar references only real registry entries.
-- [ ] The MCP `scaffold_*` path can return the prompt/grammar (or a new tool does); documented.
+      prompt** + an **allowed-vocabulary grammar** (components → props → enums/sizes/variants) describing how
+      to emit valid **`ViewConfig` JSON** bounded to cascivo's real components.
+- [ ] Bounded: a test asserts every component/prop/enum it references exists in the registry/manifests.
+- [ ] Exposed to agents (a new MCP tool or an extension of `scaffold_*`); documented.
 - [ ] `pnpm exec vp run @cascivo/mcp#test` green.
 
-### T3 — Streaming / progressive rendering
+### T2 — Deep conformance validation (core)
 
-- [ ] A streaming parser consumes `cvl` incrementally and yields complete nodes as they finish; a
-      `CascadeView` streaming mode (or `StreamingView`) paints them progressively with placeholders for
-      in-flight nodes.
-- [ ] Signal-driven: `useSignal`/`useSignalEffect` only — **no** `useState`/`useEffect`; passes the React
-      explicit-subscription rule (`useSignals()`); text leaves may reuse `@cascivo/ai` `StreamingText`.
-- [ ] A test feeds chunked `cvl` and asserts intermediate renders show the already-parsed nodes and the
-      final render equals the one-shot render.
-- [ ] `pnpm exec vp run @cascivo/render#test` green.
+- [ ] `validateView` validates node **props against manifest types/enums** (unknown prop with Levenshtein
+      "did you mean", type mismatch, out-of-enum) with actionable `{ path, message }` errors; existing checks
+      unchanged.
+- [ ] Tests cover: unknown prop, bad enum value, type mismatch, and a valid view (no errors).
+- [ ] `pnpm exec vp run @cascivo/render#test` green (existing `validate.test.ts` still passes).
 
-### T4 — Deep conformance validation
+### T3 — `cvl` compact DSL (optional)
 
-- [ ] `validateView` (or a sibling) validates node **props against manifest types/enums** (unknown prop,
-      wrong type, out-of-enum value) with actionable messages, reusing the Levenshtein "did you mean" UX for
-      prop names.
-- [ ] The `cvl` parser tolerates partial/invalid input (returns structured errors, never throws) so
-      streaming (T3) degrades gracefully.
-- [ ] Tests cover: unknown prop, bad enum value, type mismatch, truncated `cvl`.
-- [ ] `pnpm exec vp run @cascivo/render#test` green.
+- [ ] `packages/render/src/lang/` ships `encode(config): string` / `parse(src): { config, errors }`,
+      exported from `@cascivo/render`; lossless round-trip on every fixture; a recorded token-saving benchmark.
+- [ ] T1's prompt gains an optional `cvl` section; T2's conformance applies to parsed `cvl` too.
+- [ ] `pnpm exec vp run @cascivo/render#test` green. **May be cut cleanly without affecting T1/T2.**
 
-### T5 — `openui.json` interop export + docs & final gate
+### Roadmap close-out
 
-- [ ] An emitter produces a standard, framework-agnostic `openui.json` (AI-native component spec:
-      name/description/props/enum/default/example) derived from the manifests/registry — additive, no change
-      to `registry.json` or the v39 shadcn output.
-- [ ] A smoke test validates the emitted spec's shape against the documented schema.
-- [ ] This roadmap + `cvl` + prompt-gen + streaming + interop documented (READMEs + a docs section);
-      CSS-native interop caveats noted.
+- [ ] This roadmap + the prompt/grammar (T1) and conformance (T2) documented (READMEs + a docs section);
+      "Deferred / revisit when" section records streaming + `openui.json` interop with trigger conditions.
 - [ ] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
       `pnpm test`, `breakpoint:check`, `fallback:check`, `brand:check`.
+
+---
+
+## Deferred / revisit when
+
+| Idea | Build it when… | Notes |
+| ---- | -------------- | ----- |
+| **Streaming / progressive rendering** | a product actually streams LLM-generated views to end users (live latency matters) | Most useful atop `cvl` (T3); signal-driven (`useSignalEffect`, no `useEffect`); can reuse `@cascivo/ai` `StreamingText` for text leaves |
+| **`openui.json` interop export** | a real consumer/tool in the OpenUI ("AI-Native Spec") ecosystem requests it, or that ecosystem gains an install base | Additive emitter in `packages/registry`, derived from manifests, leaving `registry.json` + the v39 shadcn output untouched (same pattern as v39 Decision 6) |
+| **Docs generative-UI playground upgrade** | T3 or streaming lands and you want to showcase it | A `cvl`/streaming text box driving the existing `CascadeView` in `apps/docs` |
 </content>
-</invoke>
