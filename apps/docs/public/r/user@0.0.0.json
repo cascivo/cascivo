@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "name": "user",
+  "type": "component",
+  "description": "Identity composite: an avatar with a name, description, and optional action slot",
+  "version": "0.0.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/user/user.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/user/user.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "tags": ["user", "avatar", "identity", "display"],
+  "category": "display",
+  "meta": {
+    "name": "User",
+    "description": "Identity composite: an avatar with a name, description, and optional action slot",
+    "category": "display",
+    "states": ["default"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "name",
+        "type": "ReactNode",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "required": false
+      },
+      {
+        "name": "avatarProps",
+        "type": "AvatarProps",
+        "required": false,
+        "description": "Forwarded to the composed <Avatar>"
+      }
+    ],
+    "tokens": [
+      "--cascivo-color-text",
+      "--cascivo-color-text-muted",
+      "--cascivo-space-3",
+      "--cascivo-text-sm",
+      "--cascivo-text-xs"
+    ],
+    "accessibility": {
+      "role": "group",
+      "wcag": "2.2-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<User name=\"Jane Doe\" description=\"jane@acme.com\" avatarProps={{ src: \"/jane.jpg\", alt: \"Jane Doe\" }} />"
+      },
+      {
+        "title": "With action",
+        "code": "<User name=\"Jane Doe\" description=\"Admin\"><IconButton aria-label=\"More\" /></User>"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/components"],
+    "tags": ["user", "avatar", "identity", "display"],
+    "intent": {
+      "whenToUse": [
+        "Showing a person with their name and a secondary line (email, role) next to an avatar",
+        "Identity rows inside menus, tables, navbars, and account switchers",
+        "A compact, labelled identity primitive too granular for a page-section block"
+      ],
+      "whenNotToUse": [
+        "Just an image with no name/description — use Avatar directly",
+        "A full profile card with rich content — compose a Card instead"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "<User name=\"\" avatarProps={{ src: \"/jane.jpg\" }} />",
+          "good": "<User name=\"Jane Doe\" avatarProps={{ src: \"/jane.jpg\", alt: \"Jane Doe\" }} />",
+          "why": "The name is the accessible identity label; an empty name leaves the avatar unlabelled"
+        }
+      ],
+      "related": [
+        {
+          "name": "Avatar",
+          "relationship": "contains",
+          "reason": "User wraps Avatar and forwards avatarProps to it"
+        },
+        {
+          "name": "AvatarGroup",
+          "relationship": "alternative",
+          "reason": "Use AvatarGroup to show several identities as an overlapping stack"
+        }
+      ],
+      "a11yRationale": "The composite is a labelled group; the name provides the accessible identity and the avatar carries its own role=\"img\"/alt — no redundant roles",
+      "flexibility": [
+        {
+          "area": "description",
+          "level": "flexible",
+          "note": "Any ReactNode — email, role, or a status line"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Name and description colors must resolve to --cascivo-* tokens"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "user",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "user/user.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { Avatar, type AvatarProps } from '../avatar/avatar'\nimport styles from './user.module.css'\n\nexport interface UserProps extends HTMLAttributes<HTMLDivElement> {\n  /** Primary identity label (name). */\n  name: ReactNode\n  /** Secondary line (email, role, …). */\n  description?: ReactNode\n  /** Forwarded to the composed <Avatar>. */\n  avatarProps?: AvatarProps\n  /** Optional trailing action slot (e.g. a menu button). */\n  children?: ReactNode\n}\n\n/** Identity composite: an Avatar with a name + optional description and trailing action. */\nexport function User({ name, description, avatarProps, className, children, ...rest }: UserProps) {\n  return (\n    <div role=\"group\" className={cn(styles['user'], className)} {...rest}>\n      <Avatar {...avatarProps} />\n      <span className={styles['text']}>\n        <span className={styles['name']}>{name}</span>\n        {description != null && <span className={styles['description']}>{description}</span>}\n      </span>\n      {children != null && <span className={styles['action']}>{children}</span>}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "user/user.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .user {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-3);\n    min-inline-size: 0;\n    font-family: var(--cascivo-font-sans);\n  }\n\n  .text {\n    display: flex;\n    flex-direction: column;\n    min-inline-size: 0;\n    line-height: var(--cascivo-leading-snug, 1.3);\n  }\n\n  .name {\n    color: var(--cascivo-color-text);\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n\n  .description {\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-xs);\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n\n  .action {\n    display: inline-flex;\n    align-items: center;\n    margin-inline-start: var(--cascivo-space-2);\n  }\n}\n"
+    }
+  ],
+  "description": "Identity composite: an avatar with a name, description, and optional action slot",
+  "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

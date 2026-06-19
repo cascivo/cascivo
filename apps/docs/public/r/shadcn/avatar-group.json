@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-group",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "avatar-group/avatar-group.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport { Children, type HTMLAttributes, type ReactNode } from 'react'\nimport { Avatar } from '../avatar/avatar'\nimport styles from './avatar-group.module.css'\n\nexport interface AvatarGroupLabels {\n  /** Accessible label for the +N overflow chip. */\n  more?: (count: number) => string\n}\n\nexport interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {\n  /** Cap the number of visible avatars; the rest collapse into a +N chip. */\n  max?: number\n  /** Override the total count used for the +N chip (when more exist than rendered). */\n  total?: number\n  /** Overlap amount. */\n  spacing?: 'sm' | 'md' | 'lg'\n  /** Wrap into a grid instead of an overlapping row. */\n  isGrid?: boolean\n  labels?: AvatarGroupLabels\n  /** The <Avatar> children. */\n  children?: ReactNode\n}\n\n/** Overlapping stack of avatars with a `max` cap and an i18n-labelled +N overflow chip. */\nexport function AvatarGroup({\n  max,\n  total,\n  spacing = 'md',\n  isGrid = false,\n  labels,\n  className,\n  children,\n  ...rest\n}: AvatarGroupProps) {\n  const items = Children.toArray(children)\n  const visible = max != null ? items.slice(0, max) : items\n  const count = total ?? items.length\n  const overflow = count - visible.length\n  const moreLabel = labels?.more?.(overflow) ?? t(builtin.avatarGroup.more, { count: overflow })\n\n  return (\n    <div\n      role=\"group\"\n      data-spacing={spacing}\n      data-grid={isGrid || undefined}\n      className={cn(styles['group'], className)}\n      {...rest}\n    >\n      {visible}\n      {overflow > 0 && (\n        <Avatar className={styles['overflow']} fallback={`+${overflow}`} aria-label={moreLabel} />\n      )}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "avatar-group/avatar-group.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .group {\n    display: inline-flex;\n    align-items: center;\n\n    /* Overlapping row: each avatar after the first slides under the previous,\n       with a ring (matched to the surface) to keep them visually separate. */\n    & > * {\n      box-shadow: 0 0 0 2px var(--cascivo-color-surface);\n    }\n\n    &:not([data-grid]) > *:not(:first-child) {\n      margin-inline-start: var(--overlap, -0.5rem);\n    }\n\n    &[data-spacing='sm'] {\n      --overlap: -0.25rem;\n    }\n    &[data-spacing='md'] {\n      --overlap: -0.5rem;\n    }\n    &[data-spacing='lg'] {\n      --overlap: -0.75rem;\n    }\n\n    /* Grid mode: wrap into rows with positive gaps, no overlap. */\n    &[data-grid] {\n      display: inline-grid;\n      grid-template-columns: repeat(auto-fit, minmax(0, max-content));\n      gap: var(--cascivo-space-2);\n    }\n  }\n\n  .overflow {\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-xs);\n    font-weight: var(--cascivo-font-medium);\n  }\n}\n"
+    }
+  ],
+  "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+  "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

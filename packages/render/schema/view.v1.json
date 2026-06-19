@@ -96,6 +96,7 @@
             "AuthLayout",
             "AutoGrid",
             "Avatar",
+            "AvatarGroup",
             "Badge",
             "BarChart",
             "Blockquote",
@@ -244,6 +245,7 @@
             "Tooltip",
             "TreeView",
             "Treemap",
+            "User",
             "UsersTablePage",
             "VisuallyHidden"
           ]
@@ -459,6 +461,42 @@
                   "status": {
                     "type": "string",
                     "enum": ["online", "offline", "busy"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "AvatarGroup"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "max": {
+                    "type": "number"
+                  },
+                  "total": {
+                    "type": "number"
+                  },
+                  "spacing": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "isGrid": {
+                    "type": "boolean"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["AvatarGroupLabels"]
                   }
                 }
               }
@@ -3970,6 +4008,38 @@
                   }
                 },
                 "required": ["items"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "User"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "description": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "avatarProps": {
+                    "type": "string",
+                    "enum": ["AvatarProps"]
+                  }
+                },
+                "required": ["name"]
               }
             }
           }

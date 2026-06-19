@@ -227,6 +227,32 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['online', 'offline', 'busy'],
     },
   ],
+  AvatarGroup: [
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'total',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'spacing',
+      required: false,
+      enum: ['sm', 'md', 'lg'],
+    },
+    {
+      name: 'isGrid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   Badge: [
     {
       name: 'variant',
@@ -4013,6 +4039,20 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+  ],
+  User: [
+    {
+      name: 'name',
+      required: true,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'avatarProps',
+      required: false,
     },
   ],
   UsersTablePage: [

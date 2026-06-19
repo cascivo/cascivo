@@ -216,6 +216,18 @@
           "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
         }
       ],
+      "AvatarGroup": [
+        {
+          "area": "spacing",
+          "level": "flexible",
+          "note": "Pick the overlap that fits the surrounding density"
+        },
+        {
+          "area": "overflow label",
+          "level": "strict",
+          "note": "The +N label must come from i18n (builtin.avatarGroup.more or a labels override)"
+        }
+      ],
       "Badge": [
         {
           "area": "variant",
@@ -1595,6 +1607,18 @@
           "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
         }
       ],
+      "User": [
+        {
+          "area": "description",
+          "level": "flexible",
+          "note": "Any ReactNode — email, role, or a status line"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Name and description colors must resolve to --cascivo-* tokens"
+        }
+      ],
       "VisuallyHidden": [
         {
           "area": "children",
@@ -1909,6 +1933,55 @@
         ]
       },
       "contextUrl": "/context/avatar.md"
+    },
+    {
+      "name": "AvatarGroup",
+      "category": "display",
+      "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
+      "intent": {
+        "whenToUse": [
+          "Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)",
+          "Capping a long list of avatars with a +N overflow chip",
+          "A facepile in a card header, table cell, or activity row"
+        ],
+        "whenNotToUse": [
+          "A single identity with a name — use User or Avatar",
+          "A selectable list of people — use a list/menu with checkboxes"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<AvatarGroup>{hundredsOfAvatars}</AvatarGroup> with no max",
+            "good": "<AvatarGroup max={5} total={120}>{avatars}</AvatarGroup>",
+            "why": "Without a max the row grows unbounded; a cap plus total keeps it compact and accurate"
+          }
+        ],
+        "related": [
+          {
+            "name": "Avatar",
+            "relationship": "contains",
+            "reason": "AvatarGroup arranges Avatar children and adds an overflow chip"
+          },
+          {
+            "name": "User",
+            "relationship": "alternative",
+            "reason": "Use User for a single labelled identity row"
+          }
+        ],
+        "a11yRationale": "The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label (\"{count} more\") so the hidden count is announced, not conveyed by the chip text alone",
+        "flexibility": [
+          {
+            "area": "spacing",
+            "level": "flexible",
+            "note": "Pick the overlap that fits the surrounding density"
+          },
+          {
+            "area": "overflow label",
+            "level": "strict",
+            "note": "The +N label must come from i18n (builtin.avatarGroup.more or a labels override)"
+          }
+        ]
+      },
+      "contextUrl": "/context/avatar-group.md"
     },
     {
       "name": "Badge",
@@ -7406,6 +7479,55 @@
         ]
       },
       "contextUrl": "/context/tree-view.md"
+    },
+    {
+      "name": "User",
+      "category": "display",
+      "description": "Identity composite: an avatar with a name, description, and optional action slot",
+      "intent": {
+        "whenToUse": [
+          "Showing a person with their name and a secondary line (email, role) next to an avatar",
+          "Identity rows inside menus, tables, navbars, and account switchers",
+          "A compact, labelled identity primitive too granular for a page-section block"
+        ],
+        "whenNotToUse": [
+          "Just an image with no name/description — use Avatar directly",
+          "A full profile card with rich content — compose a Card instead"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<User name=\"\" avatarProps={{ src: \"/jane.jpg\" }} />",
+            "good": "<User name=\"Jane Doe\" avatarProps={{ src: \"/jane.jpg\", alt: \"Jane Doe\" }} />",
+            "why": "The name is the accessible identity label; an empty name leaves the avatar unlabelled"
+          }
+        ],
+        "related": [
+          {
+            "name": "Avatar",
+            "relationship": "contains",
+            "reason": "User wraps Avatar and forwards avatarProps to it"
+          },
+          {
+            "name": "AvatarGroup",
+            "relationship": "alternative",
+            "reason": "Use AvatarGroup to show several identities as an overlapping stack"
+          }
+        ],
+        "a11yRationale": "The composite is a labelled group; the name provides the accessible identity and the avatar carries its own role=\"img\"/alt — no redundant roles",
+        "flexibility": [
+          {
+            "area": "description",
+            "level": "flexible",
+            "note": "Any ReactNode — email, role, or a status line"
+          },
+          {
+            "area": "token names",
+            "level": "strict",
+            "note": "Name and description colors must resolve to --cascivo-* tokens"
+          }
+        ]
+      },
+      "contextUrl": "/context/user.md"
     },
     {
       "name": "VisuallyHidden",

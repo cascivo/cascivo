@@ -112,6 +112,18 @@
         "note": "Fallback and status colors must resolve to --cascivo-* semantic tokens"
       }
     ],
+    "AvatarGroup": [
+      {
+        "area": "spacing",
+        "level": "flexible",
+        "note": "Pick the overlap that fits the surrounding density"
+      },
+      {
+        "area": "overflow label",
+        "level": "strict",
+        "note": "The +N label must come from i18n (builtin.avatarGroup.more or a labels override)"
+      }
+    ],
     "Badge": [
       {
         "area": "variant",
@@ -1489,6 +1501,18 @@
         "area": "indent token",
         "level": "flexible",
         "note": "Per-level indent is driven by --cascivo-tree-indent and may be overridden"
+      }
+    ],
+    "User": [
+      {
+        "area": "description",
+        "level": "flexible",
+        "note": "Any ReactNode — email, role, or a status line"
+      },
+      {
+        "area": "token names",
+        "level": "strict",
+        "note": "Name and description colors must resolve to --cascivo-* tokens"
       }
     ],
     "VisuallyHidden": [

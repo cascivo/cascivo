@@ -81,7 +81,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 
 ## Component index
 
-160 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+162 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -128,6 +128,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 
 - **Alert** — Highlights a short, important message inline
 - **Avatar** — Displays a user image with initials fallback
+- **AvatarGroup** — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
 - **Badge** — Small status label or category indicator
 - **Blockquote** — Quoted passage with optional attribution footer
 - **Card** — Container for grouping related content
@@ -164,6 +165,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line
 - **TreeView** — Hierarchical, expandable tree of nodes with keyboard navigation and selection
+- **User** — Identity composite: an avatar with a name, description, and optional action slot
 - **UsersTablePage** — Full users management page with table, search, and invite action.
 - **VisuallyHidden** — Hides content visually while keeping it available to screen readers
 

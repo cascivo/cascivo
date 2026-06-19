@@ -3,6 +3,7 @@ import { meta as accordionMeta } from './accordion/accordion.meta'
 import { meta as alertMeta } from './alert/alert.meta'
 import { meta as alertDialogMeta } from './alert-dialog/alert-dialog.meta'
 import { meta as avatarMeta } from './avatar/avatar.meta'
+import { meta as avatarGroupMeta } from './avatar-group/avatar-group.meta'
 import { meta as badgeMeta } from './badge/badge.meta'
 import { meta as blockquoteMeta } from './blockquote/blockquote.meta'
 import { meta as breadcrumbMeta } from './breadcrumb/breadcrumb.meta'
@@ -82,6 +83,7 @@ import { meta as toastMeta } from './toast/toast.meta'
 import { meta as tocMeta } from './toc/toc.meta'
 import { meta as toggleMeta } from './toggle/toggle.meta'
 import { meta as tooltipMeta } from './tooltip/tooltip.meta'
+import { meta as userMeta } from './user/user.meta'
 import { meta as visuallyHiddenMeta } from './visually-hidden/visually-hidden.meta'
 
 export const allMetas: ComponentMeta[] = [
@@ -89,6 +91,7 @@ export const allMetas: ComponentMeta[] = [
   alertMeta,
   alertDialogMeta,
   avatarMeta,
+  avatarGroupMeta,
   badgeMeta,
   blockquoteMeta,
   breadcrumbMeta,
@@ -168,5 +171,6 @@ export const allMetas: ComponentMeta[] = [
   tocMeta,
   toggleMeta,
   tooltipMeta,
+  userMeta,
   visuallyHiddenMeta,
 ]
