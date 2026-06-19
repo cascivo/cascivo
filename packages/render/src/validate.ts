@@ -1,5 +1,6 @@
 import type { ComponentNode } from './types'
 import { componentMap } from './component-map'
+import { propSchemas, type PropPrimitive, type PropSchema } from './prop-schemas'
 
 export interface ValidationError {
   path: string
@@ -8,6 +9,66 @@ export interface ValidationError {
 
 const DATA_REF_RE = /^\$data\./
 const ACTION_REF_RE = /^\$actions\./
+
+/** A TranslationRef ({ $t }) resolves to a string at render time — accepted for any prop. */
+function isTranslationRef(value: unknown): boolean {
+  return typeof value === 'object' && value !== null && '$t' in value
+}
+
+function primitiveOf(value: unknown): PropPrimitive | 'object' {
+  if (value === null) return 'null'
+  const t = typeof value
+  if (t === 'string' || t === 'number' || t === 'boolean') return t
+  return 'object'
+}
+
+/**
+ * Validate a node's `props` against its component's manifest schema: unknown
+ * prop (with a Levenshtein "did you mean"), out-of-enum value, and primitive
+ * type mismatch. Bound/event props are skipped (they resolve at runtime), as
+ * are complex/unconstrained props and TranslationRef values.
+ */
+function validateProps(
+  props: Record<string, unknown>,
+  schema: PropSchema[],
+  skip: Set<string>,
+  componentName: string,
+  path: string,
+  errors: ValidationError[],
+): void {
+  const byName = new Map(schema.map((p) => [p.name, p]))
+  const propNames = schema.map((p) => p.name)
+  for (const [key, value] of Object.entries(props)) {
+    if (skip.has(key)) continue
+    const prop = byName.get(key)
+    if (!prop) {
+      const suggestion = closestName(key, propNames)
+      const hint = suggestion ? ` Did you mean "${suggestion}"?` : ''
+      errors.push({
+        path: `${path}.props.${key}`,
+        message: `Unknown prop "${key}" for component "${componentName}".${hint}`,
+      })
+      continue
+    }
+    if (isTranslationRef(value)) continue
+    if (prop.enum) {
+      if (typeof value !== 'string' || !prop.enum.includes(value)) {
+        errors.push({
+          path: `${path}.props.${key}`,
+          message: `Invalid value ${JSON.stringify(value)} for "${key}" — expected one of: ${prop.enum.join(', ')}.`,
+        })
+      }
+    } else if (prop.primitives) {
+      const actual = primitiveOf(value)
+      if (actual === 'object' || !prop.primitives.includes(actual)) {
+        errors.push({
+          path: `${path}.props.${key}`,
+          message: `Invalid type for "${key}" — expected ${prop.primitives.join(' | ')}, got ${actual}.`,
+        })
+      }
+    }
+  }
+}
 
 /** Levenshtein distance (≤ 2 cutoff for suggestions). */
 function closestName(name: string, candidates: string[]): string | undefined {
@@ -83,6 +144,15 @@ function validateNode(node: unknown, path: string, errors: ValidationError[]): v
         message: `events values must start with "$actions." — got "${value}"`,
       })
     }
+  }
+
+  // Validate props against the manifest schema (conformance). Bound/event prop
+  // names are skipped — their values resolve at runtime from the host context.
+  const schema = propSchemas[componentName]
+  const nodeProps = n['props']
+  if (schema && typeof nodeProps === 'object' && nodeProps !== null && !Array.isArray(nodeProps)) {
+    const skip = new Set([...Object.keys(nodeBind), ...Object.keys(nodeEvents)])
+    validateProps(nodeProps as Record<string, unknown>, schema, skip, componentName, path, errors)
   }
 
   // Recurse into children
