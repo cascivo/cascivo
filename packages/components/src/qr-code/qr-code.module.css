@@ -1,0 +1,13 @@
+@layer cascivo.component {
+  .qrCode {
+    display: inline-block;
+    overflow: hidden;
+    color: var(--cascivo-color-text);
+  }
+
+  .svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+}

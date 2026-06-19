@@ -1,7 +1,11 @@
 # cascivo — Roadmap v42: Web Awesome Study — Adopt the Genuinely-Missing Pieces
 
 **Last updated:** 2026-06-19
-**Status:** 📋 Planned (T1–T5)
+**Status:** ✅ Shipped (T1–T5). `comparison`, `qr-code`, `relative-time` components added; `formatBytes` added
+to `@cascivo/i18n`; `useResizeObserver`/`useMutationObserver`/`useIntersectionObserver` added to `@cascivo/core`.
+The "intent-router" idea was found to **already exist** as the `select_component` MCP tool (`packages/mcp/src/select.ts`),
+which predates Web Awesome's `choosing-components` skill — it was **enhanced** to return `whenNotToUse`/`related`
+so agents can disqualify wrong picks; the three new components flow into it automatically via `context:generate`.
 **Plan documents:** `docs/superpowers/plans/2026-06-19-v42-master-plan.md` + tranches 1–5
 **Builds on:** the component registry + manifests (`registry.json`, `packages/components`, `packages/react`),
 the `@cascivo/core` hooks/primitives (`useClipboard`, `useDisclosure`, `useInfiniteScroll`, **`useDraggable`**,

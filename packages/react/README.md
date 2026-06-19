@@ -81,7 +81,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 
 ## Component index
 
-162 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+165 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -137,6 +137,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 - **Code** — Inline code span for identifiers, commands, and short snippets
 - **CodeSnippet** — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
 - **Collapsible** — A single disclosure region toggled open and closed by its trigger
+- **Comparison** — Reveals the difference between two layers with a draggable divider
 - **ConsoleApp** — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.
 - **ContainedList** — Labelled list of rows inside a bordered container
 - **DashboardCharts** — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
@@ -153,6 +154,8 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 - **NotificationCenter** — A list of notification alerts with a mark-all-read action.
 - **PageWithBreadcrumb** — A centered content page with a breadcrumb navigation and page header.
 - **Prose** — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
+- **QrCode** — Encodes a URL or short text into a scannable SVG QR code
+- **RelativeTime** — Displays a date as a localized phrase relative to now, auto-updating
 - **Separator** — Visual or semantic divider between content
 - **SettingsFormPage** — Settings page with profile form inside a two-column settings layout.
 - **SidebarApp** — Full app shell with collapsible side navigation and top header.

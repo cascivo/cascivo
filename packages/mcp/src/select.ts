@@ -1,9 +1,19 @@
 import type { ContextComponent } from './context.js'
 
+export interface SelectRelated {
+  name: string
+  relationship: string
+  reason: string
+}
+
 export interface SelectResult {
   name: string
   score: number
   why: string
+  /** When NOT to use this pick — lets an agent disqualify a wrong match. */
+  whenNotToUse: string[]
+  /** Related components (alternatives, pairs-with) to consider instead/alongside. */
+  related: SelectRelated[]
 }
 
 // Minimum length for a need word to be scored (filters out articles, prepositions, etc.)
@@ -46,7 +56,13 @@ export function selectComponent(need: string, components: ContextComponent[]): S
       why = `Matched: ${descMatches.map((w) => `'${w}'`).join(', ')} in description`
     }
 
-    return { name: c.name, score, why, related: c.intent.related ?? [] }
+    return {
+      name: c.name,
+      score,
+      why,
+      whenNotToUse: c.intent.whenNotToUse ?? [],
+      related: c.intent.related ?? [],
+    }
   })
 
   // First pass: top 3 by score for related bonus
@@ -70,6 +86,8 @@ export function selectComponent(need: string, components: ContextComponent[]): S
     name: r.name,
     score: r.score + (relatedBonus.get(r.name) ?? 0),
     why: r.why,
+    whenNotToUse: r.whenNotToUse,
+    related: r.related,
   }))
 
   return final

@@ -15,6 +15,7 @@ import { meta as checkboxCardMeta } from './checkbox-card/checkbox-card.meta'
 import { meta as codeMeta } from './code/code.meta'
 import { meta as comboboxMeta } from './combobox/combobox.meta'
 import { meta as commandMenuMeta } from './command-menu/command-menu.meta'
+import { meta as comparisonMeta } from './comparison/comparison.meta'
 import { meta as contextMenuMeta } from './context-menu/context-menu.meta'
 import { meta as copyButtonMeta } from './copy-button/copy-button.meta'
 import { meta as dataTableMeta } from './data-table/data-table.meta'
@@ -53,9 +54,11 @@ import { meta as progressBarMeta } from './progress-bar/progress-bar.meta'
 import { meta as progressCircleMeta } from './progress-circle/progress-circle.meta'
 import { meta as progressIndicatorMeta } from './progress-indicator/progress-indicator.meta'
 import { meta as proseMeta } from './prose/prose.meta'
+import { meta as qrCodeMeta } from './qr-code/qr-code.meta'
 import { meta as radioMeta } from './radio/radio.meta'
 import { meta as radioCardMeta } from './radio-card/radio-card.meta'
 import { meta as ratingGroupMeta } from './rating-group/rating-group.meta'
+import { meta as relativeTimeMeta } from './relative-time/relative-time.meta'
 import { meta as searchMeta } from './search/search.meta'
 import { meta as segmentedControlMeta } from './segmented-control/segmented-control.meta'
 import { meta as selectMeta } from './select/select.meta'
@@ -103,6 +106,7 @@ export const allMetas: ComponentMeta[] = [
   codeMeta,
   comboboxMeta,
   commandMenuMeta,
+  comparisonMeta,
   contextMenuMeta,
   copyButtonMeta,
   dataTableMeta,
@@ -141,9 +145,11 @@ export const allMetas: ComponentMeta[] = [
   progressCircleMeta,
   progressIndicatorMeta,
   proseMeta,
+  qrCodeMeta,
   radioMeta,
   radioCardMeta,
   ratingGroupMeta,
+  relativeTimeMeta,
   searchMeta,
   segmentedControlMeta,
   selectMeta,

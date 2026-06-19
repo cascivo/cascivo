@@ -985,6 +985,45 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  Comparison: [
+    {
+      name: 'after',
+      required: true,
+    },
+    {
+      name: 'before',
+      required: true,
+    },
+    {
+      name: 'position',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'defaultPosition',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onPositionChange',
+      required: false,
+    },
+    {
+      name: 'orientation',
+      required: false,
+      enum: ['horizontal', 'vertical'],
+    },
+    {
+      name: 'keyboardStep',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   ConsoleApp: [],
   ContainedList: [
     {
@@ -2763,6 +2802,43 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Prose: [],
+  QrCode: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'errorCorrection',
+      required: false,
+      enum: ['L', 'M', 'Q', 'H'],
+    },
+    {
+      name: 'radius',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'fill',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'background',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Radar: [
     {
       name: 'axes',
@@ -2913,6 +2989,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'labels',
+      required: false,
+    },
+  ],
+  RelativeTime: [
+    {
+      name: 'date',
+      required: true,
+    },
+    {
+      name: 'sync',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'now',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'format',
       required: false,
     },
   ],

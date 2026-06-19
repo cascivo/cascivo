@@ -3000,6 +3000,159 @@
       }
     },
     {
+      "name": "comparison",
+      "type": "component",
+      "description": "Reveals the difference between two layers with a draggable divider",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/comparison/comparison.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/comparison/comparison.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["comparison", "before-after", "image", "slider", "display"],
+      "meta": {
+        "name": "Comparison",
+        "description": "Reveals the difference between two layers with a draggable divider",
+        "category": "display",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "after",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Base layer shown underneath"
+          },
+          {
+            "name": "before",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Top layer revealed up to the divider"
+          },
+          {
+            "name": "position",
+            "type": "number",
+            "required": false,
+            "description": "Divider position 0–100 (controlled)"
+          },
+          {
+            "name": "defaultPosition",
+            "type": "number",
+            "required": false,
+            "default": "50"
+          },
+          {
+            "name": "onPositionChange",
+            "type": "(position: number) => void",
+            "required": false
+          },
+          {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal"
+          },
+          {
+            "name": "keyboardStep",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-radius-md",
+          "--cascivo-radius-full",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-focus-ring",
+          "--cascivo-shadow-sm",
+          "--cascivo-target-min-coarse"
+        ],
+        "accessibility": {
+          "role": "slider",
+          "wcag": "2.2-AA",
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown"
+          ],
+          "apgPattern": "slider"
+        },
+        "examples": [
+          {
+            "title": "Image before/after",
+            "code": "<Comparison before={<img src=\"/edited.jpg\" alt=\"\" />} after={<img src=\"/original.jpg\" alt=\"Original\" />} label=\"Reveal edited image\" />"
+          },
+          {
+            "title": "Vertical",
+            "code": "<Comparison orientation=\"vertical\" before={<Before />} after={<After />} />"
+          },
+          {
+            "title": "Controlled",
+            "code": "<Comparison position={position} onPositionChange={setPosition} before={<Before />} after={<After />} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["comparison", "before-after", "image", "slider", "display"],
+        "intent": {
+          "whenToUse": [
+            "Showing the difference between two versions of similar content (before/after edits, original vs processed)",
+            "Letting users interactively reveal one image or panel over another",
+            "Side-by-side visual demos where a draggable divider is clearer than two static images"
+          ],
+          "whenNotToUse": [
+            "Comparing more than two items — use a layout or table instead",
+            "Non-visual data comparison — use a table or chart",
+            "Static side-by-side images with no need for an interactive reveal"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Comparison before={<Before />} after={<After />} /> with no label",
+              "good": "<Comparison label=\"Reveal edited photo\" before={<Before />} after={<After />} />",
+              "why": "The divider is a slider; without a label assistive tech announces an unnamed control"
+            }
+          ],
+          "related": [
+            {
+              "name": "Slider",
+              "relationship": "alternative",
+              "reason": "Use Slider for selecting a numeric value rather than revealing layered content"
+            },
+            {
+              "name": "Carousel",
+              "relationship": "alternative",
+              "reason": "Use Carousel to step through more than two pieces of content"
+            }
+          ],
+          "a11yRationale": "The divider is a role=\"slider\" with aria-valuemin/max/now and full keyboard support (Arrow/Home/End/PageUp/PageDown); aria-orientation reflects the axis so the value and direction are conveyed without sight",
+          "flexibility": [
+            {
+              "area": "orientation",
+              "level": "flexible",
+              "note": "Horizontal or vertical depending on the content"
+            },
+            {
+              "area": "label",
+              "level": "strict",
+              "note": "Provide a label (or rely on the i18n default) so the slider is named"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "contained-list",
       "type": "component",
       "description": "Labelled list of rows inside a bordered container",
@@ -9414,6 +9567,131 @@
       }
     },
     {
+      "name": "qr-code",
+      "type": "component",
+      "description": "Encodes a URL or short text into a scannable SVG QR code",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/qr-code/qr-code.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["qr", "qr-code", "barcode", "encode", "display"],
+      "meta": {
+        "name": "QrCode",
+        "description": "Encodes a URL or short text into a scannable SVG QR code",
+        "category": "display",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "Text or URL to encode"
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "default": "128"
+          },
+          {
+            "name": "errorCorrection",
+            "type": "'L' | 'M' | 'Q' | 'H'",
+            "required": false,
+            "default": "M",
+            "description": "Higher levels tolerate more damage but hold less data"
+          },
+          {
+            "name": "radius",
+            "type": "string",
+            "required": false,
+            "description": "CSS length rounding the corners"
+          },
+          {
+            "name": "fill",
+            "type": "string",
+            "required": false,
+            "default": "currentColor"
+          },
+          {
+            "name": "background",
+            "type": "string",
+            "required": false,
+            "default": "transparent"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-color-text"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "URL",
+            "code": "<QrCode value=\"https://cascivo.dev\" />"
+          },
+          {
+            "title": "High error correction",
+            "code": "<QrCode value=\"https://cascivo.dev\" errorCorrection=\"H\" size={200} />"
+          },
+          {
+            "title": "Custom colors",
+            "code": "<QrCode value=\"cascivo\" fill=\"var(--cascivo-color-accent)\" background=\"var(--cascivo-color-surface)\" />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["qr", "qr-code", "barcode", "encode", "display"],
+        "intent": {
+          "whenToUse": [
+            "Letting users scan a URL, contact, or short token with a phone camera",
+            "Bridging print or screen to a digital destination",
+            "Sharing a link where typing it would be error-prone"
+          ],
+          "whenNotToUse": [
+            "Encoding long or sensitive payloads — QR codes are public and capacity-limited",
+            "Where a plain, copyable link or button is more accessible"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<QrCode value={veryLongString} />",
+              "good": "<QrCode value=\"https://cascivo.dev/s/abc\" />",
+              "why": "Long payloads force a dense, hard-to-scan code; encode a short URL that redirects instead"
+            }
+          ],
+          "related": [
+            {
+              "name": "CopyButton",
+              "relationship": "pairs-with",
+              "reason": "Offer a copyable link alongside the QR code for non-camera contexts"
+            }
+          ],
+          "a11yRationale": "Rendered as role=\"img\" with an accessible label so screen-reader users know a QR code is present; the underlying link should also be available as text since a QR code is not operable by assistive tech",
+          "flexibility": [
+            {
+              "area": "errorCorrection",
+              "level": "flexible",
+              "note": "Raise to Q/H when the code may be printed small or partially obscured"
+            },
+            {
+              "area": "colors",
+              "level": "flexible",
+              "note": "Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "radial-progress",
       "type": "component",
       "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
@@ -9906,6 +10184,111 @@
               "area": "scale and labels",
               "level": "flexible",
               "note": "max sets the scale and labels.rating customizes the per-star announcement"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "relative-time",
+      "type": "component",
+      "description": "Displays a date as a localized phrase relative to now, auto-updating",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/relative-time/relative-time.tsx",
+        "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["time", "date", "relative", "i18n", "display"],
+      "meta": {
+        "name": "RelativeTime",
+        "description": "Displays a date as a localized phrase relative to now, auto-updating",
+        "category": "display",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "date",
+            "type": "Date | number | string",
+            "required": true
+          },
+          {
+            "name": "sync",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "now",
+            "type": "number",
+            "required": false,
+            "description": "Override \"now\" (ms); disables the interval"
+          },
+          {
+            "name": "format",
+            "type": "Intl.RelativeTimeFormatOptions",
+            "required": false
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "time",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<RelativeTime date={post.createdAt} />"
+          },
+          {
+            "title": "Natural language",
+            "code": "<RelativeTime date={date} format={{ numeric: \"auto\" }} />"
+          },
+          {
+            "title": "Static (no ticking)",
+            "code": "<RelativeTime date={date} sync={false} />"
+          }
+        ],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["time", "date", "relative", "i18n", "display"],
+        "intent": {
+          "whenToUse": [
+            "Showing how long ago something happened in human terms (\"3 minutes ago\")",
+            "Timestamps in feeds, comments, and activity logs where recency matters more than precision",
+            "Anywhere a self-updating relative time is friendlier than an absolute date"
+          ],
+          "whenNotToUse": [
+            "Precise timestamps in tables or audit logs — use formatDate for an exact, sortable value",
+            "Dates far in the past/future where \"2 years ago\" is less useful than the actual date"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<RelativeTime date={date} /> as the only representation of a legal/audit timestamp",
+              "good": "<time>{formatDate(date)}</time> for exact records; RelativeTime for casual recency",
+              "why": "Relative phrases lose precision; the exact date belongs in records (RelativeTime still exposes it via title/datetime)"
+            }
+          ],
+          "related": [
+            {
+              "name": "Stat",
+              "relationship": "pairs-with",
+              "reason": "Use alongside Stat to timestamp a metric’s last update"
+            }
+          ],
+          "a11yRationale": "Renders a native <time> element with a machine-readable datetime and the absolute date in the title, so the precise instant is available even though the visible text is relative",
+          "flexibility": [
+            {
+              "area": "format",
+              "level": "flexible",
+              "note": "Pass Intl.RelativeTimeFormat options (e.g. numeric: \"auto\") to tune the wording"
+            },
+            {
+              "area": "sync",
+              "level": "flexible",
+              "note": "Disable ticking for static contexts or long-past dates"
             }
           ]
         }

@@ -1,0 +1,91 @@
+@layer cascivo.component {
+  .comparison {
+    position: relative;
+    inline-size: 100%;
+    overflow: hidden;
+    border-radius: var(--cascivo-radius-md);
+    touch-action: none;
+    user-select: none;
+  }
+
+  .item,
+  .before {
+    display: block;
+    inline-size: 100%;
+  }
+
+  .item :where(img),
+  .before :where(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .before {
+    position: absolute;
+    inset: 0;
+    /* Reveal the start edge up to --position; clip the remainder. */
+    clip-path: inset(0 calc(100% - var(--position)) 0 0);
+  }
+
+  .comparison[data-orientation='vertical'] .before {
+    clip-path: inset(0 0 calc(100% - var(--position)) 0);
+  }
+
+  .divider {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--position);
+    inline-size: 2px;
+    background-color: var(--cascivo-color-surface);
+    transform: translateX(-50%);
+    /* static fallback — all browsers */
+    transition: none;
+  }
+
+  .comparison[data-orientation='vertical'] .divider {
+    inset-inline: 0;
+    inset-block: auto;
+    inset-block-start: var(--position);
+    inline-size: auto;
+    block-size: 2px;
+    transform: translateY(-50%);
+  }
+
+  .handle {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+    inline-size: 2rem;
+    block-size: 2rem;
+    min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    border-radius: var(--cascivo-radius-full);
+    background-color: var(--cascivo-color-surface);
+    border: 2px solid var(--cascivo-color-border);
+    box-shadow: var(--cascivo-shadow-sm);
+    cursor: grab;
+  }
+
+  .comparison[data-orientation='vertical'] .handle {
+    cursor: row-resize;
+  }
+
+  .handle:focus-visible {
+    outline: 2px solid var(--cascivo-color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .comparison[data-dragging] .handle {
+    cursor: grabbing;
+  }
+
+  @media (pointer: coarse) {
+    .handle {
+      inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}
