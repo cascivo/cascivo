@@ -592,7 +592,7 @@ export function ChartsPage() {
       <section class="doc-section">
         <h2>Chart Palette Gallery</h2>
         <p>
-          Same data, all 11 themes — receipt for CVD-safe per-theme palettes. Eight series map to
+          Same data, all 12 themes — receipt for CVD-safe per-theme palettes. Eight series map to
           chart color slots 1–8 (Okabe-Ito base, theme-adjusted).{' '}
           <a href="/docs/specs/chart-palette.md">docs/specs/chart-palette.md</a>
         </p>

@@ -3,7 +3,8 @@ import { useRef, type ReactElement } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader, type ShellHeaderNavItem } from '@cascivo/components/shell-header'
 import { Tooltip } from '@cascivo/components/tooltip'
-import { setTheme, theme, type ThemeName } from '../theme'
+import { Dropdown, type DropdownItem } from '@cascivo/components/dropdown'
+import { setTheme, theme, THEMES, type ThemeName } from '../theme'
 import { currentPath, navigate } from '../router'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
@@ -34,13 +35,8 @@ function isExternalHref(href: string) {
   return /^https?:\/\//.test(href)
 }
 
-// The compact switcher cycles the three first-party themes (roadmap decision #5).
-const CYCLE_THEMES = ['light', 'dark', 'warm'] as const satisfies readonly ThemeName[]
-
-function cycleTheme() {
-  const idx = CYCLE_THEMES.indexOf(theme.value as (typeof CYCLE_THEMES)[number])
-  setTheme(CYCLE_THEMES[(idx + 1) % CYCLE_THEMES.length] ?? CYCLE_THEMES[0])
-}
+// All themes are selectable from a dropdown (not just the three first-party ones).
+const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 function SunIcon() {
   return (
@@ -105,6 +101,48 @@ function WarmIcon() {
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
       <path d="M17 12a5 5 0 0 1-5 5" strokeOpacity="0.5" />
+    </svg>
+  )
+}
+
+function PaletteIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.012 17.5 2 12 2z" />
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   )
 }
@@ -273,16 +311,26 @@ export function Header() {
                 </button>
               </Tooltip>
             )}
-            <Tooltip content={`Theme: ${theme.value}`} placement="bottom">
-              <button
-                type="button"
-                className="header-theme-cycle"
-                aria-label={`Switch theme, current: ${theme.value}`}
-                onClick={cycleTheme}
-              >
-                {(THEME_ICONS[theme.value] ?? SunIcon)()}
-              </button>
-            </Tooltip>
+            <Dropdown
+              placement="bottom-end"
+              items={THEMES.map(
+                (t): DropdownItem => ({
+                  label: titleCase(t),
+                  value: t,
+                  ...(theme.value === t ? { icon: <CheckIcon /> } : {}),
+                }),
+              )}
+              onSelect={(value) => setTheme(value as ThemeName)}
+              trigger={
+                <button
+                  type="button"
+                  className="header-theme-cycle"
+                  aria-label={`Switch theme, current: ${theme.value}`}
+                >
+                  {(THEME_ICONS[theme.value] ?? PaletteIcon)()}
+                </button>
+              }
+            />
             <SearchButton
               onClick={() => {
                 searchOpen.value = true

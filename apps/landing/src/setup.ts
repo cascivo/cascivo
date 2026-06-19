@@ -10,6 +10,34 @@ if (typeof CSS === 'undefined') {
   CSS.supports = () => false
 }
 
+// jsdom implements the Popover API with a UA rule that hides closed popovers
+// ([popover]:not(:popover-open) { display: none }), which breaks role queries,
+// and omits showPopover/hidePopover. Drop the 'popover' attribute and no-op the
+// methods so components using popovers (e.g. Dropdown in the Header) render in
+// tests. Mirrors packages/components/src/setup.ts.
+const _setAttribute = HTMLElement.prototype.setAttribute
+HTMLElement.prototype.setAttribute = function (name: string, value: string) {
+  if (name === 'popover') return
+  _setAttribute.call(this, name, value)
+}
+HTMLElement.prototype.showPopover = function () {}
+HTMLElement.prototype.hidePopover = function () {}
+
+// jsdom does not implement matchMedia — stub it (theme.ts reads it on load).
+if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
+  window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as unknown as MediaQueryList
+}
+
 // See packages/components/src/setup.ts for rationale.
 configure({
   asyncWrapper: async (cb) => {

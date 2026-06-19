@@ -68,7 +68,7 @@ const CLAIMS: Claim[] = [
     number: 20,
     title: 'Per-theme CVD-safe chart palettes',
     substance:
-      'All 8 chart colors are distinguishable under protanopia, deuteranopia, and tritanopia across all 10 themes. Palettes are rooted in Okabe-Ito oklch coordinates, overridden per theme, and verified by a CI palette test that checks presence, contrast, and CVD simulation on every merge.',
+      'All 8 chart colors are distinguishable under protanopia, deuteranopia, and tritanopia across all 12 themes. Palettes are rooted in Okabe-Ito oklch coordinates, overridden per theme, and verified by a CI palette test that checks presence, contrast, and CVD simulation on every merge.',
     receipt: {
       label: 'Themed chart gallery in docs',
       href: '/charts',
@@ -131,7 +131,7 @@ const CLAIMS: Claim[] = [
     title: 'Complete story, accurate numbers',
     substance:
       'Every major shipped feature — charts, layouts, i18n, AI audit, RSC support — is visible on ' +
-      'the landing page. WCAG 2.2 AA, 10 themes, and correct CLI commands are stated accurately. ' +
+      'the landing page. WCAG 2.2 AA, 12 themes, and correct CLI commands are stated accurately. ' +
       'No stale claims, no missing receipts.',
     receipt: null,
   },
@@ -139,7 +139,7 @@ const CLAIMS: Claim[] = [
     number: 29,
     title: 'Charts built for every user and condition',
     substance:
-      '17 chart types. CVD-safe palettes across all 10 themes — rooted in Okabe-Ito oklch and ' +
+      '17 chart types. CVD-safe palettes across all 12 themes — rooted in Okabe-Ito oklch and ' +
       'verified under protanopia, deuteranopia, and tritanopia. Keyboard-navigable tooltips on ' +
       'every chart type. Dogfooded in our own docs.',
     receipt: { label: 'See the chart gallery', href: '/charts' },

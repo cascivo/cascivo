@@ -71,17 +71,21 @@
     transform: translateY(-2px);
   }
 
-  .block-card__screenshot {
+  /* Live thumbnail — the real block, rendered at PREVIEW_WIDTH and scaled to fit */
+  .block-card__preview {
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    position: relative;
     background: var(--cascivo-color-surface-raised);
+    /* Decorative snapshot — clicks belong to the wrapping card link. */
+    pointer-events: none;
   }
 
-  .block-card__screenshot img {
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
-    object-position: top;
+  .block-card__preview-frame {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    transform-origin: top left;
   }
 
   .block-card__body {
