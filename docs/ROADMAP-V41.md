@@ -1,7 +1,7 @@
 # cascivo — Roadmap v41: HeroUI Study — Adopt the Genuinely-Missing Pieces
 
 **Last updated:** 2026-06-19
-**Status:** 📋 Planned (T1–T5)
+**Status:** ✅ Shipped (T1–T5). `image`, `user`, `avatar-group` added; `useDisclosure`/`useInfiniteScroll`/`useDraggable` in `@cascivo/core`; draggable Modal / swipe-to-dismiss Drawer / `scroll-area` mask fade; `--cascivo-disabled-opacity` + `--cascivo-hover-opacity` in all 12 themes.
 **Plan documents:** `docs/superpowers/plans/2026-06-19-v41-master-plan.md` + tranches 1–5
 **Builds on:** the component registry + manifests (`registry.json`, `packages/components`, `packages/react`),
 the `@cascivo/core` hooks/primitives (`useClipboard`, `useControllableSignal`, `useMediaQuery`, …), the
@@ -273,51 +273,51 @@ Why these five, and why in this order:
 
 ### T1 — `image` component
 
-- [ ] `packages/components/src/image/` ships `image.tsx` + `image.module.css` + `image.meta.ts` + `image.test.tsx`.
-- [ ] Signal-driven load FSM (`loading → loaded → error`) modelled on `avatar`; `src`, `alt`, `fallbackSrc`,
+- [x] `packages/components/src/image/` ships `image.tsx` + `image.module.css` + `image.meta.ts` + `image.test.tsx`.
+- [x] Signal-driven load FSM (`loading → loaded → error`) modelled on `avatar`; `src`, `alt`, `fallbackSrc`,
       `width`/`height`/`radius`, optional `zoom`, blur-up/`skeleton` placeholder during `loading`. No banned hooks.
-- [ ] WCAG AA (`alt` required-or-decorative semantics), reduced-motion-safe blur/zoom with static fallbacks,
+- [x] WCAG AA (`alt` required-or-decorative semantics), reduced-motion-safe blur/zoom with static fallbacks,
       logical-property CSS; ≥44px target only if interactive.
-- [ ] Manifest complete; exported from `packages/react/src/index.ts` + `_all-metas.ts`; appears in
+- [x] Manifest complete; exported from `packages/react/src/index.ts` + `_all-metas.ts`; appears in
       `registry.json` after `pnpm regen`. `pnpm exec vp run @cascivo/components#test` green for `image`.
 
 ### T2 — `user` + `avatar-group` components
 
-- [ ] `packages/components/src/user/` and `packages/components/src/avatar-group/` each ship tsx + css + meta + test.
-- [ ] `user` composes `avatar` + name/description (+ optional trailing action slot); `avatar-group` overlaps N
+- [x] `packages/components/src/user/` and `packages/components/src/avatar-group/` each ship tsx + css + meta + test.
+- [x] `user` composes `avatar` + name/description (+ optional trailing action slot); `avatar-group` overlaps N
       `avatar`s with `max` + a `+N` overflow chip and configurable spacing; both reuse the existing `avatar`.
-- [ ] i18n-defaulted strings (e.g. avatar-group overflow label) via `@cascivo/i18n` `builtin`; WCAG AA;
+- [x] i18n-defaulted strings (e.g. avatar-group overflow label) via `@cascivo/i18n` `builtin`; WCAG AA;
       manifests complete; both exported from `packages/react/src/index.ts` + `_all-metas.ts`; in `registry.json`.
-- [ ] `pnpm exec vp run @cascivo/components#test` green for `user` + `avatar-group`.
+- [x] `pnpm exec vp run @cascivo/components#test` green for `user` + `avatar-group`.
 
 ### T3 — interaction hooks in `@cascivo/core`
 
-- [ ] `useDisclosure` (`{ isOpen, open, close, toggle, onOpenChange }`, signal-backed, controllable),
+- [x] `useDisclosure` (`{ isOpen, open, close, toggle, onOpenChange }`, signal-backed, controllable),
       `useInfiniteScroll` (IntersectionObserver sentinel ref + `hasMore`/`onLoadMore`, `useSignalEffect`),
       `useDraggable` (pointer-driven `{ x, y }` signal offset + handle/target refs) — all in
       `packages/core/src/`, exported from `index.ts`, each with a unit test. No `useState`/`useEffect`.
-- [ ] SSR/no-DOM guarded; observers/listeners cleaned up in `useSignalEffect` teardown.
-- [ ] `pnpm exec vp run @cascivo/core#test` green.
+- [x] SSR/no-DOM guarded; observers/listeners cleaned up in `useSignalEffect` teardown.
+- [x] `pnpm exec vp run @cascivo/core#test` green.
 
 ### T4 — interaction polish + state tokens
 
-- [ ] `modal` gains an opt-in `draggable` prop (drag by header via `useDraggable`, CSS `translate`, no Framer);
+- [x] `modal` gains an opt-in `draggable` prop (drag by header via `useDraggable`, CSS `translate`, no Framer);
       `drawer` gains opt-in drag-to-dismiss. Reduced-motion-safe; default behavior unchanged.
-- [ ] `scroll-area` gains an opt-in mask/fade variant (`mask-image`) with the existing box-shadow as the static
+- [x] `scroll-area` gains an opt-in mask/fade variant (`mask-image`) with the existing box-shadow as the static
       fallback; `fallback:check` + `breakpoint:check` pass.
-- [ ] A documented infinite-scroll integration path (`useInfiniteScroll`) demonstrated with `data-table` or
+- [x] A documented infinite-scroll integration path (`useInfiniteScroll`) demonstrated with `data-table` or
       `select` (example/test), no real timers.
-- [ ] `--cascivo-disabled-opacity` + `--cascivo-hover-opacity` added to `packages/tokens` + **all 12** theme
+- [x] `--cascivo-disabled-opacity` + `--cascivo-hover-opacity` added to `packages/tokens` + **all 12** theme
       files; `parity.test.ts` + `chart-palette.test.ts` green; ≥1 component routes its state opacity through the
       token to prove the mechanism.
 
 ### T5 — HeroUI study doc + final gate
 
-- [ ] This roadmap + the new components/hooks/tokens documented (component docs, `THEME-PROPOSALS.md` for the
+- [x] This roadmap + the new components/hooks/tokens documented (component docs, `THEME-PROPOSALS.md` for the
       interaction tokens, a core-hooks note).
-- [ ] Optional stretch: a vendor-neutral `AGENTS.md` emitted from existing sources (HeroUI parity) — or
+- [x] Optional stretch: a vendor-neutral `AGENTS.md` emitted from existing sources (HeroUI parity) — or
       explicitly deferred.
-- [ ] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
+- [x] `pnpm regen`; drift gate green; full CI gate passes: `vp check`, `pnpm build`, `vp run -r check`,
       `pnpm test`, `breakpoint:check`, `fallback:check`, `brand:check`; grep sweep confirms `image`/`user`/
       `avatar-group` reached every registration surface.
 </content>
