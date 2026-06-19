@@ -19,7 +19,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/': {
     title: 'cascivo — the CSS-native, signal-driven, AI-first React design system',
     description:
-      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 10 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today.',
+      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today.',
     ogTitle: 'cascivo',
   },
   '/accessibility': {

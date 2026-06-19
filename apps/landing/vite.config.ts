@@ -361,6 +361,7 @@ export default defineConfig({
         root,
         'packages/components/src/blocks/dashboard-table/dashboard-table.tsx',
       ),
+      '@cascivo/blocks/faq/component': resolve(root, 'packages/components/src/blocks/faq/faq.tsx'),
       '@cascivo/blocks/marketing-features/component': resolve(
         root,
         'packages/components/src/blocks/marketing-features/marketing-features.tsx',
@@ -369,9 +370,21 @@ export default defineConfig({
         root,
         'packages/components/src/blocks/marketing-hero/marketing-hero.tsx',
       ),
+      '@cascivo/blocks/pricing/component': resolve(
+        root,
+        'packages/components/src/blocks/pricing/pricing.tsx',
+      ),
       '@cascivo/blocks/settings-profile/component': resolve(
         root,
         'packages/components/src/blocks/settings-profile/settings-profile.tsx',
+      ),
+      '@cascivo/blocks/site-footer/component': resolve(
+        root,
+        'packages/components/src/blocks/site-footer/site-footer.tsx',
+      ),
+      '@cascivo/blocks/testimonials/component': resolve(
+        root,
+        'packages/components/src/blocks/testimonials/testimonials.tsx',
       ),
       // Block meta aliases (bare name → meta file)
       '@cascivo/blocks/app-shell': resolve(
@@ -394,6 +407,7 @@ export default defineConfig({
         root,
         'packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts',
       ),
+      '@cascivo/blocks/faq': resolve(root, 'packages/components/src/blocks/faq/faq.meta.ts'),
       '@cascivo/blocks/marketing-features': resolve(
         root,
         'packages/components/src/blocks/marketing-features/marketing-features.meta.ts',
@@ -402,9 +416,21 @@ export default defineConfig({
         root,
         'packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts',
       ),
+      '@cascivo/blocks/pricing': resolve(
+        root,
+        'packages/components/src/blocks/pricing/pricing.meta.ts',
+      ),
       '@cascivo/blocks/settings-profile': resolve(
         root,
         'packages/components/src/blocks/settings-profile/settings-profile.meta.ts',
+      ),
+      '@cascivo/blocks/site-footer': resolve(
+        root,
+        'packages/components/src/blocks/site-footer/site-footer.meta.ts',
+      ),
+      '@cascivo/blocks/testimonials': resolve(
+        root,
+        'packages/components/src/blocks/testimonials/testimonials.meta.ts',
       ),
     },
   },

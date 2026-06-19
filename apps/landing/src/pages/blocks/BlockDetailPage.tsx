@@ -1,6 +1,9 @@
 import { Suspense, lazy } from 'react'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import { Button } from '@cascivo/react'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
+import { Header } from '../../sections/Header'
+import { Footer } from '../../sections/Footer'
 import { findBlock, type BlockEntry } from './blocks-data'
 import './blocks.css'
 
@@ -31,12 +34,19 @@ export function BlockDetailPage({ name }: Props) {
 
   if (!entry) {
     return (
-      <main className="block-detail">
-        <a href="/blocks" className="block-detail__back">
-          ← Back to Blocks
-        </a>
-        <p>Block &quot;{name}&quot; not found.</p>
-      </main>
+      <>
+        <SkipNavLink />
+        <Header />
+        <SkipNavTarget>
+          <main className="block-detail">
+            <a href="/blocks" className="block-detail__back">
+              ← Back to Blocks
+            </a>
+            <p>Block &quot;{name}&quot; not found.</p>
+          </main>
+        </SkipNavTarget>
+        <Footer />
+      </>
     )
   }
 
@@ -79,98 +89,107 @@ function BlockDetailInner({ entry, name }: InnerProps) {
   }
 
   return (
-    <main className="block-detail">
-      <a href="/blocks" className="block-detail__back">
-        ← Back to Blocks
-      </a>
+    <>
+      <SkipNavLink />
+      <Header />
+      <SkipNavTarget>
+        <main className="block-detail">
+          <a href="/blocks" className="block-detail__back">
+            ← Back to Blocks
+          </a>
 
-      <h1 className="block-detail__heading">{entry.meta.displayName}</h1>
-      <p className="block-detail__description">{entry.meta.description}</p>
+          <h1 className="block-detail__heading">{entry.meta.displayName}</h1>
+          <p className="block-detail__description">{entry.meta.description}</p>
 
-      <div className="block-detail__controls">
-        <div className="block-detail__controls-group">
-          {(['light', 'dark'] as ThemeKey[]).map((t) => (
-            <Button
-              key={t}
-              variant={previewTheme.value === t ? 'primary' : 'ghost'}
-              size="sm"
-              onClick={() => {
-                previewTheme.value = t
-              }}
+          <div className="block-detail__controls">
+            <div className="block-detail__controls-group">
+              {(['light', 'dark'] as ThemeKey[]).map((t) => (
+                <Button
+                  key={t}
+                  variant={previewTheme.value === t ? 'primary' : 'ghost'}
+                  size="sm"
+                  onClick={() => {
+                    previewTheme.value = t
+                  }}
+                >
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </Button>
+              ))}
+            </div>
+
+            <div className="block-detail__controls-group">
+              {VIEWPORTS.map((v) => (
+                <Button
+                  key={v.label}
+                  variant={viewport.value === v.value ? 'primary' : 'ghost'}
+                  size="sm"
+                  onClick={() => {
+                    viewport.value = v.value
+                  }}
+                >
+                  {v.label}
+                </Button>
+              ))}
+            </div>
+
+            <a
+              href={`/blocks/preview/${name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block-detail__open-link"
             >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </Button>
-          ))}
-        </div>
+              Open full tab ↗
+            </a>
+          </div>
 
-        <div className="block-detail__controls-group">
-          {VIEWPORTS.map((v) => (
-            <Button
-              key={v.label}
-              variant={viewport.value === v.value ? 'primary' : 'ghost'}
-              size="sm"
-              onClick={() => {
-                viewport.value = v.value
-              }}
-            >
-              {v.label}
-            </Button>
-          ))}
-        </div>
+          <div className="block-detail__preview-wrapper" style={{ maxInlineSize: viewport.value }}>
+            <div className="block-detail__preview-inner" data-theme={previewTheme.value}>
+              <Suspense
+                fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading…</div>}
+              >
+                <Block />
+              </Suspense>
+            </div>
+          </div>
 
-        <a
-          href={`/blocks/preview/${name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block-detail__open-link"
-        >
-          Open full tab ↗
-        </a>
-      </div>
+          <div className="block-detail__code-section">
+            <div className="block-detail__tabs" role="tablist">
+              {(['tsx', 'css'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  role="tab"
+                  aria-selected={activeTab.value === tab}
+                  className="block-detail__tab"
+                  onClick={() => {
+                    activeTab.value = tab
+                  }}
+                >
+                  {tab.toUpperCase()}
+                </button>
+              ))}
+            </div>
 
-      <div className="block-detail__preview-wrapper" style={{ maxInlineSize: viewport.value }}>
-        <div className="block-detail__preview-inner" data-theme={previewTheme.value}>
-          <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading…</div>}>
-            <Block />
-          </Suspense>
-        </div>
-      </div>
+            <div className="block-detail__code-panel">
+              <div className="block-detail__code-copy">
+                <Button variant="ghost" size="sm" onClick={copyCode}>
+                  {copyLabel.value}
+                </Button>
+              </div>
+              <pre className="block-detail__code-pre">
+                <code>{displayedCode.value}</code>
+              </pre>
+            </div>
+          </div>
 
-      <div className="block-detail__code-section">
-        <div className="block-detail__tabs" role="tablist">
-          {(['tsx', 'css'] as const).map((tab) => (
-            <button
-              key={tab}
-              role="tab"
-              aria-selected={activeTab.value === tab}
-              className="block-detail__tab"
-              onClick={() => {
-                activeTab.value = tab
-              }}
-            >
-              {tab.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
-        <div className="block-detail__code-panel">
-          <div className="block-detail__code-copy">
-            <Button variant="ghost" size="sm" onClick={copyCode}>
-              {copyLabel.value}
+          <div className="block-detail__install">
+            <code className="block-detail__install-cmd">npx cascivo add block/{name}</code>
+            <Button variant="ghost" size="sm" onClick={copyCmd}>
+              {cmdCopyLabel.value}
             </Button>
           </div>
-          <pre className="block-detail__code-pre">
-            <code>{displayedCode.value}</code>
-          </pre>
-        </div>
-      </div>
-
-      <div className="block-detail__install">
-        <code className="block-detail__install-cmd">npx cascivo add block/{name}</code>
-        <Button variant="ghost" size="sm" onClick={copyCmd}>
-          {cmdCopyLabel.value}
-        </Button>
-      </div>
-    </main>
+        </main>
+      </SkipNavTarget>
+      <Footer />
+    </>
   )
 }

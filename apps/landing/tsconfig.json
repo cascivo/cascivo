@@ -21,14 +21,24 @@
       "@cascivo/blocks/dashboard-table/component": [
         "../../packages/components/src/blocks/dashboard-table/dashboard-table.tsx"
       ],
+      "@cascivo/blocks/faq/component": ["../../packages/components/src/blocks/faq/faq.tsx"],
       "@cascivo/blocks/marketing-features/component": [
         "../../packages/components/src/blocks/marketing-features/marketing-features.tsx"
       ],
       "@cascivo/blocks/marketing-hero/component": [
         "../../packages/components/src/blocks/marketing-hero/marketing-hero.tsx"
       ],
+      "@cascivo/blocks/pricing/component": [
+        "../../packages/components/src/blocks/pricing/pricing.tsx"
+      ],
       "@cascivo/blocks/settings-profile/component": [
         "../../packages/components/src/blocks/settings-profile/settings-profile.tsx"
+      ],
+      "@cascivo/blocks/site-footer/component": [
+        "../../packages/components/src/blocks/site-footer/site-footer.tsx"
+      ],
+      "@cascivo/blocks/testimonials/component": [
+        "../../packages/components/src/blocks/testimonials/testimonials.tsx"
       ],
       "@cascivo/blocks/app-shell": [
         "../../packages/components/src/blocks/app-shell/app-shell.meta.ts"
@@ -45,14 +55,22 @@
       "@cascivo/blocks/dashboard-table": [
         "../../packages/components/src/blocks/dashboard-table/dashboard-table.meta.ts"
       ],
+      "@cascivo/blocks/faq": ["../../packages/components/src/blocks/faq/faq.meta.ts"],
       "@cascivo/blocks/marketing-features": [
         "../../packages/components/src/blocks/marketing-features/marketing-features.meta.ts"
       ],
       "@cascivo/blocks/marketing-hero": [
         "../../packages/components/src/blocks/marketing-hero/marketing-hero.meta.ts"
       ],
+      "@cascivo/blocks/pricing": ["../../packages/components/src/blocks/pricing/pricing.meta.ts"],
       "@cascivo/blocks/settings-profile": [
         "../../packages/components/src/blocks/settings-profile/settings-profile.meta.ts"
+      ],
+      "@cascivo/blocks/site-footer": [
+        "../../packages/components/src/blocks/site-footer/site-footer.meta.ts"
+      ],
+      "@cascivo/blocks/testimonials": [
+        "../../packages/components/src/blocks/testimonials/testimonials.meta.ts"
       ]
     }
   },

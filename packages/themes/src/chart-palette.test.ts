@@ -190,7 +190,7 @@ function themeBackground(themeName: string): RGB {
 // ── Tests ──────────────────────────────────────────────────────────────────────
 
 describe('chart palette', () => {
-  describe('presence — all 11 themes define chart-1 through chart-8', () => {
+  describe('presence — all 12 themes define chart-1 through chart-8', () => {
     for (const theme of THEMES) {
       it(`${theme}: defines --cascivo-chart-1 through --cascivo-chart-8`, () => {
         const tokens = parseChartTokens(theme)

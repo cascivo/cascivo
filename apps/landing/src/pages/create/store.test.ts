@@ -18,8 +18,8 @@ describe('DEFAULT_CONFIG', () => {
 })
 
 describe('PRESETS', () => {
-  it('has exactly 10 presets', () => {
-    expect(PRESETS).toHaveLength(10)
+  it('has exactly 12 presets', () => {
+    expect(PRESETS).toHaveLength(12)
   })
 
   it('each preset has valid ThemeConfig fields', () => {
