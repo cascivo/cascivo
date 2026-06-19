@@ -1,5 +1,14 @@
 # @cascivo/react
 
+## 0.2.1
+
+### Patch Changes
+
+- e9998ab: Further improvements
+- Updated dependencies [e9998ab]
+  - @cascivo/core@0.1.1
+  - @cascivo/i18n@0.1.1
+
 ## 0.2.0
 
 ### Minor Changes
