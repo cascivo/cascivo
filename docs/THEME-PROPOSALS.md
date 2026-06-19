@@ -105,9 +105,9 @@ the chunky offset shadow that makes elements pop off the page.
 - Shadows: hard offset — `--cascivo-shadow-sm: 2px 2px 0 oklch(0.1 0 0)`,
   `md: 4px 4px 0 …`, overlay `6px 6px 0 …`. No blur.
 - Focus ring: solid black, 3px, with offset
-- **Font note**: brutalism often pairs with a mono/grotesk face. Font is currently
-  a primitive token (`--cascivo-font-sans` in `tokens/index.css`, not themed). See
-  "Open questions" — theming fonts requires adding the key to _all_ themes for parity.
+- **Font note**: brutalism pairs with a heavy grotesk face. As of v39 T1, `brutalist`
+  sets `--cascivo-font-display` to a heavy grotesk stack (`'Arial Black', 'Helvetica Neue',
+  ui-sans-serif, sans-serif`), so headings render in the display face. See "Open questions" #1.
 
 ### 4. `corporate` — enterprise / data-dense
 
@@ -139,7 +139,8 @@ A second dark theme that's unmistakably different from `midnight` and `dark`.
 - Borders: hairline green `oklch(0.4 0.08 150)`
 - Shadows: none on surfaces; green glow on overlays (`0 0 0 1px oklch(0.82 0.2 145 / 0.3)`)
 - Focus ring: green glow, 2px
-- **Font note**: ideally monospace — same caveat as `brutalist`.
+- **Font note**: as of v39 T1, `terminal` maps `--cascivo-font-display` to the mono stack
+  (`var(--cascivo-font-mono)`), so headings render monospace. See "Open questions" #1.
 
 ### 6. `cyberpunk` — brutalism × cyberpunk (added in v38)
 
@@ -161,7 +162,8 @@ than `terminal` and `dark`.
   `.cascivo-cyber-scanline` (CRT overlay), `.cascivo-cyber-glitch` (RGB-split on hover/focus),
   `.cascivo-cyber-flicker` (neon flicker). Each declares a static resting look first and is
   disabled under `prefers-reduced-motion`. They never fire unless a consumer opts in.
-- **Font note**: inherits `--cascivo-font-sans` — same caveat as `brutalist`/`terminal`.
+- **Font note**: inherits `--cascivo-font-display` (= sans). The per-theme font mechanism
+  shipped in v39 T1 is available if a distinct cyberpunk display face is wanted later.
 - **Motion note**: an ambient "hard-snap" motion-character override was considered but **not**
   shipped — `--cascivo-motion-*` is a global `@cascivo/tokens` contract, and per-theme motion
   tokens would force a parity change across all themes (see "Open questions"). The opt-in
@@ -207,12 +209,16 @@ checks pass.
 
 ## Open questions / decisions needed before implementing
 
-1. **Font theming.** `brutalist`, `terminal`, and `cyberpunk` want non-default
-   (mono/grotesk) fonts, but `--cascivo-font-sans`/`-mono` live in `tokens/index.css
-   :root`, not in themes. Options: (a) keep fonts global, skip per-theme fonts; (b) add
-   font tokens to _all 11_ themes to satisfy parity. Recommendation: **(a) for now** —
-   convey personality through radius/shadow/border/color; revisit fonts as a
-   separate "themeable typography" change.
+1. **Font theming — _shipped (v39 T1)._** Resolved: studying RetroUI (a library whose
+   identity rides on its display/pixel typeface — see `docs/ROADMAP-V39.md`) motivated
+   flipping the earlier "keep fonts global" recommendation. A `--cascivo-font-display`
+   token now lives in `tokens/index.css :root` (default `var(--cascivo-font-sans)`) and is
+   **declared in every theme file**, so a theme can carry its own headline face without
+   breaking token parity (option (b)). The `Heading` component consumes
+   `--cascivo-font-display`, so the override is visible wherever headings render; `terminal`
+   maps display → mono and `brutalist` → a heavy grotesk stack. `--cascivo-font-sans`/`-mono`
+   remain the global body/code defaults (overriding _those_ per-theme would mean writing the
+   full stack in all themes, since parity counts declared keys — left as a future option).
 2. **Density theming.** Same situation for `corporate`'s tighter density
    (`--cascivo-control-height-*` are primitives). Recommendation: defer; ship
    `corporate` at default density first.

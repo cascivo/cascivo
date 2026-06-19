@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-sparkline",
+  "type": "registry:component",
+  "files": [],
+  "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkbox",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "checkbox/checkbox.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignal, useSignalEffect } from '@cascivo/core'\nimport { useRef, type InputHTMLAttributes } from 'react'\nimport styles from './checkbox.module.css'\n\nexport interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {\n  label?: string\n  indeterminate?: boolean\n}\n\nexport function Checkbox({\n  label,\n  indeterminate = false,\n  className,\n  id,\n  disabled,\n  ...props\n}: CheckboxProps) {\n  const inputRef = useRef<HTMLInputElement>(null)\n  const isIndeterminate = useSignal(indeterminate)\n  isIndeterminate.value = indeterminate\n\n  useSignalEffect(() => {\n    if (inputRef.current) inputRef.current.indeterminate = isIndeterminate.value\n  })\n\n  const checkboxId =\n    id ?? (label ? `cascade-checkbox-${label.toLowerCase().replace(/\\s+/g, '-')}` : undefined)\n\n  return (\n    <label className={cn(styles['wrapper'], className)} data-disabled={disabled || undefined}>\n      <input\n        ref={inputRef}\n        id={checkboxId}\n        type=\"checkbox\"\n        className={styles['input']}\n        disabled={disabled}\n        {...props}\n      />\n      <span className={styles['control']} aria-hidden=\"true\" />\n      {label && <span className={styles['label']}>{label}</span>}\n    </label>\n  )\n}\n"
+    },
+    {
+      "path": "checkbox/checkbox.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .wrapper {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    font-family: var(--cascivo-font-sans);\n    cursor: pointer;\n\n    &[data-disabled] {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n  }\n\n  .input {\n    position: absolute;\n    inline-size: 1px;\n    block-size: 1px;\n    margin: -1px;\n    padding: 0;\n    border: 0;\n    clip: rect(0 0 0 0);\n    clip-path: inset(50%);\n    overflow: hidden;\n    white-space: nowrap;\n  }\n\n  .control {\n    --_check-color: transparent;\n    display: inline-flex;\n    flex-shrink: 0;\n    inline-size: 1.125rem;\n    block-size: 1.125rem;\n    background-color: var(--cascivo-color-surface);\n    border: 1px solid var(--cascivo-color-border-strong);\n    border-radius: var(--cascivo-radius-indicator);\n    transition:\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    /* Checkmark drawn via mask so it inherits theme color */\n    &::after {\n      content: '';\n      inline-size: 100%;\n      block-size: 100%;\n      background-color: var(--_check-color);\n      mask: var(--_check-icon, none) no-repeat center / 0.75rem;\n    }\n  }\n\n  .input:checked + .control,\n  .input:indeterminate + .control {\n    --_check-color: var(--cascivo-color-text-on-accent);\n    background-color: var(--cascivo-color-accent);\n    border-color: var(--cascivo-color-accent);\n  }\n\n  .input:checked + .control {\n    --_check-icon: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E\");\n  }\n\n  .input:indeterminate + .control {\n    --_check-icon: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' d='M4 8h8'/%3E%3C/svg%3E\");\n  }\n\n  .input:focus-visible + .control {\n    outline: none;\n    box-shadow: var(--cascivo-focus-ring);\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-snug);\n  }\n}\n\n@media (forced-colors: active) {\n  .control {\n    border: 1px solid ButtonText;\n    background-color: Field;\n  }\n\n  .input:checked + .control,\n  .input:indeterminate + .control {\n    border-color: Highlight;\n    background-color: Highlight;\n  }\n\n  .input:focus-visible + .control {\n    outline: 2px solid Highlight;\n    outline-offset: 2px;\n  }\n}\n"
+    }
+  ],
+  "description": "Binary toggle for forms, with indeterminate support",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

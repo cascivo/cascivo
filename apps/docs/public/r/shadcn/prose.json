@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "prose",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "prose/prose.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './prose.module.css'\n\nexport type ProseProps = HTMLAttributes<HTMLDivElement>\n\nexport function Prose({ className, children, ...props }: ProseProps) {\n  return (\n    <div className={cn(styles['prose'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "prose/prose.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .prose {\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-base);\n    line-height: var(--cascivo-leading-relaxed);\n    color: var(--cascivo-color-text);\n\n    & > * {\n      margin-block: 0;\n    }\n\n    & > * + * {\n      margin-block-start: var(--cascivo-space-4);\n    }\n\n    & h1,\n    & h2,\n    & h3,\n    & h4,\n    & h5,\n    & h6 {\n      font-weight: var(--cascivo-font-semibold);\n      line-height: var(--cascivo-leading-tight);\n      color: var(--cascivo-color-text);\n      text-wrap: balance;\n    }\n\n    & h1 {\n      font-size: var(--cascivo-text-3xl);\n      letter-spacing: var(--cascivo-tracking-tight);\n    }\n\n    & h2 {\n      font-size: var(--cascivo-text-2xl);\n      letter-spacing: var(--cascivo-tracking-tight);\n    }\n\n    & h3 {\n      font-size: var(--cascivo-text-xl);\n    }\n\n    & h4 {\n      font-size: var(--cascivo-text-lg);\n    }\n\n    & h5,\n    & h6 {\n      font-size: var(--cascivo-text-base);\n    }\n\n    & > * + h2 {\n      margin-block-start: var(--cascivo-space-8);\n    }\n\n    & > * + h3 {\n      margin-block-start: var(--cascivo-space-6);\n    }\n\n    & ul,\n    & ol {\n      padding-inline-start: var(--cascivo-space-6);\n    }\n\n    & ul {\n      list-style-type: disc;\n    }\n\n    & ol {\n      list-style-type: decimal;\n    }\n\n    & li {\n      margin-block: var(--cascivo-space-1);\n    }\n\n    & li > ul,\n    & li > ol {\n      margin-block-start: var(--cascivo-space-1);\n    }\n\n    & code {\n      font-family: var(--cascivo-font-mono);\n      font-size: 0.875em;\n      background-color: var(--cascivo-color-surface);\n      border: 1px solid var(--cascivo-color-border);\n      border-radius: var(--cascivo-radius-indicator);\n      padding-block: 0.0625rem;\n      padding-inline: var(--cascivo-space-1);\n    }\n\n    & blockquote {\n      border-inline-start: 3px solid var(--cascivo-color-border-strong);\n      padding-inline-start: var(--cascivo-space-4);\n      color: var(--cascivo-color-text-subtle);\n    }\n\n    & a {\n      color: var(--cascivo-color-accent);\n      text-decoration: underline;\n      text-underline-offset: 0.15em;\n\n      &:hover {\n        color: var(--cascivo-color-accent-hover);\n      }\n    }\n\n    & table {\n      inline-size: 100%;\n      border-collapse: collapse;\n      font-size: var(--cascivo-text-sm);\n    }\n\n    & th,\n    & td {\n      border-block-end: 1px solid var(--cascivo-color-border);\n      padding-block: var(--cascivo-space-2);\n      padding-inline: var(--cascivo-space-3);\n      text-align: start;\n    }\n\n    & th {\n      font-weight: var(--cascivo-font-semibold);\n    }\n\n    & img {\n      max-inline-size: 100%;\n      block-size: auto;\n      border-radius: var(--cascivo-radius-surface);\n    }\n\n    & hr {\n      border: none;\n      border-block-start: 1px solid var(--cascivo-color-border);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

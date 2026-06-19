@@ -7,6 +7,9 @@
   [data-theme='brutalist'] {
     color-scheme: light;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: 'Arial Black', 'Helvetica Neue', ui-sans-serif, sans-serif;
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.97 0.02 95);
     --cascivo-color-surface: oklch(1 0 0);

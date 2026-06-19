@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-settings-form-page",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-settings-form-page/settings-form-page.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Button, Form, Input, Select, Toggle, useForm } from '@cascivo/react'\nimport { SettingsLayout } from '../../settings-layout/settings-layout'\n\ninterface SettingsValues extends Record<string, unknown> {\n  displayName: string\n  email: string\n  language: string\n  notifications: boolean\n}\n\nconst languageOptions = [\n  { value: 'en', label: 'English' },\n  { value: 'es', label: 'Spanish' },\n  { value: 'fr', label: 'French' },\n]\n\nexport interface SettingsFormPageProps {\n  onSave?: (values: SettingsValues) => void\n}\n\nexport function SettingsFormPage({ onSave }: SettingsFormPageProps) {\n  const form = useForm<SettingsValues>({\n    initialValues: { displayName: '', email: '', language: 'en', notifications: true },\n    validate: (values) => {\n      const errors: Partial<Record<keyof SettingsValues, string>> = {}\n      if (!values.displayName) errors.displayName = 'Display name is required.'\n      if (!values.email.includes('@')) errors.email = 'Enter a valid email address.'\n      return errors\n    },\n  })\n\n  const dnField = form.field('displayName')\n  const emailField = form.field('email')\n  const langField = form.field('language')\n  const notifField = form.field('notifications')\n\n  return (\n    <SettingsLayout\n      menu={\n        <nav aria-label=\"Settings sections\">\n          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>\n            <li>\n              <a href=\"#profile\">Profile</a>\n            </li>\n            <li>\n              <a href=\"#notifications\">Notifications</a>\n            </li>\n          </ul>\n        </nav>\n      }\n    >\n      <h1>Profile settings</h1>\n      <Form form={form} onValid={(v) => onSave?.(v)}>\n        <Input\n          label=\"Display name\"\n          value={String(dnField.value)}\n          onChange={(e) => dnField.onChange(e.target.value)}\n          onBlur={dnField.onBlur}\n          {...(dnField.error !== undefined ? { error: dnField.error } : {})}\n        />\n        <Input\n          label=\"Email\"\n          type=\"email\"\n          value={String(emailField.value)}\n          onChange={(e) => emailField.onChange(e.target.value)}\n          onBlur={emailField.onBlur}\n          {...(emailField.error !== undefined ? { error: emailField.error } : {})}\n        />\n        <Select\n          label=\"Language\"\n          options={languageOptions}\n          value={String(langField.value)}\n          onChange={(e) => langField.onChange(e.target.value)}\n          onBlur={langField.onBlur}\n        />\n        <Toggle\n          label=\"Email notifications\"\n          checked={Boolean(notifField.value)}\n          onChange={(checked) => notifField.onChange(checked)}\n        />\n        <Button type=\"submit\">Save changes</Button>\n      </Form>\n    </SettingsLayout>\n  )\n}\n"
+    }
+  ],
+  "description": "Settings page with profile form inside a two-column settings layout.",
+  "dependencies": ["@cascivo/react", "layout/settings-layout"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

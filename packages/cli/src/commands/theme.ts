@@ -12,6 +12,7 @@ const THEMES = [
   'corporate',
   'terminal',
   'cyberpunk',
+  'arcade',
 ]
 
 export async function theme(args: string[]): Promise<void> {

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "scroll-area/scroll-area.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignalEffect, useSignals } from '@cascivo/core'\nimport { useRef, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'\nimport styles from './scroll-area.module.css'\n\nexport interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {\n  /** Max block size of the scroll container (any CSS length). */\n  height?: string\n  /** Max inline size of the scroll container (any CSS length). */\n  width?: string\n  /** Which axes may scroll. */\n  orientation?: 'vertical' | 'horizontal' | 'both'\n  children?: ReactNode\n}\n\nexport function ScrollArea({\n  height,\n  width,\n  orientation = 'vertical',\n  className,\n  style,\n  children,\n  ...props\n}: ScrollAreaProps) {\n  useSignals()\n  const nodeRef = useRef<HTMLDivElement | null>(null)\n\n  // Drive scroll-shadow data attributes from the scroll position. No useEffect —\n  // useSignalEffect runs the subscription once on mount and cleans up on unmount.\n  useSignalEffect(() => {\n    const node = nodeRef.current\n    if (!node) return\n\n    const update = (): void => {\n      const atTop = node.scrollTop <= 0\n      const atBottom = node.scrollTop + node.clientHeight >= node.scrollHeight - 1\n      const atStart = node.scrollLeft <= 0\n      const atEnd = node.scrollLeft + node.clientWidth >= node.scrollWidth - 1\n      node.toggleAttribute('data-scroll-top', !atTop)\n      node.toggleAttribute('data-scroll-bottom', !atBottom)\n      node.toggleAttribute('data-scroll-start', !atStart)\n      node.toggleAttribute('data-scroll-end', !atEnd)\n    }\n\n    update()\n    node.addEventListener('scroll', update, { passive: true })\n    return () => {\n      node.removeEventListener('scroll', update)\n    }\n  })\n\n  const sizeStyle = {\n    ...(height !== undefined ? { '--cascivo-scroll-area-height': height } : {}),\n    ...(width !== undefined ? { '--cascivo-scroll-area-width': width } : {}),\n    ...style,\n  } as CSSProperties\n\n  return (\n    <div\n      ref={nodeRef}\n      data-orientation={orientation}\n      className={cn(styles['root'], className)}\n      style={sizeStyle}\n      {...props}\n    >\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "scroll-area/scroll-area.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    max-block-size: var(--cascivo-scroll-area-height, none);\n    max-inline-size: var(--cascivo-scroll-area-width, none);\n    scrollbar-width: thin;\n    scrollbar-color: var(--cascivo-color-border) transparent;\n\n    &[data-orientation='vertical'] {\n      overflow-x: hidden;\n      overflow-y: auto;\n    }\n\n    &[data-orientation='horizontal'] {\n      overflow-x: auto;\n      overflow-y: hidden;\n    }\n\n    &[data-orientation='both'] {\n      overflow: auto;\n    }\n\n    &::-webkit-scrollbar {\n      inline-size: 0.5rem;\n      block-size: 0.5rem;\n    }\n\n    &::-webkit-scrollbar-track {\n      background: transparent;\n    }\n\n    &::-webkit-scrollbar-thumb {\n      background-color: var(--cascivo-color-border);\n      border-radius: var(--cascivo-radius-control);\n    }\n\n    &::-webkit-scrollbar-thumb:hover {\n      background-color: var(--cascivo-color-text-subtle);\n    }\n\n    /* Scroll shadows — gradients appear only when content overflows in that direction. */\n    background:\n      linear-gradient(var(--cascivo-color-surface) 30%, transparent) center top / 100% 1.5rem\n        no-repeat,\n      linear-gradient(transparent, var(--cascivo-color-surface) 70%) center bottom / 100% 1.5rem\n        no-repeat;\n    background-attachment: local, local;\n\n    &[data-scroll-top] {\n      box-shadow: inset 0 0.5rem 0.4rem -0.4rem\n        color-mix(in srgb, var(--cascivo-color-text) 12%, transparent);\n    }\n\n    &[data-scroll-bottom] {\n      box-shadow: inset 0 -0.5rem 0.4rem -0.4rem\n        color-mix(in srgb, var(--cascivo-color-text) 12%, transparent);\n    }\n\n    &[data-scroll-top][data-scroll-bottom] {\n      box-shadow:\n        inset 0 0.5rem 0.4rem -0.4rem color-mix(in srgb, var(--cascivo-color-text) 12%, transparent),\n        inset 0 -0.5rem 0.4rem -0.4rem\n          color-mix(in srgb, var(--cascivo-color-text) 12%, transparent);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "A scroll container with styled, slim scrollbars and overflow shadows",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

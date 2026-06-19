@@ -39,7 +39,7 @@ Renders a real <h1>–<h6> from the level prop so the heading appears in the acc
 
 ## Tokens
 
-- `--cascivo-font-sans`
+- `--cascivo-font-display`
 - `--cascivo-font-semibold`
 - `--cascivo-leading-tight`
 - `--cascivo-tracking-tight`

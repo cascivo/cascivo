@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "aspect-ratio",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "aspect-ratio/aspect-ratio.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes, ReactNode } from 'react'\nimport styles from './aspect-ratio.module.css'\n\nexport interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {\n  /** Width-to-height ratio (e.g. 16 / 9). Defaults to 16/9. */\n  ratio?: number\n  children?: ReactNode\n}\n\nexport function AspectRatio({\n  ratio = 16 / 9,\n  className,\n  style,\n  children,\n  ...props\n}: AspectRatioProps) {\n  return (\n    <div\n      className={cn(styles['root'], className)}\n      style={{ '--cascivo-aspect-ratio': ratio, ...style } as CSSProperties}\n      {...props}\n    >\n      <div className={styles['inner']}>{children}</div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "aspect-ratio/aspect-ratio.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    position: relative;\n    inline-size: 100%;\n    aspect-ratio: var(--cascivo-aspect-ratio, 1);\n  }\n\n  .inner {\n    position: absolute;\n    inset: 0;\n    inline-size: 100%;\n    block-size: 100%;\n\n    & > * {\n      inline-size: 100%;\n      block-size: 100%;\n      object-fit: cover;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Constrains content to a fixed width-to-height ratio",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

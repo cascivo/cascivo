@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-page-with-breadcrumb",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-page-with-breadcrumb/page-with-breadcrumb.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Breadcrumb } from '@cascivo/react'\nimport { Center } from '../../center/center'\nimport { PageHeader } from '../../page-header/page-header'\n\nexport function PageWithBreadcrumb() {\n  return (\n    <Center maxWidth=\"64rem\">\n      <PageHeader\n        title=\"Settings\"\n        description=\"Manage your account preferences.\"\n        breadcrumb={\n          <Breadcrumb\n            items={[\n              { label: 'Home', href: '/' },\n              { label: 'Settings', href: '/settings' },\n            ]}\n          />\n        }\n      />\n      <div style={{ padding: '2rem 0' }}>\n        <p>Page content goes here.</p>\n      </div>\n    </Center>\n  )\n}\n"
+    }
+  ],
+  "description": "A centered content page with a breadcrumb navigation and page header.",
+  "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

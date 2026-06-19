@@ -7,6 +7,9 @@
   [data-theme='cyberpunk'] {
     color-scheme: dark;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.16 0.03 285);
     --cascivo-color-surface: oklch(0.2 0.035 285);

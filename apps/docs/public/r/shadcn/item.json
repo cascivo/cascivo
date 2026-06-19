@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "item",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "item/item.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, Slot } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './item.module.css'\n\nexport interface ItemProps extends HTMLAttributes<HTMLDivElement> {\n  asChild?: boolean\n  variant?: 'default' | 'muted'\n  size?: 'sm' | 'md'\n}\n\nexport function Item({\n  asChild = false,\n  variant = 'default',\n  size = 'md',\n  className,\n  children,\n  ...props\n}: ItemProps) {\n  const Comp = asChild ? Slot : 'div'\n  return (\n    <Comp\n      data-variant={variant}\n      data-size={size}\n      className={cn(styles['item'], className as string | undefined)}\n      {...(props as Record<string, unknown>)}\n    >\n      {children}\n    </Comp>\n  )\n}\n\nexport interface ItemMediaProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function ItemMedia({ className, children, ...props }: ItemMediaProps) {\n  return (\n    <div className={cn(styles['media'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n\nexport interface ItemContentProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function ItemContent({ className, children, ...props }: ItemContentProps) {\n  return (\n    <div className={cn(styles['content'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n\nexport interface ItemTitleProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function ItemTitle({ className, children, ...props }: ItemTitleProps) {\n  return (\n    <div className={cn(styles['title'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n\nexport interface ItemDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {}\n\nexport function ItemDescription({ className, children, ...props }: ItemDescriptionProps) {\n  return (\n    <p className={cn(styles['description'], className as string | undefined)} {...props}>\n      {children}\n    </p>\n  )\n}\n\nexport interface ItemActionsProps extends HTMLAttributes<HTMLDivElement> {}\n\nexport function ItemActions({ className, children, ...props }: ItemActionsProps) {\n  return (\n    <div className={cn(styles['actions'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "item/item.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .item {\n    display: grid;\n    grid-template-columns: auto 1fr auto;\n    align-items: center;\n    gap: var(--cascivo-space-3);\n    inline-size: 100%;\n    box-sizing: border-box;\n    font-family: var(--cascivo-font-sans);\n    color: var(--cascivo-color-text);\n    border-radius: var(--cascivo-radius-item);\n\n    &[data-size='sm'] {\n      padding-inline: var(--cascivo-space-3);\n      padding-block: var(--cascivo-space-2);\n      font-size: var(--cascivo-text-xs);\n    }\n\n    &[data-size='md'] {\n      padding-inline: var(--cascivo-space-4);\n      padding-block: var(--cascivo-space-3);\n      font-size: var(--cascivo-text-sm);\n    }\n\n    &[data-variant='muted'] {\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n  }\n\n  .media {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    flex: none;\n    color: var(--cascivo-color-text-subtle);\n  }\n\n  .content {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    min-inline-size: 0;\n  }\n\n  .title {\n    font-weight: var(--cascivo-font-medium);\n    line-height: var(--cascivo-leading-tight);\n    color: var(--cascivo-color-text);\n  }\n\n  .description {\n    margin: 0;\n    font-size: var(--cascivo-text-xs);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-normal);\n  }\n\n  .actions {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    flex: none;\n  }\n}\n"
+    }
+  ],
+  "description": "Generic content row primitive with media, content, and action regions",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

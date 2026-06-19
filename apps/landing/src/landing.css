@@ -3,7 +3,7 @@
  * sm: 30rem (480px)  md: 48rem (768px)  lg: 56rem (896px)  xl: 64rem (1024px)  2xl: 80rem (1280px)
  */
 
-/* Import tokens + all eleven themes (switching + scoped containers) */
+/* Import tokens + all twelve themes (switching + scoped containers) */
 @import '@cascivo/themes/light.css';
 @import '@cascivo/themes/dark.css';
 @import '@cascivo/themes/warm.css';
@@ -15,6 +15,7 @@
 @import '@cascivo/themes/corporate.css';
 @import '@cascivo/themes/terminal.css';
 @import '@cascivo/themes/cyberpunk.css';
+@import '@cascivo/themes/arcade.css';
 
 /* ── Cross-document view transitions ─────────────────── */
 @view-transition {

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-center",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-center/center.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './center.module.css'\n\nexport interface CenterProps extends HTMLAttributes<HTMLDivElement> {\n  maxWidth?: string\n}\n\nexport function Center({ maxWidth = '48rem', className, style, ...props }: CenterProps) {\n  return (\n    <div\n      className={cn(styles['center'], className)}\n      style={{ ['--_center-max' as string]: maxWidth, ...style }}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-center/center.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .center {\n    margin-inline: auto;\n    max-inline-size: var(--_center-max, 48rem);\n    padding-inline: var(--cascivo-space-4);\n    inline-size: 100%;\n  }\n}\n"
+    }
+  ],
+  "description": "Horizontally centered container with a configurable max-width.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -13,6 +13,7 @@ export const THEMES = [
   'corporate',
   'terminal',
   'cyberpunk',
+  'arcade',
 ] as const
 export type ThemeName = (typeof THEMES)[number]
 

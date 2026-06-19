@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "skeleton/skeleton.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './skeleton.module.css'\n\nexport interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {\n  variant?: 'text' | 'circle' | 'rect'\n  width?: string\n  height?: string\n  lines?: number\n}\n\nexport function Skeleton({\n  variant = 'text',\n  width,\n  height,\n  lines = 1,\n  className,\n  style,\n  ...props\n}: SkeletonProps) {\n  const sizeVars = {\n    ...(width !== undefined && { '--cascivo-skeleton-width': width }),\n    ...(height !== undefined && { '--cascivo-skeleton-height': height }),\n  } as CSSProperties\n\n  return (\n    <div\n      aria-hidden=\"true\"\n      data-variant={variant}\n      className={cn(styles['skeleton'], className)}\n      style={{ ...sizeVars, ...style }}\n      {...props}\n    >\n      {variant === 'text' &&\n        Array.from({ length: lines }, (_, index) => (\n          <span key={index} className={styles['line']} />\n        ))}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "skeleton/skeleton.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .skeleton {\n    &[data-variant='text'] {\n      display: flex;\n      flex-direction: column;\n      gap: var(--cascivo-space-2);\n      inline-size: var(--cascivo-skeleton-width, 100%);\n    }\n\n    &[data-variant='circle'] {\n      inline-size: var(--cascivo-skeleton-width, var(--cascivo-space-10));\n      block-size: var(--cascivo-skeleton-height, var(--cascivo-space-10));\n      border-radius: var(--cascivo-radius-full);\n    }\n\n    &[data-variant='rect'] {\n      inline-size: var(--cascivo-skeleton-width, 100%);\n      block-size: var(--cascivo-skeleton-height, var(--cascivo-space-24));\n      border-radius: var(--cascivo-radius-surface);\n    }\n  }\n\n  .line {\n    display: block;\n    inline-size: 100%;\n    block-size: var(--cascivo-skeleton-height, 1em);\n    border-radius: var(--cascivo-radius-indicator);\n\n    /* Multi-line paragraphs end on a shorter bar */\n    &:last-child:not(:first-child) {\n      inline-size: 60%;\n    }\n  }\n\n  /* Continuous shimmer — literal duration; a static fallback below\n     replaces the duration-token opt-out used for one-shot motion. */\n  .skeleton[data-variant='circle'],\n  .skeleton[data-variant='rect'],\n  .line {\n    background-color: var(--cascivo-color-border);\n    background-image: linear-gradient(\n      90deg,\n      var(--cascivo-color-border) 25%,\n      var(--cascivo-color-bg-subtle) 50%,\n      var(--cascivo-color-border) 75%\n    );\n    background-size: 200% 100%;\n    animation: cascade-shimmer 1.5s linear infinite;\n  }\n\n  @keyframes cascade-shimmer {\n    from {\n      background-position: 200% 0;\n    }\n\n    to {\n      background-position: -200% 0;\n    }\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .skeleton[data-variant='circle'],\n    .skeleton[data-variant='rect'],\n    .line {\n      animation: none;\n      background-image: none;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Animated loading placeholder that mirrors the shape of pending content",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

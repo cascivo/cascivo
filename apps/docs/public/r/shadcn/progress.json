@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "progress/progress.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport styles from './progress.module.css'\n\nexport type ProgressVariant = 'primary' | 'info' | 'success' | 'warning' | 'error'\nexport type ProgressSize = 'sm' | 'md' | 'lg'\n\nexport interface ProgressProps {\n  /** 0–100. Omit for indeterminate state. */\n  value?: number\n  variant?: ProgressVariant\n  size?: ProgressSize\n  'aria-label'?: string\n  'aria-describedby'?: string\n  className?: string\n}\n\nexport function Progress({\n  value,\n  variant = 'primary',\n  size = 'md',\n  className,\n  ...aria\n}: ProgressProps) {\n  return (\n    <progress\n      className={[styles['progress'], className].filter(Boolean).join(' ')}\n      data-variant={variant}\n      data-size={size}\n      value={value}\n      max={value !== undefined ? 100 : undefined}\n      {...aria}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "progress/progress.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .progress {\n    display: block;\n    inline-size: 100%;\n    appearance: none;\n    border: none;\n    border-radius: var(--cascivo-radius-full);\n    background-color: var(--cascivo-color-surface-2);\n    overflow: hidden;\n  }\n\n  .progress[data-size='sm'] {\n    block-size: 0.25rem;\n  }\n  .progress[data-size='md'] {\n    block-size: 0.5rem;\n  }\n  .progress[data-size='lg'] {\n    block-size: 0.75rem;\n  }\n\n  .progress::-webkit-progress-bar {\n    background: transparent;\n  }\n  .progress::-webkit-progress-value {\n    background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));\n    border-radius: var(--cascivo-radius-full);\n    transition: inline-size 150ms var(--cascivo-ease-out);\n  }\n  .progress::-moz-progress-bar {\n    background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));\n    border-radius: var(--cascivo-radius-full);\n  }\n\n  .progress[data-variant='primary'] {\n    --cascivo-progress-color: var(--cascivo-color-primary);\n  }\n  .progress[data-variant='info'] {\n    --cascivo-progress-color: var(--cascivo-color-info);\n  }\n  .progress[data-variant='success'] {\n    --cascivo-progress-color: var(--cascivo-color-success);\n  }\n  .progress[data-variant='warning'] {\n    --cascivo-progress-color: var(--cascivo-color-warning);\n  }\n  .progress[data-variant='error'] {\n    --cascivo-progress-color: var(--cascivo-color-error);\n  }\n\n  .progress:indeterminate::-webkit-progress-value {\n    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;\n  }\n  .progress:indeterminate::-moz-progress-bar {\n    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;\n  }\n\n  @keyframes cascivo-progress-indeterminate {\n    0% {\n      inline-size: 0%;\n      margin-inline-start: 0;\n    }\n    50% {\n      inline-size: 50%;\n      margin-inline-start: 25%;\n    }\n    100% {\n      inline-size: 0%;\n      margin-inline-start: 100%;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Horizontal bar showing the completion progress of a tracked operation",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["feedback"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

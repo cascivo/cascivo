@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-bubble",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "chat-bubble/chat-bubble.tsx",
+      "type": "registry:component",
+      "content": "import styles from './chat-bubble.module.css'\n\nexport type ChatBubbleSide = 'start' | 'end'\n\nexport interface ChatBubbleProps {\n  children: React.ReactNode\n  side?: ChatBubbleSide\n  avatar?: React.ReactNode\n  name?: string\n  time?: string\n  className?: string\n}\n\nexport function ChatBubble({\n  children,\n  side = 'start',\n  avatar,\n  name,\n  time,\n  className,\n}: ChatBubbleProps) {\n  return (\n    <div className={[styles.bubble, className].filter(Boolean).join(' ')} data-side={side}>\n      {avatar && (\n        <div className={styles.avatar} aria-hidden=\"true\">\n          {avatar}\n        </div>\n      )}\n      <div className={styles.content}>\n        {(name || time) && (\n          <div className={styles.meta}>\n            {name && <span className={styles.name}>{name}</span>}\n            {time && <time className={styles.time}>{time}</time>}\n          </div>\n        )}\n        <div className={styles.body}>{children}</div>\n      </div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "chat-bubble/chat-bubble.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .bubble {\n    display: flex;\n    align-items: flex-end;\n    gap: 0.5rem;\n    max-inline-size: 75%;\n  }\n\n  .bubble[data-side='start'] {\n    align-self: flex-start;\n    flex-direction: row;\n  }\n  .bubble[data-side='end'] {\n    align-self: flex-end;\n    flex-direction: row-reverse;\n  }\n\n  .avatar {\n    flex-shrink: 0;\n    align-self: flex-end;\n  }\n\n  .content {\n    display: flex;\n    flex-direction: column;\n    gap: 0.25rem;\n  }\n  .bubble[data-side='end'] .content {\n    align-items: flex-end;\n  }\n\n  .meta {\n    display: flex;\n    gap: 0.5rem;\n    align-items: baseline;\n    font-size: 0.75rem;\n    color: var(--cascivo-color-text-muted);\n  }\n\n  .name {\n    font-weight: 600;\n    color: var(--cascivo-color-text-subtle);\n  }\n  .time {\n    color: var(--cascivo-color-text-muted);\n  }\n\n  .body {\n    padding-block: 0.5rem;\n    padding-inline: 0.875rem;\n    border-radius: var(--cascivo-radius-overlay);\n    font-size: 0.9375rem;\n    line-height: 1.5;\n  }\n\n  .bubble[data-side='start'] .body {\n    background-color: var(--cascivo-color-surface);\n    color: var(--cascivo-color-text);\n    border-end-start-radius: var(--cascivo-radius-indicator);\n  }\n\n  .bubble[data-side='end'] .body {\n    background-color: var(--cascivo-color-accent);\n    color: var(--cascivo-color-accent-content);\n    border-end-end-radius: var(--cascivo-radius-indicator);\n  }\n}\n"
+    }
+  ],
+  "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

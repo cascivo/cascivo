@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-kpi",
+  "type": "registry:component",
+  "files": [],
+  "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

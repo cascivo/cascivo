@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-combo-chart",
+  "type": "registry:component",
+  "files": [],
+  "description": "Combination bar + line chart on shared or dual y-axes.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radial-progress",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "radial-progress/radial-progress.tsx",
+      "type": "registry:component",
+      "content": "import styles from './radial-progress.module.css'\n\nexport type RadialProgressSize = 'sm' | 'md' | 'lg'\nexport type RadialProgressVariant = 'primary' | 'info' | 'success' | 'warning' | 'error'\n\nexport interface RadialProgressProps {\n  value: number\n  size?: RadialProgressSize\n  variant?: RadialProgressVariant\n  children?: React.ReactNode\n  'aria-label'?: string\n  className?: string\n}\n\nexport function RadialProgress({\n  value,\n  size = 'md',\n  variant = 'primary',\n  children,\n  className,\n  ...aria\n}: RadialProgressProps) {\n  const clamped = Math.min(100, Math.max(0, value))\n  return (\n    <div\n      role=\"progressbar\"\n      aria-valuenow={clamped}\n      aria-valuemin={0}\n      aria-valuemax={100}\n      className={[styles.radialProgress, className].filter(Boolean).join(' ')}\n      data-size={size}\n      data-variant={variant}\n      style={\n        { '--cascivo-radial-progress': clamped } as React.CSSProperties & {\n          '--cascivo-radial-progress': number\n        }\n      }\n      {...aria}\n    >\n      <span className={styles.label}>{children ?? `${clamped}%`}</span>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "radial-progress/radial-progress.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .radialProgress {\n    --cascivo-radial-size: 5rem;\n    --cascivo-radial-thickness: 0.375rem;\n    --cascivo-radial-color: var(--cascivo-color-accent);\n\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    inline-size: var(--cascivo-radial-size);\n    block-size: var(--cascivo-radial-size);\n    border-radius: var(--cascivo-radius-full);\n    background-color: var(--cascivo-color-surface-2);\n    background-image: conic-gradient(\n      var(--cascivo-radial-color) calc(var(--cascivo-radial-progress, 0) * 1%),\n      transparent 0\n    );\n    box-shadow: inset 0 0 0 calc(var(--cascivo-radial-size) / 2 - var(--cascivo-radial-thickness))\n      var(--cascivo-color-surface);\n  }\n\n  .radialProgress[data-size='sm'] {\n    --cascivo-radial-size: 3.5rem;\n    --cascivo-radial-thickness: 0.25rem;\n  }\n  .radialProgress[data-size='md'] {\n    --cascivo-radial-size: 5rem;\n    --cascivo-radial-thickness: 0.375rem;\n  }\n  .radialProgress[data-size='lg'] {\n    --cascivo-radial-size: 7rem;\n    --cascivo-radial-thickness: 0.5rem;\n  }\n\n  .radialProgress[data-variant='primary'] {\n    --cascivo-radial-color: var(--cascivo-color-primary);\n  }\n  .radialProgress[data-variant='info'] {\n    --cascivo-radial-color: var(--cascivo-color-info);\n  }\n  .radialProgress[data-variant='success'] {\n    --cascivo-radial-color: var(--cascivo-color-success);\n  }\n  .radialProgress[data-variant='warning'] {\n    --cascivo-radial-color: var(--cascivo-color-warning);\n  }\n  .radialProgress[data-variant='error'] {\n    --cascivo-radial-color: var(--cascivo-color-error);\n  }\n\n  .label {\n    font-size: 0.875em;\n    font-weight: 600;\n    color: var(--cascivo-color-text);\n    line-height: 1;\n  }\n}\n"
+    }
+  ],
+  "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
+  "categories": ["feedback"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

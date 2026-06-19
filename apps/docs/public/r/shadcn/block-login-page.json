@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-login-page",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-login-page/login-page.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Button, Form, Input, useForm } from '@cascivo/react'\nimport { AuthLayout } from '../../auth-layout/auth-layout'\n\ninterface LoginValues extends Record<string, unknown> {\n  email: string\n  password: string\n}\n\nexport interface LoginPageProps {\n  onSubmit?: (values: LoginValues) => void\n}\n\nexport function LoginPage({ onSubmit }: LoginPageProps) {\n  const form = useForm<LoginValues>({\n    initialValues: { email: '', password: '' },\n    validate: (values) => {\n      const errors: Partial<Record<keyof LoginValues, string>> = {}\n      if (!values.email) errors.email = 'Email is required.'\n      if (values.password.length < 8) errors.password = 'Password must be at least 8 characters.'\n      return errors\n    },\n  })\n\n  const emailField = form.field('email')\n  const passwordField = form.field('password')\n\n  return (\n    <AuthLayout>\n      <h1>Sign in</h1>\n      <Form form={form} onValid={(v) => onSubmit?.(v)}>\n        <Input\n          label=\"Email\"\n          type=\"email\"\n          value={String(emailField.value)}\n          onChange={(e) => emailField.onChange(e.target.value)}\n          onBlur={emailField.onBlur}\n          {...(emailField.error !== undefined ? { error: emailField.error } : {})}\n        />\n        <Input\n          label=\"Password\"\n          type=\"password\"\n          value={String(passwordField.value)}\n          onChange={(e) => passwordField.onChange(e.target.value)}\n          onBlur={passwordField.onBlur}\n          {...(passwordField.error !== undefined ? { error: passwordField.error } : {})}\n        />\n        <Button type=\"submit\">Sign in</Button>\n      </Form>\n    </AuthLayout>\n  )\n}\n"
+    }
+  ],
+  "description": "Authentication login page with email and password form.",
+  "dependencies": ["@cascivo/react", "layout/auth-layout"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

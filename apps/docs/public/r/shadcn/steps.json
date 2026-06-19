@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "steps",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "steps/steps.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { useSignal, useSignals } from '@cascivo/core'\nimport styles from './steps.module.css'\n\nexport type StepState = 'pending' | 'active' | 'complete' | 'error'\n\nexport interface Step {\n  label: string\n  state?: StepState\n}\n\nexport interface StepsProps {\n  steps: Step[]\n  activeStep?: number\n  orientation?: 'horizontal' | 'vertical'\n  className?: string\n}\n\nexport function Steps({\n  steps,\n  activeStep: controlledActiveStep,\n  orientation = 'horizontal',\n  className,\n}: StepsProps) {\n  useSignals()\n  const active = useSignal(controlledActiveStep ?? 0)\n  active.value = controlledActiveStep ?? active.value\n\n  return (\n    <ol\n      className={[styles.steps, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n      aria-label=\"Steps\"\n    >\n      {steps.map((step, i) => {\n        const state: StepState =\n          step.state ?? (i < active.value ? 'complete' : i === active.value ? 'active' : 'pending')\n        return (\n          <li\n            key={i}\n            className={styles.step}\n            data-state={state}\n            aria-current={state === 'active' ? 'step' : undefined}\n          >\n            <div className={styles.circle}>\n              {state === 'complete' ? '✓' : state === 'error' ? '✕' : i + 1}\n            </div>\n            <span className={styles.label}>{step.label}</span>\n          </li>\n        )\n      })}\n    </ol>\n  )\n}\n"
+    },
+    {
+      "path": "steps/steps.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .steps {\n    display: flex;\n    gap: 0;\n    list-style: none;\n    margin: 0;\n    padding: 0;\n  }\n\n  .steps[data-orientation='horizontal'] {\n    flex-direction: row;\n    align-items: center;\n  }\n  .steps[data-orientation='vertical'] {\n    flex-direction: column;\n  }\n\n  .step {\n    display: flex;\n    align-items: center;\n    gap: 0.5rem;\n    flex: 1;\n    position: relative;\n  }\n\n  .step:not(:last-child)::after {\n    content: '';\n    flex: 1;\n    block-size: 1px;\n    background-color: var(--cascivo-border-default);\n  }\n\n  .steps[data-orientation='vertical'] .step:not(:last-child)::after {\n    position: absolute;\n    inset-inline-start: 0.75rem;\n    inset-block-start: 2rem;\n    inline-size: 1px;\n    block-size: calc(100% - 1.5rem);\n    flex: none;\n  }\n\n  .circle {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    inline-size: 1.5rem;\n    block-size: 1.5rem;\n    border-radius: var(--cascivo-radius-full);\n    border: 2px solid var(--cascivo-border-default);\n    background-color: var(--cascivo-color-surface);\n    font-size: 0.75rem;\n    font-weight: 600;\n    color: var(--cascivo-color-text-muted);\n    flex-shrink: 0;\n    transition:\n      background-color 150ms var(--cascivo-ease-out),\n      border-color 150ms var(--cascivo-ease-out);\n  }\n\n  .step[data-state='active'] .circle {\n    background-color: var(--cascivo-color-accent);\n    border-color: var(--cascivo-color-accent);\n    color: var(--cascivo-color-accent-content);\n  }\n\n  .step[data-state='complete'] .circle {\n    background-color: var(--cascivo-color-success);\n    border-color: var(--cascivo-color-success);\n    color: var(--cascivo-color-success-content);\n  }\n\n  .step[data-state='error'] .circle {\n    background-color: var(--cascivo-color-error);\n    border-color: var(--cascivo-color-error);\n    color: var(--cascivo-color-error-content);\n  }\n\n  .step[data-state='complete']:not(:last-child)::after {\n    background-color: var(--cascivo-color-success);\n  }\n\n  .label {\n    font-size: 0.875rem;\n    color: var(--cascivo-color-text-subtle);\n  }\n\n  .step[data-state='active'] .label {\n    color: var(--cascivo-color-text);\n    font-weight: 500;\n  }\n  .step[data-state='complete'] .label {\n    color: var(--cascivo-color-text-subtle);\n  }\n  .step[data-state='error'] .label {\n    color: var(--cascivo-color-error);\n  }\n}\n"
+    }
+  ],
+  "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["navigation"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

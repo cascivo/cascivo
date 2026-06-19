@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "header",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "header/header.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport styles from './header.module.css'\n\nexport interface HeaderLink {\n  label: string\n  href: string\n  active?: boolean\n}\n\nexport interface HeaderLabels {\n  nav?: string\n}\n\nexport interface HeaderProps extends HTMLAttributes<HTMLElement> {\n  brand?: ReactNode\n  links?: HeaderLink[]\n  actions?: ReactNode\n  sticky?: boolean\n  labels?: HeaderLabels\n}\n\nexport function Header({\n  brand,\n  links,\n  actions,\n  sticky = false,\n  labels,\n  className,\n  ...props\n}: HeaderProps) {\n  useSignals()\n  const navLabel = labels?.nav ?? t(builtin.header.nav)\n  return (\n    <header\n      role=\"banner\"\n      data-sticky={sticky || undefined}\n      className={cn(styles['header'], className)}\n      {...props}\n    >\n      {brand && <div className={styles['brand']}>{brand}</div>}\n      {links && links.length > 0 && (\n        <nav aria-label={navLabel} className={styles['nav']}>\n          <ul className={styles['list']}>\n            {links.map((link) => (\n              <li key={link.href}>\n                <a\n                  href={link.href}\n                  aria-current={link.active ? 'page' : undefined}\n                  data-state={link.active ? 'active' : undefined}\n                  className={styles['link']}\n                >\n                  {link.label}\n                </a>\n              </li>\n            ))}\n          </ul>\n        </nav>\n      )}\n      <div className={styles['spacer']} />\n      {actions && <div className={styles['actions']}>{actions}</div>}\n    </header>\n  )\n}\n"
+    },
+    {
+      "path": "header/header.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .header {\n    container: cascade-header / inline-size;\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-6);\n    padding-inline: var(--cascivo-space-6);\n    padding-block: var(--cascivo-space-3);\n    font-family: var(--cascivo-font-sans);\n    background-color: var(--cascivo-header-bg, var(--cascivo-color-surface));\n    border-block-end: 1px solid var(--cascivo-color-border);\n\n    &[data-sticky] {\n      position: sticky;\n      inset-block-start: 0;\n      z-index: var(--cascivo-z-raised);\n    }\n  }\n\n  .brand {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    font-size: var(--cascivo-text-base);\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-color-text);\n    white-space: nowrap;\n\n    & :any-link {\n      color: inherit;\n      text-decoration: none;\n    }\n  }\n\n  .nav {\n    min-inline-size: 0;\n  }\n\n  .list {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-1);\n    margin: 0;\n    padding: 0;\n    list-style: none;\n  }\n\n  .link {\n    display: inline-flex;\n    align-items: center;\n    padding-inline: var(--cascivo-space-3);\n    padding-block: var(--cascivo-space-2);\n    font-size: var(--cascivo-text-sm);\n    line-height: var(--cascivo-leading-none);\n    color: var(--cascivo-color-text-subtle);\n    text-decoration: none;\n    white-space: nowrap;\n    border-radius: var(--cascivo-radius-item);\n    transition:\n      color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover {\n      color: var(--cascivo-color-text);\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    &[data-state='active'] {\n      color: var(--cascivo-color-text);\n      font-weight: var(--cascivo-font-medium);\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n  }\n\n  .spacer {\n    flex: 1;\n  }\n\n  .actions {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n  }\n\n  /* Narrow container: tighter, smaller nav link labels */\n  @container cascade-header (inline-size < 40rem) {\n    .list {\n      gap: 0;\n    }\n\n    .link {\n      padding-inline: var(--cascivo-space-2);\n      font-size: var(--cascivo-text-xs);\n      letter-spacing: var(--cascivo-tracking-tight);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "App top bar with brand, primary navigation links, and an actions slot",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["navigation"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

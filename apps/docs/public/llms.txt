@@ -207,6 +207,7 @@ New MCP tools:
 - [time-picker](/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants
 - [timeline](/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
 - [toast](/llms/toast.md) — Transient notification surfaced via the useToast hook
+- [toc](/llms/toc.md) — Table of contents with scroll-spy highlighting of the active section
 - [toggle](/llms/toggle.md) — On/off switch built as an accessible button
 - [toggle-group](/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection
 - [toggletip](/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content
@@ -368,6 +369,7 @@ New MCP tools:
 - [TimePicker](/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
 - [Timeline](/context/timeline.md) — Use when: Showing an ordered sequence of events over time (activity feeds, order tracking)
 - [Toast](/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
+- [Toc](/context/toc.md) — Use when: Long-form pages (docs, articles) that benefit from in-page jump links
 - [Toggle](/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
 - [ToggleGroup](/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
 - [Toggletip](/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance

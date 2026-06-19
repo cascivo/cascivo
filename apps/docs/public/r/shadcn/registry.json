@@ -1,0 +1,3641 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "cascivo",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "accordion",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "accordion/accordion.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "accordion/accordion.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Vertically stacked, collapsible content sections",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "alert",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "alert/alert.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "alert/alert.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Highlights a short, important message inline",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "alert-dialog",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "alert-dialog/alert-dialog.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "alert-dialog/alert-dialog.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "app-shell",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "app-shell/app-shell.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "app-shell/app-shell.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "aspect-ratio",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "aspect-ratio/aspect-ratio.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "aspect-ratio/aspect-ratio.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Constrains content to a fixed width-to-height ratio",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "avatar",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "avatar/avatar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "avatar/avatar.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Displays a user image with initials fallback",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "badge",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "badge/badge.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "badge/badge.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Small status label or category indicator",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-console-app",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-console-app/console-app.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-console-app/console-app.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
+      "dependencies": [
+        "@cascivo/react",
+        "@cascivo/icons",
+        "layout/app-shell",
+        "layout/page-header"
+      ],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-dashboard-charts",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-dashboard-charts/dashboard-charts.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+      "dependencies": ["@cascivo/charts", "@cascivo/react"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-empty-dashboard",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-empty-dashboard/empty-dashboard.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Dashboard page showing an empty state with a call-to-action button.",
+      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-login-page",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-login-page/login-page.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Authentication login page with email and password form.",
+      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-notification-center",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-notification-center/notification-center.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "A list of notification alerts with a mark-all-read action.",
+      "dependencies": ["@cascivo/react", "layout/stack"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-page-with-breadcrumb",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-page-with-breadcrumb/page-with-breadcrumb.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "A centered content page with a breadcrumb navigation and page header.",
+      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-settings-form-page",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-settings-form-page/settings-form-page.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Settings page with profile form inside a two-column settings layout.",
+      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-sidebar-app",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-sidebar-app/sidebar-app.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Full app shell with collapsible side navigation and top header.",
+      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-stats-cards",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-stats-cards/stats-cards.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Grid of KPI stat cards with trend badges.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-users-table-page",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-users-table-page/users-table-page.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Full users management page with table, search, and invite action.",
+      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "blockquote",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "blockquote/blockquote.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "blockquote/blockquote.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Quoted passage with optional attribution footer",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "breadcrumb",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "breadcrumb/breadcrumb.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "breadcrumb/breadcrumb.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Shows the current page location within a navigation hierarchy",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "button/button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "button/button.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Triggers an action or event",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button-group",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "button-group/button-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "button-group/button-group.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Visually joins a set of related buttons into a single segmented control",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "calendar",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "calendar/calendar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "calendar/calendar.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "An accessible standalone month-grid date picker.",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "card",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "card/card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "card/card.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Container for grouping related content",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "carousel",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "carousel/carousel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "carousel/carousel.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-area-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-bar-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-boxplot",
+      "type": "registry:component",
+      "files": [],
+      "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-bubble-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-bullet",
+      "type": "registry:component",
+      "files": [],
+      "description": "Bullet chart with background range bands, measure bar, and target tick.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-combo-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Combination bar + line chart on shared or dual y-axes.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-heatmap",
+      "type": "registry:component",
+      "files": [],
+      "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-histogram",
+      "type": "registry:component",
+      "files": [],
+      "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-kpi",
+      "type": "registry:component",
+      "files": [],
+      "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-line-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-meter",
+      "type": "registry:component",
+      "files": [],
+      "description": "Progress meter in bar or gauge variant with threshold coloring.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-pie-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Pie or donut chart with hover segments and optional legend.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-radar",
+      "type": "registry:component",
+      "files": [],
+      "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-scatter-chart",
+      "type": "registry:component",
+      "files": [],
+      "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-sparkline",
+      "type": "registry:component",
+      "files": [],
+      "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-treemap",
+      "type": "registry:component",
+      "files": [],
+      "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chat-bubble",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "chat-bubble/chat-bubble.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "chat-bubble/chat-bubble.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "checkbox",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "checkbox/checkbox.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "checkbox/checkbox.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Binary toggle for forms, with indeterminate support",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "checkbox-card",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "checkbox-card/checkbox-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "checkbox-card/checkbox-card.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "code",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "code/code.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "code/code.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Inline code span for identifiers, commands, and short snippets",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "code-snippet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "code-snippet/code-snippet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "code-snippet/code-snippet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "collapsible",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "collapsible/collapsible.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "collapsible/collapsible.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A single disclosure region toggled open and closed by its trigger",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "color-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "color-picker/color-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "color-picker/color-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "combobox",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "combobox/combobox.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "combobox/combobox.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "command-menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "command-menu/command-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "command-menu/command-menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Cmd+K command palette with fuzzy search over grouped commands",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "contained-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "contained-list/contained-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "contained-list/contained-list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Labelled list of rows inside a bordered container",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "context-menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "context-menu/context-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "context-menu/context-menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "copy-button",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "copy-button/copy-button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "copy-button/copy-button.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Icon button that copies a value to the clipboard with copied feedback",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "data-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "data-list/data-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-list/data-list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Key-value pairs rendered as a description list",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "data-table",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "data-table/data-table.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/data-table.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "date-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "date-picker/date-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "date-picker/date-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "An accessible date-picker with a calendar popover.",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "date-range-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "date-range-picker/date-range-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "date-range-picker/date-range-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A dual-calendar picker for selecting a contiguous date range.",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dock",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "dock/dock.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "dock/dock.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "drawer",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "drawer/drawer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "drawer/drawer.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dropdown",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "dropdown/dropdown.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "dropdown/dropdown.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Menu of actions revealed from a trigger",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "editable",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "editable/editable.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "editable/editable.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Inline click-to-edit text field",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "empty-state",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "empty-state/empty-state.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "empty-state/empty-state.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Placeholder for views that have no data to display",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "field",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "field/field.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "field/field.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Form-field wrapper composing label, control, description, and error",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "file-uploader",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "file-uploader/file-uploader.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "file-uploader/file-uploader.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Drag-and-drop file upload zone with file list and status indicators.",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "filter",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "filter/filter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "filter/filter.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A group of toggleable pill or outline buttons for filtering content by category",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "form",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "form/form.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "form/form.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "header",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "header/header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "header/header.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "App top bar with brand, primary navigation links, and an actions slot",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "header-panel",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "header-panel/header-panel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "header-panel/header-panel.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "heading",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "heading/heading.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "heading/heading.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Section heading with semantic level decoupled from visual size",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "hover-card",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "hover-card/hover-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "hover-card/hover-card.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Hover-triggered popover with configurable open/close delay",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "icon-button",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "icon-button/icon-button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "icon-button/icon-button.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Square, icon-only button with a required accessible label",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "indicator",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "indicator/indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "indicator/indicator.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "inline-loading",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "inline-loading/inline-loading.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "inline-loading/inline-loading.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "input/input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "input/input.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Text input field with optional label, hint, and error state",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "input-group",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "input-group/input-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "input-group/input-group.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "item",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "item/item.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "item/item.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Generic content row primitive with media, content, and action regions",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "join",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "join/join.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "join/join.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "kbd",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "kbd/kbd.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "kbd/kbd.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Displays a keyboard key or shortcut",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "label",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "label/label.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "label/label.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Accessible caption for a form control",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-app-shell",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-app-shell/app-shell.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-app-shell/app-shell.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-auth-layout",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-auth-layout/auth-layout.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-auth-layout/auth-layout.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Centered card layout for authentication pages (login, register, forgot password).",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-auto-grid",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-auto-grid/auto-grid.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-auto-grid/auto-grid.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-center",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-center/center.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-center/center.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Horizontally centered container with a configurable max-width.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-columns",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-columns/columns.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-columns/columns.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-dashboard-layout",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-dashboard-layout/dashboard-layout.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-dashboard-layout/dashboard-layout.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-grid",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-grid/grid.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-grid/grid.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "CSS grid layout primitive with responsive column collapsing.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-masonry",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-masonry/masonry.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-masonry/masonry.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-page-header",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-page-header/page-header.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-page-header/page-header.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Page-level header with title, description, breadcrumb, and actions slots.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-section",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-section/section.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-section/section.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Page-section shell with block padding, centered inner width, and stack gap.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-settings-layout",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-settings-layout/settings-layout.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-settings-layout/settings-layout.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-spacer",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-spacer/spacer.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-spacer/spacer.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Fixed-height spacing block using design token steps.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-split-view",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-split-view/split-view.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-split-view/split-view.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-stack",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-stack/stack.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-stack/stack.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "link",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "link/link.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "link/link.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Styled anchor for navigation, standalone or inline within prose",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "list/list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "list/list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Styled unordered or ordered list with ListItem",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "menu/menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "menu/menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Dropdown menu with keyboard navigation, built on usePopover",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "menu-button",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "menu-button/menu-button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "menu-button/menu-button.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A button that opens an anchored action menu of one-shot commands",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "menubar",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "menubar/menubar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "menubar/menubar.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "modal",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "modal/modal.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "modal/modal.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Accessible dialog overlay using native <dialog> element",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "multi-select",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "multi-select/multi-select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "multi-select/multi-select.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Searchable multi-value select with popover listbox",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "native-select",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "native-select/native-select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "native-select/native-select.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "navigation-menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "navigation-menu/navigation-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "navigation-menu/navigation-menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Site navigation bar with links and dropdown flyout panels",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "notification",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "notification/notification.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "notification/notification.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "number-input",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "number-input/number-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "number-input/number-input.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "otp-input",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "otp-input/otp-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "otp-input/otp-input.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Segmented one-time code input",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "overflow-menu",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "overflow-menu/overflow-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "overflow-menu/overflow-menu.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Kebab icon button revealing a menu of row-level actions",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "pagination",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "pagination/pagination.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "pagination/pagination.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Controls for navigating paged data sets, with page size selection",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "password-input",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "password-input/password-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "password-input/password-input.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Password input with reveal toggle and optional strength meter",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "popover",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "popover/popover.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "popover/popover.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "progress/progress.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress/progress.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Horizontal bar showing the completion progress of a tracked operation",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress-bar",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "progress-bar/progress-bar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-bar/progress-bar.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Shows determinate or indeterminate progress of a task",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress-circle",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "progress-circle/progress-circle.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-circle/progress-circle.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Circular determinate progress indicator rendered as an SVG arc",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "progress-indicator",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "progress-indicator/progress-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-indicator/progress-indicator.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Shows progress through the steps of a multi-step flow",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "prose",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "prose/prose.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "prose/prose.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "radial-progress",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "radial-progress/radial-progress.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radial-progress/radial-progress.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "radio",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "radio/radio.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio/radio.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Single choice from a set, grouped with RadioGroup",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "radio-card",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "radio-card/radio-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio-card/radio-card.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "rating-group",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "rating-group/rating-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "rating-group/rating-group.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Star rating input with accessible radio group pattern",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "resizable",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "resizable/resizable.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "resizable/resizable.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "scroll-area",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "scroll-area/scroll-area.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "scroll-area/scroll-area.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A scroll container with styled, slim scrollbars and overflow shadows",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "search",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "search/search.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "search/search.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Search input with debounced search callback and clear button",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-cta",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-cta/cta.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-cta/cta.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-feature-grid",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-feature-grid/feature-grid.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-feature-grid/feature-grid.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-hero",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-hero/hero.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-hero/hero.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-media-masonry",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-media-masonry/media-masonry.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-media-masonry/media-masonry.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-page-footer",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-page-footer/page-footer.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-page-footer/page-footer.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "section-stats-band",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "section-stats-band/stats-band.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "section-stats-band/stats-band.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+      "dependencies": ["@cascivo/core", "@cascivo/charts"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "section",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "segmented-control",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "segmented-control/segmented-control.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "segmented-control/segmented-control.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Mutually exclusive toggle group",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "select",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "select/select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "select/select.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Native select menu styled to match the design system",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "separator",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "separator/separator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "separator/separator.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Visual or semantic divider between content",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "sheet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "sheet/sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "sheet/sheet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "shell-header",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "shell-header/shell-header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "shell-header/shell-header.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "side-nav",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "side-nav/side-nav.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "side-nav/side-nav.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "skeleton",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "skeleton/skeleton.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "skeleton/skeleton.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Animated loading placeholder that mirrors the shape of pending content",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "skip-nav",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "skip-nav/skip-nav.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "skip-nav/skip-nav.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Skip link that jumps keyboard users past the navigation to the main content",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "slider",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "slider/slider.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "slider/slider.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Range input for selecting a value within bounds",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "spinner",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "spinner/spinner.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "spinner/spinner.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Indeterminate loading indicator",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "stack",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "stack/stack.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "stack/stack.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "stat",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "stat/stat.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "stat/stat.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Displays a key metric with optional delta, trend direction and help text",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "status",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "status/status.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "status/status.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Colored dot with a label communicating the state of a system or entity",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "steps",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "steps/steps.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "steps/steps.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "structured-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "structured-list/structured-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "structured-list/structured-list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Tabular row list for scannable data, optionally single-selectable",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "swap",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "swap/swap.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "swap/swap.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Animated toggle between two icon/content states with rotate or flip transition",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "switcher",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "switcher/switcher.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "switcher/switcher.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tabs",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tabs/tabs.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tabs/tabs.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Switch between related panels of content",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tag",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tag/tag.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tag/tag.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Compact chip for labeling, categorizing, or filtering content",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tags-input",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tags-input/tags-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tags-input/tags-input.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Free-form multi-value chip input",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "text",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "text/text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "text/text.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Body text with size, weight, and muted variants",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "textarea",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "textarea/textarea.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "textarea/textarea.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Multi-line text input with optional label, hint, and error state",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tile",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tile/tile.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tile/tile.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "time-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "time-picker/time-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "time-picker/time-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Native time input wrapper with label, hint, error, and size variants",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "timeline",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "timeline/timeline.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "timeline/timeline.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Ordered sequence of events with status markers and a connector line",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toast",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "toast/toast.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toast/toast.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Transient notification surfaced via the useToast hook",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toc",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "toc/toc.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toc/toc.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Table of contents with scroll-spy highlighting of the active section",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggle",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "toggle/toggle.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toggle/toggle.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "On/off switch built as an accessible button",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggle-group",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "toggle-group/toggle-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toggle-group/toggle-group.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A set of toggle buttons for single or multiple selection",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "toggletip",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "toggletip/toggletip.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toggletip/toggletip.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "A click-triggered info popover for supplementary, selectable content",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tooltip",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tooltip/tooltip.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tooltip/tooltip.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Contextual label shown on hover or focus",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "tree-view",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "tree-view/tree-view.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tree-view/tree-view.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "visually-hidden",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "visually-hidden/visually-hidden.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "visually-hidden/visually-hidden.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Hides content visually while keeping it available to screen readers",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    }
+  ]
+}

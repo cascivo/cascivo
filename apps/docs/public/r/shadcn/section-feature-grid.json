@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-feature-grid",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "section-feature-grid/feature-grid.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { AutoGrid } from '../../auto-grid/auto-grid'\nimport { Section } from '../../section/section'\nimport styles from './feature-grid.module.css'\n\ntype HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6\n\nexport interface FeatureItem {\n  title: ReactNode\n  description?: ReactNode\n  icon?: ReactNode\n  href?: string\n}\n\nexport interface FeatureGridProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {\n  title?: ReactNode\n  description?: ReactNode\n  headingLevel?: Extract<HeadingLevel, 1 | 2 | 3>\n  items: FeatureItem[]\n  /** Minimum track width forwarded to AutoGrid. */\n  min?: string\n  className?: string | undefined\n}\n\nexport function FeatureGrid({\n  title,\n  description,\n  headingLevel = 2,\n  items,\n  min = '16rem',\n  className,\n  ...props\n}: FeatureGridProps) {\n  const SectionHeading = `h${headingLevel}` as const\n  const itemHeadingLevel = Math.min(headingLevel + 1, 6) as HeadingLevel\n  const ItemHeading = `h${itemHeadingLevel}` as const\n\n  return (\n    <Section className={cn(styles['feature-grid'], className)} {...props}>\n      {(title || description) && (\n        <div className={styles['header']}>\n          {title && <SectionHeading className={styles['title']}>{title}</SectionHeading>}\n          {description && <p className={styles['description']}>{description}</p>}\n        </div>\n      )}\n      <AutoGrid min={min}>\n        {items.map((item, i) => {\n          const inner = (\n            <>\n              {item.icon && <span className={styles['icon']}>{item.icon}</span>}\n              <ItemHeading className={styles['item-title']}>{item.title}</ItemHeading>\n              {item.description && <p className={styles['item-description']}>{item.description}</p>}\n            </>\n          )\n          return item.href ? (\n            <a key={i} href={item.href} className={styles['item']}>\n              {inner}\n            </a>\n          ) : (\n            <div key={i} className={styles['item']}>\n              {inner}\n            </div>\n          )\n        })}\n      </AutoGrid>\n    </Section>\n  )\n}\n"
+    },
+    {
+      "path": "section-feature-grid/feature-grid.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .title {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    text-wrap: balance;\n    margin: 0;\n  }\n\n  .description {\n    font-size: var(--cascivo-text-base);\n    color: var(--cascivo-text-secondary);\n    max-inline-size: 60ch;\n    margin: 0;\n  }\n\n  .item {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n    padding-block-start: var(--cascivo-space-4);\n    border-block-start: 1px solid var(--cascivo-color-border);\n    min-inline-size: 0;\n    text-decoration: none;\n    color: inherit;\n  }\n\n  a.item:hover {\n    background-color: var(--cascivo-surface-subtle);\n  }\n\n  .icon {\n    display: flex;\n    inline-size: var(--cascivo-space-6);\n    block-size: var(--cascivo-space-6);\n    color: var(--cascivo-color-accent);\n  }\n\n  .item-title {\n    font-size: var(--cascivo-text-base);\n    font-weight: var(--cascivo-font-semibold);\n    margin: 0;\n  }\n\n  .item-description {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-text-secondary);\n    margin: 0;\n  }\n}\n"
+    }
+  ],
+  "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "section",
+      "version": "0.0.0"
+    }
+  }
+}

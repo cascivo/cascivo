@@ -7,6 +7,9 @@
   [data-theme='pastel'] {
     color-scheme: light;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.99 0.01 330);
     --cascivo-color-surface: oklch(0.975 0.013 330);

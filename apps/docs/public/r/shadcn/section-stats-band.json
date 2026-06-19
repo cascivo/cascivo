@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-stats-band",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "section-stats-band/stats-band.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport { Sparkline } from '@cascivo/charts'\nimport type { HTMLAttributes } from 'react'\nimport { AutoGrid } from '../../auto-grid/auto-grid'\nimport styles from './stats-band.module.css'\n\nexport interface StatItem {\n  label: string\n  value: string\n  delta?: string\n  trend?: number[]\n}\n\nexport interface StatsBandProps extends HTMLAttributes<HTMLElement> {\n  stats: StatItem[]\n  /** Accessible label for the stats region when no visible heading is shown. */\n  'aria-label'?: string\n  className?: string | undefined\n}\n\nexport function StatsBand({ stats, className, ...props }: StatsBandProps) {\n  return (\n    <section\n      className={cn(styles['stats-band'], className)}\n      aria-label={props['aria-label'] ?? 'Key metrics'}\n      {...props}\n    >\n      <div className={styles['inner']}>\n        <AutoGrid min=\"12rem\" gap={4}>\n          {stats.map((stat, i) => (\n            <div key={i} className={styles['stat']}>\n              <div className={styles['stat-main']}>\n                <span className={styles['value']}>{stat.value}</span>\n                {stat.trend && (\n                  <Sparkline\n                    data={stat.trend}\n                    label={`${stat.label} trend`}\n                    width={80}\n                    height={28}\n                  />\n                )}\n              </div>\n              {stat.delta && <span className={styles['delta']}>{stat.delta}</span>}\n              <span className={styles['label']}>{stat.label}</span>\n            </div>\n          ))}\n        </AutoGrid>\n      </div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "section-stats-band/stats-band.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .stats-band {\n    padding-block: var(--cascivo-space-8);\n    padding-inline: var(--cascivo-space-4);\n    border-block: 1px solid var(--cascivo-color-border);\n    background-color: var(--cascivo-surface-subtle);\n  }\n\n  .inner {\n    max-inline-size: 90rem;\n    margin-inline: auto;\n  }\n\n  .stat {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    padding-inline: var(--cascivo-space-4);\n    border-inline-start: 1px solid var(--cascivo-color-border);\n    min-inline-size: 0;\n  }\n\n  .stat-main {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-3);\n  }\n\n  .value {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    font-family: var(--cascivo-font-mono);\n    line-height: 1;\n  }\n\n  .delta {\n    font-size: var(--cascivo-text-sm);\n    font-family: var(--cascivo-font-mono);\n    color: var(--cascivo-text-secondary);\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-text-secondary);\n  }\n}\n"
+    }
+  ],
+  "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
+  "dependencies": ["@cascivo/core", "@cascivo/charts"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "section",
+      "version": "0.0.0"
+    }
+  }
+}

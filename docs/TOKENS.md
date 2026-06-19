@@ -171,6 +171,7 @@ are kept for backwards-compatibility (no token has been removed).
 | Token | Value | Notes |
 | ----- | ----- | ----- |
 | **`--cascivo-font-bold`** | `700` |  |
+| **`--cascivo-font-display`** | `var(--cascivo-font-sans)` |  |
 | **`--cascivo-font-medium`** | `500` |  |
 | **`--cascivo-font-mono`** | `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace` |  |
 | **`--cascivo-font-normal`** | `400` |  |

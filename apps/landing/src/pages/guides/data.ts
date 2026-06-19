@@ -71,7 +71,7 @@ export const MIGRATION = {
       n: 6,
       title: 'Point theming at data-theme',
       detail:
-        'Apply data-theme to the root (or any subtree) and delete your bespoke theme CSS. Eleven themes ship; overrides are three lines (see Make it yours below).',
+        'Apply data-theme to the root (or any subtree) and delete your bespoke theme CSS. Twelve themes ship; overrides are three lines (see Make it yours below).',
     },
     {
       n: 7,
@@ -82,7 +82,7 @@ export const MIGRATION = {
     },
   ] satisfies MigrationStep[],
   verdict:
-    'shadcn nailed ownership: copy the code, keep it forever. cascivo keeps that and adds the parts you would otherwise build yourself — signal reactivity with no re-render tax, a closed three-tier token system, eleven themes, WCAG 2.2 AA, and a machine-readable layer your agent can actually build against. The honest cost: you rewrite local interactivity to signals and you learn the token names instead of memorizing utility classes. For a long-lived app, that is a one-time tax against a permanent floor of quality.',
+    'shadcn nailed ownership: copy the code, keep it forever. cascivo keeps that and adds the parts you would otherwise build yourself — signal reactivity with no re-render tax, a closed three-tier token system, twelve themes, WCAG 2.2 AA, and a machine-readable layer your agent can actually build against. The honest cost: you rewrite local interactivity to signals and you learn the token names instead of memorizing utility classes. For a long-lived app, that is a one-time tax against a permanent floor of quality.',
 } as const
 
 export interface CustomizeTier {
@@ -244,7 +244,7 @@ export const FAQ: FaqEntry[] = [
   {
     id: 'vs-shadcn',
     q: 'How is this different from shadcn/ui?',
-    a: 'It shares the best idea — you own copied source — and adds signal reactivity, a closed token system, eleven themes, built-in WCAG 2.2 AA, and a machine-readable AI layer. The migration guide maps exactly what transfers and what changes.',
+    a: 'It shares the best idea — you own copied source — and adds signal reactivity, a closed token system, twelve themes, built-in WCAG 2.2 AA, and a machine-readable AI layer. The migration guide maps exactly what transfers and what changes.',
     next: { label: 'Coming from shadcn?', href: '/guides#migrate' },
   },
   {

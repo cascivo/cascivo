@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "link/link.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { AnchorHTMLAttributes } from 'react'\nimport styles from './link.module.css'\n\nexport interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {\n  variant?: 'standalone' | 'inline'\n  size?: 'sm' | 'md' | 'lg'\n  external?: boolean\n}\n\nexport function Link({\n  variant = 'standalone',\n  size = 'md',\n  external = false,\n  className,\n  children,\n  ...props\n}: LinkProps) {\n  return (\n    <a\n      data-variant={variant}\n      data-size={size}\n      data-external={external || undefined}\n      className={cn(styles['link'], className)}\n      {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}\n      {...props}\n    >\n      {children}\n    </a>\n  )\n}\n"
+    },
+    {
+      "path": "link/link.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .link {\n    color: var(--cascivo-link-color, var(--cascivo-color-accent));\n    cursor: pointer;\n    border-radius: var(--cascivo-radius-item);\n    text-underline-offset: 0.2em;\n    transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover {\n      color: var(--cascivo-color-accent-hover);\n    }\n\n    &:active {\n      color: var(--cascivo-color-accent-active);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    /* Standalone: own typography, underline on hover only */\n    &[data-variant='standalone'] {\n      font-family: var(--cascivo-font-sans);\n      font-weight: var(--cascivo-font-medium);\n      text-decoration: none;\n\n      &:hover {\n        text-decoration: underline;\n      }\n\n      &[data-size='sm'] {\n        font-size: var(--cascivo-text-sm);\n      }\n\n      &[data-size='md'] {\n        font-size: var(--cascivo-text-base);\n      }\n\n      &[data-size='lg'] {\n        font-size: var(--cascivo-text-lg);\n      }\n    }\n\n    /* Inline: inherits surrounding prose typography, always underlined */\n    &[data-variant='inline'] {\n      font: inherit;\n      text-decoration: underline;\n    }\n\n    /* External indicator — alt text '' keeps it out of the accessibility tree */\n    &[data-external]::after {\n      content: '\\2197' / '';\n      font-size: 0.8em;\n      margin-inline-start: var(--cascivo-space-1);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Styled anchor for navigation, standalone or inline within prose",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["navigation"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

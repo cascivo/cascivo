@@ -1,0 +1,95 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Toc',
+  description: 'Table of contents with scroll-spy highlighting of the active section',
+  category: 'navigation',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    { name: 'items', type: '{ id: string; label: string; level?: number }[]', required: true },
+    {
+      name: 'activeId',
+      type: 'string',
+      required: false,
+      description: 'Controlled active item id; disables built-in scroll-spy when set',
+    },
+    { name: 'onActiveChange', type: '(id: string) => void', required: false },
+    { name: 'labels', type: '{ nav?: string }', required: false },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: [
+    '--cascivo-font-sans',
+    '--cascivo-color-text',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-accent',
+    '--cascivo-focus-ring',
+    '--cascivo-target-min-coarse',
+  ],
+  accessibility: {
+    role: 'navigation',
+    wcag: '2.2-AA',
+    keyboard: ['Tab', 'Enter'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: "<Toc items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }, { id: 'api', label: 'API', level: 3 }]} />",
+    },
+    {
+      title: 'Controlled active item',
+      code: "<Toc activeId=\"usage\" items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }]} />",
+      description: 'Pass activeId to drive the highlight yourself; scroll-spy is disabled.',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['toc', 'table-of-contents', 'navigation', 'scroll-spy', 'anchor'],
+  intent: {
+    whenToUse: [
+      'Long-form pages (docs, articles) that benefit from in-page jump links',
+      'Highlighting which section is currently in view as the reader scrolls',
+    ],
+    whenNotToUse: [
+      'Top-level site navigation between pages — use NavigationMenu or SideNav',
+      'Showing hierarchy depth of the current page — use Breadcrumb',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Using Toc as the primary site navigation between routes',
+        good: '<NavigationMenu> / <SideNav> for cross-page navigation',
+        why: 'Toc links to sections within the current document, not to other pages',
+      },
+    ],
+    related: [
+      {
+        name: 'SideNav',
+        relationship: 'alternative',
+        reason: 'SideNav navigates between pages; Toc navigates within one page',
+      },
+      {
+        name: 'Breadcrumb',
+        relationship: 'alternative',
+        reason: 'Breadcrumb shows ancestor hierarchy; Toc shows in-page sections',
+      },
+    ],
+    a11yRationale:
+      'Rendered as a <nav> landmark with a label; entries are real anchor links and the active one is marked aria-current="location" so assistive tech announces the current section',
+    content: {
+      tone: 'Short labels matching the section headings',
+      notes: 'Labels should mirror the on-page heading text',
+    },
+    flexibility: [
+      {
+        area: 'activeId',
+        level: 'flexible',
+        note: 'Control the highlight externally, or omit it for built-in scroll-spy',
+      },
+      {
+        area: 'token names',
+        level: 'strict',
+        note: 'Colors, focus ring, and touch target must resolve to --cascivo-* tokens',
+      },
+    ],
+  },
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stack",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "stack/stack.tsx",
+      "type": "registry:component",
+      "content": "import styles from './stack.module.css'\n\nexport interface StackProps {\n  children: React.ReactNode\n  offset?: number\n  className?: string\n}\n\nexport function Stack({ children, offset = 4, className }: StackProps) {\n  const items = Array.isArray(children) ? children : [children]\n  return (\n    <div\n      className={[styles.stack, className].filter(Boolean).join(' ')}\n      style={{ '--cascivo-stack-offset': `${offset}px` } as React.CSSProperties}\n    >\n      {items.map((child, i) => (\n        <div\n          key={i}\n          className={styles.layer}\n          style={{ '--cascivo-stack-index': i } as React.CSSProperties}\n        >\n          {child}\n        </div>\n      ))}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "stack/stack.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .stack {\n    display: grid;\n    grid-template-areas: 'stack';\n    isolation: isolate;\n  }\n\n  .layer {\n    grid-area: stack;\n    transform: translate(\n      calc(var(--cascivo-stack-index, 0) * var(--cascivo-stack-offset, 4px)),\n      calc(var(--cascivo-stack-index, 0) * var(--cascivo-stack-offset, 4px))\n    );\n    z-index: calc(10 - var(--cascivo-stack-index, 0));\n  }\n}\n"
+    }
+  ],
+  "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

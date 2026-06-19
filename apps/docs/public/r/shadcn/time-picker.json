@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "time-picker",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "time-picker/time-picker.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, createMachine, useMachine, useSignals } from '@cascivo/core'\nimport type { InputHTMLAttributes } from 'react'\nimport styles from './time-picker.module.css'\n\nconst machine = createMachine({\n  initial: 'idle' as const,\n  states: {\n    idle: { on: { FOCUS: 'focused' } },\n    focused: { on: { BLUR: 'idle' } },\n  },\n})\n\nexport interface TimePickerProps extends Omit<\n  InputHTMLAttributes<HTMLInputElement>,\n  'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'\n> {\n  value?: string\n  defaultValue?: string\n  onChange?: (value: string) => void\n  min?: string\n  max?: string\n  step?: number\n  label?: string\n  hint?: string\n  error?: string\n  size?: 'sm' | 'md' | 'lg'\n}\n\nexport function TimePicker({\n  value,\n  defaultValue,\n  onChange,\n  min,\n  max,\n  step,\n  label,\n  hint,\n  error,\n  size = 'md',\n  className,\n  id,\n  onFocus,\n  onBlur,\n  ...props\n}: TimePickerProps) {\n  useSignals()\n  const [state, send] = useMachine(machine)\n  const inputId =\n    id ?? (label ? `cascade-time-picker-${label.toLowerCase().replace(/\\s+/g, '-')}` : undefined)\n\n  return (\n    <div\n      className={cn(styles['wrapper'], className)}\n      data-state={error ? 'error' : state.value}\n      data-size={size}\n    >\n      {label && (\n        <label className={styles['label']} htmlFor={inputId}>\n          {label}\n        </label>\n      )}\n      <input\n        id={inputId}\n        type=\"time\"\n        className={styles['input']}\n        value={value}\n        defaultValue={defaultValue}\n        min={min}\n        max={max}\n        step={step}\n        aria-invalid={error ? true : undefined}\n        aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}\n        onChange={(e) => onChange?.(e.target.value)}\n        onFocus={(e) => {\n          send('FOCUS')\n          onFocus?.(e)\n        }}\n        onBlur={(e) => {\n          send('BLUR')\n          onBlur?.(e)\n        }}\n        {...props}\n      />\n      {error && (\n        <span id={`${inputId}-error`} className={styles['error']} role=\"alert\">\n          {error}\n        </span>\n      )}\n      {!error && hint && (\n        <span id={`${inputId}-hint`} className={styles['hint']}>\n          {hint}\n        </span>\n      )}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "time-picker/time-picker.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .wrapper {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    font-family: var(--cascivo-font-sans);\n\n    &[data-size='sm'] {\n      --_height: 2rem;\n      --_font: var(--cascivo-text-sm);\n      --_px: var(--cascivo-space-3);\n    }\n    &[data-size='md'] {\n      --_height: 2.5rem;\n      --_font: var(--cascivo-text-sm);\n      --_px: var(--cascivo-space-4);\n    }\n    &[data-size='lg'] {\n      --_height: 3rem;\n      --_font: var(--cascivo-text-base);\n      --_px: var(--cascivo-space-4);\n    }\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-snug);\n  }\n\n  .input {\n    block-size: var(--_height, 2.5rem);\n    padding-inline: var(--_px, var(--cascivo-space-4));\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--_font, var(--cascivo-text-sm));\n    color: var(--cascivo-color-text);\n    background-color: var(--cascivo-color-surface);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-field);\n    outline: none;\n    transition:\n      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover:not(:disabled):not(:focus-visible) {\n      border-color: var(--cascivo-color-border-strong);\n    }\n\n    &:focus-visible {\n      border-color: var(--cascivo-color-accent);\n      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cascivo-color-accent) 20%, transparent);\n    }\n\n    &:disabled {\n      opacity: 0.5;\n      cursor: not-allowed;\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n\n    .wrapper[data-state='error'] & {\n      border-color: var(--cascivo-color-danger);\n    }\n  }\n\n  .error {\n    font-size: var(--cascivo-text-xs);\n    color: var(--cascivo-color-danger);\n  }\n\n  .hint {\n    font-size: var(--cascivo-text-xs);\n    color: var(--cascivo-color-text-muted);\n  }\n}\n"
+    }
+  ],
+  "description": "Native time input wrapper with label, hint, error, and size variants",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -13,6 +13,7 @@ import '@cascivo/themes/brutalist'
 import '@cascivo/themes/corporate'
 import '@cascivo/themes/terminal'
 import '@cascivo/themes/cyberpunk'
+import '@cascivo/themes/arcade'
 
 const withFrame: Decorator = (Story, context) => {
   if (context.parameters['layout'] === 'fullscreen') return <Story />
@@ -41,6 +42,7 @@ const preview: Preview = {
         corporate: 'corporate',
         terminal: 'terminal',
         cyberpunk: 'cyberpunk',
+        arcade: 'arcade',
       },
       defaultTheme: 'light',
       attributeName: 'data-theme',

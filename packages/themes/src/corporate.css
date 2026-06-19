@@ -7,6 +7,9 @@
   [data-theme='corporate'] {
     color-scheme: light;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.99 0.003 250);
     --cascivo-color-surface: oklch(0.97 0.004 250);

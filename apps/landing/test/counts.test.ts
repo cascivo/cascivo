@@ -6,7 +6,7 @@
  * component/theme numbers can never silently rot. This test pins that contract:
  *   - index.html uses the injection placeholders, not a hardcoded number.
  *   - no stale literal ("97+", "five themes") survives.
- *   - the theme count equals the number of theme CSS files (the "eleven themes"
+ *   - the theme count equals the number of theme CSS files (the "twelve themes"
  *     literal used in page copy must match source).
  *
  * Run via `vp run -r test` (the landing `test` script).
@@ -45,11 +45,11 @@ test('index.html injects counts via placeholders (no hardcoded headline numbers)
   assert.doesNotMatch(html, /five themes/i, 'stale "five themes" must be gone')
 })
 
-test('theme count matches the "eleven themes" copy used across the page', () => {
+test('theme count matches the "twelve themes" copy used across the page', () => {
   assert.equal(
     themeCount(),
-    11,
-    'theme CSS file count changed — update the "eleven themes" page copy',
+    12,
+    'theme CSS file count changed — update the "twelve themes" page copy',
   )
 })
 

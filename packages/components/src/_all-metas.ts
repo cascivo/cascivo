@@ -78,6 +78,7 @@ import { meta as textareaMeta } from './textarea/textarea.meta'
 import { meta as textMeta } from './text/text.meta'
 import { meta as timePickerMeta } from './time-picker/time-picker.meta'
 import { meta as toastMeta } from './toast/toast.meta'
+import { meta as tocMeta } from './toc/toc.meta'
 import { meta as toggleMeta } from './toggle/toggle.meta'
 import { meta as tooltipMeta } from './tooltip/tooltip.meta'
 import { meta as visuallyHiddenMeta } from './visually-hidden/visually-hidden.meta'
@@ -162,6 +163,7 @@ export const allMetas: ComponentMeta[] = [
   textMeta,
   timePickerMeta,
   toastMeta,
+  tocMeta,
   toggleMeta,
   tooltipMeta,
   visuallyHiddenMeta,

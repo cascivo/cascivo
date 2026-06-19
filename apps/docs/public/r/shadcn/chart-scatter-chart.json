@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-scatter-chart",
+  "type": "registry:component",
+  "files": [],
+  "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

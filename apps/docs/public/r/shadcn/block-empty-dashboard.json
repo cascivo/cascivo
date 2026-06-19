@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-empty-dashboard",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-empty-dashboard/empty-dashboard.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Button, EmptyState } from '@cascivo/react'\nimport { DashboardLayout } from '../../dashboard-layout/dashboard-layout'\n\nexport interface EmptyDashboardProps {\n  onCreateItem?: () => void\n}\n\nexport function EmptyDashboard({ onCreateItem }: EmptyDashboardProps) {\n  return (\n    <DashboardLayout\n      main={\n        <EmptyState\n          title=\"No data yet\"\n          description=\"Get started by creating your first item.\"\n          action={<Button onClick={onCreateItem}>Create item</Button>}\n        />\n      }\n    />\n  )\n}\n"
+    }
+  ],
+  "description": "Dashboard page showing an empty state with a call-to-action button.",
+  "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

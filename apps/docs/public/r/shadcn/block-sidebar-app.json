@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-sidebar-app",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-sidebar-app/sidebar-app.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Header, SideNav } from '@cascivo/react'\nimport { AppShell } from '../../app-shell/app-shell'\n\nexport function SidebarApp() {\n  return (\n    <AppShell\n      persistKey={false}\n      header={\n        <Header\n          brand={<span>App</span>}\n          links={[{ label: 'Dashboard', href: '#', active: true }]}\n        />\n      }\n      sideNav={\n        <SideNav\n          items={[\n            { label: 'Dashboard', href: '#', active: true },\n            { label: 'Users', href: '#' },\n            { label: 'Settings', href: '#' },\n          ]}\n        />\n      }\n    >\n      <div style={{ padding: '2rem' }}>\n        <h1>Dashboard</h1>\n        <p>Welcome to your app.</p>\n      </div>\n    </AppShell>\n  )\n}\n"
+    }
+  ],
+  "description": "Full app shell with collapsible side navigation and top header.",
+  "dependencies": ["@cascivo/react", "layout/app-shell"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

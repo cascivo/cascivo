@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-dashboard-charts",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-dashboard-charts/dashboard-charts.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { LineChart, BarChart, PieChart, Kpi } from '@cascivo/charts'\nimport { DashboardLayout } from '../../dashboard-layout/dashboard-layout'\n\n// Deterministic demo data — no Math.random\nconst months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']\n\nconst lineSeries = [\n  {\n    id: 'revenue',\n    label: 'Revenue',\n    data: months.map((_, i) => ({ x: i, y: 2000 + i * 350 + (i % 3) * 150 })),\n  },\n  {\n    id: 'cost',\n    label: 'Cost',\n    data: months.map((_, i) => ({ x: i, y: 1200 + i * 100 + (i % 4) * 80 })),\n  },\n]\n\nconst barSeries = [\n  {\n    id: 'sales',\n    label: 'Sales',\n    data: months.map((m, i) => ({ x: m, y: 800 + i * 120 })),\n  },\n]\n\nconst pieData = [\n  { id: 'direct', label: 'Direct', value: 38 },\n  { id: 'organic', label: 'Organic', value: 30 },\n  { id: 'referral', label: 'Referral', value: 20 },\n  { id: 'social', label: 'Social', value: 12 },\n]\n\nconst kpiTrend = [120, 145, 132, 178, 165, 210]\n\nexport interface DashboardChartsProps {\n  className?: string\n}\n\nexport function DashboardCharts({ className }: DashboardChartsProps) {\n  return (\n    <DashboardLayout\n      className={className}\n      stats={\n        <div\n          style={{\n            display: 'grid',\n            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',\n            gap: '1rem',\n          }}\n        >\n          <Kpi value={12483} label=\"Total Users\" delta={12.4} sparkline={kpiTrend} />\n          <Kpi value=\"$48,290\" label=\"Revenue\" delta={8.4} />\n          <Kpi value={1042} label=\"Active Sessions\" delta={-3.2} />\n          <Kpi value=\"99.98%\" label=\"Uptime\" />\n        </div>\n      }\n      main={\n        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>\n          <LineChart\n            series={lineSeries}\n            x={(d) => d.x}\n            y={(d) => d.y}\n            title=\"Revenue vs Cost\"\n            height={240}\n          />\n          <BarChart\n            series={barSeries}\n            x={(d) => d.x}\n            y={(d) => d.y}\n            title=\"Monthly Sales\"\n            height={200}\n          />\n        </div>\n      }\n      aside={<PieChart data={pieData} title=\"Traffic Sources\" height={260} donut />}\n    />\n  )\n}\n"
+    }
+  ],
+  "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
+  "dependencies": ["@cascivo/charts", "@cascivo/react"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

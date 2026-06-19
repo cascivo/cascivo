@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-notification-center",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-notification-center/notification-center.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Alert, Button } from '@cascivo/react'\nimport { Stack } from '../../stack/stack'\n\ninterface Notification {\n  id: string\n  title: string\n  description?: string\n  variant: 'info' | 'success' | 'warning' | 'destructive'\n  read: boolean\n}\n\nconst demoNotifications: Notification[] = [\n  {\n    id: '1',\n    title: 'Deployment complete',\n    description: 'v2.4.0 deployed to production.',\n    variant: 'success',\n    read: false,\n  },\n  {\n    id: '2',\n    title: 'High memory usage',\n    description: 'Server memory at 87%.',\n    variant: 'warning',\n    read: false,\n  },\n  {\n    id: '3',\n    title: 'New user signup',\n    description: 'alice@example.com just joined.',\n    variant: 'info',\n    read: true,\n  },\n]\n\nexport interface NotificationCenterProps {\n  notifications?: Notification[]\n  onMarkAllRead?: () => void\n}\n\nexport function NotificationCenter({\n  notifications = demoNotifications,\n  onMarkAllRead,\n}: NotificationCenterProps) {\n  return (\n    <Stack gap={4}>\n      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>\n        <h2 style={{ margin: 0 }}>Notifications</h2>\n        <Button variant=\"ghost\" onClick={onMarkAllRead}>\n          Mark all read\n        </Button>\n      </div>\n      <Stack gap={2}>\n        {notifications.map((n) => (\n          <Alert key={n.id} variant={n.variant} title={n.title}>\n            {n.description}\n          </Alert>\n        ))}\n      </Stack>\n    </Stack>\n  )\n}\n"
+    }
+  ],
+  "description": "A list of notification alerts with a mark-all-read action.",
+  "dependencies": ["@cascivo/react", "layout/stack"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.0.0"
+    }
+  }
+}

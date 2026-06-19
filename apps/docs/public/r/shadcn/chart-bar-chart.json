@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-bar-chart",
+  "type": "registry:component",
+  "files": [],
+  "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

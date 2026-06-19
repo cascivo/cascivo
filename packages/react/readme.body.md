@@ -73,7 +73,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 
 ## Component index
 
-158 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+159 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -194,6 +194,7 @@ there is no `outline`) and the CSS-setup delta vs Tailwind.
 - **Steps** — Visual progress indicator for multi-step flows with horizontal and vertical orientations
 - **Switcher** — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
 - **Tabs** — Switch between related panels of content
+- **Toc** — Table of contents with scroll-spy highlighting of the active section
 
 ### Layout
 

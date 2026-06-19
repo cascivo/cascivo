@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-auto-grid",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-auto-grid/auto-grid.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './auto-grid.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface AutoGridProps extends HTMLAttributes<HTMLDivElement> {\n  /** Minimum track size before items wrap to fewer columns. */\n  min?: string\n  gap?: SpaceStep\n  className?: string | undefined\n}\n\nexport function AutoGrid({ min = '16rem', gap = 4, className, style, ...props }: AutoGridProps) {\n  return (\n    <div\n      className={cn(styles['auto-grid'], className)}\n      style={{\n        ['--_min' as string]: min,\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(style as CSSProperties | undefined),\n      }}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-auto-grid/auto-grid.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .auto-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(min(var(--_min, 16rem), 100%), 1fr));\n    gap: var(--_gap, var(--cascivo-space-4));\n  }\n}\n"
+    }
+  ],
+  "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

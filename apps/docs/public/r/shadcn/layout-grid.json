@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-grid",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-grid/grid.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './grid.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface GridProps extends HTMLAttributes<HTMLDivElement> {\n  cols?: number\n  gap?: SpaceStep\n}\n\nexport function Grid({ cols = 12, gap = 4, className, style, children, ...props }: GridProps) {\n  return (\n    <div\n      className={cn(styles['grid'], className)}\n      style={{\n        ['--_grid-cols' as string]: String(cols),\n        ['--_grid-gap' as string]: `var(--cascivo-space-${gap})`,\n        ...style,\n      }}\n      {...props}\n    >\n      {children}\n    </div>\n  )\n}\n\nexport interface GridItemProps extends HTMLAttributes<HTMLDivElement> {\n  span?: number\n}\n\nexport function GridItem({ span, className, style, ...props }: GridItemProps) {\n  return (\n    <div\n      className={cn(styles['grid-item'], className)}\n      style={span ? { ['--_span' as string]: String(span), ...style } : style}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-grid/grid.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .grid {\n    display: grid;\n    grid-template-columns: repeat(var(--_grid-cols, 12), minmax(0, 1fr));\n    gap: var(--_grid-gap, var(--cascivo-space-4));\n    container-type: inline-size;\n\n    @container (max-width: 40rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n\n  .grid-item {\n    grid-column: span var(--_span, 1);\n  }\n}\n"
+    }
+  ],
+  "description": "CSS grid layout primitive with responsive column collapsing.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.0.0"
+    }
+  }
+}

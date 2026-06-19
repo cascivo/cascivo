@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "collapsible/collapsible.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, useControllableSignal, useSignals } from '@cascivo/core'\nimport { useId, type ReactNode } from 'react'\nimport styles from './collapsible.module.css'\n\nexport interface CollapsibleProps {\n  /** Controlled open state. */\n  open?: boolean\n  /** Initial open state for uncontrolled use. */\n  defaultOpen?: boolean\n  /** Called whenever the open state should change. */\n  onOpenChange?: (open: boolean) => void\n  /** Content rendered inside the trigger button. */\n  trigger: ReactNode\n  /** Disables the trigger. */\n  disabled?: boolean\n  className?: string\n  children?: ReactNode\n}\n\nexport function Collapsible({\n  open,\n  defaultOpen = false,\n  onOpenChange,\n  trigger,\n  disabled = false,\n  className,\n  children,\n}: CollapsibleProps) {\n  useSignals()\n  const [openSig, setOpen] = useControllableSignal<boolean>({\n    ...(open !== undefined ? { value: open } : {}),\n    defaultValue: defaultOpen,\n    ...(onOpenChange ? { onChange: onOpenChange } : {}),\n  })\n  const baseId = useId()\n  const contentId = `${baseId}-content`\n  const triggerId = `${baseId}-trigger`\n  const isOpen = openSig.value\n\n  return (\n    <div data-state={isOpen ? 'open' : 'closed'} className={cn(styles['root'], className)}>\n      <button\n        type=\"button\"\n        id={triggerId}\n        aria-expanded={isOpen}\n        aria-controls={contentId}\n        disabled={disabled}\n        data-state={isOpen ? 'open' : 'closed'}\n        className={styles['trigger']}\n        onClick={() => setOpen(!isOpen)}\n      >\n        {trigger}\n      </button>\n      <div\n        id={contentId}\n        role=\"region\"\n        aria-labelledby={triggerId}\n        data-state={isOpen ? 'open' : 'closed'}\n        className={styles['content']}\n      >\n        <div className={styles['contentInner']}>{children}</div>\n      </div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "collapsible/collapsible.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    display: flex;\n    flex-direction: column;\n  }\n\n  .trigger {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: var(--cascivo-space-3);\n    inline-size: 100%;\n    padding: var(--cascivo-space-3);\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    text-align: start;\n    color: var(--cascivo-color-text);\n    background: transparent;\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-control);\n    cursor: pointer;\n\n    &:hover:not(:disabled) {\n      background-color: var(--cascivo-color-bg-subtle);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    &:disabled {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n  }\n\n  .content {\n    display: grid;\n    grid-template-rows: 0fr;\n    visibility: hidden;\n    color: var(--cascivo-color-text);\n    transition:\n      grid-template-rows var(--cascivo-duration-200) var(--cascivo-ease-out),\n      visibility var(--cascivo-duration-200) var(--cascivo-ease-out);\n\n    &[data-state='open'] {\n      grid-template-rows: 1fr;\n      visibility: visible;\n\n      @starting-style {\n        grid-template-rows: 0fr;\n      }\n    }\n  }\n\n  .contentInner {\n    overflow: hidden;\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-relaxed);\n\n    .content[data-state='open'] & {\n      padding-block: var(--cascivo-space-3);\n    }\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .content {\n    transition: none;\n  }\n}\n\n@media (forced-colors: active) {\n  .trigger:focus-visible {\n    outline: 2px solid Highlight;\n    outline-offset: 2px;\n  }\n}\n"
+    }
+  ],
+  "description": "A single disclosure region toggled open and closed by its trigger",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

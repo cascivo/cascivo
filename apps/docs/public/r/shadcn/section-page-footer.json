@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-page-footer",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "section-page-footer/page-footer.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport { AutoGrid } from '../../auto-grid/auto-grid'\nimport styles from './page-footer.module.css'\n\nexport interface FooterLink {\n  label: ReactNode\n  href: string\n}\n\nexport interface FooterGroup {\n  title: ReactNode\n  links: FooterLink[]\n}\n\nexport interface PageFooterProps extends HTMLAttributes<HTMLElement> {\n  groups: FooterGroup[]\n  brand?: ReactNode\n  meta?: ReactNode\n  className?: string | undefined\n}\n\nexport function PageFooter({ groups, brand, meta, className, ...props }: PageFooterProps) {\n  return (\n    <footer className={cn(styles['page-footer'], className)} {...props}>\n      <div className={styles['inner']}>\n        <nav aria-label=\"Footer\">\n          <AutoGrid min=\"10rem\" gap={6}>\n            {groups.map((group, i) => (\n              <div key={i} className={styles['group']}>\n                <p className={styles['group-title']}>{group.title}</p>\n                <ul className={styles['link-list']}>\n                  {group.links.map((link, j) => (\n                    <li key={j}>\n                      <a href={link.href} className={styles['link']}>\n                        {link.label}\n                      </a>\n                    </li>\n                  ))}\n                </ul>\n              </div>\n            ))}\n          </AutoGrid>\n        </nav>\n        {(brand || meta) && (\n          <div className={styles['bottom']}>\n            {brand && <div className={styles['brand']}>{brand}</div>}\n            {meta && <div className={styles['meta']}>{meta}</div>}\n          </div>\n        )}\n      </div>\n    </footer>\n  )\n}\n"
+    },
+    {
+      "path": "section-page-footer/page-footer.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .page-footer {\n    padding-block: var(--cascivo-space-10);\n    padding-inline: var(--cascivo-space-4);\n    border-block-start: 1px solid var(--cascivo-color-border);\n  }\n\n  .inner {\n    max-inline-size: 72rem;\n    margin-inline: auto;\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-8);\n  }\n\n  .group {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n    min-inline-size: 0;\n  }\n\n  .group-title {\n    font-size: var(--cascivo-text-sm);\n    font-family: var(--cascivo-font-mono);\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-text-secondary);\n    text-transform: uppercase;\n    letter-spacing: 0.05em;\n    margin: 0;\n  }\n\n  .link-list {\n    list-style: none;\n    padding: 0;\n    margin: 0;\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n  }\n\n  .link {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-text-primary);\n    text-decoration: none;\n  }\n\n  .link:hover {\n    color: var(--cascivo-color-accent);\n  }\n\n  .bottom {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    gap: var(--cascivo-space-4);\n    padding-block-start: var(--cascivo-space-6);\n    border-block-start: 1px solid var(--cascivo-color-border);\n  }\n\n  .brand {\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-semibold);\n  }\n\n  .meta {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-text-secondary);\n  }\n}\n"
+    }
+  ],
+  "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "section",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "badge/badge.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './badge.module.css'\n\nexport interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {\n  variant?: 'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'\n  size?: 'sm' | 'md'\n}\n\nexport function Badge({\n  variant = 'default',\n  size = 'md',\n  className,\n  children,\n  ...props\n}: BadgeProps) {\n  return (\n    <span\n      data-variant={variant}\n      data-size={size}\n      className={cn(styles['badge'], className)}\n      {...props}\n    >\n      {children}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "badge/badge.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .badge {\n    display: inline-flex;\n    align-items: center;\n    font-family: var(--cascivo-font-sans);\n    font-weight: var(--cascivo-font-medium);\n    border-radius: var(--cascivo-radius-badge);\n    border: 1px solid transparent;\n    white-space: nowrap;\n\n    &[data-size='sm'] {\n      padding-inline: var(--cascivo-space-2);\n      padding-block: var(--cascivo-space-1);\n      font-size: var(--cascivo-text-xs);\n      line-height: 1;\n    }\n\n    &[data-size='md'] {\n      padding-inline: var(--cascivo-space-3);\n      padding-block: var(--cascivo-space-1);\n      font-size: var(--cascivo-text-xs);\n      line-height: var(--cascivo-leading-normal);\n    }\n\n    &[data-variant='default'] {\n      background-color: var(--cascivo-color-accent);\n      color: var(--cascivo-color-text-on-accent);\n    }\n\n    &[data-variant='secondary'] {\n      background-color: var(--cascivo-color-bg-subtle);\n      color: var(--cascivo-color-text);\n      border-color: var(--cascivo-color-border);\n    }\n\n    &[data-variant='success'] {\n      background-color: var(--cascivo-color-success-subtle);\n      color: var(--cascivo-color-success-foreground);\n    }\n\n    &[data-variant='warning'] {\n      background-color: var(--cascivo-color-warning-subtle);\n      color: var(--cascivo-color-warning-foreground);\n    }\n\n    &[data-variant='destructive'] {\n      background-color: var(--cascivo-color-destructive-subtle);\n      color: var(--cascivo-color-destructive-foreground);\n    }\n\n    &[data-variant='primary'] {\n      background-color: var(--cascivo-color-primary);\n      color: var(--cascivo-color-primary-content);\n    }\n\n    &[data-variant='info'] {\n      background-color: var(--cascivo-color-info);\n      color: var(--cascivo-color-info-content);\n    }\n\n    &[data-variant='error'] {\n      background-color: var(--cascivo-color-error);\n      color: var(--cascivo-color-error-content);\n    }\n\n    &[data-variant='outline'] {\n      background-color: transparent;\n      color: var(--cascivo-color-text);\n      border-color: var(--cascivo-color-border-strong);\n    }\n  }\n}\n\n@media (forced-colors: active) {\n  .badge {\n    border: 1px solid CanvasText;\n    color: CanvasText;\n  }\n}\n\n@media (prefers-contrast: more) {\n  .badge {\n    border-width: 2px;\n  }\n}\n"
+    }
+  ],
+  "description": "Small status label or category indicator",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

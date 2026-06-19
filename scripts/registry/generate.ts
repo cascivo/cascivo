@@ -12,7 +12,11 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import type { ComponentMeta } from '@cascivo/core'
-import { buildRegistry, parseLegacyRegistry } from '../../packages/registry/src/index.ts'
+import {
+  buildRegistry,
+  parseLegacyRegistry,
+  writeShadcnRegistry,
+} from '../../packages/registry/src/index.ts'
 import type { BlockMeta } from '../../packages/components/src/blocks/types.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -246,6 +250,27 @@ async function main(): Promise<void> {
   const docsPublicR = join(REPO_ROOT, 'apps', 'docs', 'public', 'r')
   const index = parseLegacyRegistry(registry)
   await buildRegistry(index, docsPublicR)
+
+  // Additive shadcn-registry interop: emit r/shadcn/<name>.json with inlined
+  // source so `npx shadcn add <host>/r/shadcn/<name>.json` works. cascivo's own
+  // registry schema (above) is untouched.
+  const contentByUrl = new Map<string, string>()
+  for (const it of index.items) {
+    for (const f of it.files) {
+      if (!f.url.startsWith(BASE_URL) || contentByUrl.has(f.url)) continue
+      try {
+        contentByUrl.set(
+          f.url,
+          await readFile(join(REPO_ROOT, f.url.slice(BASE_URL.length + 1)), 'utf8'),
+        )
+      } catch {
+        // Source not readable locally (e.g. npm-only charts) — emit without content.
+      }
+    }
+  }
+  const shadcnDir = join(docsPublicR, 'shadcn')
+  await writeShadcnRegistry(index, shadcnDir, { resolveContent: (url) => contentByUrl.get(url) })
+  console.log(`Wrote shadcn-compatible registry to ${shadcnDir}`)
 
   // Copy JSON Schemas to docs public
   const schemaDir = join(REPO_ROOT, 'apps', 'docs', 'public', 'schema')

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "empty-state/empty-state.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes, ReactNode } from 'react'\nimport styles from './empty-state.module.css'\n\nexport interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {\n  icon?: ReactNode\n  title: string\n  description?: string\n  action?: ReactNode\n  size?: 'md' | 'lg'\n}\n\nexport function EmptyState({\n  icon,\n  title,\n  description,\n  action,\n  size = 'md',\n  className,\n  ...props\n}: EmptyStateProps) {\n  return (\n    <div data-size={size} className={cn(styles['empty-state'], className)} {...props}>\n      {icon && (\n        <span className={styles['icon']} aria-hidden=\"true\">\n          {icon}\n        </span>\n      )}\n      <h3 className={styles['title']}>{title}</h3>\n      {description && <p className={styles['description']}>{description}</p>}\n      {action && <div className={styles['action']}>{action}</div>}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "empty-state/empty-state.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .empty-state {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    text-align: center;\n    gap: var(--cascivo-space-2);\n    padding: var(--cascivo-space-8);\n    font-family: var(--cascivo-font-sans);\n    color: var(--cascivo-color-text);\n\n    &[data-size='lg'] {\n      gap: var(--cascivo-space-3);\n      padding: var(--cascivo-space-12);\n    }\n  }\n\n  .icon {\n    display: flex;\n    flex-shrink: 0;\n    align-items: center;\n    justify-content: center;\n    inline-size: 3rem;\n    block-size: 3rem;\n    margin-block-end: var(--cascivo-space-2);\n    font-size: var(--cascivo-text-xl);\n    line-height: 1;\n    color: var(--cascivo-color-text-muted);\n    background-color: var(--cascivo-color-bg-subtle);\n    border-radius: var(--cascivo-radius-full);\n\n    .empty-state[data-size='lg'] & {\n      inline-size: 4rem;\n      block-size: 4rem;\n      font-size: var(--cascivo-text-2xl);\n    }\n  }\n\n  .title {\n    margin: 0;\n    font-size: var(--cascivo-text-base);\n    font-weight: var(--cascivo-font-semibold);\n    line-height: var(--cascivo-leading-snug);\n\n    .empty-state[data-size='lg'] & {\n      font-size: var(--cascivo-text-lg);\n    }\n  }\n\n  .description {\n    margin: 0;\n    max-inline-size: 40ch;\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text-subtle);\n    line-height: var(--cascivo-leading-normal);\n\n    .empty-state[data-size='lg'] & {\n      font-size: var(--cascivo-text-base);\n    }\n  }\n\n  .action {\n    margin-block-start: var(--cascivo-space-2);\n  }\n}\n"
+    }
+  ],
+  "description": "Placeholder for views that have no data to display",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

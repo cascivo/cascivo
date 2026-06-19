@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-18",
-  "count": 225,
+  "count": 226,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -586,6 +586,14 @@
       "layer": "primitive",
       "group": "font",
       "resolvedDefault": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-font-display",
+      "value": "var(--cascivo-font-sans)",
+      "layer": "semantic",
+      "group": "font",
+      "resolvedDefault": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       "resolvesPerTheme": false
     },
     {

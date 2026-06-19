@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggletip",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "toggletip/toggletip.tsx",
+      "type": "registry:component",
+      "content": "'use client'\n\nimport {\n  cn,\n  DismissableLayer,\n  useAnchorPosition,\n  useControllableSignal,\n  useSignals,\n} from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport { useId, useRef, type ReactNode } from 'react'\nimport styles from './toggletip.module.css'\n\nexport type ToggletipPlacement =\n  | 'top'\n  | 'bottom'\n  | 'left'\n  | 'right'\n  | 'top-start'\n  | 'top-end'\n  | 'bottom-start'\n  | 'bottom-end'\n\nexport interface ToggletipProps {\n  /** The trigger node (e.g. an info icon). Rendered inside a button. */\n  trigger: ReactNode\n  /** The popover content. Interactive and selectable. */\n  children: ReactNode\n  placement?: ToggletipPlacement\n  defaultOpen?: boolean\n  open?: boolean\n  onOpenChange?: (open: boolean) => void\n  labels?: { label?: string }\n  className?: string\n}\n\nexport function Toggletip({\n  trigger,\n  children,\n  placement = 'top',\n  defaultOpen = false,\n  open,\n  onOpenChange,\n  labels,\n  className,\n}: ToggletipProps) {\n  useSignals()\n  const [isOpen, setOpen] = useControllableSignal<boolean>({\n    ...(open !== undefined && { value: open }),\n    defaultValue: defaultOpen,\n    ...(onOpenChange && { onChange: onOpenChange }),\n  })\n\n  const triggerRef = useRef<HTMLButtonElement>(null)\n  const bubbleRef = useRef<HTMLDivElement>(null)\n  const bubbleId = useId()\n\n  const { anchorStyle, floatingStyle } = useAnchorPosition({\n    anchorRef: triggerRef,\n    floatingRef: bubbleRef,\n    placement,\n    enabled: isOpen,\n  })\n\n  return (\n    <span className={cn(styles['root'], className)}>\n      <button\n        ref={triggerRef}\n        type=\"button\"\n        className={styles['trigger']}\n        aria-expanded={isOpen.value}\n        aria-controls={bubbleId}\n        aria-label={labels?.label ?? t(builtin.toggletip.label)}\n        style={anchorStyle}\n        onClick={() => setOpen(!isOpen.value)}\n      >\n        {trigger}\n      </button>\n\n      {isOpen.value ? (\n        <DismissableLayer onDismiss={() => setOpen(false)}>\n          <div\n            ref={bubbleRef}\n            id={bubbleId}\n            role=\"status\"\n            data-state=\"open\"\n            data-placement={placement}\n            className={styles['bubble']}\n            style={floatingStyle}\n          >\n            {children}\n          </div>\n        </DismissableLayer>\n      ) : null}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "toggletip/toggletip.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    position: relative;\n    display: inline-flex;\n  }\n\n  .trigger {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    padding: var(--cascivo-space-1);\n    background: transparent;\n    border: none;\n    border-radius: var(--cascivo-radius-control);\n    color: inherit;\n    cursor: pointer;\n\n    &:hover {\n      background: var(--cascivo-color-bg-subtle);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n  }\n\n  .bubble {\n    z-index: var(--cascivo-z-tooltip);\n    inline-size: max-content;\n    max-inline-size: 18rem;\n    margin: var(--cascivo-space-2);\n    padding-inline: var(--cascivo-space-3);\n    padding-block: var(--cascivo-space-2);\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    line-height: var(--cascivo-leading-snug);\n    color: var(--cascivo-color-text);\n    background-color: var(--cascivo-color-surface);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-overlay);\n    box-shadow: var(--cascivo-shadow-md);\n\n    opacity: 1;\n    translate: 0 0;\n    transition:\n      opacity var(--cascivo-motion-enter),\n      translate var(--cascivo-motion-enter);\n\n    @starting-style {\n      opacity: 0;\n      translate: 0 calc(-1 * var(--cascivo-space-1));\n    }\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .bubble {\n    transition: none;\n  }\n}\n\n@media (forced-colors: active) {\n  .trigger:focus-visible {\n    outline: 2px solid Highlight;\n    outline-offset: 2px;\n  }\n\n  .bubble {\n    border: 1px solid CanvasText;\n    background-color: Canvas;\n    color: CanvasText;\n  }\n}\n"
+    }
+  ],
+  "description": "A click-triggered info popover for supplementary, selectable content",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["overlay"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

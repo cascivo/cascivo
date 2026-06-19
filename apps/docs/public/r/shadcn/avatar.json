@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "avatar/avatar.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, createMachine, useMachine, useSignals } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './avatar.module.css'\n\nconst machine = createMachine({\n  initial: 'loading' as const,\n  states: {\n    loading: { on: { LOADED: 'loaded', ERROR: 'error' } },\n    loaded: {},\n    error: {},\n  },\n})\n\nexport interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {\n  src?: string\n  alt?: string\n  fallback?: string\n  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'\n  status?: 'online' | 'offline' | 'busy'\n}\n\nexport function Avatar({\n  src,\n  alt = '',\n  fallback,\n  size = 'md',\n  status,\n  className,\n  ...props\n}: AvatarProps) {\n  useSignals()\n  const [state, send] = useMachine(machine)\n  const showImage = Boolean(src) && state.value !== 'error'\n\n  return (\n    <span\n      data-size={size}\n      data-status={status}\n      className={cn(styles['avatar'], className)}\n      role={showImage ? undefined : 'img'}\n      aria-label={showImage ? undefined : alt || fallback}\n      {...props}\n    >\n      {showImage ? (\n        <img\n          className={styles['image']}\n          src={src}\n          alt={alt}\n          onLoad={() => send('LOADED')}\n          onError={() => send('ERROR')}\n        />\n      ) : (\n        <span className={styles['fallback']} aria-hidden=\"true\">\n          {fallback}\n        </span>\n      )}\n      {status && <span className={styles['status']} aria-hidden=\"true\" />}\n    </span>\n  )\n}\n"
+    },
+    {
+      "path": "avatar/avatar.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .avatar {\n    position: relative;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    flex-shrink: 0;\n    overflow: visible;\n    border-radius: var(--cascivo-radius-full);\n    background-color: var(--cascivo-color-accent-subtle);\n    color: var(--cascivo-color-text);\n    font-family: var(--cascivo-font-sans);\n    font-weight: var(--cascivo-font-medium);\n    user-select: none;\n\n    &[data-size='xs'] {\n      inline-size: 1.5rem;\n      block-size: 1.5rem;\n      font-size: var(--cascivo-text-xs);\n    }\n    &[data-size='sm'] {\n      inline-size: 2rem;\n      block-size: 2rem;\n      font-size: var(--cascivo-text-xs);\n    }\n    &[data-size='md'] {\n      inline-size: 2.5rem;\n      block-size: 2.5rem;\n      font-size: var(--cascivo-text-sm);\n    }\n    &[data-size='lg'] {\n      inline-size: 3rem;\n      block-size: 3rem;\n      font-size: var(--cascivo-text-base);\n    }\n    &[data-size='xl'] {\n      inline-size: 4rem;\n      block-size: 4rem;\n      font-size: var(--cascivo-text-lg);\n    }\n  }\n\n  .image {\n    inline-size: 100%;\n    block-size: 100%;\n    object-fit: cover;\n    border-radius: inherit;\n  }\n\n  .fallback {\n    line-height: 1;\n    text-transform: uppercase;\n  }\n\n  .status {\n    position: absolute;\n    inset-block-end: 0;\n    inset-inline-end: 0;\n    inline-size: 28%;\n    block-size: 28%;\n    min-inline-size: 0.5rem;\n    min-block-size: 0.5rem;\n    border-radius: var(--cascivo-radius-full);\n    border: 2px solid var(--cascivo-color-surface);\n\n    .avatar[data-status='online'] & {\n      background-color: var(--cascivo-color-success);\n    }\n    .avatar[data-status='offline'] & {\n      background-color: var(--cascivo-color-text-muted);\n    }\n    .avatar[data-status='busy'] & {\n      background-color: var(--cascivo-color-destructive);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Displays a user image with initials fallback",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

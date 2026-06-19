@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
-    '--cascivo-font-sans',
+    '--cascivo-font-display',
     '--cascivo-font-semibold',
     '--cascivo-leading-tight',
     '--cascivo-tracking-tight',

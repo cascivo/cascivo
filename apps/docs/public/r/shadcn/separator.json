@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "separator/separator.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './separator.module.css'\n\nexport interface SeparatorProps extends HTMLAttributes<HTMLElement> {\n  orientation?: 'horizontal' | 'vertical'\n  decorative?: boolean\n}\n\nexport function Separator({\n  orientation = 'horizontal',\n  decorative = false,\n  className,\n  ...props\n}: SeparatorProps) {\n  if (orientation === 'horizontal' && !decorative) {\n    return (\n      <hr data-orientation=\"horizontal\" className={cn(styles['separator'], className)} {...props} />\n    )\n  }\n\n  return (\n    <div\n      role={decorative ? 'none' : 'separator'}\n      aria-orientation={decorative ? undefined : orientation}\n      data-orientation={orientation}\n      className={cn(styles['separator'], className)}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "separator/separator.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .separator {\n    margin: 0;\n    border: none;\n    background-color: var(--cascivo-color-border);\n    flex-shrink: 0;\n\n    &[data-orientation='horizontal'] {\n      block-size: 1px;\n      inline-size: 100%;\n    }\n\n    &[data-orientation='vertical'] {\n      inline-size: 1px;\n      block-size: 100%;\n      align-self: stretch;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Visual or semantic divider between content",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

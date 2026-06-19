@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "context-menu",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "context-menu/context-menu.tsx",
+      "type": "registry:component",
+      "content": "'use client'\n\nimport { useRef, type ReactNode, type MouseEvent as ReactMouseEvent } from 'react'\nimport { useSignal, useSignalEffect, useSignals } from '@cascivo/core'\nimport styles from './context-menu.module.css'\n\nexport interface ContextMenuProps {\n  children: ReactNode\n}\n\nexport function ContextMenu({ children }: ContextMenuProps) {\n  useSignals()\n  const menuRef = useRef<HTMLDivElement>(null)\n  const containerRef = useRef<HTMLDivElement>(null)\n  const isOpen = useSignal(false)\n\n  useSignalEffect(() => {\n    const el = menuRef.current\n    if (!el) return\n    if (isOpen.value) {\n      try {\n        el.showPopover()\n      } catch {\n        /* noop */\n      }\n    } else {\n      try {\n        el.hidePopover()\n      } catch {\n        /* noop */\n      }\n    }\n  })\n\n  // Sync light-dismiss close back to signal\n  useSignalEffect(() => {\n    const el = menuRef.current\n    if (!el) return\n    const handler = (e: Event) => {\n      const toggleEvent = e as ToggleEvent\n      if (toggleEvent.newState === 'closed') {\n        isOpen.value = false\n      }\n    }\n    el.addEventListener('toggle', handler)\n    return () => el.removeEventListener('toggle', handler)\n  })\n\n  function handleContextMenu(e: ReactMouseEvent) {\n    e.preventDefault()\n    const container = containerRef.current\n    if (!container) return\n    container.style.setProperty('--cascivo-context-x', `${e.clientX}px`)\n    container.style.setProperty('--cascivo-context-y', `${e.clientY}px`)\n    isOpen.value = true\n  }\n\n  const childArray = Array.isArray(children) ? children : [children]\n  const [trigger, ...menuItems] = childArray\n\n  return (\n    <div ref={containerRef} onContextMenu={handleContextMenu} className={styles.wrapper}>\n      {trigger}\n      <div\n        ref={menuRef}\n        // eslint-disable-next-line @typescript-eslint/ban-ts-comment\n        // @ts-ignore — popover is a valid HTML attribute not yet in React types\n        popover=\"auto\"\n        role=\"menu\"\n        data-state={isOpen.value ? 'open' : 'closed'}\n        className={styles.menu}\n      >\n        {menuItems}\n      </div>\n    </div>\n  )\n}\n\nexport interface ContextMenuItemProps {\n  children: ReactNode\n  onSelect: () => void\n  disabled?: boolean\n}\n\nexport function ContextMenuItem({ children, onSelect, disabled }: ContextMenuItemProps) {\n  return (\n    <div\n      role=\"menuitem\"\n      tabIndex={disabled ? -1 : 0}\n      aria-disabled={disabled}\n      onClick={() => {\n        if (!disabled) onSelect()\n      }}\n      className={styles.item}\n    >\n      {children}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "context-menu/context-menu.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .wrapper {\n    display: contents;\n  }\n\n  .menu {\n    position: fixed;\n    inset: auto;\n    margin: 0;\n    padding: var(--cascivo-space-1);\n    min-width: 10rem;\n    background: var(--cascivo-color-surface);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-overlay);\n    box-shadow: var(--cascivo-shadow-md);\n\n    /* Position at pointer coordinates set via JS custom properties */\n    top: var(--cascivo-context-y, 0);\n    left: var(--cascivo-context-x, 0);\n\n    opacity: 1;\n    translate: 0 0;\n    transition:\n      opacity var(--cascivo-motion-enter),\n      translate var(--cascivo-motion-enter),\n      display var(--cascivo-motion-enter) allow-discrete,\n      overlay var(--cascivo-motion-enter) allow-discrete;\n\n    @starting-style {\n      opacity: 0;\n      translate: 0 calc(-1 * var(--cascivo-space-1));\n    }\n\n    &[data-state='closed'] {\n      opacity: 0;\n      translate: 0 calc(-1 * var(--cascivo-space-1));\n      transition:\n        opacity var(--cascivo-motion-exit),\n        translate var(--cascivo-motion-exit),\n        display var(--cascivo-motion-exit) allow-discrete,\n        overlay var(--cascivo-motion-exit) allow-discrete;\n    }\n  }\n\n  .item {\n    display: flex;\n    align-items: center;\n    padding: var(--cascivo-space-2) var(--cascivo-space-3);\n    border-radius: var(--cascivo-radius-item);\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-text);\n    cursor: pointer;\n    user-select: none;\n    outline: none;\n\n    &:hover,\n    &:focus-visible {\n      background: var(--cascivo-color-bg-subtle);\n    }\n\n    &[aria-disabled='true'] {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["overlay"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

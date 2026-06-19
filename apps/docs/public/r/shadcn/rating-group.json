@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rating-group",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "rating-group/rating-group.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './rating-group.module.css'\n\nexport interface RatingGroupLabels {\n  rating?: (value: number, max: number) => string\n}\n\nexport interface RatingGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {\n  value: number\n  onValueChange?: (v: number) => void\n  max?: number\n  size?: 'sm' | 'md' | 'lg'\n  disabled?: boolean\n  readOnly?: boolean\n  labels?: RatingGroupLabels\n}\n\nfunction defaultRatingLabel(value: number, max: number): string {\n  return `${value} of ${max} stars`\n}\n\nexport function RatingGroup({\n  value,\n  onValueChange,\n  max = 5,\n  size = 'md',\n  disabled = false,\n  readOnly = false,\n  labels,\n  className,\n  ...props\n}: RatingGroupProps) {\n  const labelFn = labels?.rating ?? defaultRatingLabel\n  const isInteractive = !disabled && !readOnly && onValueChange !== undefined\n\n  return (\n    <div className={cn(styles['wrapper'], className)} data-size={size} role=\"radiogroup\" {...props}>\n      {Array.from({ length: max }, (_, i) => {\n        const starValue = i + 1\n        const isFilled = starValue <= value\n        return (\n          <button\n            key={starValue}\n            type=\"button\"\n            role=\"radio\"\n            aria-checked={starValue === value}\n            aria-label={labelFn(starValue, max)}\n            className={styles['star']}\n            data-filled={isFilled ? '' : undefined}\n            data-value={starValue}\n            disabled={disabled}\n            tabIndex={isInteractive ? 0 : -1}\n            onClick={() => {\n              if (isInteractive) onValueChange(starValue)\n            }}\n          />\n        )\n      })}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "rating-group/rating-group.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .wrapper {\n    display: inline-flex;\n    gap: var(--cascivo-space-1);\n    align-items: center;\n\n    &[data-size='sm'] {\n      --_star-size: 1.25rem;\n    }\n\n    &[data-size='md'] {\n      --_star-size: 1.5rem;\n    }\n\n    &[data-size='lg'] {\n      --_star-size: 2rem;\n    }\n  }\n\n  .star {\n    width: var(--_star-size, 1.5rem);\n    height: var(--_star-size, 1.5rem);\n    padding: 0;\n    background: none;\n    border: none;\n    cursor: pointer;\n    color: var(--cascivo-color-border-strong);\n    transition:\n      color var(--cascivo-duration-100) var(--cascivo-ease-out),\n      transform var(--cascivo-duration-100) var(--cascivo-ease-out);\n\n    /* Star shape via clip-path or mask */\n    -webkit-mask-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E\");\n    mask-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E\");\n    -webkit-mask-repeat: no-repeat;\n    mask-repeat: no-repeat;\n    -webkit-mask-size: contain;\n    mask-size: contain;\n    background-color: var(--cascivo-color-border-strong);\n\n    /* Hover: all stars up to and including hovered star fill via CSS sibling trick */\n    /* When hovered, fill via :hover and subsequent ~.star:hover */\n    .wrapper:not(:has(:disabled)):not(:has([tabindex='-1'])):hover &[data-filled] {\n      background-color: var(--cascivo-color-warning);\n    }\n\n    &[data-filled] {\n      background-color: var(--cascivo-color-warning);\n    }\n\n    /* Unfill stars after the hovered one via sibling reset */\n    .wrapper:not(:has(:disabled)):hover &:hover ~ & {\n      background-color: var(--cascivo-color-border-strong);\n    }\n\n    &:focus-visible {\n      outline: 2px solid var(--cascivo-color-accent);\n      outline-offset: 2px;\n      border-radius: var(--cascivo-radius-control);\n    }\n\n    &:disabled {\n      cursor: not-allowed;\n      opacity: 0.5;\n    }\n\n    &:not(:disabled):not([tabindex='-1']):hover {\n      transform: scale(1.1);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Star rating input with accessible radio group pattern",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

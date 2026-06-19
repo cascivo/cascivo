@@ -94,7 +94,7 @@ function ThemesPanel() {
         ))}
       </div>
       <div className="adv-copy">
-        <h3>Eleven themes, one token swap</h3>
+        <h3>Twelve themes, one token swap</h3>
         <p>
           Three first-party themes plus eight more, all token-driven. Set <code>data-theme</code> on
           any element and every component restyles — no component changes.
@@ -187,7 +187,7 @@ const ADVANTAGES: Advantage[] = [
     id: 'themes',
     icon: <Sun />,
     title: 'Beautiful by default',
-    tagline: 'Eleven themes, one token swap',
+    tagline: 'Twelve themes, one token swap',
     panel: <ThemesPanel />,
   },
   {

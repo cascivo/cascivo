@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tile",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "tile/tile.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, Slot, useControllableSignal, useSignals } from '@cascivo/core'\nimport type { KeyboardEvent, ReactNode } from 'react'\nimport styles from './tile.module.css'\n\nexport interface TileProps {\n  /** Identifies this tile within a group. */\n  value: string\n  /** Controlled selected state. */\n  selected?: boolean\n  /** Initial selected state for uncontrolled use. */\n  defaultSelected?: boolean\n  /** Called with this tile's value whenever it is toggled on (or off for multi). */\n  onSelect?: (value: string) => void\n  /** Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off). */\n  selectable?: 'single' | 'multi'\n  disabled?: boolean\n  /** Optional leading icon/visual. */\n  icon?: ReactNode\n  /** Render as the child element instead of a div (Radix-style composition). */\n  asChild?: boolean\n  children?: ReactNode\n  className?: string\n}\n\n/**\n * A selectable card. Renders with radio (single) or checkbox (multi) semantics and toggles via\n * click or Space/Enter. Selection is controllable; `data-selected` drives the visuals via CSS.\n */\nexport function Tile({\n  value,\n  selected,\n  defaultSelected,\n  onSelect,\n  selectable = 'single',\n  disabled,\n  icon,\n  asChild,\n  children,\n  className,\n}: TileProps) {\n  useSignals()\n  const [isSelected, setSelected] = useControllableSignal<boolean>({\n    value: selected,\n    defaultValue: defaultSelected ?? false,\n    onChange: () => onSelect?.(value),\n  })\n\n  const toggle = (): void => {\n    if (disabled) return\n    // Single behaves like a radio: selecting an already-selected tile keeps it selected.\n    setSelected(selectable === 'multi' ? !isSelected.value : true)\n  }\n\n  const handleKeyDown = (e: KeyboardEvent<Element>): void => {\n    if (e.key === ' ' || e.key === 'Enter') {\n      e.preventDefault()\n      toggle()\n    }\n  }\n\n  const Comp = asChild ? Slot : 'div'\n\n  return (\n    <Comp\n      role={selectable === 'multi' ? 'checkbox' : 'radio'}\n      aria-checked={isSelected.value}\n      aria-disabled={disabled || undefined}\n      tabIndex={disabled ? -1 : 0}\n      data-selected={isSelected.value || undefined}\n      data-disabled={disabled || undefined}\n      className={cn(styles['tile'], className)}\n      onClick={toggle}\n      onKeyDown={handleKeyDown}\n    >\n      {icon && (\n        <span className={styles['icon']} aria-hidden=\"true\">\n          {icon}\n        </span>\n      )}\n      <span className={styles['body']}>{children}</span>\n    </Comp>\n  )\n}\n"
+    },
+    {
+      "path": "tile/tile.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .tile {\n    display: flex;\n    gap: var(--cascivo-space-3);\n    align-items: flex-start;\n    padding: var(--cascivo-space-4);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-surface);\n    background: var(--cascivo-color-bg);\n    color: var(--cascivo-color-text);\n    cursor: pointer;\n    transition:\n      border-color var(--cascivo-duration-150) var(--cascivo-ease-out),\n      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);\n\n    &:hover:not([data-disabled]) {\n      border-color: var(--cascivo-color-border-strong);\n    }\n\n    &:focus-visible {\n      outline: none;\n      box-shadow: var(--cascivo-focus-ring);\n    }\n\n    &[data-selected] {\n      border-color: var(--cascivo-color-accent);\n      background: color-mix(in oklch, var(--cascivo-color-accent) 4%, var(--cascivo-color-bg));\n    }\n\n    &[data-disabled] {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n  }\n\n  .icon {\n    flex: none;\n    display: grid;\n    place-items: center;\n    inline-size: 1.5rem;\n    block-size: 1.5rem;\n    color: var(--cascivo-color-text-muted);\n  }\n\n  .tile[data-selected] .icon {\n    color: var(--cascivo-color-accent);\n  }\n\n  .body {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1);\n    font-size: var(--cascivo-text-sm);\n  }\n}\n"
+    }
+  ],
+  "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

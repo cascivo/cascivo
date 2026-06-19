@@ -7,6 +7,9 @@
   [data-theme='midnight'] {
     color-scheme: dark;
 
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-font-sans);
+
     /* ── Surface ──────────────────────────────────────── */
     --cascivo-color-background: oklch(0.16 0.02 280);
     --cascivo-color-surface: oklch(0.2 0.025 280);

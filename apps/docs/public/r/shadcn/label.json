@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "label/label.tsx",
+      "type": "registry:component",
+      "content": "'use client'\nimport { cn, Slot } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { LabelHTMLAttributes, ReactNode } from 'react'\nimport styles from './label.module.css'\n\nexport interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {\n  /** Renders into the child element (Slot composition) instead of a native `<label>`. */\n  asChild?: boolean\n  /** Shows a required marker after the label text. */\n  required?: boolean\n  /** Dims the label to match an associated disabled control. */\n  disabled?: boolean\n  children: ReactNode\n  /** Override built-in strings (e.g. the required-marker accessible text). */\n  labels?: { required?: string }\n}\n\nexport function Label({\n  asChild = false,\n  required = false,\n  disabled = false,\n  className,\n  children,\n  labels,\n  ...props\n}: LabelProps) {\n  const Comp = asChild ? Slot : 'label'\n  const requiredText = labels?.required ?? t(builtin.label.required)\n\n  const marker = required ? (\n    <>\n      <span className={styles['marker']} aria-hidden=\"true\">\n        *\n      </span>\n      <span className={styles['srOnly']}>{requiredText}</span>\n    </>\n  ) : null\n\n  return (\n    <Comp\n      data-disabled={disabled ? '' : undefined}\n      className={cn(styles['label'], className as string | undefined)}\n      {...(props as Record<string, unknown>)}\n    >\n      {marker ? (\n        <>\n          {children}\n          {marker}\n        </>\n      ) : (\n        children\n      )}\n    </Comp>\n  )\n}\n"
+    },
+    {
+      "path": "label/label.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .label {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-1);\n    font-family: var(--cascivo-font-sans);\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n    line-height: var(--cascivo-leading-snug);\n    color: var(--cascivo-color-text);\n\n    &[data-disabled] {\n      opacity: 0.5;\n      cursor: not-allowed;\n    }\n  }\n\n  .marker {\n    color: var(--cascivo-color-destructive);\n    line-height: var(--cascivo-leading-none);\n  }\n\n  .srOnly {\n    position: absolute;\n    inline-size: 1px;\n    block-size: 1px;\n    margin: -1px;\n    padding: 0;\n    border: 0;\n    clip: rect(0 0 0 0);\n    clip-path: inset(50%);\n    overflow: hidden;\n    white-space: nowrap;\n  }\n}\n\n@media (forced-colors: active) {\n  .label[data-disabled] {\n    color: GrayText;\n  }\n}\n"
+    }
+  ],
+  "description": "Accessible caption for a form control",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.0.0"
+    }
+  }
+}

@@ -53,7 +53,7 @@ Keep the document outline correct while controlling the visual scale
 
 ## Design tokens
 
-- `--cascivo-font-sans`
+- `--cascivo-font-display`
 - `--cascivo-font-semibold`
 - `--cascivo-leading-tight`
 - `--cascivo-tracking-tight`
