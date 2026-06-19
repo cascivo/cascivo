@@ -167,7 +167,7 @@ All must exit 0. The drift check is especially important: regenerated artifacts 
 
 Several CI jobs build apps **without** a prior `pnpm build` step (perf, storybook deploy, landing deploy). When those apps import a workspace package whose `package.json` exports point to `./dist/`, Rolldown fails to resolve the import because no dist exists.
 
-**Rule:** Every `@cascivo/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`.
+**Rule:** Every `@cascivo/*` package whose root export resolves to `./dist/` **must** have an explicit source alias in the vite config of every app that builds without a prior full build. Currently affected packages: `core`, `storage`, `i18n`, `ai`, `render`, `icons`, `charts`.
 
 The alias maps the package name to its TypeScript source entry so Rolldown can bundle it directly:
 

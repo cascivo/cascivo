@@ -1,16 +1,49 @@
 {
   "name": "@cascivo/charts",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
   "description": "Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies",
+  "keywords": [
+    "cascivo",
+    "charts",
+    "css",
+    "data-visualization",
+    "design-system",
+    "react",
+    "signals",
+    "svg"
+  ],
+  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/charts#readme",
+  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "directory": "packages/charts"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
-  "sideEffects": false,
-  "main": "./src/index.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/charts.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
-    "build": "echo 'charts: source-only, no build'",
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },
@@ -33,7 +66,7 @@
   },
   "peerDependencies": {
     "@preact/signals-react": ">=2.0.0",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   }
 }

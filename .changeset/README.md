@@ -7,5 +7,5 @@ Versioning and publishing are driven by [changesets](https://github.com/changese
 - `pnpm release` — build and publish to npm (done by CI on main)
 
 Published packages: @cascivo/core, @cascivo/tokens, @cascivo/themes,
-@cascivo/icons, @cascivo/react, @cascivo/mcp, cascade (CLI).
+@cascivo/icons, @cascivo/react, @cascivo/charts, @cascivo/mcp, cascade (CLI).
 Private packages (components registry source, apps) are never published.
