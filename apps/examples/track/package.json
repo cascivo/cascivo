@@ -2,6 +2,7 @@
   "name": "@cascivo/example-track",
   "version": "0.0.1",
   "private": true,
+  "description": "Example app — a Linear-style keyboard-first issue tracker built with cascivo",
   "type": "module",
   "scripts": {
     "dev": "vp dev",

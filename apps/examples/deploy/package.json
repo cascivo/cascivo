@@ -2,6 +2,7 @@
   "name": "@cascivo/example-deploy",
   "version": "0.0.1",
   "private": true,
+  "description": "Example app — a Vercel-style deployment platform built with cascivo",
   "type": "module",
   "scripts": {
     "dev": "vp dev",

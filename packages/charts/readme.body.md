@@ -1,4 +1,4 @@
-Accessible, signal-driven chart library for cascade — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all twelve themes.
+Accessible, signal-driven chart library for cascivo — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all 14 themes.
 
 ## Install
 

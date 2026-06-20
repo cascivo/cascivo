@@ -2,6 +2,7 @@
   "name": "@cascivo/example-pay",
   "version": "0.0.1",
   "private": true,
+  "description": "Example app — a Stripe-style payments and revenue dashboard built with cascivo",
   "type": "module",
   "scripts": {
     "dev": "vp dev",

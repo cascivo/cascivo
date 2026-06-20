@@ -1,1 +1,19 @@
-CLI for scaffold and copy-paste workflows — `npx cascivo init`, `cascivo add <component>`, `cascivo audit --ai`. Detects your package manager, writes `cascivo.config.ts`, and fetches component source from `registry.json`.
+The `cascivo` CLI drives the copy-paste workflow — it scaffolds config, copies component source from the registry into your project, and audits generated code. You own every file it writes.
+
+## Commands
+
+```sh
+npx cascivo init              # scaffold cascivo.config.ts + tokens; detects your package manager
+cascivo add button card       # copy component source from the registry into your project
+cascivo add owner/repo/button # install from any third-party registry
+cascivo list                  # list available components
+cascivo update                # pull newer versions of copied components
+cascivo audit --ai            # flag hard-coded values, invented props, missing wiring
+cascivo build                 # build a registry from your own components
+```
+
+## How it works
+
+`init` detects npm / pnpm / yarn / bun, writes `cascivo.config.ts`, and wires up the token and theme imports. `add` resolves each component from [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json), fetches its source (TSX + CSS module + manifest) from GitHub raw URLs, and drops it into the path from your config — pulling in any dependencies it needs.
+
+Because the registry model is open, `add owner/repo/component` installs from any compatible registry, not just the first-party one. See the [registry starter](https://github.com/cascivo/cascivo/tree/main/apps/examples/registry-starter) to publish your own.

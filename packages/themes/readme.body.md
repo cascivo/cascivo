@@ -1,4 +1,4 @@
-First-party themes for cascade — `light.css`, `dark.css`, `warm.css`, and more. Apply via `data-theme` on any container; themes override the semantic token layer only, leaving component and primitive tokens unchanged.
+First-party themes for cascivo — 14 of them: `light`, `dark`, `warm`, `midnight`, `pastel`, `brutalist`, `corporate`, `terminal`, `cyberpunk`, and more. Apply via `data-theme` on any container; themes override the semantic token layer only, leaving component and primitive tokens unchanged.
 
 ## Per-theme fonts
 
