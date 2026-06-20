@@ -2,6 +2,7 @@
   "name": "@cascivo/example-flow",
   "version": "0.0.1",
   "private": true,
+  "description": "Example app — a Camunda-style process orchestration dashboard built with cascivo",
   "type": "module",
   "scripts": {
     "dev": "vp dev",

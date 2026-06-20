@@ -2,7 +2,7 @@
   "name": "@cascivo/landing",
   "version": "0.0.0",
   "private": true,
-  "description": "cascade landing page",
+  "description": "cascivo landing page — the public front door at cascivo.com",
   "type": "module",
   "scripts": {
     "predev": "node -e \"require('fs').copyFileSync('../../registry.json', 'public/registry.json')\"",

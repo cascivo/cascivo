@@ -2,6 +2,7 @@
   "name": "@cascivo/search",
   "version": "0.0.1",
   "private": true,
+  "description": "Registry search index for the cascivo ecosystem",
   "type": "module",
   "exports": {
     ".": {
