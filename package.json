@@ -6,7 +6,7 @@
   "author": "urbanisierung",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/urbanisierung/cascivo.git"
+    "url": "git+https://github.com/cascivo/cascivo.git"
   },
   "type": "module",
   "scripts": {

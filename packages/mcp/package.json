@@ -13,13 +13,13 @@
     "react",
     "signals"
   ],
-  "homepage": "https://github.com/urbanisierung/cascivo/tree/main/packages/mcp#readme",
-  "bugs": "https://github.com/urbanisierung/cascivo/issues",
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/mcp#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
   "license": "MIT",
   "author": "urbanisierung",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/urbanisierung/cascivo.git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
     "directory": "packages/mcp"
   },
   "bin": {

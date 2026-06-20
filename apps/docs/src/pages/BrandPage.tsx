@@ -21,7 +21,7 @@ export function BrandPage() {
         </p>
         <p>
           Full derivation:{' '}
-          <a href="https://github.com/urbanisierung/cascivo/blob/main/docs/BRAND.md">BRAND.md</a>
+          <a href="https://github.com/cascivo/cascivo/blob/main/docs/BRAND.md">BRAND.md</a>
         </p>
       </section>
 
@@ -69,7 +69,7 @@ export function BrandPage() {
         </div>
         <p>
           Brand tokens are for landing/docs/OG only — never used in component CSS. Full spec:{' '}
-          <a href="https://github.com/urbanisierung/cascivo/blob/main/docs/specs/brand-color.md">
+          <a href="https://github.com/cascivo/cascivo/blob/main/docs/specs/brand-color.md">
             brand-color.md
           </a>
         </p>

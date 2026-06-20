@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/item/item.tsx"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/item/item.module.css"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
     }
   ],
   "dependencies": ["@cascivo/core"],

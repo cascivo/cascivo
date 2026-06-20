@@ -10,5 +10,5 @@ Every component ships a machine-readable manifest.
 - [Docs](https://docs.cascivo.com): Component reference, props, tokens, and examples
 - [Storybook](https://storybook.cascivo.com): Interactive component explorer with all variants
 - [Registry](https://cascivo.com/registry.json): Machine-readable component manifest (JSON)
-- [GitHub](https://github.com/urbanisierung/cascivo): Source code under MIT licence
-- [MCP server](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp): MCP server for AI agent integration
+- [GitHub](https://github.com/cascivo/cascivo): Source code under MIT licence
+- [MCP server](https://github.com/cascivo/cascivo/tree/main/packages/mcp): MCP server for AI agent integration

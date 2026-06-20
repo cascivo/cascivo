@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.tsx"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
     }
   ],
   "dependencies": ["@cascivo/core"],
@@ -60,7 +60,7 @@
     "examples": [
       {
         "title": "Site footer",
-        "code": "<PageFooter\n  brand=\"Cascade\"\n  meta=\"MIT licensed. Built with care.\"\n  groups={[\n    { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },\n    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' }, { label: 'Changelog', href: '/changelog' }] },\n    { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },\n  ]}\n/>",
+        "code": "<PageFooter\n  brand=\"Cascade\"\n  meta=\"MIT licensed. Built with care.\"\n  groups={[\n    { title: 'Product', links: [{ label: 'Components', href: '/components' }, { label: 'Charts', href: '/charts' }, { label: 'Layouts', href: '/layouts' }] },\n    { title: 'Developers', links: [{ label: 'Docs', href: '/docs' }, { label: 'GitHub', href: 'https://github.com/cascivo/cascivo' }, { label: 'Changelog', href: '/changelog' }] },\n    { title: 'Resources', links: [{ label: 'Figma kit', href: '/figma' }, { label: 'Storybook', href: '/storybook' }] },\n  ]}\n/>",
         "description": "Three-column footer with brand and license meta"
       }
     ],

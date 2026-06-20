@@ -156,8 +156,8 @@ component shape but uses `"type": "block"`:
   "category": "auth",
   "version": "0.0.0",
   "files": [
-    "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx",
-    "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
+    "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx",
+    "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
   ],
   "dependencies": ["@cascivo/react"],
   "tags": ["auth", "login", "form"],

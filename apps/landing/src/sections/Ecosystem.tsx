@@ -1,5 +1,5 @@
 const DOCS_BASE = 'https://cascivo.dev'
-const GITHUB_BASE = 'https://github.com/urbanisierung/cascade-ui/tree/main/packages'
+const GITHUB_BASE = 'https://github.com/cascivo/cascivo/tree/main/packages'
 
 const PACKAGES = [
   {

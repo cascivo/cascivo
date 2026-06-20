@@ -1,6 +1,6 @@
 import { Separator } from '@cascivo/components/separator'
 
-const REPO = 'https://github.com/urbanisierung/cascivo'
+const REPO = 'https://github.com/cascivo/cascivo'
 
 // Internal targets resolve to OTHER apps/assets on the deployed cascivo.com
 // domain (not the landing SPA): /docs + /storybook (separate CF Pages apps),

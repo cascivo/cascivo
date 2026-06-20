@@ -26,7 +26,7 @@ For each of the ten Tier-1 packages, you must configure a trusted publisher on n
 
 For each package, add a GitHub Actions trusted publisher with:
 
-- **Organization:** `urbanisierung`
+- **Organization:** `cascivo`
 - **Repository:** `cascivo`
 - **Workflow filename:** `release.yml`
 - **Environment:** _(leave blank)_
@@ -83,7 +83,7 @@ git push --follow-tags
 For each of the ten packages that are now live on npm:
 
 1. Go to `npmjs.com/package/<pkg-name>` → **Settings** → **Trusted Publisher**.
-2. Add a GitHub Actions publisher: org `urbanisierung`, repo `cascivo`, workflow `release.yml`.
+2. Add a GitHub Actions publisher: org `cascivo`, repo `cascivo`, workflow `release.yml`.
 
 From the second release onward the workflow publishes tokenlessly via OIDC — no token needed.
 

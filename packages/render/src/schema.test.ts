@@ -15,7 +15,7 @@ describe('view.v1.json schema artifact', () => {
   it('is valid JSON with correct $id', () => {
     const schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf-8')) as Record<string, unknown>
     expect(schema['$id']).toBe(
-      'https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json',
+      'https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/view.v1.json',
     )
   })
 

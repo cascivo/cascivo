@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
     }
   ],
   "dependencies": ["@cascivo/core"],

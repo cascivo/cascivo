@@ -15,7 +15,7 @@ and `@preact/signals-react` — cascivo components are signal-driven, so the
 signals runtime is required. `@cascivo/themes` is optional but recommended; it
 supplies the tokens and themes the components read.
 
-Charts live in a separate package — add [`@cascivo/charts`](https://github.com/urbanisierung/cascivo/tree/main/packages/charts)
+Charts live in a separate package — add [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts)
 for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
 
 ### Framework setup (Next.js App Router)
@@ -95,7 +95,7 @@ bundle), so the package works in Next.js App Router projects out of the box.
 
 ## Migrating from shadcn/ui?
 
-See [`MIGRATING-FROM-SHADCN.md`](https://github.com/urbanisierung/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
+See [`MIGRATING-FROM-SHADCN.md`](https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
 for the variant/prop mapping (e.g. Button `default/outline` → `primary/secondary`,
 there is no `outline`) and the CSS-setup delta vs Tailwind.
 

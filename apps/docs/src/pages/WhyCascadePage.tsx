@@ -54,7 +54,7 @@ const CLAIMS: Claim[] = [
       'Button, Badge, and Alert now use CSS @function token math and if(style()) variant selection, each guarded by an @supports fallback. The system works pixel-identically in Safari and Firefox; the CSS-native path is a Chrome-leading progressive enhancement. A fallback-audit script asserts no @function or if() usage is ever shipped without a guarded fallback.',
     receipt: {
       label: 'functions.css — CSS @function helpers',
-      href: 'https://github.com/urbanisierung/cascivo/blob/main/packages/tokens/src/functions.css',
+      href: 'https://github.com/cascivo/cascivo/blob/main/packages/tokens/src/functions.css',
     },
   },
   {
@@ -191,7 +191,7 @@ const CLAIMS: Claim[] = [
       'not around their absence.',
     receipt: {
       label: '@cascivo/core primitives',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/packages/core/src',
+      href: 'https://github.com/cascivo/cascivo/tree/main/packages/core/src',
     },
   },
   {

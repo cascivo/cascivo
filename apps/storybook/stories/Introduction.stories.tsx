@@ -31,8 +31,7 @@ function Introduction() {
           tokens
         </li>
         <li>
-          <a href="https://github.com/urbanisierung/cascivo">github.com/urbanisierung/cascivo</a> —
-          source code
+          <a href="https://github.com/cascivo/cascivo">github.com/cascivo/cascivo</a> — source code
         </li>
       </ul>
 

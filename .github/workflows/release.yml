@@ -1,7 +1,7 @@
 # Trusted publishing via npm OIDC — no NPM_TOKEN required.
 # Prerequisites (one-time manual setup):
 #   1. For each Tier-1 package on npmjs.com, go to Settings → Trusted Publisher
-#      and add a GitHub Actions publisher: org=urbanisierung, repo=cascivo,
+#      and add a GitHub Actions publisher: org=cascivo, repo=cascivo,
 #      workflow=release.yml (no environment needed).
 #   2. For the first publish bootstrap, see docs/RELEASING.md.
 # After setup, every merge to main with a staged changeset triggers this workflow.

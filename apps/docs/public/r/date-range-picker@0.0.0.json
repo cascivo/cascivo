@@ -6,10 +6,10 @@
   "version": "0.0.0",
   "files": [
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx"
     },
     {
-      "url": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
     }
   ],
   "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],

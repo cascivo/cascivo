@@ -4,7 +4,7 @@
 
 > Prebuilt cascivo design system components — use without copying source
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 Every cascivo component, prebuilt as a normal installable library — for users
 who just want to **use** the design system without owning the source. If you
@@ -23,7 +23,7 @@ and `@preact/signals-react` — cascivo components are signal-driven, so the
 signals runtime is required. `@cascivo/themes` is optional but recommended; it
 supplies the tokens and themes the components read.
 
-Charts live in a separate package — add [`@cascivo/charts`](https://github.com/urbanisierung/cascivo/tree/main/packages/charts)
+Charts live in a separate package — add [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts)
 for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
 
 ### Framework setup (Next.js App Router)
@@ -103,7 +103,7 @@ bundle), so the package works in Next.js App Router projects out of the box.
 
 ## Migrating from shadcn/ui?
 
-See [`MIGRATING-FROM-SHADCN.md`](https://github.com/urbanisierung/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
+See [`MIGRATING-FROM-SHADCN.md`](https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
 for the variant/prop mapping (e.g. Button `default/outline` → `primary/secondary`,
 there is no `outline`) and the CSS-setup delta vs Tailwind.
 
@@ -328,4 +328,4 @@ pnpm add @cascivo/react
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT

@@ -17,7 +17,7 @@ export function Hero() {
       </p>
       <div className="hero-ctas">
         <LinkButton href="/guides">Get started</LinkButton>
-        <LinkButton href="https://github.com/urbanisierung/cascivo" variant="secondary">
+        <LinkButton href="https://github.com/cascivo/cascivo" variant="secondary">
           GitHub
         </LinkButton>
       </div>

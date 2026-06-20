@@ -14,7 +14,7 @@ const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 const SCHEMA_OUT = join(REPO_ROOT, 'packages', 'render', 'schema', 'view.v1.json')
 const PROP_SCHEMAS_OUT = join(REPO_ROOT, 'packages', 'render', 'src', 'prop-schemas.ts')
 const SCHEMA_ID =
-  'https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json'
+  'https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/view.v1.json'
 
 interface PropMeta {
   name: string
