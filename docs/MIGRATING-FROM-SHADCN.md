@@ -88,5 +88,5 @@ show/hide, `inert`/focus handling, and a mobile drawer:
 Before hand-rolling a component, check the index — cascivo ships heavy ones that
 are easy to miss: `DataTable` (sort/filter/paginate/select/expand), `CommandMenu`
 (⌘K), `EmptyState`, `Stat`, `DataList`, `Combobox`, `MultiSelect`, and more. The
-full categorized list is in the [`@cascivo/react` README](https://github.com/urbanisierung/cascivo/tree/main/packages/react#readme)
+full categorized list is in the [`@cascivo/react` README](https://github.com/cascivo/cascivo/tree/main/packages/react#readme)
 and at [docs.cascivo.com](https://docs.cascivo.com).

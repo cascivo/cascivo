@@ -2,7 +2,7 @@
 
 # @cascivo/example-pay
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo)
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 Cascade Pay — a functional mock of a payments and revenue dashboard (feels like Stripe).
 
@@ -32,4 +32,4 @@ standalone (`vp preview`, served at `/`) and under `/demos/pay/`.
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/urbanisierung/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/urbanisierung/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT

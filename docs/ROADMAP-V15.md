@@ -110,7 +110,7 @@ Two things are now true that the codebase doesn't yet reflect:
     logo is an asset/SVG in the apps; mobile work is CSS + a handful of signal-driven layout tweaks
     in `apps/landing` and `apps/docs` (plus shared `@cascivo/layouts` breakpoints where reused).
 12. **External steps are an out-of-code checklist.** npm org creation, `cascivo.com` DNS + hosting,
-    and the GitHub repo rename (`urbanisierung/cascade-ui` → `urbanisierung/cascivo`, redirect-safe)
+    and the GitHub repo rename (`urbanisierung/cascade-ui` → `cascivo/cascivo`, redirect-safe)
     are documented in T4/T7 as steps the human performs; the code is parameterized
     (`REGISTRY_BASE_URL`, base URLs) so it works the moment those flip.
 
@@ -136,7 +136,7 @@ Two things are now true that the codebase doesn't yet reflect:
       renamed repo; MCP server name + base URLs use `cascivo.com`; skills are `cascivo:*`;
       README/llms.txt/OG/meta carry the new name; `pnpm regen` produces no drift.
       _Evidence: T4 — `packages/cli/package.json` name `@cascivo/cli`, bin `cascivo`; registry
-      URLs updated to `urbanisierung/cascivo`; MCP server updated; skills renamed `cascivo:*`;
+      URLs updated to `cascivo/cascivo`; MCP server updated; skills renamed `cascivo:*`;
       README/OG/meta updated (T7); regen passes (T7 gate). External steps (npm org, DNS, repo rename)
       code done; external step in `docs/specs/cascivo-launch-checklist.md`._
 

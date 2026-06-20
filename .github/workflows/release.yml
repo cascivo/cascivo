@@ -1,7 +1,7 @@
 # Trusted publishing via npm OIDC — no NPM_TOKEN required.
 # Prerequisites (one-time manual setup):
 #   1. For each Tier-1 package on npmjs.com, go to Settings → Trusted Publisher
-#      and add a GitHub Actions publisher: org=urbanisierung, repo=cascivo,
+#      and add a GitHub Actions publisher: org=cascivo, repo=cascivo,
 #      workflow=release.yml (no environment needed).
 #   2. For the first publish bootstrap, see docs/RELEASING.md.
 # After setup, every merge to main with a staged changeset triggers this workflow.
@@ -51,6 +51,21 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # Defense in depth: the PR `drift` job already keeps `main` in sync, but a
+      # publish must never ship stale generated docs (READMEs, registry.json,
+      # llms.txt, context, schema). Regenerate and fail the release if anything
+      # drifted — this leaves the tree clean in the normal case (committed ==
+      # generated), so it is safe to run before changesets touches git.
+      - name: Verify generated docs are up to date
+        run: |
+          pnpm run regen
+          pnpm exec vp check --fix
+          if ! git diff --exit-code -- ':!docs/**' || [ -n "$(git status --porcelain -- ':!docs/**')" ]; then
+            git status --porcelain -- ':!docs/**'
+            echo '::error::Generated docs are stale at release time. Run `pnpm regen && pnpm exec vp check --fix` and commit the result.'
+            exit 1
+          fi
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets

@@ -469,16 +469,16 @@ function MethodologySection() {
       </ul>
       <p className="perf-note">
         Full methodology:{' '}
-        <a href="https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md">
+        <a href="https://github.com/cascivo/cascivo/blob/main/apps/bench/METHODOLOGY.md">
           METHODOLOGY.md
         </a>{' '}
         · per-component matrix detail:{' '}
-        <a href="https://github.com/urbanisierung/cascivo/blob/main/docs/specs/perf-methodology.md">
+        <a href="https://github.com/cascivo/cascivo/blob/main/docs/specs/perf-methodology.md">
           docs/specs/perf-methodology.md
         </a>{' '}
         · bench source:{' '}
-        <a href="https://github.com/urbanisierung/cascivo/tree/main/apps/bench">apps/bench</a> ·
-        reproduce with <code>pnpm bench</code>.
+        <a href="https://github.com/cascivo/cascivo/tree/main/apps/bench">apps/bench</a> · reproduce
+        with <code>pnpm bench</code>.
       </p>
     </section>
   )

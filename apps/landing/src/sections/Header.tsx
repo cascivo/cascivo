@@ -10,7 +10,7 @@ import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
 import { peek } from '../peek'
 
-const GITHUB_HREF = 'https://github.com/urbanisierung/cascivo'
+const GITHUB_HREF = 'https://github.com/cascivo/cascivo'
 
 type NavLink = { label: string; href: string }
 

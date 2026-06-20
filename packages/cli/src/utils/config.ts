@@ -22,7 +22,10 @@ export interface CascadeConfig {
 }
 
 export const DEFAULT_CONFIG: CascadeConfig = {
-  registry: 'https://raw.githubusercontent.com/urbanisierung/cascivo/main/registry.json',
+  // Canonical hosted registry index (served from the landing site, documented in
+  // llms.txt). Prefer this over a branch's GitHub raw URL, which 404s for
+  // unauthenticated/private-repo requests and breaks `cascivo list`/`add`.
+  registry: 'https://cascivo.com/registry.json',
   outputDir: 'src/components/ui',
   theme: 'light',
 }

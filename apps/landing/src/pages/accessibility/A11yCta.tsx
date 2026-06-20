@@ -9,7 +9,7 @@ export function A11yCta() {
         says about speed.
       </p>
       <div className="cta-band-actions">
-        <LinkButton href="https://github.com/urbanisierung/cascivo/blob/main/apps/bench/METHODOLOGY.md">
+        <LinkButton href="https://github.com/cascivo/cascivo/blob/main/apps/bench/METHODOLOGY.md">
           Read the methodology
         </LinkButton>
         <LinkButton href="/performance" variant="secondary">

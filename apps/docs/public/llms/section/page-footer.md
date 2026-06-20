@@ -43,7 +43,7 @@ Three-column footer with brand and license meta
       title: 'Developers',
       links: [
         { label: 'Docs', href: '/docs' },
-        { label: 'GitHub', href: 'https://github.com/urbanisierung/cascivo' },
+        { label: 'GitHub', href: 'https://github.com/cascivo/cascivo' },
         { label: 'Changelog', href: '/changelog' },
       ],
     },

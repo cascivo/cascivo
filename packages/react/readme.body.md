@@ -4,6 +4,36 @@ want to customize component internals, use the copy-paste flow instead
 (`npx cascivo add <component>`); both consume the same tokens and themes, and
 can coexist in one project.
 
+## Install
+
+```sh
+pnpm add @cascivo/react @cascivo/themes @preact/signals-react
+```
+
+**Peer dependencies** (install them in your app): `react >=18`, `react-dom >=18`,
+and `@preact/signals-react` — cascivo components are signal-driven, so the
+signals runtime is required. `@cascivo/themes` is optional but recommended; it
+supplies the tokens and themes the components read.
+
+Charts live in a separate package — add [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts)
+for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
+
+### Framework setup (Next.js App Router)
+
+In a Server Component file (e.g. `app/layout.tsx`), import the CSS once:
+
+```tsx
+import '@cascivo/react/styles.css'
+import '@cascivo/themes/all'
+```
+
+Components ship with `'use client'` preserved in the bundle, so they work inside
+RSC without any extra wrapper.
+
+> **Note on the styles path:** the import specifier is `@cascivo/react/styles.css`,
+> which the package's export map points at the dist file `cascivo.css`. Always
+> import the `styles.css` specifier — never reference `cascivo.css` directly.
+
 ## Use
 
 ```tsx
@@ -65,9 +95,28 @@ bundle), so the package works in Next.js App Router projects out of the box.
 
 ## Migrating from shadcn/ui?
 
-See [`MIGRATING-FROM-SHADCN.md`](https://github.com/urbanisierung/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
+See [`MIGRATING-FROM-SHADCN.md`](https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)
 for the variant/prop mapping (e.g. Button `default/outline` → `primary/secondary`,
 there is no `outline`) and the CSS-setup delta vs Tailwind.
+
+## Gotchas — naming collisions
+
+A handful of exported component names shadow common DOM, browser, or Next.js
+globals. When you import them, alias the import (or import the cascivo name
+explicitly) to avoid clashing with the platform identifier:
+
+| cascivo export   | Collides with                             | Suggested alias                                            |
+| ---------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| `Image`          | `next/image`, the DOM `Image` constructor | `import { Image as CascivoImage } from '@cascivo/react'`   |
+| `Link`           | `next/link`                               | `import { Link as CascivoLink } from '@cascivo/react'`     |
+| `Header`         | the `<header>` element / app headers      | `import { Header as CascivoHeader } from '@cascivo/react'` |
+| `Search`         | various router/search helpers             | `import { Search as CascivoSearch } from '@cascivo/react'` |
+| `User`, `Status` | domain models in many apps                | alias as needed                                            |
+| `Tag`            | exported as the cascivo `Tag` chip        | already namespaced — import directly                       |
+
+Editor auto-import will sometimes pick the wrong `Image`/`Link`; if styles or
+routing break after adding one of these, check that the import resolves to
+`@cascivo/react`.
 
 <!-- COMPONENT_INDEX:START -->
 

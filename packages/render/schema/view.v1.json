@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/urbanisierung/cascivo/main/packages/render/schema/view.v1.json",
+  "$id": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/render/schema/view.v1.json",
   "title": "CascadeView v1 Config",
   "description": "JSON-configured UI layout for @cascivo/render <CascadeView />",
   "type": "object",

@@ -86,7 +86,7 @@ Trusted publishing replaces the `NPM_TOKEN` secret with short-lived OIDC credent
 2. **Workflow permissions:** `id-token: write` (mint OIDC), `contents: write` (changesets tags/commits), `pull-requests: write` (the "Version Packages" PR).
 3. **No `NPM_TOKEN`.** Remove it from the workflow env entirely.
 4. **`registry-url`** on `actions/setup-node` (`https://registry.npmjs.org`) so the runner `.npmrc` points at npm.
-5. **Per-package config on npmjs.com:** each package's _Trusted Publisher_ must name `urbanisierung/cascivo`, workflow `release.yml`, and (optionally) an environment. This is a one-time manual step documented in T4.
+5. **Per-package config on npmjs.com:** each package's _Trusted Publisher_ must name `cascivo/cascivo`, workflow `release.yml`, and (optionally) an environment. This is a one-time manual step documented in T4.
 6. **First-publish bootstrap:** these names have never been published. If npm requires a package to exist before a trusted publisher can be attached, do a one-time bootstrap publish with a short-lived **granular automation token**, then switch to fully tokenless. T4 documents both paths.
 
 `changeset publish` shells out to `npm publish` per package; with npm ≥ 11.5.1 + OIDC present it mints the token and attaches provenance automatically. `publishConfig.provenance: true` + `NPM_CONFIG_PROVENANCE: true` are added as belt-and-suspenders.

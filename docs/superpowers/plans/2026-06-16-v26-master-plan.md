@@ -199,8 +199,8 @@ CSS-native, signal-driven, AI-first React design system.
 - [Docs](https://docs.cascivo.com): Component reference and API
 - [Storybook](https://storybook.cascivo.com): Interactive component explorer
 - [Registry](https://cascivo.com/registry.json): Machine-readable component manifest
-- [GitHub](https://github.com/urbanisierung/cascivo): Source code
-- [MCP server](https://github.com/urbanisierung/cascivo/tree/main/packages/mcp): AI integration
+- [GitHub](https://github.com/cascivo/cascivo): Source code
+- [MCP server](https://github.com/cascivo/cascivo/tree/main/packages/mcp): AI integration
 ```
 
 ### Storybook URL pattern (T6)

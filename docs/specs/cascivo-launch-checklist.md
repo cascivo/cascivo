@@ -17,10 +17,10 @@ Code prerequisites completed in v15 T1–T4. External steps the owner must perfo
 
 ## GitHub
 
-- [ ] Rename repo: `urbanisierung/cascade-ui` → `urbanisierung/cascivo`
+- [ ] Rename repo: `urbanisierung/cascade-ui` → `cascivo/cascivo`
   - GitHub automatically creates a redirect from the old path (safe — raw URLs still resolve)
-- [ ] Update local git remote: `git remote set-url origin git@github.com:urbanisierung/cascivo.git`
-- [ ] Verify `pnpm regen` still produces clean drift (registry.json URLs point at `urbanisierung/cascivo`)
+- [ ] Update local git remote: `git remote set-url origin git@github.com:cascivo/cascivo.git`
+- [ ] Verify `pnpm regen` still produces clean drift (registry.json URLs point at `cascivo/cascivo`)
 
 ## Verification (after infra is live)
 
@@ -34,6 +34,6 @@ Code prerequisites completed in v15 T1–T4. External steps the owner must perfo
 - [x] CSS tokens renamed `--cascivo-*` (T2)
 - [x] npm packages renamed `@cascivo/*` (T3)
 - [x] CLI renamed to unscoped `cascivo` package (T4/v34-T3)
-- [x] Registry URLs point at `urbanisierung/cascivo` (T4)
+- [x] Registry URLs point at `cascivo/cascivo` (T4)
 - [x] MCP uses `cascivo.com` (T4)
 - [x] Skills renamed `cascivo:*` (T4)

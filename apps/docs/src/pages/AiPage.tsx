@@ -106,7 +106,7 @@ export function AiPage() {
         <h2>Claude Code skills</h2>
         <p>
           Install the cascivo skills from the{' '}
-          <a href="https://github.com/urbanisierung/cascivo/tree/main/skills">skills/ directory</a>:
+          <a href="https://github.com/cascivo/cascivo/tree/main/skills">skills/ directory</a>:
         </p>
         <ul>
           <li>

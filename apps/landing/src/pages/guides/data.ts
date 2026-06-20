@@ -151,17 +151,17 @@ export const CUSTOMIZE = {
     {
       label: 'Whole brand theme',
       detail: 'Generate a full token set from a brand color with the create-theme skill.',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/skills/cascivo-create-theme',
+      href: 'https://github.com/cascivo/cascivo/tree/main/skills/cascivo-create-theme',
     },
     {
       label: 'For agents',
       detail: 'Agents call the create_theme MCP tool to do the same headlessly.',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/packages/mcp',
+      href: 'https://github.com/cascivo/cascivo/tree/main/packages/mcp',
     },
     {
       label: 'Change behavior, not just color',
       detail: 'Go past tokens — the cascivo-extend skill walks editing a component you own.',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/skills/cascivo-extend',
+      href: 'https://github.com/cascivo/cascivo/tree/main/skills/cascivo-extend',
     },
   ] satisfies CustomizeEscalation[],
 } as const
@@ -218,7 +218,7 @@ export const FAQ: FaqEntry[] = [
     id: 'license',
     q: 'Is cascivo free? What’s the license?',
     a: 'Yes — cascivo is open source under the MIT license. Use it in commercial and private projects with no fee and no attribution requirement.',
-    next: { label: 'See the source on GitHub', href: 'https://github.com/urbanisierung/cascivo' },
+    next: { label: 'See the source on GitHub', href: 'https://github.com/cascivo/cascivo' },
   },
   {
     id: 'all-or-one',
@@ -232,7 +232,7 @@ export const FAQ: FaqEntry[] = [
     a: 'Yes. Components are RSC-compatible and mark themselves "use client" only where they need interactivity. There is a Next.js App Router example you can copy from.',
     next: {
       label: 'See the example apps',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/apps/examples',
+      href: 'https://github.com/cascivo/cascivo/tree/main/apps/examples',
     },
   },
   {
@@ -259,7 +259,7 @@ export const FAQ: FaqEntry[] = [
     a: 'Because you own the source, you edit it directly. The cascivo-extend skill walks the safe way to add behavior to a component you copied without breaking its accessibility contract.',
     next: {
       label: 'The extend skill',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/skills/cascivo-extend',
+      href: 'https://github.com/cascivo/cascivo/tree/main/skills/cascivo-extend',
     },
   },
   {
@@ -291,7 +291,7 @@ export const BOUNDARIES: Boundary[] = [
       'It is progressive enhancement: Safari and Firefox render pixel-identically through static fallbacks, and a CI audit blocks any @function or if() that ships without one. The CSS-native path is a forward pilot, not a requirement — nothing breaks where it is not yet supported.',
     receipt: {
       label: 'functions.css + fallback audit',
-      href: 'https://github.com/urbanisierung/cascivo/blob/main/packages/tokens/src/functions.css',
+      href: 'https://github.com/cascivo/cascivo/blob/main/packages/tokens/src/functions.css',
     },
   },
   {
@@ -306,7 +306,7 @@ export const BOUNDARIES: Boundary[] = [
       "If you're on Vue, Svelte, or Angular, cascivo is not your library today — and we would rather say so than pretend otherwise.",
     receipt: {
       label: 'See the example apps',
-      href: 'https://github.com/urbanisierung/cascivo/tree/main/apps/examples',
+      href: 'https://github.com/cascivo/cascivo/tree/main/apps/examples',
     },
   },
   {
@@ -315,7 +315,7 @@ export const BOUNDARIES: Boundary[] = [
       'cascivo relies on :has() and @container — the last two versions of Chrome, Firefox, and Safari. No IE, no deep legacy support.',
     receipt: {
       label: 'Browser targets',
-      href: 'https://github.com/urbanisierung/cascivo/blob/main/CLAUDE.md',
+      href: 'https://github.com/cascivo/cascivo/blob/main/CLAUDE.md',
     },
   },
 ]
