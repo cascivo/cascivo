@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a problem with a cascivo component, package, or the CLI.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please search existing issues first to avoid duplicates.
+  - type: input
+    id: package
+    attributes:
+      label: Affected package or component
+      description: e.g. `@cascivo/core`, `cascivo` (CLI), or a component name like `Button`.
+      placeholder: '@cascivo/react · Button'
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, plus what you expected to happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal steps or a link to a repo/StackBlitz that reproduces the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Package versions, framework (React/Next/Vite/Astro), browser, and OS.
+      placeholder: |
+        - cascivo: 0.x.x
+        - React: 19.x
+        - Browser: Chrome 140
+        - OS: macOS 15
+    validations:
+      required: true
