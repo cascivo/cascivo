@@ -1,5 +1,31 @@
 # @cascivo/react
 
+## 0.3.0
+
+### Minor Changes
+
+- a8822a8: Integration-feedback fixes (from the bpmn-kit and pagome migrations):
+
+  - **tokens:** `@function` helpers (`--cascivo-step`/`--cascivo-scale`) are no longer
+    auto-imported from the main token CSS — they are now opt-in via the new
+    `@cascivo/tokens/functions.css` export. This removes the `@import must precede all
+other statements` warning and the lightningcss / Tailwind v4 `Unknown at rule:
+@function` break for every consumer. Every call site already ships a static
+    fallback, so default output is unchanged. Also adds the missing
+    `--cascivo-text-4xl` (+ `-fluid`) type-scale token.
+  - **react:** `Button` now supports `asChild` (render button styling on a real
+    `<a href>`); `Sheet`'s `title` is now optional and `ReactNode`-typed (labels the
+    dialog via `aria-labelledby`). Adds the conventional `"./package.json"` export.
+  - **themes:** tightens the `@cascivo/tokens` peer-dependency range to `>=0.2.0`.
+
+### Patch Changes
+
+- a8822a8: Improvements
+- 72d0086: New location
+- Updated dependencies [72d0086]
+  - @cascivo/core@0.1.2
+  - @cascivo/i18n@0.1.2
+
 ## 0.2.1
 
 ### Patch Changes

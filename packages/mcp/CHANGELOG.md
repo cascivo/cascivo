@@ -1,5 +1,11 @@
 # @cascivo/mcp
 
+## 0.1.2
+
+### Patch Changes
+
+- 72d0086: New location
+
 ## 0.1.1
 
 ### Patch Changes

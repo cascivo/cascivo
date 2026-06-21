@@ -1,5 +1,18 @@
 # cascivo
 
+## 0.1.2
+
+### Patch Changes
+
+- 30b0f20: Fix `cascivo list`/`add` 404s: the default registry index now points at the
+  canonical hosted URL `https://cascivo.com/registry.json` instead of a branch's
+  GitHub raw URL (which 404s for unauthenticated/private-repo requests). Matches
+  the registry URL already documented in `llms.txt`. Override with the
+  `registry` field in `cascivo.config.*` or `CASCIVO_REGISTRY` as before.
+- 72d0086: New location
+- Updated dependencies [72d0086]
+  - @cascivo/registry@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes
