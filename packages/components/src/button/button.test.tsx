@@ -48,4 +48,18 @@ describe('Button', () => {
     await userEvent.click(screen.getByRole('button'))
     expect(handler).not.toHaveBeenCalled()
   })
+
+  it('renders the child element with button styling when asChild', () => {
+    render(
+      <Button asChild variant="secondary" size="lg">
+        <a href="https://example.com">Visit</a>
+      </Button>,
+    )
+    const link = screen.getByRole('link', { name: 'Visit' })
+    expect(link).toHaveAttribute('href', 'https://example.com')
+    expect(link).toHaveAttribute('data-variant', 'secondary')
+    expect(link).toHaveAttribute('data-size', 'lg')
+    // no native <button> is rendered in asChild mode
+    expect(screen.queryByRole('button')).toBeNull()
+  })
 })

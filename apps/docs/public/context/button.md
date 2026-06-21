@@ -38,6 +38,7 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 | `size`     | `'sm'                                        | 'md'        | 'lg'`   | No             | md  | —       |
 | `loading`  | `boolean`                                    | No          | false   | —              |
 | `disabled` | `boolean`                                    | No          | false   | —              |
+| `asChild`  | `boolean`                                    | No          | false   | —              |
 | `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No          | —       | —              |
 
 ## Tokens
@@ -69,6 +70,16 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ```jsx
 <Button variant="destructive">Delete</Button>
+```
+
+### As link
+
+Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
+
+```jsx
+<Button asChild>
+  <a href="/pricing">View pricing</a>
+</Button>
 ```
 
 ## Boundaries

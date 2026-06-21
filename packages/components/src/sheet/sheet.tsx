@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useId, useRef, type ReactNode } from 'react'
 import { useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'
@@ -8,13 +8,15 @@ import styles from './sheet.module.css'
 export interface SheetProps {
   open: boolean
   onClose: () => void
-  title: string
+  /** Optional heading. Accepts rich nodes; when present it labels the dialog via `aria-labelledby`. */
+  title?: ReactNode
   children: ReactNode
   side?: 'start' | 'end' | 'top' | 'bottom'
 }
 
 export function Sheet({ open, onClose, title, children, side = 'end' }: SheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null)
+  const titleId = useId()
   const isOpen = useSignal(open)
   isOpen.value = open
   const onCloseRef = useRef(onClose)
@@ -46,13 +48,17 @@ export function Sheet({ open, onClose, title, children, side = 'end' }: SheetPro
       popover="manual"
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-labelledby={title != null ? titleId : undefined}
       data-state={open ? 'open' : 'closed'}
       data-side={side}
       className={styles.sheet}
     >
       <div className={styles.header}>
-        <span className={styles.title}>{title}</span>
+        {title != null && (
+          <span id={titleId} className={styles.title}>
+            {title}
+          </span>
+        )}
         <button
           type="button"
           aria-label={t(builtin.sheet.close)}

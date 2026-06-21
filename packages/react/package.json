@@ -36,7 +36,8 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./dist/cascivo.css"
+    "./styles.css": "./dist/cascivo.css",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public",

@@ -611,6 +611,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "asChild": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -3234,7 +3237,16 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "side": {
+                    "type": "string",
+                    "enum": ["start", "end", "top", "bottom"]
+                  }
+                },
+                "required": ["open", "onClose"]
               }
             }
           }

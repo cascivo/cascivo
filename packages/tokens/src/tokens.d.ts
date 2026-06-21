@@ -202,6 +202,8 @@ export type CascivoToken =
   | '--cascivo-text-2xl-fluid'
   | '--cascivo-text-3xl'
   | '--cascivo-text-3xl-fluid'
+  | '--cascivo-text-4xl'
+  | '--cascivo-text-4xl-fluid'
   | '--cascivo-text-base'
   | '--cascivo-text-lg'
   | '--cascivo-text-sm'

@@ -507,6 +507,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'asChild',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'onClick',
       required: false,
     },
@@ -3293,7 +3298,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: true,
     },
   ],
-  Sheet: [],
+  Sheet: [
+    {
+      name: 'open',
+      required: true,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onClose',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'side',
+      required: false,
+      enum: ['start', 'end', 'top', 'bottom'],
+    },
+  ],
   ShellHeader: [
     {
       name: 'brand',

@@ -200,3 +200,49 @@ notes:
   us and worth advertising.
 
 Thanks for the library — happy to provide a repro repo for any of the above.
+
+---
+
+## Resolution log (maintainers)
+
+> Added in response to this report. ✅ fixed · 📝 documented · ⏭️ deferred (tracked).
+
+### Packaging / dependency
+- ✅ **`@cascivo/themes` → `@cascivo/tokens` dependency** → `@cascivo/themes` now
+  declares `@cascivo/tokens` as a `peerDependency` so the transitive `@import`
+  resolves. `COMPATIBILITY.md` notes that a standalone themes install should also
+  add `@cascivo/tokens`.
+- 📝 **Canonical, minimal import order** → documented in the `@cascivo/react`
+  README and [`docs/COMPATIBILITY.md`](./COMPATIBILITY.md). `@cascivo/react/styles.css`
+  is explicitly described as component-structure-only (no tokens/colors).
+- 📝 **`@cascivo/layouts` references** → `@cascivo/layouts` is intentionally
+  unpublished (`private: true`) registry/copy-paste source; the README package
+  table labels it "not published." Migration cookbooks that referenced it as an
+  installable package are internal notes, not the published guidance.
+
+### Theming
+- ✅ **`--cascivo-text-4xl` undefined** → added `--cascivo-text-4xl` (36px) and
+  `--cascivo-text-4xl-fluid` to `@cascivo/tokens`.
+- 📝 **Theme override specificity footgun** → documented in
+  [`docs/THEMING.md`](./THEMING.md), including the brand-token indirection pattern
+  so one knob can be set at `:root` without fighting `:root:not([data-theme])`.
+- 📝 **Per-role radius + control-height as the real override surface** → documented
+  as first-class brand tokens in `THEMING.md`.
+
+### Component API
+- ✅ **Polymorphic `Button` (`asChild`)** → `Button` now accepts `asChild` (same
+  `Slot` mechanism as `IconButton`), so a button-styled `<a href>` keeps real anchor
+  semantics. Covered by a test and a `meta` example.
+- ✅ **`Sheet` required `title`** → `title` is now optional and `ReactNode`-typed;
+  when present it labels the dialog via `aria-labelledby` (rich title nodes stay
+  accessible). Covered by tests.
+- ⏭️ **`Field` + `InputGroup` composition** and **`Input` adornment slots** →
+  deferred; needs a typed prop-forwarding design through `Field`/`InputGroup` (or
+  native `prefix`/`suffix` on `Input`). Tracked.
+
+### Preact / TypeScript
+- 📝 **Preact support** → confirmed and documented in
+  [`docs/USING-WITH-PREACT.md`](./USING-WITH-PREACT.md) (alias, tsconfig paths,
+  `@preact/signals-react`, peer deps).
+- ✅ **Exported prop types hold up under `exactOptionalPropertyTypes`** → no change
+  needed; the public prop types remain exported.

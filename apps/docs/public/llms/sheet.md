@@ -19,7 +19,12 @@ npx cascivo add sheet
 
 ## Props
 
-_No props._
+| Prop      | Type              | Required | Default | Description |
+| --------- | ----------------- | -------- | ------- | ----------- | --- | ----- | --- |
+| `open`    | `boolean`         | yes      | —       | —           |
+| `onClose` | `() => void`      | yes      | —       | —           |
+| `title`   | `React.ReactNode` | no       | —       | —           |
+| `side`    | `'start'          | 'end'    | 'top'   | 'bottom'`   | no  | `end` | —   |
 
 ## Design tokens
 

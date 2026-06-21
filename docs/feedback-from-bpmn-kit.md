@@ -184,3 +184,46 @@ back-compat) would make brand-mapping unambiguous.
    fallbacks).
 4. State the supported framework/browser matrix and the Preact-alias story.
 5. Add per-component subpath exports + `./package.json` to `exports`.
+
+---
+
+## Resolution log (maintainers)
+
+> Added in response to this report. ✅ fixed · 📝 documented · ⏭️ deferred (tracked).
+
+### Documentation gaps
+- ✅📝 **Theming / custom-brand recipe** → new [`docs/THEMING.md`](./THEMING.md):
+  semantic-token override surface, `data-theme` scoping, the layer-cascade rule,
+  the `:root:not([data-theme])` specificity footgun, and a brand-token indirection
+  pattern + starter theme.
+- 📝 **Framework-compat / SSR + browser baseline + package matrix** → new
+  [`docs/COMPATIBILITY.md`](./COMPATIBILITY.md) (frameworks incl. the verified
+  Preact story, browser feature support, build-tooling baseline, version matrix).
+- 📝 **Preact story** → new [`docs/USING-WITH-PREACT.md`](./USING-WITH-PREACT.md)
+  (alias, tsconfig paths, peer deps, signals package).
+- 📝 **API/usage reference & package-vs-CLI** → the categorized component index and
+  the copy-paste-vs-package trade-off are in the `@cascivo/react` README; full
+  per-component props/examples live at docs.cascivo.com. The new guides are linked
+  from the README "Guides" section.
+- 📝 **CSS entry discoverability** → README already documents the
+  `@cascivo/react/styles.css` specifier and warns against importing `cascivo.css`.
+
+### Technical issues
+- ✅ **`@cascivo/tokens` invalid `@import` order** → `functions.css` is no longer
+  `@import`ed from `index.css`, so there is no `@import`-after-`@layer` warning.
+- ✅ **`@function` breaks lightningcss / Tailwind v4** → `@function` helpers are now
+  **opt-in** via the `@cascivo/tokens/functions.css` export and are not pulled into
+  the default token CSS. Every call site already ships a static fallback, so output
+  is unchanged for non-supporting pipelines. Documented in `COMPATIBILITY.md`.
+- ✅ **`./package.json` not exported** → added `"./package.json"` to
+  `@cascivo/react` `exports`.
+- 📝 **React peer deps vs. Preact** → documented in `USING-WITH-PREACT.md`; a
+  `peerDependenciesMeta` softening is tracked for a future minor.
+- ⏭️ **Per-component subpath exports / per-component CSS** → deferred; needs a build
+  change to emit per-component CSS and a stable subpath surface. Tracked.
+- ⏭️ **`Menu` Radix-parity** (`MenuLabel`, `asChild` on trigger/items,
+  checkbox/radio items), **`Button` icon size vs. `IconButton` variant alignment**,
+  **`AppShell` nav-width hugging `SideNav` + SideNav header slot** → deferred; each
+  is a deliberate API addition needing design sign-off. Tracked for a roadmap tranche.
+- 📝 **Redundant semantic color tokens** → canonical names documented in
+  `THEMING.md` (and `TOKENS.md` marks aliases).
