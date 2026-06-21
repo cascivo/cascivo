@@ -4,8 +4,16 @@ Typed signal-based form store (createForm/useForm) with sync/async validation an
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add form
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Form } from '@cascivo/react'
 ```
 
 ## Category

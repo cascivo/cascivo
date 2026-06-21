@@ -4,9 +4,13 @@ Page-level header with title, description, breadcrumb, and actions slots.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/page-header
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

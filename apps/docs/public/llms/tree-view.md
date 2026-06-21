@@ -4,8 +4,16 @@ Hierarchical, expandable tree of nodes with keyboard navigation and selection
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tree-view
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { TreeView } from '@cascivo/react'
 ```
 
 ## Category

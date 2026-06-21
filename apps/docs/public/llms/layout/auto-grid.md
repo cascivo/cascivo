@@ -4,9 +4,13 @@ Media-query-free responsive grid — columns auto-fill based on available space.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/auto-grid
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

@@ -4,8 +4,16 @@ Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add image
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Image } from '@cascivo/react'
 ```
 
 ## Category

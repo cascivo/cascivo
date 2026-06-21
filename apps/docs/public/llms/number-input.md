@@ -4,8 +4,16 @@ Numeric input with stepper buttons, clamping, precision, and locale formatting
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add number-input
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { NumberInput } from '@cascivo/react'
 ```
 
 ## Category

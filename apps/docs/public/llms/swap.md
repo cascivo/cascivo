@@ -4,8 +4,16 @@ Animated toggle between two icon/content states with rotate or flip transition
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add swap
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Swap } from '@cascivo/react'
 ```
 
 ## Category

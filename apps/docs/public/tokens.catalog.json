@@ -1,8 +1,8 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
-  "generatedAt": "2026-06-20",
-  "count": 228,
+  "generatedAt": "2026-06-21",
+  "count": 230,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -650,6 +650,14 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "1.875rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-4xl",
+      "value": "2.25rem",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "2.25rem",
       "resolvesPerTheme": false
     },
     {
@@ -1386,6 +1394,14 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-4xl-fluid",
+      "value": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
       "resolvesPerTheme": false
     },
     {

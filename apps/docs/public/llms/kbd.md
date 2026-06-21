@@ -4,8 +4,16 @@ Displays a keyboard key or shortcut
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add kbd
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Kbd } from '@cascivo/react'
 ```
 
 ## Category

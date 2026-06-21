@@ -29,7 +29,16 @@
 
 ## Accessibility rationale
 
-Uses popover="manual" with role="dialog" and aria-modal so it is announced as a modal surface; the title labels it via aria-label and Escape/Tab handling comes from the popover platform behavior.
+Uses popover="manual" with role="dialog" and aria-modal so it is announced as a modal surface; when a title is provided it labels the dialog via aria-labelledby (so rich title nodes stay accessible), and Escape/Tab handling comes from the popover platform behavior.
+
+## Props
+
+| Name      | Type              | Required | Default | Description |
+| --------- | ----------------- | -------- | ------- | ----------- | --- | --- | --- |
+| `open`    | `boolean`         | Yes      | —       | —           |
+| `onClose` | `() => void`      | Yes      | —       | —           |
+| `title`   | `React.ReactNode` | No       | —       | —           |
+| `side`    | `'start'          | 'end'    | 'top'   | 'bottom'`   | No  | end | —   |
 
 ## Tokens
 

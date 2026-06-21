@@ -4,8 +4,16 @@ Triggers an action or event
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add button
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Button } from '@cascivo/react'
 ```
 
 ## Category
@@ -38,6 +46,7 @@ npx cascivo add button
 | `size`     | `'sm'                                        | 'md'        | 'lg'`   | no             | `md` | —         |
 | `loading`  | `boolean`                                    | no          | `false` | —              |
 | `disabled` | `boolean`                                    | no          | `false` | —              |
+| `asChild`  | `boolean`                                    | no          | `false` | —              |
 | `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | no          | —       | —              |
 
 ## Examples
@@ -58,6 +67,16 @@ npx cascivo add button
 
 ```tsx
 <Button variant="destructive">Delete</Button>
+```
+
+### As link
+
+Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
+
+```tsx
+<Button asChild>
+  <a href="/pricing">View pricing</a>
+</Button>
 ```
 
 ## Design tokens

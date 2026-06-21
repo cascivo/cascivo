@@ -4,8 +4,16 @@ Controls for navigating paged data sets, with page size selection
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add pagination
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Pagination } from '@cascivo/react'
 ```
 
 ## Category

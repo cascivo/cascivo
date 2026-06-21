@@ -4,8 +4,14 @@ Scatter plot with variable point radius, multi-series, and hover tooltip.
 
 ## Install
 
-```bash
-npx cascivo add chart/scatter-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { ScatterChart } from '@cascivo/charts'
 ```
 
 ## Category

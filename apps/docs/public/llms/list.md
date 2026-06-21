@@ -4,8 +4,16 @@ Styled unordered or ordered list with ListItem
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add list
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { List } from '@cascivo/react'
 ```
 
 ## Category

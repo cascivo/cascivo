@@ -4,8 +4,16 @@ Kebab icon button revealing a menu of row-level actions
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add overflow-menu
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { OverflowMenu } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Right-click context menu anchored at pointer coordinates via CSS custom properti
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add context-menu
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ContextMenu } from '@cascivo/react'
 ```
 
 ## Category

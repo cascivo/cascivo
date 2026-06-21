@@ -7,7 +7,12 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    { name: 'open', type: 'boolean', required: true },
+    { name: 'onClose', type: '() => void', required: true },
+    { name: 'title', type: 'React.ReactNode', required: false },
+    { name: 'side', type: "'start' | 'end' | 'top' | 'bottom'", required: false, default: 'end' },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -54,7 +59,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'Uses popover="manual" with role="dialog" and aria-modal so it is announced as a modal surface; the title labels it via aria-label and Escape/Tab handling comes from the popover platform behavior.',
+      'Uses popover="manual" with role="dialog" and aria-modal so it is announced as a modal surface; when a title is provided it labels the dialog via aria-labelledby (so rich title nodes stay accessible), and Escape/Tab handling comes from the popover platform behavior.',
     flexibility: [
       {
         area: 'side',

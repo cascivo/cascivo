@@ -4,8 +4,16 @@ A dual-calendar picker for selecting a contiguous date range.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add date-range-picker
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { DateRangePicker } from '@cascivo/react'
 ```
 
 ## Category

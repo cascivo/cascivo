@@ -4,8 +4,16 @@ A scroll container with styled, slim scrollbars and overflow shadows
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add scroll-area
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ScrollArea } from '@cascivo/react'
 ```
 
 ## Category

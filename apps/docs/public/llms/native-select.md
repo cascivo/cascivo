@@ -4,8 +4,16 @@ A styled native <select> that keeps platform form/keyboard behavior with a custo
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add native-select
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { NativeSelect } from '@cascivo/react'
 ```
 
 ## Category

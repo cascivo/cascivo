@@ -1,45 +1,93 @@
-# cascade — The CSS-native, signal-driven, AI-first React design system
+# cascivo — The CSS-native, signal-driven, AI-first React design system
 
-cascade is a copy-paste component library (shadcn model). Users own the code they install.
-Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 AA.
+cascivo is a React design system you can consume two ways: copy-paste the source
+(`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
+`@cascivo/react` package (use without copying). Components are signal-driven (Preact
+Signals), styled with modern CSS (@layer / @container / :has() / oklch), themed via the
+`data-theme` attribute, and WCAG 2.2 AA. Every component ships a machine-readable manifest,
+so this file plus the linked resources are enough to build with cascivo.
 
-## Key resources
+## Start here
 
-- Registry JSON: https://cascivo.com/registry.json
-- View schema: https://cascivo.com/view.v1.json
-- MCP server: npx @cascivo/mcp
-- llms.txt: https://cascivo.com/llms.txt
+- Docs (per-component reference, props, live examples): https://docs.cascivo.com
+- Storybook (every variant, interactive): https://storybook.cascivo.com
+- Source (MIT): https://github.com/cascivo/cascivo
+- This file: https://cascivo.com/llms.txt (mirrored at https://docs.cascivo.com/llms.txt)
 
-## MCP tools
+## Machine-readable resources (AI-first)
 
+- Registry — index of every component (JSON): https://cascivo.com/registry.json
+- Per-component AI docs (props, examples, a11y, tokens): https://docs.cascivo.com/llms/<name>.md
+- Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
+- Context bundle (all intent + boundaries + rules): https://docs.cascivo.com/context.json
+- Token catalog (closed set, every --cascivo-* + layer + default): https://docs.cascivo.com/tokens.catalog.json
+
+## How to use it
+
+Two consumption paths — they share the same tokens/themes and can coexist:
+
+A. Prebuilt package — fastest, use without copying source:
+
+```sh
+pnpm add @cascivo/react @cascivo/themes @preact/signals-react
+```
+
+```tsx
+import '@cascivo/react/styles.css' // component styles (structure only)
+import '@cascivo/themes/all'       // tokens (once) + base typography + light & dark
+import { Button, Card } from '@cascivo/react'
+```
+
+   Trade-offs: smallest setup, updates via npm; you do not edit component internals.
+
+B. Copy-paste source — own and customize the code (shadcn model):
+
+```sh
+npx cascivo add button card
+```
+
+   Trade-offs: full control over internals; updates are a manual re-add.
+
+Required CSS import order (both paths): components -> tokens+theme -> brand overrides (last).
+`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.
+
+## Guides
+
+- Theming & branding: https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md
+- Using cascivo with Preact: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-PREACT.md
+- Compatibility & support matrix: https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md
+- Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
+- Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
+
+## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)
+
+- React 18/19, Next.js App Router (RSC), Vite, Astro islands, Preact 10 (preact/compat — verified).
+- Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).
+- CSS @function is opt-in (`import '@cascivo/tokens/functions.css'`); not auto-loaded, so
+  lightningcss / Tailwind v4 pipelines work by default.
+
+## MCP server (recommended for agents)
+
+Point any MCP client at the cascivo server:
+
+```json
+{ "mcpServers": { "cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] } } }
+```
+
+Tools:
 - `list_components` — list all components with category/tags
-- `get_component` — full component manifest
-- `scaffold_view` — natural language → JSON view config
+- `get_component` — full manifest for one component
+- `get_context` — intent + boundaries + tokens for one component
+- `get_tokens` — closed-set token catalog (filter by group/layer)
+- `select_component` — rank components by a natural-language need
+- `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
 - `add_to_project` — install components into the user project
 
-## Context resources
+To pick a component without MCP, read the intent summaries below (grouped by need) or
+fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when-not-to-use of each.
 
-The context layer provides machine-readable WHY — intent, boundaries, and closed-set tokens.
-
-- Context bundle: https://cascivo.com/context.json
-- Token catalog (closed set): https://cascivo.com/tokens.catalog.json
-- Per-component context: https://cascivo.com/context/<name>.md
-
-## How to select a component
-
-Use the MCP `select_component` tool with a natural-language need:
-  select_component({ need: "show a transient success message" })
-
-Or browse the `related` edges in each component's intent:
-  get_context({ name: "Toast" }) → returns intent.related edges to neighbours
-
-New MCP tools:
-- `get_tokens` — closed-set token catalog (filter by group/layer)
-- `get_context` — full context for one component (intent + boundaries + tokens)
-- `select_component` — deterministic ranking of components by need description
-
-## Component authoring rules (for cascivo:extend)
+## Component authoring rules (for cascivo:extend / custom components)
 
 - Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`
 - No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`
@@ -51,342 +99,362 @@ New MCP tools:
 - FSM (`useMachine`) only when the component itself drives transitions
 - CSS logical properties throughout (RTL-safe): `margin-inline-start`, etc.
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
-- WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested
+- WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index
+## Component index (165 components)
 
-- [accordion](/llms/accordion.md) — Vertically stacked, collapsible content sections
-- [alert](/llms/alert.md) — Highlights a short, important message inline
-- [alert-dialog](/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
-- [app-shell](/llms/app-shell.md) — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
-- [aspect-ratio](/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio
-- [avatar](/llms/avatar.md) — Displays a user image with initials fallback
-- [avatar-group](/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
-- [badge](/llms/badge.md) — Small status label or category indicator
-- [block/console-app](/llms/block/console-app.md) — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.
-- [block/dashboard-charts](/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
-- [block/empty-dashboard](/llms/block/empty-dashboard.md) — Dashboard page showing an empty state with a call-to-action button.
-- [block/login-page](/llms/block/login-page.md) — Authentication login page with email and password form.
-- [block/notification-center](/llms/block/notification-center.md) — A list of notification alerts with a mark-all-read action.
-- [block/page-with-breadcrumb](/llms/block/page-with-breadcrumb.md) — A centered content page with a breadcrumb navigation and page header.
-- [block/settings-form-page](/llms/block/settings-form-page.md) — Settings page with profile form inside a two-column settings layout.
-- [block/sidebar-app](/llms/block/sidebar-app.md) — Full app shell with collapsible side navigation and top header.
-- [block/stats-cards](/llms/block/stats-cards.md) — Grid of KPI stat cards with trend badges.
-- [block/users-table-page](/llms/block/users-table-page.md) — Full users management page with table, search, and invite action.
-- [blockquote](/llms/blockquote.md) — Quoted passage with optional attribution footer
-- [breadcrumb](/llms/breadcrumb.md) — Shows the current page location within a navigation hierarchy
-- [button](/llms/button.md) — Triggers an action or event
-- [button-group](/llms/button-group.md) — Visually joins a set of related buttons into a single segmented control
-- [calendar](/llms/calendar.md) — An accessible standalone month-grid date picker.
-- [card](/llms/card.md) — Container for grouping related content
-- [carousel](/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators
-- [chart/area-chart](/llms/chart/area-chart.md) — Area chart with optional stacking, multi-series support, and hover tooltip.
-- [chart/bar-chart](/llms/chart/bar-chart.md) — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.
-- [chart/boxplot](/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series.
-- [chart/bubble-chart](/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
-- [chart/bullet](/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick.
-- [chart/combo-chart](/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes.
-- [chart/heatmap](/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation.
-- [chart/histogram](/llms/chart/histogram.md) — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
-- [chart/kpi](/llms/chart/kpi.md) — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
-- [chart/line-chart](/llms/chart/line-chart.md) — Time-series or numeric line chart with multi-series support, hover tooltip, and legend.
-- [chart/meter](/llms/chart/meter.md) — Progress meter in bar or gauge variant with threshold coloring.
-- [chart/pie-chart](/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend.
-- [chart/radar](/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
-- [chart/scatter-chart](/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
-- [chart/sparkline](/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
-- [chart/treemap](/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
-- [chat-bubble](/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support
-- [checkbox](/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
-- [checkbox-card](/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
-- [code](/llms/code.md) — Inline code span for identifiers, commands, and short snippets
-- [code-snippet](/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
-- [collapsible](/llms/collapsible.md) — A single disclosure region toggled open and closed by its trigger
-- [color-picker](/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
-- [combobox](/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
-- [command-menu](/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
-- [comparison](/llms/comparison.md) — Reveals the difference between two layers with a draggable divider
-- [contained-list](/llms/contained-list.md) — Labelled list of rows inside a bordered container
-- [context-menu](/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
-- [copy-button](/llms/copy-button.md) — Icon button that copies a value to the clipboard with copied feedback
-- [data-list](/llms/data-list.md) — Key-value pairs rendered as a description list
-- [data-table](/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
-- [date-picker](/llms/date-picker.md) — An accessible date-picker with a calendar popover.
-- [date-range-picker](/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
-- [dock](/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items
-- [drawer](/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
-- [dropdown](/llms/dropdown.md) — Menu of actions revealed from a trigger
-- [editable](/llms/editable.md) — Inline click-to-edit text field
-- [empty-state](/llms/empty-state.md) — Placeholder for views that have no data to display
-- [field](/llms/field.md) — Form-field wrapper composing label, control, description, and error
-- [file-uploader](/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
-- [filter](/llms/filter.md) — A group of toggleable pill or outline buttons for filtering content by category
-- [form](/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
-- [header](/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot
-- [header-panel](/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
-- [heading](/llms/heading.md) — Section heading with semantic level decoupled from visual size
-- [hover-card](/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
-- [icon-button](/llms/icon-button.md) — Square, icon-only button with a required accessible label
-- [image](/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
-- [indicator](/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child
-- [inline-loading](/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
-- [input](/llms/input.md) — Text input field with optional label, hint, and error state
-- [input-group](/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
-- [item](/llms/item.md) — Generic content row primitive with media, content, and action regions
-- [join](/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii
-- [kbd](/llms/kbd.md) — Displays a keyboard key or shortcut
-- [label](/llms/label.md) — Accessible caption for a form control
-- [layout/app-shell](/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
-- [layout/auth-layout](/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password).
-- [layout/auto-grid](/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space.
-- [layout/center](/llms/layout/center.md) — Horizontally centered container with a configurable max-width.
-- [layout/columns](/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports.
-- [layout/dashboard-layout](/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside.
-- [layout/grid](/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing.
-- [layout/masonry](/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).
-- [layout/page-header](/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots.
-- [layout/section](/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap.
-- [layout/settings-layout](/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area.
-- [layout/spacer](/llms/layout/spacer.md) — Fixed-height spacing block using design token steps.
-- [layout/split-view](/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support.
-- [layout/stack](/llms/layout/stack.md) — Flex layout primitive for vertical or horizontal stacking with gap control.
-- [link](/llms/link.md) — Styled anchor for navigation, standalone or inline within prose
-- [list](/llms/list.md) — Styled unordered or ordered list with ListItem
-- [menu](/llms/menu.md) — Dropdown menu with keyboard navigation, built on usePopover
-- [menu-button](/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands
-- [menubar](/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus
-- [modal](/llms/modal.md) — Accessible dialog overlay using native <dialog> element
-- [multi-select](/llms/multi-select.md) — Searchable multi-value select with popover listbox
-- [native-select](/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
-- [navigation-menu](/llms/navigation-menu.md) — Site navigation bar with links and dropdown flyout panels
-- [notification](/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
-- [number-input](/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting
-- [otp-input](/llms/otp-input.md) — Segmented one-time code input
-- [overflow-menu](/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions
-- [pagination](/llms/pagination.md) — Controls for navigating paged data sets, with page size selection
-- [password-input](/llms/password-input.md) — Password input with reveal toggle and optional strength meter
-- [popover](/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API
-- [progress](/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation
-- [progress-bar](/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
-- [progress-circle](/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
-- [progress-indicator](/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
-- [prose](/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
-- [qr-code](/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code
-- [radial-progress](/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
-- [radio](/llms/radio.md) — Single choice from a set, grouped with RadioGroup
-- [radio-card](/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
-- [rating-group](/llms/rating-group.md) — Star rating input with accessible radio group pattern
-- [relative-time](/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating
-- [resizable](/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
-- [scroll-area](/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows
-- [search](/llms/search.md) — Search input with debounced search callback and clear button
-- [section/cta](/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
-- [section/feature-grid](/llms/section/feature-grid.md) — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
-- [section/hero](/llms/section/hero.md) — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
-- [section/media-masonry](/llms/section/media-masonry.md) — Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.
-- [section/page-footer](/llms/section/page-footer.md) — Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns.
-- [section/stats-band](/llms/section/stats-band.md) — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.
-- [segmented-control](/llms/segmented-control.md) — Mutually exclusive toggle group
-- [select](/llms/select.md) — Native select menu styled to match the design system
-- [separator](/llms/separator.md) — Visual or semantic divider between content
-- [sheet](/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations
-- [shell-header](/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content
-- [side-nav](/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping
-- [skeleton](/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content
-- [skip-nav](/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content
-- [slider](/llms/slider.md) — Range input for selecting a value within bounds
-- [spinner](/llms/spinner.md) — Indeterminate loading indicator
-- [stack](/llms/stack.md) — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect
-- [stat](/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
-- [status](/llms/status.md) — Colored dot with a label communicating the state of a system or entity
-- [steps](/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations
-- [structured-list](/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
-- [swap](/llms/swap.md) — Animated toggle between two icon/content states with rotate or flip transition
-- [switcher](/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
-- [tabs](/llms/tabs.md) — Switch between related panels of content
-- [tag](/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
-- [tags-input](/llms/tags-input.md) — Free-form multi-value chip input
-- [text](/llms/text.md) — Body text with size, weight, and muted variants
-- [textarea](/llms/textarea.md) — Multi-line text input with optional label, hint, and error state
-- [tile](/llms/tile.md) — A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard
-- [time-picker](/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants
-- [timeline](/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
-- [toast](/llms/toast.md) — Transient notification surfaced via the useToast hook
-- [toc](/llms/toc.md) — Table of contents with scroll-spy highlighting of the active section
-- [toggle](/llms/toggle.md) — On/off switch built as an accessible button
-- [toggle-group](/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection
-- [toggletip](/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content
-- [tooltip](/llms/tooltip.md) — Contextual label shown on hover or focus
-- [tree-view](/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection
-- [user](/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot
-- [visually-hidden](/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
+### chart
 
-## Component intent summaries
+- [chart/area-chart](https://docs.cascivo.com/llms/chart/area-chart.md) — Area chart with optional stacking, multi-series support, and hover tooltip.
+- [chart/bar-chart](https://docs.cascivo.com/llms/chart/bar-chart.md) — Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.
+- [chart/boxplot](https://docs.cascivo.com/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series.
+- [chart/bubble-chart](https://docs.cascivo.com/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
+- [chart/bullet](https://docs.cascivo.com/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick.
+- [chart/combo-chart](https://docs.cascivo.com/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes.
+- [chart/heatmap](https://docs.cascivo.com/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation.
+- [chart/histogram](https://docs.cascivo.com/llms/chart/histogram.md) — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
+- [chart/kpi](https://docs.cascivo.com/llms/chart/kpi.md) — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
+- [chart/line-chart](https://docs.cascivo.com/llms/chart/line-chart.md) — Time-series or numeric line chart with multi-series support, hover tooltip, and legend.
+- [chart/meter](https://docs.cascivo.com/llms/chart/meter.md) — Progress meter in bar or gauge variant with threshold coloring.
+- [chart/pie-chart](https://docs.cascivo.com/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend.
+- [chart/radar](https://docs.cascivo.com/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
+- [chart/scatter-chart](https://docs.cascivo.com/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
+- [chart/sparkline](https://docs.cascivo.com/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
+- [chart/treemap](https://docs.cascivo.com/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
 
-- [Accordion](/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
-- [Alert](/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
-- [AlertDialog](/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
-- [AppShell](/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
-- [AspectRatio](/context/aspect-ratio.md) — Use when: Reserving a stable box for media that loads asynchronously, avoiding layout shift
-- [Avatar](/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
-- [AvatarGroup](/context/avatar-group.md) — Use when: Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)
-- [Badge](/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
-- [ConsoleApp](/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
-- [DashboardCharts](/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
-- [EmptyDashboard](/context/block/empty-dashboard.md) — Use when: A first-run or zero-data dashboard with an empty state and primary CTA
-- [LoginPage](/context/block/login-page.md) — Use when: A complete login page with email and password form
-- [NotificationCenter](/context/block/notification-center.md) — Use when: A list of notification alerts with a mark-all-read action
-- [PageWithBreadcrumb](/context/block/page-with-breadcrumb.md) — Use when: A centered content page with breadcrumb navigation and a page header
-- [SettingsFormPage](/context/block/settings-form-page.md) — Use when: A settings page with a profile form inside a two-column settings layout
-- [SidebarApp](/context/block/sidebar-app.md) — Use when: A ready-made app shell with opinionated collapsible sidebar and top header
-- [StatsCards](/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
-- [UsersTablePage](/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
-- [Blockquote](/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
-- [Breadcrumb](/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
-- [Button](/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
-- [ButtonGroup](/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
-- [Calendar](/context/calendar.md) — Use when: Showing an always-visible month grid for picking a single date (inline, not a popover)
-- [Card](/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
-- [Carousel](/context/carousel.md) — Use when: Presenting a sequence of media or cards the user pages through one at a time
-- [AreaChart](/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
-- [BarChart](/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
-- [Boxplot](/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
-- [BubbleChart](/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
-- [Bullet](/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
-- [ComboChart](/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
-- [Heatmap](/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
-- [Histogram](/context/chart/histogram.md) — Use when: Showing the frequency distribution of a single continuous variable
-- [Kpi](/context/chart/kpi.md) — Use when: Highlighting a single headline metric with an optional change delta
-- [LineChart](/context/chart/line-chart.md) — Use when: Showing trends and precise values over continuous time or a numeric range
-- [Meter](/context/chart/meter.md) — Use when: Showing a rated or gauged value within a known min/max range
-- [PieChart](/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
-- [Radar](/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
-- [ScatterChart](/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
-- [Sparkline](/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
-- [Treemap](/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
-- [ChatBubble](/context/chat-bubble.md) — Use when: Chat UIs and messaging features showing conversation history
-- [Checkbox](/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
-- [CheckboxCard](/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
-- [Code](/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
-- [CodeSnippet](/context/code-snippet.md) — Use when: Showing a command, token, or path the user is expected to copy
-- [Collapsible](/context/collapsible.md) — Use when: Hiding a single secondary block until the user asks for it
-- [ColorPicker](/context/color-picker.md) — Use when: Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control
-- [Combobox](/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
-- [CommandMenu](/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
-- [Comparison](/context/comparison.md) — Use when: Showing the difference between two versions of similar content (before/after edits, original vs processed)
-- [ContainedList](/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
-- [ContextMenu](/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
-- [CopyButton](/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
-- [DataList](/context/data-list.md) — Use when: Displaying read-only key-value metadata (profile fields, record summaries)
-- [DataTable](/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
-- [DatePicker](/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
-- [DateRangePicker](/context/date-range-picker.md) — Use when: Selecting a contiguous start–end date range (reporting windows, bookings, filters)
-- [Dock](/context/dock.md) — Use when: Mobile app-shell navigation with 3–5 top-level destinations
-- [Drawer](/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
-- [Dropdown](/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
-- [Editable](/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
-- [EmptyState](/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
-- [Field](/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
-- [FileUploader](/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
-- [Filter](/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
-- [Form](/context/form.md) — Use when: Collecting and submitting a set of related field values together
-- [Header](/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
-- [HeaderPanel](/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)
-- [Heading](/context/heading.md) — Use when: Titling a page or section as part of the document outline
-- [HoverCard](/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
-- [IconButton](/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
-- [Image](/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
-- [Indicator](/context/indicator.md) — Use when: Notification counts on icon buttons
-- [InlineLoading](/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
-- [Input](/context/input.md) — Use when: Collecting a single line of free-form text from the user
-- [InputGroup](/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
-- [Item](/context/item.md) — Use when: Composing a single content row with leading media, a text block, and trailing actions
-- [Join](/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
-- [Kbd](/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
-- [Label](/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
-- [AppShell](/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
-- [AuthLayout](/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
-- [AutoGrid](/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
-- [Center](/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
-- [Columns](/context/layout/columns.md) — Use when: Equal-width multi-column content that collapses to one column when narrow
-- [DashboardLayout](/context/layout/dashboard-layout.md) — Use when: A dashboard page with a stats strip, main content area, and optional aside
-- [Grid](/context/layout/grid.md) — Use when: Two-dimensional layouts with an explicit column count
-- [Masonry](/context/layout/masonry.md) — Use when: Galleries of variable-height items packed into balanced columns
-- [PageHeader](/context/layout/page-header.md) — Use when: A page-level header with title, description, breadcrumb, and action slots
-- [Section](/context/layout/section.md) — Use when: Wrapping a page region with block padding and a centered inner width
-- [SettingsLayout](/context/layout/settings-layout.md) — Use when: A two-column settings page with a fixed-width menu and fluid content
-- [Spacer](/context/layout/spacer.md) — Use when: Inserting a fixed vertical gap between blocks using spacing token steps
-- [SplitView](/context/layout/split-view.md) — Use when: Two side-by-side panes the user can resize via pointer or keyboard
-- [Stack](/context/layout/stack.md) — Use when: Arranging children vertically or horizontally with a consistent gap
-- [Link](/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
-- [List](/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
-- [Menu](/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
-- [MenuButton](/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
-- [Menubar](/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions
-- [Modal](/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
-- [MultiSelect](/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
-- [NativeSelect](/context/native-select.md) — Use when: A standard single-choice dropdown where native behavior and form integration matter most
-- [NavigationMenu](/context/navigation-menu.md) — Use when: Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links
-- [Notification](/context/notification.md) — Use when: Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)
-- [NumberInput](/context/number-input.md) — Use when: Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)
-- [OtpInput](/context/otp-input.md) — Use when: Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots
-- [OverflowMenu](/context/overflow-menu.md) — Use when: Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists
-- [Pagination](/context/pagination.md) — Use when: Navigating between pages of a paged dataset
-- [PasswordInput](/context/password-input.md) — Use when: Collecting a secret credential that should be masked by default with an opt-in reveal toggle
-- [Popover](/context/popover.md) — Use when: Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking
-- [Progress](/context/progress.md) — Use when: Tracked operations with a known total (file uploads, multi-step imports)
-- [ProgressBar](/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
-- [ProgressCircle](/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
-- [ProgressIndicator](/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
-- [Prose](/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
-- [QrCode](/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
-- [RadialProgress](/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
-- [Radio](/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
-- [RadioCard](/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
-- [RatingGroup](/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
-- [RelativeTime](/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
-- [Resizable](/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
-- [ScrollArea](/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
-- [Search](/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
-- [Cta](/context/section/cta.md) — Use when: A call-to-action band with title, description, and centered actions
-- [FeatureGrid](/context/section/feature-grid.md) — Use when: A feature section laying out items in an auto-fitting grid
-- [Hero](/context/section/hero.md) — Use when: The primary page intro with eyebrow, title, description, actions, and media
-- [MediaMasonry](/context/section/media-masonry.md) — Use when: A full-width media gallery section with masonry packing
-- [PageFooter](/context/section/page-footer.md) — Use when: A site footer with grouped link columns and a brand/meta bottom row
-- [StatsBand](/context/section/stats-band.md) — Use when: A horizontal KPI strip with optional deltas and inline sparkline trends
-- [SegmentedControl](/context/segmented-control.md) — Use when: A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges
-- [Select](/context/select.md) — Use when: Choosing exactly one value from a known, finite list inside a form
-- [Separator](/context/separator.md) — Use when: Dividing groups of content within a section or menu
-- [Sheet](/context/sheet.md) — Use when: Showing secondary content or a form in a panel that slides in from a screen edge
-- [ShellHeader](/context/shell-header.md) — Use when: Building console/admin app chrome with brand, dropdown nav, and global icon actions
-- [SideNav](/context/side-nav.md) — Use when: Persistent primary navigation along the side of an app shell
-- [Skeleton](/context/skeleton.md) — Use when: Indicating loading by mirroring the shape of the content that will appear
-- [SkipNav](/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
-- [Slider](/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
-- [Spinner](/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
-- [Stack](/context/stack.md) — Use when: Card pile UI where depth and layering should be visible
-- [Stat](/context/stat.md) — Use when: Highlighting a single key metric with a clear label
-- [Status](/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
-- [Steps](/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
-- [StructuredList](/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
-- [Swap](/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
-- [Switcher](/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
-- [Tabs](/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
-- [Tag](/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
-- [TagsInput](/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
-- [Text](/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
-- [Textarea](/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
-- [Tile](/context/tile.md) — Use when: A visually rich, clickable choice card in a single- or multi-select group
-- [TimePicker](/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
-- [Timeline](/context/timeline.md) — Use when: Showing an ordered sequence of events over time (activity feeds, order tracking)
-- [Toast](/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
-- [Toc](/context/toc.md) — Use when: Long-form pages (docs, articles) that benefit from in-page jump links
-- [Toggle](/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
-- [ToggleGroup](/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
-- [Toggletip](/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
-- [Tooltip](/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
-- [TreeView](/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
-- [User](/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
-- [VisuallyHidden](/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
+### display
 
-_Generated: 2026-06-20 from registry v0.0.0_
+- [alert](https://docs.cascivo.com/llms/alert.md) — Highlights a short, important message inline
+- [avatar](https://docs.cascivo.com/llms/avatar.md) — Displays a user image with initials fallback
+- [avatar-group](https://docs.cascivo.com/llms/avatar-group.md) — Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip
+- [badge](https://docs.cascivo.com/llms/badge.md) — Small status label or category indicator
+- [block/console-app](https://docs.cascivo.com/llms/block/console-app.md) — Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.
+- [block/dashboard-charts](https://docs.cascivo.com/llms/block/dashboard-charts.md) — Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
+- [block/empty-dashboard](https://docs.cascivo.com/llms/block/empty-dashboard.md) — Dashboard page showing an empty state with a call-to-action button.
+- [block/login-page](https://docs.cascivo.com/llms/block/login-page.md) — Authentication login page with email and password form.
+- [block/notification-center](https://docs.cascivo.com/llms/block/notification-center.md) — A list of notification alerts with a mark-all-read action.
+- [block/page-with-breadcrumb](https://docs.cascivo.com/llms/block/page-with-breadcrumb.md) — A centered content page with a breadcrumb navigation and page header.
+- [block/settings-form-page](https://docs.cascivo.com/llms/block/settings-form-page.md) — Settings page with profile form inside a two-column settings layout.
+- [block/sidebar-app](https://docs.cascivo.com/llms/block/sidebar-app.md) — Full app shell with collapsible side navigation and top header.
+- [block/stats-cards](https://docs.cascivo.com/llms/block/stats-cards.md) — Grid of KPI stat cards with trend badges.
+- [block/users-table-page](https://docs.cascivo.com/llms/block/users-table-page.md) — Full users management page with table, search, and invite action.
+- [blockquote](https://docs.cascivo.com/llms/blockquote.md) — Quoted passage with optional attribution footer
+- [card](https://docs.cascivo.com/llms/card.md) — Container for grouping related content
+- [carousel](https://docs.cascivo.com/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators
+- [chat-bubble](https://docs.cascivo.com/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support
+- [code](https://docs.cascivo.com/llms/code.md) — Inline code span for identifiers, commands, and short snippets
+- [code-snippet](https://docs.cascivo.com/llms/code-snippet.md) — Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look
+- [collapsible](https://docs.cascivo.com/llms/collapsible.md) — A single disclosure region toggled open and closed by its trigger
+- [comparison](https://docs.cascivo.com/llms/comparison.md) — Reveals the difference between two layers with a draggable divider
+- [contained-list](https://docs.cascivo.com/llms/contained-list.md) — Labelled list of rows inside a bordered container
+- [data-list](https://docs.cascivo.com/llms/data-list.md) — Key-value pairs rendered as a description list
+- [data-table](https://docs.cascivo.com/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
+- [empty-state](https://docs.cascivo.com/llms/empty-state.md) — Placeholder for views that have no data to display
+- [heading](https://docs.cascivo.com/llms/heading.md) — Section heading with semantic level decoupled from visual size
+- [image](https://docs.cascivo.com/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
+- [item](https://docs.cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions
+- [kbd](https://docs.cascivo.com/llms/kbd.md) — Displays a keyboard key or shortcut
+- [list](https://docs.cascivo.com/llms/list.md) — Styled unordered or ordered list with ListItem
+- [prose](https://docs.cascivo.com/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
+- [qr-code](https://docs.cascivo.com/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code
+- [relative-time](https://docs.cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating
+- [separator](https://docs.cascivo.com/llms/separator.md) — Visual or semantic divider between content
+- [skeleton](https://docs.cascivo.com/llms/skeleton.md) — Animated loading placeholder that mirrors the shape of pending content
+- [stat](https://docs.cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
+- [status](https://docs.cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity
+- [structured-list](https://docs.cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
+- [tag](https://docs.cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
+- [text](https://docs.cascivo.com/llms/text.md) — Body text with size, weight, and muted variants
+- [timeline](https://docs.cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
+- [tree-view](https://docs.cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection
+- [user](https://docs.cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot
+- [visually-hidden](https://docs.cascivo.com/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers
+
+### feedback
+
+- [inline-loading](https://docs.cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state
+- [notification](https://docs.cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
+- [progress](https://docs.cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation
+- [progress-bar](https://docs.cascivo.com/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
+- [progress-circle](https://docs.cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
+- [radial-progress](https://docs.cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
+- [spinner](https://docs.cascivo.com/llms/spinner.md) — Indeterminate loading indicator
+
+### inputs
+
+- [button](https://docs.cascivo.com/llms/button.md) — Triggers an action or event
+- [button-group](https://docs.cascivo.com/llms/button-group.md) — Visually joins a set of related buttons into a single segmented control
+- [calendar](https://docs.cascivo.com/llms/calendar.md) — An accessible standalone month-grid date picker.
+- [checkbox](https://docs.cascivo.com/llms/checkbox.md) — Binary toggle for forms, with indeterminate support
+- [checkbox-card](https://docs.cascivo.com/llms/checkbox-card.md) — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
+- [color-picker](https://docs.cascivo.com/llms/color-picker.md) — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
+- [combobox](https://docs.cascivo.com/llms/combobox.md) — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
+- [copy-button](https://docs.cascivo.com/llms/copy-button.md) — Icon button that copies a value to the clipboard with copied feedback
+- [date-picker](https://docs.cascivo.com/llms/date-picker.md) — An accessible date-picker with a calendar popover.
+- [date-range-picker](https://docs.cascivo.com/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
+- [editable](https://docs.cascivo.com/llms/editable.md) — Inline click-to-edit text field
+- [field](https://docs.cascivo.com/llms/field.md) — Form-field wrapper composing label, control, description, and error
+- [file-uploader](https://docs.cascivo.com/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
+- [filter](https://docs.cascivo.com/llms/filter.md) — A group of toggleable pill or outline buttons for filtering content by category
+- [form](https://docs.cascivo.com/llms/form.md) — Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
+- [icon-button](https://docs.cascivo.com/llms/icon-button.md) — Square, icon-only button with a required accessible label
+- [input](https://docs.cascivo.com/llms/input.md) — Text input field with optional label, hint, and error state
+- [input-group](https://docs.cascivo.com/llms/input-group.md) — Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
+- [label](https://docs.cascivo.com/llms/label.md) — Accessible caption for a form control
+- [multi-select](https://docs.cascivo.com/llms/multi-select.md) — Searchable multi-value select with popover listbox
+- [native-select](https://docs.cascivo.com/llms/native-select.md) — A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring
+- [number-input](https://docs.cascivo.com/llms/number-input.md) — Numeric input with stepper buttons, clamping, precision, and locale formatting
+- [otp-input](https://docs.cascivo.com/llms/otp-input.md) — Segmented one-time code input
+- [password-input](https://docs.cascivo.com/llms/password-input.md) — Password input with reveal toggle and optional strength meter
+- [radio](https://docs.cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup
+- [radio-card](https://docs.cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
+- [rating-group](https://docs.cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern
+- [search](https://docs.cascivo.com/llms/search.md) — Search input with debounced search callback and clear button
+- [segmented-control](https://docs.cascivo.com/llms/segmented-control.md) — Mutually exclusive toggle group
+- [select](https://docs.cascivo.com/llms/select.md) — Native select menu styled to match the design system
+- [slider](https://docs.cascivo.com/llms/slider.md) — Range input for selecting a value within bounds
+- [swap](https://docs.cascivo.com/llms/swap.md) — Animated toggle between two icon/content states with rotate or flip transition
+- [tags-input](https://docs.cascivo.com/llms/tags-input.md) — Free-form multi-value chip input
+- [textarea](https://docs.cascivo.com/llms/textarea.md) — Multi-line text input with optional label, hint, and error state
+- [tile](https://docs.cascivo.com/llms/tile.md) — A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard
+- [time-picker](https://docs.cascivo.com/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants
+- [toggle](https://docs.cascivo.com/llms/toggle.md) — On/off switch built as an accessible button
+- [toggle-group](https://docs.cascivo.com/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection
+
+### layout
+
+- [app-shell](https://docs.cascivo.com/llms/app-shell.md) — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
+- [aspect-ratio](https://docs.cascivo.com/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio
+- [indicator](https://docs.cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child
+- [join](https://docs.cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii
+- [layout/app-shell](https://docs.cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
+- [layout/auth-layout](https://docs.cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password).
+- [layout/auto-grid](https://docs.cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space.
+- [layout/center](https://docs.cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width.
+- [layout/columns](https://docs.cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports.
+- [layout/dashboard-layout](https://docs.cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside.
+- [layout/grid](https://docs.cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing.
+- [layout/masonry](https://docs.cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).
+- [layout/page-header](https://docs.cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots.
+- [layout/section](https://docs.cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap.
+- [layout/settings-layout](https://docs.cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area.
+- [layout/spacer](https://docs.cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps.
+- [layout/split-view](https://docs.cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support.
+- [layout/stack](https://docs.cascivo.com/llms/layout/stack.md) — Flex layout primitive for vertical or horizontal stacking with gap control.
+- [resizable](https://docs.cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
+- [scroll-area](https://docs.cascivo.com/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows
+- [section/cta](https://docs.cascivo.com/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
+- [section/feature-grid](https://docs.cascivo.com/llms/section/feature-grid.md) — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
+- [section/hero](https://docs.cascivo.com/llms/section/hero.md) — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
+- [section/media-masonry](https://docs.cascivo.com/llms/section/media-masonry.md) — Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.
+- [section/page-footer](https://docs.cascivo.com/llms/section/page-footer.md) — Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns.
+- [section/stats-band](https://docs.cascivo.com/llms/section/stats-band.md) — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.
+- [stack](https://docs.cascivo.com/llms/stack.md) — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect
+
+### navigation
+
+- [accordion](https://docs.cascivo.com/llms/accordion.md) — Vertically stacked, collapsible content sections
+- [breadcrumb](https://docs.cascivo.com/llms/breadcrumb.md) — Shows the current page location within a navigation hierarchy
+- [dock](https://docs.cascivo.com/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items
+- [header](https://docs.cascivo.com/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot
+- [header-panel](https://docs.cascivo.com/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
+- [link](https://docs.cascivo.com/llms/link.md) — Styled anchor for navigation, standalone or inline within prose
+- [menu-button](https://docs.cascivo.com/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands
+- [menubar](https://docs.cascivo.com/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus
+- [navigation-menu](https://docs.cascivo.com/llms/navigation-menu.md) — Site navigation bar with links and dropdown flyout panels
+- [pagination](https://docs.cascivo.com/llms/pagination.md) — Controls for navigating paged data sets, with page size selection
+- [progress-indicator](https://docs.cascivo.com/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow
+- [shell-header](https://docs.cascivo.com/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content
+- [side-nav](https://docs.cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping
+- [skip-nav](https://docs.cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content
+- [steps](https://docs.cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations
+- [switcher](https://docs.cascivo.com/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+- [tabs](https://docs.cascivo.com/llms/tabs.md) — Switch between related panels of content
+- [toc](https://docs.cascivo.com/llms/toc.md) — Table of contents with scroll-spy highlighting of the active section
+
+### overlay
+
+- [alert-dialog](https://docs.cascivo.com/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
+- [command-menu](https://docs.cascivo.com/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
+- [context-menu](https://docs.cascivo.com/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
+- [drawer](https://docs.cascivo.com/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
+- [dropdown](https://docs.cascivo.com/llms/dropdown.md) — Menu of actions revealed from a trigger
+- [hover-card](https://docs.cascivo.com/llms/hover-card.md) — Hover-triggered popover with configurable open/close delay
+- [menu](https://docs.cascivo.com/llms/menu.md) — Dropdown menu with keyboard navigation, built on usePopover
+- [modal](https://docs.cascivo.com/llms/modal.md) — Accessible dialog overlay using native <dialog> element
+- [overflow-menu](https://docs.cascivo.com/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions
+- [popover](https://docs.cascivo.com/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API
+- [sheet](https://docs.cascivo.com/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations
+- [toast](https://docs.cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook
+- [toggletip](https://docs.cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content
+- [tooltip](https://docs.cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus
+
+## Component intent summaries (use when…)
+
+- [Accordion](https://docs.cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
+- [Alert](https://docs.cascivo.com/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
+- [AlertDialog](https://docs.cascivo.com/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
+- [AppShell](https://docs.cascivo.com/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
+- [AspectRatio](https://docs.cascivo.com/context/aspect-ratio.md) — Use when: Reserving a stable box for media that loads asynchronously, avoiding layout shift
+- [Avatar](https://docs.cascivo.com/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
+- [AvatarGroup](https://docs.cascivo.com/context/avatar-group.md) — Use when: Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)
+- [Badge](https://docs.cascivo.com/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
+- [ConsoleApp](https://docs.cascivo.com/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
+- [DashboardCharts](https://docs.cascivo.com/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
+- [EmptyDashboard](https://docs.cascivo.com/context/block/empty-dashboard.md) — Use when: A first-run or zero-data dashboard with an empty state and primary CTA
+- [LoginPage](https://docs.cascivo.com/context/block/login-page.md) — Use when: A complete login page with email and password form
+- [NotificationCenter](https://docs.cascivo.com/context/block/notification-center.md) — Use when: A list of notification alerts with a mark-all-read action
+- [PageWithBreadcrumb](https://docs.cascivo.com/context/block/page-with-breadcrumb.md) — Use when: A centered content page with breadcrumb navigation and a page header
+- [SettingsFormPage](https://docs.cascivo.com/context/block/settings-form-page.md) — Use when: A settings page with a profile form inside a two-column settings layout
+- [SidebarApp](https://docs.cascivo.com/context/block/sidebar-app.md) — Use when: A ready-made app shell with opinionated collapsible sidebar and top header
+- [StatsCards](https://docs.cascivo.com/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
+- [UsersTablePage](https://docs.cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
+- [Blockquote](https://docs.cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
+- [Breadcrumb](https://docs.cascivo.com/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
+- [Button](https://docs.cascivo.com/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
+- [ButtonGroup](https://docs.cascivo.com/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
+- [Calendar](https://docs.cascivo.com/context/calendar.md) — Use when: Showing an always-visible month grid for picking a single date (inline, not a popover)
+- [Card](https://docs.cascivo.com/context/card.md) — Use when: Grouping related content into a visually distinct surface with border/shadow
+- [Carousel](https://docs.cascivo.com/context/carousel.md) — Use when: Presenting a sequence of media or cards the user pages through one at a time
+- [AreaChart](https://docs.cascivo.com/context/chart/area-chart.md) — Use when: Showing cumulative volume or magnitude of a trend over continuous time
+- [BarChart](https://docs.cascivo.com/context/chart/bar-chart.md) — Use when: Comparing discrete categorical values across groups
+- [Boxplot](https://docs.cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
+- [BubbleChart](https://docs.cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
+- [Bullet](https://docs.cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
+- [ComboChart](https://docs.cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
+- [Heatmap](https://docs.cascivo.com/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
+- [Histogram](https://docs.cascivo.com/context/chart/histogram.md) — Use when: Showing the frequency distribution of a single continuous variable
+- [Kpi](https://docs.cascivo.com/context/chart/kpi.md) — Use when: Highlighting a single headline metric with an optional change delta
+- [LineChart](https://docs.cascivo.com/context/chart/line-chart.md) — Use when: Showing trends and precise values over continuous time or a numeric range
+- [Meter](https://docs.cascivo.com/context/chart/meter.md) — Use when: Showing a rated or gauged value within a known min/max range
+- [PieChart](https://docs.cascivo.com/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
+- [Radar](https://docs.cascivo.com/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
+- [ScatterChart](https://docs.cascivo.com/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
+- [Sparkline](https://docs.cascivo.com/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
+- [Treemap](https://docs.cascivo.com/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
+- [ChatBubble](https://docs.cascivo.com/context/chat-bubble.md) — Use when: Chat UIs and messaging features showing conversation history
+- [Checkbox](https://docs.cascivo.com/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent
+- [CheckboxCard](https://docs.cascivo.com/context/checkbox-card.md) — Use when: Multi-select where each option needs a title and supporting description (feature toggles, add-ons)
+- [Code](https://docs.cascivo.com/context/code.md) — Use when: Marking up an inline identifier, command, path, or token within prose
+- [CodeSnippet](https://docs.cascivo.com/context/code-snippet.md) — Use when: Showing a command, token, or path the user is expected to copy
+- [Collapsible](https://docs.cascivo.com/context/collapsible.md) — Use when: Hiding a single secondary block until the user asks for it
+- [ColorPicker](https://docs.cascivo.com/context/color-picker.md) — Use when: Letting a user choose an arbitrary color via a visual saturation/lightness area plus hue control
+- [Combobox](https://docs.cascivo.com/context/combobox.md) — Use when: Single-select from a long list where type-to-filter makes finding an option faster
+- [CommandMenu](https://docs.cascivo.com/context/command-menu.md) — Use when: Giving power users a global Cmd/Ctrl+K palette to search and run actions or navigate
+- [Comparison](https://docs.cascivo.com/context/comparison.md) — Use when: Showing the difference between two versions of similar content (before/after edits, original vs processed)
+- [ContainedList](https://docs.cascivo.com/context/contained-list.md) — Use when: Grouping a short set of related rows under a visible heading in a bordered surface
+- [ContextMenu](https://docs.cascivo.com/context/context-menu.md) — Use when: Offering actions contextual to an element via right-click (rename, delete, copy on a row or canvas item)
+- [CopyButton](https://docs.cascivo.com/context/copy-button.md) — Use when: Letting users copy a short value to the clipboard — install commands, API keys, tokens, share links
+- [DataList](https://docs.cascivo.com/context/data-list.md) — Use when: Displaying read-only key-value metadata (profile fields, record summaries)
+- [DataTable](https://docs.cascivo.com/context/data-table.md) — Use when: Displaying tabular data with columns the user sorts, filters, or pages through
+- [DatePicker](https://docs.cascivo.com/context/date-picker.md) — Use when: Picking a single calendar date in a form where a visual month grid helps (due dates, bookings)
+- [DateRangePicker](https://docs.cascivo.com/context/date-range-picker.md) — Use when: Selecting a contiguous start–end date range (reporting windows, bookings, filters)
+- [Dock](https://docs.cascivo.com/context/dock.md) — Use when: Mobile app-shell navigation with 3–5 top-level destinations
+- [Drawer](https://docs.cascivo.com/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
+- [Dropdown](https://docs.cascivo.com/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
+- [Editable](https://docs.cascivo.com/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
+- [EmptyState](https://docs.cascivo.com/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
+- [Field](https://docs.cascivo.com/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
+- [FileUploader](https://docs.cascivo.com/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
+- [Filter](https://docs.cascivo.com/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
+- [Form](https://docs.cascivo.com/context/form.md) — Use when: Collecting and submitting a set of related field values together
+- [Header](https://docs.cascivo.com/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
+- [HeaderPanel](https://docs.cascivo.com/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)
+- [Heading](https://docs.cascivo.com/context/heading.md) — Use when: Titling a page or section as part of the document outline
+- [HoverCard](https://docs.cascivo.com/context/hover-card.md) — Use when: Showing a rich preview (avatar, summary, links) when a user hovers or focuses a trigger
+- [IconButton](https://docs.cascivo.com/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
+- [Image](https://docs.cascivo.com/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
+- [Indicator](https://docs.cascivo.com/context/indicator.md) — Use when: Notification counts on icon buttons
+- [InlineLoading](https://docs.cascivo.com/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
+- [Input](https://docs.cascivo.com/context/input.md) — Use when: Collecting a single line of free-form text from the user
+- [InputGroup](https://docs.cascivo.com/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
+- [Item](https://docs.cascivo.com/context/item.md) — Use when: Composing a single content row with leading media, a text block, and trailing actions
+- [Join](https://docs.cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
+- [Kbd](https://docs.cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
+- [Label](https://docs.cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
+- [AppShell](https://docs.cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
+- [AuthLayout](https://docs.cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
+- [AutoGrid](https://docs.cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
+- [Center](https://docs.cascivo.com/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
+- [Columns](https://docs.cascivo.com/context/layout/columns.md) — Use when: Equal-width multi-column content that collapses to one column when narrow
+- [DashboardLayout](https://docs.cascivo.com/context/layout/dashboard-layout.md) — Use when: A dashboard page with a stats strip, main content area, and optional aside
+- [Grid](https://docs.cascivo.com/context/layout/grid.md) — Use when: Two-dimensional layouts with an explicit column count
+- [Masonry](https://docs.cascivo.com/context/layout/masonry.md) — Use when: Galleries of variable-height items packed into balanced columns
+- [PageHeader](https://docs.cascivo.com/context/layout/page-header.md) — Use when: A page-level header with title, description, breadcrumb, and action slots
+- [Section](https://docs.cascivo.com/context/layout/section.md) — Use when: Wrapping a page region with block padding and a centered inner width
+- [SettingsLayout](https://docs.cascivo.com/context/layout/settings-layout.md) — Use when: A two-column settings page with a fixed-width menu and fluid content
+- [Spacer](https://docs.cascivo.com/context/layout/spacer.md) — Use when: Inserting a fixed vertical gap between blocks using spacing token steps
+- [SplitView](https://docs.cascivo.com/context/layout/split-view.md) — Use when: Two side-by-side panes the user can resize via pointer or keyboard
+- [Stack](https://docs.cascivo.com/context/layout/stack.md) — Use when: Arranging children vertically or horizontally with a consistent gap
+- [Link](https://docs.cascivo.com/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
+- [List](https://docs.cascivo.com/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
+- [Menu](https://docs.cascivo.com/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
+- [MenuButton](https://docs.cascivo.com/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
+- [Menubar](https://docs.cascivo.com/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions
+- [Modal](https://docs.cascivo.com/context/modal.md) — Use when: Presenting focused content or a task that must interrupt the current flow
+- [MultiSelect](https://docs.cascivo.com/context/multi-select.md) — Use when: Selecting several values at once from a known list of options
+- [NativeSelect](https://docs.cascivo.com/context/native-select.md) — Use when: A standard single-choice dropdown where native behavior and form integration matter most
+- [NavigationMenu](https://docs.cascivo.com/context/navigation-menu.md) — Use when: Primary site navigation where some destinations are plain links and others reveal a flyout of grouped links
+- [Notification](https://docs.cascivo.com/context/notification.md) — Use when: Surfacing a prominent, often actionable message in the page flow (sync result, failed upload, available update)
+- [NumberInput](https://docs.cascivo.com/context/number-input.md) — Use when: Collecting a bounded numeric value where increment/decrement by a known step is natural (quantity, opacity, count)
+- [OtpInput](https://docs.cascivo.com/context/otp-input.md) — Use when: Entering a fixed-length one-time code (2FA, SMS verification, email confirmation) split across per-character slots
+- [OverflowMenu](https://docs.cascivo.com/context/overflow-menu.md) — Use when: Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists
+- [Pagination](https://docs.cascivo.com/context/pagination.md) — Use when: Navigating between pages of a paged dataset
+- [PasswordInput](https://docs.cascivo.com/context/password-input.md) — Use when: Collecting a secret credential that should be masked by default with an opt-in reveal toggle
+- [Popover](https://docs.cascivo.com/context/popover.md) — Use when: Showing rich, interactive content anchored to a trigger that the user must explicitly open by clicking
+- [Progress](https://docs.cascivo.com/context/progress.md) — Use when: Tracked operations with a known total (file uploads, multi-step imports)
+- [ProgressBar](https://docs.cascivo.com/context/progress-bar.md) — Use when: Showing linear determinate progress of a task with a known percentage (value)
+- [ProgressCircle](https://docs.cascivo.com/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
+- [ProgressIndicator](https://docs.cascivo.com/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
+- [Prose](https://docs.cascivo.com/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [QrCode](https://docs.cascivo.com/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
+- [RadialProgress](https://docs.cascivo.com/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
+- [Radio](https://docs.cascivo.com/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
+- [RadioCard](https://docs.cascivo.com/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
+- [RatingGroup](https://docs.cascivo.com/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
+- [RelativeTime](https://docs.cascivo.com/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
+- [Resizable](https://docs.cascivo.com/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
+- [ScrollArea](https://docs.cascivo.com/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
+- [Search](https://docs.cascivo.com/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
+- [Cta](https://docs.cascivo.com/context/section/cta.md) — Use when: A call-to-action band with title, description, and centered actions
+- [FeatureGrid](https://docs.cascivo.com/context/section/feature-grid.md) — Use when: A feature section laying out items in an auto-fitting grid
+- [Hero](https://docs.cascivo.com/context/section/hero.md) — Use when: The primary page intro with eyebrow, title, description, actions, and media
+- [MediaMasonry](https://docs.cascivo.com/context/section/media-masonry.md) — Use when: A full-width media gallery section with masonry packing
+- [PageFooter](https://docs.cascivo.com/context/section/page-footer.md) — Use when: A site footer with grouped link columns and a brand/meta bottom row
+- [StatsBand](https://docs.cascivo.com/context/section/stats-band.md) — Use when: A horizontal KPI strip with optional deltas and inline sparkline trends
+- [SegmentedControl](https://docs.cascivo.com/context/segmented-control.md) — Use when: A compact inline single choice among a few mutually exclusive options (2–5) such as view modes or time ranges
+- [Select](https://docs.cascivo.com/context/select.md) — Use when: Choosing exactly one value from a known, finite list inside a form
+- [Separator](https://docs.cascivo.com/context/separator.md) — Use when: Dividing groups of content within a section or menu
+- [Sheet](https://docs.cascivo.com/context/sheet.md) — Use when: Showing secondary content or a form in a panel that slides in from a screen edge
+- [ShellHeader](https://docs.cascivo.com/context/shell-header.md) — Use when: Building console/admin app chrome with brand, dropdown nav, and global icon actions
+- [SideNav](https://docs.cascivo.com/context/side-nav.md) — Use when: Persistent primary navigation along the side of an app shell
+- [Skeleton](https://docs.cascivo.com/context/skeleton.md) — Use when: Indicating loading by mirroring the shape of the content that will appear
+- [SkipNav](https://docs.cascivo.com/context/skip-nav.md) — Use when: Letting keyboard users jump past repeated navigation to the main content
+- [Slider](https://docs.cascivo.com/context/slider.md) — Use when: Selecting a value within a continuous or stepped numeric range where approximate adjustment is fine
+- [Spinner](https://docs.cascivo.com/context/spinner.md) — Use when: Indicating indeterminate work where duration and progress are unknown
+- [Stack](https://docs.cascivo.com/context/stack.md) — Use when: Card pile UI where depth and layering should be visible
+- [Stat](https://docs.cascivo.com/context/stat.md) — Use when: Highlighting a single key metric with a clear label
+- [Status](https://docs.cascivo.com/context/status.md) — Use when: Communicating the live state of a system or entity (operational, deploying, down)
+- [Steps](https://docs.cascivo.com/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
+- [StructuredList](https://docs.cascivo.com/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
+- [Swap](https://docs.cascivo.com/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
+- [Switcher](https://docs.cascivo.com/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
+- [Tabs](https://docs.cascivo.com/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
+- [Tag](https://docs.cascivo.com/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
+- [TagsInput](https://docs.cascivo.com/context/tags-input.md) — Use when: Collecting an open-ended set of free-text values the user types themselves (keywords, emails, labels)
+- [Text](https://docs.cascivo.com/context/text.md) — Use when: Rendering body copy, paragraphs, and inline text in app UI
+- [Textarea](https://docs.cascivo.com/context/textarea.md) — Use when: Capturing multi-line free text such as messages, descriptions, or comments
+- [Tile](https://docs.cascivo.com/context/tile.md) — Use when: A visually rich, clickable choice card in a single- or multi-select group
+- [TimePicker](https://docs.cascivo.com/context/time-picker.md) — Use when: Capturing a time of day (HH:mm) in a form, such as a meeting or reminder time
+- [Timeline](https://docs.cascivo.com/context/timeline.md) — Use when: Showing an ordered sequence of events over time (activity feeds, order tracking)
+- [Toast](https://docs.cascivo.com/context/toast.md) — Use when: Confirming that a background or just-completed action succeeded or failed (e.g. "Saved")
+- [Toc](https://docs.cascivo.com/context/toc.md) — Use when: Long-form pages (docs, articles) that benefit from in-page jump links
+- [Toggle](https://docs.cascivo.com/context/toggle.md) — Use when: Flipping a single binary setting that takes effect immediately (e.g. notifications on/off)
+- [ToggleGroup](https://docs.cascivo.com/context/toggle-group.md) — Use when: Choosing one value from a small, mutually exclusive set that should stay visible (type="single")
+- [Toggletip](https://docs.cascivo.com/context/toggletip.md) — Use when: Revealing brief supplementary information on demand when the user clicks an info affordance
+- [Tooltip](https://docs.cascivo.com/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
+- [TreeView](https://docs.cascivo.com/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
+- [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
+- [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
+
+_Generated: 2026-06-21 from registry v0.0.0_

@@ -4,8 +4,16 @@ A button that opens an anchored action menu of one-shot commands
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add menu-button
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { MenuButton } from '@cascivo/react'
 ```
 
 ## Category

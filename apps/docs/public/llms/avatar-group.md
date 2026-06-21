@@ -4,8 +4,16 @@ Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chi
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add avatar-group
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AvatarGroup } from '@cascivo/react'
 ```
 
 ## Category

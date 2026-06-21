@@ -4,8 +4,16 @@ Placeholder for views that have no data to display
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add empty-state
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { EmptyState } from '@cascivo/react'
 ```
 
 ## Category

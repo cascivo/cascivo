@@ -4,8 +4,16 @@ Confirmation dialog requiring explicit user action; no light-dismiss
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add alert-dialog
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AlertDialog } from '@cascivo/react'
 ```
 
 ## Category

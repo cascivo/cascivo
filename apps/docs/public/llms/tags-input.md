@@ -4,8 +4,16 @@ Free-form multi-value chip input
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tags-input
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { TagsInput } from '@cascivo/react'
 ```
 
 ## Category

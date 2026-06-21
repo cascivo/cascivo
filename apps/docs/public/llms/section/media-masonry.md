@@ -4,9 +4,13 @@ Masonry gallery section — native CSS masonry where supported, multi-column fal
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add section/media-masonry
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

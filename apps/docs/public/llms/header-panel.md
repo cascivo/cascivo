@@ -4,8 +4,16 @@ Non-modal panel anchored below the shell header at the inline-end edge — hosts
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add header-panel
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { HeaderPanel } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Circular progress indicator using conic-gradient, with percentage label and vari
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add radial-progress
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { RadialProgress } from '@cascivo/react'
 ```
 
 ## Category

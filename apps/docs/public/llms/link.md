@@ -4,8 +4,16 @@ Styled anchor for navigation, standalone or inline within prose
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add link
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Link } from '@cascivo/react'
 ```
 
 ## Category

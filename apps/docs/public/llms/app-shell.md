@@ -4,8 +4,16 @@ Sticky-header + full-height side-nav + single-scroll-container layout with an an
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add app-shell
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AppShell } from '@cascivo/react'
 ```
 
 ## Category

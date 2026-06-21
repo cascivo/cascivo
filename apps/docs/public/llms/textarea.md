@@ -4,8 +4,16 @@ Multi-line text input with optional label, hint, and error state
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add textarea
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Textarea } from '@cascivo/react'
 ```
 
 ## Category

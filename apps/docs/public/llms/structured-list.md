@@ -4,8 +4,16 @@ Tabular row list for scannable data, optionally single-selectable
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add structured-list
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { StructuredList } from '@cascivo/react'
 ```
 
 ## Category

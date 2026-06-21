@@ -4,9 +4,13 @@ Grid of KPI stat cards with trend badges.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/stats-cards
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

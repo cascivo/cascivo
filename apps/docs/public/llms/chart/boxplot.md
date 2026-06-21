@@ -4,8 +4,14 @@ Box-and-whisker plot with five-number summary and outlier dots per series.
 
 ## Install
 
-```bash
-npx cascivo add chart/boxplot
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Boxplot } from '@cascivo/charts'
 ```
 
 ## Category

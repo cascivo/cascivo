@@ -4,8 +4,16 @@ App/product switcher list — lives inside HeaderPanel, renders links with activ
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add switcher
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Switcher } from '@cascivo/react'
 ```
 
 ## Category

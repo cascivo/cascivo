@@ -4,8 +4,16 @@ Overlaps children in a CSS grid stack with a configurable offset to create a car
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add stack
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Stack } from '@cascivo/react'
 ```
 
 ## Category

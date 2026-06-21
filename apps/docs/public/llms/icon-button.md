@@ -4,8 +4,16 @@ Square, icon-only button with a required accessible label
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add icon-button
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { IconButton } from '@cascivo/react'
 ```
 
 ## Category

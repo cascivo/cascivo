@@ -4,9 +4,13 @@ Equal-width multi-column layout that collapses to single column on narrow viewpo
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/columns
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

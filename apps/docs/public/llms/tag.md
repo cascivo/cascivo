@@ -4,8 +4,16 @@ Compact chip for labeling, categorizing, or filtering content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tag
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Tag } from '@cascivo/react'
 ```
 
 ## Category

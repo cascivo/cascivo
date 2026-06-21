@@ -47,6 +47,8 @@ Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/s
 
 cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent, boundaries, anti-patterns) so agents select from closed sets and their output is checkable:
 
+- **`llms.txt`** — start here. [`https://cascivo.com/llms.txt`](https://cascivo.com/llms.txt) is the AI entry point: how to install (both paths + trade-offs), the guides, the MCP tools, and a categorized index linking each component's machine-readable docs. Mirrored at `https://docs.cascivo.com/llms.txt`.
+- **Per-component AI docs** — `https://docs.cascivo.com/llms/<name>.md` (props, examples, a11y, tokens) and `…/context/<name>.md` (when-to-use / when-not-to-use).
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle.
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.

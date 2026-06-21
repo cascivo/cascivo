@@ -4,8 +4,16 @@ A set of toggle buttons for single or multiple selection
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add toggle-group
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ToggleGroup } from '@cascivo/react'
 ```
 
 ## Category

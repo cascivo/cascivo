@@ -4,8 +4,16 @@ Native time input wrapper with label, hint, error, and size variants
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add time-picker
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { TimePicker } from '@cascivo/react'
 ```
 
 ## Category

@@ -17,6 +17,7 @@ export const meta: ComponentMeta = {
     { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
     { name: 'loading', type: 'boolean', required: false, default: 'false' },
     { name: 'disabled', type: 'boolean', required: false, default: 'false' },
+    { name: 'asChild', type: 'boolean', required: false, default: 'false' },
     { name: 'onClick', type: 'React.MouseEventHandler<HTMLButtonElement>', required: false },
   ],
   tokens: [
@@ -41,6 +42,11 @@ export const meta: ComponentMeta = {
     { title: 'Primary', code: '<Button>Click me</Button>' },
     { title: 'Loading', code: '<Button loading>Saving…</Button>' },
     { title: 'Destructive', code: '<Button variant="destructive">Delete</Button>' },
+    {
+      title: 'As link',
+      code: '<Button asChild><a href="/pricing">View pricing</a></Button>',
+      description: 'Render button styling on a real anchor (keeps middle-click / open-in-new-tab).',
+    },
   ],
   dependencies: ['@cascivo/core'],
   tags: ['action', 'form', 'interactive'],

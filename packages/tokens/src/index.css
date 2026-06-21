@@ -110,6 +110,7 @@
     --cascivo-text-xl: 1.25rem; /* 20px */
     --cascivo-text-2xl: 1.5rem; /* 24px */
     --cascivo-text-3xl: 1.875rem; /* 30px */
+    --cascivo-text-4xl: 2.25rem; /* 36px */
 
     --cascivo-font-normal: 400;
     --cascivo-font-medium: 500;
@@ -254,6 +255,7 @@
     /* clamp(min, vw-slope, max) where max = current fixed value so desktop ceiling is frozen. */
     --cascivo-text-2xl-fluid: clamp(1.25rem, 1rem + 1.25vw, 1.5rem); /* 20→24px */
     --cascivo-text-3xl-fluid: clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem); /* 24→30px */
+    --cascivo-text-4xl-fluid: clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem); /* 30→36px */
 
     /* ── Coarse-pointer touch target ─────────────────── */
     /* Controls should reach this minimum under @media (pointer: coarse) — added in v20-t3.   */
@@ -275,4 +277,11 @@
   }
 }
 
-@import './functions.css';
+/*
+ * CSS @function helpers (--cascivo-step / --cascivo-scale) are NOT imported here.
+ * They are a Chrome-133+ progressive-enhancement pilot and are unparseable by
+ * current CSS minifiers (lightningcss / Tailwind v4), which choke on `@function`
+ * and drop the rule. Every call site ships a static fallback, so omitting them is
+ * always correct. Opt in explicitly if your build pipeline supports @function:
+ *   import '@cascivo/tokens/functions.css'
+ */

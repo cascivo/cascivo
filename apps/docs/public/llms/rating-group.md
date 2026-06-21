@@ -4,8 +4,16 @@ Star rating input with accessible radio group pattern
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add rating-group
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { RatingGroup } from '@cascivo/react'
 ```
 
 ## Category

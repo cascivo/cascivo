@@ -4,8 +4,16 @@ Scroll-snap slide deck with previous/next controls and dot indicators
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add carousel
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Carousel } from '@cascivo/react'
 ```
 
 ## Category

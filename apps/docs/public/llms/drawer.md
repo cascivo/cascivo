@@ -4,8 +4,16 @@ Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add drawer
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Drawer } from '@cascivo/react'
 ```
 
 ## Category

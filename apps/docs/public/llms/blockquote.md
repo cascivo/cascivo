@@ -4,8 +4,16 @@ Quoted passage with optional attribution footer
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add blockquote
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Blockquote } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Message bubble for chat and messaging UIs with avatar, name, and timestamp suppo
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add chat-bubble
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ChatBubble } from '@cascivo/react'
 ```
 
 ## Category

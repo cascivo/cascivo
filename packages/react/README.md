@@ -111,6 +111,13 @@ declaration. Token names and aliases are documented in `TOKENS.md`.
 All components are client components (`'use client'` is preserved in the
 bundle), so the package works in Next.js App Router projects out of the box.
 
+## Guides
+
+- [Theming & branding](https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md) — match a brand by overriding tokens (layer cascade, the `data-theme` specificity footgun, per-role radius/control-height tokens, a starter theme).
+- [Using cascivo with Preact](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-PREACT.md) — `preact/compat` alias, tsconfig paths, peer deps, signals package. It works — this documents how.
+- [Compatibility & support matrix](https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md) — frameworks, browsers, the build-tooling baseline, and which package versions go together.
+- [Token reference](https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md) — every CSS custom property, canonical names, and aliases.
+
 ## Migrating from shadcn/ui?
 
 See [`MIGRATING-FROM-SHADCN.md`](https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md)

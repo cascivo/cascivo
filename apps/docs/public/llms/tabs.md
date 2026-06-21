@@ -4,8 +4,16 @@ Switch between related panels of content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tabs
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Tabs } from '@cascivo/react'
 ```
 
 ## Category

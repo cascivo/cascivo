@@ -4,8 +4,14 @@ Bubble chart mapping x, y, and size dimensions; radius is area-proportional via 
 
 ## Install
 
-```bash
-npx cascivo add chart/bubble-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { BubbleChart } from '@cascivo/charts'
 ```
 
 ## Category

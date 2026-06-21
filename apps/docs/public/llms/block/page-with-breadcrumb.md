@@ -4,9 +4,13 @@ A centered content page with a breadcrumb navigation and page header.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/page-with-breadcrumb
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

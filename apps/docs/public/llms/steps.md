@@ -4,8 +4,16 @@ Visual progress indicator for multi-step flows with horizontal and vertical orie
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add steps
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Steps } from '@cascivo/react'
 ```
 
 ## Category

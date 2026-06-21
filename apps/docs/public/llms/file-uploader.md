@@ -4,8 +4,16 @@ Drag-and-drop file upload zone with file list and status indicators.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add file-uploader
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { FileUploader } from '@cascivo/react'
 ```
 
 ## Category

@@ -84,6 +84,19 @@ function propsTable(props: PropMeta[]): string {
   return [header, sep, ...rows].join('\n') + '\n'
 }
 
+/**
+ * Which npm package (if any) exports a registry entry. Drives the import example.
+ * - charts → @cascivo/charts
+ * - components under packages/components/src → @cascivo/react (prebuilt)
+ * - layouts/blocks/sections (packages/layouts/src) → null (copy-paste only, unpublished)
+ */
+function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' | null {
+  if (entry.type === 'chart') return '@cascivo/charts'
+  const first = entry.files?.[0] ?? ''
+  if (first.includes('/packages/components/src/')) return '@cascivo/react'
+  return null
+}
+
 function componentMarkdown(entry: RegistryEntry): string {
   const meta = entry.meta
   const lines: string[] = []
@@ -93,12 +106,42 @@ function componentMarkdown(entry: RegistryEntry): string {
   lines.push(entry.description)
   lines.push('')
 
+  const exportName = meta?.name ?? entry.name
+  const pkg = packageFor(entry)
+
   lines.push('## Install')
   lines.push('')
-  lines.push('```bash')
-  lines.push(`npx cascivo add ${entry.name}`)
-  lines.push('```')
-  lines.push('')
+  if (entry.type === 'chart') {
+    // Charts ship only as the @cascivo/charts package (no copy-paste source files).
+    lines.push('Charts ship in the `@cascivo/charts` package:')
+    lines.push('')
+    lines.push('```sh')
+    lines.push('pnpm add @cascivo/charts')
+    lines.push('```')
+    lines.push('')
+    lines.push('```tsx')
+    lines.push(`import { ${exportName} } from '@cascivo/charts'`)
+    lines.push('```')
+    lines.push('')
+  } else {
+    lines.push('Copy-paste the source (you own and can edit it):')
+    lines.push('')
+    lines.push('```bash')
+    lines.push(`npx cascivo add ${entry.name}`)
+    lines.push('```')
+    lines.push('')
+    if (pkg === '@cascivo/react') {
+      lines.push('Or use it from the prebuilt package without copying:')
+      lines.push('')
+      lines.push('```tsx')
+      lines.push(`import { ${exportName} } from '@cascivo/react'`)
+      lines.push('```')
+      lines.push('')
+    } else {
+      lines.push('_Copy-paste only — this block/layout is not published as an importable package._')
+      lines.push('')
+    }
+  }
 
   lines.push('## Category')
   lines.push('')
@@ -184,55 +227,123 @@ function componentMarkdown(entry: RegistryEntry): string {
 }
 
 function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
-  const BASE_URL = 'https://cascivo.com'
+  // Root-served (cascivo.com) vs docs-served (docs.cascivo.com). Per-component
+  // markdown, context, and catalogs live only on the docs site, so link to them
+  // absolutely — that way this file is correct whether it is fetched from
+  // cascivo.com/llms.txt or docs.cascivo.com/llms.txt.
+  const SITE = 'https://cascivo.com'
+  const DOCS = 'https://docs.cascivo.com'
+  const REPO = 'https://github.com/cascivo/cascivo'
   const lines: string[] = []
 
-  lines.push('# cascade — The CSS-native, signal-driven, AI-first React design system')
+  lines.push('# cascivo — The CSS-native, signal-driven, AI-first React design system')
+  lines.push('')
+  lines.push('cascivo is a React design system you can consume two ways: copy-paste the source')
+  lines.push('(`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt')
+  lines.push('`@cascivo/react` package (use without copying). Components are signal-driven (Preact')
+  lines.push(
+    'Signals), styled with modern CSS (@layer / @container / :has() / oklch), themed via the',
+  )
+  lines.push(
+    '`data-theme` attribute, and WCAG 2.2 AA. Every component ships a machine-readable manifest,',
+  )
+  lines.push('so this file plus the linked resources are enough to build with cascivo.')
+  lines.push('')
+  lines.push('## Start here')
+  lines.push('')
+  lines.push(`- Docs (per-component reference, props, live examples): ${DOCS}`)
+  lines.push(`- Storybook (every variant, interactive): https://storybook.cascivo.com`)
+  lines.push(`- Source (MIT): ${REPO}`)
+  lines.push(`- This file: ${SITE}/llms.txt (mirrored at ${DOCS}/llms.txt)`)
+  lines.push('')
+  lines.push('## Machine-readable resources (AI-first)')
+  lines.push('')
+  lines.push(`- Registry — index of every component (JSON): ${SITE}/registry.json`)
+  lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
+  lines.push(`- Per-component context (intent, when-to-use, boundaries): ${DOCS}/context/<name>.md`)
+  lines.push(`- Context bundle (all intent + boundaries + rules): ${DOCS}/context.json`)
+  lines.push(
+    `- Token catalog (closed set, every --cascivo-* + layer + default): ${DOCS}/tokens.catalog.json`,
+  )
+  lines.push('')
+  lines.push('## How to use it')
+  lines.push('')
+  lines.push('Two consumption paths — they share the same tokens/themes and can coexist:')
+  lines.push('')
+  lines.push('A. Prebuilt package — fastest, use without copying source:')
+  lines.push('')
+  lines.push('```sh')
+  lines.push('pnpm add @cascivo/react @cascivo/themes @preact/signals-react')
+  lines.push('```')
+  lines.push('')
+  lines.push('```tsx')
+  lines.push("import '@cascivo/react/styles.css' // component styles (structure only)")
+  lines.push("import '@cascivo/themes/all'       // tokens (once) + base typography + light & dark")
+  lines.push("import { Button, Card } from '@cascivo/react'")
+  lines.push('```')
+  lines.push('')
+  lines.push('   Trade-offs: smallest setup, updates via npm; you do not edit component internals.')
+  lines.push('')
+  lines.push('B. Copy-paste source — own and customize the code (shadcn model):')
+  lines.push('')
+  lines.push('```sh')
+  lines.push('npx cascivo add button card')
+  lines.push('```')
+  lines.push('')
+  lines.push('   Trade-offs: full control over internals; updates are a manual re-add.')
   lines.push('')
   lines.push(
-    'cascade is a copy-paste component library (shadcn model). Users own the code they install.',
+    'Required CSS import order (both paths): components -> tokens+theme -> brand overrides (last).',
   )
-  lines.push('Components are signal-driven (Preact Signals), styled with modern CSS, WCAG 2.1 AA.')
+  lines.push('`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.')
   lines.push('')
-  lines.push('## Key resources')
+  lines.push('## Guides')
   lines.push('')
-  lines.push(`- Registry JSON: ${BASE_URL}/registry.json`)
-  lines.push(`- View schema: ${BASE_URL}/view.v1.json`)
-  lines.push(`- MCP server: npx @cascivo/mcp`)
-  lines.push(`- llms.txt: ${BASE_URL}/llms.txt`)
+  lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)
+  lines.push(`- Using cascivo with Preact: ${REPO}/blob/main/docs/USING-WITH-PREACT.md`)
+  lines.push(`- Compatibility & support matrix: ${REPO}/blob/main/docs/COMPATIBILITY.md`)
+  lines.push(`- Migrating from shadcn/ui: ${REPO}/blob/main/docs/MIGRATING-FROM-SHADCN.md`)
+  lines.push(`- Token reference: ${REPO}/blob/main/docs/TOKENS.md`)
   lines.push('')
-  lines.push('## MCP tools')
+  lines.push('## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)')
   lines.push('')
+  lines.push(
+    '- React 18/19, Next.js App Router (RSC), Vite, Astro islands, Preact 10 (preact/compat — verified).',
+  )
+  lines.push(
+    '- Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).',
+  )
+  lines.push(
+    "- CSS @function is opt-in (`import '@cascivo/tokens/functions.css'`); not auto-loaded, so",
+  )
+  lines.push('  lightningcss / Tailwind v4 pipelines work by default.')
+  lines.push('')
+  lines.push('## MCP server (recommended for agents)')
+  lines.push('')
+  lines.push('Point any MCP client at the cascivo server:')
+  lines.push('')
+  lines.push('```json')
+  lines.push(
+    '{ "mcpServers": { "cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] } } }',
+  )
+  lines.push('```')
+  lines.push('')
+  lines.push('Tools:')
   lines.push('- `list_components` — list all components with category/tags')
-  lines.push('- `get_component` — full component manifest')
-  lines.push('- `scaffold_view` — natural language → JSON view config')
+  lines.push('- `get_component` — full manifest for one component')
+  lines.push('- `get_context` — intent + boundaries + tokens for one component')
+  lines.push('- `get_tokens` — closed-set token catalog (filter by group/layer)')
+  lines.push('- `select_component` — rank components by a natural-language need')
+  lines.push('- `scaffold_view` — natural language -> JSON view config')
   lines.push('- `validate_view` — validate a view config against the schema')
   lines.push('- `add_to_project` — install components into the user project')
   lines.push('')
-  lines.push('## Context resources')
-  lines.push('')
   lines.push(
-    'The context layer provides machine-readable WHY — intent, boundaries, and closed-set tokens.',
+    'To pick a component without MCP, read the intent summaries below (grouped by need) or',
   )
+  lines.push(`fetch ${DOCS}/context/<name>.md for the full when-to-use / when-not-to-use of each.`)
   lines.push('')
-  lines.push(`- Context bundle: ${BASE_URL}/context.json`)
-  lines.push(`- Token catalog (closed set): ${BASE_URL}/tokens.catalog.json`)
-  lines.push(`- Per-component context: ${BASE_URL}/context/<name>.md`)
-  lines.push('')
-  lines.push('## How to select a component')
-  lines.push('')
-  lines.push('Use the MCP `select_component` tool with a natural-language need:')
-  lines.push('  select_component({ need: "show a transient success message" })')
-  lines.push('')
-  lines.push("Or browse the `related` edges in each component's intent:")
-  lines.push('  get_context({ name: "Toast" }) → returns intent.related edges to neighbours')
-  lines.push('')
-  lines.push('New MCP tools:')
-  lines.push('- `get_tokens` — closed-set token catalog (filter by group/layer)')
-  lines.push('- `get_context` — full context for one component (intent + boundaries + tokens)')
-  lines.push('- `select_component` — deterministic ranking of components by need description')
-  lines.push('')
-  lines.push('## Component authoring rules (for cascivo:extend)')
+  lines.push('## Component authoring rules (for cascivo:extend / custom components)')
   lines.push('')
   lines.push('- Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`')
   lines.push('- No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`')
@@ -244,26 +355,31 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- FSM (`useMachine`) only when the component itself drives transitions')
   lines.push('- CSS logical properties throughout (RTL-safe): `margin-inline-start`, etc.')
   lines.push('- User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks')
-  lines.push('- WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested')
-  lines.push('')
-  lines.push('## Component index')
+  lines.push('- WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested')
   lines.push('')
 
-  // Sort deterministically
+  // Sort deterministically, then group the index by category.
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
-  for (const entry of sorted) {
-    lines.push(`- [${entry.name}](/llms/${entry.name}.md) — ${entry.description}`)
+  const categories = [...new Set(sorted.map((e) => e.category))].sort()
+
+  lines.push(`## Component index (${sorted.length} components)`)
+  lines.push('')
+  for (const category of categories) {
+    lines.push(`### ${category}`)
+    lines.push('')
+    for (const entry of sorted.filter((e) => e.category === category)) {
+      lines.push(`- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description}`)
+    }
+    lines.push('')
   }
 
+  lines.push('## Component intent summaries (use when…)')
   lines.push('')
-  lines.push('## Component intent summaries')
-  lines.push('')
-
   for (const entry of sorted) {
     const firstWhenToUse = entry.meta?.intent?.whenToUse?.[0]
     if (firstWhenToUse) {
       lines.push(
-        `- [${entry.meta?.name ?? entry.name}](/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
+        `- [${entry.meta?.name ?? entry.name}](${DOCS}/context/${entry.name}.md) — Use when: ${firstWhenToUse}`,
       )
     }
   }
@@ -290,11 +406,16 @@ function main() {
     writeFileSync(outPath, md, 'utf8')
   }
 
-  // Generate llms.txt
+  // Generate llms.txt. It uses absolute URLs throughout, so the same file is
+  // correct whether served from cascivo.com (landing) or docs.cascivo.com (docs).
+  // Write it to both so the front door (cascivo.com/llms.txt) never drifts.
   const llmsTxt = generateLlmsTxt(registry, entries)
   writeFileSync(join(OUT_DIR, 'llms.txt'), llmsTxt, 'utf8')
+  const LANDING_PUBLIC = join(ROOT, 'apps', 'landing', 'public')
+  mkdirSync(LANDING_PUBLIC, { recursive: true })
+  writeFileSync(join(LANDING_PUBLIC, 'llms.txt'), llmsTxt, 'utf8')
 
-  console.log(`Generated llms.txt + ${sorted.length} component markdown files`)
+  console.log(`Generated llms.txt (docs + landing) + ${sorted.length} component markdown files`)
 }
 
 main()

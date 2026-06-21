@@ -4,8 +4,16 @@ Animated loading placeholder that mirrors the shape of pending content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add skeleton
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Skeleton } from '@cascivo/react'
 ```
 
 ## Category

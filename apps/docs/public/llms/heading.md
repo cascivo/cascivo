@@ -4,8 +4,16 @@ Section heading with semantic level decoupled from visual size
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add heading
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Heading } from '@cascivo/react'
 ```
 
 ## Category

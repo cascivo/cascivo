@@ -4,8 +4,16 @@ Identity composite: an avatar with a name, description, and optional action slot
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add user
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { User } from '@cascivo/react'
 ```
 
 ## Category

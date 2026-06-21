@@ -4,8 +4,14 @@ Radar / spider chart with polar grid rings, spokes, and multi-series polygon ove
 
 ## Install
 
-```bash
-npx cascivo add chart/radar
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Radar } from '@cascivo/charts'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Displays a user image with initials fallback
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add avatar
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Avatar } from '@cascivo/react'
 ```
 
 ## Category

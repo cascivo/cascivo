@@ -47,4 +47,28 @@ describe('Sheet', () => {
     const el = container.querySelector('[role="dialog"]')
     expect(el?.getAttribute('data-side')).toBe('start')
   })
+
+  it('labels the dialog via aria-labelledby when a title is given', () => {
+    const { container } = render(
+      <Sheet open={true} onClose={() => {}} title="Settings">
+        <p>Content</p>
+      </Sheet>,
+    )
+    const el = container.querySelector('[role="dialog"]')
+    const labelId = el?.getAttribute('aria-labelledby')
+    expect(labelId).toBeTruthy()
+    expect(container.querySelector(`#${labelId}`)?.textContent).toBe('Settings')
+  })
+
+  it('omits the title and aria-labelledby when no title is given', () => {
+    const { container } = render(
+      <Sheet open={true} onClose={() => {}}>
+        <p>Content</p>
+      </Sheet>,
+    )
+    const el = container.querySelector('[role="dialog"]')
+    expect(el?.getAttribute('aria-labelledby')).toBeNull()
+    // close affordance still renders
+    expect(screen.getByRole('button', { name: /close/i, hidden: true })).toBeDefined()
+  })
 })

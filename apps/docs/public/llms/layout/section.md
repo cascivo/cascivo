@@ -4,9 +4,13 @@ Page-section shell with block padding, centered inner width, and stack gap.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/section
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

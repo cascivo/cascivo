@@ -4,8 +4,14 @@ Two-dimensional heatmap with band scales and color-mix cell interpolation.
 
 ## Install
 
-```bash
-npx cascivo add chart/heatmap
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Heatmap } from '@cascivo/charts'
 ```
 
 ## Category

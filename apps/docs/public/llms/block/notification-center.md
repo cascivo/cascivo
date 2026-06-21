@@ -4,9 +4,13 @@ A list of notification alerts with a mark-all-read action.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/notification-center
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

@@ -4,8 +4,16 @@ Filterable single-select with an animated custom listbox, built on the dropdown 
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add combobox
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Combobox } from '@cascivo/react'
 ```
 
 ## Category

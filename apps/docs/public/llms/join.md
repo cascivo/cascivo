@@ -4,8 +4,16 @@ Groups adjacent children into a seamless joined element by removing interior bor
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add join
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Join } from '@cascivo/react'
 ```
 
 ## Category

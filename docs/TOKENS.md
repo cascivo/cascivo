@@ -186,6 +186,8 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-text-2xl-fluid`** | `clamp(1.25rem, 1rem + 1.25vw, 1.5rem)` |  |
 | **`--cascivo-text-3xl`** | `1.875rem` |  |
 | **`--cascivo-text-3xl-fluid`** | `clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)` |  |
+| **`--cascivo-text-4xl`** | `2.25rem` |  |
+| **`--cascivo-text-4xl-fluid`** | `clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)` |  |
 | **`--cascivo-text-base`** | `1rem` |  |
 | **`--cascivo-text-lg`** | `1.125rem` |  |
 | **`--cascivo-text-sm`** | `0.875rem` |  |

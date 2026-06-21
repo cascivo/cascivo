@@ -4,8 +4,16 @@ Small status label or category indicator
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add badge
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Badge } from '@cascivo/react'
 ```
 
 ## Category

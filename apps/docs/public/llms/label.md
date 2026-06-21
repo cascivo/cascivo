@@ -4,8 +4,16 @@ Accessible caption for a form control
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add label
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Label } from '@cascivo/react'
 ```
 
 ## Category

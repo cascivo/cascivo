@@ -4,8 +4,14 @@ Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 
 ## Install
 
-```bash
-npx cascivo add chart/histogram
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Histogram } from '@cascivo/charts'
 ```
 
 ## Category

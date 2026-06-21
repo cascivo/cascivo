@@ -4,8 +4,14 @@ KPI card showing a primary metric with optional delta indicator, icon, and spark
 
 ## Install
 
-```bash
-npx cascivo add chart/kpi
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Kpi } from '@cascivo/charts'
 ```
 
 ## Category

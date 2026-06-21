@@ -4,8 +4,16 @@ An accessible date-picker with a calendar popover.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add date-picker
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { DatePicker } from '@cascivo/react'
 ```
 
 ## Category

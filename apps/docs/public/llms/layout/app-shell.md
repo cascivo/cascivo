@@ -4,9 +4,13 @@ Full-page application shell with persisted collapsible sidebar. Includes a signa
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/app-shell
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

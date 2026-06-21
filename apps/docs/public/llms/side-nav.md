@@ -4,8 +4,16 @@ Collapsible sidebar navigation with optional icons and one level of grouping
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add side-nav
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { SideNav } from '@cascivo/react'
 ```
 
 ## Category

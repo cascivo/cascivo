@@ -30,6 +30,8 @@
   ],
   "exports": {
     ".": "./src/index.css",
+    "./functions": "./src/functions.css",
+    "./functions.css": "./src/functions.css",
     "./screens": "./src/screens.ts",
     "./tokens.json": "./tokens.json",
     "./tokens": {

@@ -4,8 +4,16 @@ Wrapper that styles raw descendant HTML — headings, lists, code, quotes, table
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add prose
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Prose } from '@cascivo/react'
 ```
 
 ## Category

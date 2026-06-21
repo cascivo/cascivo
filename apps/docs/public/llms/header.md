@@ -4,8 +4,16 @@ App top bar with brand, primary navigation links, and an actions slot
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add header
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Header } from '@cascivo/react'
 ```
 
 ## Category

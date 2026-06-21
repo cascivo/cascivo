@@ -4,8 +4,16 @@ Segmented one-time code input
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add otp-input
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { OtpInput } from '@cascivo/react'
 ```
 
 ## Category
