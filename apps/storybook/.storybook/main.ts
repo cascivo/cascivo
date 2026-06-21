@@ -8,6 +8,7 @@ const root = resolve(__dirname, '../../..')
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../stories/**/*.stories.tsx'],
+  staticDirs: ['../public'],
   addons: ['@storybook/addon-a11y', '@storybook/addon-themes'],
   viteFinal: (cfg) => ({
     ...cfg,
