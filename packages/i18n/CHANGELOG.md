@@ -1,5 +1,13 @@
 # @cascivo/i18n
 
+## 0.1.2
+
+### Patch Changes
+
+- 72d0086: New location
+- Updated dependencies [72d0086]
+  - @cascivo/core@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
