@@ -4,8 +4,16 @@ Displays a key metric with optional delta, trend direction and help text
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add stat
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Stat } from '@cascivo/react'
 ```
 
 ## Category

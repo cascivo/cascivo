@@ -4,8 +4,16 @@ Triggers an action or event
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add button
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Button } from '@cascivo/react'
 ```
 
 ## Category

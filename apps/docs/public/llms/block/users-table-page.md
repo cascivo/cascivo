@@ -4,9 +4,13 @@ Full users management page with table, search, and invite action.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/users-table-page
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

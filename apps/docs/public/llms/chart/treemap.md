@@ -4,8 +4,14 @@ Squarified treemap for visualizing part-to-whole hierarchical data.
 
 ## Install
 
-```bash
-npx cascivo add chart/treemap
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Treemap } from '@cascivo/charts'
 ```
 
 ## Category

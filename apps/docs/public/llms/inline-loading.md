@@ -4,8 +4,16 @@ Compact inline status indicator that pairs a label with a loading, success, or e
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add inline-loading
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { InlineLoading } from '@cascivo/react'
 ```
 
 ## Category

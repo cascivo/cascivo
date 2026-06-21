@@ -4,8 +4,14 @@ Pie or donut chart with hover segments and optional legend.
 
 ## Install
 
-```bash
-npx cascivo add chart/pie-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { PieChart } from '@cascivo/charts'
 ```
 
 ## Category

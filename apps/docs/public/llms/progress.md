@@ -4,8 +4,16 @@ Horizontal bar showing the completion progress of a tracked operation
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add progress
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Progress } from '@cascivo/react'
 ```
 
 ## Category

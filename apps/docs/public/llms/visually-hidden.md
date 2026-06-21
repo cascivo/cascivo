@@ -4,8 +4,16 @@ Hides content visually while keeping it available to screen readers
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add visually-hidden
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { VisuallyHidden } from '@cascivo/react'
 ```
 
 ## Category

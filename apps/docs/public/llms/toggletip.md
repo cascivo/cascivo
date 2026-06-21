@@ -4,8 +4,16 @@ A click-triggered info popover for supplementary, selectable content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add toggletip
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Toggletip } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Ordered sequence of events with status markers and a connector line
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add timeline
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Timeline } from '@cascivo/react'
 ```
 
 ## Category

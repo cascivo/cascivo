@@ -4,8 +4,16 @@ Constrains content to a fixed width-to-height ratio
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add aspect-ratio
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AspectRatio } from '@cascivo/react'
 ```
 
 ## Category

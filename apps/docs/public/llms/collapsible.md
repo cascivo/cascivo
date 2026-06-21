@@ -4,8 +4,16 @@ A single disclosure region toggled open and closed by its trigger
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add collapsible
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Collapsible } from '@cascivo/react'
 ```
 
 ## Category

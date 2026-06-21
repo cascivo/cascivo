@@ -4,8 +4,16 @@ Displays code (inline, single-line, or multi-line) with an optional copy button,
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add code-snippet
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { CodeSnippet } from '@cascivo/react'
 ```
 
 ## Category

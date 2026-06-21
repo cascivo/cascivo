@@ -4,8 +4,16 @@ Interactive color selection widget with saturation/lightness area, hue and alpha
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add color-picker
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ColorPicker } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Visual or semantic divider between content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add separator
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Separator } from '@cascivo/react'
 ```
 
 ## Category

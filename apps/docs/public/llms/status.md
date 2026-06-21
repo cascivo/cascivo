@@ -4,8 +4,16 @@ Colored dot with a label communicating the state of a system or entity
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add status
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Status } from '@cascivo/react'
 ```
 
 ## Category

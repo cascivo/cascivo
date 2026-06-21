@@ -4,8 +4,16 @@ Skip link that jumps keyboard users past the navigation to the main content
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add skip-nav
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { SkipNav } from '@cascivo/react'
 ```
 
 ## Category

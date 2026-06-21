@@ -4,8 +4,16 @@ Inline code span for identifiers, commands, and short snippets
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add code
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Code } from '@cascivo/react'
 ```
 
 ## Category

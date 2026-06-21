@@ -4,8 +4,16 @@ Fixed bottom navigation bar for mobile app shells with up to 5 items
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add dock
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Dock } from '@cascivo/react'
 ```
 
 ## Category

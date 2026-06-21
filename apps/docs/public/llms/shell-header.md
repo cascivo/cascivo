@@ -4,8 +4,16 @@ Console application header: brand with prefix, dropdown nav menus, global icon a
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add shell-header
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ShellHeader } from '@cascivo/react'
 ```
 
 ## Category

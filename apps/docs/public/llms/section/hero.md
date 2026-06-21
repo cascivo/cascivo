@@ -4,9 +4,13 @@ Page hero section — centered or split layout with eyebrow, title, description,
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add section/hero
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

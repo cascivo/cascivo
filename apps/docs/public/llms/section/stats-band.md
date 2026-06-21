@@ -4,9 +4,13 @@ KPI strip — horizontal band of stats with optional delta and inline sparkline 
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add section/stats-band
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

@@ -4,8 +4,16 @@ Search input with debounced search callback and clear button
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add search
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Search } from '@cascivo/react'
 ```
 
 ## Category

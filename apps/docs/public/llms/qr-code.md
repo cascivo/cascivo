@@ -4,8 +4,16 @@ Encodes a URL or short text into a scannable SVG QR code
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add qr-code
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { QrCode } from '@cascivo/react'
 ```
 
 ## Category

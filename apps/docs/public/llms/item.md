@@ -4,8 +4,16 @@ Generic content row primitive with media, content, and action regions
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add item
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Item } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,14 @@ Combination bar + line chart on shared or dual y-axes.
 
 ## Install
 
-```bash
-npx cascivo add chart/combo-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { ComboChart } from '@cascivo/charts'
 ```
 
 ## Category

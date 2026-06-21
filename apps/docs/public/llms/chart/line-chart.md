@@ -4,8 +4,14 @@ Time-series or numeric line chart with multi-series support, hover tooltip, and 
 
 ## Install
 
-```bash
-npx cascivo add chart/line-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { LineChart } from '@cascivo/charts'
 ```
 
 ## Category

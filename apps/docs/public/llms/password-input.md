@@ -4,8 +4,16 @@ Password input with reveal toggle and optional strength meter
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add password-input
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { PasswordInput } from '@cascivo/react'
 ```
 
 ## Category

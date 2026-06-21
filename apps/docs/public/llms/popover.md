@@ -4,8 +4,16 @@ Anchored floating panel built on CSS Anchor Positioning + Popover API
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add popover
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Popover } from '@cascivo/react'
 ```
 
 ## Category

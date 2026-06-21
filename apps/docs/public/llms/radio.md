@@ -4,8 +4,16 @@ Single choice from a set, grouped with RadioGroup
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add radio
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Radio } from '@cascivo/react'
 ```
 
 ## Category

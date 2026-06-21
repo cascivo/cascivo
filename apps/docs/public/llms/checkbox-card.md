@@ -4,8 +4,16 @@ Multi-selectable card backed by a native checkbox. Use multiple independent Chec
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add checkbox-card
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { CheckboxCard } from '@cascivo/react'
 ```
 
 ## Category

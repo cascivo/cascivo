@@ -4,8 +4,16 @@ Reveals the difference between two layers with a draggable divider
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add comparison
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Comparison } from '@cascivo/react'
 ```
 
 ## Category

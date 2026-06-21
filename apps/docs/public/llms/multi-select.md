@@ -4,8 +4,16 @@ Searchable multi-value select with popover listbox
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add multi-select
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { MultiSelect } from '@cascivo/react'
 ```
 
 ## Category

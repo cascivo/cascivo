@@ -4,9 +4,13 @@ Dashboard page layout with stats strip, main content area, and optional aside.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add layout/dashboard-layout
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

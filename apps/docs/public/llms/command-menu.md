@@ -4,8 +4,16 @@ Cmd+K command palette with fuzzy search over grouped commands
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add command-menu
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { CommandMenu } from '@cascivo/react'
 ```
 
 ## Category

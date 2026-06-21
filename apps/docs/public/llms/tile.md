@@ -4,8 +4,16 @@ A selectable card with radio (single) or checkbox (multi) semantics, toggled by 
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tile
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Tile } from '@cascivo/react'
 ```
 
 ## Category

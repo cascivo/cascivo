@@ -4,8 +4,16 @@ Visually joins a set of related buttons into a single segmented control
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add button-group
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ButtonGroup } from '@cascivo/react'
 ```
 
 ## Category

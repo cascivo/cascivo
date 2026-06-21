@@ -4,8 +4,14 @@ Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 
 ## Install
 
-```bash
-npx cascivo add chart/sparkline
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Sparkline } from '@cascivo/charts'
 ```
 
 ## Category

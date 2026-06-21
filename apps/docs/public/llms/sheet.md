@@ -4,8 +4,16 @@ Slide-in panel from any edge, using popover=manual and @starting-style animation
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add sheet
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Sheet } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Circular determinate progress indicator rendered as an SVG arc
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add progress-circle
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ProgressCircle } from '@cascivo/react'
 ```
 
 ## Category

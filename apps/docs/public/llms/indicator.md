@@ -4,8 +4,16 @@ Positions an overlay element (badge, dot, count) at a corner of its child
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add indicator
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Indicator } from '@cascivo/react'
 ```
 
 ## Category

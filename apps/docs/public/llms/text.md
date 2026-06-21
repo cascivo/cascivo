@@ -4,8 +4,16 @@ Body text with size, weight, and muted variants
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add text
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Text } from '@cascivo/react'
 ```
 
 ## Category

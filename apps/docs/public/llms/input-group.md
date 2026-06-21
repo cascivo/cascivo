@@ -4,8 +4,16 @@ Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/unit
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add input-group
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { InputGroup } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Contextual label shown on hover or focus
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add tooltip
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Tooltip } from '@cascivo/react'
 ```
 
 ## Category

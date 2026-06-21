@@ -4,8 +4,16 @@ Signal-driven data table with client/server sort, filter, pagination, multi-sele
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add data-table
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { DataTable } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Shows progress through the steps of a multi-step flow
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add progress-indicator
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ProgressIndicator } from '@cascivo/react'
 ```
 
 ## Category

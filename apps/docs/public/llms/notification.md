@@ -4,8 +4,16 @@ Inline, actionable notification banner that surfaces a titled message with an op
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add notification
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Notification } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Labelled list of rows inside a bordered container
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add contained-list
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ContainedList } from '@cascivo/react'
 ```
 
 ## Category

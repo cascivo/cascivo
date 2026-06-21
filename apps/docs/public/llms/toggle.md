@@ -4,8 +4,16 @@ On/off switch built as an accessible button
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add toggle
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Toggle } from '@cascivo/react'
 ```
 
 ## Category

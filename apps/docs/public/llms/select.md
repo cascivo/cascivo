@@ -4,8 +4,16 @@ Native select menu styled to match the design system
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add select
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Select } from '@cascivo/react'
 ```
 
 ## Category

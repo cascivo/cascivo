@@ -4,9 +4,13 @@ Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a 
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add section/page-footer
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

@@ -4,8 +4,14 @@ Progress meter in bar or gauge variant with threshold coloring.
 
 ## Install
 
-```bash
-npx cascivo add chart/meter
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Meter } from '@cascivo/charts'
 ```
 
 ## Category

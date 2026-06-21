@@ -4,8 +4,16 @@ Vertically stacked, collapsible content sections
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add accordion
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Accordion } from '@cascivo/react'
 ```
 
 ## Category

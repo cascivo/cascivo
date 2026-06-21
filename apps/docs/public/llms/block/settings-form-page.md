@@ -4,9 +4,13 @@ Settings page with profile form inside a two-column settings layout.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/settings-form-page
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

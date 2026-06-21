@@ -4,8 +4,16 @@ Dropdown menu with keyboard navigation, built on usePopover
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add menu
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Menu } from '@cascivo/react'
 ```
 
 ## Category

@@ -4,8 +4,16 @@ Binary toggle for forms, with indeterminate support
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add checkbox
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Checkbox } from '@cascivo/react'
 ```
 
 ## Category

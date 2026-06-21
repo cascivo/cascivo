@@ -4,8 +4,14 @@ Area chart with optional stacking, multi-series support, and hover tooltip.
 
 ## Install
 
-```bash
-npx cascivo add chart/area-chart
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { AreaChart } from '@cascivo/charts'
 ```
 
 ## Category

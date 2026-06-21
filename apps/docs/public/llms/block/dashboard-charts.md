@@ -4,9 +4,13 @@ Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add block/dashboard-charts
 ```
+
+_Copy-paste only — this block/layout is not published as an importable package._
 
 ## Category
 

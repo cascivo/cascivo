@@ -4,8 +4,16 @@ A group of toggleable pill or outline buttons for filtering content by category
 
 ## Install
 
+Copy-paste the source (you own and can edit it):
+
 ```bash
 npx cascivo add filter
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Filter } from '@cascivo/react'
 ```
 
 ## Category
