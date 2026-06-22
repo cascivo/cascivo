@@ -79,6 +79,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Cascade Pulse: an observability dashboard in the shape of Datadog, built with cascivo. Live metrics, a heatmap, alerts and a log stream driven by a real-time simulation — no backend.',
     ogTitle: 'Cascade Pulse — cascivo example',
   },
+  '/showcase': {
+    title: 'Showcase — products built with cascivo',
+    description:
+      'Real, shipped products built with the cascivo design system: Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, and u11g — proof the library holds up in production.',
+    ogTitle: 'Built with cascivo',
+  },
   '/ai': {
     title: 'AI layer — cascivo',
     description:
@@ -106,6 +112,7 @@ export const PRERENDER_ROUTES = [
   'guides',
   'modern-css',
   'examples',
+  'showcase',
   'examples/deploy',
   'examples/pay',
   'examples/flow',

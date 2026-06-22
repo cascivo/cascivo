@@ -88,3 +88,28 @@ Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 | ----------- | -------- | ------------------------------------------------------------------ |
 | token names | strict   | Visual props must resolve to --cascivo-button-\* / semantic tokens |
 | label copy  | flexible | Free, within tone guidance                                         |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Button component (inputs). Triggers an action or event
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Button is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity
+
+Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+
+Do not change (strict): token names — Visual props must resolve to --cascivo-button-* / semantic tokens
+Flexible: label copy.
+
+Do not invent props, tokens, or global viewport media queries.
+```

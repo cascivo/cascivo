@@ -74,3 +74,28 @@ Presentational by role; the label-value pairing is real text so the metric and i
 | --------------- | -------- | ---------------------------------------------------------------- |
 | delta and trend | flexible | Optional — include only when change is meaningful                |
 | token names     | strict   | Trend colors must resolve to --cascivo-color-success/destructive |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Stat component (display). Displays a key metric with optional delta, trend direction and help text
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Stat is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-color-success, --cascivo-color-destructive
+
+Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Trend colors must resolve to --cascivo-color-success/destructive
+Flexible: delta and trend.
+
+Do not invent props, tokens, or global viewport media queries.
+```

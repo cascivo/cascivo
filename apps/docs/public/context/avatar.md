@@ -73,3 +73,28 @@ role="img" with alt names the person; on image error it falls back to initials s
 | ----------- | -------- | ----------------------------------------------------------------------- |
 | size        | flexible | Pick the size that fits the surrounding density                         |
 | token names | strict   | Fallback and status colors must resolve to --cascivo-\* semantic tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Avatar component (display). Displays a user image with initials fallback
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Avatar is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-radius-full
+
+Accessibility: role "img", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Fallback and status colors must resolve to --cascivo-* semantic tokens
+Flexible: size.
+
+Do not invent props, tokens, or global viewport media queries.
+```

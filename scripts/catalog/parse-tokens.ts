@@ -79,7 +79,7 @@ const COMPONENT_SEGMENTS = new Set([
  * Returns a Map of property name → raw value (trimmed, without trailing ;).
  * Handles multi-line values (e.g. font stacks, color-mix).
  */
-function extractDeclarations(css: string): Map<string, string> {
+export function extractDeclarations(css: string): Map<string, string> {
   const result = new Map<string, string>()
   // Match --cascivo-<name>: followed by any value up to the next ; or end of block.
   // We use a single-pass regex that captures multi-line values.

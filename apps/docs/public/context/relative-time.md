@@ -65,3 +65,26 @@ Renders a native <time> element with a machine-readable datetime and the absolut
 | ------ | -------- | ------------------------------------------------------------------------------- |
 | format | flexible | Pass Intl.RelativeTimeFormat options (e.g. numeric: "auto") to tune the wording |
 | sync   | flexible | Disable ticking for static contexts or long-past dates                          |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo RelativeTime component (display). Displays a date as a localized phrase relative to now, auto-updating
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+RelativeTime is strictly bound to these tokens — use only these, do not invent token names:
+  none declared
+
+Accessibility: role "time", WCAG 2.2-AA. Keep it AA.
+Flexible: format, sync.
+
+Do not invent props, tokens, or global viewport media queries.
+```

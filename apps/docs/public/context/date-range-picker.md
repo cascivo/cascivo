@@ -86,3 +86,28 @@ Limits the selectable dates
 | range type | strict   | value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC |
 | presets    | flexible | Optional preset ranges render as quick-select buttons in a side column                     |
 | locale     | flexible | Display, weekday labels, and week start derive from the locale via Intl                    |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo DateRangePicker component (inputs). A dual-calendar picker for selecting a contiguous date range.
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+DateRangePicker is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-calendar-bg, --cascivo-calendar-day-selected-bg, --cascivo-calendar-day-selected-fg, --cascivo-calendar-range-bg
+
+Accessibility: role "combobox", WCAG 2.2-AA, keyboard: Enter/Space/Escape/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Home/End/PageUp/PageDown. Keep it AA.
+
+Do not change (strict): range type — value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC
+Flexible: presets, locale.
+
+Do not invent props, tokens, or global viewport media queries.
+```

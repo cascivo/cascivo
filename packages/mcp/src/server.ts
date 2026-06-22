@@ -19,6 +19,8 @@ import { scaffoldView } from './scaffold-view.js'
 import { buildGrammar, formatGrammar } from './grammar.js'
 import { buildGenerationPrompt } from './prompt.js'
 import { loadTokenCatalog } from './tokens.js'
+import { loadVariantMatrix } from './variants.js'
+import { validateComponentSource } from './validate-component.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
 import { selectComponent } from './select.js'
 
@@ -306,6 +308,80 @@ export function createServer(options: ServerOptions = {}): McpServer {
   )
 
   server.registerTool(
+    'get_variant_matrix',
+    {
+      title: 'Get variant matrix',
+      description:
+        'Get the deterministic token variant matrix: a map from design intent (a colour role + state slot, e.g. accent + hover) to the exact token name, plus every semantic/component token resolved to a concrete value in each theme. Use this to answer "what is the warm theme\'s accent-hover value?" or "which token is the active state of primary?" without guessing how layered theme CSS resolves.',
+      inputSchema: {
+        role: z
+          .string()
+          .optional()
+          .describe('Filter to one colour role, e.g. "accent", "primary", "destructive"'),
+        theme: z
+          .string()
+          .optional()
+          .describe('Restrict the per-theme values to a single theme, e.g. "warm"'),
+      },
+    },
+    async ({ role, theme }) => {
+      try {
+        const matrix = await loadVariantMatrix(fetchFn)
+        if (theme && !matrix.themes.includes(theme)) {
+          return error(`Unknown theme "${theme}". Available: ${matrix.themes.join(', ')}`)
+        }
+        const pickTheme = (byTheme: Record<string, string | null>) =>
+          theme ? { [theme]: byTheme[theme] ?? null } : byTheme
+        let tokens = matrix.tokens
+        let families = matrix.families
+        if (role) {
+          tokens = tokens.filter((t) => t.role === role)
+          families = matrix.families[role] ? { [role]: matrix.families[role] } : {}
+          if (tokens.length === 0) {
+            const available = Object.keys(matrix.families).join(', ')
+            return error(`No colour role "${role}". Available roles: ${available}`)
+          }
+        }
+        return json({
+          themes: theme ? [theme] : matrix.themes,
+          families,
+          tokens: tokens.map((t) => ({ ...t, byTheme: pickTheme(t.byTheme) })),
+        })
+      } catch (e) {
+        return error(`Variant matrix unavailable: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    },
+  )
+
+  server.registerTool(
+    'validate_component',
+    {
+      title: 'Validate component (shadow sandbox)',
+      description:
+        "Run cascivo's structural invariants over candidate component source (TSX and/or CSS) before writing it to disk. Catches banned React hooks, off-scale @media/@container breakpoints, missing static fallbacks for progressive CSS (@function/if()), and hallucinated --cascivo-* tokens. Use this to self-correct generated code in a loop until `valid` is true.",
+      inputSchema: {
+        tsx: z.string().optional().describe('Component TSX source'),
+        css: z.string().optional().describe('Component CSS (module or plain) source'),
+        name: z.string().optional().describe('Component name (for messages only)'),
+      },
+    },
+    async ({ tsx, css, name }) => {
+      let tokenNames: Set<string> | undefined
+      try {
+        const catalog = await loadTokenCatalog(fetchFn)
+        tokenNames = new Set(catalog.tokens.map((t) => t.name))
+      } catch {
+        // Token catalog is optional — skip the hallucination check if unavailable.
+      }
+      const result = validateComponentSource(
+        { ...(tsx ? { tsx } : {}), ...(css ? { css } : {}), ...(name ? { name } : {}) },
+        tokenNames ? { tokenNames } : {},
+      )
+      return json(result)
+    },
+  )
+
+  server.registerTool(
     'get_context',
     {
       title: 'Get context',
@@ -331,6 +407,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
           description: component.description,
           intent: component.intent,
           contextUrl: component.contextUrl,
+          ...(component.aiPrompt ? { aiPrompt: component.aiPrompt } : {}),
           ...(md ? { markdown: md } : {}),
         })
       } catch (e) {

@@ -72,3 +72,28 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
 | -------------------- | -------- | --------------------------------------------------------------------------- |
 | orientation and size | flexible | horizontal for wide panels, vertical for narrow columns; size tunes density |
 | dl semantics         | strict   | Always renders dl/dt/dd; do not substitute generic elements                 |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo DataList component (display). Key-value pairs rendered as a description list
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+DataList is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-space-3, --cascivo-space-4
+
+Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): dl semantics — Always renders dl/dt/dd; do not substitute generic elements
+Flexible: orientation and size.
+
+Do not invent props, tokens, or global viewport media queries.
+```

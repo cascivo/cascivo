@@ -75,3 +75,28 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 | ----------- | -------- | ------------------------------------------------------------------ |
 | source HTML | flexible | Accepts authored children or rendered markup                       |
 | token names | strict   | All typography and surface styling resolves to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Prose component (display). Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Prose is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface
+
+Accessibility: role "generic", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — All typography and surface styling resolves to --cascivo-* tokens
+Flexible: source HTML.
+
+Do not invent props, tokens, or global viewport media queries.
+```

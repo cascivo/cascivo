@@ -66,3 +66,28 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 | ---------------- | -------- | ---------------------------------------------------------------------- |
 | orientation      | flexible | vertical for feeds, horizontal for compact progress strips             |
 | status semantics | strict   | Use a single current item; status drives marker colour via data-status |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Timeline component (display). Ordered sequence of events with status markers and a connector line
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Timeline is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-radius-full
+
+Accessibility: role "list", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): status semantics — Use a single current item; status drives marker colour via data-status
+Flexible: orientation.
+
+Do not invent props, tokens, or global viewport media queries.
+```

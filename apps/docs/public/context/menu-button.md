@@ -110,3 +110,28 @@ Aligns the menu to the trigger end edge
 | token names        | strict   | Trigger and menu styling must resolve to the listed --cascivo-\* tokens  |
 | item content       | flexible | Each item label accepts arbitrary ReactNode; onSelect defines the action |
 | trigger appearance | flexible | variant and size choose among the standard button looks and dimensions   |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo MenuButton component (navigation). A button that opens an anchored action menu of one-shot commands
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+MenuButton is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-primary, --cascivo-color-primary-fg, --cascivo-color-primary-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-z-dropdown
+
+Accessibility: role "menu", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape/Tab. Keep it AA.
+
+Do not change (strict): token names — Trigger and menu styling must resolve to the listed --cascivo-* tokens
+Flexible: item content, trigger appearance.
+
+Do not invent props, tokens, or global viewport media queries.
+```

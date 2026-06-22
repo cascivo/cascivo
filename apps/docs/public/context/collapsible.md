@@ -77,3 +77,28 @@ The trigger is a native button exposing aria-expanded and aria-controls; the reg
 | -------------- | -------- | -------------------------------------------------------------------- |
 | open state     | flexible | Controlled or uncontrolled via open / defaultOpen                    |
 | trigger markup | strict   | Always rendered as a native button for keyboard and a11y correctness |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Collapsible component (display). A single disclosure region toggled open and closed by its trigger
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Collapsible is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-space-3, --cascivo-duration-200, --cascivo-ease-out
+
+Accessibility: role "region", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+
+Do not change (strict): trigger markup — Always rendered as a native button for keyboard and a11y correctness
+Flexible: open state.
+
+Do not invent props, tokens, or global viewport media queries.
+```

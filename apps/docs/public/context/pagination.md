@@ -96,3 +96,28 @@ Wrapped in <nav> with an accessible label; page controls are real buttons with c
 | ----------------- | -------- | ----------------------------------------------------------------- |
 | page size options | flexible | pageSizeOptions and the size select are optional                  |
 | token names       | strict   | Surfaces, borders, and accent must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Pagination component (navigation). Controls for navigating paged data sets, with page size selection
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Pagination is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-radius-input, --cascivo-radius-button, --cascivo-focus-ring
+
+Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowUp/ArrowDown. Keep it AA.
+
+Do not change (strict): token names — Surfaces, borders, and accent must resolve to --cascivo-* tokens
+Flexible: page size options.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -74,3 +74,28 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 | ------------- | -------- | ---------------------------------------------------------------------------- |
 | token names   | strict   | Visual props must resolve to --cascivo-color-\* / radius / focus-ring tokens |
 | option labels | flexible | Free, supplied by the consumer via the options array                         |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Select component (inputs). Native select menu styled to match the design system
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Select is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-text-muted, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "listbox", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Space. Keep it AA.
+
+Do not change (strict): token names — Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens
+Flexible: option labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

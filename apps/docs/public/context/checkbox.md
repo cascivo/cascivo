@@ -77,3 +77,28 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 | ------------------ | -------- | --------------------------------------------------------------------------------------- |
 | native input props | flexible | Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through |
 | token names        | strict   | Control styling resolves to semantic --cascivo-color-\* / --cascivo-radius-sm tokens    |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Checkbox component (inputs). Binary toggle for forms, with indeterminate support
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Checkbox is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-text-on-accent, --cascivo-radius-sm, --cascivo-focus-ring
+
+Accessibility: role "checkbox", WCAG 2.2-AA, keyboard: Space. Keep it AA.
+
+Do not change (strict): token names — Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens
+Flexible: native input props.
+
+Do not invent props, tokens, or global viewport media queries.
+```

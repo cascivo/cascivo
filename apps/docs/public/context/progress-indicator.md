@@ -78,3 +78,28 @@ role="list" structures the steps in order; the current step is conveyed as text/
 | ----------- | -------- | ------------------------------------------------------------- |
 | orientation | flexible | horizontal or vertical to fit the layout                      |
 | token names | strict   | Step and connector colors must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ProgressIndicator component (navigation). Shows progress through the steps of a multi-step flow
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ProgressIndicator is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-text-on-accent, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-full
+
+Accessibility: role "list", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Step and connector colors must resolve to --cascivo-* tokens
+Flexible: orientation.
+
+Do not invent props, tokens, or global viewport media queries.
+```

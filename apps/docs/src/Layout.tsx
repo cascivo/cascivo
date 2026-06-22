@@ -15,6 +15,7 @@ import {
   Eye,
   Bell,
   Grid,
+  Layers,
   Menu as MenuIcon,
   Server,
   Terminal,
@@ -58,6 +59,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
   const exploreItems = [
     { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
     { label: 'Context Explorer', href: '/context', icon: <Eye size={16} /> },
+    { label: 'Design Tokens', href: '/tokens', icon: <Layers size={16} /> },
     { label: 'Why cascivo', href: '/why', icon: <Check size={16} /> },
     { label: 'Parity', href: '/parity', icon: <Grid size={16} /> },
     { label: 'Migrating from shadcn', href: '/migrating', icon: <Grid size={16} /> },

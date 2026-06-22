@@ -74,3 +74,28 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 | ------------- | -------- | -------------------------------------------------------------------------------- |
 | transition    | strict   | Paging uses native CSS scroll-snap, not transform math — no custom easing config |
 | slide content | flexible | Any ReactNode may be a slide; pass via children or the slides array              |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Carousel component (display). Scroll-snap slide deck with previous/next controls and dot indicators
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Carousel is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring
+
+Accessibility: role "group", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End. Keep it AA.
+
+Do not change (strict): transition — Paging uses native CSS scroll-snap, not transform math — no custom easing config
+Flexible: slide content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

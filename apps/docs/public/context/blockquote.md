@@ -68,3 +68,28 @@ Attribution renders as <footer><cite>
 | ----------- | -------- | ---------------------------------------------------------------------- |
 | attribution | flexible | cite is optional; omit when the source is given in surrounding context |
 | token names | strict   | Border and text colors must resolve to --cascivo-\* tokens             |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Blockquote component (display). Quoted passage with optional attribution footer
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Blockquote is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-font-sans, --cascivo-font-medium, --cascivo-leading-relaxed, --cascivo-text-sm, --cascivo-text-base
+
+Accessibility: role "blockquote", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Border and text colors must resolve to --cascivo-* tokens
+Flexible: attribution.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -70,3 +70,26 @@ Indicator positioned at the bottom-start corner
 | Area      | Level    | Note                                                                                          |
 | --------- | -------- | --------------------------------------------------------------------------------------------- |
 | placement | flexible | All four corners are supported; top-end is the most common convention for notification counts |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Indicator component (layout). Positions an overlay element (badge, dot, count) at a corner of its child
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Indicator is strictly bound to these tokens — use only these, do not invent token names:
+  none declared
+
+Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
+Flexible: placement.
+
+Do not invent props, tokens, or global viewport media queries.
+```

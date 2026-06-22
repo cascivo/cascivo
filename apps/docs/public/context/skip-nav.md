@@ -76,3 +76,28 @@ SkipNavLink must be the first focusable element on the page
 | ------------------------- | -------- | ----------------------------------------------------------- |
 | target id                 | flexible | targetId/id may be customized as long as they match         |
 | first-focusable placement | strict   | SkipNavLink must be the first focusable element to function |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo SkipNav component (navigation). Skip link that jumps keyboard users past the navigation to the main content
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+SkipNav is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-radius-control, --cascivo-focus-ring
+
+Accessibility: role "link", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
+
+Do not change (strict): first-focusable placement — SkipNavLink must be the first focusable element to function
+Flexible: target id.
+
+Do not invent props, tokens, or global viewport media queries.
+```

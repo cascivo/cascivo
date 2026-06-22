@@ -89,3 +89,28 @@ role="alert" for warning and error so assistive tech announces them assertively,
 | icon         | flexible | A variant-appropriate icon is supplied by default; override with the icon prop |
 | actions      | flexible | Any ReactNode (typically Buttons) can fill the actions slot                    |
 | role mapping | strict   | warning/error must use role="alert"; info/success use role="status"            |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Notification component (feedback). Inline, actionable notification banner that surfaces a titled message with an optional recovery action
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Notification is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-surface, --cascivo-motion-enter, --cascivo-motion-exit
+
+Accessibility: role "alert", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): role mapping — warning/error must use role="alert"; info/success use role="status"
+Flexible: icon, actions.
+
+Do not invent props, tokens, or global viewport media queries.
+```

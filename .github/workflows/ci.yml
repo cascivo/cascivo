@@ -44,6 +44,9 @@ jobs:
       - name: Demo storage-key collision check
         run: pnpm run demos:storage:check
 
+      - name: Story audit (orphan stories)
+        run: pnpm run audit:stories
+
       - name: Build (vp run -r build)
         run: pnpm exec vp run -r --concurrency-limit 1 build
 

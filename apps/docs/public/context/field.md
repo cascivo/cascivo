@@ -91,3 +91,28 @@ Sets aria-invalid on the control and announces the error via role="alert".
 | --------------- | -------- | ---------------------------------------------------------------------- |
 | token names     | strict   | Spacing and color must resolve to --cascivo-\* semantic tokens         |
 | control element | flexible | Any single element accepting id/aria-\* props can be the child control |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Field component (inputs). Form-field wrapper composing label, control, description, and error
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Field is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-space-2, --cascivo-font-sans, --cascivo-text-sm, --cascivo-leading-snug, --cascivo-color-text-muted, --cascivo-color-destructive
+
+Accessibility: role "group", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Spacing and color must resolve to --cascivo-* semantic tokens
+Flexible: control element.
+
+Do not invent props, tokens, or global viewport media queries.
+```

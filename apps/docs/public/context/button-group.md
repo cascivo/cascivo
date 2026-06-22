@@ -73,3 +73,28 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
 | token names | strict   | Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons |
 | children    | flexible | Any focusable controls (Button, IconButton, links) may be grouped                                                  |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ButtonGroup component (inputs). Visually joins a set of related buttons into a single segmented control
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ButtonGroup is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-button-radius, --cascivo-radius-control
+
+Accessibility: role "group", WCAG 2.2-AA, keyboard: ArrowRight/ArrowLeft/ArrowUp/ArrowDown/Home/End. Keep it AA.
+
+Do not change (strict): token names — Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons
+Flexible: children.
+
+Do not invent props, tokens, or global viewport media queries.
+```

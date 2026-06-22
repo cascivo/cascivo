@@ -67,3 +67,28 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 | ----------------------------- | -------- | ------------------------------------------------------------------------------ |
 | token names                   | strict   | Control and label styling must resolve to the listed --cascivo-\* tokens       |
 | option labels and orientation | flexible | Labels are free text and the group supports horizontal or vertical orientation |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Radio component (inputs). Single choice from a set, grouped with RadioGroup
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Radio is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-text-on-accent, --cascivo-radius-full, --cascivo-focus-ring
+
+Accessibility: role "radio", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Space. Keep it AA.
+
+Do not change (strict): token names — Control and label styling must resolve to the listed --cascivo-* tokens
+Flexible: option labels and orientation.
+
+Do not invent props, tokens, or global viewport media queries.
+```

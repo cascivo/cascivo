@@ -74,3 +74,28 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 | token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-\* tokens |
 | label / hint / error copy | flexible | Free, within content tone guidance                                                                          |
 | size                      | flexible | sm                                                                                                          | md  | lg, defaulting to md |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Input component (inputs). Text input field with optional label, hint, and error state
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Input is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.
+
+Do not change (strict): token names — Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens
+Flexible: label / hint / error copy, size.
+
+Do not invent props, tokens, or global viewport media queries.
+```

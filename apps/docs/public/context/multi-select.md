@@ -77,3 +77,28 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 | token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-\* tokens |
 | labels      | flexible | placeholder, selected(count), search, and noResults are overridable                                            |
 | options     | flexible | Caller supplies the option list and may mark individual options disabled                                       |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo MultiSelect component (inputs). Searchable multi-value select with popover listbox
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+MultiSelect is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-radius-input, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter
+
+Accessibility: role "listbox", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Space/Enter/Escape. Keep it AA.
+
+Do not change (strict): token names — Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens
+Flexible: labels, options.
+
+Do not invent props, tokens, or global viewport media queries.
+```

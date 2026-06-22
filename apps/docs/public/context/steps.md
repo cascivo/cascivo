@@ -99,3 +99,26 @@ Override derived state on a specific step
 | ----------- | -------- | --------------------------------------------------------------------------- |
 | step state  | flexible | Each step can override derived pending/active/complete state via step.state |
 | orientation | flexible | Horizontal for top progress bars, vertical for sidebar wizards              |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Steps component (navigation). Visual progress indicator for multi-step flows with horizontal and vertical orientations
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Steps is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-success, --cascivo-color-success-content, --cascivo-color-error, --cascivo-color-error-content, --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-border-default, --cascivo-radius-full, --cascivo-ease-out
+
+Accessibility: role "list", WCAG 2.2-AA. Keep it AA.
+Flexible: step state, orientation.
+
+Do not invent props, tokens, or global viewport media queries.
+```

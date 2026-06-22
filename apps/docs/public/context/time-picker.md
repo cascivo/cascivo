@@ -75,3 +75,28 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 | ------------ | -------- | --------------------------------------------------------------- |
 | value format | strict   | Value is a 24-hour HH:mm string driven by the native time input |
 | min/max/step | flexible | Consumer-defined bounds and step granularity                    |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo TimePicker component (inputs). Native time input wrapper with label, hint, error, and size variants
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+TimePicker is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-color-danger, --cascivo-radius-input, --cascivo-radius-md
+
+Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab. Keep it AA.
+
+Do not change (strict): value format — Value is a 24-hour HH:mm string driven by the native time input
+Flexible: min/max/step.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -48,3 +48,28 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 | token names      | strict   | Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-\* tokens |
 | open/close delay | flexible | openDelay and closeDelay are tunable per instance (defaults 300/100ms)                     |
 | content          | flexible | HoverCardContent accepts arbitrary children                                                |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo HoverCard component (overlay). Hover-triggered popover with configurable open/close delay
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+HoverCard is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit
+
+Accessibility: role "complementary", WCAG 2.2-AA, keyboard: Tab/Escape. Keep it AA.
+
+Do not change (strict): token names — Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens
+Flexible: open/close delay, content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

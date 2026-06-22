@@ -103,3 +103,28 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 | ------------------------- | -------- | ---------------------------------------------------------------- |
 | collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs                  |
 | token names               | strict   | Sizing, surfaces, and motion must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo SideNav component (navigation). Collapsible sidebar navigation with optional icons and one level of grouping
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+SideNav is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis
+
+Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.
+
+Do not change (strict): token names — Sizing, surfaces, and motion must resolve to --cascivo-* tokens
+Flexible: collapsed / expandOnHover.
+
+Do not invent props, tokens, or global viewport media queries.
+```

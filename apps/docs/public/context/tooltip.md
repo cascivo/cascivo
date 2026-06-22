@@ -65,3 +65,28 @@ The floating element uses role="tooltip" and is linked to the trigger via aria-d
 | --------- | -------- | ------------------------------------------------ | ----- | ------ | ------------------------------- |
 | placement | strict   | Limited to top                                   | right | bottom | left, positioned via CSS anchor |
 | delay     | flexible | Consumer can tune the show delay (default 200ms) |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Tooltip component (overlay). Contextual label shown on hover or focus
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Tooltip is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-on-accent, --cascivo-radius-sm, --cascivo-z-tooltip
+
+Accessibility: role "tooltip", WCAG 2.2-AA, keyboard: Tab/Escape. Keep it AA.
+
+Do not change (strict): placement — Limited to top | right | bottom | left, positioned via CSS anchor
+Flexible: delay.
+
+Do not invent props, tokens, or global viewport media queries.
+```

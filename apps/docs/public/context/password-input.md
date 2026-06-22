@@ -73,3 +73,28 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 | ----------- | -------- | ---------------------------------------------------------------------------------------- |
 | token names | strict   | Field, toggle, and strength-meter styling must resolve to the listed --cascivo-\* tokens |
 | labels      | flexible | reveal, hide, and strengthLabel can be overridden via the labels prop                    |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo PasswordInput component (inputs). Password input with reveal toggle and optional strength meter
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+PasswordInput is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-warning, --cascivo-color-success, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.
+
+Do not change (strict): token names — Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens
+Flexible: labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

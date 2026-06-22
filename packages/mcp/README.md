@@ -35,17 +35,19 @@ The server speaks the MCP stdio transport. By default it reads the `registry.jso
 
 ## Tools
 
-| Tool                | Input                                 | Returns                                                                              |
-| ------------------- | ------------------------------------- | ------------------------------------------------------------------------------------ |
-| `list_components`   | `{ category? }`                       | All component manifests, optionally filtered by category                             |
-| `get_component`     | `{ name }`                            | The full manifest for one component                                                  |
-| `search_components` | `{ query }`                           | Components matching name, tags, or description                                       |
-| `add_to_project`    | `{ name, outputDir? }`                | Runs `cascivo add <name>` as a child process                                         |
-| `create_theme`      | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer)                                         |
-| `scaffold_page`     | `{ description, components? }`        | A JSX page layout string                                                             |
-| `scaffold_view`     | `{ description, components? }`        | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components |
-| `validate_view`     | `{ config }`                          | Validation errors (component, prop type/enum, refs) with exact paths                 |
-| `get_view_grammar`  | `{ components? }`                     | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON             |
+| Tool                 | Input                                 | Returns                                                                                                                                 |
+| -------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `list_components`    | `{ category? }`                       | All component manifests, optionally filtered by category                                                                                |
+| `get_component`      | `{ name }`                            | The full manifest for one component                                                                                                     |
+| `search_components`  | `{ query }`                           | Components matching name, tags, or description                                                                                          |
+| `add_to_project`     | `{ name, outputDir? }`                | Runs `cascivo add <name>` as a child process                                                                                            |
+| `create_theme`       | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer)                                                                                            |
+| `scaffold_page`      | `{ description, components? }`        | A JSX page layout string                                                                                                                |
+| `scaffold_view`      | `{ description, components? }`        | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
+| `validate_view`      | `{ config }`                          | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
+| `get_view_grammar`   | `{ components? }`                     | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
+| `get_variant_matrix` | `{ role?, theme? }`                   | Deterministic intent→token map (role + state slot) + every token resolved per theme                                                     |
+| `validate_component` | `{ tsx?, css?, name? }`               | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
 
 `category` is one of `inputs`, `display`, `overlay`, `navigation`, `feedback`.
 

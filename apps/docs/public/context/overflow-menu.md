@@ -80,3 +80,28 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 | ------------------- | -------- | ----------------------------------------------------------------------- |
 | token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-\* tokens |
 | item set and labels | flexible | items, ariaLabel, and placement are free to suit the context            |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo OverflowMenu component (overlay). Kebab icon button revealing a menu of row-level actions
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+OverflowMenu is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-radius-button, --cascivo-focus-ring
+
+Accessibility: role "menu", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.
+
+Do not change (strict): token names — Trigger and item styling must resolve to the listed --cascivo-* tokens
+Flexible: item set and labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

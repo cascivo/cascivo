@@ -80,3 +80,28 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 | ---------- | -------- | ----------------------------------------------------------------------------------- |
 | selectable | flexible | Toggle selectable based on whether the list is interactive or purely presentational |
 | roles      | strict   | Static uses table semantics; selectable uses radiogroup — do not mix                |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo StructuredList component (display). Tabular row list for scannable data, optionally single-selectable
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+StructuredList is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-primary, --cascivo-color-surface, --cascivo-focus-ring
+
+Accessibility: role "table", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space. Keep it AA.
+
+Do not change (strict): roles — Static uses table semantics; selectable uses radiogroup — do not mix
+Flexible: selectable.
+
+Do not invent props, tokens, or global viewport media queries.
+```

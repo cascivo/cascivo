@@ -80,3 +80,28 @@ Keep the document outline correct while controlling the visual scale
 | -------------- | -------- | ------------------------------------------------------------ |
 | size           | flexible | size may override the level-derived default for visual scale |
 | level sequence | strict   | Levels must not skip — maintain a valid heading hierarchy    |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Heading component (display). Section heading with semantic level decoupled from visual size
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Heading is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-font-display, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-text-base, --cascivo-text-lg, --cascivo-text-xl, --cascivo-text-2xl, --cascivo-text-3xl
+
+Accessibility: role "heading", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): level sequence — Levels must not skip — maintain a valid heading hierarchy
+Flexible: size.
+
+Do not invent props, tokens, or global viewport media queries.
+```

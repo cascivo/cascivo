@@ -76,3 +76,28 @@ The container heading labels the ul/li structure; interactive rows must slot a r
 | -------------- | -------- | ------------------------------------------------------------------------ |
 | kind           | flexible | on-page sits inline; disclosed adds a header band for menus and popovers |
 | list semantics | strict   | Rows are always ul/li; do not replace with generic divs                  |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ContainedList component (display). Labelled list of rows inside a bordered container
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ContainedList is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-surface, --cascivo-focus-ring
+
+Accessibility: role "list", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.
+
+Do not change (strict): list semantics — Rows are always ul/li; do not replace with generic divs
+Flexible: kind.
+
+Do not invent props, tokens, or global viewport media queries.
+```

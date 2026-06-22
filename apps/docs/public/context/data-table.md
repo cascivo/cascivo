@@ -122,3 +122,28 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 | -------------------- | -------- | ---------------------------------------------------------------------- |
 | sortMode and density | flexible | Choose client/server sort and density to fit data size and layout      |
 | token names          | strict   | All surfaces, borders, and spacing must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo DataTable component (display). Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+DataTable is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-font-sans, --cascivo-text-sm, --cascivo-text-xs, --cascivo-font-semibold, --cascivo-font-medium, --cascivo-radius-lg, --cascivo-radius-sm, --cascivo-space-2, --cascivo-space-3, --cascivo-space-4, --cascivo-data-table-max-height, --cascivo-duration-150, --cascivo-duration-500, --cascivo-ease-out, --cascivo-ease-in-out
+
+Accessibility: role "table", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Enter/Space. Keep it AA.
+
+Do not change (strict): token names — All surfaces, borders, and spacing must resolve to --cascivo-* tokens
+Flexible: sortMode and density.
+
+Do not invent props, tokens, or global viewport media queries.
+```

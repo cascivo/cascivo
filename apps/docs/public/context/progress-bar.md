@@ -80,3 +80,28 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 | ---------------------------- | -------- | ---------------------------------------------------------- |
 | determinate vs indeterminate | flexible | Presence of value selects the mode                         |
 | token names                  | strict   | Fill and status colors must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ProgressBar component (feedback). Shows determinate or indeterminate progress of a task
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ProgressBar is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-full, --cascivo-motion-enter
+
+Accessibility: role "progressbar", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Fill and status colors must resolve to --cascivo-* tokens
+Flexible: determinate vs indeterminate.
+
+Do not invent props, tokens, or global viewport media queries.
+```
