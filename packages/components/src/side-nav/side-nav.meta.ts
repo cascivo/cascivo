@@ -13,7 +13,7 @@ export const meta: ComponentMeta = {
       type: 'SideNavItem[]',
       required: true,
       description:
-        '{ label, href?, icon?, active?, items? } — items with nested items render as expandable groups',
+        '{ label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch',
     },
     {
       name: 'collapsed',
@@ -35,6 +35,13 @@ export const meta: ComponentMeta = {
         'Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts',
     },
     {
+      name: 'header',
+      type: 'ReactNode',
+      required: false,
+      description:
+        'Content rendered above the items, inside the item padding context (e.g. app-context pickers)',
+    },
+    {
       name: 'footer',
       type: 'ReactNode',
       required: false,
@@ -53,6 +60,9 @@ export const meta: ComponentMeta = {
     '--cascivo-color-bg-subtle',
     '--cascivo-color-accent',
     '--cascivo-color-accent-subtle',
+    '--cascivo-color-destructive',
+    '--cascivo-color-warning',
+    '--cascivo-color-success',
     '--cascivo-focus-ring',
     '--cascivo-motion-enter',
     '--cascivo-motion-exit',

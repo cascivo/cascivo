@@ -2,6 +2,7 @@
 import { cn, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import {
+  Fragment,
   useId,
   type CSSProperties,
   type KeyboardEvent,
@@ -13,11 +14,25 @@ import { Tooltip } from '../tooltip/tooltip'
 import { usePopover } from '../popover/use-popover'
 import styles from './side-nav.module.css'
 
-export interface SideNavSubItem {
+export type SideNavTone = 'default' | 'danger' | 'warning' | 'success'
+
+/** A selectable/navigable sub-item (link when `href` is set, action when `onSelect` is set). */
+export interface SideNavLinkSubItem {
   label: string
-  href: string
+  href?: string
+  icon?: ReactNode
   active?: boolean
+  /** Shows a trailing checkmark; use for picker-style "current selection" rows. */
+  selected?: boolean
+  /** Runs an action instead of navigating. When set without `href`, renders a `<button>`. */
+  onSelect?: () => void
+  disabled?: boolean
 }
+
+export type SideNavSubItem =
+  | SideNavLinkSubItem
+  | { type: 'separator' }
+  | { type: 'label'; label: string }
 
 export interface SideNavItem {
   label: string
@@ -26,6 +41,17 @@ export interface SideNavItem {
   active?: boolean
   items?: SideNavSubItem[]
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
+  /** Non-interactive and visually dimmed. */
+  disabled?: boolean
+  /** Recolors the item; `'default'` is the standard subtle color. */
+  tone?: SideNavTone
+  /** Rendered right-aligned after the label (e.g. a Kbd hint, badge, count); hidden on the rail. */
+  trailing?: ReactNode
+  /**
+   * Escape hatch: render arbitrary content inside the item's shell so it inherits
+   * alignment and the collapse context. When set, the item's own fields are ignored.
+   */
+  render?: (ctx: { collapsed: boolean }) => ReactNode
 }
 
 export interface SideNavGroup {
@@ -44,8 +70,104 @@ export interface SideNavProps {
   expandLabel?: string
   expandOnHover?: boolean
   showCollapseToggle?: boolean
+  /** Content rendered above the items, inside the item padding context. */
+  header?: ReactNode
   footer?: ReactNode
   className?: string
+}
+
+function isLinkSubItem(sub: SideNavSubItem): sub is SideNavLinkSubItem {
+  return !('type' in sub)
+}
+
+function CheckMark() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      aria-hidden="true"
+      className={styles['checkMark']}
+    >
+      <path
+        d="M3.5 8.5l3 3 6-7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+interface SubControlOptions {
+  inMenu: boolean
+  onActivate?: () => void
+  extraClass?: string | undefined
+}
+
+/** Renders the interactive control for a link/action sub-item (shared by inline + flyout). */
+function renderSubControl(
+  sub: SideNavLinkSubItem,
+  { inMenu, onActivate, extraClass }: SubControlOptions,
+) {
+  const role = inMenu ? 'menuitem' : undefined
+  const className = cn(styles['link'], styles['sublink'], extraClass)
+  const inner = (
+    <>
+      {sub.icon ? (
+        <span className={styles['icon']} aria-hidden="true">
+          {sub.icon}
+        </span>
+      ) : null}
+      <span className={styles['label']}>{sub.label}</span>
+      {sub.selected ? <CheckMark /> : null}
+    </>
+  )
+
+  if (sub.onSelect && !sub.href) {
+    return (
+      <button
+        type="button"
+        role={role}
+        aria-current={sub.active ? 'page' : undefined}
+        data-state={sub.active ? 'active' : undefined}
+        data-selected={sub.selected || undefined}
+        disabled={sub.disabled}
+        className={className}
+        onClick={() => {
+          sub.onSelect?.()
+          onActivate?.()
+        }}
+      >
+        {inner}
+      </button>
+    )
+  }
+
+  return (
+    <a
+      href={sub.disabled ? undefined : sub.href}
+      role={role}
+      aria-current={sub.active ? 'page' : undefined}
+      aria-disabled={sub.disabled || undefined}
+      tabIndex={sub.disabled ? -1 : undefined}
+      data-state={sub.active ? 'active' : undefined}
+      data-selected={sub.selected || undefined}
+      className={className}
+      onClick={(e) => {
+        if (sub.disabled) {
+          e.preventDefault()
+          return
+        }
+        sub.onSelect?.()
+        onActivate?.()
+      }}
+    >
+      {inner}
+    </a>
+  )
 }
 
 function firstGrapheme(label: string): string {
@@ -63,6 +185,8 @@ interface RailGroupFlyoutProps {
 function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
   const { triggerRef, popoverRef, isOpen, anchorName, open, close, toggle } = usePopover()
 
+  const menuItemSelector = '[role="menuitem"]:not([disabled]):not([aria-disabled="true"])'
+
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault()
@@ -70,7 +194,7 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
       const panel = popoverRef.current
       if (panel) {
         setTimeout(() => {
-          panel.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
+          panel.querySelector<HTMLElement>(menuItemSelector)?.focus()
         }, 0)
       }
     } else if (e.key === 'Escape') {
@@ -81,7 +205,7 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
   const handlePanelKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const panel = popoverRef.current
     if (!panel) return
-    const items = Array.from(panel.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+    const items = Array.from(panel.querySelectorAll<HTMLElement>(menuItemSelector))
     const idx = items.indexOf(e.target as HTMLElement)
     if (e.key === 'ArrowDown') {
       e.preventDefault()
@@ -132,19 +256,26 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
         <div className={styles['railFlyoutCaption']} aria-hidden="true">
           {item.label}
         </div>
-        {item.items.map((sub) => (
-          <a
-            key={sub.href}
-            href={sub.href}
-            role="menuitem"
-            aria-current={sub.active ? 'page' : undefined}
-            data-state={sub.active ? 'active' : undefined}
-            className={cn(styles['link'], styles['sublink'], styles['flyoutItem'])}
-            onClick={() => close()}
-          >
-            {sub.label}
-          </a>
-        ))}
+        {item.items.map((sub, si) => {
+          if (!isLinkSubItem(sub)) {
+            return sub.type === 'separator' ? (
+              <div key={si} role="separator" className={styles['flyoutSeparator']} />
+            ) : (
+              <div key={si} className={styles['railFlyoutCaption']} aria-hidden="true">
+                {sub.label}
+              </div>
+            )
+          }
+          return (
+            <Fragment key={si}>
+              {renderSubControl(sub, {
+                inMenu: true,
+                onActivate: close,
+                extraClass: styles['flyoutItem'],
+              })}
+            </Fragment>
+          )
+        })}
       </div>
     </>
   )
@@ -161,6 +292,7 @@ export function SideNav({
   expandLabel,
   expandOnHover = false,
   showCollapseToggle = true,
+  header,
   footer,
   className,
 }: SideNavProps) {
@@ -177,7 +309,9 @@ export function SideNav({
 
   const allItems = effectiveGroups.flatMap((g) => g.items)
   const expandedGroups = useSignal<string[]>(
-    allItems.filter((item) => item.items?.some((sub) => sub.active)).map((item) => item.label),
+    allItems
+      .filter((item) => item.items?.some((sub) => isLinkSubItem(sub) && sub.active))
+      .map((item) => item.label),
   )
 
   const toggleGroup = (label: string) => {
@@ -202,6 +336,7 @@ export function SideNav({
       data-expand-on-hover={rail && expandOnHover ? '' : undefined}
       className={cn(styles['sideNav'], className)}
     >
+      {header && <div className={styles['header']}>{header}</div>}
       <ul className={styles['list']}>
         {effectiveGroups.map((group, gi) => (
           <li key={gi} className={styles['group']}>
@@ -269,33 +404,34 @@ export function SideNav({
                         className={styles['sublist']}
                       >
                         <ul className={styles['sublistInner']}>
-                          {item.items.map((sub) => (
-                            <li key={sub.href}>
-                              <a
-                                href={sub.href}
-                                aria-current={sub.active ? 'page' : undefined}
-                                data-state={sub.active ? 'active' : undefined}
-                                className={cn(styles['link'], styles['sublink'])}
-                              >
-                                <span className={styles['label']}>{sub.label}</span>
-                              </a>
-                            </li>
-                          ))}
+                          {item.items.map((sub, si) => {
+                            if (!isLinkSubItem(sub)) {
+                              return sub.type === 'separator' ? (
+                                <li key={si} role="separator" className={styles['subSeparator']} />
+                              ) : (
+                                <li key={si} className={styles['subGroupLabel']}>
+                                  {sub.label}
+                                </li>
+                              )
+                            }
+                            return <li key={si}>{renderSubControl(sub, { inMenu: false })}</li>
+                          })}
                         </ul>
                       </div>
                     </li>
                   )
                 }
 
-                const link = (
-                  <a
-                    href={item.href}
-                    aria-current={item.active ? 'page' : undefined}
-                    aria-label={rail ? item.label : undefined}
-                    data-state={item.active ? 'active' : undefined}
-                    className={styles['link']}
-                    onClick={item.onClick}
-                  >
+                if (item.render) {
+                  return (
+                    <li key={item.label} className={styles['customItem']}>
+                      {item.render({ collapsed: rail })}
+                    </li>
+                  )
+                }
+
+                const inner = (
+                  <>
                     {item.icon ? (
                       <span className={styles['icon']} aria-hidden="true">
                         {item.icon}
@@ -312,8 +448,50 @@ export function SideNav({
                     <span className={styles['label']} data-rail-hidden={rail || undefined}>
                       {item.label}
                     </span>
-                  </a>
+                    {item.trailing != null ? (
+                      <span className={styles['trailing']} data-rail-hidden={rail || undefined}>
+                        {item.trailing}
+                      </span>
+                    ) : null}
+                  </>
                 )
+
+                const tone = item.tone && item.tone !== 'default' ? item.tone : undefined
+                const link =
+                  item.onClick && !item.href ? (
+                    <button
+                      type="button"
+                      aria-current={item.active ? 'page' : undefined}
+                      aria-label={rail ? item.label : undefined}
+                      data-state={item.active ? 'active' : undefined}
+                      data-tone={tone}
+                      className={styles['link']}
+                      disabled={item.disabled}
+                      onClick={(e) => item.onClick?.(e as unknown as MouseEvent<HTMLAnchorElement>)}
+                    >
+                      {inner}
+                    </button>
+                  ) : (
+                    <a
+                      href={item.disabled ? undefined : item.href}
+                      aria-current={item.active ? 'page' : undefined}
+                      aria-label={rail ? item.label : undefined}
+                      aria-disabled={item.disabled || undefined}
+                      tabIndex={item.disabled ? -1 : undefined}
+                      data-state={item.active ? 'active' : undefined}
+                      data-tone={tone}
+                      className={styles['link']}
+                      onClick={(e) => {
+                        if (item.disabled) {
+                          e.preventDefault()
+                          return
+                        }
+                        item.onClick?.(e)
+                      }}
+                    >
+                      {inner}
+                    </a>
+                  )
 
                 return (
                   <li key={item.label}>
