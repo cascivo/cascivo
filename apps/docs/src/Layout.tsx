@@ -21,6 +21,7 @@ import {
 } from '@cascivo/icons'
 import { buildNav } from './nav'
 import { DocsSearch } from './search'
+import { applyDocsSeo } from './seo'
 import { applyTheme, theme, THEMES } from './theme'
 
 // Singleton shell state — persisted across navigations.
@@ -34,6 +35,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
 
   useEffect(() => {
     document.getElementById('cascivo-main')?.scrollTo(0, 0)
+    applyDocsSeo(path)
   }, [path])
 
   useEffect(() => {
