@@ -19,9 +19,6 @@ async function main() {
   const lightCss = await readFile(join(ROOT, 'packages/themes/src/light.css'), 'utf8')
   const tokens = parseTokens(indexCss, lightCss)
 
-  const outDir = join(ROOT, 'apps/docs/public')
-  await mkdir(outDir, { recursive: true })
-
   const catalog = {
     generatedFrom: ['packages/tokens/src/index.css', 'packages/themes/src/light.css'],
     resolutionTheme: 'light',
@@ -30,8 +27,15 @@ async function main() {
     tokens,
   }
 
-  await writeFile(join(outDir, 'tokens.catalog.json'), JSON.stringify(catalog, null, 2) + '\n')
-  console.log(`Wrote ${tokens.length} tokens to tokens.catalog.json`)
+  const json = JSON.stringify(catalog, null, 2) + '\n'
+  // Written to both the docs and Storybook public dirs so each app's
+  // auto-generated Design Tokens page can fetch it at runtime.
+  const outDirs = [join(ROOT, 'apps/docs/public'), join(ROOT, 'apps/storybook/public')]
+  for (const outDir of outDirs) {
+    await mkdir(outDir, { recursive: true })
+    await writeFile(join(outDir, 'tokens.catalog.json'), json)
+  }
+  console.log(`Wrote ${tokens.length} tokens to tokens.catalog.json (docs + storybook)`)
 }
 
 await main()
