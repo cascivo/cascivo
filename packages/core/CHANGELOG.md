@@ -1,5 +1,11 @@
 # @cascivo/core
 
+## 0.1.3
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+
 ## 0.1.2
 
 ### Patch Changes

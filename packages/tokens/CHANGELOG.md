@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.3.1
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+
 ## 0.3.0
 
 ### Minor Changes

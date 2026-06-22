@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.2.4
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+
 ## 0.2.3
 
 ### Patch Changes
