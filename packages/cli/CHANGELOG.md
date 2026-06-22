@@ -1,5 +1,11 @@
 # cascivo
 
+## 0.1.3
+
+### Patch Changes
+
+- 5e58e32: Component eject
+
 ## 0.1.2
 
 ### Patch Changes
