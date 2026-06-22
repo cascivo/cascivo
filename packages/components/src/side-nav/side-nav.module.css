@@ -21,7 +21,8 @@
     &[data-state='collapsed'] {
       inline-size: var(--cascivo-sidenav-rail-inline-size, 4rem);
 
-      & .label[data-rail-hidden] {
+      & .label[data-rail-hidden],
+      & .trailing[data-rail-hidden] {
         display: none;
       }
 
@@ -41,7 +42,8 @@
         z-index: 10;
         box-shadow: var(--cascivo-shadow-md);
 
-        & .label[data-rail-hidden] {
+        & .label[data-rail-hidden],
+        & .trailing[data-rail-hidden] {
           display: initial;
         }
 
@@ -148,6 +150,44 @@
     }
   }
 
+  /* Tone — recolors action items (e.g. reconnect = warning) */
+  .link[data-tone='danger'] {
+    color: var(--cascivo-color-destructive);
+  }
+
+  .link[data-tone='warning'] {
+    color: var(--cascivo-color-warning);
+  }
+
+  .link[data-tone='success'] {
+    color: var(--cascivo-color-success);
+  }
+
+  /* Disabled — non-interactive and dimmed (button uses :disabled, anchor uses aria-disabled) */
+  .link:disabled,
+  .link[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Trailing slot — right-aligned hint/badge after the label */
+  .trailing {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  /* Selected checkmark on picker-style sub-items */
+  .checkMark {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    color: var(--cascivo-color-accent);
+  }
+
   .icon {
     display: inline-flex;
     align-items: center;
@@ -214,10 +254,48 @@
     );
   }
 
+  .sublink[data-selected] {
+    color: var(--cascivo-color-text);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  /* Separator + section label inside an expandable item's inline sublist */
+  .subSeparator {
+    block-size: 1px;
+    margin-block: var(--cascivo-space-1);
+    margin-inline: var(--cascivo-space-3);
+    background: var(--cascivo-color-border);
+  }
+
+  .subGroupLabel {
+    padding-inline-start: calc(
+      var(--cascivo-space-3) + var(--cascivo-space-4) + var(--cascivo-space-2)
+    );
+    padding-block: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .header {
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+  }
+
   .footer {
     padding-block: var(--cascivo-space-2);
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
+  }
+
+  /* Custom-item escape hatch — provides the item's padding/alignment context */
+  .customItem {
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-2);
   }
 
   .collapseToggle {
@@ -300,5 +378,12 @@
   .flyoutItem {
     padding-inline-start: var(--cascivo-space-3);
     border-inline-start: none;
+  }
+
+  .flyoutSeparator {
+    block-size: 1px;
+    margin-block: var(--cascivo-space-1);
+    margin-inline: var(--cascivo-space-2);
+    background: var(--cascivo-color-border);
   }
 }

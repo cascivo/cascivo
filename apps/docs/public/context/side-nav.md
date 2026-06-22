@@ -32,18 +32,19 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 
 ## Props
 
-| Name                | Type                           | Required | Default             | Description                                                                                    |
-| ------------------- | ------------------------------ | -------- | ------------------- | ---------------------------------------------------------------------------------------------- |
-| `items`             | `SideNavItem[]`                | Yes      | —                   | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
-| `collapsed`         | `boolean`                      | No       | —                   | Controlled collapsed state (rail mode)                                                         |
-| `defaultCollapsed`  | `boolean`                      | No       | false               | —                                                                                              |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | No       | —                   | —                                                                                              |
-| `ariaLabel`         | `string`                       | No       | Side navigation     | —                                                                                              |
-| `collapseLabel`     | `string`                       | No       | Collapse navigation | —                                                                                              |
-| `expandLabel`       | `string`                       | No       | Expand navigation   | —                                                                                              |
-| `expandOnHover`     | `boolean`                      | No       | false               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts               |
-| `footer`            | `ReactNode`                    | No       | —                   | Content rendered above the collapse toggle (e.g. version string, user info)                    |
-| `className`         | `string`                       | No       | —                   | —                                                                                              |
+| Name                | Type                           | Required | Default             | Description                                                                                                                                                                                                                                                                                               |
+| ------------------- | ------------------------------ | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`             | `SideNavItem[]`                | Yes      | —                   | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
+| `collapsed`         | `boolean`                      | No       | —                   | Controlled collapsed state (rail mode)                                                                                                                                                                                                                                                                    |
+| `defaultCollapsed`  | `boolean`                      | No       | false               | —                                                                                                                                                                                                                                                                                                         |
+| `onCollapsedChange` | `(collapsed: boolean) => void` | No       | —                   | —                                                                                                                                                                                                                                                                                                         |
+| `ariaLabel`         | `string`                       | No       | Side navigation     | —                                                                                                                                                                                                                                                                                                         |
+| `collapseLabel`     | `string`                       | No       | Collapse navigation | —                                                                                                                                                                                                                                                                                                         |
+| `expandLabel`       | `string`                       | No       | Expand navigation   | —                                                                                                                                                                                                                                                                                                         |
+| `expandOnHover`     | `boolean`                      | No       | false               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts                                                                                                                                                                                                                          |
+| `header`            | `ReactNode`                    | No       | —                   | Content rendered above the items, inside the item padding context (e.g. app-context pickers)                                                                                                                                                                                                              |
+| `footer`            | `ReactNode`                    | No       | —                   | Content rendered above the collapse toggle (e.g. version string, user info)                                                                                                                                                                                                                               |
+| `className`         | `string`                       | No       | —                   | —                                                                                                                                                                                                                                                                                                         |
 
 ## Tokens
 
@@ -57,6 +58,9 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 - `--cascivo-color-bg-subtle`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-warning`
+- `--cascivo-color-success`
 - `--cascivo-focus-ring`
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
@@ -119,7 +123,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 SideNav is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis
+  --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-destructive, --cascivo-color-warning, --cascivo-color-success, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis
 
 Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.
 

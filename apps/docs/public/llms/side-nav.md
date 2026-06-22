@@ -27,18 +27,19 @@ import { SideNav } from '@cascivo/react'
 
 ## Props
 
-| Prop                | Type                           | Required | Default               | Description                                                                                    |
-| ------------------- | ------------------------------ | -------- | --------------------- | ---------------------------------------------------------------------------------------------- |
-| `items`             | `SideNavItem[]`                | yes      | —                     | { label, href?, icon?, active?, items? } — items with nested items render as expandable groups |
-| `collapsed`         | `boolean`                      | no       | —                     | Controlled collapsed state (rail mode)                                                         |
-| `defaultCollapsed`  | `boolean`                      | no       | `false`               | —                                                                                              |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | no       | —                     | —                                                                                              |
-| `ariaLabel`         | `string`                       | no       | `Side navigation`     | —                                                                                              |
-| `collapseLabel`     | `string`                       | no       | `Collapse navigation` | —                                                                                              |
-| `expandLabel`       | `string`                       | no       | `Expand navigation`   | —                                                                                              |
-| `expandOnHover`     | `boolean`                      | no       | `false`               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts               |
-| `footer`            | `ReactNode`                    | no       | —                     | Content rendered above the collapse toggle (e.g. version string, user info)                    |
-| `className`         | `string`                       | no       | —                     | —                                                                                              |
+| Prop                | Type                           | Required | Default               | Description                                                                                                                                                                                                                                                                                               |
+| ------------------- | ------------------------------ | -------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`             | `SideNavItem[]`                | yes      | —                     | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
+| `collapsed`         | `boolean`                      | no       | —                     | Controlled collapsed state (rail mode)                                                                                                                                                                                                                                                                    |
+| `defaultCollapsed`  | `boolean`                      | no       | `false`               | —                                                                                                                                                                                                                                                                                                         |
+| `onCollapsedChange` | `(collapsed: boolean) => void` | no       | —                     | —                                                                                                                                                                                                                                                                                                         |
+| `ariaLabel`         | `string`                       | no       | `Side navigation`     | —                                                                                                                                                                                                                                                                                                         |
+| `collapseLabel`     | `string`                       | no       | `Collapse navigation` | —                                                                                                                                                                                                                                                                                                         |
+| `expandLabel`       | `string`                       | no       | `Expand navigation`   | —                                                                                                                                                                                                                                                                                                         |
+| `expandOnHover`     | `boolean`                      | no       | `false`               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts                                                                                                                                                                                                                          |
+| `header`            | `ReactNode`                    | no       | —                     | Content rendered above the items, inside the item padding context (e.g. app-context pickers)                                                                                                                                                                                                              |
+| `footer`            | `ReactNode`                    | no       | —                     | Content rendered above the collapse toggle (e.g. version string, user info)                                                                                                                                                                                                                               |
+| `className`         | `string`                       | no       | —                     | —                                                                                                                                                                                                                                                                                                         |
 
 ## Examples
 
@@ -87,6 +88,9 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 - `--cascivo-color-bg-subtle`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-warning`
+- `--cascivo-color-success`
 - `--cascivo-focus-ring`
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`

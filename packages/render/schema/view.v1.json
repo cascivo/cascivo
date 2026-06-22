@@ -3321,6 +3321,10 @@
                   "expandOnHover": {
                     "type": "boolean"
                   },
+                  "header": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
                   "footer": {
                     "type": "string",
                     "enum": ["ReactNode"]

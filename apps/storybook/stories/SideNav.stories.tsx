@@ -133,6 +133,52 @@ export const ActiveInGroup: Story = {
   },
 }
 
+export const NativeControls: Story = {
+  name: 'Native app-context controls',
+  args: {
+    header: <strong style={{ fontSize: 13, padding: '0 4px' }}>Acme Studio</strong>,
+    items: [
+      {
+        label: 'Project',
+        icon: <Database size={16} />,
+        items: [
+          { type: 'label', label: 'Projects' },
+          { label: 'Apollo', icon: <Server size={16} />, selected: true, onSelect: () => {} },
+          { label: 'Mercury', icon: <Server size={16} />, onSelect: () => {} },
+          { type: 'separator' },
+          { label: 'Add project →', href: '#new-project' },
+        ],
+      },
+      { label: 'Home', href: '#home', icon: <Home size={16} />, active: true },
+      { label: 'Activity', href: '#activity', icon: <Activity size={16} /> },
+      {
+        label: 'Search',
+        icon: <BarChart size={16} />,
+        onClick: () => {},
+        trailing: (
+          <kbd
+            style={{
+              fontSize: 11,
+              border: '1px solid var(--cascivo-color-border)',
+              borderRadius: 4,
+              padding: '0 4px',
+            }}
+          >
+            ⌘K
+          </kbd>
+        ),
+      },
+      {
+        label: 'Reconnect',
+        icon: <Shield size={16} />,
+        onClick: () => {},
+        tone: 'warning',
+        disabled: true,
+      },
+    ],
+  },
+}
+
 export const Accessibility: Story = {
   args: { items: consoleItems },
   parameters: {

@@ -232,6 +232,114 @@ describe('SideNav rail flyout', () => {
   })
 })
 
+describe('SideNav button-mode items', () => {
+  it('renders an onClick-only item as a focusable button', async () => {
+    const onClick = vi.fn()
+    render(<SideNav items={[{ label: 'Search', onClick }]} />)
+    const button = screen.getByRole('button', { name: 'Search' })
+    expect(button).toHaveAttribute('type', 'button')
+
+    await userEvent.tab()
+    expect(button).toHaveFocus()
+    await userEvent.keyboard('{Enter}')
+    expect(onClick).toHaveBeenCalledOnce()
+  })
+
+  it('keeps an item with href as an anchor even when onClick is set', () => {
+    render(<SideNav items={[{ label: 'Home', href: '/', onClick: vi.fn() }]} />)
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
+    expect(screen.queryByRole('button', { name: 'Home' })).toBeNull()
+  })
+})
+
+describe('SideNav item disabled / tone / trailing', () => {
+  it('disables a button-mode item and blocks its onClick', async () => {
+    const onClick = vi.fn()
+    render(<SideNav items={[{ label: 'Reconnect', onClick, disabled: true }]} />)
+    const button = screen.getByRole('button', { name: 'Reconnect' })
+    expect(button).toBeDisabled()
+    await userEvent.click(button)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('marks a disabled link item with aria-disabled and prevents navigation', async () => {
+    const onClick = vi.fn()
+    render(<SideNav items={[{ label: 'Reports', href: '/reports', onClick, disabled: true }]} />)
+    const link = screen.getByText('Reports').closest('a') as HTMLAnchorElement
+    expect(link).toHaveAttribute('aria-disabled', 'true')
+    expect(link).not.toHaveAttribute('href')
+    await userEvent.click(link)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('applies a tone via data-tone', () => {
+    render(<SideNav items={[{ label: 'Reconnect', onClick: vi.fn(), tone: 'warning' }]} />)
+    expect(screen.getByRole('button', { name: 'Reconnect' })).toHaveAttribute(
+      'data-tone',
+      'warning',
+    )
+  })
+
+  it('renders trailing content after the label', () => {
+    render(<SideNav items={[{ label: 'Search', onClick: vi.fn(), trailing: <kbd>⌘K</kbd> }]} />)
+    expect(screen.getByText('⌘K')).toBeInTheDocument()
+  })
+})
+
+describe('SideNav rich sub-items', () => {
+  it('runs onSelect for an action sub-item and shows a selected checkmark', async () => {
+    const onSelect = vi.fn()
+    render(
+      <SideNav
+        items={[
+          {
+            label: 'Project',
+            items: [
+              { type: 'label', label: 'Projects' },
+              { label: 'Apollo', onSelect, selected: true },
+              { type: 'separator' },
+              { label: 'Add project', href: '/projects/new' },
+            ],
+          },
+        ]}
+      />,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Project' }))
+
+    expect(screen.getByText('Projects')).toBeInTheDocument()
+    const apollo = screen.getByRole('button', { name: 'Apollo' })
+    expect(apollo.querySelector('svg')).not.toBeNull()
+    await userEvent.click(apollo)
+    expect(onSelect).toHaveBeenCalledOnce()
+
+    expect(screen.getByRole('link', { name: 'Add project' })).toHaveAttribute(
+      'href',
+      '/projects/new',
+    )
+  })
+})
+
+describe('SideNav custom-item escape hatch', () => {
+  it('renders custom content and passes the collapsed context', () => {
+    render(
+      <SideNav
+        collapsed
+        items={[
+          { label: 'Picker', render: ({ collapsed }) => <div>rail:{String(collapsed)}</div> },
+        ]}
+      />,
+    )
+    expect(screen.getByText('rail:true')).toBeInTheDocument()
+  })
+})
+
+describe('SideNav header slot', () => {
+  it('renders header content above the items', () => {
+    render(<SideNav items={[{ label: 'Home', href: '/' }]} header={<span>Workspace</span>} />)
+    expect(screen.getByText('Workspace')).toBeInTheDocument()
+  })
+})
+
 describe('SideNav footer + expandOnHover', () => {
   it('renders footer content above the collapse toggle', () => {
     render(<SideNav items={[]} footer={<span>v2.1.0</span>} />)

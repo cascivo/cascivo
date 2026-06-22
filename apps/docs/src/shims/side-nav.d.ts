@@ -1,10 +1,21 @@
 import type { ComponentChildren } from 'preact'
 
-export interface SideNavSubItem {
+export type SideNavTone = 'default' | 'danger' | 'warning' | 'success'
+
+export interface SideNavLinkSubItem {
   label: string
-  href: string
+  href?: string
+  icon?: ComponentChildren
   active?: boolean
+  selected?: boolean
+  onSelect?: () => void
+  disabled?: boolean
 }
+
+export type SideNavSubItem =
+  | SideNavLinkSubItem
+  | { type: 'separator' }
+  | { type: 'label'; label: string }
 
 export interface SideNavItem {
   label: string
@@ -12,6 +23,11 @@ export interface SideNavItem {
   icon?: ComponentChildren
   active?: boolean
   items?: SideNavSubItem[]
+  onClick?: (e: MouseEvent) => void
+  disabled?: boolean
+  tone?: SideNavTone
+  trailing?: ComponentChildren
+  render?: (ctx: { collapsed: boolean }) => ComponentChildren
 }
 
 export interface SideNavProps {
@@ -23,6 +39,8 @@ export interface SideNavProps {
   collapseLabel?: string
   expandLabel?: string
   showCollapseToggle?: boolean
+  header?: ComponentChildren
+  footer?: ComponentChildren
   className?: string
 }
 
