@@ -671,6 +671,11 @@
         overflow: hidden;
         filter: blur(7px);
         transition: filter 450ms ease;
+        /* Columns have content-driven heights, so their last cards never land on
+           one line. Fade the bottom edge so every column visually terminates on
+           the same horizontal line (and the hard viewport clip softens too). */
+        -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 6rem), transparent);
+        mask-image: linear-gradient(to bottom, #000 calc(100% - 6rem), transparent);
       }
 
       .bg-field::after {
@@ -754,6 +759,12 @@
 
       [data-peek] .bg-field::after {
         opacity: 0;
+      }
+
+      /* Scroll room past the content so the last cards can clear the bottom fade
+         when fully scrolled, instead of resting inside it. */
+      [data-peek] .bg-field-grid {
+        padding-block-end: 8rem;
       }
 
       [data-peek] .home-sheet,
