@@ -1,5 +1,14 @@
 # @cascivo/charts
 
+## 0.2.1
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+- Updated dependencies [fa55081]
+  - @cascivo/core@0.1.3
+  - @cascivo/i18n@0.1.3
+
 ## 0.2.0
 
 ### Minor Changes

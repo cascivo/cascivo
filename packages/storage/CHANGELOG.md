@@ -1,5 +1,13 @@
 # @cascivo/storage
 
+## 0.1.2
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+- Updated dependencies [fa55081]
+  - @cascivo/core@0.1.3
+
 ## 0.1.1
 
 ### Patch Changes

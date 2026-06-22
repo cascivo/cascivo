@@ -1,5 +1,13 @@
 # cascivo
 
+## 0.1.4
+
+### Patch Changes
+
+- fa55081: SideNav improvements
+- Updated dependencies [fa55081]
+  - @cascivo/registry@0.1.2
+
 ## 0.1.3
 
 ### Patch Changes
