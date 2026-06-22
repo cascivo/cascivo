@@ -704,40 +704,39 @@
         transition: opacity 350ms ease;
       }
 
-      /* Masonry-style columns: tiles flow top-to-bottom with varied heights.
-         One column on phones (full-width, readable); more as the screen widens.
-         In the blurred default state the field is clipped to the viewport; on
-         peek it scrolls so every card is reachable (see [data-peek] below). */
+      /* Explicit flex columns (count set in JS to match the breakpoints below).
+         Each column is its own flex stack so it can end in a stretching filler;
+         align-items:stretch makes every column as tall as the tallest, and the
+         fillers absorb the slack — so all columns end on one horizontal line
+         despite content-driven card heights. */
       .bg-field-grid {
-        columns: 1;
-        column-gap: var(--cascivo-space-4);
+        display: flex;
+        align-items: stretch;
+        gap: var(--cascivo-space-4);
         padding: var(--cascivo-space-4);
       }
 
-      /* Each tile is a full composed Card; the wrapper only carries the theme
-         and the column rhythm. Heights are content-driven — real masonry. */
+      .bg-field-col {
+        display: flex;
+        flex: 1 1 0;
+        min-inline-size: 0;
+        flex-direction: column;
+        gap: var(--cascivo-space-4);
+      }
+
+      /* Each tile is a full composed Card; the wrapper only carries the theme. */
       .bg-field-tile {
-        break-inside: avoid;
-        margin-block-end: var(--cascivo-space-4);
         color: var(--cascivo-color-text);
       }
 
-      @media (min-width: 30rem) {
-        .bg-field-grid {
-          columns: 2;
-        }
-      }
-
-      @media (min-width: 40rem) {
-        .bg-field-grid {
-          columns: 3;
-        }
-      }
-
-      @media (min-width: 64rem) {
-        .bg-field-grid {
-          columns: 4;
-        }
+      /* Grows to fill whatever height a column is short of the tallest one, so
+         every column visually terminates on the same line. */
+      .bg-field-filler {
+        flex: 1 1 0;
+        min-block-size: 4rem;
+        border-radius: var(--cascivo-radius-lg, 0.75rem);
+        border: 1px solid color-mix(in oklch, var(--cascivo-color-border) 60%, transparent);
+        background: var(--cascivo-color-surface);
       }
 
       /* Peek on: sharpen the field, drop the scrim, fade the page away, and let
@@ -755,16 +754,19 @@
         overflow-y: auto;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
+        /* The per-column fillers align the bottoms here, so drop the fade and
+           let the aligned card/filler edges read crisply. */
+        -webkit-mask-image: none;
+        mask-image: none;
       }
 
       [data-peek] .bg-field::after {
         opacity: 0;
       }
 
-      /* Scroll room past the content so the last cards can clear the bottom fade
-         when fully scrolled, instead of resting inside it. */
+      /* Breathing room below the aligned card/filler bottoms at full scroll. */
       [data-peek] .bg-field-grid {
-        padding-block-end: 8rem;
+        padding-block-end: 4rem;
       }
 
       [data-peek] .home-sheet,

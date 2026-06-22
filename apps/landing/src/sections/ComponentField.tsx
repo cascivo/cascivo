@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useSignals } from '@cascivo/core'
+import { useMediaQuery, useSignals } from '@cascivo/core'
 import { Alert } from '@cascivo/components/alert'
 import { Avatar } from '@cascivo/components/avatar'
 import { Badge } from '@cascivo/components/badge'
@@ -1281,6 +1281,23 @@ export function ComponentField() {
   // visitor is exploring, so drop inert/aria-hidden — that also makes it
   // scrollable (inert blocks scrolling), letting every card be reached.
   const revealed = peek.value
+
+  // Explicit flex columns (not CSS multi-column) so each column can carry a
+  // stretching filler at its foot — that's what lets every column reach the same
+  // bottom line despite content-driven card heights. Column count tracks the
+  // same breakpoints the old `columns` rule used. All three queries are read
+  // unconditionally to keep hook order stable.
+  const isLg = useMediaQuery('(min-width: 64rem)').value
+  const isMd = useMediaQuery('(min-width: 40rem)').value
+  const isSm = useMediaQuery('(min-width: 30rem)').value
+  const cols = isLg ? 4 : isMd ? 3 : isSm ? 2 : 1
+
+  const columns: ReactNode[][] = Array.from({ length: cols }, () => [])
+  FIELD.forEach((tile, i) => {
+    const col = columns[i % cols]
+    if (col) col.push(tile)
+  })
+
   return (
     <div
       className="bg-field"
@@ -1288,10 +1305,18 @@ export function ComponentField() {
       inert={revealed ? undefined : true}
     >
       <div className="bg-field-grid">
-        {FIELD.map((tile, i) => (
+        {columns.map((col, ci) => (
           // eslint-disable-next-line react/no-array-index-key
-          <div key={i} className="bg-field-tile">
-            {tile}
+          <div key={ci} className="bg-field-col">
+            {col.map((tile, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={i} className="bg-field-tile">
+                {tile}
+              </div>
+            ))}
+            {/* Stretches to fill the gap so all columns end on one line. Only
+                when there's more than one column to align. */}
+            {cols > 1 && <div className="bg-field-filler" aria-hidden="true" />}
           </div>
         ))}
       </div>
