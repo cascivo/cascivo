@@ -45,6 +45,22 @@ export const SHOWCASE: ShowcaseSite[] = [
     category: 'Personal site',
     tagline: 'The Modern Mainframe — a functional-brutalist digital garden.',
   },
+  {
+    slug: 'sharu',
+    url: 'https://new.sharu.io',
+    name: 'Sharu',
+    category: 'Backup & sync',
+    tagline:
+      'A decentralized, zero-knowledge, local-first backup platform — files are encrypted on your device and synced peer-to-peer across your own machines.',
+  },
+  {
+    slug: 'aime',
+    url: 'https://aime.directory',
+    name: 'AI & me',
+    category: 'Directory',
+    tagline:
+      'A curated directory of AI tools, MCP servers, jobs, and instructions — structured for both humans and LLMs.',
+  },
 ]
 
 /** Host without protocol/trailing slash, for the faux browser URL bar. */

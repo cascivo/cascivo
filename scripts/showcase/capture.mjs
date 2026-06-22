@@ -25,6 +25,8 @@ const SITES = [
   { slug: 'bpmnkit', url: 'https://bpmnkit.com' },
   { slug: 'weeklyfoo', url: 'https://weeklyfoo.directory' },
   { slug: 'u11g', url: 'https://u11g.com' },
+  { slug: 'sharu', url: 'https://new.sharu.io' },
+  { slug: 'aime', url: 'https://aime.directory' },
 ]
 
 const DESKTOP = { width: 1280, height: 800 }
