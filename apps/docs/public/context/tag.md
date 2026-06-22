@@ -83,3 +83,28 @@ Renders a trailing remove button labeled by dismissLabel
 | -------------------------- | -------- | --------------------------------------------------------------- |
 | variant and dismissibility | flexible | onDismiss is optional; variant matches semantic meaning         |
 | token names                | strict   | Variant colors must resolve to --cascivo-color-\*-subtle tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Tag component (display). Compact chip for labeling, categorizing, or filtering content
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Tag is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-bg-subtle, --cascivo-color-text-subtle, --cascivo-color-info, --cascivo-color-info-subtle, --cascivo-color-success, --cascivo-color-success-subtle, --cascivo-color-warning, --cascivo-color-warning-subtle, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-radius-badge, --cascivo-focus-ring
+
+Accessibility: role "none", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+
+Do not change (strict): token names — Variant colors must resolve to --cascivo-color-*-subtle tokens
+Flexible: variant and dismissibility.
+
+Do not invent props, tokens, or global viewport media queries.
+```

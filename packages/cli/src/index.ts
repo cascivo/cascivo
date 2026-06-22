@@ -28,6 +28,7 @@ Commands:
   search <query>           Search components across registries
   view <spec>              View a component before installing
   theme add <name>         Install a theme (light | dark | warm)
+  eject <component>        Eject specific tokens into a scoped local override file
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
   audit --ai <paths...>    Audit AI-generated code against the cascivo contract
@@ -66,6 +67,32 @@ export async function run(args: string[]): Promise<void> {
     case 'theme':
       await theme(rest)
       break
+    case 'eject': {
+      const { eject } = await import('./commands/eject.js')
+      const flag = (key: string): string | undefined => {
+        const eq = rest.find((r) => r.startsWith(`--${key}=`))
+        if (eq) return eq.slice(key.length + 3)
+        const idx = rest.indexOf(`--${key}`)
+        const next = idx !== -1 ? rest[idx + 1] : undefined
+        // Ignore a following token that is itself a flag (e.g. `--tokens --dry-run`).
+        return next && !next.startsWith('--') ? next : undefined
+      }
+      const tokensArg = flag('tokens')
+      await eject(rest, await loadConfig(), {
+        ...(tokensArg
+          ? {
+              tokens: tokensArg
+                .split(',')
+                .map((t) => t.trim())
+                .filter(Boolean),
+            }
+          : {}),
+        ...(flag('scope') ? { scope: flag('scope')! } : {}),
+        ...(flag('out') ? { out: flag('out')! } : {}),
+        dryRun: rest.includes('--dry-run'),
+      })
+      break
+    }
     case 'generate':
       await generate(rest, await loadConfig())
       break

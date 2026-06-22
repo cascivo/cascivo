@@ -73,3 +73,28 @@ Compose multiple keys to show a shortcut
 | ----------- | -------- | ------------------------------------------------------ |
 | size        | flexible | sm fits inline help; md matches body text              |
 | token names | strict   | Surface and border must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Kbd component (display). Displays a keyboard key or shortcut
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Kbd is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-text-subtle, --cascivo-color-surface-raised, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-sm
+
+Accessibility: role "kbd", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Surface and border must resolve to --cascivo-* tokens
+Flexible: size.
+
+Do not invent props, tokens, or global viewport media queries.
+```

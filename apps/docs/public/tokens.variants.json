@@ -1,0 +1,2488 @@
+{
+  "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
+  "generatedAt": "2026-06-22",
+  "themes": [
+    "arcade",
+    "brutalist",
+    "corporate",
+    "cyberpunk",
+    "dark",
+    "flat",
+    "light",
+    "midnight",
+    "minimal",
+    "pastel",
+    "terminal",
+    "warm"
+  ],
+  "families": {
+    "accent": {
+      "base": "--cascivo-color-accent",
+      "active": "--cascivo-color-accent-active",
+      "content": "--cascivo-color-accent-content",
+      "foreground": "--cascivo-color-accent-foreground",
+      "hover": "--cascivo-color-accent-hover",
+      "muted": "--cascivo-color-accent-muted",
+      "subtle": "--cascivo-color-accent-subtle"
+    },
+    "bg": {
+      "base": "--cascivo-color-bg",
+      "subtle": "--cascivo-color-bg-subtle"
+    },
+    "destructive": {
+      "base": "--cascivo-color-destructive",
+      "content": "--cascivo-color-destructive-content",
+      "foreground": "--cascivo-color-destructive-foreground",
+      "hover": "--cascivo-color-destructive-hover",
+      "subtle": "--cascivo-color-destructive-subtle"
+    },
+    "error": {
+      "base": "--cascivo-color-error",
+      "content": "--cascivo-color-error-content"
+    },
+    "foreground": {
+      "base": "--cascivo-color-foreground",
+      "muted": "--cascivo-color-foreground-muted"
+    },
+    "info": {
+      "base": "--cascivo-color-info",
+      "content": "--cascivo-color-info-content",
+      "subtle": "--cascivo-color-info-subtle"
+    },
+    "primary": {
+      "base": "--cascivo-color-primary",
+      "active": "--cascivo-color-primary-active",
+      "content": "--cascivo-color-primary-content",
+      "fg": "--cascivo-color-primary-fg",
+      "hover": "--cascivo-color-primary-hover"
+    },
+    "secondary": {
+      "base": "--cascivo-color-secondary",
+      "content": "--cascivo-color-secondary-content",
+      "hover": "--cascivo-color-secondary-hover",
+      "subtle": "--cascivo-color-secondary-subtle"
+    },
+    "success": {
+      "base": "--cascivo-color-success",
+      "content": "--cascivo-color-success-content",
+      "foreground": "--cascivo-color-success-foreground",
+      "subtle": "--cascivo-color-success-subtle"
+    },
+    "text": {
+      "base": "--cascivo-color-text",
+      "muted": "--cascivo-color-text-muted",
+      "subtle": "--cascivo-color-text-subtle"
+    },
+    "warning": {
+      "base": "--cascivo-color-warning",
+      "content": "--cascivo-color-warning-content",
+      "foreground": "--cascivo-color-warning-foreground",
+      "subtle": "--cascivo-color-warning-subtle"
+    }
+  },
+  "tokens": [
+    {
+      "name": "--cascivo-border-default",
+      "layer": "semantic",
+      "group": "border",
+      "byTheme": {
+        "arcade": "oklch(0.15 0.02 265)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.86 0.007 250)",
+        "cyberpunk": "oklch(0.6 0.2 320 / 60%)",
+        "dark": "oklch(1 0 0 / 0.1)",
+        "flat": "oklch(0.4 0 0)",
+        "light": "oklch(0.872 0.008 264)",
+        "midnight": "oklch(1 0 0 / 0.1)",
+        "minimal": "oklch(0.88 0.008 80)",
+        "pastel": "oklch(0.88 0.024 328)",
+        "terminal": "oklch(0.4 0.08 150 / 60%)",
+        "warm": "oklch(0.86 0.025 75)"
+      }
+    },
+    {
+      "name": "--cascivo-border-strong",
+      "layer": "semantic",
+      "group": "border",
+      "byTheme": {
+        "arcade": "oklch(0.08 0.02 265)",
+        "brutalist": "oklch(0.05 0 0)",
+        "corporate": "oklch(0.74 0.012 250)",
+        "cyberpunk": "oklch(0.72 0.22 330 / 85%)",
+        "dark": "oklch(1 0 0 / 0.2)",
+        "flat": "oklch(0.1 0 0)",
+        "light": "oklch(0.707 0.015 264)",
+        "midnight": "oklch(1 0 0 / 0.18)",
+        "minimal": "oklch(0.8 0.012 80)",
+        "pastel": "oklch(0.8 0.03 325)",
+        "terminal": "oklch(0.55 0.1 150 / 80%)",
+        "warm": "oklch(0.72 0.04 70)"
+      }
+    },
+    {
+      "name": "--cascivo-border-subtle",
+      "layer": "semantic",
+      "group": "border",
+      "byTheme": {
+        "arcade": "oklch(0.32 0.02 265)",
+        "brutalist": "oklch(0.3 0 0)",
+        "corporate": "oklch(0.91 0.005 250)",
+        "cyberpunk": "oklch(0.45 0.12 300 / 50%)",
+        "dark": "oklch(1 0 0 / 0.06)",
+        "flat": "oklch(0.7 0 0)",
+        "light": "oklch(0.928 0.006 264)",
+        "midnight": "oklch(1 0 0 / 0.06)",
+        "minimal": "oklch(0.92 0.005 80)",
+        "pastel": "oklch(0.93 0.018 330)",
+        "terminal": "oklch(0.35 0.06 150 / 50%)",
+        "warm": "oklch(0.92 0.018 80)"
+      }
+    },
+    {
+      "name": "--cascivo-brand-accent",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch(0.72 0.13 195)",
+        "brutalist": "oklch(0.72 0.13 195)",
+        "corporate": "oklch(0.72 0.13 195)",
+        "cyberpunk": "oklch(0.72 0.13 195)",
+        "dark": "oklch(0.72 0.13 195)",
+        "flat": "oklch(0.72 0.13 195)",
+        "light": "oklch(0.72 0.13 195)",
+        "midnight": "oklch(0.72 0.13 195)",
+        "minimal": "oklch(0.72 0.13 195)",
+        "pastel": "oklch(0.72 0.13 195)",
+        "terminal": "oklch(0.72 0.13 195)",
+        "warm": "oklch(0.72 0.13 195)"
+      }
+    },
+    {
+      "name": "--cascivo-brand-gradient-end",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch(0.72 0.13 195)",
+        "brutalist": "oklch(0.72 0.13 195)",
+        "corporate": "oklch(0.72 0.13 195)",
+        "cyberpunk": "oklch(0.72 0.13 195)",
+        "dark": "oklch(0.72 0.13 195)",
+        "flat": "oklch(0.72 0.13 195)",
+        "light": "oklch(0.72 0.13 195)",
+        "midnight": "oklch(0.72 0.13 195)",
+        "minimal": "oklch(0.72 0.13 195)",
+        "pastel": "oklch(0.72 0.13 195)",
+        "terminal": "oklch(0.72 0.13 195)",
+        "warm": "oklch(0.72 0.13 195)"
+      }
+    },
+    {
+      "name": "--cascivo-brand-gradient-start",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.15 240)",
+        "brutalist": "oklch(0.55 0.15 240)",
+        "corporate": "oklch(0.55 0.15 240)",
+        "cyberpunk": "oklch(0.55 0.15 240)",
+        "dark": "oklch(0.55 0.15 240)",
+        "flat": "oklch(0.55 0.15 240)",
+        "light": "oklch(0.55 0.15 240)",
+        "midnight": "oklch(0.55 0.15 240)",
+        "minimal": "oklch(0.55 0.15 240)",
+        "pastel": "oklch(0.55 0.15 240)",
+        "terminal": "oklch(0.55 0.15 240)",
+        "warm": "oklch(0.55 0.15 240)"
+      }
+    },
+    {
+      "name": "--cascivo-brand-ink",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch( 0.22 0.03 250 )",
+        "brutalist": "oklch( 0.22 0.03 250 )",
+        "corporate": "oklch( 0.22 0.03 250 )",
+        "cyberpunk": "oklch( 0.22 0.03 250 )",
+        "dark": "oklch( 0.22 0.03 250 )",
+        "flat": "oklch( 0.22 0.03 250 )",
+        "light": "oklch( 0.22 0.03 250 )",
+        "midnight": "oklch( 0.22 0.03 250 )",
+        "minimal": "oklch( 0.22 0.03 250 )",
+        "pastel": "oklch( 0.22 0.03 250 )",
+        "terminal": "oklch( 0.22 0.03 250 )",
+        "warm": "oklch( 0.22 0.03 250 )"
+      }
+    },
+    {
+      "name": "--cascivo-brand-paper",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch(0.99 0.005 250)",
+        "brutalist": "oklch(0.99 0.005 250)",
+        "corporate": "oklch(0.99 0.005 250)",
+        "cyberpunk": "oklch(0.99 0.005 250)",
+        "dark": "oklch(0.99 0.005 250)",
+        "flat": "oklch(0.99 0.005 250)",
+        "light": "oklch(0.99 0.005 250)",
+        "midnight": "oklch(0.99 0.005 250)",
+        "minimal": "oklch(0.99 0.005 250)",
+        "pastel": "oklch(0.99 0.005 250)",
+        "terminal": "oklch(0.99 0.005 250)",
+        "warm": "oklch(0.99 0.005 250)"
+      }
+    },
+    {
+      "name": "--cascivo-brand-primary",
+      "layer": "semantic",
+      "group": "brand",
+      "byTheme": {
+        "arcade": "oklch( 0.55 0.15 240 )",
+        "brutalist": "oklch( 0.55 0.15 240 )",
+        "corporate": "oklch( 0.55 0.15 240 )",
+        "cyberpunk": "oklch( 0.55 0.15 240 )",
+        "dark": "oklch( 0.55 0.15 240 )",
+        "flat": "oklch( 0.55 0.15 240 )",
+        "light": "oklch( 0.55 0.15 240 )",
+        "midnight": "oklch( 0.55 0.15 240 )",
+        "minimal": "oklch( 0.55 0.15 240 )",
+        "pastel": "oklch( 0.55 0.15 240 )",
+        "terminal": "oklch( 0.55 0.15 240 )",
+        "warm": "oklch( 0.55 0.15 240 )"
+      }
+    },
+    {
+      "name": "--cascivo-chart-axis",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "oklch(0.3 0.01 265)",
+        "brutalist": "oklch(0.3 0 0)",
+        "corporate": "oklch(0.65 0.012 255)",
+        "cyberpunk": "oklch(0.65 0.06 300)",
+        "dark": "oklch(0.707 0.015 264)",
+        "flat": "oklch(0.55 0 0)",
+        "light": "oklch(0.707 0.015 264)",
+        "midnight": "oklch(0.68 0.02 285)",
+        "minimal": "oklch(0.65 0.012 80)",
+        "pastel": "oklch(0.7 0.02 325)",
+        "terminal": "oklch(0.65 0.05 148)",
+        "warm": "oklch(0.64 0.025 65)"
+      }
+    },
+    {
+      "name": "--cascivo-chart-grid",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "oklch(0.72 0.005 250)",
+        "brutalist": "oklch(0.7 0 0)",
+        "corporate": "oklch(0.91 0.005 250)",
+        "cyberpunk": "oklch(0.4 0.1 300 / 40%)",
+        "dark": "oklch(1 0 0 / 0.06)",
+        "flat": "oklch(0.85 0 0)",
+        "light": "oklch(0.928 0.006 264)",
+        "midnight": "oklch(1 0 0 / 0.06)",
+        "minimal": "oklch(0.92 0.005 80)",
+        "pastel": "oklch(0.92 0.02 330)",
+        "terminal": "oklch(0.4 0.08 150 / 40%)",
+        "warm": "oklch(0.92 0.018 80)"
+      }
+    },
+    {
+      "name": "--cascivo-color-accent",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27)",
+        "brutalist": "oklch(0.88 0.19 105)",
+        "corporate": "oklch(0.5 0.16 255)",
+        "cyberpunk": "oklch(0.7 0.25 330)",
+        "dark": "oklch(0.65 0.2 250)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light": "oklch(0.52 0.2 250)",
+        "midnight": "oklch(0.7 0.22 290)",
+        "minimal": "oklch(0.25 0.01 80)",
+        "pastel": "oklch(0.68 0.18 350)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.768 0.145 75)"
+      },
+      "role": "accent",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-accent-active",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.44 0.23 27)",
+        "brutalist": "oklch(0.76 0.2 98)",
+        "corporate": "oklch(0.38 0.16 255)",
+        "cyberpunk": "oklch(0.82 0.2 330)",
+        "dark": "oklch(0.808 0.14 250)",
+        "flat": "oklch(0.4 0.21 145)",
+        "light": "oklch(0.373 0.155 250)",
+        "midnight": "oklch(0.82 0.17 290)",
+        "minimal": "oklch(0.32 0.01 80)",
+        "pastel": "oklch(0.56 0.2 350)",
+        "terminal": "oklch(0.92 0.15 145)",
+        "warm": "oklch(0.64 0.155 65)"
+      },
+      "role": "accent",
+      "slot": "active"
+    },
+    {
+      "name": "--cascivo-color-accent-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "accent",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-accent-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "accent",
+      "slot": "foreground"
+    },
+    {
+      "name": "--cascivo-color-accent-hover",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.49 0.23 27)",
+        "brutalist": "oklch(0.82 0.2 100)",
+        "corporate": "oklch(0.44 0.17 255)",
+        "cyberpunk": "oklch(0.76 0.23 330)",
+        "dark": "oklch(0.707 0.18 250)",
+        "flat": "oklch(0.45 0.21 145)",
+        "light": "oklch(0.45 0.2 250)",
+        "midnight": "oklch(0.76 0.2 290)",
+        "minimal": "oklch(0.2 0.01 80)",
+        "pastel": "oklch(0.62 0.19 350)",
+        "terminal": "oklch(0.88 0.18 145)",
+        "warm": "oklch(0.7 0.155 70)"
+      },
+      "role": "accent",
+      "slot": "hover"
+    },
+    {
+      "name": "--cascivo-color-accent-muted",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27 / 0.2)",
+        "brutalist": "oklch(0.93 0.12 105)",
+        "corporate": "oklch(0.9 0.05 255)",
+        "cyberpunk": "oklch(0.7 0.25 330 / 0.22)",
+        "dark": "oklch(0.623 0.214 250 / 0.2)",
+        "flat": "oklch(0.9 0.07 145)",
+        "light": "oklch(0.932 0.055 250)",
+        "midnight": "oklch(0.7 0.22 290 / 0.22)",
+        "minimal": "oklch(0.9 0.01 80)",
+        "pastel": "oklch(0.93 0.07 350)",
+        "terminal": "oklch(0.82 0.2 145 / 0.2)",
+        "warm": "oklch(0.768 0.145 75 / 0.2)"
+      },
+      "role": "accent",
+      "slot": "muted"
+    },
+    {
+      "name": "--cascivo-color-accent-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27 / 0.12)",
+        "brutalist": "oklch(0.96 0.07 105)",
+        "corporate": "oklch(0.95 0.03 255)",
+        "cyberpunk": "oklch(0.7 0.25 330 / 0.12)",
+        "dark": "oklch(0.623 0.214 250 / 0.1)",
+        "flat": "oklch(0.95 0.04 145)",
+        "light": "oklch(0.97 0.025 250)",
+        "midnight": "oklch(0.7 0.22 290 / 0.12)",
+        "minimal": "oklch(0.94 0.008 80)",
+        "pastel": "oklch(0.96 0.04 350)",
+        "terminal": "oklch(0.82 0.2 145 / 0.1)",
+        "warm": "oklch(0.768 0.145 75 / 0.1)"
+      },
+      "role": "accent",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-active-bg",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27 / 0.12)",
+        "brutalist": "oklch(0.1 0 0 / 8%)",
+        "corporate": "oklch(0.2 0.01 250 / 6%)",
+        "cyberpunk": "oklch(0.7 0.25 330 / 0.12)",
+        "dark": "oklch(1 0 0 / 8%)",
+        "flat": "oklch(0.1 0 0 / 8%)",
+        "light": "oklch(0.145 0.005 264 / 6%)",
+        "midnight": "oklch(1 0 0 / 8%)",
+        "minimal": "oklch(0.25 0.01 80 / 7%)",
+        "pastel": "oklch(0.68 0.18 350 / 8%)",
+        "terminal": "oklch(0.82 0.2 145 / 0.1)",
+        "warm": "oklch(0.18 0.015 50 / 7%)"
+      },
+      "role": "active-bg",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-background",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.96 0.008 250)",
+        "brutalist": "oklch(0.97 0.02 95)",
+        "corporate": "oklch(0.99 0.003 250)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.16 0.02 280)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(0.99 0.01 330)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.995 0.006 80)"
+      },
+      "role": "background",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-bg",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.96 0.008 250)",
+        "brutalist": "oklch(0.97 0.02 95)",
+        "corporate": "oklch(0.99 0.003 250)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.16 0.02 280)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(0.99 0.01 330)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.995 0.006 80)"
+      },
+      "role": "bg",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-bg-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(1 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(0.97 0.004 250)",
+        "cyberpunk": "oklch(0.2 0.035 285)",
+        "dark": "oklch(0.185 0.007 250)",
+        "flat": "oklch(0.97 0 0)",
+        "light": "oklch(0.985 0.002 264)",
+        "midnight": "oklch(0.2 0.025 280)",
+        "minimal": "oklch(0.965 0.006 80)",
+        "pastel": "oklch(0.975 0.013 330)",
+        "terminal": "oklch(0.21 0.012 150)",
+        "warm": "oklch(0.975 0.01 80)"
+      },
+      "role": "bg",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-border",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.15 0.02 265)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.88 0.006 250)",
+        "cyberpunk": "oklch(0.6 0.2 320 / 60%)",
+        "dark": "oklch(1 0 0 / 10%)",
+        "flat": "oklch(0.7 0 0)",
+        "light": "oklch(0.928 0.006 264)",
+        "midnight": "oklch(1 0 0 / 8%)",
+        "minimal": "oklch(0.92 0.005 80)",
+        "pastel": "oklch(0.92 0.02 330)",
+        "terminal": "oklch(0.4 0.08 150 / 60%)",
+        "warm": "oklch(0.92 0.018 80)"
+      },
+      "role": "border",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-border-strong",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.08 0.02 265)",
+        "brutalist": "oklch(0.05 0 0)",
+        "corporate": "oklch(0.78 0.01 250)",
+        "cyberpunk": "oklch(0.72 0.22 330 / 85%)",
+        "dark": "oklch(1 0 0 / 16%)",
+        "flat": "oklch(0.4 0 0)",
+        "light": "oklch(0.872 0.008 264)",
+        "midnight": "oklch(1 0 0 / 14%)",
+        "minimal": "oklch(0.8 0.012 80)",
+        "pastel": "oklch(0.86 0.028 325)",
+        "terminal": "oklch(0.55 0.1 150 / 80%)",
+        "warm": "oklch(0.86 0.025 75)"
+      },
+      "role": "border-strong",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-destructive",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.52 0.24 25)",
+        "brutalist": "oklch(0.52 0.22 22)",
+        "corporate": "oklch(0.54 0.19 22)",
+        "cyberpunk": "oklch(0.65 0.25 18)",
+        "dark": "oklch(0.72 0.16 22)",
+        "flat": "oklch(0.52 0.2 22)",
+        "light": "oklch(0.54 0.188 22)",
+        "midnight": "oklch(0.72 0.16 22)",
+        "minimal": "oklch(0.55 0.14 22)",
+        "pastel": "oklch(0.58 0.18 22)",
+        "terminal": "oklch(0.72 0.16 22)",
+        "warm": "oklch(0.54 0.188 22)"
+      },
+      "role": "destructive",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-destructive-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(1 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(1 0 0)"
+      },
+      "role": "destructive",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-destructive-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.42 0.22 25)",
+        "brutalist": "oklch(0.4 0.2 22)",
+        "corporate": "oklch(0.448 0.17 22)",
+        "cyberpunk": "oklch(0.78 0.18 18)",
+        "dark": "oklch(0.85 0.12 22)",
+        "flat": "oklch(0.42 0.19 22)",
+        "light": "oklch(0.448 0.17 22)",
+        "midnight": "oklch(0.85 0.12 22)",
+        "minimal": "oklch(0.448 0.17 22)",
+        "pastel": "oklch(0.448 0.17 22)",
+        "terminal": "oklch(0.82 0.15 22)",
+        "warm": "oklch(0.448 0.17 22)"
+      },
+      "role": "destructive",
+      "slot": "foreground"
+    },
+    {
+      "name": "--cascivo-color-destructive-hover",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.46 0.24 25)",
+        "brutalist": "oklch(0.46 0.23 22)",
+        "corporate": "oklch(0.48 0.2 22)",
+        "cyberpunk": "oklch(0.72 0.22 18)",
+        "dark": "oklch(0.628 0.188 22)",
+        "flat": "oklch(0.46 0.21 22)",
+        "light": "oklch(0.448 0.17 22)",
+        "midnight": "oklch(0.628 0.188 22)",
+        "minimal": "oklch(0.49 0.15 22)",
+        "pastel": "oklch(0.52 0.19 22)",
+        "terminal": "oklch(0.78 0.14 22)",
+        "warm": "oklch(0.448 0.17 22)"
+      },
+      "role": "destructive",
+      "slot": "hover"
+    },
+    {
+      "name": "--cascivo-color-destructive-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.95 0.05 25)",
+        "brutalist": "oklch(0.95 0.05 22)",
+        "corporate": "oklch(0.97 0.02 22)",
+        "cyberpunk": "oklch(0.65 0.25 18 / 0.12)",
+        "dark": "oklch(0.628 0.188 22 / 0.1)",
+        "flat": "oklch(0.95 0.04 22)",
+        "light": "oklch(0.971 0.013 22)",
+        "midnight": "oklch(0.628 0.188 22 / 0.1)",
+        "minimal": "oklch(0.96 0.025 22)",
+        "pastel": "oklch(0.96 0.04 22)",
+        "terminal": "oklch(0.72 0.16 22 / 0.1)",
+        "warm": "oklch(0.971 0.013 22)"
+      },
+      "role": "destructive",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-error",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.52 0.24 25)",
+        "brutalist": "oklch(0.52 0.22 22)",
+        "corporate": "oklch(0.54 0.19 22)",
+        "cyberpunk": "oklch(0.65 0.25 18)",
+        "dark": "oklch(0.72 0.16 22)",
+        "flat": "oklch(0.52 0.2 22)",
+        "light": "oklch(0.628 0.188 22)",
+        "midnight": "oklch(0.72 0.16 22)",
+        "minimal": "oklch(0.55 0.14 22)",
+        "pastel": "oklch(0.58 0.18 22)",
+        "terminal": "oklch(0.72 0.16 22)",
+        "warm": "oklch(0.628 0.188 22)"
+      },
+      "role": "error",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-error-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.145 0 0)",
+        "minimal": "oklch(1 0 0)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(1 0 0)"
+      },
+      "role": "error",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-focus-ring",
+      "layer": "component",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.5 0.16 255)",
+        "cyberpunk": "oklch(0.78 0.16 200)",
+        "dark": "oklch(0.65 0.2 250)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light": "oklch(0.623 0.214 250)",
+        "midnight": "oklch(0.7 0.22 290)",
+        "minimal": "oklch(0.25 0.01 80)",
+        "pastel": "oklch(0.68 0.18 350)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.768 0.145 75)"
+      },
+      "role": "focus-ring",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.16 0.02 265)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.2 0.01 250)",
+        "cyberpunk": "oklch(0.95 0.03 320)",
+        "dark": "oklch(0.985 0.002 264)",
+        "flat": "oklch(0.1 0 0)",
+        "light": "oklch(0.145 0.005 264)",
+        "midnight": "oklch(0.96 0.01 280)",
+        "minimal": "oklch(0.2 0.01 80)",
+        "pastel": "oklch(0.32 0.03 320)",
+        "terminal": "oklch(0.9 0.06 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "foreground",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-foreground-muted",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.4 0.02 265)",
+        "brutalist": "oklch(0.35 0 0)",
+        "corporate": "oklch(0.5 0.015 255)",
+        "cyberpunk": "oklch(0.7 0.05 300)",
+        "dark": "oklch(0.707 0.015 264)",
+        "flat": "oklch(0.4 0 0)",
+        "light": "oklch(0.554 0.018 264)",
+        "midnight": "oklch(0.68 0.02 285)",
+        "minimal": "oklch(0.55 0.015 80)",
+        "pastel": "oklch(0.58 0.025 325)",
+        "terminal": "oklch(0.65 0.05 148)",
+        "warm": "oklch(0.52 0.03 60)"
+      },
+      "role": "foreground",
+      "slot": "muted"
+    },
+    {
+      "name": "--cascivo-color-info",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250)",
+        "brutalist": "oklch(0.48 0.2 250)",
+        "corporate": "oklch(0.5 0.16 255)",
+        "cyberpunk": "oklch(0.78 0.16 200)",
+        "dark": "oklch(0.65 0.2 250)",
+        "flat": "oklch(0.5 0.18 250)",
+        "light": "oklch(0.546 0.224 250)",
+        "midnight": "oklch(0.7 0.22 290)",
+        "minimal": "oklch(0.55 0.1 250)",
+        "pastel": "oklch(0.68 0.18 350)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.546 0.224 250)"
+      },
+      "role": "info",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-info-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.16 0.02 280)",
+        "minimal": "oklch(1 0 0)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(1 0 0)"
+      },
+      "role": "info",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-info-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.95 0.05 250)",
+        "brutalist": "oklch(0.95 0.05 250)",
+        "corporate": "oklch(0.95 0.03 255)",
+        "cyberpunk": "oklch(0.78 0.16 200 / 0.12)",
+        "dark": "oklch(0.65 0.2 250 / 0.1)",
+        "flat": "oklch(0.95 0.04 250)",
+        "light": "oklch(0.97 0.025 250)",
+        "midnight": "oklch(0.7 0.22 290 / 0.1)",
+        "minimal": "oklch(0.96 0.025 250)",
+        "pastel": "oklch(0.96 0.04 350)",
+        "terminal": "oklch(0.82 0.2 145 / 0.1)",
+        "warm": "oklch(0.97 0.025 250)"
+      },
+      "role": "info",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-primary",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27)",
+        "brutalist": "oklch(0.88 0.19 105)",
+        "corporate": "oklch(0.2 0.01 250)",
+        "cyberpunk": "oklch(0.7 0.25 330)",
+        "dark": "oklch(0.922 0 0)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light": "oklch(0.205 0 0)",
+        "midnight": "oklch(0.88 0 0)",
+        "minimal": "oklch(0.25 0.01 80)",
+        "pastel": "oklch(0.68 0.18 350)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.768 0.145 75)"
+      },
+      "role": "primary",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-primary-active",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.44 0.23 27)",
+        "brutalist": "oklch(0.76 0.2 98)",
+        "corporate": "oklch(0.35 0.012 250)",
+        "cyberpunk": "oklch(0.82 0.2 330)",
+        "dark": "oklch(0.8 0 0)",
+        "flat": "oklch(0.4 0.21 145)",
+        "light": "oklch(0.32 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.38 0.01 80)",
+        "pastel": "oklch(0.56 0.2 350)",
+        "terminal": "oklch(0.92 0.15 145)",
+        "warm": "oklch(0.64 0.155 65)"
+      },
+      "role": "primary",
+      "slot": "active"
+    },
+    {
+      "name": "--cascivo-color-primary-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.99 0.003 250)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.205 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(0.985 0 0)",
+        "midnight": "oklch(0.16 0.02 280)",
+        "minimal": "oklch(0.985 0 0)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "primary",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-primary-fg",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.99 0.003 250)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.205 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(0.985 0 0)",
+        "midnight": "oklch(0.16 0.02 280)",
+        "minimal": "oklch(0.985 0 0)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "primary",
+      "slot": "fg"
+    },
+    {
+      "name": "--cascivo-color-primary-hover",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.49 0.23 27)",
+        "brutalist": "oklch(0.82 0.2 100)",
+        "corporate": "oklch(0.28 0.01 250)",
+        "cyberpunk": "oklch(0.76 0.23 330)",
+        "dark": "oklch(0.86 0 0)",
+        "flat": "oklch(0.45 0.21 145)",
+        "light": "oklch(0.27 0 0)",
+        "midnight": "oklch(0.96 0 0)",
+        "minimal": "oklch(0.32 0.01 80)",
+        "pastel": "oklch(0.62 0.19 350)",
+        "terminal": "oklch(0.88 0.18 145)",
+        "warm": "oklch(0.7 0.155 70)"
+      },
+      "role": "primary",
+      "slot": "hover"
+    },
+    {
+      "name": "--cascivo-color-secondary",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250)",
+        "brutalist": "oklch(0.88 0.19 105)",
+        "corporate": "oklch(0.92 0.004 250)",
+        "cyberpunk": "oklch(0.78 0.16 200)",
+        "dark": "oklch(0.27 0.008 264)",
+        "flat": "oklch(0.92 0 0)",
+        "light": "oklch(0.92 0.004 264)",
+        "midnight": "oklch(0.28 0.025 280)",
+        "minimal": "oklch(0.92 0.004 80)",
+        "pastel": "oklch(0.92 0.018 330)",
+        "terminal": "oklch(0.28 0.05 148)",
+        "warm": "oklch(0.91 0.012 80)"
+      },
+      "role": "secondary",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-secondary-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.27 0.008 250)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.9 0.004 264)",
+        "flat": "oklch(0.25 0 0)",
+        "light": "oklch(0.27 0.01 264)",
+        "midnight": "oklch(0.9 0.008 280)",
+        "minimal": "oklch(0.28 0.008 80)",
+        "pastel": "oklch(0.32 0.03 320)",
+        "terminal": "oklch(0.82 0.1 145)",
+        "warm": "oklch(0.28 0.015 70)"
+      },
+      "role": "secondary",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-secondary-hover",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.44 0.21 250)",
+        "brutalist": "oklch(0.82 0.2 100)",
+        "corporate": "oklch(0.86 0.006 250)",
+        "cyberpunk": "oklch(0.84 0.14 200)",
+        "dark": "oklch(0.32 0.01 264)",
+        "flat": "oklch(0.86 0 0)",
+        "light": "oklch(0.86 0.006 264)",
+        "midnight": "oklch(0.34 0.03 280)",
+        "minimal": "oklch(0.86 0.006 80)",
+        "pastel": "oklch(0.86 0.024 328)",
+        "terminal": "oklch(0.34 0.06 148)",
+        "warm": "oklch(0.85 0.018 75)"
+      },
+      "role": "secondary",
+      "slot": "hover"
+    },
+    {
+      "name": "--cascivo-color-secondary-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250 / 0.12)",
+        "brutalist": "oklch(0.96 0.07 105)",
+        "corporate": "oklch(0.965 0.003 250)",
+        "cyberpunk": "oklch(0.78 0.16 200 / 0.15)",
+        "dark": "oklch(0.22 0.005 264)",
+        "flat": "oklch(0.96 0 0)",
+        "light": "oklch(0.967 0.002 264)",
+        "midnight": "oklch(0.22 0.018 280)",
+        "minimal": "oklch(0.962 0.003 80)",
+        "pastel": "oklch(0.965 0.01 330)",
+        "terminal": "oklch(0.22 0.03 148)",
+        "warm": "oklch(0.965 0.007 80)"
+      },
+      "role": "secondary",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-success",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.54 0.18 145)",
+        "brutalist": "oklch(0.52 0.18 145)",
+        "corporate": "oklch(0.52 0.15 145)",
+        "cyberpunk": "oklch(0.82 0.2 150)",
+        "dark": "oklch(0.72 0.13 145)",
+        "flat": "oklch(0.52 0.18 145)",
+        "light": "oklch(0.648 0.15 145)",
+        "midnight": "oklch(0.72 0.13 145)",
+        "minimal": "oklch(0.55 0.13 145)",
+        "pastel": "oklch(0.62 0.14 165)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.648 0.15 145)"
+      },
+      "role": "success",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-success-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.145 0 0)",
+        "minimal": "oklch(1 0 0)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(1 0 0)"
+      },
+      "role": "success",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-success-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.54 0.18 145)",
+        "brutalist": "oklch(0.52 0.18 145)",
+        "corporate": "oklch(0.45 0.14 145)",
+        "cyberpunk": "oklch(0.82 0.2 150)",
+        "dark": "oklch(0.72 0.13 145)",
+        "flat": "oklch(0.52 0.18 145)",
+        "light": "oklch(0.45 0.14 145)",
+        "midnight": "oklch(0.72 0.13 145)",
+        "minimal": "oklch(0.45 0.13 145)",
+        "pastel": "oklch(0.46 0.13 165)",
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.45 0.14 145)"
+      },
+      "role": "success",
+      "slot": "foreground"
+    },
+    {
+      "name": "--cascivo-color-success-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.95 0.05 145)",
+        "brutalist": "oklch(0.95 0.05 145)",
+        "corporate": "oklch(0.96 0.02 145)",
+        "cyberpunk": "oklch(0.82 0.2 150 / 0.12)",
+        "dark": "oklch(0.72 0.13 145 / 0.1)",
+        "flat": "oklch(0.95 0.04 145)",
+        "light": "oklch(0.982 0.018 145)",
+        "midnight": "oklch(0.72 0.13 145 / 0.1)",
+        "minimal": "oklch(0.96 0.03 145)",
+        "pastel": "oklch(0.95 0.04 165)",
+        "terminal": "oklch(0.82 0.2 145 / 0.1)",
+        "warm": "oklch(0.982 0.018 145)"
+      },
+      "role": "success",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-surface",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(1 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(0.97 0.004 250)",
+        "cyberpunk": "oklch(0.2 0.035 285)",
+        "dark": "oklch(0.185 0.007 250)",
+        "flat": "oklch(0.97 0 0)",
+        "light": "oklch(0.985 0.002 264)",
+        "midnight": "oklch(0.2 0.025 280)",
+        "minimal": "oklch(0.965 0.006 80)",
+        "pastel": "oklch(0.975 0.013 330)",
+        "terminal": "oklch(0.21 0.012 150)",
+        "warm": "oklch(0.975 0.01 80)"
+      },
+      "role": "surface",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-surface-2",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.93 0.012 250)",
+        "brutalist": "oklch(0.96 0.015 95)",
+        "corporate": "oklch(0.95 0.005 250)",
+        "cyberpunk": "oklch(0.25 0.04 285)",
+        "dark": "oklch(0.22 0.008 250)",
+        "flat": "oklch(0.94 0 0)",
+        "light": "oklch(0.967 0.003 264)",
+        "midnight": "oklch(0.24 0.028 280)",
+        "minimal": "oklch(0.95 0.007 80)",
+        "pastel": "oklch(0.958 0.016 330)",
+        "terminal": "oklch(0.26 0.014 150)",
+        "warm": "oklch(0.95 0.014 80)"
+      },
+      "role": "surface-2",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-surface-overlay",
+      "layer": "component",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(1 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(0.99 0.003 250)",
+        "cyberpunk": "oklch(0.2 0.035 285)",
+        "dark": "oklch(0.185 0.007 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(0.2 0.025 280)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(0.99 0.01 330)",
+        "terminal": "oklch(0.21 0.012 150)",
+        "warm": "oklch(0.995 0.006 80)"
+      },
+      "role": "surface-overlay",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-surface-raised",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(1 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(0.97 0.004 250)",
+        "cyberpunk": "oklch(0.25 0.04 285)",
+        "dark": "oklch(0.22 0.008 250)",
+        "flat": "oklch(0.97 0 0)",
+        "light": "oklch(0.985 0.002 264)",
+        "midnight": "oklch(0.24 0.028 280)",
+        "minimal": "oklch(0.965 0.006 80)",
+        "pastel": "oklch(0.975 0.013 330)",
+        "terminal": "oklch(0.26 0.014 150)",
+        "warm": "oklch(0.975 0.01 80)"
+      },
+      "role": "surface-raised",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-text",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.16 0.02 265)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(0.2 0.01 250)",
+        "cyberpunk": "oklch(0.95 0.03 320)",
+        "dark": "oklch(0.985 0.002 264)",
+        "flat": "oklch(0.1 0 0)",
+        "light": "oklch(0.145 0.005 264)",
+        "midnight": "oklch(0.96 0.01 280)",
+        "minimal": "oklch(0.2 0.01 80)",
+        "pastel": "oklch(0.32 0.03 320)",
+        "terminal": "oklch(0.9 0.06 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "text",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-text-muted",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.52 0.02 265)",
+        "brutalist": "oklch(0.5 0 0)",
+        "corporate": "oklch(0.65 0.012 255)",
+        "cyberpunk": "oklch(0.55 0.05 300)",
+        "dark": "oklch(0.554 0.018 264)",
+        "flat": "oklch(0.55 0 0)",
+        "light": "oklch(0.707 0.015 264)",
+        "midnight": "oklch(0.52 0.02 280)",
+        "minimal": "oklch(0.65 0.012 80)",
+        "pastel": "oklch(0.7 0.02 325)",
+        "terminal": "oklch(0.48 0.04 148)",
+        "warm": "oklch(0.64 0.025 65)"
+      },
+      "role": "text",
+      "slot": "muted"
+    },
+    {
+      "name": "--cascivo-color-text-on-accent",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(0.145 0.005 250)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(0.18 0.015 50)"
+      },
+      "role": "text-on-accent",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-text-on-destructive",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.98 0 0)",
+        "brutalist": "oklch(1 0 0)",
+        "corporate": "oklch(1 0 0)",
+        "cyberpunk": "oklch(0.16 0.03 285)",
+        "dark": "oklch(1 0 0)",
+        "flat": "oklch(1 0 0)",
+        "light": "oklch(1 0 0)",
+        "midnight": "oklch(1 0 0)",
+        "minimal": "oklch(0.98 0.005 80)",
+        "pastel": "oklch(1 0 0)",
+        "terminal": "oklch(0.17 0.01 150)",
+        "warm": "oklch(1 0 0)"
+      },
+      "role": "text-on-destructive",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-text-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.4 0.02 265)",
+        "brutalist": "oklch(0.35 0 0)",
+        "corporate": "oklch(0.5 0.015 255)",
+        "cyberpunk": "oklch(0.7 0.05 300)",
+        "dark": "oklch(0.707 0.015 264)",
+        "flat": "oklch(0.4 0 0)",
+        "light": "oklch(0.446 0.018 264)",
+        "midnight": "oklch(0.68 0.02 285)",
+        "minimal": "oklch(0.55 0.015 80)",
+        "pastel": "oklch(0.58 0.025 325)",
+        "terminal": "oklch(0.65 0.05 148)",
+        "warm": "oklch(0.52 0.03 60)"
+      },
+      "role": "text",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-warning",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.68 0.17 75)",
+        "brutalist": "oklch(0.65 0.17 75)",
+        "corporate": "oklch(0.65 0.14 75)",
+        "cyberpunk": "oklch(0.82 0.17 75)",
+        "dark": "oklch(0.82 0.13 75)",
+        "flat": "oklch(0.6 0.16 75)",
+        "light": "oklch(0.768 0.145 75)",
+        "midnight": "oklch(0.82 0.13 75)",
+        "minimal": "oklch(0.65 0.12 75)",
+        "pastel": "oklch(0.72 0.14 75)",
+        "terminal": "oklch(0.82 0.16 75)",
+        "warm": "oklch(0.768 0.145 75)"
+      },
+      "role": "warning",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-warning-content",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.145 0 0)",
+        "brutalist": "oklch(0.145 0 0)",
+        "corporate": "oklch(0.145 0 0)",
+        "cyberpunk": "oklch(0.145 0 0)",
+        "dark": "oklch(0.145 0 0)",
+        "flat": "oklch(0.145 0 0)",
+        "light": "oklch(0.145 0 0)",
+        "midnight": "oklch(0.145 0 0)",
+        "minimal": "oklch(0.145 0 0)",
+        "pastel": "oklch(0.145 0 0)",
+        "terminal": "oklch(0.145 0 0)",
+        "warm": "oklch(0.145 0 0)"
+      },
+      "role": "warning",
+      "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-warning-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.15 75)",
+        "brutalist": "oklch(0.5 0.15 75)",
+        "corporate": "oklch(0.5 0.13 75)",
+        "cyberpunk": "oklch(0.82 0.17 75)",
+        "dark": "oklch(0.82 0.13 75)",
+        "flat": "oklch(0.5 0.14 75)",
+        "light": "oklch(0.5 0.14 75)",
+        "midnight": "oklch(0.82 0.13 75)",
+        "minimal": "oklch(0.5 0.12 75)",
+        "pastel": "oklch(0.5 0.13 75)",
+        "terminal": "oklch(0.82 0.16 75)",
+        "warm": "oklch(0.5 0.14 75)"
+      },
+      "role": "warning",
+      "slot": "foreground"
+    },
+    {
+      "name": "--cascivo-color-warning-subtle",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.96 0.06 75)",
+        "brutalist": "oklch(0.96 0.06 75)",
+        "corporate": "oklch(0.97 0.03 75)",
+        "cyberpunk": "oklch(0.82 0.17 75 / 0.12)",
+        "dark": "oklch(0.82 0.13 75 / 0.1)",
+        "flat": "oklch(0.96 0.04 75)",
+        "light": "oklch(0.98 0.02 75)",
+        "midnight": "oklch(0.82 0.13 75 / 0.1)",
+        "minimal": "oklch(0.97 0.03 75)",
+        "pastel": "oklch(0.96 0.04 75)",
+        "terminal": "oklch(0.82 0.16 75 / 0.1)",
+        "warm": "oklch(0.768 0.145 75 / 0.1)"
+      },
+      "role": "warning",
+      "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-control-height-lg",
+      "layer": "component",
+      "group": "control",
+      "byTheme": {
+        "arcade": "3rem",
+        "brutalist": "3rem",
+        "corporate": "3rem",
+        "cyberpunk": "3rem",
+        "dark": "3rem",
+        "flat": "3rem",
+        "light": "3rem",
+        "midnight": "3rem",
+        "minimal": "3rem",
+        "pastel": "3rem",
+        "terminal": "3rem",
+        "warm": "3rem"
+      }
+    },
+    {
+      "name": "--cascivo-control-height-md",
+      "layer": "component",
+      "group": "control",
+      "byTheme": {
+        "arcade": "2.5rem",
+        "brutalist": "2.5rem",
+        "corporate": "2.5rem",
+        "cyberpunk": "2.5rem",
+        "dark": "2.5rem",
+        "flat": "2.5rem",
+        "light": "2.5rem",
+        "midnight": "2.5rem",
+        "minimal": "2.5rem",
+        "pastel": "2.5rem",
+        "terminal": "2.5rem",
+        "warm": "2.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-control-height-sm",
+      "layer": "component",
+      "group": "control",
+      "byTheme": {
+        "arcade": "2rem",
+        "brutalist": "2rem",
+        "corporate": "2rem",
+        "cyberpunk": "2rem",
+        "dark": "2rem",
+        "flat": "2rem",
+        "light": "2rem",
+        "midnight": "2rem",
+        "minimal": "2rem",
+        "pastel": "2rem",
+        "terminal": "2rem",
+        "warm": "2rem"
+      }
+    },
+    {
+      "name": "--cascivo-disabled-opacity",
+      "layer": "semantic",
+      "group": "disabled",
+      "byTheme": {
+        "arcade": "0.5",
+        "brutalist": "0.6",
+        "corporate": "0.5",
+        "cyberpunk": "0.55",
+        "dark": "0.5",
+        "flat": "0.5",
+        "light": "0.5",
+        "midnight": "0.5",
+        "minimal": "0.5",
+        "pastel": "0.5",
+        "terminal": "0.5",
+        "warm": "0.5"
+      }
+    },
+    {
+      "name": "--cascivo-focus-ring",
+      "layer": "component",
+      "group": "focus",
+      "byTheme": {
+        "arcade": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "brutalist": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "corporate": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "cyberpunk": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "dark": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "flat": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "light": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "midnight": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "minimal": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "pastel": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "terminal": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+        "warm": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)"
+      }
+    },
+    {
+      "name": "--cascivo-font-bold",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "700",
+        "brutalist": "700",
+        "corporate": "700",
+        "cyberpunk": "700",
+        "dark": "700",
+        "flat": "700",
+        "light": "700",
+        "midnight": "700",
+        "minimal": "700",
+        "pastel": "700",
+        "terminal": "700",
+        "warm": "700"
+      }
+    },
+    {
+      "name": "--cascivo-font-display",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "'Press Start 2P', 'Courier New', ui-monospace, monospace",
+        "brutalist": "'Arial Black', 'Helvetica Neue', ui-sans-serif, sans-serif",
+        "corporate": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "cyberpunk": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "dark": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "flat": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "light": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "midnight": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "minimal": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "pastel": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "terminal": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",
+        "warm": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+      }
+    },
+    {
+      "name": "--cascivo-font-medium",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "500",
+        "brutalist": "500",
+        "corporate": "500",
+        "cyberpunk": "500",
+        "dark": "500",
+        "flat": "500",
+        "light": "500",
+        "midnight": "500",
+        "minimal": "500",
+        "pastel": "500",
+        "terminal": "500",
+        "warm": "500"
+      }
+    },
+    {
+      "name": "--cascivo-font-normal",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "400",
+        "brutalist": "400",
+        "corporate": "400",
+        "cyberpunk": "400",
+        "dark": "400",
+        "flat": "400",
+        "light": "400",
+        "midnight": "400",
+        "minimal": "400",
+        "pastel": "400",
+        "terminal": "400",
+        "warm": "400"
+      }
+    },
+    {
+      "name": "--cascivo-font-semibold",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "600",
+        "brutalist": "600",
+        "corporate": "600",
+        "cyberpunk": "600",
+        "dark": "600",
+        "flat": "600",
+        "light": "600",
+        "midnight": "600",
+        "minimal": "600",
+        "pastel": "600",
+        "terminal": "600",
+        "warm": "600"
+      }
+    },
+    {
+      "name": "--cascivo-hover-opacity",
+      "layer": "semantic",
+      "group": "hover",
+      "byTheme": {
+        "arcade": "0.8",
+        "brutalist": "0.85",
+        "corporate": "0.8",
+        "cyberpunk": "0.75",
+        "dark": "0.8",
+        "flat": "0.8",
+        "light": "0.8",
+        "midnight": "0.8",
+        "minimal": "0.8",
+        "pastel": "0.8",
+        "terminal": "0.75",
+        "warm": "0.8"
+      }
+    },
+    {
+      "name": "--cascivo-leading-normal",
+      "layer": "semantic",
+      "group": "leading",
+      "byTheme": {
+        "arcade": "1.5",
+        "brutalist": "1.5",
+        "corporate": "1.5",
+        "cyberpunk": "1.5",
+        "dark": "1.5",
+        "flat": "1.5",
+        "light": "1.5",
+        "midnight": "1.5",
+        "minimal": "1.5",
+        "pastel": "1.5",
+        "terminal": "1.5",
+        "warm": "1.5"
+      }
+    },
+    {
+      "name": "--cascivo-leading-relaxed",
+      "layer": "semantic",
+      "group": "leading",
+      "byTheme": {
+        "arcade": "1.625",
+        "brutalist": "1.625",
+        "corporate": "1.625",
+        "cyberpunk": "1.625",
+        "dark": "1.625",
+        "flat": "1.625",
+        "light": "1.625",
+        "midnight": "1.625",
+        "minimal": "1.625",
+        "pastel": "1.625",
+        "terminal": "1.625",
+        "warm": "1.625"
+      }
+    },
+    {
+      "name": "--cascivo-leading-snug",
+      "layer": "semantic",
+      "group": "leading",
+      "byTheme": {
+        "arcade": "1.375",
+        "brutalist": "1.375",
+        "corporate": "1.375",
+        "cyberpunk": "1.375",
+        "dark": "1.375",
+        "flat": "1.375",
+        "light": "1.375",
+        "midnight": "1.375",
+        "minimal": "1.375",
+        "pastel": "1.375",
+        "terminal": "1.375",
+        "warm": "1.375"
+      }
+    },
+    {
+      "name": "--cascivo-leading-tight",
+      "layer": "semantic",
+      "group": "leading",
+      "byTheme": {
+        "arcade": "1.25",
+        "brutalist": "1.25",
+        "corporate": "1.25",
+        "cyberpunk": "1.25",
+        "dark": "1.25",
+        "flat": "1.25",
+        "light": "1.25",
+        "midnight": "1.25",
+        "minimal": "1.25",
+        "pastel": "1.25",
+        "terminal": "1.25",
+        "warm": "1.25"
+      }
+    },
+    {
+      "name": "--cascivo-motion-emphasis",
+      "layer": "semantic",
+      "group": "motion",
+      "byTheme": {
+        "arcade": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "brutalist": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "corporate": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "cyberpunk": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "dark": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "flat": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "light": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "midnight": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "minimal": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "pastel": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "terminal": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
+        "warm": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)"
+      }
+    },
+    {
+      "name": "--cascivo-motion-enter",
+      "layer": "semantic",
+      "group": "motion",
+      "byTheme": {
+        "arcade": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "brutalist": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "corporate": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "cyberpunk": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "dark": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "flat": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "light": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "midnight": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "minimal": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "pastel": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "terminal": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
+        "warm": "var(--cascivo-duration-200) var(--cascivo-ease-out)"
+      }
+    },
+    {
+      "name": "--cascivo-motion-exit",
+      "layer": "semantic",
+      "group": "motion",
+      "byTheme": {
+        "arcade": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "brutalist": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "corporate": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "cyberpunk": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "dark": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "flat": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "light": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "midnight": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "minimal": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "pastel": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "terminal": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
+        "warm": "var(--cascivo-duration-150) var(--cascivo-ease-in)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-badge",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "calc(var(--cascivo-radius-base) * 2)",
+        "cyberpunk": "0",
+        "dark": "9999px",
+        "flat": "0",
+        "light": "9999px",
+        "midnight": "9999px",
+        "minimal": "9999px",
+        "pastel": "9999px",
+        "terminal": "0",
+        "warm": "9999px"
+      }
+    },
+    {
+      "name": "--cascivo-radius-base",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-button",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-card",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "calc(var(--cascivo-radius-base) * 2)",
+        "cyberpunk": "0",
+        "dark": "calc(var(--cascivo-radius-base) * 1.66)",
+        "flat": "0",
+        "light": "calc(var(--cascivo-radius-base) * 1.66)",
+        "midnight": "calc(var(--cascivo-radius-base) * 1.66)",
+        "minimal": "1.25rem",
+        "pastel": "calc(var(--cascivo-radius-base) * 1.25)",
+        "terminal": "0",
+        "warm": "calc(var(--cascivo-radius-base) * 1.66)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-component",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-control",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-field",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-indicator",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "calc(var(--cascivo-radius-base) / 2)",
+        "flat": "0",
+        "light": "calc(var(--cascivo-radius-base) / 2)",
+        "midnight": "calc(var(--cascivo-radius-base) / 2)",
+        "minimal": "0.375rem",
+        "pastel": "calc(var(--cascivo-radius-base) / 2)",
+        "terminal": "0",
+        "warm": "calc(var(--cascivo-radius-base) / 2)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-input",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0.125rem",
+        "cyberpunk": "0",
+        "dark": "0.375rem",
+        "flat": "0",
+        "light": "0.375rem",
+        "midnight": "0.625rem",
+        "minimal": "0.75rem",
+        "pastel": "1rem",
+        "terminal": "0",
+        "warm": "0.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-radius-item",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "calc(var(--cascivo-radius-base) * 0.66)",
+        "brutalist": "calc(var(--cascivo-radius-base) * 0.66)",
+        "corporate": "calc(var(--cascivo-radius-base) * 0.66)",
+        "cyberpunk": "calc(var(--cascivo-radius-base) * 0.66)",
+        "dark": "calc(var(--cascivo-radius-base) * 0.66)",
+        "flat": "calc(var(--cascivo-radius-base) * 0.66)",
+        "light": "calc(var(--cascivo-radius-base) * 0.66)",
+        "midnight": "calc(var(--cascivo-radius-base) * 0.66)",
+        "minimal": "calc(var(--cascivo-radius-base) * 0.66)",
+        "pastel": "calc(var(--cascivo-radius-base) * 0.66)",
+        "terminal": "calc(var(--cascivo-radius-base) * 0.66)",
+        "warm": "calc(var(--cascivo-radius-base) * 0.66)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-modal",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "calc(var(--cascivo-radius-base) * 2)",
+        "cyberpunk": "0",
+        "dark": "calc(var(--cascivo-radius-base) * 2)",
+        "flat": "0",
+        "light": "calc(var(--cascivo-radius-base) * 2)",
+        "midnight": "calc(var(--cascivo-radius-base) * 2)",
+        "minimal": "1.25rem",
+        "pastel": "calc(var(--cascivo-radius-base) * 1.5)",
+        "terminal": "0",
+        "warm": "calc(var(--cascivo-radius-base) * 2)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-overlay",
+      "layer": "component",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "calc(var(--cascivo-radius-base) * 2)",
+        "brutalist": "calc(var(--cascivo-radius-base) * 2)",
+        "corporate": "calc(var(--cascivo-radius-base) * 2)",
+        "cyberpunk": "calc(var(--cascivo-radius-base) * 2)",
+        "dark": "calc(var(--cascivo-radius-base) * 2)",
+        "flat": "calc(var(--cascivo-radius-base) * 2)",
+        "light": "calc(var(--cascivo-radius-base) * 2)",
+        "midnight": "calc(var(--cascivo-radius-base) * 2)",
+        "minimal": "calc(var(--cascivo-radius-base) * 2)",
+        "pastel": "calc(var(--cascivo-radius-base) * 2)",
+        "terminal": "calc(var(--cascivo-radius-base) * 2)",
+        "warm": "calc(var(--cascivo-radius-base) * 2)"
+      }
+    },
+    {
+      "name": "--cascivo-radius-surface",
+      "layer": "semantic",
+      "group": "radius",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "calc(var(--cascivo-radius-base) * 2)",
+        "cyberpunk": "0",
+        "dark": "calc(var(--cascivo-radius-base) * 1.66)",
+        "flat": "0",
+        "light": "calc(var(--cascivo-radius-base) * 1.66)",
+        "midnight": "calc(var(--cascivo-radius-base) * 1.66)",
+        "minimal": "1.25rem",
+        "pastel": "calc(var(--cascivo-radius-base) * 1.25)",
+        "terminal": "0",
+        "warm": "calc(var(--cascivo-radius-base) * 1.66)"
+      }
+    },
+    {
+      "name": "--cascivo-ring-color",
+      "layer": "component",
+      "group": "ring",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250)",
+        "brutalist": "oklch(0.1 0 0)",
+        "corporate": "color-mix(in oklch, var(--cascivo-color-accent) 70%, transparent)",
+        "cyberpunk": "oklch(0.78 0.16 200)",
+        "dark": "color-mix(in oklch, var(--cascivo-color-accent) 65%, transparent)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light": "color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)",
+        "midnight": "color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)",
+        "minimal": "oklch(0.25 0.01 80 / 0.4)",
+        "pastel": "color-mix(in oklch, var(--cascivo-color-accent) 45%, transparent)",
+        "terminal": "color-mix(in oklch, var(--cascivo-color-accent) 60%, transparent)",
+        "warm": "color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)"
+      }
+    },
+    {
+      "name": "--cascivo-ring-offset",
+      "layer": "component",
+      "group": "ring",
+      "byTheme": {
+        "arcade": "2px",
+        "brutalist": "2px",
+        "corporate": "0px",
+        "cyberpunk": "2px",
+        "dark": "0px",
+        "flat": "0px",
+        "light": "0px",
+        "midnight": "0px",
+        "minimal": "3px",
+        "pastel": "2px",
+        "terminal": "0px",
+        "warm": "0px"
+      }
+    },
+    {
+      "name": "--cascivo-ring-width",
+      "layer": "component",
+      "group": "ring",
+      "byTheme": {
+        "arcade": "3px",
+        "brutalist": "3px",
+        "corporate": "2px",
+        "cyberpunk": "3px",
+        "dark": "2px",
+        "flat": "2px",
+        "light": "2px",
+        "midnight": "3px",
+        "minimal": "2px",
+        "pastel": "3px",
+        "terminal": "2px",
+        "warm": "2px"
+      }
+    },
+    {
+      "name": "--cascivo-screen-lg",
+      "layer": "semantic",
+      "group": "screen",
+      "byTheme": {
+        "arcade": "64rem",
+        "brutalist": "64rem",
+        "corporate": "64rem",
+        "cyberpunk": "64rem",
+        "dark": "64rem",
+        "flat": "64rem",
+        "light": "64rem",
+        "midnight": "64rem",
+        "minimal": "64rem",
+        "pastel": "64rem",
+        "terminal": "64rem",
+        "warm": "64rem"
+      }
+    },
+    {
+      "name": "--cascivo-screen-md",
+      "layer": "semantic",
+      "group": "screen",
+      "byTheme": {
+        "arcade": "40rem",
+        "brutalist": "40rem",
+        "corporate": "40rem",
+        "cyberpunk": "40rem",
+        "dark": "40rem",
+        "flat": "40rem",
+        "light": "40rem",
+        "midnight": "40rem",
+        "minimal": "40rem",
+        "pastel": "40rem",
+        "terminal": "40rem",
+        "warm": "40rem"
+      }
+    },
+    {
+      "name": "--cascivo-screen-sm",
+      "layer": "semantic",
+      "group": "screen",
+      "byTheme": {
+        "arcade": "30rem",
+        "brutalist": "30rem",
+        "corporate": "30rem",
+        "cyberpunk": "30rem",
+        "dark": "30rem",
+        "flat": "30rem",
+        "light": "30rem",
+        "midnight": "30rem",
+        "minimal": "30rem",
+        "pastel": "30rem",
+        "terminal": "30rem",
+        "warm": "30rem"
+      }
+    },
+    {
+      "name": "--cascivo-screen-xl",
+      "layer": "semantic",
+      "group": "screen",
+      "byTheme": {
+        "arcade": "80rem",
+        "brutalist": "80rem",
+        "corporate": "80rem",
+        "cyberpunk": "80rem",
+        "dark": "80rem",
+        "flat": "80rem",
+        "light": "80rem",
+        "midnight": "80rem",
+        "minimal": "80rem",
+        "pastel": "80rem",
+        "terminal": "80rem",
+        "warm": "80rem"
+      }
+    },
+    {
+      "name": "--cascivo-shadow-overlay",
+      "layer": "component",
+      "group": "shadow",
+      "byTheme": {
+        "arcade": "6px 6px 0 oklch(0.15 0.02 265)",
+        "brutalist": "6px 6px 0 oklch(0.1 0 0)",
+        "corporate": "0 2px 12px oklch(0 0 0 / 0.12), 0 0 0 1px oklch(0 0 0 / 0.04)",
+        "cyberpunk": "6px 6px 0 oklch(0.78 0.16 200), 0 0 24px oklch(0.7 0.25 330 / 0.4)",
+        "dark": "0 4px 32px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(1 0 0 / 0.06)",
+        "flat": "none",
+        "light": "0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04)",
+        "midnight": "0 8px 40px oklch(0.16 0.02 280 / 0.7), 0 0 0 1px oklch(0.7 0.22 290 / 0.12)",
+        "minimal": "0 10px 30px oklch(0 0 0 / 0.07), 0 0 0 1px oklch(0 0 0 / 0.02)",
+        "pastel": "0 8px 32px oklch(0.68 0.18 350 / 0.14), 0 0 0 1px oklch(0.68 0.18 350 / 0.06)",
+        "terminal": "0 0 0 1px oklch(0.82 0.2 145 / 0.3), 0 4px 24px oklch(0 0 0 / 0.5)",
+        "warm": "0 4px 32px oklch(0.2 0.04 60 / 0.18), 0 0 0 1px oklch(0.2 0.04 60 / 0.06)"
+      }
+    },
+    {
+      "name": "--cascivo-shell-aside-inline-size",
+      "layer": "component",
+      "group": "shell",
+      "byTheme": {
+        "arcade": "18rem",
+        "brutalist": "18rem",
+        "corporate": "18rem",
+        "cyberpunk": "18rem",
+        "dark": "18rem",
+        "flat": "18rem",
+        "light": "18rem",
+        "midnight": "18rem",
+        "minimal": "18rem",
+        "pastel": "18rem",
+        "terminal": "18rem",
+        "warm": "18rem"
+      }
+    },
+    {
+      "name": "--cascivo-shell-header-block-size",
+      "layer": "component",
+      "group": "shell",
+      "byTheme": {
+        "arcade": "3rem",
+        "brutalist": "3rem",
+        "corporate": "3rem",
+        "cyberpunk": "3rem",
+        "dark": "3rem",
+        "flat": "3rem",
+        "light": "3rem",
+        "midnight": "3rem",
+        "minimal": "3rem",
+        "pastel": "3rem",
+        "terminal": "3rem",
+        "warm": "3rem"
+      }
+    },
+    {
+      "name": "--cascivo-shell-panel-inline-size",
+      "layer": "component",
+      "group": "shell",
+      "byTheme": {
+        "arcade": "20rem",
+        "brutalist": "20rem",
+        "corporate": "20rem",
+        "cyberpunk": "20rem",
+        "dark": "20rem",
+        "flat": "20rem",
+        "light": "20rem",
+        "midnight": "20rem",
+        "minimal": "20rem",
+        "pastel": "20rem",
+        "terminal": "20rem",
+        "warm": "20rem"
+      }
+    },
+    {
+      "name": "--cascivo-target-min-coarse",
+      "layer": "semantic",
+      "group": "target",
+      "byTheme": {
+        "arcade": "2.75rem",
+        "brutalist": "2.75rem",
+        "corporate": "2.75rem",
+        "cyberpunk": "2.75rem",
+        "dark": "2.75rem",
+        "flat": "2.75rem",
+        "light": "2.75rem",
+        "midnight": "2.75rem",
+        "minimal": "2.75rem",
+        "pastel": "2.75rem",
+        "terminal": "2.75rem",
+        "warm": "2.75rem"
+      }
+    },
+    {
+      "name": "--cascivo-text-2xl-fluid",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "brutalist": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "corporate": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "cyberpunk": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "dark": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "flat": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "light": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "midnight": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "minimal": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "pastel": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "terminal": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
+        "warm": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)"
+      }
+    },
+    {
+      "name": "--cascivo-text-3xl-fluid",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "brutalist": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "corporate": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "cyberpunk": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "dark": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "flat": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "light": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "midnight": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "minimal": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "pastel": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "terminal": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
+        "warm": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)"
+      }
+    },
+    {
+      "name": "--cascivo-text-4xl",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "2.25rem",
+        "brutalist": "2.25rem",
+        "corporate": "2.25rem",
+        "cyberpunk": "2.25rem",
+        "dark": "2.25rem",
+        "flat": "2.25rem",
+        "light": "2.25rem",
+        "midnight": "2.25rem",
+        "minimal": "2.25rem",
+        "pastel": "2.25rem",
+        "terminal": "2.25rem",
+        "warm": "2.25rem"
+      }
+    },
+    {
+      "name": "--cascivo-text-4xl-fluid",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "brutalist": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "corporate": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "cyberpunk": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "dark": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "flat": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "light": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "midnight": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "minimal": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "pastel": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "terminal": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
+        "warm": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)"
+      }
+    },
+    {
+      "name": "--cascivo-text-base",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "1rem",
+        "brutalist": "1rem",
+        "corporate": "1rem",
+        "cyberpunk": "1rem",
+        "dark": "1rem",
+        "flat": "1rem",
+        "light": "1rem",
+        "midnight": "1rem",
+        "minimal": "1rem",
+        "pastel": "1rem",
+        "terminal": "1rem",
+        "warm": "1rem"
+      }
+    },
+    {
+      "name": "--cascivo-tracking-normal",
+      "layer": "semantic",
+      "group": "tracking",
+      "byTheme": {
+        "arcade": "0em",
+        "brutalist": "0em",
+        "corporate": "0em",
+        "cyberpunk": "0em",
+        "dark": "0em",
+        "flat": "0em",
+        "light": "0em",
+        "midnight": "0em",
+        "minimal": "0em",
+        "pastel": "0em",
+        "terminal": "0em",
+        "warm": "0em"
+      }
+    },
+    {
+      "name": "--cascivo-tracking-tight",
+      "layer": "semantic",
+      "group": "tracking",
+      "byTheme": {
+        "arcade": "-0.025em",
+        "brutalist": "-0.025em",
+        "corporate": "-0.025em",
+        "cyberpunk": "-0.025em",
+        "dark": "-0.025em",
+        "flat": "-0.025em",
+        "light": "-0.025em",
+        "midnight": "-0.025em",
+        "minimal": "-0.025em",
+        "pastel": "-0.025em",
+        "terminal": "-0.025em",
+        "warm": "-0.025em"
+      }
+    },
+    {
+      "name": "--cascivo-tracking-wide",
+      "layer": "semantic",
+      "group": "tracking",
+      "byTheme": {
+        "arcade": "0.025em",
+        "brutalist": "0.025em",
+        "corporate": "0.025em",
+        "cyberpunk": "0.025em",
+        "dark": "0.025em",
+        "flat": "0.025em",
+        "light": "0.025em",
+        "midnight": "0.025em",
+        "minimal": "0.025em",
+        "pastel": "0.025em",
+        "terminal": "0.025em",
+        "warm": "0.025em"
+      }
+    },
+    {
+      "name": "--cascivo-z-base",
+      "layer": "semantic",
+      "group": "z",
+      "byTheme": {
+        "arcade": "0",
+        "brutalist": "0",
+        "corporate": "0",
+        "cyberpunk": "0",
+        "dark": "0",
+        "flat": "0",
+        "light": "0",
+        "midnight": "0",
+        "minimal": "0",
+        "pastel": "0",
+        "terminal": "0",
+        "warm": "0"
+      }
+    },
+    {
+      "name": "--cascivo-z-dropdown",
+      "layer": "semantic",
+      "group": "z",
+      "byTheme": {
+        "arcade": "100",
+        "brutalist": "100",
+        "corporate": "100",
+        "cyberpunk": "100",
+        "dark": "100",
+        "flat": "100",
+        "light": "100",
+        "midnight": "100",
+        "minimal": "100",
+        "pastel": "100",
+        "terminal": "100",
+        "warm": "100"
+      }
+    },
+    {
+      "name": "--cascivo-z-modal",
+      "layer": "component",
+      "group": "z",
+      "byTheme": {
+        "arcade": "300",
+        "brutalist": "300",
+        "corporate": "300",
+        "cyberpunk": "300",
+        "dark": "300",
+        "flat": "300",
+        "light": "300",
+        "midnight": "300",
+        "minimal": "300",
+        "pastel": "300",
+        "terminal": "300",
+        "warm": "300"
+      }
+    },
+    {
+      "name": "--cascivo-z-overlay",
+      "layer": "component",
+      "group": "z",
+      "byTheme": {
+        "arcade": "200",
+        "brutalist": "200",
+        "corporate": "200",
+        "cyberpunk": "200",
+        "dark": "200",
+        "flat": "200",
+        "light": "200",
+        "midnight": "200",
+        "minimal": "200",
+        "pastel": "200",
+        "terminal": "200",
+        "warm": "200"
+      }
+    },
+    {
+      "name": "--cascivo-z-raised",
+      "layer": "semantic",
+      "group": "z",
+      "byTheme": {
+        "arcade": "10",
+        "brutalist": "10",
+        "corporate": "10",
+        "cyberpunk": "10",
+        "dark": "10",
+        "flat": "10",
+        "light": "10",
+        "midnight": "10",
+        "minimal": "10",
+        "pastel": "10",
+        "terminal": "10",
+        "warm": "10"
+      }
+    },
+    {
+      "name": "--cascivo-z-toast",
+      "layer": "semantic",
+      "group": "z",
+      "byTheme": {
+        "arcade": "400",
+        "brutalist": "400",
+        "corporate": "400",
+        "cyberpunk": "400",
+        "dark": "400",
+        "flat": "400",
+        "light": "400",
+        "midnight": "400",
+        "minimal": "400",
+        "pastel": "400",
+        "terminal": "400",
+        "warm": "400"
+      }
+    },
+    {
+      "name": "--cascivo-z-tooltip",
+      "layer": "semantic",
+      "group": "z",
+      "byTheme": {
+        "arcade": "500",
+        "brutalist": "500",
+        "corporate": "500",
+        "cyberpunk": "500",
+        "dark": "500",
+        "flat": "500",
+        "light": "500",
+        "midnight": "500",
+        "minimal": "500",
+        "pastel": "500",
+        "terminal": "500",
+        "warm": "500"
+      }
+    }
+  ]
+}

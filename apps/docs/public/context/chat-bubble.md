@@ -91,3 +91,26 @@ Message with an avatar beside the bubble
 | ------------ | -------- | ------------------------------------------------------------------------- |
 | avatar slot  | flexible | Accepts any ReactNode — Avatar, initials, icon, or nothing                |
 | body content | flexible | children accepts rich content including images, links, and formatted text |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ChatBubble component (display). Message bubble for chat and messaging UIs with avatar, name, and timestamp support
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ChatBubble is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-radius-overlay, --cascivo-radius-indicator
+
+Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
+Flexible: avatar slot, body content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

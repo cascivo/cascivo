@@ -83,3 +83,28 @@ Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 | ----------- | -------- | ------------------------------------------------------------------------ |
 | activeId    | flexible | Control the highlight externally, or omit it for built-in scroll-spy     |
 | token names | strict   | Colors, focus ring, and touch target must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Toc component (navigation). Table of contents with scroll-spy highlighting of the active section
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Toc is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-font-sans, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-focus-ring, --cascivo-target-min-coarse
+
+Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
+
+Do not change (strict): token names — Colors, focus ring, and touch target must resolve to --cascivo-* tokens
+Flexible: activeId.
+
+Do not invent props, tokens, or global viewport media queries.
+```

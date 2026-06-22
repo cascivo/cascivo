@@ -90,3 +90,28 @@ Link-based dock items for standard navigation
 | ------------ | -------- | --------------------------------------------------------------------------------------- |
 | item element | flexible | Renders <a> when href is provided, <button> otherwise — no wrapper needed               |
 | visibility   | strict   | Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Dock component (navigation). Fixed bottom navigation bar for mobile app shells with up to 5 items
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Dock is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-text-muted, --cascivo-border-subtle, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out, --cascivo-target-min-coarse, --cascivo-z-dock
+
+Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
+
+Do not change (strict): visibility — Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent
+Flexible: item element.
+
+Do not invent props, tokens, or global viewport media queries.
+```

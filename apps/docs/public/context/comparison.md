@@ -90,3 +90,28 @@ The divider is a role="slider" with aria-valuemin/max/now and full keyboard supp
 | ----------- | -------- | -------------------------------------------------------------------- |
 | orientation | flexible | Horizontal or vertical depending on the content                      |
 | label       | strict   | Provide a label (or rely on the i18n default) so the slider is named |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Comparison component (display). Reveals the difference between two layers with a draggable divider
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Comparison is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-radius-md, --cascivo-radius-full, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-focus-ring, --cascivo-shadow-sm, --cascivo-target-min-coarse
+
+Accessibility: role "slider", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown. Keep it AA.
+
+Do not change (strict): label — Provide a label (or rely on the i18n default) so the slider is named
+Flexible: orientation.
+
+Do not invent props, tokens, or global viewport media queries.
+```

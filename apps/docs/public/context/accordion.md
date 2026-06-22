@@ -66,3 +66,28 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 | ------------------ | -------- | ------------------------------------------------------------------------- |
 | single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive       |
 | token names        | strict   | Borders, surfaces, and radii must resolve to --cascivo-\* semantic tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Accordion component (navigation). Vertically stacked, collapsible content sections
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Accordion is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-radius-md, --cascivo-focus-ring
+
+Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+
+Do not change (strict): token names — Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens
+Flexible: single vs multiple.
+
+Do not invent props, tokens, or global viewport media queries.
+```

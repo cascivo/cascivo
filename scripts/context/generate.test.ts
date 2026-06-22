@@ -3,6 +3,7 @@ import { describe, it } from 'node:test'
 import {
   buildComponentMarkdown,
   buildContextIndex,
+  buildContextPrompt,
   type RegistryEntry,
   type Registry,
 } from './generate.ts'
@@ -159,6 +160,11 @@ describe('buildContextIndex', () => {
     const index = buildContextIndex(FIXTURE_REGISTRY, [BUTTON])
     assert.equal(index.tokenCatalogUrl, '/tokens.catalog.json')
   })
+
+  it('sets variantMatrixUrl', () => {
+    const index = buildContextIndex(FIXTURE_REGISTRY, [BUTTON])
+    assert.equal(index.variantMatrixUrl, '/tokens.variants.json')
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -230,5 +236,59 @@ describe('buildComponentMarkdown', () => {
     const md = buildComponentMarkdown(NO_INTENT)
     assert.ok(md.includes('Intent not yet documented'))
     assert.ok(!md.includes('## When to use'))
+  })
+
+  it('includes the AI context prompt section', () => {
+    const md = buildComponentMarkdown(BUTTON)
+    assert.ok(md.includes('## AI context prompt'))
+    assert.ok(md.includes('I am modifying the cascivo Button component'))
+  })
+})
+
+// ---------------------------------------------------------------------------
+// buildContextPrompt tests
+// ---------------------------------------------------------------------------
+
+describe('buildContextPrompt', () => {
+  it('names the component and category', () => {
+    const prompt = buildContextPrompt(BUTTON)
+    assert.ok(prompt.startsWith('I am modifying the cascivo Button component (inputs).'))
+  })
+
+  it('lists the bound tokens and forbids inventing new ones', () => {
+    const prompt = buildContextPrompt(BUTTON)
+    assert.ok(prompt.includes('--cascivo-color-accent'))
+    assert.ok(prompt.includes('do not invent token names'))
+  })
+
+  it('pins the architecture rules (signals, container queries)', () => {
+    const prompt = buildContextPrompt(BUTTON)
+    assert.ok(prompt.includes('Signals only'))
+    assert.ok(prompt.includes('@container'))
+    assert.ok(prompt.includes('Do not use global viewport @media'))
+  })
+
+  it('surfaces strict boundaries', () => {
+    const prompt = buildContextPrompt(BUTTON)
+    assert.ok(prompt.includes('Do not change (strict): token names'))
+  })
+
+  it('handles components with no intent or accessibility', () => {
+    const prompt = buildContextPrompt(NO_INTENT)
+    assert.ok(prompt.includes('Spinner'))
+    assert.ok(prompt.includes('none declared'))
+  })
+})
+
+// ---------------------------------------------------------------------------
+// buildContextIndex — aiPrompt
+// ---------------------------------------------------------------------------
+
+describe('buildContextIndex aiPrompt', () => {
+  it('attaches an aiPrompt to every component entry', () => {
+    const index = buildContextIndex(FIXTURE_REGISTRY, [BUTTON, BADGE, NO_INTENT])
+    assert.ok(
+      index.components.every((c) => typeof c.aiPrompt === 'string' && c.aiPrompt.length > 0),
+    )
   })
 })

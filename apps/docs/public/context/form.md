@@ -77,3 +77,28 @@ function Demo() {
 | validation strategy       | flexible | Use schema, validate, or both; schema runs first and validate only if the schema passes               |
 | field control composition | flexible | Any control can be wired via form.field(name); children are free-form                                 |
 | submit semantics          | strict   | onValid only fires when validation produces no errors; submission is guarded by the submitting signal |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Form component (inputs). Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Form is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-space-4
+
+Accessibility: role "form", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
+
+Do not change (strict): submit semantics — onValid only fires when validation produces no errors; submission is guarded by the submitting signal
+Flexible: validation strategy, field control composition.
+
+Do not invent props, tokens, or global viewport media queries.
+```

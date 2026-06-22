@@ -15,6 +15,7 @@
     "WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested"
   ],
   "tokenCatalogUrl": "/tokens.catalog.json",
+  "variantMatrixUrl": "/tokens.variants.json",
   "specs": [
     {
       "id": "at-matrix",
@@ -1723,7 +1724,8 @@
           }
         ]
       },
-      "contextUrl": "/context/accordion.md"
+      "contextUrl": "/context/accordion.md",
+      "aiPrompt": "I am modifying the cascivo Accordion component (navigation). Vertically stacked, collapsible content sections\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAccordion is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-radius-md, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens\nFlexible: single vs multiple.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Alert",
@@ -1776,7 +1778,8 @@
           }
         ]
       },
-      "contextUrl": "/context/alert.md"
+      "contextUrl": "/context/alert.md",
+      "aiPrompt": "I am modifying the cascivo Alert component (display). Highlights a short, important message inline\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAlert is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-color-border, --cascivo-radius-md\n\nAccessibility: role \"alert\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Severity colors must resolve to --cascivo-color-info/success/warning/destructive\nFlexible: variant.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AlertDialog",
@@ -1842,7 +1845,8 @@
           }
         ]
       },
-      "contextUrl": "/context/alert-dialog.md"
+      "contextUrl": "/context/alert-dialog.md",
+      "aiPrompt": "I am modifying the cascivo AlertDialog component (overlay). Confirmation dialog requiring explicit user action; no light-dismiss\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAlertDialog is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-accent, --cascivo-color-destructive\n\nAccessibility: role \"alertdialog\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): dismiss behavior — No light-dismiss — closing must go through onConfirm/onCancel; token names — Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive\nFlexible: action labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AppShell",
@@ -1880,7 +1884,8 @@
         "a11yRationale": "The hidden nav uses transform/inline-size + inert (never display:none alone), so it stays in the a11y tree and is keyboard-reachable when open while leaving the tab order when closed; Escape and a scrim close the mobile drawer and focus returns to the toggle.",
         "flexibility": []
       },
-      "contextUrl": "/context/app-shell.md"
+      "contextUrl": "/context/app-shell.md",
+      "aiPrompt": "I am modifying the cascivo AppShell component (layout). Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAppShell is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-shell-aside-inline-size, --cascivo-shell-panel-inline-size, --cascivo-motion-emphasis, --cascivo-z-raised, --cascivo-z-overlay, --cascivo-color-foreground, --cascivo-color-background\n\nAccessibility: role \"none\", WCAG 2.2-AA, keyboard: Escape. Keep it AA.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AspectRatio",
@@ -1924,7 +1929,8 @@
           }
         ]
       },
-      "contextUrl": "/context/aspect-ratio.md"
+      "contextUrl": "/context/aspect-ratio.md",
+      "aiPrompt": "I am modifying the cascivo AspectRatio component (layout). Constrains content to a fixed width-to-height ratio\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAspectRatio is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-aspect-ratio\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): child sizing — The single child is stretched to fill; provide one media element\nFlexible: ratio.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Avatar",
@@ -1968,7 +1974,8 @@
           }
         ]
       },
-      "contextUrl": "/context/avatar.md"
+      "contextUrl": "/context/avatar.md",
+      "aiPrompt": "I am modifying the cascivo Avatar component (display). Displays a user image with initials fallback\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAvatar is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-radius-full\n\nAccessibility: role \"img\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Fallback and status colors must resolve to --cascivo-* semantic tokens\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AvatarGroup",
@@ -2017,7 +2024,8 @@
           }
         ]
       },
-      "contextUrl": "/context/avatar-group.md"
+      "contextUrl": "/context/avatar-group.md",
+      "aiPrompt": "I am modifying the cascivo AvatarGroup component (display). Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAvatarGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-text-muted, --cascivo-space-2, --cascivo-text-xs\n\nAccessibility: role \"group\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): overflow label — The +N label must come from i18n (builtin.avatarGroup.more or a labels override)\nFlexible: spacing.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Badge",
@@ -2065,7 +2073,8 @@
           }
         ]
       },
-      "contextUrl": "/context/badge.md"
+      "contextUrl": "/context/badge.md",
+      "aiPrompt": "I am modifying the cascivo Badge component (display). Small status label or category indicator\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBadge is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-font-medium, --cascivo-radius-badge, --cascivo-space-1, --cascivo-space-2, --cascivo-space-3, --cascivo-text-xs, --cascivo-leading-normal, --cascivo-color-accent, --cascivo-color-text-on-accent, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-success-subtle, --cascivo-color-success-foreground, --cascivo-color-warning-subtle, --cascivo-color-warning-foreground, --cascivo-color-destructive-subtle, --cascivo-color-destructive-foreground, --cascivo-color-primary, --cascivo-color-primary-content, --cascivo-color-info, --cascivo-color-info-content, --cascivo-color-error, --cascivo-color-error-content\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)\nFlexible: variant.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Blockquote",
@@ -2112,7 +2121,8 @@
           }
         ]
       },
-      "contextUrl": "/context/blockquote.md"
+      "contextUrl": "/context/blockquote.md",
+      "aiPrompt": "I am modifying the cascivo Blockquote component (display). Quoted passage with optional attribution footer\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBlockquote is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-font-sans, --cascivo-font-medium, --cascivo-leading-relaxed, --cascivo-text-sm, --cascivo-text-base\n\nAccessibility: role \"blockquote\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Border and text colors must resolve to --cascivo-* tokens\nFlexible: attribution.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Breadcrumb",
@@ -2160,7 +2170,8 @@
           }
         ]
       },
-      "contextUrl": "/context/breadcrumb.md"
+      "contextUrl": "/context/breadcrumb.md",
+      "aiPrompt": "I am modifying the cascivo Breadcrumb component (navigation). Shows the current page location within a navigation hierarchy\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBreadcrumb is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-radius-sm, --cascivo-focus-ring\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): token names — Text colors and focus ring must resolve to --cascivo-* tokens\nFlexible: maxVisible.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Button",
@@ -2212,7 +2223,8 @@
           }
         ]
       },
-      "contextUrl": "/context/button.md"
+      "contextUrl": "/context/button.md",
+      "aiPrompt": "I am modifying the cascivo Button component (inputs). Triggers an action or event\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nButton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Visual props must resolve to --cascivo-button-* / semantic tokens\nFlexible: label copy.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ButtonGroup",
@@ -2264,7 +2276,8 @@
           }
         ]
       },
-      "contextUrl": "/context/button-group.md"
+      "contextUrl": "/context/button-group.md",
+      "aiPrompt": "I am modifying the cascivo ButtonGroup component (inputs). Visually joins a set of related buttons into a single segmented control\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nButtonGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-button-radius, --cascivo-radius-control\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowRight/ArrowLeft/ArrowUp/ArrowDown/Home/End. Keep it AA.\n\nDo not change (strict): token names — Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons\nFlexible: children.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Calendar",
@@ -2317,7 +2330,8 @@
           }
         ]
       },
-      "contextUrl": "/context/calendar.md"
+      "contextUrl": "/context/calendar.md",
+      "aiPrompt": "I am modifying the cascivo Calendar component (inputs). An accessible standalone month-grid date picker.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCalendar is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-calendar-bg, --cascivo-calendar-radius, --cascivo-calendar-cell-size, --cascivo-calendar-day-selected-bg, --cascivo-calendar-day-selected-fg, --cascivo-calendar-day-today-color, --cascivo-calendar-range-bg\n\nAccessibility: role \"grid\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown/Enter/Space. Keep it AA.\n\nDo not change (strict): date type — All date props are native Date objects compared in UTC\nFlexible: locale, view control.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Card",
@@ -2361,7 +2375,8 @@
           }
         ]
       },
-      "contextUrl": "/context/card.md"
+      "contextUrl": "/context/card.md",
+      "aiPrompt": "I am modifying the cascivo Card component (display). Container for grouping related content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCard is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-card, --cascivo-shadow-md\n\nAccessibility: role \"region\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Surface, border, radius, and shadow must resolve to --cascivo-* tokens\nFlexible: variant and padding.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Carousel",
@@ -2405,7 +2420,8 @@
           }
         ]
       },
-      "contextUrl": "/context/carousel.md"
+      "contextUrl": "/context/carousel.md",
+      "aiPrompt": "I am modifying the cascivo Carousel component (display). Scroll-snap slide deck with previous/next controls and dot indicators\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCarousel is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End. Keep it AA.\n\nDo not change (strict): transition — Paging uses native CSS scroll-snap, not transform math — no custom easing config\nFlexible: slide content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ChatBubble",
@@ -2454,7 +2470,8 @@
           }
         ]
       },
-      "contextUrl": "/context/chat-bubble.md"
+      "contextUrl": "/context/chat-bubble.md",
+      "aiPrompt": "I am modifying the cascivo ChatBubble component (display). Message bubble for chat and messaging UIs with avatar, name, and timestamp support\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nChatBubble is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-radius-overlay, --cascivo-radius-indicator\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: avatar slot, body content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Checkbox",
@@ -2513,7 +2530,8 @@
           }
         ]
       },
-      "contextUrl": "/context/checkbox.md"
+      "contextUrl": "/context/checkbox.md",
+      "aiPrompt": "I am modifying the cascivo Checkbox component (inputs). Binary toggle for forms, with indeterminate support\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCheckbox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-text-on-accent, --cascivo-radius-sm, --cascivo-focus-ring\n\nAccessibility: role \"checkbox\", WCAG 2.2-AA, keyboard: Space. Keep it AA.\n\nDo not change (strict): token names — Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens\nFlexible: native input props.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CheckboxCard",
@@ -2569,7 +2587,8 @@
           }
         ]
       },
-      "contextUrl": "/context/checkbox-card.md"
+      "contextUrl": "/context/checkbox-card.md",
+      "aiPrompt": "I am modifying the cascivo CheckboxCard component (inputs). Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCheckboxCard is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-border, --cascivo-radius-surface\n\nAccessibility: role \"checkbox\", WCAG 2.2-AA, keyboard: Space. Keep it AA.\n\nDo not change (strict): token names — Card styling resolves to --cascivo-color-accent / --cascivo-color-border / --cascivo-radius-surface\nFlexible: controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Code",
@@ -2617,7 +2636,8 @@
           }
         ]
       },
-      "contextUrl": "/context/code.md"
+      "contextUrl": "/context/code.md",
+      "aiPrompt": "I am modifying the cascivo Code component (display). Inline code span for identifiers, commands, and short snippets\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCode is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-mono, --cascivo-color-text, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-indicator, --cascivo-text-xs, --cascivo-text-sm\n\nAccessibility: role \"code\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Font and surface must resolve to --cascivo-font-mono and --cascivo-* tokens\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CodeSnippet",
@@ -2661,7 +2681,8 @@
           }
         ]
       },
-      "contextUrl": "/context/code-snippet.md"
+      "contextUrl": "/context/code-snippet.md",
+      "aiPrompt": "I am modifying the cascivo CodeSnippet component (display). Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCodeSnippet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-mono, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-surface, --cascivo-radius-control\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): variant — inline | single | multi — controls the wrapping element and layout\nFlexible: copy button.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Collapsible",
@@ -2705,7 +2726,8 @@
           }
         ]
       },
-      "contextUrl": "/context/collapsible.md"
+      "contextUrl": "/context/collapsible.md",
+      "aiPrompt": "I am modifying the cascivo Collapsible component (display). A single disclosure region toggled open and closed by its trigger\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCollapsible is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-space-3, --cascivo-duration-200, --cascivo-ease-out\n\nAccessibility: role \"region\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): trigger markup — Always rendered as a native button for keyboard and a11y correctness\nFlexible: open state.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ColorPicker",
@@ -2754,7 +2776,8 @@
           }
         ]
       },
-      "contextUrl": "/context/color-picker.md"
+      "contextUrl": "/context/color-picker.md",
+      "aiPrompt": "I am modifying the cascivo ColorPicker component (inputs). Interactive color selection widget with saturation/lightness area, hue and alpha sliders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nColorPicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-md, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders and focus ring must resolve to --cascivo-* tokens\nFlexible: color model.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Combobox",
@@ -2817,7 +2840,8 @@
           }
         ]
       },
-      "contextUrl": "/context/combobox.md"
+      "contextUrl": "/context/combobox.md",
+      "aiPrompt": "I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCombobox is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-danger, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens\nFlexible: searchable, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CommandMenu",
@@ -2884,7 +2908,8 @@
           }
         ]
       },
-      "contextUrl": "/context/command-menu.md"
+      "contextUrl": "/context/command-menu.md",
+      "aiPrompt": "I am modifying the cascivo CommandMenu component (overlay). Cmd+K command palette with fuzzy search over grouped commands\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCommandMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-radius-modal, --cascivo-radius-sm, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: Cmd/Ctrl+K/ArrowDown/ArrowUp/Home/End/Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens\nFlexible: hotkey, async items.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Comparison",
@@ -2934,7 +2959,8 @@
           }
         ]
       },
-      "contextUrl": "/context/comparison.md"
+      "contextUrl": "/context/comparison.md",
+      "aiPrompt": "I am modifying the cascivo Comparison component (display). Reveals the difference between two layers with a draggable divider\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nComparison is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-radius-md, --cascivo-radius-full, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-focus-ring, --cascivo-shadow-sm, --cascivo-target-min-coarse\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown. Keep it AA.\n\nDo not change (strict): label — Provide a label (or rely on the i18n default) so the slider is named\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ContainedList",
@@ -2983,7 +3009,8 @@
           }
         ]
       },
-      "contextUrl": "/context/contained-list.md"
+      "contextUrl": "/context/contained-list.md",
+      "aiPrompt": "I am modifying the cascivo ContainedList component (display). Labelled list of rows inside a bordered container\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContainedList is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-surface, --cascivo-focus-ring\n\nAccessibility: role \"list\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\n\nDo not change (strict): list semantics — Rows are always ul/li; do not replace with generic divs\nFlexible: kind.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ContextMenu",
@@ -3031,7 +3058,8 @@
           }
         ]
       },
-      "contextUrl": "/context/context-menu.md"
+      "contextUrl": "/context/context-menu.md",
+      "aiPrompt": "I am modifying the cascivo ContextMenu component (overlay). Right-click context menu anchored at pointer coordinates via CSS custom properties\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContextMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): anchor position — Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click\nFlexible: menu contents.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CopyButton",
@@ -3083,7 +3111,8 @@
           }
         ]
       },
-      "contextUrl": "/context/copy-button.md"
+      "contextUrl": "/context/copy-button.md",
+      "aiPrompt": "I am modifying the cascivo CopyButton component (inputs). Icon button that copies a value to the clipboard with copied feedback\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCopyButton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-text-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-success, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-control-height-sm, --cascivo-control-height-md\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Styling resolves to semantic --cascivo-color-* tokens; copied state uses --cascivo-color-success\nFlexible: labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DataList",
@@ -3127,7 +3156,8 @@
           }
         ]
       },
-      "contextUrl": "/context/data-list.md"
+      "contextUrl": "/context/data-list.md",
+      "aiPrompt": "I am modifying the cascivo DataList component (display). Key-value pairs rendered as a description list\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDataList is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-space-3, --cascivo-space-4\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): dl semantics — Always renders dl/dt/dd; do not substitute generic elements\nFlexible: orientation and size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DataTable",
@@ -3176,7 +3206,8 @@
           }
         ]
       },
-      "contextUrl": "/context/data-table.md"
+      "contextUrl": "/context/data-table.md",
+      "aiPrompt": "I am modifying the cascivo DataTable component (display). Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDataTable is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-font-sans, --cascivo-text-sm, --cascivo-text-xs, --cascivo-font-semibold, --cascivo-font-medium, --cascivo-radius-lg, --cascivo-radius-sm, --cascivo-space-2, --cascivo-space-3, --cascivo-space-4, --cascivo-data-table-max-height, --cascivo-duration-150, --cascivo-duration-500, --cascivo-ease-out, --cascivo-ease-in-out\n\nAccessibility: role \"table\", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Enter/Space. Keep it AA.\n\nDo not change (strict): token names — All surfaces, borders, and spacing must resolve to --cascivo-* tokens\nFlexible: sortMode and density.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DatePicker",
@@ -3234,7 +3265,8 @@
           }
         ]
       },
-      "contextUrl": "/context/date-picker.md"
+      "contextUrl": "/context/date-picker.md",
+      "aiPrompt": "I am modifying the cascivo DatePicker component (inputs). An accessible date-picker with a calendar popover.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDatePicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-date-picker-bg, --cascivo-date-picker-border, --cascivo-date-picker-radius, --cascivo-date-picker-day-selected-bg, --cascivo-date-picker-day-today-color\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: Enter/Space/Escape/ArrowUp/ArrowDown/ArrowLeft/ArrowRight. Keep it AA.\n\nDo not change (strict): value format — All date props are ISO YYYY-MM-DD strings; token names — Styling resolves to --cascivo-date-picker-* component tokens\nFlexible: locale formatting.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "DateRangePicker",
@@ -3287,7 +3319,8 @@
           }
         ]
       },
-      "contextUrl": "/context/date-range-picker.md"
+      "contextUrl": "/context/date-range-picker.md",
+      "aiPrompt": "I am modifying the cascivo DateRangePicker component (inputs). A dual-calendar picker for selecting a contiguous date range.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDateRangePicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-calendar-bg, --cascivo-calendar-day-selected-bg, --cascivo-calendar-day-selected-fg, --cascivo-calendar-range-bg\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: Enter/Space/Escape/ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Home/End/PageUp/PageDown. Keep it AA.\n\nDo not change (strict): range type — value/defaultValue are { start: Date; end: Date } with native Date objects compared in UTC\nFlexible: presets, locale.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Dock",
@@ -3336,7 +3369,8 @@
           }
         ]
       },
-      "contextUrl": "/context/dock.md"
+      "contextUrl": "/context/dock.md",
+      "aiPrompt": "I am modifying the cascivo Dock component (navigation). Fixed bottom navigation bar for mobile app shells with up to 5 items\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDock is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-text-muted, --cascivo-border-subtle, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out, --cascivo-target-min-coarse, --cascivo-z-dock\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): visibility — Hidden at 64rem (lg) via display:none — not configurable to preserve mobile-only intent\nFlexible: item element.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Drawer",
@@ -3391,7 +3425,8 @@
           }
         ]
       },
-      "contextUrl": "/context/drawer.md"
+      "contextUrl": "/context/drawer.md",
+      "aiPrompt": "I am modifying the cascivo Drawer component (overlay). Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDrawer is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): side — Limited to start | end | top | bottom — drives the slide direction and animation\nFlexible: open state, body content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Dropdown",
@@ -3449,7 +3484,8 @@
           }
         ]
       },
-      "contextUrl": "/context/dropdown.md"
+      "contextUrl": "/context/dropdown.md",
+      "aiPrompt": "I am modifying the cascivo Dropdown component (overlay). Menu of actions revealed from a trigger\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nDropdown is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-md, --cascivo-z-dropdown\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): token names — Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens\nFlexible: trigger element, controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Editable",
@@ -3503,7 +3539,8 @@
           }
         ]
       },
-      "contextUrl": "/context/editable.md"
+      "contextUrl": "/context/editable.md",
+      "aiPrompt": "I am modifying the cascivo Editable component (inputs). Inline click-to-edit text field\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nEditable is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Visual styling must resolve to the listed --cascivo-* surface/border/accent/text tokens\nFlexible: placeholder copy, submit-on-blur behavior.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "EmptyState",
@@ -3556,7 +3593,8 @@
           }
         ]
       },
-      "contextUrl": "/context/empty-state.md"
+      "contextUrl": "/context/empty-state.md",
+      "aiPrompt": "I am modifying the cascivo EmptyState component (display). Placeholder for views that have no data to display\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nEmptyState is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-full\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Text and background colors must resolve to --cascivo-* tokens\nFlexible: size and action.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Field",
@@ -3613,7 +3651,8 @@
           }
         ]
       },
-      "contextUrl": "/context/field.md"
+      "contextUrl": "/context/field.md",
+      "aiPrompt": "I am modifying the cascivo Field component (inputs). Form-field wrapper composing label, control, description, and error\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nField is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-2, --cascivo-font-sans, --cascivo-text-sm, --cascivo-leading-snug, --cascivo-color-text-muted, --cascivo-color-destructive\n\nAccessibility: role \"group\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Spacing and color must resolve to --cascivo-* semantic tokens\nFlexible: control element.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "FileUploader",
@@ -3676,7 +3715,8 @@
           }
         ]
       },
-      "contextUrl": "/context/file-uploader.md"
+      "contextUrl": "/context/file-uploader.md",
+      "aiPrompt": "I am modifying the cascivo FileUploader component (inputs). Drag-and-drop file upload zone with file list and status indicators.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nFileUploader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-danger, --cascivo-color-danger-subtle\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Status colors must resolve to --cascivo-color-accent/success/danger tokens\nFlexible: label and hint copy, accept / maxSize constraints.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Filter",
@@ -3730,7 +3770,8 @@
           }
         ]
       },
-      "contextUrl": "/context/filter.md"
+      "contextUrl": "/context/filter.md",
+      "aiPrompt": "I am modifying the cascivo Filter component (inputs). A group of toggleable pill or outline buttons for filtering content by category\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nFilter is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-radius-full, --cascivo-border-default, --cascivo-color-text-subtle, --cascivo-color-text, --cascivo-color-active-bg, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.\nFlexible: variant, multi.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Form",
@@ -3784,7 +3825,8 @@
           }
         ]
       },
-      "contextUrl": "/context/form.md"
+      "contextUrl": "/context/form.md",
+      "aiPrompt": "I am modifying the cascivo Form component (inputs). Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nForm is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-4\n\nAccessibility: role \"form\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): submit semantics — onValid only fires when validation produces no errors; submission is guarded by the submitting signal\nFlexible: validation strategy, field control composition.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Header",
@@ -3828,7 +3870,8 @@
           }
         ]
       },
-      "contextUrl": "/context/header.md"
+      "contextUrl": "/context/header.md",
+      "aiPrompt": "I am modifying the cascivo Header component (navigation). App top bar with brand, primary navigation links, and an actions slot\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nHeader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-header-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-focus-ring, --cascivo-z-raised\n\nAccessibility: role \"banner\", WCAG 2.2-AA, keyboard: Tab. Keep it AA.\n\nDo not change (strict): token names — Surface, border, and z-index must resolve to --cascivo-* tokens\nFlexible: links and actions.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "HeaderPanel",
@@ -3877,7 +3920,8 @@
           }
         ]
       },
-      "contextUrl": "/context/header-panel.md"
+      "contextUrl": "/context/header-panel.md",
+      "aiPrompt": "I am modifying the cascivo HeaderPanel component (navigation). Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nHeaderPanel is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-shell-header-block-size, --cascivo-shell-panel-inline-size, --cascivo-color-surface, --cascivo-color-border, --cascivo-shadow-md, --cascivo-motion-enter\n\nAccessibility: role \"region\", WCAG 2.2-AA, keyboard: Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Surface, shadow, and sizing must resolve to --cascivo-* shell tokens\nFlexible: content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Heading",
@@ -3929,7 +3973,8 @@
           }
         ]
       },
-      "contextUrl": "/context/heading.md"
+      "contextUrl": "/context/heading.md",
+      "aiPrompt": "I am modifying the cascivo Heading component (display). Section heading with semantic level decoupled from visual size\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nHeading is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-display, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-text-base, --cascivo-text-lg, --cascivo-text-xl, --cascivo-text-2xl, --cascivo-text-3xl\n\nAccessibility: role \"heading\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): level sequence — Levels must not skip — maintain a valid heading hierarchy\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "HoverCard",
@@ -3984,7 +4029,8 @@
           }
         ]
       },
-      "contextUrl": "/context/hover-card.md"
+      "contextUrl": "/context/hover-card.md",
+      "aiPrompt": "I am modifying the cascivo HoverCard component (overlay). Hover-triggered popover with configurable open/close delay\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nHoverCard is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"complementary\", WCAG 2.2-AA, keyboard: Tab/Escape. Keep it AA.\n\nDo not change (strict): token names — Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens\nFlexible: open/close delay, content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "IconButton",
@@ -4036,7 +4082,8 @@
           }
         ]
       },
-      "contextUrl": "/context/icon-button.md"
+      "contextUrl": "/context/icon-button.md",
+      "aiPrompt": "I am modifying the cascivo IconButton component (inputs). Square, icon-only button with a required accessible label\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nIconButton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-control-height-sm, --cascivo-control-height-md, --cascivo-control-height-lg, --cascivo-button-radius, --cascivo-radius-control, --cascivo-color-primary, --cascivo-color-primary-fg, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-surface, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls\nFlexible: icon choice.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Image",
@@ -4085,7 +4132,8 @@
           }
         ]
       },
-      "contextUrl": "/context/image.md"
+      "contextUrl": "/context/image.md",
+      "aiPrompt": "I am modifying the cascivo Image component (display). Image with load state, blur-up placeholder, graceful fallback, and optional zoom\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nImage is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-radius-none, --cascivo-radius-sm, --cascivo-radius-md, --cascivo-radius-lg, --cascivo-radius-full, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-space-12\n\nAccessibility: role \"img\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Radius and placeholder colors must resolve to --cascivo-* tokens\nFlexible: radius.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Indicator",
@@ -4119,7 +4167,8 @@
           }
         ]
       },
-      "contextUrl": "/context/indicator.md"
+      "contextUrl": "/context/indicator.md",
+      "aiPrompt": "I am modifying the cascivo Indicator component (layout). Positions an overlay element (badge, dot, count) at a corner of its child\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nIndicator is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: placement.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "InlineLoading",
@@ -4173,7 +4222,8 @@
           }
         ]
       },
-      "contextUrl": "/context/inline-loading.md"
+      "contextUrl": "/context/inline-loading.md",
+      "aiPrompt": "I am modifying the cascivo InlineLoading component (feedback). Compact inline status indicator that pairs a label with a loading, success, or error state\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInlineLoading is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-success, --cascivo-color-destructive, --cascivo-motion-enter\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): status semantics — active must show a spinner, finished a success icon, error an error icon — do not repurpose\nFlexible: label.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Input",
@@ -4237,7 +4287,8 @@
           }
         ]
       },
-      "contextUrl": "/context/input.md"
+      "contextUrl": "/context/input.md",
+      "aiPrompt": "I am modifying the cascivo Input component (inputs). Text input field with optional label, hint, and error state\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens\nFlexible: label / hint / error copy, size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "InputGroup",
@@ -4291,7 +4342,8 @@
           }
         ]
       },
-      "contextUrl": "/context/input-group.md"
+      "contextUrl": "/context/input-group.md",
+      "aiPrompt": "I am modifying the cascivo InputGroup component (inputs). Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInputGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-text-subtle, --cascivo-radius-input\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Addon background, border, text, and radius must resolve to the listed --cascivo-* tokens\nFlexible: addon alignment, addon content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Item",
@@ -4340,7 +4392,8 @@
           }
         ]
       },
-      "contextUrl": "/context/item.md"
+      "contextUrl": "/context/item.md",
+      "aiPrompt": "I am modifying the cascivo Item component (display). Generic content row primitive with media, content, and action regions\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nItem is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-radius-item, --cascivo-space-3\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: variant and size, compound parts.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Join",
@@ -4377,7 +4430,8 @@
           }
         ]
       },
-      "contextUrl": "/context/join.md"
+      "contextUrl": "/context/join.md",
+      "aiPrompt": "I am modifying the cascivo Join component (layout). Groups adjacent children into a seamless joined element by removing interior borders and radii\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nJoin is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Kbd",
@@ -4420,7 +4474,8 @@
           }
         ]
       },
-      "contextUrl": "/context/kbd.md"
+      "contextUrl": "/context/kbd.md",
+      "aiPrompt": "I am modifying the cascivo Kbd component (display). Displays a keyboard key or shortcut\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nKbd is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-subtle, --cascivo-color-surface-raised, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-sm\n\nAccessibility: role \"kbd\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Surface and border must resolve to --cascivo-* tokens\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Label",
@@ -4477,7 +4532,8 @@
           }
         ]
       },
-      "contextUrl": "/context/label.md"
+      "contextUrl": "/context/label.md",
+      "aiPrompt": "I am modifying the cascivo Label component (inputs). Accessible caption for a form control\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nLabel is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-1, --cascivo-font-sans, --cascivo-text-sm, --cascivo-font-medium, --cascivo-leading-snug, --cascivo-leading-none, --cascivo-color-text, --cascivo-color-destructive\n\nAccessibility: role \"label\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Colors and type must resolve to --cascivo-* semantic tokens\nFlexible: label copy.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Link",
@@ -4525,7 +4581,8 @@
           }
         ]
       },
-      "contextUrl": "/context/link.md"
+      "contextUrl": "/context/link.md",
+      "aiPrompt": "I am modifying the cascivo Link component (navigation). Styled anchor for navigation, standalone or inline within prose\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nLink is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-radius-sm, --cascivo-focus-ring\n\nAccessibility: role \"link\", WCAG 2.2-AA, keyboard: Enter. Keep it AA.\n\nDo not change (strict): token names — Accent colors and focus ring must resolve to --cascivo-* tokens\nFlexible: variant.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "List",
@@ -4569,7 +4626,8 @@
           }
         ]
       },
-      "contextUrl": "/context/list.md"
+      "contextUrl": "/context/list.md",
+      "aiPrompt": "I am modifying the cascivo List component (display). Styled unordered or ordered list with ListItem\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nList is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-leading-normal, --cascivo-color-text, --cascivo-text-base, --cascivo-space-1, --cascivo-space-6\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Spacing and text color must resolve to --cascivo-* tokens\nFlexible: marker.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Menu",
@@ -4629,7 +4687,8 @@
           }
         ]
       },
-      "contextUrl": "/context/menu.md"
+      "contextUrl": "/context/menu.md",
+      "aiPrompt": "I am modifying the cascivo Menu component (overlay). Dropdown menu with keyboard navigation, built on usePopover\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): token names — Surface, border, radius, shadow, and motion must resolve to the listed --cascivo-* tokens\nFlexible: item content, composition.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "MenuButton",
@@ -4700,7 +4759,8 @@
           }
         ]
       },
-      "contextUrl": "/context/menu-button.md"
+      "contextUrl": "/context/menu-button.md",
+      "aiPrompt": "I am modifying the cascivo MenuButton component (navigation). A button that opens an anchored action menu of one-shot commands\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMenuButton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-primary, --cascivo-color-primary-fg, --cascivo-color-primary-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-z-dropdown\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape/Tab. Keep it AA.\n\nDo not change (strict): token names — Trigger and menu styling must resolve to the listed --cascivo-* tokens\nFlexible: item content, trigger appearance.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Menubar",
@@ -4749,7 +4809,8 @@
           }
         ]
       },
-      "contextUrl": "/context/menubar.md"
+      "contextUrl": "/context/menubar.md",
+      "aiPrompt": "I am modifying the cascivo Menubar component (navigation). Horizontal application menu bar with keyboard-navigable dropdown menus\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMenubar is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"menubar\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowDown/ArrowUp/Home/End/Enter/Escape. Keep it AA.\n\nDo not change (strict): menu content — Menus are described by data (menus prop) so roles and keyboard wiring stay correct; token names — Surface, borders, and focus ring must resolve to --cascivo-* tokens\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Modal",
@@ -4813,7 +4874,8 @@
           }
         ]
       },
-      "contextUrl": "/context/modal.md"
+      "contextUrl": "/context/modal.md",
+      "aiPrompt": "I am modifying the cascivo Modal component (overlay). Accessible dialog overlay using native <dialog> element\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nModal is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-radius-modal, --cascivo-shadow-xl, --cascivo-focus-ring\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-* tokens\nFlexible: size, title / description / body.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "MultiSelect",
@@ -4877,7 +4939,8 @@
           }
         ]
       },
-      "contextUrl": "/context/multi-select.md"
+      "contextUrl": "/context/multi-select.md",
+      "aiPrompt": "I am modifying the cascivo MultiSelect component (inputs). Searchable multi-value select with popover listbox\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nMultiSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-radius-input, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter\n\nAccessibility: role \"listbox\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Space/Enter/Escape. Keep it AA.\n\nDo not change (strict): token names — Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens\nFlexible: labels, options.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "NativeSelect",
@@ -4926,7 +4989,8 @@
           }
         ]
       },
-      "contextUrl": "/context/native-select.md"
+      "contextUrl": "/context/native-select.md",
+      "aiPrompt": "I am modifying the cascivo NativeSelect component (inputs). A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNativeSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text-muted, --cascivo-radius-field, --cascivo-focus-ring\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Space/Home/End. Keep it AA.\nFlexible: options, value.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "NavigationMenu",
@@ -4975,7 +5039,8 @@
           }
         ]
       },
-      "contextUrl": "/context/navigation-menu.md"
+      "contextUrl": "/context/navigation-menu.md",
+      "aiPrompt": "I am modifying the cascivo NavigationMenu component (navigation). Site navigation bar with links and dropdown flyout panels\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNavigationMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End/Enter/Escape. Keep it AA.\nFlexible: orientation, panel content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Notification",
@@ -5034,7 +5099,8 @@
           }
         ]
       },
-      "contextUrl": "/context/notification.md"
+      "contextUrl": "/context/notification.md",
+      "aiPrompt": "I am modifying the cascivo Notification component (feedback). Inline, actionable notification banner that surfaces a titled message with an optional recovery action\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNotification is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-surface, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"alert\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): role mapping — warning/error must use role=\"alert\"; info/success use role=\"status\"\nFlexible: icon, actions.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "NumberInput",
@@ -5089,7 +5155,8 @@
           }
         ]
       },
-      "contextUrl": "/context/number-input.md"
+      "contextUrl": "/context/number-input.md",
+      "aiPrompt": "I am modifying the cascivo NumberInput component (inputs). Numeric input with stepper buttons, clamping, precision, and locale formatting\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNumberInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-bg-subtle, --cascivo-color-text-subtle, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"spinbutton\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Tab. Keep it AA.\n\nDo not change (strict): token names — Visual props must resolve to the listed --cascivo-* semantic tokens\nFlexible: formatting and bounds, stepper labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "OtpInput",
@@ -5139,7 +5206,8 @@
           }
         ]
       },
-      "contextUrl": "/context/otp-input.md"
+      "contextUrl": "/context/otp-input.md",
+      "aiPrompt": "I am modifying the cascivo OtpInput component (inputs). Segmented one-time code input\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nOtpInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Backspace. Keep it AA.\n\nDo not change (strict): token names — Slot styling must resolve to the listed --cascivo-* tokens\nFlexible: length and type.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "OverflowMenu",
@@ -5197,7 +5265,8 @@
           }
         ]
       },
-      "contextUrl": "/context/overflow-menu.md"
+      "contextUrl": "/context/overflow-menu.md",
+      "aiPrompt": "I am modifying the cascivo OverflowMenu component (overlay). Kebab icon button revealing a menu of row-level actions\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nOverflowMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-radius-button, --cascivo-focus-ring\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): token names — Trigger and item styling must resolve to the listed --cascivo-* tokens\nFlexible: item set and labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Pagination",
@@ -5246,7 +5315,8 @@
           }
         ]
       },
-      "contextUrl": "/context/pagination.md"
+      "contextUrl": "/context/pagination.md",
+      "aiPrompt": "I am modifying the cascivo Pagination component (navigation). Controls for navigating paged data sets, with page size selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPagination is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-radius-input, --cascivo-radius-button, --cascivo-focus-ring\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowUp/ArrowDown. Keep it AA.\n\nDo not change (strict): token names — Surfaces, borders, and accent must resolve to --cascivo-* tokens\nFlexible: page size options.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "PasswordInput",
@@ -5298,7 +5368,8 @@
           }
         ]
       },
-      "contextUrl": "/context/password-input.md"
+      "contextUrl": "/context/password-input.md",
+      "aiPrompt": "I am modifying the cascivo PasswordInput component (inputs). Password input with reveal toggle and optional strength meter\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPasswordInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-warning, --cascivo-color-success, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Field, toggle, and strength-meter styling must resolve to the listed --cascivo-* tokens\nFlexible: labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Popover",
@@ -5352,7 +5423,8 @@
           }
         ]
       },
-      "contextUrl": "/context/popover.md"
+      "contextUrl": "/context/popover.md",
+      "aiPrompt": "I am modifying the cascivo Popover component (overlay). Anchored floating panel built on CSS Anchor Positioning + Popover API\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPopover is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape. Keep it AA.\n\nDo not change (strict): token names — Panel styling must resolve to the listed --cascivo-* tokens\nFlexible: content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Progress",
@@ -5400,7 +5472,8 @@
           }
         ]
       },
-      "contextUrl": "/context/progress.md"
+      "contextUrl": "/context/progress.md",
+      "aiPrompt": "I am modifying the cascivo Progress component (feedback). Horizontal bar showing the completion progress of a tracked operation\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProgress is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface-2, --cascivo-color-primary, --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-error, --cascivo-color-accent, --cascivo-radius-full, --cascivo-ease-out\n\nAccessibility: role \"progressbar\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Colors must resolve to --cascivo-* tokens\nFlexible: variant.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ProgressBar",
@@ -5450,7 +5523,8 @@
           }
         ]
       },
-      "contextUrl": "/context/progress-bar.md"
+      "contextUrl": "/context/progress-bar.md",
+      "aiPrompt": "I am modifying the cascivo ProgressBar component (feedback). Shows determinate or indeterminate progress of a task\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProgressBar is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-full, --cascivo-motion-enter\n\nAccessibility: role \"progressbar\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Fill and status colors must resolve to --cascivo-* tokens\nFlexible: determinate vs indeterminate.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ProgressCircle",
@@ -5500,7 +5574,8 @@
           }
         ]
       },
-      "contextUrl": "/context/progress-circle.md"
+      "contextUrl": "/context/progress-circle.md",
+      "aiPrompt": "I am modifying the cascivo ProgressCircle component (feedback). Circular determinate progress indicator rendered as an SVG arc\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProgressCircle is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-accent, --cascivo-color-text\n\nAccessibility: role \"progressbar\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Arc and track colors must resolve to --cascivo-* tokens\nFlexible: size and showValue.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ProgressIndicator",
@@ -5548,7 +5623,8 @@
           }
         ]
       },
-      "contextUrl": "/context/progress-indicator.md"
+      "contextUrl": "/context/progress-indicator.md",
+      "aiPrompt": "I am modifying the cascivo ProgressIndicator component (navigation). Shows progress through the steps of a multi-step flow\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProgressIndicator is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-text-on-accent, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-full\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Step and connector colors must resolve to --cascivo-* tokens\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Prose",
@@ -5596,7 +5672,8 @@
           }
         ]
       },
-      "contextUrl": "/context/prose.md"
+      "contextUrl": "/context/prose.md",
+      "aiPrompt": "I am modifying the cascivo Prose component (display). Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProse is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — All typography and surface styling resolves to --cascivo-* tokens\nFlexible: source HTML.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "QrCode",
@@ -5640,7 +5717,8 @@
           }
         ]
       },
-      "contextUrl": "/context/qr-code.md"
+      "contextUrl": "/context/qr-code.md",
+      "aiPrompt": "I am modifying the cascivo QrCode component (display). Encodes a URL or short text into a scannable SVG QR code\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nQrCode is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text\n\nAccessibility: role \"img\", WCAG 2.2-AA. Keep it AA.\nFlexible: errorCorrection, colors.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "RadialProgress",
@@ -5695,7 +5773,8 @@
           }
         ]
       },
-      "contextUrl": "/context/radial-progress.md"
+      "contextUrl": "/context/radial-progress.md",
+      "aiPrompt": "I am modifying the cascivo RadialProgress component (feedback). Circular progress indicator using conic-gradient, with percentage label and variant colors\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRadialProgress is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-primary, --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-error, --cascivo-color-surface, --cascivo-color-surface-2, --cascivo-color-text, --cascivo-radius-full\n\nAccessibility: role \"progressbar\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): color — Color resolves through --cascivo-color-* semantic tokens via data-variant\nFlexible: label.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Radio",
@@ -5749,7 +5828,8 @@
           }
         ]
       },
-      "contextUrl": "/context/radio.md"
+      "contextUrl": "/context/radio.md",
+      "aiPrompt": "I am modifying the cascivo Radio component (inputs). Single choice from a set, grouped with RadioGroup\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRadio is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-text-on-accent, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"radio\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/ArrowLeft/ArrowRight/Space. Keep it AA.\n\nDo not change (strict): token names — Control and label styling must resolve to the listed --cascivo-* tokens\nFlexible: option labels and orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "RadioCard",
@@ -5803,7 +5883,8 @@
           }
         ]
       },
-      "contextUrl": "/context/radio-card.md"
+      "contextUrl": "/context/radio-card.md",
+      "aiPrompt": "I am modifying the cascivo RadioCard component (inputs). Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRadioCard is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-border, --cascivo-radius-surface, --cascivo-color-active-bg\n\nAccessibility: role \"radiogroup\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Space. Keep it AA.\n\nDo not change (strict): token names — Card and indicator styling must resolve to the listed --cascivo-* tokens\nFlexible: title and description.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "RatingGroup",
@@ -5852,7 +5933,8 @@
           }
         ]
       },
-      "contextUrl": "/context/rating-group.md"
+      "contextUrl": "/context/rating-group.md",
+      "aiPrompt": "I am modifying the cascivo RatingGroup component (inputs). Star rating input with accessible radio group pattern\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRatingGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-warning, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-radius-sm\n\nAccessibility: role \"radiogroup\", WCAG 2.2-AA, keyboard: Tab/Space/Enter. Keep it AA.\n\nDo not change (strict): token names — Star styling must resolve to the listed --cascivo-* tokens\nFlexible: scale and labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "RelativeTime",
@@ -5896,7 +5978,8 @@
           }
         ]
       },
-      "contextUrl": "/context/relative-time.md"
+      "contextUrl": "/context/relative-time.md",
+      "aiPrompt": "I am modifying the cascivo RelativeTime component (display). Displays a date as a localized phrase relative to now, auto-updating\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRelativeTime is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"time\", WCAG 2.2-AA. Keep it AA.\nFlexible: format, sync.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Resizable",
@@ -5940,7 +6023,8 @@
           }
         ]
       },
-      "contextUrl": "/context/resizable.md"
+      "contextUrl": "/context/resizable.md",
+      "aiPrompt": "I am modifying the cascivo Resizable component (layout). Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nResizable is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"separator\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End. Keep it AA.\n\nDo not change (strict): sizing — Pane sizes derive from a single --cascivo-resizable-ratio custom property via flex\nFlexible: min/max ratio.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ScrollArea",
@@ -5984,7 +6068,8 @@
           }
         ]
       },
-      "contextUrl": "/context/scroll-area.md"
+      "contextUrl": "/context/scroll-area.md",
+      "aiPrompt": "I am modifying the cascivo ScrollArea component (layout). A scroll container with styled, slim scrollbars and overflow shadows\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nScrollArea is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-control, --cascivo-scroll-area-height, --cascivo-scroll-area-width\n\nAccessibility: role \"none\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/PageUp/PageDown/Home/End. Keep it AA.\n\nDo not change (strict): scroll behaviour — Relies on native overflow scrolling — never replace with JS scrolling\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Search",
@@ -6037,7 +6122,8 @@
           }
         ]
       },
-      "contextUrl": "/context/search.md"
+      "contextUrl": "/context/search.md",
+      "aiPrompt": "I am modifying the cascivo Search component (inputs). Search input with debounced search callback and clear button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSearch is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"searchbox\", WCAG 2.2-AA, keyboard: Enter. Keep it AA.\n\nDo not change (strict): token names — Field and control styling must resolve to the listed --cascivo-* tokens\nFlexible: debounce and copy.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "SegmentedControl",
@@ -6091,7 +6177,8 @@
           }
         ]
       },
-      "contextUrl": "/context/segmented-control.md"
+      "contextUrl": "/context/segmented-control.md",
+      "aiPrompt": "I am modifying the cascivo SegmentedControl component (inputs). Mutually exclusive toggle group\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSegmentedControl is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-surface, --cascivo-color-text, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-sm\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight. Keep it AA.\n\nDo not change (strict): token names — Segment styling must resolve to the listed --cascivo-* tokens\nFlexible: option labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Select",
@@ -6146,7 +6233,8 @@
           }
         ]
       },
-      "contextUrl": "/context/select.md"
+      "contextUrl": "/context/select.md",
+      "aiPrompt": "I am modifying the cascivo Select component (inputs). Native select menu styled to match the design system\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-text-muted, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"listbox\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Space. Keep it AA.\n\nDo not change (strict): token names — Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens\nFlexible: option labels.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Separator",
@@ -6190,7 +6278,8 @@
           }
         ]
       },
-      "contextUrl": "/context/separator.md"
+      "contextUrl": "/context/separator.md",
+      "aiPrompt": "I am modifying the cascivo Separator component (display). Visual or semantic divider between content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSeparator is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border\n\nAccessibility: role \"separator\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Color must resolve to --cascivo-color-border\nFlexible: decorative.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Sheet",
@@ -6239,7 +6328,8 @@
           }
         ]
       },
-      "contextUrl": "/context/sheet.md"
+      "contextUrl": "/context/sheet.md",
+      "aiPrompt": "I am modifying the cascivo Sheet component (overlay). Slide-in panel from any edge, using popover=manual and @starting-style animations\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): side — Limited to start | end | top | bottom — drives the slide direction and animation\nFlexible: body content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ShellHeader",
@@ -6293,7 +6383,8 @@
           }
         ]
       },
-      "contextUrl": "/context/shell-header.md"
+      "contextUrl": "/context/shell-header.md",
+      "aiPrompt": "I am modifying the cascivo ShellHeader component (navigation). Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nShellHeader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-shell-header-block-size, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-radius-control\n\nAccessibility: role \"banner\", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.\n\nDo not change (strict): token names — Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens\nFlexible: nav / actions / end slots.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "SideNav",
@@ -6337,7 +6428,8 @@
           }
         ]
       },
-      "contextUrl": "/context/side-nav.md"
+      "contextUrl": "/context/side-nav.md",
+      "aiPrompt": "I am modifying the cascivo SideNav component (navigation). Collapsible sidebar navigation with optional icons and one level of grouping\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSideNav is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.\n\nDo not change (strict): token names — Sizing, surfaces, and motion must resolve to --cascivo-* tokens\nFlexible: collapsed / expandOnHover.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Skeleton",
@@ -6386,7 +6478,8 @@
           }
         ]
       },
-      "contextUrl": "/context/skeleton.md"
+      "contextUrl": "/context/skeleton.md",
+      "aiPrompt": "I am modifying the cascivo Skeleton component (display). Animated loading placeholder that mirrors the shape of pending content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSkeleton is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-sm, --cascivo-radius-full, --cascivo-radius-component\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Background and radius must resolve to --cascivo-* tokens\nFlexible: variant and dimensions.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "SkipNav",
@@ -6434,7 +6527,8 @@
           }
         ]
       },
-      "contextUrl": "/context/skip-nav.md"
+      "contextUrl": "/context/skip-nav.md",
+      "aiPrompt": "I am modifying the cascivo SkipNav component (navigation). Skip link that jumps keyboard users past the navigation to the main content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSkipNav is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-radius-control, --cascivo-focus-ring\n\nAccessibility: role \"link\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): first-focusable placement — SkipNavLink must be the first focusable element to function\nFlexible: target id.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Slider",
@@ -6483,7 +6577,8 @@
           }
         ]
       },
-      "contextUrl": "/context/slider.md"
+      "contextUrl": "/context/slider.md",
+      "aiPrompt": "I am modifying the cascivo Slider component (inputs). Range input for selecting a value within bounds\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSlider is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"slider\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End. Keep it AA.\n\nDo not change (strict): token names — Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens\nFlexible: min/max/step.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Spinner",
@@ -6532,7 +6627,8 @@
           }
         ]
       },
-      "contextUrl": "/context/spinner.md"
+      "contextUrl": "/context/spinner.md",
+      "aiPrompt": "I am modifying the cascivo Spinner component (feedback). Indeterminate loading indicator\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSpinner is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-radius-full\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Radius must resolve to --cascivo-radius-full\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Stack",
@@ -6570,7 +6666,8 @@
           }
         ]
       },
-      "contextUrl": "/context/stack.md"
+      "contextUrl": "/context/stack.md",
+      "aiPrompt": "I am modifying the cascivo Stack component (layout). Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nStack is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: offset.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Stat",
@@ -6618,7 +6715,8 @@
           }
         ]
       },
-      "contextUrl": "/context/stat.md"
+      "contextUrl": "/context/stat.md",
+      "aiPrompt": "I am modifying the cascivo Stat component (display). Displays a key metric with optional delta, trend direction and help text\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nStat is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-color-success, --cascivo-color-destructive\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Trend colors must resolve to --cascivo-color-success/destructive\nFlexible: delta and trend.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Status",
@@ -6671,7 +6769,8 @@
           }
         ]
       },
-      "contextUrl": "/context/status.md"
+      "contextUrl": "/context/status.md",
+      "aiPrompt": "I am modifying the cascivo Status component (display). Colored dot with a label communicating the state of a system or entity\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nStatus is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-success, --cascivo-color-warning, --cascivo-color-error, --cascivo-color-info, --cascivo-color-text-muted, --cascivo-color-text, --cascivo-radius-full\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — State colors must resolve to --cascivo-color-success/warning/error/info\nFlexible: pulse.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Steps",
@@ -6721,7 +6820,8 @@
           }
         ]
       },
-      "contextUrl": "/context/steps.md"
+      "contextUrl": "/context/steps.md",
+      "aiPrompt": "I am modifying the cascivo Steps component (navigation). Visual progress indicator for multi-step flows with horizontal and vertical orientations\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSteps is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-success, --cascivo-color-success-content, --cascivo-color-error, --cascivo-color-error-content, --cascivo-color-surface, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-border-default, --cascivo-radius-full, --cascivo-ease-out\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\nFlexible: step state, orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "StructuredList",
@@ -6770,7 +6870,8 @@
           }
         ]
       },
-      "contextUrl": "/context/structured-list.md"
+      "contextUrl": "/context/structured-list.md",
+      "aiPrompt": "I am modifying the cascivo StructuredList component (display). Tabular row list for scannable data, optionally single-selectable\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nStructuredList is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-primary, --cascivo-color-surface, --cascivo-focus-ring\n\nAccessibility: role \"table\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space. Keep it AA.\n\nDo not change (strict): roles — Static uses table semantics; selectable uses radiogroup — do not mix\nFlexible: selectable.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Swap",
@@ -6820,7 +6921,8 @@
           }
         ]
       },
-      "contextUrl": "/context/swap.md"
+      "contextUrl": "/context/swap.md",
+      "aiPrompt": "I am modifying the cascivo Swap component (inputs). Animated toggle between two icon/content states with rotate or flip transition\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSwap is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-ring-width, --cascivo-ring-color, --cascivo-radius-control, --cascivo-ease-out\n\nAccessibility: role \"switch\", WCAG 2.2-AA, keyboard: Space/Enter. Keep it AA.\nFlexible: content, animation mode.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Switcher",
@@ -6864,7 +6966,8 @@
           }
         ]
       },
-      "contextUrl": "/context/switcher.md"
+      "contextUrl": "/context/switcher.md",
+      "aiPrompt": "I am modifying the cascivo Switcher component (navigation). App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSwitcher is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-border, --cascivo-focus-ring\n\nAccessibility: role \"list\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): token names — Accent and surface colors must resolve to --cascivo-* tokens\nFlexible: dividers.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tabs",
@@ -6913,7 +7016,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tabs.md"
+      "contextUrl": "/context/tabs.md",
+      "aiPrompt": "I am modifying the cascivo Tabs component (navigation). Switch between related panels of content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTabs is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-focus-ring\n\nAccessibility: role \"tablist\", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End. Keep it AA.\n\nDo not change (strict): token names — Accent, borders, and focus ring must resolve to --cascivo-* tokens\nFlexible: controlled vs uncontrolled.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tag",
@@ -6966,7 +7070,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tag.md"
+      "contextUrl": "/context/tag.md",
+      "aiPrompt": "I am modifying the cascivo Tag component (display). Compact chip for labeling, categorizing, or filtering content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTag is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg-subtle, --cascivo-color-text-subtle, --cascivo-color-info, --cascivo-color-info-subtle, --cascivo-color-success, --cascivo-color-success-subtle, --cascivo-color-warning, --cascivo-color-warning-subtle, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-radius-badge, --cascivo-focus-ring\n\nAccessibility: role \"none\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Variant colors must resolve to --cascivo-color-*-subtle tokens\nFlexible: variant and dismissibility.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "TagsInput",
@@ -7019,7 +7124,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tags-input.md"
+      "contextUrl": "/context/tags-input.md",
+      "aiPrompt": "I am modifying the cascivo TagsInput component (inputs). Free-form multi-value chip input\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTagsInput is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Enter/,/Backspace. Keep it AA.\n\nDo not change (strict): commit keys — Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract\nFlexible: tag values.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Text",
@@ -7067,7 +7173,8 @@
           }
         ]
       },
-      "contextUrl": "/context/text.md"
+      "contextUrl": "/context/text.md",
+      "aiPrompt": "I am modifying the cascivo Text component (display). Body text with size, weight, and muted variants\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nText is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-font-normal, --cascivo-font-medium, --cascivo-font-semibold, --cascivo-leading-normal, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-text-sm, --cascivo-text-base, --cascivo-text-lg\n\nAccessibility: role \"paragraph\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Font, leading, and color must resolve to --cascivo-* tokens\nFlexible: as / size / weight.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Textarea",
@@ -7120,7 +7227,8 @@
           }
         ]
       },
-      "contextUrl": "/context/textarea.md"
+      "contextUrl": "/context/textarea.md",
+      "aiPrompt": "I am modifying the cascivo Textarea component (inputs). Multi-line text input with optional label, hint, and error state\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTextarea is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens\nFlexible: resize and rows.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tile",
@@ -7174,7 +7282,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tile.md"
+      "contextUrl": "/context/tile.md",
+      "aiPrompt": "I am modifying the cascivo Tile component (inputs). A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTile is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-bg, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-radius-surface, --cascivo-focus-ring\n\nAccessibility: role \"radio\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): selectable — single (radio, select-only) | multi (checkbox, toggle)\nFlexible: selected state, element.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "TimePicker",
@@ -7223,7 +7332,8 @@
           }
         ]
       },
-      "contextUrl": "/context/time-picker.md"
+      "contextUrl": "/context/time-picker.md",
+      "aiPrompt": "I am modifying the cascivo TimePicker component (inputs). Native time input wrapper with label, hint, error, and size variants\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTimePicker is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-color-danger, --cascivo-radius-input, --cascivo-radius-md\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab. Keep it AA.\n\nDo not change (strict): value format — Value is a 24-hour HH:mm string driven by the native time input\nFlexible: min/max/step.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Timeline",
@@ -7267,7 +7377,8 @@
           }
         ]
       },
-      "contextUrl": "/context/timeline.md"
+      "contextUrl": "/context/timeline.md",
+      "aiPrompt": "I am modifying the cascivo Timeline component (display). Ordered sequence of events with status markers and a connector line\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTimeline is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-radius-full\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): status semantics — Use a single current item; status drives marker colour via data-status\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Toast",
@@ -7320,7 +7431,8 @@
           }
         ]
       },
-      "contextUrl": "/context/toast.md"
+      "contextUrl": "/context/toast.md",
+      "aiPrompt": "I am modifying the cascivo Toast component (overlay). Transient notification surfaced via the useToast hook\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToast is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface-overlay, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-radius-md, --cascivo-z-toast\n\nAccessibility: role \"status\", WCAG 2.2-AA, keyboard: Tab. Keep it AA.\n\nDo not change (strict): variant — Limited to default | success | warning | destructive — drives color and live-region urgency\nFlexible: duration.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Toc",
@@ -7372,7 +7484,8 @@
           }
         ]
       },
-      "contextUrl": "/context/toc.md"
+      "contextUrl": "/context/toc.md",
+      "aiPrompt": "I am modifying the cascivo Toc component (navigation). Table of contents with scroll-spy highlighting of the active section\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToc is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-focus-ring, --cascivo-target-min-coarse\n\nAccessibility: role \"navigation\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): token names — Colors, focus ring, and touch target must resolve to --cascivo-* tokens\nFlexible: activeId.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Toggle",
@@ -7421,7 +7534,8 @@
           }
         ]
       },
-      "contextUrl": "/context/toggle.md"
+      "contextUrl": "/context/toggle.md",
+      "aiPrompt": "I am modifying the cascivo Toggle component (inputs). On/off switch built as an accessible button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToggle is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-radius-full, --cascivo-focus-ring\n\nAccessibility: role \"switch\", WCAG 2.2-AA, keyboard: Space/Enter. Keep it AA.\n\nDo not change (strict): token names — Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens\nFlexible: label copy.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ToggleGroup",
@@ -7473,7 +7587,8 @@
           }
         ]
       },
-      "contextUrl": "/context/toggle-group.md"
+      "contextUrl": "/context/toggle-group.md",
+      "aiPrompt": "I am modifying the cascivo ToggleGroup component (inputs). A set of toggle buttons for single or multiple selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToggleGroup is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-control-height-sm, --cascivo-control-height-md, --cascivo-control-height-lg, --cascivo-radius-control, --cascivo-radius-item, --cascivo-color-bg-subtle, --cascivo-color-surface, --cascivo-color-text, --cascivo-shadow-sm, --cascivo-focus-ring\n\nAccessibility: role \"radiogroup\", WCAG 2.2-AA, keyboard: ArrowRight/ArrowLeft/ArrowUp/ArrowDown/Home/End/Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Item height must resolve to --cascivo-control-height-* to align with other controls\nFlexible: item content.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Toggletip",
@@ -7539,7 +7654,8 @@
           }
         ]
       },
-      "contextUrl": "/context/toggletip.md"
+      "contextUrl": "/context/toggletip.md",
+      "aiPrompt": "I am modifying the cascivo Toggletip component (overlay). A click-triggered info popover for supplementary, selectable content\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nToggletip is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-radius-overlay, --cascivo-shadow-md, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-z-tooltip\n\nAccessibility: role \"status\", WCAG 2.2-AA, keyboard: Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): token names — Trigger and bubble styling must resolve to the listed --cascivo-* tokens\nFlexible: content, open state ownership.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tooltip",
@@ -7598,7 +7714,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tooltip.md"
+      "contextUrl": "/context/tooltip.md",
+      "aiPrompt": "I am modifying the cascivo Tooltip component (overlay). Contextual label shown on hover or focus\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTooltip is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-on-accent, --cascivo-radius-sm, --cascivo-z-tooltip\n\nAccessibility: role \"tooltip\", WCAG 2.2-AA, keyboard: Tab/Escape. Keep it AA.\n\nDo not change (strict): placement — Limited to top | right | bottom | left, positioned via CSS anchor\nFlexible: delay.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "TreeView",
@@ -7652,7 +7769,8 @@
           }
         ]
       },
-      "contextUrl": "/context/tree-view.md"
+      "contextUrl": "/context/tree-view.md",
+      "aiPrompt": "I am modifying the cascivo TreeView component (display). Hierarchical, expandable tree of nodes with keyboard navigation and selection\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTreeView is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-tree-indent, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-duration-200, --cascivo-ease-out\n\nAccessibility: role \"tree\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/ArrowRight/ArrowLeft/Home/End/Enter/Space/Typeahead. Keep it AA.\n\nDo not change (strict): keyboard model — Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped\nFlexible: selectionMode, indent token.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "User",
@@ -7701,7 +7819,8 @@
           }
         ]
       },
-      "contextUrl": "/context/user.md"
+      "contextUrl": "/context/user.md",
+      "aiPrompt": "I am modifying the cascivo User component (display). Identity composite: an avatar with a name, description, and optional action slot\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nUser is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-space-3, --cascivo-text-sm, --cascivo-text-xs\n\nAccessibility: role \"group\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Name and description colors must resolve to --cascivo-* tokens\nFlexible: description.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "VisuallyHidden",
@@ -7749,7 +7868,8 @@
           }
         ]
       },
-      "contextUrl": "/context/visually-hidden.md"
+      "contextUrl": "/context/visually-hidden.md",
+      "aiPrompt": "I am modifying the cascivo VisuallyHidden component (display). Hides content visually while keeping it available to screen readers\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nVisuallyHidden is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): visibility technique — Must keep content in the a11y tree — never display:none\nFlexible: children.\n\nDo not invent props, tokens, or global viewport media queries."
     }
   ]
 }

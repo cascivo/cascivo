@@ -69,3 +69,28 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 | ----------- | -------- | --------------------------------------------------------------------- |
 | content     | flexible | Children are arbitrary panel content                                  |
 | token names | strict   | Surface, shadow, and sizing must resolve to --cascivo-\* shell tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo HeaderPanel component (navigation). Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+HeaderPanel is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-shell-header-block-size, --cascivo-shell-panel-inline-size, --cascivo-color-surface, --cascivo-color-border, --cascivo-shadow-md, --cascivo-motion-enter
+
+Accessibility: role "region", WCAG 2.2-AA, keyboard: Escape/Tab. Keep it AA.
+
+Do not change (strict): token names — Surface, shadow, and sizing must resolve to --cascivo-* shell tokens
+Flexible: content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

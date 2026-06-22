@@ -46,3 +46,28 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 | --------------- | -------- | ---------------------------------------------------------------------------------------------- |
 | menu contents   | flexible | Accepts arbitrary ContextMenuItem children after the trigger child                             |
 | anchor position | strict   | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ContextMenu component (overlay). Right-click context menu anchored at pointer coordinates via CSS custom properties
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ContextMenu is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle
+
+Accessibility: role "menu", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape. Keep it AA.
+
+Do not change (strict): anchor position — Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click
+Flexible: menu contents.
+
+Do not invent props, tokens, or global viewport media queries.
+```

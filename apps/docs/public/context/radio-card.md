@@ -68,3 +68,28 @@ Single-select plan picker
 | --------------------- | -------- | ------------------------------------------------------------------------- |
 | token names           | strict   | Card and indicator styling must resolve to the listed --cascivo-\* tokens |
 | title and description | flexible | title and description accept arbitrary ReactNode content                  |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo RadioCard component (inputs). Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+RadioCard is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-border, --cascivo-radius-surface, --cascivo-color-active-bg
+
+Accessibility: role "radiogroup", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Space. Keep it AA.
+
+Do not change (strict): token names — Card and indicator styling must resolve to the listed --cascivo-* tokens
+Flexible: title and description.
+
+Do not invent props, tokens, or global viewport media queries.
+```

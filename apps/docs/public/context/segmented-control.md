@@ -74,3 +74,28 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 | ------------- | -------- | ----------------------------------------------------------------------- |
 | token names   | strict   | Segment styling must resolve to the listed --cascivo-\* tokens          |
 | option labels | flexible | option label and value are free, and individual options may be disabled |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo SegmentedControl component (inputs). Mutually exclusive toggle group
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+SegmentedControl is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-surface, --cascivo-color-text, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-sm
+
+Accessibility: role "group", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight. Keep it AA.
+
+Do not change (strict): token names — Segment styling must resolve to the listed --cascivo-* tokens
+Flexible: option labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

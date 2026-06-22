@@ -94,3 +94,28 @@ Shows file list
 | token names                  | strict   | Status colors must resolve to --cascivo-color-accent/success/danger tokens |
 | label and hint copy          | flexible | Overridable via label/hint props or the labels object                      |
 | accept / maxSize constraints | flexible | Configure freely; rejected files surface through onRejected                |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo FileUploader component (inputs). Drag-and-drop file upload zone with file list and status indicators.
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+FileUploader is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-danger, --cascivo-color-danger-subtle
+
+Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+
+Do not change (strict): token names — Status colors must resolve to --cascivo-color-accent/success/danger tokens
+Flexible: label and hint copy, accept / maxSize constraints.
+
+Do not invent props, tokens, or global viewport media queries.
+```

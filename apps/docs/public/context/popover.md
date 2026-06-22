@@ -47,3 +47,28 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 | ----------- | -------- | ------------------------------------------------------------------------- |
 | token names | strict   | Panel styling must resolve to the listed --cascivo-\* tokens              |
 | content     | flexible | Trigger and panel content are arbitrary children supplied by the consumer |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Popover component (overlay). Anchored floating panel built on CSS Anchor Positioning + Popover API
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Popover is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit
+
+Accessibility: role "dialog", WCAG 2.2-AA, keyboard: Escape. Keep it AA.
+
+Do not change (strict): token names — Panel styling must resolve to the listed --cascivo-* tokens
+Flexible: content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

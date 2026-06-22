@@ -85,3 +85,28 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 | ----------- | -------- | ---------------------------------------------------------------- |
 | variant     | flexible | standalone vs inline depending on whether the link sits in prose |
 | token names | strict   | Accent colors and focus ring must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Link component (navigation). Styled anchor for navigation, standalone or inline within prose
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Link is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-radius-sm, --cascivo-focus-ring
+
+Accessibility: role "link", WCAG 2.2-AA, keyboard: Enter. Keep it AA.
+
+Do not change (strict): token names — Accent colors and focus ring must resolve to --cascivo-* tokens
+Flexible: variant.
+
+Do not invent props, tokens, or global viewport media queries.
+```

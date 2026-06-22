@@ -35,6 +35,8 @@ export interface ContextComponent {
   description: string
   intent: ComponentIntent
   contextUrl: string
+  /** Copy-pasteable system-prompt snippet that pins an LLM to this component. */
+  aiPrompt?: string
 }
 
 export interface ContextBundle {

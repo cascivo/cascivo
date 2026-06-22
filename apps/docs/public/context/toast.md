@@ -64,3 +64,28 @@ toast({ title: 'Saved', variant: 'success' })
 | -------- | -------- | ------------------------------------------------------ | ------- | ------- | -------------------------------------------------- |
 | variant  | strict   | Limited to default                                     | success | warning | destructive — drives color and live-region urgency |
 | duration | flexible | Consumer can tune auto-dismiss timing (default 5000ms) |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Toast component (overlay). Transient notification surfaced via the useToast hook
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Toast is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface-overlay, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-radius-md, --cascivo-z-toast
+
+Accessibility: role "status", WCAG 2.2-AA, keyboard: Tab. Keep it AA.
+
+Do not change (strict): variant — Limited to default | success | warning | destructive — drives color and live-region urgency
+Flexible: duration.
+
+Do not invent props, tokens, or global viewport media queries.
+```

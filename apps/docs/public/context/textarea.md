@@ -71,3 +71,28 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 | --------------- | -------- | -------------------------------------------------------------------------------- |
 | token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
 | resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Textarea component (inputs). Multi-line text input with optional label, hint, and error state
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Textarea is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.
+
+Do not change (strict): token names — Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens
+Flexible: resize and rows.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -66,3 +66,27 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 | ------------ | ------ | ---------------------------------------------------------------------------------- |
 | menu content | strict | Menus are described by data (menus prop) so roles and keyboard wiring stay correct |
 | token names  | strict | Surface, borders, and focus ring must resolve to --cascivo-\* tokens               |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Menubar component (navigation). Horizontal application menu bar with keyboard-navigable dropdown menus
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Menubar is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit
+
+Accessibility: role "menubar", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowDown/ArrowUp/Home/End/Enter/Escape. Keep it AA.
+
+Do not change (strict): menu content — Menus are described by data (menus prop) so roles and keyboard wiring stay correct; token names — Surface, borders, and focus ring must resolve to --cascivo-* tokens
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -55,3 +55,28 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 | ------------ | -------- | ---------------------------------------------- | --- | --- | ------------------------------------------------- |
 | side         | strict   | Limited to start                               | end | top | bottom — drives the slide direction and animation |
 | body content | flexible | Any children; consumer owns the panel contents |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Sheet component (overlay). Slide-in panel from any edge, using popover=manual and @starting-style animations
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Sheet is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit
+
+Accessibility: role "dialog", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.
+
+Do not change (strict): side — Limited to start | end | top | bottom — drives the slide direction and animation
+Flexible: body content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

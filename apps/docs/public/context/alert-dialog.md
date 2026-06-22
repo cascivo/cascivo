@@ -55,3 +55,28 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 | dismiss behavior | strict   | No light-dismiss — closing must go through onConfirm/onCancel                                                       |
 | action labels    | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog                                     |
 | token names      | strict   | Visual styling resolves to semantic --cascivo-color-\* tokens; destructive variant uses --cascivo-color-destructive |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo AlertDialog component (overlay). Confirmation dialog requiring explicit user action; no light-dismiss
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+AlertDialog is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-accent, --cascivo-color-destructive
+
+Accessibility: role "alertdialog", WCAG 2.2-AA, keyboard: Tab/Shift+Tab/Enter/Space. Keep it AA.
+
+Do not change (strict): dismiss behavior — No light-dismiss — closing must go through onConfirm/onCancel; token names — Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive
+Flexible: action labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

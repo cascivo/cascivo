@@ -66,3 +66,28 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 | -------------------------- | -------- | ------------------------------------------------------------------- |
 | controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs                |
 | token names                | strict   | Accent, borders, and focus ring must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Tabs component (navigation). Switch between related panels of content
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Tabs is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-focus-ring
+
+Accessibility: role "tablist", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End. Keep it AA.
+
+Do not change (strict): token names — Accent, borders, and focus ring must resolve to --cascivo-* tokens
+Flexible: controlled vs uncontrolled.
+
+Do not invent props, tokens, or global viewport media queries.
+```

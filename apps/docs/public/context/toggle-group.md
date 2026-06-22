@@ -91,3 +91,28 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 | ------------ | -------- | ------------------------------------------------------------------------------------ |
 | token names  | strict   | Item height must resolve to --cascivo-control-height-\* to align with other controls |
 | item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set             |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ToggleGroup component (inputs). A set of toggle buttons for single or multiple selection
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ToggleGroup is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-control-height-sm, --cascivo-control-height-md, --cascivo-control-height-lg, --cascivo-radius-control, --cascivo-radius-item, --cascivo-color-bg-subtle, --cascivo-color-surface, --cascivo-color-text, --cascivo-shadow-sm, --cascivo-focus-ring
+
+Accessibility: role "radiogroup", WCAG 2.2-AA, keyboard: ArrowRight/ArrowLeft/ArrowUp/ArrowDown/Home/End/Enter/Space. Keep it AA.
+
+Do not change (strict): token names — Item height must resolve to --cascivo-control-height-* to align with other controls
+Flexible: item content.
+
+Do not invent props, tokens, or global viewport media queries.
+```

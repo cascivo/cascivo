@@ -88,3 +88,28 @@ role="img" with alt names the image; on error it shows a fallback image or neutr
 | ----------- | -------- | ----------------------------------------------------------------- |
 | radius      | flexible | Pick the corner radius that matches the surrounding surface       |
 | token names | strict   | Radius and placeholder colors must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Image component (display). Image with load state, blur-up placeholder, graceful fallback, and optional zoom
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Image is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-radius-none, --cascivo-radius-sm, --cascivo-radius-md, --cascivo-radius-lg, --cascivo-radius-full, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-space-12
+
+Accessibility: role "img", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Radius and placeholder colors must resolve to --cascivo-* tokens
+Flexible: radius.
+
+Do not invent props, tokens, or global viewport media queries.
+```

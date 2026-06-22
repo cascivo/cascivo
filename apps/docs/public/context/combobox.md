@@ -98,3 +98,28 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 | searchable                 | flexible | Filtering can be toggled off for short lists via searchable={false}                      |
 | controlled vs uncontrolled | flexible | Supports value + onChange or defaultValue                                                |
 | token names                | strict   | Listbox/field styling resolves to semantic --cascivo-color-_ / --cascivo-radius-_ tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Combobox component (inputs). Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Combobox is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-danger, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown
+
+Accessibility: role "combobox", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Escape/Tab. Keep it AA.
+
+Do not change (strict): token names — Listbox/field styling resolves to semantic --cascivo-color-* / --cascivo-radius-* tokens
+Flexible: searchable, controlled vs uncontrolled.
+
+Do not invent props, tokens, or global viewport media queries.
+```

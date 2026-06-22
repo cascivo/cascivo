@@ -2,6 +2,7 @@ import React from 'react'
 import type { Decorator, Preview, Renderer } from '@storybook/react-vite'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import { SCREEN } from '../../../packages/tokens/src/screens.ts'
+import { withContextPrompt } from './context-prompt.tsx'
 import '@cascivo/themes/light'
 import '@cascivo/themes/dark'
 import '@cascivo/themes/warm'
@@ -49,6 +50,7 @@ const preview: Preview = {
       parentSelector: 'html',
     }),
     withFrame,
+    withContextPrompt,
   ],
   parameters: {
     layout: 'centered',

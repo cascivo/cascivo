@@ -92,3 +92,28 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 | ----------- | -------- | ------------------------------------------------------------------------------ |
 | variant     | flexible | Choose the variant that matches the semantic meaning                           |
 | token names | strict   | Colors and radius must resolve to --cascivo-\* tokens (--cascivo-radius-badge) |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Badge component (display). Small status label or category indicator
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Badge is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-font-sans, --cascivo-font-medium, --cascivo-radius-badge, --cascivo-space-1, --cascivo-space-2, --cascivo-space-3, --cascivo-text-xs, --cascivo-leading-normal, --cascivo-color-accent, --cascivo-color-text-on-accent, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-success-subtle, --cascivo-color-success-foreground, --cascivo-color-warning-subtle, --cascivo-color-warning-foreground, --cascivo-color-destructive-subtle, --cascivo-color-destructive-foreground, --cascivo-color-primary, --cascivo-color-primary-content, --cascivo-color-info, --cascivo-color-info-content, --cascivo-color-error, --cascivo-color-error-content
+
+Accessibility: role "status", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge)
+Flexible: variant.
+
+Do not invent props, tokens, or global viewport media queries.
+```

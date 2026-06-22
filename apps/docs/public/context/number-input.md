@@ -90,3 +90,28 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 | token names           | strict   | Visual props must resolve to the listed --cascivo-\* semantic tokens           |
 | formatting and bounds | flexible | min, max, step, precision, and formatOptions are free to suit the value domain |
 | stepper labels        | flexible | incrementLabel/decrementLabel override the i18n defaults                       |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo NumberInput component (inputs). Numeric input with stepper buttons, clamping, precision, and locale formatting
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+NumberInput is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-bg-subtle, --cascivo-color-text-subtle, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "spinbutton", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Tab. Keep it AA.
+
+Do not change (strict): token names — Visual props must resolve to the listed --cascivo-* semantic tokens
+Flexible: formatting and bounds, stepper labels.
+
+Do not invent props, tokens, or global viewport media queries.
+```

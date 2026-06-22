@@ -69,3 +69,28 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 | trigger element            | flexible | Any ReactElement works as the trigger; ref and aria props are merged in            |
 | controlled vs uncontrolled | flexible | Supports open + onOpenChange or fully internal state                               |
 | token names                | strict   | Menu styling resolves to semantic --cascivo-color-\* / --cascivo-z-dropdown tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Dropdown component (overlay). Menu of actions revealed from a trigger
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Dropdown is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-md, --cascivo-z-dropdown
+
+Accessibility: role "menu", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.
+
+Do not change (strict): token names — Menu styling resolves to semantic --cascivo-color-* / --cascivo-z-dropdown tokens
+Flexible: trigger element, controlled vs uncontrolled.
+
+Do not invent props, tokens, or global viewport media queries.
+```

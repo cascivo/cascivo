@@ -104,3 +104,26 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 | ------- | -------- | ----------------------------------------------------------------------------------------------- |
 | variant | flexible | pill suits floating filter bars; outline suits embedded filter rows within a bordered container |
 | multi   | flexible | single-select for mutually exclusive categories; multi for additive facets                      |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Filter component (inputs). A group of toggleable pill or outline buttons for filtering content by category
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Filter is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-radius-full, --cascivo-border-default, --cascivo-color-text-subtle, --cascivo-color-text, --cascivo-color-active-bg, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out
+
+Accessibility: role "group", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.
+Flexible: variant, multi.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -83,3 +83,28 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 | ----------- | -------- | -------------------------------------------------------------------------------- |
 | variant     | flexible | Choose the severity variant that matches the message; default is neutral         |
 | token names | strict   | Severity colors must resolve to --cascivo-color-info/success/warning/destructive |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Alert component (display). Highlights a short, important message inline
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Alert is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-color-border, --cascivo-radius-md
+
+Accessibility: role "alert", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): token names — Severity colors must resolve to --cascivo-color-info/success/warning/destructive
+Flexible: variant.
+
+Do not invent props, tokens, or global viewport media queries.
+```

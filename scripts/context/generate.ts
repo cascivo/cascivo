@@ -116,6 +116,8 @@ export interface ContextIndexEntry {
   description: string
   intent: ComponentIntent | null
   contextUrl: string
+  /** Copy-pasteable system-prompt snippet that pins an LLM to this component. */
+  aiPrompt: string
 }
 
 export interface SpecRef {
@@ -129,6 +131,7 @@ export interface ContextIndex {
   tagline: string
   authoringRules: string[]
   tokenCatalogUrl: string
+  variantMatrixUrl: string
   specs: SpecRef[]
   boundaries: unknown
   exceptions: unknown
@@ -152,6 +155,7 @@ export function buildContextIndex(
     tagline: 'The CSS-native, signal-driven, AI-first React design system',
     authoringRules: AUTHORING_RULES,
     tokenCatalogUrl: '/tokens.catalog.json',
+    variantMatrixUrl: '/tokens.variants.json',
     specs: extras.specs ?? [],
     boundaries: extras.boundaries ?? null,
     exceptions: extras.exceptions ?? null,
@@ -161,8 +165,67 @@ export function buildContextIndex(
       description: entry.description,
       intent: entry.meta?.intent ?? null,
       contextUrl: `/context/${entry.name}.md`,
+      aiPrompt: buildContextPrompt(entry),
     })),
   }
+}
+
+// ---------------------------------------------------------------------------
+// AI context prompt — copy-pasteable system-prompt snippet
+// ---------------------------------------------------------------------------
+
+/**
+ * Build a tailored system-prompt snippet for one component. Dropping this into
+ * an LLM's context bar pins the model to this component's tokens, container
+ * breakpoints, and the design system's CSS/signal rules — eliminating the
+ * prompt-engineering guesswork for developers adapting the library.
+ */
+export function buildContextPrompt(entry: RegistryEntry): string {
+  const meta = entry.meta
+  const name = meta?.name ?? entry.name
+  const tokens = meta?.tokens ?? []
+  const a11y = meta?.accessibility
+  const strict = (meta?.intent?.flexibility ?? []).filter((f) => f.level === 'strict')
+  const flexible = (meta?.intent?.flexibility ?? []).filter((f) => f.level === 'flexible')
+
+  const lines: string[] = []
+  lines.push(
+    `I am modifying the cascivo ${name} component (${entry.category}). ${entry.description}`,
+  )
+  lines.push('')
+  lines.push('Architecture constraints — follow exactly:')
+  lines.push(
+    '- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.',
+  )
+  lines.push(
+    '- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.',
+  )
+  lines.push(
+    '- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.',
+  )
+  lines.push('- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.')
+  lines.push('- CSS logical properties only (RTL-safe).')
+  lines.push('')
+  lines.push(
+    `${name} is strictly bound to these tokens — use only these, do not invent token names:`,
+  )
+  lines.push(`  ${tokens.length > 0 ? tokens.join(', ') : 'none declared'}`)
+  if (a11y) {
+    const kb =
+      a11y.keyboard && a11y.keyboard.length > 0 ? `, keyboard: ${a11y.keyboard.join('/')}` : ''
+    lines.push('')
+    lines.push(`Accessibility: role "${a11y.role}", WCAG ${a11y.wcag}${kb}. Keep it AA.`)
+  }
+  if (strict.length > 0) {
+    lines.push('')
+    lines.push(`Do not change (strict): ${strict.map((f) => `${f.area} — ${f.note}`).join('; ')}`)
+  }
+  if (flexible.length > 0) {
+    lines.push(`Flexible: ${flexible.map((f) => f.area).join(', ')}.`)
+  }
+  lines.push('')
+  lines.push('Do not invent props, tokens, or global viewport media queries.')
+  return lines.join('\n')
 }
 
 // ---------------------------------------------------------------------------
@@ -285,6 +348,15 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
     lines.push('')
   }
 
+  lines.push('## AI context prompt')
+  lines.push('')
+  lines.push('Copy this into an LLM context bar before editing this component:')
+  lines.push('')
+  lines.push('```text')
+  lines.push(buildContextPrompt(entry))
+  lines.push('```')
+  lines.push('')
+
   return lines.join('\n')
 }
 
@@ -339,6 +411,15 @@ function main() {
     writeFileSync(join(CONTEXT_DIR, `${entry.name}.md`), md)
   }
   console.log(`Wrote ${sorted.length} files to context/`)
+
+  // Compact { <component>: aiPrompt } map for the Storybook "Copy AI context"
+  // button (served from apps/storybook/public).
+  const prompts: Record<string, string> = {}
+  for (const entry of sorted) prompts[entry.name] = buildContextPrompt(entry)
+  const SB_PUBLIC = join(ROOT, 'apps', 'storybook', 'public')
+  mkdirSync(SB_PUBLIC, { recursive: true })
+  writeFileSync(join(SB_PUBLIC, 'context-prompts.json'), JSON.stringify(prompts, null, 2) + '\n')
+  console.log(`Wrote context-prompts.json with ${Object.keys(prompts).length} prompts`)
 }
 
 // Only run when executed directly, not when imported by tests.

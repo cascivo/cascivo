@@ -75,3 +75,26 @@ Heart icon that flips to filled on activation
 | -------------- | -------- | --------------------------------------------------------------------------- |
 | content        | flexible | on/off slots accept any ReactNode — icons, text, images                     |
 | animation mode | flexible | rotate (default) or flip — choose based on the visual metaphor of the icons |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Swap component (inputs). Animated toggle between two icon/content states with rotate or flip transition
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Swap is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-ring-width, --cascivo-ring-color, --cascivo-radius-control, --cascivo-ease-out
+
+Accessibility: role "switch", WCAG 2.2-AA, keyboard: Space/Enter. Keep it AA.
+Flexible: content, animation mode.
+
+Do not invent props, tokens, or global viewport media queries.
+```

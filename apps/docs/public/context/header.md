@@ -77,3 +77,28 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 | ----------------- | -------- | ---------------------------------------------------------------- |
 | links and actions | flexible | Brand, links, and actions slots are optional and composable      |
 | token names       | strict   | Surface, border, and z-index must resolve to --cascivo-\* tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Header component (navigation). App top bar with brand, primary navigation links, and an actions slot
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Header is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-header-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-focus-ring, --cascivo-z-raised
+
+Accessibility: role "banner", WCAG 2.2-AA, keyboard: Tab. Keep it AA.
+
+Do not change (strict): token names — Surface, border, and z-index must resolve to --cascivo-* tokens
+Flexible: links and actions.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -90,3 +90,28 @@ Override the default percentage label with custom content
 | ----- | -------- | ---------------------------------------------------------------------------- |
 | label | flexible | Default is the percentage string; pass children to override with any content |
 | color | strict   | Color resolves through --cascivo-color-\* semantic tokens via data-variant   |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo RadialProgress component (feedback). Circular progress indicator using conic-gradient, with percentage label and variant colors
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+RadialProgress is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-primary, --cascivo-color-info, --cascivo-color-success, --cascivo-color-warning, --cascivo-color-error, --cascivo-color-surface, --cascivo-color-surface-2, --cascivo-color-text, --cascivo-radius-full
+
+Accessibility: role "progressbar", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): color — Color resolves through --cascivo-color-* semantic tokens via data-variant
+Flexible: label.
+
+Do not invent props, tokens, or global viewport media queries.
+```

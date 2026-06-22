@@ -78,3 +78,28 @@ Brand with prefix, dropdown nav, global icon action
 | ------------------------- | -------- | ---------------------------------------------------------------------- |
 | nav / actions / end slots | flexible | Brand, nav, actions, and end are composable and optional               |
 | token names               | strict   | Surfaces, sizing, and accent must resolve to --cascivo-\* shell tokens |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo ShellHeader component (navigation). Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+ShellHeader is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-shell-header-block-size, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-radius-control
+
+Accessibility: role "banner", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.
+
+Do not change (strict): token names — Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens
+Flexible: nav / actions / end slots.
+
+Do not invent props, tokens, or global viewport media queries.
+```

@@ -86,3 +86,28 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 | ----------------- | -------- | ---------------------------------------------------------------------------- |
 | token names       | strict   | Field and control styling must resolve to the listed --cascivo-\* tokens     |
 | debounce and copy | flexible | debounceMs and the placeholder/label/clear copy are free to suit the context |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Search component (inputs). Search input with debounced search callback and clear button
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Search is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring
+
+Accessibility: role "searchbox", WCAG 2.2-AA, keyboard: Enter. Keep it AA.
+
+Do not change (strict): token names — Field and control styling must resolve to the listed --cascivo-* tokens
+Flexible: debounce and copy.
+
+Do not invent props, tokens, or global viewport media queries.
+```

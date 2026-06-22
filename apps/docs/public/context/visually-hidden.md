@@ -63,3 +63,28 @@ Gives an icon-only control an accessible name
 | -------------------- | -------- | ------------------------------------------------------- |
 | children             | flexible | Any text/content meant for assistive tech               |
 | visibility technique | strict   | Must keep content in the a11y tree — never display:none |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo VisuallyHidden component (display). Hides content visually while keeping it available to screen readers
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+VisuallyHidden is strictly bound to these tokens — use only these, do not invent token names:
+  none declared
+
+Accessibility: role "none", WCAG 2.2-AA. Keep it AA.
+
+Do not change (strict): visibility technique — Must keep content in the a11y tree — never display:none
+Flexible: children.
+
+Do not invent props, tokens, or global viewport media queries.
+```

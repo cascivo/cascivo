@@ -71,3 +71,28 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 | ------------ | -------- | -------------------------------------------------------------------------------------- |
 | token names  | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
 | min/max/step | flexible | Consumer-defined bounds and increment                                                  |
+
+## AI context prompt
+
+Copy this into an LLM context bar before editing this component:
+
+```text
+I am modifying the cascivo Slider component (inputs). Range input for selecting a value within bounds
+
+Architecture constraints — follow exactly:
+- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
+- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
+- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
+- CSS logical properties only (RTL-safe).
+
+Slider is strictly bound to these tokens — use only these, do not invent token names:
+  --cascivo-color-accent, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-radius-full, --cascivo-focus-ring
+
+Accessibility: role "slider", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End. Keep it AA.
+
+Do not change (strict): token names — Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens
+Flexible: min/max/step.
+
+Do not invent props, tokens, or global viewport media queries.
+```
