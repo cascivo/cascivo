@@ -20,6 +20,29 @@ import { Steps } from '@cascivo/components/steps'
 import { Tag } from '@cascivo/components/tag'
 import { Toggle } from '@cascivo/components/toggle'
 import { Textarea } from '@cascivo/components/textarea'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@cascivo/components/accordion'
+import { Breadcrumb } from '@cascivo/components/breadcrumb'
+import { Combobox } from '@cascivo/components/combobox'
+import { DatePicker } from '@cascivo/components/date-picker'
+import { EmptyState } from '@cascivo/components/empty-state'
+import { Link } from '@cascivo/components/link'
+import { MultiSelect } from '@cascivo/components/multi-select'
+import { NumberInput } from '@cascivo/components/number-input'
+import { OtpInput } from '@cascivo/components/otp-input'
+import { PasswordInput } from '@cascivo/components/password-input'
+import { ProgressIndicator } from '@cascivo/components/progress-indicator'
+import { Radio, RadioGroup } from '@cascivo/components/radio'
+import { Separator } from '@cascivo/components/separator'
+import { Skeleton } from '@cascivo/components/skeleton'
+import { Spinner } from '@cascivo/components/spinner'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
+import { TagsInput } from '@cascivo/components/tags-input'
+import { TimePicker } from '@cascivo/components/time-picker'
 import { AreaChart, BarChart, Kpi, LineChart, PieChart } from '@cascivo/charts'
 import { peek } from '../peek'
 
@@ -644,55 +667,612 @@ function Orders() {
   )
 }
 
+function FaqAccordion() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>FAQ</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="single" defaultValue="what">
+          <AccordionItem value="what">
+            <AccordionTrigger>What is cascivo?</AccordionTrigger>
+            <AccordionContent>
+              A CSS-native, signal-driven, AI-first React design system.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="how">
+            <AccordionTrigger>How do I install it?</AccordionTrigger>
+            <AccordionContent>Copy a component in with the CLI and own the code.</AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SettingsTabs() {
+  return (
+    <Card>
+      <CardContent>
+        <Tabs defaultValue="account">
+          <TabsList>
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="team">Team</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">Manage your account settings and preferences.</TabsContent>
+          <TabsContent value="security">Update your password and security options.</TabsContent>
+          <TabsContent value="team">Invite teammates and manage their roles.</TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
+
+function PlanChoice() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Choose a plan</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <RadioGroup name="bg-plan" defaultValue="pro">
+          <Radio value="free" label="Free — for hobby projects" />
+          <Radio value="pro" label="Pro — $20/mo" />
+          <Radio value="team" label="Team — $60/mo" />
+        </RadioGroup>
+      </CardContent>
+    </Card>
+  )
+}
+
+function PageTrail() {
+  return (
+    <Card variant="outlined">
+      <CardContent>
+        <div className="bgc-stack">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '#' },
+              { label: 'Components', href: '#' },
+              { label: 'Breadcrumb' },
+            ]}
+          />
+          <span className="bgc-muted">Navigation · 3 levels deep</span>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SignupFlow() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Set up your account</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ProgressIndicator
+          currentIndex={1}
+          steps={[
+            { label: 'Account', description: 'Basic info' },
+            { label: 'Profile', description: 'Your details' },
+            { label: 'Review' },
+          ]}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function LoadingCard() {
+  return (
+    <Card>
+      <CardContent>
+        <div className="bgc-stack">
+          <div className="bgc-row-tight">
+            <Skeleton variant="circle" width="3rem" height="3rem" />
+            <Skeleton variant="rect" width="8rem" height="1.5rem" />
+          </div>
+          <Skeleton variant="text" lines={3} />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function NoMessages() {
+  return (
+    <Card>
+      <CardContent>
+        <EmptyState
+          icon="📭"
+          title="No messages yet"
+          description="When you receive messages, they'll appear here."
+          action={<Button size="sm">Compose</Button>}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function NewPassword() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Create a password</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <PasswordInput showStrengthMeter placeholder="Create password" />
+          <Button>Continue</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function VerifyCode() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Verify your email</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <span className="bgc-muted">Enter the 6-digit code we sent you.</span>
+          <OtpInput value="412" onValueChange={() => {}} />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SkillsInput() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Skills</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <TagsInput
+          value={['react', 'typescript', 'css']}
+          onValueChange={() => {}}
+          placeholder="Add skill…"
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function CountrySelect() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Shipping country</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Combobox
+          label="Country"
+          defaultValue="us"
+          clearable
+          options={[
+            { value: 'us', label: 'United States' },
+            { value: 'de', label: 'Germany' },
+            { value: 'fr', label: 'France' },
+            { value: 'jp', label: 'Japan' },
+          ]}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function BookAppointment() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Book a slot</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <DatePicker label="Date" defaultValue="2026-07-15" clearable />
+          <TimePicker label="Time" defaultValue="09:30" />
+          <Button>Confirm</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function TechStack() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Frameworks</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <MultiSelect
+          value={['react', 'svelte']}
+          onValueChange={() => {}}
+          placeholder="Select frameworks"
+          options={[
+            { label: 'React', value: 'react' },
+            { label: 'Vue', value: 'vue' },
+            { label: 'Svelte', value: 'svelte' },
+            { label: 'Angular', value: 'angular' },
+          ]}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+function QuickLinks() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Resources</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Link href="#">Documentation</Link>
+          <Link href="#">Component registry</Link>
+          <Separator />
+          <Link href="https://example.com" external>
+            GitHub repository
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Deploying() {
+  return (
+    <Card>
+      <CardContent>
+        <div className="bgc-row-tight">
+          <Spinner />
+          <div>
+            <div>Deploying to production…</div>
+            <span className="bgc-muted">Build 248 · 12s elapsed</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Uploads() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Uploads</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <ProgressBar label="report.pdf" value={100} status="success" />
+          <ProgressBar label="dataset.csv" value={64} helperText="64 of 100 MB" />
+          <ProgressBar label="image.png" value={40} status="error" helperText="Network error" />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function CartItem() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Your cart</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <div className="bgc-row">
+            <span>Pro license</span>
+            <NumberInput defaultValue={2} min={1} max={10} />
+          </div>
+          <div className="bgc-row">
+            <span className="bgc-muted">Subtotal</span>
+            <span className="bgc-price">$40</span>
+          </div>
+          <Button>Checkout</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ContactForm() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Get in touch</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Input label="Name" placeholder="Ada Lovelace" />
+          <Input label="Email" placeholder="ada@studio.com" />
+          <Textarea label="Message" rows={2} placeholder="How can we help?" />
+          <Button>Send message</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function Newsletter() {
+  return (
+    <Card variant="elevated">
+      <CardHeader>
+        <CardTitle>Stay in the loop</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Input label="Email" placeholder="you@example.com" />
+          <Checkbox label="I agree to receive product emails" defaultChecked />
+          <Button>Subscribe</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function WeeklyGoals() {
+  const goals = [
+    ['Ship onboarding', 80],
+    ['Close 5 tickets', 60],
+    ['Write release notes', 25],
+  ] as const
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>This week</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {goals.map(([label, value]) => (
+            <ProgressBar key={label} label={label} value={value} size="sm" />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ConnectedApps() {
+  const apps = ['Slack', 'GitHub', 'Figma']
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Connected apps</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {apps.map((a, i) => (
+            <div key={a} className="bgc-row">
+              <span>{a}</span>
+              <Toggle defaultChecked={i !== 2} />
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ShippingForm() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Shipping address</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Input label="Address" placeholder="1 Infinite Loop" />
+          <div className="bgc-row">
+            <Input label="City" placeholder="Cupertino" />
+            <Input label="ZIP" placeholder="95014" />
+          </div>
+          <Select
+            label="Method"
+            placeholder="Standard — 3-5 days"
+            options={[
+              { value: 'standard', label: 'Standard — 3-5 days' },
+              { value: 'express', label: 'Express — next day' },
+            ]}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SupportTicket() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Open a ticket</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <Select
+            label="Topic"
+            placeholder="Billing"
+            options={[
+              { value: 'billing', label: 'Billing' },
+              { value: 'bug', label: 'Bug report' },
+              { value: 'other', label: 'Other' },
+            ]}
+          />
+          <Textarea label="Details" rows={2} placeholder="Describe the issue…" />
+          <Button>Submit ticket</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function TwoFactor() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Two-factor auth</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <div className="bgc-row">
+            <span>Authenticator app</span>
+            <Status status="success">Enabled</Status>
+          </div>
+          <div className="bgc-row">
+            <span>SMS backup</span>
+            <Toggle />
+          </div>
+          <Button variant="secondary">Manage devices</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function InvoiceSummary() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Invoice · June</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          {[
+            ['Pro plan', '$20.00'],
+            ['Extra seats ×3', '$30.00'],
+            ['Tax', '$5.00'],
+          ].map(([label, amt]) => (
+            <div key={label} className="bgc-row">
+              <span className="bgc-muted">{label}</span>
+              <span>{amt}</span>
+            </div>
+          ))}
+          <Separator />
+          <div className="bgc-row">
+            <span>Total</span>
+            <span className="bgc-price">$55.00</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ProjectProgress() {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="bgc-row">
+          <CardTitle>Redesign</CardTitle>
+          <Badge variant="warning" size="sm">
+            In progress
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <ProgressBar label="14 of 20 tasks" value={70} />
+          <div className="bgc-avatars">
+            {['AL', 'AT', 'GH'].map((a) => (
+              <Avatar key={a} fallback={a} size="sm" />
+            ))}
+            <span className="bgc-muted">+2</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function FeatureVote() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Rate this release</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-stack">
+          <RatingGroup value={5} readOnly />
+          <span className="bgc-muted">128 people rated this 4.8 / 5</span>
+          <Button variant="secondary">Leave feedback</Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 // Interleaved so charts, forms, and lists alternate down each column. Distinct
 // cards only — no card repeats, so the revealed field reads as a real gallery.
 const TILES: ReactNode[] = [
   <SignIn key="signin" />,
   <RevenueArea key="area" />,
   <Team key="team" />,
+  <SettingsTabs key="settings-tabs" />,
   <PlanToggle key="plan" />,
   <Notifications key="notif" />,
+  <Uploads key="uploads" />,
   <Traffic key="traffic" />,
   <CreateAccount key="create" />,
   <RevenueKpi key="kpi" />,
+  <FaqAccordion key="faq" />,
   <SystemStatus key="status" />,
   <OrdersBar key="bar" />,
+  <ProjectProgress key="project" />,
   <Collaborators key="collab" />,
   <Review key="review" />,
+  <NewPassword key="new-password" />,
   <StatsGrid key="stats" />,
   <CommandSearch key="cmd" />,
+  <SkillsInput key="skills" />,
   <CookieSettings key="cookie" />,
   <CostLine key="line" />,
+  <SignupFlow key="signup-flow" />,
   <Upgrade key="upgrade" />,
   <Checkout key="checkout" />,
+  <CountrySelect key="country" />,
   <Profile key="profile" />,
   <Alerts key="alerts" />,
+  <PlanChoice key="plan-choice" />,
   <Onboarding key="onboard" />,
+  <Deploying key="deploying" />,
   <DeviceSettings key="device" />,
+  <BookAppointment key="appointment" />,
   <PaymentMethod key="pay" />,
   <Inbox key="inbox" />,
+  <NoMessages key="empty" />,
   <SocialLogin key="social" />,
+  <ContactForm key="contact" />,
   <Filters key="filters" />,
+  <TechStack key="tech" />,
   <Orders key="orders" />,
+  <VerifyCode key="verify" />,
+  <WeeklyGoals key="goals" />,
+  <PageTrail key="trail" />,
+  <Newsletter key="newsletter" />,
+  <ConnectedApps key="apps" />,
+  <CartItem key="cart" />,
+  <ShippingForm key="shipping" />,
+  <LoadingCard key="loading" />,
+  <SupportTicket key="support" />,
+  <TwoFactor key="2fa" />,
+  <QuickLinks key="links" />,
+  <InvoiceSummary key="invoice" />,
+  <FeatureVote key="vote" />,
 ]
 
-const THEMES = [
-  'light',
-  'dark',
-  'warm',
-  'flat',
-  'minimal',
-  'midnight',
-  'pastel',
-  'corporate',
-  'terminal',
-  'brutalist',
-  'cyberpunk',
-  'arcade',
-] as const
-
-// 27 distinct cards is enough that the balanced columns overflow and fill the
-// viewport; the overflow is clipped by the fixed field.
+// ~55 distinct cards balance the columns past the fold so the field always fills
+// the viewport; the overflow is clipped by the fixed field, and peek mode scrolls
+// to reach the rest. Cards inherit the page theme — no per-tile override — so
+// switching the theme re-skins the whole backdrop in step with the page.
 const FIELD = TILES
 
 export function ComponentField() {
@@ -710,7 +1290,7 @@ export function ComponentField() {
       <div className="bg-field-grid">
         {FIELD.map((tile, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <div key={i} className="bg-field-tile" data-theme={THEMES[i % THEMES.length]}>
+          <div key={i} className="bg-field-tile">
             {tile}
           </div>
         ))}
