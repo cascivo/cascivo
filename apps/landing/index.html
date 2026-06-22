@@ -664,6 +664,9 @@
       .bg-field {
         position: fixed;
         inset: 0;
+        /* Start below the sticky header so its first row of cards isn't clipped
+           behind the navbar. */
+        top: var(--cascivo-shell-header-block-size);
         z-index: -1;
         overflow: hidden;
         filter: blur(7px);
