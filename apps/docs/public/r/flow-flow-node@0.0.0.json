@@ -55,6 +55,13 @@
         "default": "true"
       },
       {
+        "name": "interactive",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "When false, the node is view-only: not draggable, selectable, or focusable."
+      },
+      {
         "name": "onSelect",
         "type": "(id: string) => void",
         "required": false

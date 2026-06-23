@@ -1751,6 +1751,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'interactive',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'className',
       required: false,
       primitives: ['string'],
@@ -1978,6 +1983,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'interactive',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'onSelect',
       required: false,
     },
@@ -2056,6 +2066,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'autoPlay',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'interactive',
       required: false,
       primitives: ['boolean'],
     },

@@ -81,6 +81,13 @@
         "description": "Optional dependency-free layout."
       },
       {
+        "name": "interactive",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false

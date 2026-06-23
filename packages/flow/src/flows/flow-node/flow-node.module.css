@@ -17,6 +17,11 @@
     user-select: none;
   }
 
+  /* View-only nodes: no drag/select affordance. */
+  .node[data-static] {
+    cursor: default;
+  }
+
   /* Comfortable touch target on coarse pointers without disturbing fine density. */
   @media (pointer: coarse) {
     .node {

@@ -45,4 +45,29 @@ describe('FlowNode', () => {
     expect(last.x).toBeCloseTo(50)
     expect(last.y).toBeCloseTo(20)
   })
+
+  it('view-only (interactive=false): not draggable, not selectable, not focusable', () => {
+    const onPositionChange = vi.fn()
+    const onSelect = vi.fn()
+    const { container } = render(
+      <FlowNode
+        id="a"
+        position={{ x: 0, y: 0 }}
+        interactive={false}
+        onPositionChange={onPositionChange}
+        onSelect={onSelect}
+      >
+        A
+      </FlowNode>,
+    )
+    const el = container.querySelector('[data-node-id="a"]') as HTMLElement
+    expect(el).toHaveAttribute('data-static', 'true')
+    expect(el).not.toHaveAttribute('tabindex')
+    fireEvent.click(el)
+    expect(onSelect).not.toHaveBeenCalled()
+    fireEvent.pointerDown(el, { clientX: 0, clientY: 0, pointerId: 1 })
+    fireEvent.pointerMove(window, { clientX: 100, clientY: 0, pointerId: 1 })
+    fireEvent.pointerUp(window, { clientX: 100, clientY: 0, pointerId: 1 })
+    expect(onPositionChange).not.toHaveBeenCalled()
+  })
 })

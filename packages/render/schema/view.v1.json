@@ -5880,6 +5880,9 @@
                   "minimap": {
                     "type": "boolean"
                   },
+                  "interactive": {
+                    "type": "boolean"
+                  },
                   "className": {
                     "type": "string"
                   }
@@ -6121,6 +6124,9 @@
                   "draggable": {
                     "type": "boolean"
                   },
+                  "interactive": {
+                    "type": "boolean"
+                  },
                   "children": {
                     "type": "string",
                     "enum": ["ReactNode"]
@@ -6204,6 +6210,9 @@
                     "type": "boolean"
                   },
                   "autoPlay": {
+                    "type": "boolean"
+                  },
+                  "interactive": {
                     "type": "boolean"
                   },
                   "className": {

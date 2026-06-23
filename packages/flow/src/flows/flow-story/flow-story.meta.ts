@@ -32,6 +32,14 @@ export const meta: ComponentMeta = {
     { name: 'onStepChange', type: '(step: number) => void', required: false },
     { name: 'controls', type: 'boolean', required: false, default: 'true' },
     { name: 'autoPlay', type: 'boolean', required: false, default: 'true' },
+    {
+      name: 'interactive',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'A storyline is a view by default — set true to allow selecting/dragging/connecting.',
+    },
     { name: 'className', type: 'string', required: false },
   ],
   tokens: ['--cascivo-color-surface', '--cascivo-color-accent', '--cascivo-color-text-muted'],

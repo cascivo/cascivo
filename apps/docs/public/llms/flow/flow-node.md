@@ -25,17 +25,18 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop               | Type                             | Required | Default | Description                                   |
-| ------------------ | -------------------------------- | -------- | ------- | --------------------------------------------- |
-| `id`               | `string`                         | yes      | —       | Stable node id.                               |
-| `position`         | `{ x: number; y: number }`       | no       | —       | Position in flow coords (controllable).       |
-| `onPositionChange` | `(position: XYPosition) => void` | no       | —       | Fired while dragging.                         |
-| `zoom`             | `number`                         | no       | `1`     | Current zoom (drag deltas are divided by it). |
-| `selected`         | `boolean`                        | no       | `false` | —                                             |
-| `draggable`        | `boolean`                        | no       | `true`  | —                                             |
-| `onSelect`         | `(id: string) => void`           | no       | —       | —                                             |
-| `children`         | `ReactNode`                      | no       | —       | Any cascivo content.                          |
-| `className`        | `string`                         | no       | —       | —                                             |
+| Prop               | Type                             | Required | Default | Description                                                                 |
+| ------------------ | -------------------------------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `id`               | `string`                         | yes      | —       | Stable node id.                                                             |
+| `position`         | `{ x: number; y: number }`       | no       | —       | Position in flow coords (controllable).                                     |
+| `onPositionChange` | `(position: XYPosition) => void` | no       | —       | Fired while dragging.                                                       |
+| `zoom`             | `number`                         | no       | `1`     | Current zoom (drag deltas are divided by it).                               |
+| `selected`         | `boolean`                        | no       | `false` | —                                                                           |
+| `draggable`        | `boolean`                        | no       | `true`  | —                                                                           |
+| `interactive`      | `boolean`                        | no       | `true`  | When false, the node is view-only: not draggable, selectable, or focusable. |
+| `onSelect`         | `(id: string) => void`           | no       | —       | —                                                                           |
+| `children`         | `ReactNode`                      | no       | —       | Any cascivo content.                                                        |
+| `className`        | `string`                         | no       | —       | —                                                                           |
 
 ## Examples
 

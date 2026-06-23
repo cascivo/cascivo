@@ -45,6 +45,14 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Optional dependency-free layout.',
     },
+    {
+      name: 'interactive',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description:
+        'When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work.',
+    },
     { name: 'className', type: 'string', required: false },
   ],
   tokens: ['--cascivo-color-bg', '--cascivo-color-surface', '--cascivo-color-accent'],

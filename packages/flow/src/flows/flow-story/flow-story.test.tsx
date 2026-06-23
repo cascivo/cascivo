@@ -79,4 +79,13 @@ describe('FlowStory', () => {
     )
     expect(container.querySelector('[aria-live="polite"]')).not.toBeNull()
   })
+
+  it('is a view by default — nodes are static and have no handles', () => {
+    const { clock } = fakeClock()
+    const { container } = render(
+      <FlowStory nodes={nodes} edges={edges} script={script} clock={clock} />,
+    )
+    expect(container.querySelector('[data-flow-handle]')).toBeNull()
+    expect(container.querySelector('[data-node-id="A"]')).toHaveAttribute('data-static', 'true')
+  })
 })

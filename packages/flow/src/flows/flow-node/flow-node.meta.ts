@@ -31,6 +31,13 @@ export const meta: ComponentMeta = {
     },
     { name: 'selected', type: 'boolean', required: false, default: 'false' },
     { name: 'draggable', type: 'boolean', required: false, default: 'true' },
+    {
+      name: 'interactive',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'When false, the node is view-only: not draggable, selectable, or focusable.',
+    },
     { name: 'onSelect', type: '(id: string) => void', required: false },
     { name: 'children', type: 'ReactNode', required: false, description: 'Any cascivo content.' },
     { name: 'className', type: 'string', required: false },

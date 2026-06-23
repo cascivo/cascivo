@@ -8,12 +8,20 @@ import { useConnection } from './use-connection.ts'
 function Harness({
   onConnect,
   isValid,
+  enabled,
 }: {
   onConnect: (c: Connection) => void
   isValid?: (c: Connection) => boolean
+  enabled?: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  useConnection({ containerRef: ref, clientToFlow: (x, y) => ({ x, y }), onConnect, isValid })
+  useConnection({
+    containerRef: ref,
+    clientToFlow: (x, y) => ({ x, y }),
+    onConnect,
+    isValid,
+    enabled,
+  })
   return (
     <div ref={ref}>
       <div data-node-id="a">
@@ -62,6 +70,16 @@ describe('useConnection', () => {
     const source = container.querySelector('[data-handle-type="source"]') as HTMLElement
     fireEvent.pointerDown(source, { clientX: 0, clientY: 0, pointerId: 1 })
     fireEvent.pointerUp(container, { clientX: 0, clientY: 0, pointerId: 1 })
+    expect(onConnect).not.toHaveBeenCalled()
+  })
+
+  it('does not connect when disabled (view mode)', () => {
+    const onConnect = vi.fn()
+    const { container } = render(<Harness onConnect={onConnect} enabled={false} />)
+    const source = container.querySelector('[data-handle-type="source"]') as HTMLElement
+    const target = container.querySelector('[data-handle-type="target"]') as HTMLElement
+    fireEvent.pointerDown(source, { clientX: 0, clientY: 0, pointerId: 1 })
+    fireEvent.pointerUp(target, { clientX: 0, clientY: 0, pointerId: 1 })
     expect(onConnect).not.toHaveBeenCalled()
   })
 })

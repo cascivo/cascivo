@@ -34,6 +34,11 @@ export interface FlowStoryProps {
   /** Start playing on mount. Default true. */
   autoPlay?: boolean
   background?: boolean
+  /**
+   * Allow selecting / dragging / connecting nodes. A storyline is a view by
+   * default — pan/zoom still work. Default false.
+   */
+  interactive?: boolean
   labels?: FlowStoryLabels
   /** Injectable clock for deterministic tests. */
   clock?: StoryClock
@@ -68,6 +73,7 @@ export function FlowStory({
   controls = true,
   autoPlay = true,
   background = true,
+  interactive = false,
   labels,
   clock,
   className,
@@ -98,6 +104,7 @@ export function FlowStory({
         nodes={nodes}
         edges={edges}
         background={background}
+        interactive={interactive}
         activeEdgeId={active?.edgeId}
         activeDirection={active?.direction}
       />

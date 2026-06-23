@@ -19,6 +19,8 @@ export interface UseConnectionOptions {
   clientToFlow: (clientX: number, clientY: number) => XYPosition
   onConnect?: ((connection: Connection) => void) | undefined
   isValid?: ((connection: Connection) => boolean) | undefined
+  /** When false, interactive connect is disabled (view mode). Default true. */
+  enabled?: boolean | undefined
 }
 
 export interface UseConnectionReturn {
@@ -46,8 +48,11 @@ export function useConnection(options: UseConnectionOptions): UseConnectionRetur
   const toFlowRef = useRef(options.clientToFlow)
   toFlowRef.current = options.clientToFlow
 
+  const enabled = useSignal(options.enabled ?? true)
+  enabled.value = options.enabled ?? true
+
   useSignalEffect(() => {
-    if (typeof window === 'undefined') return
+    if (!enabled.value || typeof window === 'undefined') return
     const container = containerRef.current
     if (!container) return
 

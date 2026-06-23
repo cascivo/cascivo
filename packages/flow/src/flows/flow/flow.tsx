@@ -47,6 +47,12 @@ export interface FlowProps {
   layout?: LayoutStrategy
   minZoom?: number
   maxZoom?: number
+  /**
+   * Interaction mode. When false (view mode), nodes can't be selected, dragged,
+   * or connected and connection handles are hidden — pan/zoom still work.
+   * Default true.
+   */
+  interactive?: boolean
   /** Highlight + animate a single edge (used by FlowStory's active step). */
   activeEdgeId?: string | undefined
   activeDirection?: 'forward' | 'reverse' | undefined
@@ -75,6 +81,7 @@ export function Flow({
   layout,
   minZoom,
   maxZoom,
+  interactive = true,
   activeEdgeId,
   activeDirection,
   className,
@@ -103,6 +110,7 @@ export function Flow({
   const { connection } = useConnection({
     containerRef: controller.containerRef,
     clientToFlow,
+    enabled: interactive,
     onConnect: (c) => {
       store.addEdge({ id: `e-${++edgeSeq}`, source: c.source, target: c.target })
       onConnect?.(c)
@@ -221,8 +229,9 @@ export function Flow({
           id={node.id}
           position={node.position}
           zoom={zoom}
+          interactive={interactive}
           selected={node.selected ?? false}
-          onSelect={select}
+          onSelect={interactive ? select : undefined}
           onMeasure={(size) => measure(node.id, size)}
           onPositionChange={(position) => store.updateNode(node.id, { position })}
         >
@@ -233,8 +242,9 @@ export function Flow({
               <span>
                 {String((node.data as { label?: ReactNode } | undefined)?.label ?? node.id)}
               </span>
-              <FlowHandle type="target" position="left" />
-              <FlowHandle type="source" position="right" />
+              {/* Connection ports only when interactive (view mode hides them). */}
+              {interactive && <FlowHandle type="target" position="left" />}
+              {interactive && <FlowHandle type="source" position="right" />}
             </>
           )}
         </FlowNode>

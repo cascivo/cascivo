@@ -36,6 +36,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 | `onStepChange` | `(step: number) => void` | no       | —       | —                                                                                     |
 | `controls`     | `boolean`                | no       | `true`  | —                                                                                     |
 | `autoPlay`     | `boolean`                | no       | `true`  | —                                                                                     |
+| `interactive`  | `boolean`                | no       | `false` | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
 | `className`    | `string`                 | no       | —       | —                                                                                     |
 
 ## Examples

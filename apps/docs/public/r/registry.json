@@ -8029,6 +8029,13 @@
             "description": "Optional dependency-free layout."
           },
           {
+            "name": "interactive",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work."
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -8698,6 +8705,13 @@
             "default": "true"
           },
           {
+            "name": "interactive",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "When false, the node is view-only: not draggable, selectable, or focusable."
+          },
+          {
             "name": "onSelect",
             "type": "(id: string) => void",
             "required": false
@@ -8917,6 +8931,13 @@
             "type": "boolean",
             "required": false,
             "default": "true"
+          },
+          {
+            "name": "interactive",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "A storyline is a view by default — set true to allow selecting/dragging/connecting."
           },
           {
             "name": "className",
