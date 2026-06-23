@@ -1,0 +1,60 @@
+@layer cascivo.component {
+  .controls {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: var(--cascivo-space-1);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+    box-shadow: var(--cascivo-shadow-md);
+  }
+
+  .controls[data-position='top-left'] {
+    inset-block-start: var(--cascivo-space-3);
+    inset-inline-start: var(--cascivo-space-3);
+  }
+  .controls[data-position='top-right'] {
+    inset-block-start: var(--cascivo-space-3);
+    inset-inline-end: var(--cascivo-space-3);
+  }
+  .controls[data-position='bottom-left'] {
+    inset-block-end: var(--cascivo-space-3);
+    inset-inline-start: var(--cascivo-space-3);
+  }
+  .controls[data-position='bottom-right'] {
+    inset-block-end: var(--cascivo-space-3);
+    inset-inline-end: var(--cascivo-space-3);
+  }
+
+  .button {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    color: var(--cascivo-color-text);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-sm);
+    cursor: pointer;
+  }
+
+  @media (pointer: coarse) {
+    .button {
+      inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .button:hover {
+    background-color: var(--cascivo-color-bg-muted);
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--cascivo-color-focus-ring);
+    outline-offset: -2px;
+  }
+}

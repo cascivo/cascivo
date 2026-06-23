@@ -52,8 +52,8 @@ export interface Viewport {
 export interface Connection {
   source: string
   target: string
-  sourceHandle?: string
-  targetHandle?: string
+  sourceHandle?: string | undefined
+  targetHandle?: string | undefined
 }
 
 /** Default node footprint when a node has no explicit/measured size. */

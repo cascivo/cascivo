@@ -1,0 +1,61 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'FlowControls',
+  description: 'Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.',
+  category: 'display',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'position',
+      type: "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
+      required: false,
+      default: 'bottom-left',
+    },
+    { name: 'showZoom', type: 'boolean', required: false, default: 'true' },
+    { name: 'showFitView', type: 'boolean', required: false, default: 'true' },
+    { name: 'onZoomIn', type: '() => void', required: false },
+    { name: 'onZoomOut', type: '() => void', required: false },
+    { name: 'onFitView', type: '() => void', required: false },
+    { name: 'labels', type: 'FlowControlsLabels', required: false },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: ['--cascivo-color-surface', '--cascivo-color-border', '--cascivo-target-min-coarse'],
+  accessibility: {
+    role: 'group',
+    wcag: '2.1-AA',
+    keyboard: ['Tab (focus)', 'Enter/Space (activate)'],
+  },
+  examples: [
+    {
+      title: 'Canvas controls',
+      code: `() => (
+  <div style={{ position: 'relative', height: 200, border: '1px solid var(--cascivo-color-border)' }}>
+    <FlowControls onZoomIn={() => {}} onZoomOut={() => {}} onFitView={() => {}} />
+  </div>
+)`,
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['flow', 'controls', 'zoom', 'chrome'],
+  intent: {
+    whenToUse: ['Giving users explicit zoom/fit controls on a flow canvas'],
+    whenNotToUse: ['When the canvas is static/non-interactive'],
+    antiPatterns: [],
+    related: [
+      { name: 'FlowCanvas', relationship: 'pairs-with', reason: 'Calls its viewport actions.' },
+      {
+        name: 'FlowMiniMap',
+        relationship: 'pairs-with',
+        reason: 'Complementary navigation chrome.',
+      },
+    ],
+    a11yRationale: 'Real <button>s with i18n-defaulted aria-labels; ≥44px coarse targets.',
+    flexibility: [
+      { area: 'position', level: 'flexible', note: 'Four corners.' },
+      { area: 'buttons', level: 'flexible', note: 'Zoom / fit toggleable.' },
+    ],
+  },
+}
