@@ -23,3 +23,7 @@ export { CodeEditor } from './editor/code-editor/code-editor.tsx'
 export type { CodeEditorProps, CodeEditorHandle } from './editor/code-editor/code-editor.tsx'
 export { Highlight } from './editor/highlight/highlight.tsx'
 export type { HighlightProps } from './editor/highlight/highlight.tsx'
+
+// Extension seam: decoration ranges + key bindings.
+export type { Decoration } from './editor/view.tsx'
+export type { Command, CommandContext, KeyMap } from './editor/code-editor/keymap.ts'

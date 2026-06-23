@@ -72,6 +72,12 @@ export interface CodeEditorProps extends Omit<
   virtualize?: boolean
   /** Accessible label for the editor (defaults to the i18n "Code editor"). */
   label?: string
+  /** Called with the current value on `Mod-S` (the browser save dialog is suppressed). */
+  onSave?: (value: string) => void
+  /** Extra key bindings, merged over the built-ins (user wins on the same chord). */
+  keymap?: KeyMap
+  /** Extra decorations — offset ranges → CSS class — merged with internal ones. */
+  decorations?: readonly Decoration[] | ((value: string) => readonly Decoration[])
 }
 
 /**
@@ -98,6 +104,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     disabled = false,
     spellCheck = false,
     label,
+    onSave,
+    keymap,
+    decorations,
     className,
     style,
     onKeyDown,
@@ -106,6 +115,10 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   ref,
 ) {
   useSignals()
+
+  // Keep the latest onSave reachable from the keymap without rebuilding it.
+  const onSaveRef = useRef(onSave)
+  onSaveRef.current = onSave
   const [text, setText] = useControllableSignal<string>({
     value,
     defaultValue: defaultValue ?? '',
@@ -296,13 +309,17 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     ? scan(highlightText.value, findQuery.value, { caseSensitive: caseSensitive.value })
     : []
   if (currentMatch.value >= matches.length) currentMatch.value = Math.max(0, matches.length - 1)
-  const findDecorations: Decoration[] | undefined =
+  const findDecorations: Decoration[] =
     matches.length > 0
       ? toDecorations(highlightText.value, matches, currentMatch.value, {
           match: hl['match'] as string,
           current: hl['matchCurrent'] as string,
         })
-      : undefined
+      : []
+  const userDecorations: readonly Decoration[] =
+    typeof decorations === 'function' ? decorations(highlightText.value) : (decorations ?? [])
+  const allDecorations = [...userDecorations, ...findDecorations]
+  const decorationList = allDecorations.length > 0 ? allDecorations : undefined
 
   const selectMatch = (index: number): void => {
     const m = matches[index]
@@ -398,13 +415,19 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       openFind(true)
       return true
     }
+    bindings['Mod-s'] = () => {
+      const onSaveNow = onSaveRef.current
+      if (!onSaveNow) return false // nothing to save — let the browser default run
+      onSaveNow(text.value)
+      return true
+    }
     if (findOpen.value) {
       bindings['Escape'] = () => {
         closeFind()
         return true
       }
     }
-    const map = mergeKeymap(bindings)
+    const map = mergeKeymap(bindings, keymap)
     const handled = dispatch(map, { textarea: ta, event, setText: commitFromCommand })
     if (handled) event.preventDefault()
     onKeyDown?.(event)
@@ -435,7 +458,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
           {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(lines, start, end, findDecorations)}</code>
+          <code>{renderRows(lines, start, end, decorationList)}</code>
           {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea

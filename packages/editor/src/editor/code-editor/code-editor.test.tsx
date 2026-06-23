@@ -231,6 +231,42 @@ describe('CodeEditor', () => {
     expect(screen.queryByRole('search')).toBeNull()
   })
 
+  it('fires onSave on Mod-S and suppresses the browser dialog', () => {
+    const onSave = vi.fn()
+    render(<CodeEditor defaultValue="content" onSave={onSave} />)
+    const ta = getTextarea()
+    const event = fireEvent.keyDown(ta, { key: 's', ctrlKey: true })
+    expect(event).toBe(false) // preventDefault
+    expect(onSave).toHaveBeenCalledWith('content')
+  })
+
+  it('does not capture Mod-S when there is no onSave', () => {
+    render(<CodeEditor defaultValue="x" />)
+    const event = fireEvent.keyDown(getTextarea(), { key: 's', ctrlKey: true })
+    expect(event).toBe(true) // not prevented — browser default runs
+  })
+
+  it('merges a custom keymap that overrides a built-in', () => {
+    const onSave = vi.fn()
+    const custom = vi.fn(() => true)
+    render(<CodeEditor defaultValue="x" onSave={onSave} keymap={{ 'Mod-s': custom }} />)
+    fireEvent.keyDown(getTextarea(), { key: 's', ctrlKey: true })
+    expect(custom).toHaveBeenCalledOnce()
+    expect(onSave).not.toHaveBeenCalled() // user binding wins
+  })
+
+  it('renders decorations from a provider prop', () => {
+    render(
+      <CodeEditor
+        language="plaintext"
+        defaultValue="hello"
+        lineNumbers={false}
+        decorations={[{ line: 0, start: 0, end: 2, className: 'udeco' }]}
+      />,
+    )
+    expect(document.querySelector('pre code .udeco')).not.toBeNull()
+  })
+
   it('uses no banned React hooks', () => {
     const files = [
       join(__dirname, 'code-editor.tsx'),

@@ -36,6 +36,28 @@ import { Highlight } from '@cascivo/editor'
 Ships small, tree-shakeable grammars: `plaintext`, `json`, `javascript`, `typescript`, `css`,
 `html`, `markdown`, `bash`. Register your own with `registerGrammar(grammar)`.
 
+### Extending the editor
+
+Three bounded seams — no plugin lifecycle, no transaction filters (use a full editor
+framework if you need those):
+
+- **Key bindings** — pass a `keymap` of `chord → command`. Chords use `Mod` for
+  Cmd/Ctrl (e.g. `'Mod-s'`, `'Mod-Shift-z'`, `'Shift-Tab'`); a command returns `true`
+  when it handled the event. User bindings merge over (and override) the built-ins.
+- **Decorations** — pass `decorations` (an array, or `(value) => Decoration[]`) to tag
+  `{ line, start, end, className }` column ranges; they render as extra classes in the
+  highlight layer (the same seam find and bracket-matching use).
+- **Grammars** — register a language with `registerGrammar(grammar)`.
+
+```tsx
+<CodeEditor
+  language="markdown"
+  onSave={(value) => save(value)} // Mod-S
+  keymap={{ 'Mod-/': ({ textarea, setText }) => { /* toggle comment */ return true } }}
+  decorations={(value) => findTodos(value)}
+/>
+```
+
 ### React apps must subscribe to signals
 
 `CodeEditor` and `Highlight` are signal-driven. In a plain React app (no Babel signals transform),
