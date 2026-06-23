@@ -27,6 +27,9 @@ const ComponentField = lazy(() =>
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
+const IconShowcase = lazy(() =>
+  import('./sections/IconShowcase').then((m) => ({ default: m.IconShowcase })),
+)
 const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
@@ -93,6 +96,10 @@ function HomePage() {
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={320} />}>
+              <IconShowcase />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={180} />}>
