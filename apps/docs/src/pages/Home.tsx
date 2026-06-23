@@ -2,6 +2,51 @@ import { CATEGORY_LABELS, components } from '../data'
 import { buildNav } from '../nav'
 import { CodeBlock } from './components/CodeBlock'
 import { demos } from '../demos'
+import {
+  Activity,
+  Anchor,
+  Bell,
+  Calendar,
+  Camera,
+  Cloud,
+  Compass,
+  Globe,
+  Heart,
+  Home as HomeIcon,
+  Layers,
+  Lock,
+  Map,
+  Music,
+  Search,
+  Settings,
+  Star,
+  User,
+  Zap,
+} from '@cascivo/icons'
+
+// A small representative strip for the docs home — the full ~440-icon catalog
+// lives at /icons. Existing + generated names, varied domains.
+const ICON_PREVIEW = [
+  HomeIcon,
+  Search,
+  Settings,
+  Heart,
+  Star,
+  Bell,
+  Calendar,
+  User,
+  Lock,
+  Globe,
+  Zap,
+  Activity,
+  Layers,
+  Camera,
+  Anchor,
+  Compass,
+  Cloud,
+  Music,
+  Map,
+]
 
 // Overlay components render portals/fixed elements — skip live preview for them
 const SKIP_PREVIEW: Set<string> = new Set([
@@ -54,6 +99,31 @@ export function Home() {
         <h2>Quick start</h2>
         <CodeBlock code={QUICK_START} lang="bash" />
         <CodeBlock code={USAGE} />
+      </section>
+
+      <section class="doc-section">
+        <h2>Icons</h2>
+        <p class="doc-lede" style={{ marginBlockEnd: 'var(--cascivo-space-4)' }}>
+          ~440 stroked 24×24 <code>currentColor</code> SVG icons in <code>@cascivo/icons</code> —
+          one import, individually tree-shakeable.
+        </p>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 'var(--cascivo-space-4)',
+            alignItems: 'center',
+            color: 'var(--cascivo-color-text-subtle)',
+            marginBlockEnd: 'var(--cascivo-space-4)',
+          }}
+        >
+          {ICON_PREVIEW.map((Icon, i) => (
+            <Icon key={i} size={24} aria-hidden="true" />
+          ))}
+        </div>
+        <a href="/icons" class="home-card-label" style={{ color: 'var(--cascivo-color-accent)' }}>
+          Browse all ~440 icons →
+        </a>
       </section>
 
       <section class="doc-section">
