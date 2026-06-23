@@ -1,0 +1,31 @@
+cascivo
+Copyright (c) cascivo contributors
+
+This product includes software developed by the cascivo project.
+
+------------------------------------------------------------------------
+Third-party icon geometry
+------------------------------------------------------------------------
+
+The icons shipped in @cascivo/icons (packages/icons) are derived from two
+MIT-licensed, stroked-24×24 icon sets. Their copyright notices are preserved
+below as required by the MIT License.
+
+1. Feather Icons
+   The original 60 hand-authored icons in packages/icons/src/index.tsx adapt
+   geometry from Feather Icons.
+
+   Copyright (c) 2013-2017 Cole Bemis
+   Licensed under the MIT License.
+   https://github.com/feathericons/feather
+
+2. chromicons (LifeOmic)
+   The generated icons in packages/icons/src/generated.tsx are derived from
+   the vendored chromicons SVG source under packages/icons/svg/ (see
+   packages/icons/svg/LICENSE). They are normalized into @cascivo/icons'
+   createIcon model by scripts/icons/generate.mjs; no chromicons runtime
+   dependency is added.
+
+   Copyright (c) 2020 LifeOmic
+   Licensed under the MIT License.
+   https://github.com/lifeomic/chromicons.com
