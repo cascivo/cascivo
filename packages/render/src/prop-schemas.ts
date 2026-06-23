@@ -32,6 +32,48 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ActionSheet: [
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'showCancel',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Alert: [
     {
       name: 'variant',

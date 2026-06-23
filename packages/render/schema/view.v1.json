@@ -87,6 +87,7 @@
           "type": "string",
           "enum": [
             "Accordion",
+            "ActionSheet",
             "Alert",
             "AlertDialog",
             "AppShell",
@@ -312,6 +313,38 @@
                     "enum": ["single", "multiple"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ActionSheet"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "showCancel": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["actions"]
               }
             }
           }

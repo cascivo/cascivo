@@ -101,6 +101,10 @@ export const builtin = {
     close: 'Close',
     handle: 'Drag to resize',
   }),
+  actionSheet: defineMessages('cascade.actionSheet', {
+    label: 'Actions',
+    cancel: 'Cancel',
+  }),
   fileUploader: defineMessages('cascade.fileUploader', {
     label: 'Upload files',
     drop: 'Drag and drop files here or click to upload',
@@ -323,6 +327,10 @@ defineCatalog(builtin.sheet, 'de', {
 defineCatalog(builtin.bottomSheet, 'de', {
   close: 'Schließen',
   handle: 'Zum Anpassen ziehen',
+})
+defineCatalog(builtin.actionSheet, 'de', {
+  label: 'Aktionen',
+  cancel: 'Abbrechen',
 })
 defineCatalog(builtin.fileUploader, 'de', {
   label: 'Dateien hochladen',

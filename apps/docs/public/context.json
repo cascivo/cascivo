@@ -164,6 +164,23 @@
           "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
         }
       ],
+      "ActionSheet": [
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Any number of actions; each may be destructive or disabled"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+        },
+        {
+          "area": "cancel",
+          "level": "flexible",
+          "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
+        }
+      ],
       "Alert": [
         {
           "area": "variant",
@@ -1743,6 +1760,62 @@
       },
       "contextUrl": "/context/accordion.md",
       "aiPrompt": "I am modifying the cascivo Accordion component (navigation). Vertically stacked, collapsible content sections\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAccordion is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-radius-md, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens\nFlexible: single vs multiple.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "ActionSheet",
+      "category": "overlay",
+      "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+      "intent": {
+        "whenToUse": [
+          "A short list of discrete actions on a touch surface, rising from the bottom",
+          "Confirming or choosing among a few operations (e.g. Share, Edit, Delete) on mobile",
+          "A mobile-first alternative to an anchored dropdown menu when there is no trigger anchor"
+        ],
+        "whenNotToUse": [
+          "A single yes/no confirmation — use AlertDialog",
+          "A form or scrollable content — use BottomSheet or Sheet",
+          "A menu anchored to a trigger on desktop — use Menu or Dropdown"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ActionSheet actions={[{ label: \"OK\", onSelect }]} />",
+            "good": "<AlertDialog title=\"Delete item?\" />",
+            "why": "A one-action sheet is a confirmation; AlertDialog states the decision clearly"
+          }
+        ],
+        "related": [
+          {
+            "name": "BottomSheet",
+            "relationship": "alternative",
+            "reason": "Use BottomSheet for rich/resizable content; ActionSheet is a fixed list of actions"
+          },
+          {
+            "name": "Menu",
+            "relationship": "alternative",
+            "reason": "Use Menu for a trigger-anchored dropdown on pointer-first surfaces"
+          }
+        ],
+        "a11yRationale": "Renders role=\"menu\" with role=\"menuitem\" buttons under vertical roving focus (Arrow keys, Home/End, wrapping). The title labels the menu via aria-labelledby (or a built-in label otherwise) and the description via aria-describedby. FocusScope traps and restores focus; DismissableLayer handles Escape and outside-pointer dismissal; a separate Cancel button provides an explicit non-destructive exit.",
+        "flexibility": [
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Any number of actions; each may be destructive or disabled"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          },
+          {
+            "area": "cancel",
+            "level": "flexible",
+            "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
+          }
+        ]
+      },
+      "contextUrl": "/context/action-sheet.md",
+      "aiPrompt": "I am modifying the cascivo ActionSheet component (overlay). Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nActionSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-overlay\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Home/End/Enter/Space/Escape. Keep it AA.\nFlexible: actions, open state, cancel.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Alert",

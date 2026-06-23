@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (166 components)
+## Component index (167 components)
 
 ### chart
 
@@ -274,6 +274,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 
 ### overlay
 
+- [action-sheet](https://docs.cascivo.com/llms/action-sheet.md) — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button
 - [alert-dialog](https://docs.cascivo.com/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
 - [bottom-sheet](https://docs.cascivo.com/llms/bottom-sheet.md) — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss
 - [command-menu](https://docs.cascivo.com/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
@@ -293,6 +294,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 ## Component intent summaries (use when…)
 
 - [Accordion](https://docs.cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
+- [ActionSheet](https://docs.cascivo.com/context/action-sheet.md) — Use when: A short list of discrete actions on a touch surface, rising from the bottom
 - [Alert](https://docs.cascivo.com/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
 - [AlertDialog](https://docs.cascivo.com/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
 - [AppShell](https://docs.cascivo.com/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation

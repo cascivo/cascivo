@@ -28,6 +28,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "action-sheet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "action-sheet/action-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "action-sheet/action-sheet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "alert",
       "type": "registry:component",
       "files": [

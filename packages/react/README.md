@@ -147,7 +147,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-166 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+167 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -240,6 +240,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Overlay
 
+- **ActionSheet** — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button
 - **AlertDialog** — Confirmation dialog requiring explicit user action; no light-dismiss
 - **BottomSheet** — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss
 - **CommandMenu** — Cmd+K command palette with fuzzy search over grouped commands

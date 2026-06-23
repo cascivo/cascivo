@@ -59,6 +59,23 @@
         "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
       }
     ],
+    "ActionSheet": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Any number of actions; each may be destructive or disabled"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      },
+      {
+        "area": "cancel",
+        "level": "flexible",
+        "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
+      }
+    ],
     "Alert": [
       {
         "area": "variant",

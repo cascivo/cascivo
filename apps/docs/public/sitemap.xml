@@ -49,6 +49,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/action-sheet</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/alert</loc>
     <priority>0.6</priority>
   </url>

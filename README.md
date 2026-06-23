@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-166-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-167-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -257,14 +257,15 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**166 components** — display 45 · inputs 38 · layout 27 · navigation 18 · chart 16 · overlay 15 · feedback 7.
+**167 components** — display 45 · inputs 38 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 7.
 
 <details>
-<summary>Browse all 166 components</summary>
+<summary>Browse all 167 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | accordion                  | navigation | Vertically stacked, collapsible content sections                                                                                                                                                                |
+| action-sheet               | overlay    | Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button                                                                                                                         |
 | alert                      | display    | Highlights a short, important message inline                                                                                                                                                                    |
 | alert-dialog               | overlay    | Confirmation dialog requiring explicit user action; no light-dismiss                                                                                                                                            |
 | app-shell                  | layout     | Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.                                                                                                  |
