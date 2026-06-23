@@ -1,5 +1,11 @@
 # @cascivo/i18n
 
+## 0.1.5
+
+### Patch Changes
+
+- aa3c6f3: Introduce Editor
+
 ## 0.1.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.3.2
+
+### Patch Changes
+
+- aa3c6f3: Introduce Editor
+
 ## 0.3.1
 
 ### Patch Changes

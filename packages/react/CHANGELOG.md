@@ -1,5 +1,13 @@
 # @cascivo/react
 
+## 0.3.3
+
+### Patch Changes
+
+- aa3c6f3: Introduce Editor
+- Updated dependencies [aa3c6f3]
+  - @cascivo/i18n@0.1.5
+
 ## 0.3.2
 
 ### Patch Changes
