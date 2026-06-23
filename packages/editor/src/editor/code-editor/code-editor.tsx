@@ -7,6 +7,8 @@ import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
 import { Gutter, renderRows } from '../view.tsx'
 import styles from './code-editor.module.css'
+import { createHistory, type History, type Snapshot } from './history.ts'
+import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
 const VIRTUALIZE_THRESHOLD = 1000
@@ -82,6 +84,59 @@ export function CodeEditor({
   const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
 
+  // Owned undo/redo history (survives programmatic `value` writes, unlike native
+  // textarea undo). Seeded once with the initial state.
+  const historyRef = useRef<History | null>(null)
+  if (historyRef.current === null) {
+    historyRef.current = createHistory()
+    historyRef.current.reset({ text: text.value, selectionStart: 0, selectionEnd: 0 })
+  }
+  const history = historyRef.current
+
+  // Edit-tracking refs: `prevText` is the last value we know about, `lastEmitted`
+  // is the value we last pushed via onValueChange (to tell our own echo from an
+  // external/controlled change), `applying` guards snapshot restores, and `sel`
+  // mirrors the live selection for history + external rebasing.
+  const prevTextRef = useRef(text.value)
+  const lastEmittedRef = useRef<string | undefined>(undefined)
+  const applyingRef = useRef(false)
+  const selRef = useRef<{ start: number; end: number }>({ start: 0, end: 0 })
+
+  // Commit an edit: route through the controllable signal and record an undo step.
+  const commit = (next: string, sel: { start: number; end: number }, coalesce: boolean): void => {
+    // Update tracking + history BEFORE setText: writing the signal runs the
+    // external-change effect synchronously, which must see this as our own edit.
+    lastEmittedRef.current = next
+    prevTextRef.current = next
+    history.record({ text: next, selectionStart: sel.start, selectionEnd: sel.end }, { coalesce })
+    setText(next)
+  }
+
+  // setText shim handed to keymap commands (indent/dedent) — reads the post-edit
+  // selection off the textarea and records a (non-coalescing) step.
+  const commitFromCommand = (next: string): void => {
+    const ta = taRef.current
+    const sel = ta ? { start: ta.selectionStart, end: ta.selectionEnd } : selRef.current
+    commit(next, sel, false)
+  }
+
+  // Apply an undo/redo snapshot: write text + selection imperatively and sync the
+  // signal, without recording a new step or tripping the external-change path.
+  const applySnapshot = (snap: Snapshot): void => {
+    const ta = taRef.current
+    if (!ta) return
+    applyingRef.current = true
+    ta.value = snap.text
+    ta.setSelectionRange(snap.selectionStart, snap.selectionEnd)
+    setText(snap.text)
+    lastEmittedRef.current = snap.text
+    prevTextRef.current = snap.text
+    selRef.current = { start: snap.selectionStart, end: snap.selectionEnd }
+    const line = snap.text.slice(0, snap.selectionStart).split('\n').length - 1
+    rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+    applyingRef.current = false
+  }
+
   // rAF-debounced highlight: editing writes `text` synchronously (never blocked);
   // the highlight layer reads `highlightText`, updated at most once per frame.
   const highlightText = useSignal(text.value)
@@ -101,6 +156,27 @@ export function CodeEditor({
       highlightText.value = next
     })
     return () => cancelAnimationFrame(id)
+  })
+
+  // External/controlled value changes: when `text` changes to something we did not
+  // emit ourselves (a parent reset / remote pull), it is an external update — seed
+  // history to the new state so undo does not restore stale pre-set text. (T2 adds
+  // selection-preserving rebasing on top of this.)
+  useSignalEffect(() => {
+    const next = text.value
+    if (applyingRef.current) return
+    if (next === prevTextRef.current) return
+    if (next === lastEmittedRef.current) {
+      prevTextRef.current = next
+      return
+    }
+    const ta = taRef.current
+    history.reset({
+      text: next,
+      selectionStart: ta?.selectionStart ?? 0,
+      selectionEnd: ta?.selectionEnd ?? 0,
+    })
+    prevTextRef.current = next
   })
 
   // Scroll-sync (textarea → highlight + gutter), viewport measurement, and the
@@ -126,6 +202,7 @@ export function CodeEditor({
     const syncCaret = (): void => {
       const line = ta.value.slice(0, ta.selectionStart).split('\n').length - 1
       rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+      selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
     }
     measure()
     syncCaret()
@@ -159,26 +236,30 @@ export function CodeEditor({
   const bottomPad = (total - end) * lh
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (event.key === 'Tab' && !readOnly && !disabled) {
-      event.preventDefault()
-      const ta = event.currentTarget
-      const { selectionStart, selectionEnd, value: current } = ta
-      const indent = insertSpaces ? ' '.repeat(tabSize) : '\t'
-      const lineStart = current.lastIndexOf('\n', selectionStart - 1) + 1
-
-      if (event.shiftKey) {
-        const block = current.slice(lineStart, selectionEnd)
-        const dedented = block.replace(new RegExp(`^(?:\\t| {1,${tabSize}})`, 'gm'), '')
-        ta.setRangeText(dedented, lineStart, selectionEnd, 'select')
-      } else if (selectionStart === selectionEnd) {
-        ta.setRangeText(indent, selectionStart, selectionEnd, 'end')
-      } else {
-        const block = current.slice(lineStart, selectionEnd)
-        const indented = block.replace(/^/gm, indent)
-        ta.setRangeText(indented, lineStart, selectionEnd, 'select')
+    const ta = event.currentTarget
+    const editable = !readOnly && !disabled
+    const bindings: KeyMap = {}
+    if (editable) {
+      const { indent, dedent } = createIndentCommands({ tabSize, insertSpaces })
+      bindings['Tab'] = indent
+      bindings['Shift-Tab'] = dedent
+      const undo = (): boolean => {
+        const snap = history.undo()
+        if (snap) applySnapshot(snap)
+        return true
       }
-      setText(ta.value)
+      const redo = (): boolean => {
+        const snap = history.redo()
+        if (snap) applySnapshot(snap)
+        return true
+      }
+      bindings['Mod-z'] = undo
+      bindings['Mod-Shift-z'] = redo
+      bindings['Mod-y'] = redo
     }
+    const map = mergeKeymap(bindings)
+    const handled = dispatch(map, { textarea: ta, event, setText: commitFromCommand })
+    if (handled) event.preventDefault()
     onKeyDown?.(event)
   }
 
@@ -214,7 +295,12 @@ export function CodeEditor({
           ref={taRef}
           className={styles['textarea']}
           value={text.value}
-          onChange={(event) => setText(event.currentTarget.value)}
+          onChange={(event) => {
+            const ta = event.currentTarget
+            const next = ta.value
+            const coalesce = Math.abs(next.length - prevTextRef.current.length) === 1
+            commit(next, { start: ta.selectionStart, end: ta.selectionEnd }, coalesce)
+          }}
           onKeyDown={handleKeyDown}
           readOnly={readOnly}
           disabled={disabled}

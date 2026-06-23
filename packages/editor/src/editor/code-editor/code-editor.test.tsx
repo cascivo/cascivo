@@ -121,6 +121,29 @@ describe('CodeEditor', () => {
     vi.restoreAllMocks()
   })
 
+  it('undoes and redoes an edit with Mod-Z / Mod-Shift-Z', () => {
+    render(<CodeEditor defaultValue="" />)
+    const ta = getTextarea()
+    fireEvent.change(ta, { target: { value: 'hello' } })
+    expect(ta.value).toBe('hello')
+
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('') // undo
+
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true, shiftKey: true })
+    expect(ta.value).toBe('hello') // redo
+  })
+
+  it('does not resurrect pre-set text on undo after a programmatic value change', () => {
+    const { rerender } = render(<CodeEditor value="a" onValueChange={() => {}} />)
+    rerender(<CodeEditor value="b" onValueChange={() => {}} />)
+    const ta = getTextarea()
+    expect(ta.value).toBe('b')
+    // Undo must not restore the externally-replaced 'a'.
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('b')
+  })
+
   it('uses no banned React hooks', () => {
     const files = [
       join(__dirname, 'code-editor.tsx'),
