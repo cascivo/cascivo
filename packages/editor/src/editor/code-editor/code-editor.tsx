@@ -1,12 +1,17 @@
 'use client'
-import { cn, useControllableSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef, type CSSProperties, type KeyboardEvent, type TextareaHTMLAttributes } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
 import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderLines } from '../view.tsx'
+import { Gutter, renderRows } from '../view.tsx'
 import styles from './code-editor.module.css'
+
+/** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
+const VIRTUALIZE_THRESHOLD = 1000
+/** Extra rows rendered above/below the viewport so fast scrolls stay covered. */
+const OVERSCAN = 12
 
 export interface CodeEditorProps extends Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -28,6 +33,11 @@ export interface CodeEditorProps extends Omit<
   insertSpaces?: boolean
   /** Soft-wrap long lines instead of scrolling horizontally (default false). */
   wrap?: boolean
+  /**
+   * Render only the visible lines for large documents. Defaults to auto
+   * (on above ~1000 lines); disabled when `wrap` makes row heights variable.
+   */
+  virtualize?: boolean
   /** Accessible label for the editor (defaults to the i18n "Code editor"). */
   label?: string
 }
@@ -36,6 +46,10 @@ export interface CodeEditorProps extends Omit<
  * A lightweight code editor: a native `<textarea>` overlaid on a syntax-highlighted
  * `Highlight` layer. The browser owns editing/caret/IME/undo/a11y; JS handles only
  * tokenizing, scroll-sync, and Tab/Shift-Tab indent. Signal-driven, no banned hooks.
+ *
+ * Performance: tokenization is per-line memoized, the highlight layer is
+ * rAF-debounced (typing never blocks), and large documents window to the visible
+ * range while the textarea always holds the full text.
  */
 export function CodeEditor({
   value,
@@ -46,6 +60,7 @@ export function CodeEditor({
   tabSize = 2,
   insertSpaces = true,
   wrap = false,
+  virtualize,
   readOnly = false,
   disabled = false,
   spellCheck = false,
@@ -67,13 +82,41 @@ export function CodeEditor({
   const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
 
-  // Scroll-sync (textarea → highlight + gutter) and the imperative current-line
-  // marker. The only DOM side effects — run in a signal effect, not a React
-  // lifecycle hook.
+  // rAF-debounced highlight: editing writes `text` synchronously (never blocked);
+  // the highlight layer reads `highlightText`, updated at most once per frame.
+  const highlightText = useSignal(text.value)
+
+  // Viewport metrics for windowing (written in the scroll/measure listener).
+  const scrollTop = useSignal(0)
+  const viewport = useSignal(0)
+  const lineHeight = useSignal(0)
+
+  useSignalEffect(() => {
+    const next = text.value
+    if (typeof requestAnimationFrame !== 'function') {
+      highlightText.value = next
+      return
+    }
+    const id = requestAnimationFrame(() => {
+      highlightText.value = next
+    })
+    return () => cancelAnimationFrame(id)
+  })
+
+  // Scroll-sync (textarea → highlight + gutter), viewport measurement, and the
+  // imperative current-line marker. The only DOM side effects — run in a signal
+  // effect, not a React lifecycle hook.
   useSignalEffect(() => {
     const ta = taRef.current
     if (!ta) return
+    const measure = (): void => {
+      const lh = Number.parseFloat(getComputedStyle(ta).lineHeight)
+      lineHeight.value = Number.isFinite(lh) && lh > 0 ? lh : 0
+      viewport.value = ta.clientHeight
+    }
     const syncScroll = (): void => {
+      scrollTop.value = ta.scrollTop
+      viewport.value = ta.clientHeight
       if (preRef.current) {
         preRef.current.scrollTop = ta.scrollTop
         preRef.current.scrollLeft = ta.scrollLeft
@@ -84,11 +127,12 @@ export function CodeEditor({
       const line = ta.value.slice(0, ta.selectionStart).split('\n').length - 1
       rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
     }
+    measure()
+    syncCaret()
     ta.addEventListener('scroll', syncScroll)
     ta.addEventListener('keyup', syncCaret)
     ta.addEventListener('click', syncCaret)
     ta.addEventListener('input', syncCaret)
-    syncCaret()
     return () => {
       ta.removeEventListener('scroll', syncScroll)
       ta.removeEventListener('keyup', syncCaret)
@@ -97,7 +141,22 @@ export function CodeEditor({
     }
   })
 
-  const lines = tokenizeDocument(getGrammar(language), text.value)
+  const lines = tokenizeDocument(getGrammar(language), highlightText.value)
+  const total = lines.length
+
+  // Windowing: render only the visible slice for large docs (never when wrapping,
+  // where row heights are variable). Spacers preserve scroll height + alignment.
+  const lh = lineHeight.value
+  const windowed = (virtualize ?? total > VIRTUALIZE_THRESHOLD) && !wrap && lh > 0
+  let start = 0
+  let end = total
+  if (windowed) {
+    start = Math.max(0, Math.floor(scrollTop.value / lh) - OVERSCAN)
+    const visibleRows = Math.ceil(viewport.value / lh)
+    end = Math.min(total, start + visibleRows + OVERSCAN * 2)
+  }
+  const topPad = start * lh
+  const bottomPad = (total - end) * lh
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (event.key === 'Tab' && !readOnly && !disabled) {
@@ -134,12 +193,22 @@ export function CodeEditor({
       style={rootStyle}
     >
       {lineNumbers && (
-        <Gutter count={lines.length} className={styles['gutter']} gutterRef={gutterRef} />
+        <Gutter
+          count={total}
+          className={styles['gutter']}
+          gutterRef={gutterRef}
+          start={start}
+          end={end}
+          topPad={topPad}
+          bottomPad={bottomPad}
+        />
       )}
       <div className={styles['codeArea']}>
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
-          <code>{renderLines(lines)}</code>
+          {topPad > 0 && <div style={{ blockSize: topPad }} />}
+          <code>{renderRows(lines, start, end)}</code>
+          {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea
           ref={taRef}

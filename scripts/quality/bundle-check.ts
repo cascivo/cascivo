@@ -8,6 +8,9 @@ const root = fileURLToPath(new URL('../..', import.meta.url))
 const BUDGETS = [
   { pkg: '@cascivo/react', distFile: 'packages/react/dist/index.mjs', maxGzipKB: 50 },
   { pkg: '@cascivo/charts', distFile: 'packages/charts/dist/index.mjs', maxGzipKB: 80 },
+  // Lightweight by design: the full editor (engine + all grammars + both React
+  // surfaces) tree-shakes to a few KB; one grammar + the engine is far smaller.
+  { pkg: '@cascivo/editor', distFile: 'packages/editor/dist/index.js', maxGzipKB: 20 },
 ]
 
 // @cascivo/ai budget checked separately — it may not have a dist yet

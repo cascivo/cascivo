@@ -4,7 +4,7 @@ import type { CSSProperties, HTMLAttributes, Ref } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
 import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderLines } from '../view.tsx'
+import { Gutter, renderRows } from '../view.tsx'
 import styles from './highlight.module.css'
 
 export interface HighlightProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -61,7 +61,7 @@ export function Highlight({
         <Gutter count={lines.length} className={styles['gutter']} gutterRef={gutterRef} />
       )}
       <pre ref={preRef} className={styles['pre']}>
-        <code className={styles['code']}>{renderLines(lines)}</code>
+        <code className={styles['code']}>{renderRows(lines)}</code>
       </pre>
     </div>
   )
