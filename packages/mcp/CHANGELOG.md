@@ -1,5 +1,11 @@
 # @cascivo/mcp
 
+## 0.1.5
+
+### Patch Changes
+
+- 8ecc7a2: Introduce Flow
+
 ## 0.1.4
 
 ### Patch Changes

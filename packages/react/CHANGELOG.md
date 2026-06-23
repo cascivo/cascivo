@@ -1,5 +1,13 @@
 # @cascivo/react
 
+## 0.3.2
+
+### Patch Changes
+
+- 8ecc7a2: Introduce Flow
+- Updated dependencies [8ecc7a2]
+  - @cascivo/i18n@0.1.4
+
 ## 0.3.1
 
 ### Patch Changes
