@@ -70,6 +70,7 @@ export function FlowEdge({
     <>
       <svg
         className={cn(styles['edgeSvg'], className)}
+        data-edge-id={id}
         data-animated={animated || undefined}
         data-selected={selected || undefined}
         data-active={active || undefined}

@@ -8831,6 +8831,144 @@
     },
     {
       "schemaVersion": 2,
+      "name": "flow/flow-story",
+      "type": "flow",
+      "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
+      "category": "display",
+      "install": "@cascivo/flow",
+      "meta": {
+        "name": "FlowStory",
+        "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
+        "category": "display",
+        "states": ["playing", "paused"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "nodes",
+            "type": "FlowNode[]",
+            "required": true
+          },
+          {
+            "name": "edges",
+            "type": "FlowEdge[]",
+            "required": true
+          },
+          {
+            "name": "script",
+            "type": "StoryStep[]",
+            "required": true,
+            "description": "Ordered steps: { from, to, label? } or { edge, reverse? }."
+          },
+          {
+            "name": "loop",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "stepDuration",
+            "type": "number",
+            "required": false,
+            "default": "1500"
+          },
+          {
+            "name": "playing",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "currentStep",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "onStepChange",
+            "type": "(step: number) => void",
+            "required": false
+          },
+          {
+            "name": "controls",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "autoPlay",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-text-muted"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.1-AA",
+          "keyboard": ["Tab (focus controls)", "Enter/Space (play/pause, prev, next)"],
+          "reducedMotion": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
+        "intent": {
+          "whenToUse": [
+            "Explaining how a flow works step by step, not just showing a static diagram",
+            "Onboarding, architecture walkthroughs, and request/response narratives"
+          ],
+          "whenNotToUse": [
+            "A static or freely-explorable graph — use <Flow>",
+            "A single always-on animated edge — set animated on a FlowEdge"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "A requestAnimationFrame loop to sequence steps",
+              "good": "A currentStep signal advanced by a timer in useSignalEffect",
+              "why": "CLAUDE.md bans the useEffect-style loop; the signal+timer idiom is deterministic + testable."
+            }
+          ],
+          "related": [
+            {
+              "name": "Flow",
+              "relationship": "contains",
+              "reason": "Renders the graph the storyline animates."
+            },
+            {
+              "name": "FlowEdge",
+              "relationship": "pairs-with",
+              "reason": "Reuses the animated-edge keyframe per step."
+            }
+          ],
+          "a11yRationale": "The caption is an aria-live region announced each step; play/pause/prev/next make it keyboard-operable; travel motion is disabled under prefers-reduced-motion while captions are preserved.",
+          "flexibility": [
+            {
+              "area": "script",
+              "level": "flexible",
+              "note": "Serializable steps — { from, to } or { edge, reverse }."
+            },
+            {
+              "area": "playback",
+              "level": "flexible",
+              "note": "Controllable playing/currentStep; loop + per-step duration."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "form",
       "type": "component",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",

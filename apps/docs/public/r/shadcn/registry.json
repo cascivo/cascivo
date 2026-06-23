@@ -1603,6 +1603,21 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-story",
+      "type": "registry:component",
+      "files": [],
+      "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "form",
       "type": "registry:component",
       "files": [

@@ -46,6 +46,9 @@ export interface FlowProps {
   layout?: LayoutStrategy
   minZoom?: number
   maxZoom?: number
+  /** Highlight + animate a single edge (used by FlowStory's active step). */
+  activeEdgeId?: string | undefined
+  activeDirection?: 'forward' | 'reverse' | undefined
   className?: string
   style?: CSSProperties
 }
@@ -71,6 +74,8 @@ export function Flow({
   layout,
   minZoom,
   maxZoom,
+  activeEdgeId,
+  activeDirection,
   className,
   style,
 }: FlowProps) {
@@ -154,6 +159,7 @@ export function Flow({
         if (!sourceNode || !targetNode) return null
         const s = handleAnchor(sourceNode, 'right')
         const t = handleAnchor(targetNode, 'left')
+        const isActive = activeEdgeId === edge.id
         return (
           <FlowEdge
             key={edge.id}
@@ -163,7 +169,9 @@ export function Flow({
             targetX={t.x}
             targetY={t.y}
             type={(edge.type as EdgePathType) ?? 'bezier'}
-            animated={edge.animated}
+            animated={edge.animated || isActive}
+            active={isActive}
+            direction={isActive ? activeDirection : undefined}
             label={edge.label}
             selected={edge.selected}
           />

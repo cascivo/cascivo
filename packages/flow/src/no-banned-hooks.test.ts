@@ -17,7 +17,13 @@ function collectFiles(dir: string): string[] {
     const full = join(dir, entry.name)
     if (entry.isDirectory()) {
       results.push(...collectFiles(full))
-    } else if (entry.isFile() && /\.tsx?$/.test(entry.name) && !entry.name.includes('.test.')) {
+    } else if (
+      entry.isFile() &&
+      /\.tsx?$/.test(entry.name) &&
+      !entry.name.includes('.test.') &&
+      // Manifests are documentation data — their prose may name banned hooks.
+      !entry.name.endsWith('.meta.ts')
+    ) {
       results.push(full)
     }
   }

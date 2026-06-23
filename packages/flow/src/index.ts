@@ -17,10 +17,12 @@ export * from './engine/transform.ts'
 export * from './engine/geometry.ts'
 export * from './engine/path.ts'
 export * from './engine/layout.ts'
+export * from './engine/script.ts'
 
 // Canvas + viewport
 export * from './core/use-viewport.ts'
 export * from './core/use-connection.ts'
+export * from './core/use-story.ts'
 export * from './core/flow-canvas/flow-canvas.tsx'
 
 // Flow primitives
@@ -32,3 +34,4 @@ export * from './flows/flow-controls/flow-controls.tsx'
 export * from './flows/flow-minimap/flow-minimap.tsx'
 export * from './flows/flow-panel/flow-panel.tsx'
 export * from './flows/flow/flow.tsx'
+export * from './flows/flow-story/flow-story.tsx'
