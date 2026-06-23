@@ -105,6 +105,11 @@ export const builtin = {
     label: 'Actions',
     cancel: 'Cancel',
   }),
+  pullToRefresh: defineMessages('cascade.pullToRefresh', {
+    pull: 'Pull to refresh',
+    release: 'Release to refresh',
+    refreshing: 'Refreshing',
+  }),
   fileUploader: defineMessages('cascade.fileUploader', {
     label: 'Upload files',
     drop: 'Drag and drop files here or click to upload',
@@ -331,6 +336,11 @@ defineCatalog(builtin.bottomSheet, 'de', {
 defineCatalog(builtin.actionSheet, 'de', {
   label: 'Aktionen',
   cancel: 'Abbrechen',
+})
+defineCatalog(builtin.pullToRefresh, 'de', {
+  pull: 'Zum Aktualisieren ziehen',
+  release: 'Zum Aktualisieren loslassen',
+  refreshing: 'Wird aktualisiert',
 })
 defineCatalog(builtin.fileUploader, 'de', {
   label: 'Dateien hochladen',

@@ -97,6 +97,7 @@ export * from '../../components/src/code/code'
 export * from '../../components/src/blockquote/blockquote'
 export * from '../../components/src/list/list'
 export * from '../../components/src/prose/prose'
+export * from '../../components/src/pull-to-refresh/pull-to-refresh'
 export * from '../../components/src/qr-code/qr-code'
 export * from '../../components/src/relative-time/relative-time'
 // v18 Tier-1 parity components

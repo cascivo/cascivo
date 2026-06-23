@@ -197,6 +197,7 @@
             "ProgressCircle",
             "ProgressIndicator",
             "Prose",
+            "PullToRefresh",
             "QrCode",
             "Radar",
             "RadialProgress",
@@ -2889,6 +2890,35 @@
               "props": {
                 "type": "object",
                 "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "PullToRefresh"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["onRefresh", "children"]
               }
             }
           }

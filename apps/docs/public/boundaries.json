@@ -1088,6 +1088,18 @@
         "note": "All typography and surface styling resolves to --cascivo-* tokens"
       }
     ],
+    "PullToRefresh": [
+      {
+        "area": "threshold",
+        "level": "flexible",
+        "note": "Pull distance required to trigger is configurable (default 64px)"
+      },
+      {
+        "area": "onRefresh",
+        "level": "flexible",
+        "note": "May return a promise; the spinner persists until it settles"
+      }
+    ],
     "QrCode": [
       {
         "area": "errorCorrection",

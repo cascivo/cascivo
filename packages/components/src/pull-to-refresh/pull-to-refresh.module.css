@@ -1,0 +1,66 @@
+@layer cascivo.component {
+  .root {
+    position: relative;
+    overflow: hidden;
+    block-size: 100%;
+  }
+
+  .indicator {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--_pull, 0px);
+    overflow: hidden;
+    color: var(--cascivo-color-text-muted);
+    transition: block-size var(--cascivo-motion-enter);
+
+    &[data-dragging] {
+      transition: none;
+    }
+  }
+
+  .arrow {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    transition: rotate var(--cascivo-motion-enter);
+
+    &[data-ready] {
+      rotate: 180deg;
+    }
+  }
+
+  .viewport {
+    block-size: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateY(var(--_pull, 0px));
+    transition: transform var(--cascivo-motion-enter);
+
+    &[data-dragging] {
+      transition: none;
+    }
+  }
+
+  .srOnly {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .indicator,
+    .arrow,
+    .viewport {
+      transition: none;
+    }
+  }
+}

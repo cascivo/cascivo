@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (169 components)
+## Component index (170 components)
 
 ### chart
 
@@ -178,6 +178,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [progress](https://docs.cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation
 - [progress-bar](https://docs.cascivo.com/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
 - [progress-circle](https://docs.cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
+- [pull-to-refresh](https://docs.cascivo.com/llms/pull-to-refresh.md) — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - [radial-progress](https://docs.cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - [spinner](https://docs.cascivo.com/llms/spinner.md) — Indeterminate loading indicator
 
@@ -414,6 +415,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [ProgressCircle](https://docs.cascivo.com/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
 - [ProgressIndicator](https://docs.cascivo.com/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
 - [Prose](https://docs.cascivo.com/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [PullToRefresh](https://docs.cascivo.com/context/pull-to-refresh.md) — Use when: A scrollable list or feed on touch devices that the user refreshes by pulling down from the top
 - [QrCode](https://docs.cascivo.com/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
 - [RadialProgress](https://docs.cascivo.com/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
 - [Radio](https://docs.cascivo.com/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible

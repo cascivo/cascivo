@@ -57,6 +57,7 @@ import { meta as progressBarMeta } from './progress-bar/progress-bar.meta'
 import { meta as progressCircleMeta } from './progress-circle/progress-circle.meta'
 import { meta as progressIndicatorMeta } from './progress-indicator/progress-indicator.meta'
 import { meta as proseMeta } from './prose/prose.meta'
+import { meta as pullToRefreshMeta } from './pull-to-refresh/pull-to-refresh.meta'
 import { meta as qrCodeMeta } from './qr-code/qr-code.meta'
 import { meta as radioMeta } from './radio/radio.meta'
 import { meta as radioCardMeta } from './radio-card/radio-card.meta'
@@ -152,6 +153,7 @@ export const allMetas: ComponentMeta[] = [
   progressCircleMeta,
   progressIndicatorMeta,
   proseMeta,
+  pullToRefreshMeta,
   qrCodeMeta,
   radioMeta,
   radioCardMeta,

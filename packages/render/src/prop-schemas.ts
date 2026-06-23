@@ -2947,6 +2947,35 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Prose: [],
+  PullToRefresh: [
+    {
+      name: 'onRefresh',
+      required: true,
+    },
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'threshold',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   QrCode: [
     {
       name: 'value',

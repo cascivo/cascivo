@@ -1193,6 +1193,18 @@
           "note": "All typography and surface styling resolves to --cascivo-* tokens"
         }
       ],
+      "PullToRefresh": [
+        {
+          "area": "threshold",
+          "level": "flexible",
+          "note": "Pull distance required to trigger is configurable (default 64px)"
+        },
+        {
+          "area": "onRefresh",
+          "level": "flexible",
+          "note": "May return a promise; the spinner persists until it settles"
+        }
+      ],
       "QrCode": [
         {
           "area": "errorCorrection",
@@ -5905,6 +5917,57 @@
       },
       "contextUrl": "/context/prose.md",
       "aiPrompt": "I am modifying the cascivo Prose component (display). Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProse is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — All typography and surface styling resolves to --cascivo-* tokens\nFlexible: source HTML.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "PullToRefresh",
+      "category": "feedback",
+      "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+      "intent": {
+        "whenToUse": [
+          "A scrollable list or feed on touch devices that the user refreshes by pulling down from the top",
+          "Mobile screens where a dedicated refresh button would be redundant or out of reach",
+          "Content that updates on demand and benefits from a familiar pull gesture"
+        ],
+        "whenNotToUse": [
+          "Desktop, pointer-first surfaces — provide an explicit Refresh button",
+          "Content that auto-refreshes or paginates on scroll — use infinite scroll instead",
+          "Regions that are not the primary scroll container of the screen"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping a non-scrolling element and relying on pull as the only refresh path",
+            "good": "Wrap the scroll container and also expose a Refresh control for non-touch users",
+            "why": "Pull-to-refresh is touch-only; keyboard and pointer users need an explicit control"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "contains",
+            "reason": "Shows the Spinner while the refresh promise settles"
+          },
+          {
+            "name": "ScrollArea",
+            "relationship": "pairs-with",
+            "reason": "Wraps a scrollable region; pair with the app’s scroll container"
+          }
+        ],
+        "a11yRationale": "The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses touch-action/overscroll containment so normal scrolling and keyboard use are unaffected. A polite aria-live status region announces the pull, release, and refreshing states (strings from the i18n catalog), and the Spinner exposes role=\"status\" while loading. Because pull-to-refresh cannot be performed without a pointer, apps should also offer an explicit refresh control for keyboard users.",
+        "flexibility": [
+          {
+            "area": "threshold",
+            "level": "flexible",
+            "note": "Pull distance required to trigger is configurable (default 64px)"
+          },
+          {
+            "area": "onRefresh",
+            "level": "flexible",
+            "note": "May return a promise; the spinner persists until it settles"
+          }
+        ]
+      },
+      "contextUrl": "/context/pull-to-refresh.md",
+      "aiPrompt": "I am modifying the cascivo PullToRefresh component (feedback). Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPullToRefresh is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-motion-enter\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\nFlexible: threshold, onRefresh.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "QrCode",

@@ -2681,6 +2681,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "pull-to-refresh",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "pull-to-refresh/pull-to-refresh.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "pull-to-refresh/pull-to-refresh.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "qr-code",
       "type": "registry:component",
       "files": [

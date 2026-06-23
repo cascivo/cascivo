@@ -521,6 +521,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/pull-to-refresh</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/qr-code</loc>
     <priority>0.6</priority>
   </url>

@@ -129,7 +129,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-169 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+170 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -299,6 +299,7 @@ routing break after adding one of these, check that the import resolves to
 - **Progress** — Horizontal bar showing the completion progress of a tracked operation
 - **ProgressBar** — Shows determinate or indeterminate progress of a task
 - **ProgressCircle** — Circular determinate progress indicator rendered as an SVG arc
+- **PullToRefresh** — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - **RadialProgress** — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - **Spinner** — Indeterminate loading indicator
 
