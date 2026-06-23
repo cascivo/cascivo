@@ -89,7 +89,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
           .optional()
           .describe('Filter by component category'),
         type: z
-          .enum(['component', 'layout', 'block', 'chart', 'flow'])
+          .enum(['component', 'layout', 'block', 'chart', 'flow', 'editor'])
           .optional()
           .describe('Filter by entry type'),
       },

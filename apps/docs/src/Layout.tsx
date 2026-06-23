@@ -66,6 +66,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
     { label: 'Brand', href: '/brand', icon: <Eye size={16} /> },
     { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart size={16} /> },
     { label: 'Charts', href: '/charts', icon: <BarChart size={16} /> },
+    { label: 'Editor', href: '/editor', icon: <Edit size={16} /> },
     { label: 'Flow', href: '/flow', icon: <Grid size={16} /> },
     { label: 'Directory', href: '/directory', icon: <Grid size={16} /> },
     { label: 'Layouts', href: '/layouts', icon: <Grid size={16} /> },

@@ -1459,6 +1459,405 @@
       }
     },
     {
+      "name": "--cascivo-editor-bg",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "brutalist": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "corporate": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "cyberpunk": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "dark": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "flat": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "light": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "midnight": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "minimal": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "pastel": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "terminal": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+        "warm": "var(--cascivo-color-surface, oklch(0.985 0.002 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-border",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "brutalist": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "corporate": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "cyberpunk": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "dark": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "flat": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "light": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "midnight": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "minimal": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "pastel": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "terminal": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+        "warm": "var(--cascivo-color-border, oklch(0.928 0.006 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-current-line",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "brutalist": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "corporate": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "cyberpunk": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "dark": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "flat": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "light": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "midnight": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "minimal": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "pastel": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "terminal": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+        "warm": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-fg",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "brutalist": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "corporate": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "cyberpunk": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "dark": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "flat": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "light": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "midnight": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "minimal": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "pastel": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "terminal": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "warm": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-gutter-bg",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "brutalist": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "corporate": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "cyberpunk": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "dark": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "flat": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "light": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "midnight": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "minimal": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "pastel": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "terminal": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+        "warm": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-gutter-fg",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "brutalist": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "corporate": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "cyberpunk": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "dark": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "flat": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "light": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "midnight": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "minimal": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "pastel": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "terminal": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+        "warm": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-selection",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "brutalist": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "corporate": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "cyberpunk": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "dark": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "flat": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "light": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "midnight": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "minimal": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "pastel": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "terminal": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+        "warm": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-attr",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "brutalist": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "corporate": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "cyberpunk": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "dark": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "flat": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "light": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "midnight": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "minimal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "pastel": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "terminal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "warm": "var(--cascivo-chart-6, oklch(0.55 0.16 40))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-boolean",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "brutalist": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "corporate": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "cyberpunk": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "dark": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "flat": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "light": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "midnight": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "minimal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "pastel": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "terminal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "warm": "var(--cascivo-chart-6, oklch(0.55 0.16 40))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-comment",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "brutalist": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "corporate": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "cyberpunk": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "dark": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "flat": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "light": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "midnight": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "minimal": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "pastel": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "terminal": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+        "warm": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-function",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "brutalist": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "corporate": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "cyberpunk": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "dark": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "flat": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "light": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "midnight": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "minimal": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "pastel": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "terminal": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+        "warm": "var(--cascivo-chart-5, oklch(0.5 0.16 265))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-keyword",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "brutalist": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "corporate": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "cyberpunk": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "dark": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "flat": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "light": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "midnight": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "minimal": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "pastel": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "terminal": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "warm": "var(--cascivo-color-accent, oklch(0.52 0.2 250))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-number",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "brutalist": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "corporate": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "cyberpunk": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "dark": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "flat": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "light": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "midnight": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "minimal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "pastel": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "terminal": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+        "warm": "var(--cascivo-chart-6, oklch(0.55 0.16 40))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-operator",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "brutalist": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "corporate": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "cyberpunk": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "dark": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "flat": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "light": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "midnight": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "minimal": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "pastel": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "terminal": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+        "warm": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-property",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "brutalist": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "corporate": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "cyberpunk": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "dark": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "flat": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "light": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "midnight": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "minimal": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "pastel": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "terminal": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+        "warm": "var(--cascivo-chart-2, oklch(0.5 0.13 240))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-punctuation",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "brutalist": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "corporate": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "cyberpunk": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "dark": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "flat": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "light": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "midnight": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "minimal": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "pastel": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "terminal": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+        "warm": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-regexp",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "brutalist": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "corporate": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "cyberpunk": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "dark": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "flat": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "light": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "midnight": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "minimal": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "pastel": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "terminal": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "warm": "var(--cascivo-chart-3, oklch(0.52 0.13 150))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-string",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "brutalist": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "corporate": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "cyberpunk": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "dark": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "flat": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "light": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "midnight": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "minimal": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "pastel": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "terminal": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+        "warm": "var(--cascivo-chart-3, oklch(0.52 0.13 150))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-tag",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "brutalist": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "corporate": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "cyberpunk": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "dark": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "flat": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "light": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "midnight": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "minimal": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "pastel": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "terminal": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+        "warm": "var(--cascivo-color-accent, oklch(0.52 0.2 250))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-type",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "brutalist": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "corporate": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "cyberpunk": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "dark": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "flat": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "light": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "midnight": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "minimal": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "pastel": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "terminal": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+        "warm": "var(--cascivo-chart-7, oklch(0.52 0.15 320))"
+      }
+    },
+    {
+      "name": "--cascivo-editor-syntax-variable",
+      "layer": "semantic",
+      "group": "editor",
+      "byTheme": {
+        "arcade": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "brutalist": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "corporate": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "cyberpunk": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "dark": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "flat": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "light": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "midnight": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "minimal": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "pastel": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "terminal": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+        "warm": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))"
+      }
+    },
+    {
       "name": "--cascivo-focus-ring",
       "layer": "component",
       "group": "focus",

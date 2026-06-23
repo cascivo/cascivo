@@ -1,0 +1,143 @@
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { CodeEditor } from './code-editor.tsx'
+
+function getTextarea(): HTMLTextAreaElement {
+  return screen.getByRole('textbox') as HTMLTextAreaElement
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
+})
+
+describe('CodeEditor', () => {
+  it('renders a textarea with the value', () => {
+    render(<CodeEditor language="javascript" defaultValue="const x = 1" />)
+    expect(getTextarea().value).toBe('const x = 1')
+  })
+
+  it('updates an uncontrolled editor and fires onValueChange', () => {
+    const onValueChange = vi.fn()
+    render(<CodeEditor onValueChange={onValueChange} />)
+    const ta = getTextarea()
+    fireEvent.change(ta, { target: { value: 'hello' } })
+    expect(ta.value).toBe('hello')
+    expect(onValueChange).toHaveBeenCalledWith('hello')
+  })
+
+  it('respects a controlled value', () => {
+    const { rerender } = render(<CodeEditor value="a" onValueChange={() => {}} />)
+    expect(getTextarea().value).toBe('a')
+    rerender(<CodeEditor value="b" onValueChange={() => {}} />)
+    expect(getTextarea().value).toBe('b')
+  })
+
+  it('inserts spaces on Tab and prevents default', () => {
+    render(<CodeEditor defaultValue="" tabSize={2} />)
+    const ta = getTextarea()
+    ta.setSelectionRange(0, 0)
+    const event = fireEvent.keyDown(ta, { key: 'Tab' })
+    // fireEvent returns false when preventDefault was called.
+    expect(event).toBe(false)
+    expect(ta.value).toBe('  ')
+  })
+
+  it('dedents a selected block on Shift+Tab', () => {
+    render(<CodeEditor defaultValue={'    a\n    b'} tabSize={2} />)
+    const ta = getTextarea()
+    ta.setSelectionRange(0, ta.value.length)
+    fireEvent.keyDown(ta, { key: 'Tab', shiftKey: true })
+    expect(ta.value).toBe('  a\n  b')
+  })
+
+  it('blocks edits when readOnly', () => {
+    render(<CodeEditor defaultValue="x" readOnly />)
+    const ta = getTextarea()
+    expect(ta.readOnly).toBe(true)
+    ta.setSelectionRange(1, 1)
+    const event = fireEvent.keyDown(ta, { key: 'Tab' })
+    // readOnly path does not preventDefault (Tab moves focus natively).
+    expect(event).toBe(true)
+    expect(ta.value).toBe('x')
+  })
+
+  it('debounces the highlight layer to a frame while the textarea stays current', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+      frames.push(cb)
+      return frames.length
+    })
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+
+    const { container } = render(<CodeEditor language="javascript" defaultValue="a" />)
+    const ta = getTextarea()
+    const pre = container.querySelector('pre') as HTMLPreElement
+
+    fireEvent.change(ta, { target: { value: 'ab' } })
+    expect(ta.value).toBe('ab') // textarea is always current
+    expect(pre.textContent).toBe('a') // highlight not yet repainted
+
+    act(() => {
+      for (const frame of frames) frame(0)
+    })
+    expect(pre.textContent).toBe('ab') // converges after the frame
+
+    vi.unstubAllGlobals()
+  })
+
+  it('windows the highlight layer to the visible range for large documents', () => {
+    const realGetComputedStyle = window.getComputedStyle.bind(window)
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((el: Element) => {
+      if (el.tagName === 'TEXTAREA') return { lineHeight: '20px' } as CSSStyleDeclaration
+      return realGetComputedStyle(el)
+    })
+
+    const doc = Array.from({ length: 500 }, (_, i) => `line ${i}`).join('\n')
+    const { container } = render(
+      <CodeEditor language="plaintext" defaultValue={doc} virtualize lineNumbers={false} />,
+    )
+    const ta = getTextarea()
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 200 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+
+    act(() => {
+      fireEvent.scroll(ta)
+    })
+    const rowsAtTop = container.querySelectorAll('pre code > span')
+    expect(rowsAtTop.length).toBeGreaterThan(0)
+    expect(rowsAtTop.length).toBeLessThan(500) // only the visible window renders
+    expect(rowsAtTop[0]!.textContent).toBe('line 0')
+
+    act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 2000
+      fireEvent.scroll(ta)
+    })
+    const rowsScrolled = container.querySelectorAll('pre code > span')
+    expect(rowsScrolled[0]!.textContent).toBe('line 88') // window followed the scroll
+
+    vi.restoreAllMocks()
+  })
+
+  it('uses no banned React hooks', () => {
+    const files = [
+      join(__dirname, 'code-editor.tsx'),
+      join(__dirname, '..', 'highlight', 'highlight.tsx'),
+      join(__dirname, '..', 'view.tsx'),
+    ]
+    for (const file of files) {
+      const src = readFileSync(file, 'utf8')
+      for (const banned of [
+        'useState',
+        'useEffect',
+        'useContext',
+        'useReducer',
+        'useLayoutEffect',
+      ]) {
+        expect(src, `${file} should not import ${banned}`).not.toContain(banned)
+      }
+    }
+  })
+})

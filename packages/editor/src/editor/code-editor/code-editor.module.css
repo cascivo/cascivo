@@ -1,0 +1,138 @@
+@layer cascivo.component {
+  .root {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    background: var(--cascivo-editor-bg);
+    color: var(--cascivo-editor-fg);
+    border: 1px solid var(--cascivo-editor-border);
+    border-radius: var(--cascivo-radius-field);
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-normal);
+    tab-size: var(--cascivo-editor-tab-size, 2);
+    transition: box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+  }
+
+  /* Focus ring driven by the textarea's focus (it is the real control). */
+  .root:has(.textarea:focus-visible) {
+    box-shadow: var(--cascivo-focus-ring);
+    border-color: var(--cascivo-color-accent);
+  }
+
+  .gutter {
+    flex: 0 0 auto;
+    overflow: hidden;
+    padding-block: var(--cascivo-space-3);
+    padding-inline-start: var(--cascivo-space-3);
+    padding-inline-end: var(--cascivo-space-2);
+    background: var(--cascivo-editor-gutter-bg);
+    color: var(--cascivo-editor-gutter-fg);
+    text-align: end;
+    user-select: none;
+  }
+
+  .codeArea {
+    position: relative;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  /* Highlight layer — visual only, behind the transparent textarea. */
+  .pre {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-3);
+    white-space: pre;
+    pointer-events: none;
+    font: inherit;
+    tab-size: inherit;
+  }
+
+  /* Current-line marker — positioned imperatively via --cascivo-editor-caret-line. */
+  .currentLine {
+    position: absolute;
+    inset-inline: 0;
+    top: var(--cascivo-space-3);
+    block-size: 1lh;
+    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
+    background: var(--cascivo-editor-current-line);
+    pointer-events: none;
+  }
+
+  .textarea {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: auto;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-3);
+    border: 0;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--cascivo-editor-fg);
+    white-space: pre;
+    font: inherit;
+    tab-size: inherit;
+    outline: none;
+  }
+
+  .textarea::placeholder {
+    color: var(--cascivo-editor-gutter-fg);
+  }
+
+  .textarea::selection {
+    background: var(--cascivo-editor-selection);
+  }
+
+  .textarea:disabled {
+    cursor: not-allowed;
+    opacity: var(--cascivo-disabled-opacity);
+  }
+
+  .root[data-wrap='true'] .pre,
+  .root[data-wrap='true'] .textarea {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .root[data-line-numbers='false'] .gutter {
+    display: none;
+  }
+
+  /* Coarse pointers: keep the editable surface comfortably tappable. */
+  @media (pointer: coarse) {
+    .root {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .root {
+      transition: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .root {
+    border: 1px solid FieldText;
+  }
+  /* High-contrast mode flattens syntax colors — show the textarea's own text
+     and hide the highlight layer so the result stays legible. */
+  .pre {
+    display: none;
+  }
+  .textarea {
+    color: CanvasText;
+    caret-color: CanvasText;
+  }
+}

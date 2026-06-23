@@ -1,0 +1,72 @@
+{
+  "name": "@cascivo/editor",
+  "version": "0.0.1",
+  "private": false,
+  "description": "Lightweight CSS-native code editor — native textarea overlay + owned zero-dependency tokenizer",
+  "keywords": [
+    "cascivo",
+    "code-editor",
+    "css",
+    "design-system",
+    "react",
+    "signals",
+    "syntax-highlighting",
+    "textarea"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/editor#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/editor"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/editor.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^",
+    "@cascivo/i18n": "workspace:^"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "fast-check": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

@@ -27,7 +27,7 @@ const BASE_URL = (
   process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/cascivo/cascivo/main'
 ).replace(/\/+$/, '')
 
-type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section' | 'flow'
+type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section' | 'flow' | 'editor'
 
 interface SourceRoot {
   dir: string
@@ -59,6 +59,11 @@ const ROOTS: SourceRoot[] = [
     dir: join(REPO_ROOT, 'packages', 'charts', 'src', 'charts'),
     type: 'chart',
     prefix: 'chart/',
+  },
+  {
+    dir: join(REPO_ROOT, 'packages', 'editor', 'src', 'editor'),
+    type: 'editor',
+    prefix: 'editor/',
   },
   {
     dir: join(REPO_ROOT, 'packages', 'layouts', 'src', 'sections'),
@@ -118,8 +123,8 @@ async function buildEntry(
   // Compute the relative path from repo root so URLs are accurate.
   const relDir = dir.slice(REPO_ROOT.length + 1).replace(/\\/g, '/')
 
-  // Charts and flow primitives are npm-installed (not copy-pasted): empty files.
-  const isNpmInstalled = root.type === 'chart' || root.type === 'flow'
+  // Charts, flow primitives, and the editor are npm-installed (not copy-pasted): empty files.
+  const isNpmInstalled = root.type === 'chart' || root.type === 'flow' || root.type === 'editor'
 
   const files = isNpmInstalled
     ? []
@@ -143,6 +148,8 @@ async function buildEntry(
     entry.install = '@cascivo/charts'
   } else if (root.type === 'flow') {
     entry.install = '@cascivo/flow'
+  } else if (root.type === 'editor') {
+    entry.install = '@cascivo/editor'
   }
   return entry
 }

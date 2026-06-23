@@ -147,7 +147,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-179 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+181 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -156,6 +156,7 @@ routing break after adding one of these, check that the import resolves to
 - **Calendar** — An accessible standalone month-grid date picker.
 - **Checkbox** — Binary toggle for forms, with indeterminate support
 - **CheckboxCard** — Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
+- **CodeEditor** — Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.
 - **ColorPicker** — Interactive color selection widget with saturation/lightness area, hue and alpha sliders
 - **Combobox** — Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
 - **CopyButton** — Icon button that copies a value to the clipboard with copied feedback
@@ -222,6 +223,7 @@ routing break after adding one of these, check that the import resolves to
 - **FlowPanel** — An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).
 - **FlowStory** — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.
 - **Heading** — Section heading with semantic level decoupled from visual size
+- **Highlight** — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.
 - **Image** — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - **Item** — Generic content row primitive with media, content, and action regions
 - **Kbd** — Displays a keyboard key or shortcut

@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-179-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-181-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -108,6 +108,7 @@ cascivo/
 │   ├── storage/      # @cascivo/storage — persisted signals (localStorage/IndexedDB)
 │   ├── react/        # @cascivo/react   — prebuilt distribution of all components
 │   ├── charts/       # @cascivo/charts  — accessible, signal-driven charts
+│   ├── editor/       # @cascivo/editor  — lightweight CSS-native code editor
 │   ├── components/   # registry source — copy-paste component TSX + CSS + manifests
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
@@ -203,6 +204,7 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | [`@cascivo/react`](packages/react)   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Freact?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/react)   | Prebuilt cascivo design system components — use without copying source                               |
 | [`@cascivo/charts`](packages/charts) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts) | Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies |
+| [`@cascivo/editor`](packages/editor) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feditor?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/editor) | Lightweight CSS-native code editor — native textarea overlay + owned zero-dependency tokenizer       |
 
 ### State & i18n
 
@@ -263,10 +265,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**179 components** — display 55 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 8.
+**181 components** — display 56 · inputs 40 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 8.
 
 <details>
-<summary>Browse all 179 components</summary>
+<summary>Browse all 181 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -434,6 +436,8 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | chart/scatter-chart        | chart      | Scatter plot with variable point radius, multi-series, and hover tooltip.                                                                                                                                       |
 | chart/sparkline            | chart      | Compact inline sparkline for embedding trend data in dashboards or KPI cards.                                                                                                                                   |
 | chart/treemap              | chart      | Squarified treemap for visualizing part-to-whole hierarchical data.                                                                                                                                             |
+| editor/code-editor         | inputs     | Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.                                                                                           |
+| editor/highlight           | display    | Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.                                                                                                         |
 | section/cta                | layout     | Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.                                                                      |
 | section/feature-grid       | layout     | Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.                                       |
 | section/hero               | layout     | Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.                                                                   |

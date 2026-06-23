@@ -23,6 +23,7 @@ export default defineConfig({
       '@cascivo/render': path.resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/icons': path.resolve(root, 'packages/icons/src/index.tsx'),
       '@cascivo/charts': path.resolve(root, 'packages/charts/src/index.ts'),
+      '@cascivo/editor': path.resolve(root, 'packages/editor/src/index.ts'),
       '@cascivo/flow': path.resolve(root, 'packages/flow/src/index.ts'),
       '@cascivo/registry': path.resolve(root, 'packages/registry/src/index.ts'),
       // Browser-safe audit-ai analyzers (no Node deps) — used by the Context Explorer.

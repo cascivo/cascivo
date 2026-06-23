@@ -86,6 +86,7 @@ cascivo/
 │   ├── storage/      # @cascivo/storage — persisted signals (localStorage/IndexedDB)
 │   ├── react/        # @cascivo/react   — prebuilt distribution of all components
 │   ├── charts/       # @cascivo/charts  — accessible, signal-driven charts
+│   ├── editor/       # @cascivo/editor  — lightweight CSS-native code editor
 │   ├── components/   # registry source — copy-paste component TSX + CSS + manifests
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
