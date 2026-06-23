@@ -1483,6 +1483,126 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow",
+      "type": "registry:component",
+      "files": [],
+      "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-background",
+      "type": "registry:component",
+      "files": [],
+      "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-controls",
+      "type": "registry:component",
+      "files": [],
+      "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-edge",
+      "type": "registry:component",
+      "files": [],
+      "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-handle",
+      "type": "registry:component",
+      "files": [],
+      "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-minimap",
+      "type": "registry:component",
+      "files": [],
+      "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-node",
+      "type": "registry:component",
+      "files": [],
+      "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "flow-flow-panel",
+      "type": "registry:component",
+      "files": [],
+      "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "flow",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "form",
       "type": "registry:component",
       "files": [

@@ -13,19 +13,19 @@ export interface FlowEdgeProps {
   /** Resolved target anchor (flow coords). */
   targetX: number
   targetY: number
-  sourcePosition?: HandlePosition
-  targetPosition?: HandlePosition
-  type?: EdgePathType
-  animated?: boolean
-  label?: ReactNode
-  selected?: boolean
+  sourcePosition?: HandlePosition | undefined
+  targetPosition?: HandlePosition | undefined
+  type?: EdgePathType | undefined
+  animated?: boolean | undefined
+  label?: ReactNode | undefined
+  selected?: boolean | undefined
   /** Render an arrowhead at the target. Default true. */
-  markerEnd?: boolean
+  markerEnd?: boolean | undefined
   /** Direction the dash travels when animated. Default 'forward'. */
-  direction?: 'forward' | 'reverse'
+  direction?: 'forward' | 'reverse' | undefined
   /** Highlight the edge (used by FlowStory's active step). */
-  active?: boolean
-  className?: string
+  active?: boolean | undefined
+  className?: string | undefined
 }
 
 /**

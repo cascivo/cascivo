@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-node",
+  "type": "registry:component",
+  "files": [],
+  "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.0.0"
+    }
+  }
+}

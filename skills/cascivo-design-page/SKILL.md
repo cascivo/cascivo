@@ -75,3 +75,39 @@ Show the user:
 - A summary of which components were used
 - How to import and use the page component
 - Any manual wiring needed (e.g. passing real data to the data table)
+
+## Flow & diagram pages (`@cascivo/flow`)
+
+When the page is a **node/edge diagram** — a flowchart, DAG, pipeline, architecture
+map, or mind-map — reach for the **`@cascivo/flow`** package instead of the view
+schema. Its headline surface is a single declarative component over plain,
+serializable data an agent can emit directly:
+
+```tsx
+import { Flow } from '@cascivo/flow'
+import '@cascivo/flow/styles.css'
+
+<Flow
+  background
+  controls
+  layout="layered"
+  nodes={[
+    { id: 'a', position: { x: 0, y: 0 }, data: { label: 'Client' } },
+    { id: 'b', position: { x: 240, y: 0 }, data: { label: 'Gateway' } },
+    { id: 'c', position: { x: 480, y: 0 }, data: { label: 'Service' } },
+  ]}
+  edges={[
+    { id: 'ab', source: 'a', target: 'b', animated: true },
+    { id: 'bc', source: 'b', target: 'c' },
+  ]}
+/>
+```
+
+- Use the **`scaffold_flow`** MCP tool to generate a starter `<Flow>` from a
+  description (it returns serializable `nodes`/`edges` + ready-to-paste JSX).
+- For an animated, captioned **walkthrough** of a flow, use `<FlowStory>` with a
+  serializable `script` of `{ from, to, label }` steps (it animates each step in
+  sequence with a fade-in caption and loops).
+- Scope: the basic set (render, pan/zoom, drag, handles, edges, selection,
+  connect, background/controls/minimap, animated edges) plus `FlowStory`. Heavy
+  editor surfaces (undo/redo, resize/rotate, snaplines, sub-flows) are out of scope.

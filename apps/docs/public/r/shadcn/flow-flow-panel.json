@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-panel",
+  "type": "registry:component",
+  "files": [],
+  "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.0.0"
+    }
+  }
+}

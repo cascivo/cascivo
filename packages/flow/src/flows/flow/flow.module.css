@@ -1,0 +1,6 @@
+@layer cascivo.component {
+  .flow {
+    /* The declarative wrapper is a thin pass-through to FlowCanvas. */
+    min-block-size: 24rem;
+  }
+}

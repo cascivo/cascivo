@@ -12,15 +12,15 @@ export interface FlowMiniMapProps {
   nodes: FlowNode[]
   viewport: Viewport
   /** Canvas size — used to draw the visible-region rectangle. */
-  containerWidth?: number
-  containerHeight?: number
-  width?: number
-  height?: number
-  position?: FlowChromePosition
-  nodeColor?: string
-  onViewportChange?: (viewport: Viewport) => void
-  label?: string
-  className?: string
+  containerWidth?: number | undefined
+  containerHeight?: number | undefined
+  width?: number | undefined
+  height?: number | undefined
+  position?: FlowChromePosition | undefined
+  nodeColor?: string | undefined
+  onViewportChange?: ((viewport: Viewport) => void) | undefined
+  label?: string | undefined
+  className?: string | undefined
 }
 
 /**

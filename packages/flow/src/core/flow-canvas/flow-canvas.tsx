@@ -13,17 +13,19 @@ export interface FlowCanvasProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
   /** Controlled viewport (used only when no external `flow` is provided). */
   viewport?: Viewport
   defaultViewport?: Viewport
-  onViewportChange?: (viewport: Viewport) => void
-  minZoom?: number
-  maxZoom?: number
+  onViewportChange?: ((viewport: Viewport) => void) | undefined
+  minZoom?: number | undefined
+  maxZoom?: number | undefined
   /** Drag the empty pane to pan. Default true. */
-  panOnDrag?: boolean
+  panOnDrag?: boolean | undefined
   /** Wheel/pinch to zoom. Default true. */
-  zoomOnScroll?: boolean
+  zoomOnScroll?: boolean | undefined
   /** Frame the graph once on mount. Default false. */
-  fitView?: boolean
-  /** Expose the viewport controller to a parent (e.g. for `<FlowControls>`). */
-  onReady?: (viewport: UseViewportReturn) => void
+  fitView?: boolean | undefined
+  /** Use a viewport controller owned by a parent (e.g. `<Flow>`). */
+  controller?: UseViewportReturn
+  /** Screen-fixed overlay (controls, minimap, panels) — rendered outside the transformed pane. */
+  chrome?: ReactNode
   className?: string
 }
 
@@ -43,26 +45,29 @@ export function FlowCanvas({
   panOnDrag = true,
   zoomOnScroll = true,
   fitView = false,
-  onReady,
+  controller: controllerProp,
+  chrome,
   className,
   role = 'application',
   ...rest
 }: FlowCanvasProps) {
   useSignals()
-  const internal = useFlow({
+  const internalStore = useFlow({
     viewport: viewportProp,
     defaultViewport,
     onViewportChange,
   })
-  const store = flow ?? internal
-  const controller = useViewport(store, {
+  const store = flow ?? internalStore
+  // A controller is always created (hooks must run unconditionally); the
+  // external one wins when provided, leaving the internal one's refs unattached.
+  const internalController = useViewport(store, {
     minZoom,
     maxZoom,
     panOnDrag,
     zoomOnScroll,
     fitOnInit: fitView,
   })
-  onReady?.(controller)
+  const controller = controllerProp ?? internalController
 
   const vp = store.viewport.value
 
@@ -89,6 +94,7 @@ export function FlowCanvas({
         />
         {children}
       </div>
+      {chrome}
     </div>
   )
 }

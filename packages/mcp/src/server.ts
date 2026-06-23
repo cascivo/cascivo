@@ -255,6 +255,60 @@ export function createServer(options: ServerOptions = {}): McpServer {
   )
 
   server.registerTool(
+    'scaffold_flow',
+    {
+      title: 'Scaffold a flow diagram',
+      description:
+        'Generate a starter declarative <Flow nodes edges /> (from @cascivo/flow) for a node/edge diagram — flowchart, DAG, or pipeline. Returns serializable nodes/edges plus ready-to-paste JSX. Edit the labels/edges to match the intent.',
+      inputSchema: {
+        description: z.string().describe('What the diagram represents'),
+        steps: z
+          .array(z.string())
+          .optional()
+          .describe(
+            'Ordered step labels; consecutive steps are connected. Omit for a 3-step starter.',
+          ),
+        layout: z
+          .enum(['none', 'grid', 'layered'])
+          .optional()
+          .describe('Optional auto-layout. Default "layered".'),
+      },
+    },
+    ({ description, steps, layout }) => {
+      const labels = steps && steps.length > 0 ? steps : ['Source', 'Process', 'Sink']
+      const nodes = labels.map((label, i) => ({
+        id: `n${i + 1}`,
+        position: { x: i * 240, y: 0 },
+        data: { label },
+      }))
+      const edges = labels.slice(1).map((_, i) => ({
+        id: `e${i + 1}`,
+        source: `n${i + 1}`,
+        target: `n${i + 2}`,
+        animated: true,
+      }))
+      const lay = layout ?? 'layered'
+      const layoutProp = lay === 'none' ? '' : ` layout="${lay}"`
+      const code = `import { Flow } from '@cascivo/flow'
+import '@cascivo/flow/styles.css'
+
+// ${description}
+export function Diagram() {
+  return (
+    <Flow
+      style={{ height: 360 }}
+      background
+      controls${layoutProp}
+      nodes={${JSON.stringify(nodes)}}
+      edges={${JSON.stringify(edges)}}
+    />
+  )
+}`
+      return json({ nodes, edges, layout: lay, code })
+    },
+  )
+
+  server.registerTool(
     'get_view_grammar',
     {
       title: 'Get view grammar',

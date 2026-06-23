@@ -83,6 +83,10 @@ export function useConnection(options: UseConnectionOptions): UseConnectionRetur
       if (!handle) return
       const node = handle.closest('[data-node-id]')
       if (!node) return
+      // Stop the event reaching the node's window-level drag listener so starting
+      // a connection on a handle does not also drag the node (container bubbles
+      // before window).
+      event.stopPropagation()
       const rect = handle.getBoundingClientRect()
       connection.value = {
         source: node.getAttribute('data-node-id') ?? '',
