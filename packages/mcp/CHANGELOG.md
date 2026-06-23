@@ -1,5 +1,11 @@
 # @cascivo/mcp
 
+## 0.1.6
+
+### Patch Changes
+
+- aa3c6f3: Introduce Editor
+
 ## 0.1.5
 
 ### Patch Changes
