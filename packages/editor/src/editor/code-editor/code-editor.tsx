@@ -1,7 +1,14 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties, type KeyboardEvent, type TextareaHTMLAttributes } from 'react'
+import {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  type CSSProperties,
+  type KeyboardEvent,
+  type TextareaHTMLAttributes,
+} from 'react'
 import { getGrammar } from '../../engine/registry.ts'
 import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
@@ -9,6 +16,24 @@ import { Gutter, renderRows } from '../view.tsx'
 import styles from './code-editor.module.css'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
+import { diff, rebaseSelection } from './sync.ts'
+
+/**
+ * Imperative handle (via `ref`) for callers that drive their own transactions —
+ * a remote pull, a programmatic insert, a reset. Edits route through the same
+ * history as keyboard edits, so they stay undoable.
+ */
+export interface CodeEditorHandle {
+  /** Replace `[from, to)` with `text` (an undoable edit), leaving the caret after it. */
+  applyEdit(range: { from: number; to: number }, text: string): void
+  /** Current selection offsets. */
+  getSelection(): { start: number; end: number }
+  /** Focus the editing surface. */
+  focus(): void
+  /** Undo / redo the owned history. */
+  undo(): void
+  redo(): void
+}
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
 const VIRTUALIZE_THRESHOLD = 1000
@@ -53,25 +78,28 @@ export interface CodeEditorProps extends Omit<
  * rAF-debounced (typing never blocks), and large documents window to the visible
  * range while the textarea always holds the full text.
  */
-export function CodeEditor({
-  value,
-  defaultValue,
-  onValueChange,
-  language = 'plaintext',
-  lineNumbers = true,
-  tabSize = 2,
-  insertSpaces = true,
-  wrap = false,
-  virtualize,
-  readOnly = false,
-  disabled = false,
-  spellCheck = false,
-  label,
-  className,
-  style,
-  onKeyDown,
-  ...rest
-}: CodeEditorProps) {
+export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function CodeEditor(
+  {
+    value,
+    defaultValue,
+    onValueChange,
+    language = 'plaintext',
+    lineNumbers = true,
+    tabSize = 2,
+    insertSpaces = true,
+    wrap = false,
+    virtualize,
+    readOnly = false,
+    disabled = false,
+    spellCheck = false,
+    label,
+    className,
+    style,
+    onKeyDown,
+    ...rest
+  },
+  ref,
+) {
   useSignals()
   const [text, setText] = useControllableSignal<string>({
     value,
@@ -137,6 +165,33 @@ export function CodeEditor({
     applyingRef.current = false
   }
 
+  const doUndo = (): void => {
+    const snap = history.undo()
+    if (snap) applySnapshot(snap)
+  }
+  const doRedo = (): void => {
+    const snap = history.redo()
+    if (snap) applySnapshot(snap)
+  }
+
+  // Imperative handle for callers driving their own transactions. Edits go through
+  // `commit`, so they record undo steps like keyboard edits.
+  useImperativeHandle(ref, () => ({
+    applyEdit: ({ from, to }, insert) => {
+      const ta = taRef.current
+      if (!ta) return
+      ta.setRangeText(insert, from, to, 'end')
+      commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+    },
+    getSelection: () => {
+      const ta = taRef.current
+      return ta ? { start: ta.selectionStart, end: ta.selectionEnd } : { ...selRef.current }
+    },
+    focus: () => taRef.current?.focus(),
+    undo: doUndo,
+    redo: doRedo,
+  }))
+
   // rAF-debounced highlight: editing writes `text` synchronously (never blocked);
   // the highlight layer reads `highlightText`, updated at most once per frame.
   const highlightText = useSignal(text.value)
@@ -159,9 +214,10 @@ export function CodeEditor({
   })
 
   // External/controlled value changes: when `text` changes to something we did not
-  // emit ourselves (a parent reset / remote pull), it is an external update — seed
-  // history to the new state so undo does not restore stale pre-set text. (T2 adds
-  // selection-preserving rebasing on top of this.)
+  // emit ourselves (a parent reset / remote pull), it is an external update. Rebase
+  // the live selection across the diff so the caret tracks the same logical spot
+  // (no jump-to-end), and seed history to the new state. The `applying` guard plus
+  // the `lastEmitted` echo check keep our own edits from looping back through here.
   useSignalEffect(() => {
     const next = text.value
     if (applyingRef.current) return
@@ -171,11 +227,16 @@ export function CodeEditor({
       return
     }
     const ta = taRef.current
-    history.reset({
-      text: next,
-      selectionStart: ta?.selectionStart ?? 0,
-      selectionEnd: ta?.selectionEnd ?? 0,
-    })
+    const change = diff(prevTextRef.current, next)
+    const sel = rebaseSelection(selRef.current.start, selRef.current.end, change)
+    if (ta) {
+      applyingRef.current = true
+      if (ta.value !== next) ta.value = next
+      ta.setSelectionRange(sel.start, sel.end)
+      applyingRef.current = false
+    }
+    selRef.current = sel
+    history.reset({ text: next, selectionStart: sel.start, selectionEnd: sel.end })
     prevTextRef.current = next
   })
 
@@ -243,17 +304,14 @@ export function CodeEditor({
       const { indent, dedent } = createIndentCommands({ tabSize, insertSpaces })
       bindings['Tab'] = indent
       bindings['Shift-Tab'] = dedent
-      const undo = (): boolean => {
-        const snap = history.undo()
-        if (snap) applySnapshot(snap)
+      bindings['Mod-z'] = () => {
+        doUndo()
         return true
       }
       const redo = (): boolean => {
-        const snap = history.redo()
-        if (snap) applySnapshot(snap)
+        doRedo()
         return true
       }
-      bindings['Mod-z'] = undo
       bindings['Mod-Shift-z'] = redo
       bindings['Mod-y'] = redo
     }
@@ -315,4 +373,4 @@ export function CodeEditor({
       </div>
     </div>
   )
-}
+})

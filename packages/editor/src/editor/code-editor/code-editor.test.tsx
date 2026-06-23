@@ -1,8 +1,9 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import { createRef } from 'react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { CodeEditor } from './code-editor.tsx'
+import { CodeEditor, type CodeEditorHandle } from './code-editor.tsx'
 
 function getTextarea(): HTMLTextAreaElement {
   return screen.getByRole('textbox') as HTMLTextAreaElement
@@ -142,6 +143,42 @@ describe('CodeEditor', () => {
     // Undo must not restore the externally-replaced 'a'.
     fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
     expect(ta.value).toBe('b')
+  })
+
+  it('preserves the caret when an external value insert lands before it', () => {
+    const { rerender } = render(<CodeEditor value="hello world" onValueChange={() => {}} />)
+    const ta = getTextarea()
+    ta.setSelectionRange(5, 5) // caret after "hello"
+    act(() => {
+      fireEvent.keyUp(ta) // capture the selection into the editor
+    })
+    rerender(<CodeEditor value="Xhello world" onValueChange={() => {}} />)
+    expect(ta.value).toBe('Xhello world')
+    expect(ta.selectionStart).toBe(6) // shifted right by the inserted "X", not jumped to end
+    expect(ta.selectionEnd).toBe(6)
+  })
+
+  it('does not echo onValueChange for an external value change', () => {
+    const onValueChange = vi.fn()
+    const { rerender } = render(<CodeEditor value="a" onValueChange={onValueChange} />)
+    rerender(<CodeEditor value="ab" onValueChange={onValueChange} />)
+    expect(onValueChange).not.toHaveBeenCalled() // external set must not loop back
+  })
+
+  it('exposes an imperative handle: applyEdit is undoable', () => {
+    const ref = createRef<CodeEditorHandle>()
+    render(<CodeEditor ref={ref} defaultValue="ac" />)
+    const ta = getTextarea()
+    act(() => {
+      ref.current!.applyEdit({ from: 1, to: 1 }, 'b')
+    })
+    expect(ta.value).toBe('abc')
+    act(() => {
+      ref.current!.undo()
+    })
+    expect(ta.value).toBe('ac')
+    // Undo restores the pre-edit snapshot, whose caret was the seeded start.
+    expect(ref.current!.getSelection()).toEqual({ start: 0, end: 0 })
   })
 
   it('uses no banned React hooks', () => {

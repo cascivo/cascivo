@@ -20,6 +20,6 @@ export { bash } from './grammars/bash.ts'
 
 // React surfaces.
 export { CodeEditor } from './editor/code-editor/code-editor.tsx'
-export type { CodeEditorProps } from './editor/code-editor/code-editor.tsx'
+export type { CodeEditorProps, CodeEditorHandle } from './editor/code-editor/code-editor.tsx'
 export { Highlight } from './editor/highlight/highlight.tsx'
 export type { HighlightProps } from './editor/highlight/highlight.tsx'
