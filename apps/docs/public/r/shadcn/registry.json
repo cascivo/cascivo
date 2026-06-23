@@ -3423,6 +3423,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "swipe-item",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "swipe-item/swipe-item.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "swipe-item/swipe-item.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "switcher",
       "type": "registry:component",
       "files": [

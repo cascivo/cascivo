@@ -13095,6 +13095,113 @@
       }
     },
     {
+      "name": "swipe-item",
+      "type": "component",
+      "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+      "category": "display",
+      "version": "0.0.0",
+      "files": [
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.module.css"
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
+      "meta": {
+        "name": "SwipeItem",
+        "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+        "category": "display",
+        "states": ["closed", "leading", "trailing"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true,
+            "description": "The row content"
+          },
+          {
+            "name": "leadingActions",
+            "type": "SwipeAction[]",
+            "required": false,
+            "description": "Actions revealed by dragging toward the end edge (shown on the start edge)"
+          },
+          {
+            "name": "trailingActions",
+            "type": "SwipeAction[]",
+            "required": false,
+            "description": "Actions revealed by dragging toward the start edge (shown on the end edge)"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-color-destructive",
+          "--cascivo-color-text-on-destructive",
+          "--cascivo-target-min-coarse",
+          "--cascivo-motion-enter"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
+        "intent": {
+          "whenToUse": [
+            "List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped",
+            "Mail/inbox-style rows that reveal contextual actions behind the content",
+            "Compact lists where always-visible action buttons would crowd each row"
+          ],
+          "whenNotToUse": [
+            "A single primary action per row — render it inline as a Button",
+            "Destructive actions that need confirmation — pair with an AlertDialog instead of swipe-only",
+            "Non-list, free-form content — swipe-to-reveal is a list-row affordance"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Relying on the swipe gesture as the only way to reach Delete",
+              "good": "Action buttons stay in the DOM and a11y tree; focusing one reveals its side",
+              "why": "Gesture-only actions are unreachable by keyboard and screen-reader users"
+            }
+          ],
+          "related": [
+            {
+              "name": "ActionSheet",
+              "relationship": "alternative",
+              "reason": "Use an ActionSheet when a row tap should present a fuller list of actions"
+            },
+            {
+              "name": "List",
+              "relationship": "contained-by",
+              "reason": "SwipeItem wraps individual rows within a list"
+            }
+          ],
+          "a11yRationale": "The action buttons are always rendered in the DOM and the accessibility tree, never gesture-only. Focusing an action (via keyboard) reveals its side so it is visible, Enter/Space activate it, and Escape closes the row — giving full keyboard and screen-reader parity with the swipe gesture. The drag uses touch-action: pan-y so vertical scrolling is unaffected.",
+          "flexibility": [
+            {
+              "area": "actions",
+              "level": "flexible",
+              "note": "Any number of leading and/or trailing actions; each may be destructive"
+            },
+            {
+              "area": "reveal direction",
+              "level": "strict",
+              "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "switcher",
       "type": "component",
       "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",

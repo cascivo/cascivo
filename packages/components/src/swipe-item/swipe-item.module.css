@@ -1,0 +1,79 @@
+@layer cascivo.component {
+  .root {
+    position: relative;
+    overflow: hidden;
+    background: var(--cascivo-color-surface);
+  }
+
+  .panel {
+    position: absolute;
+    inset-block: 0;
+    display: flex;
+  }
+
+  .leading {
+    inset-inline-start: 0;
+  }
+
+  .trailing {
+    inset-inline-end: 0;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    background: var(--cascivo-color-surface);
+    /* Vertical scrolling stays with the page; horizontal is the swipe gesture. */
+    touch-action: pan-y;
+    transition: transform var(--cascivo-motion-enter);
+
+    &[data-dragging] {
+      transition: none;
+    }
+  }
+
+  .action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cascivo-space-1);
+    inline-size: 4.5rem; /* keep in sync with ACTION_WIDTH in swipe-item.tsx */
+    padding-inline: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-accent-content);
+    background: var(--cascivo-color-accent);
+    border: none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+      /* Raise the focus ring above the sliding content. */
+      z-index: 1;
+    }
+
+    &[data-destructive] {
+      color: var(--cascivo-color-text-on-destructive);
+      background: var(--cascivo-color-destructive);
+    }
+  }
+
+  .actionIcon {
+    display: inline-flex;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+
+  .actionLabel {
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .content {
+      transition: none;
+    }
+  }
+}

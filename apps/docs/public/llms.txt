@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (168 components)
+## Component index (169 components)
 
 ### chart
 
@@ -163,6 +163,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [stat](https://docs.cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
 - [status](https://docs.cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity
 - [structured-list](https://docs.cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
+- [swipe-item](https://docs.cascivo.com/llms/swipe-item.md) — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - [tag](https://docs.cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
 - [text](https://docs.cascivo.com/llms/text.md) — Body text with size, weight, and muted variants
 - [timeline](https://docs.cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
@@ -444,6 +445,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Steps](https://docs.cascivo.com/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
 - [StructuredList](https://docs.cascivo.com/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
 - [Swap](https://docs.cascivo.com/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
+- [SwipeItem](https://docs.cascivo.com/context/swipe-item.md) — Use when: List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped
 - [Switcher](https://docs.cascivo.com/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
 - [Tabs](https://docs.cascivo.com/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
 - [Tag](https://docs.cascivo.com/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip

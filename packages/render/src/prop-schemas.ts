@@ -3858,6 +3858,25 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  SwipeItem: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'leadingActions',
+      required: false,
+    },
+    {
+      name: 'trailingActions',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Switcher: [
     {
       name: 'items',

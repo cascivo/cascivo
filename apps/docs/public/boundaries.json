@@ -1383,6 +1383,18 @@
         "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
       }
     ],
+    "SwipeItem": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Any number of leading and/or trailing actions; each may be destructive"
+      },
+      {
+        "area": "reveal direction",
+        "level": "strict",
+        "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
+      }
+    ],
     "Switcher": [
       {
         "area": "dividers",

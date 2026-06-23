@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-168-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-169-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -257,10 +257,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**168 components** — display 45 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 7.
+**169 components** — display 46 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 7.
 
 <details>
-<summary>Browse all 168 components</summary>
+<summary>Browse all 169 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -368,6 +368,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | steps                      | navigation | Visual progress indicator for multi-step flows with horizontal and vertical orientations                                                                                                                        |
 | structured-list            | display    | Tabular row list for scannable data, optionally single-selectable                                                                                                                                               |
 | swap                       | inputs     | Animated toggle between two icon/content states with rotate or flip transition                                                                                                                                  |
+| swipe-item                 | display    | List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity                                                                                                                |
 | switcher                   | navigation | App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers                                                                                                 |
 | tabs                       | navigation | Switch between related panels of content                                                                                                                                                                        |
 | tag                        | display    | Compact chip for labeling, categorizing, or filtering content                                                                                                                                                   |

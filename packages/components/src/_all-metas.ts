@@ -78,6 +78,7 @@ import { meta as spinnerMeta } from './spinner/spinner.meta'
 import { meta as statMeta } from './stat/stat.meta'
 import { meta as statusMeta } from './status/status.meta'
 import { meta as swapMeta } from './swap/swap.meta'
+import { meta as swipeItemMeta } from './swipe-item/swipe-item.meta'
 import { meta as switcherMeta } from './switcher/switcher.meta'
 import { meta as tabsMeta } from './tabs/tabs.meta'
 import { meta as tagMeta } from './tag/tag.meta'
@@ -172,6 +173,7 @@ export const allMetas: ComponentMeta[] = [
   statusMeta,
   stepsMeta,
   swapMeta,
+  swipeItemMeta,
   switcherMeta,
   tabsMeta,
   tagMeta,

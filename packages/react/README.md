@@ -147,7 +147,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-168 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+169 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -231,6 +231,7 @@ routing break after adding one of these, check that the import resolves to
 - **StatsCards** — Grid of KPI stat cards with trend badges.
 - **Status** — Colored dot with a label communicating the state of a system or entity
 - **StructuredList** — Tabular row list for scannable data, optionally single-selectable
+- **SwipeItem** — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - **Tag** — Compact chip for labeling, categorizing, or filtering content
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line

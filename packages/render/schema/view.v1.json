@@ -234,6 +234,7 @@
             "Steps",
             "StructuredList",
             "Swap",
+            "SwipeItem",
             "Switcher",
             "Tabs",
             "Tag",
@@ -3743,6 +3744,29 @@
                   }
                 },
                 "required": ["on", "off"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SwipeItem"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
