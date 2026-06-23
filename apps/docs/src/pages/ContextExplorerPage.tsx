@@ -1,5 +1,8 @@
 import type { ComponentChildren } from 'preact'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { Select } from '@cascivo/components/select'
+import { Textarea } from '@cascivo/components/textarea'
+import { Checkbox } from '@cascivo/components/checkbox'
 import {
   buildContract,
   findCssLiteralViolations,
@@ -98,23 +101,6 @@ interface RegistryV2 {
 
 const muted = { color: 'var(--cascivo-color-text-subtle)' }
 const sectionGap = { marginBlockEnd: 'var(--cascivo-space-8)' }
-
-const labelStyle = {
-  display: 'block',
-  fontSize: 'var(--cascivo-text-sm)',
-  fontWeight: 'var(--cascivo-font-medium)',
-  color: 'var(--cascivo-color-text-subtle)',
-  marginBlockEnd: 'var(--cascivo-space-2)',
-}
-
-const controlStyle = {
-  padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
-  border: '1px solid var(--cascivo-color-border)',
-  borderRadius: 'var(--cascivo-radius-md)',
-  background: 'var(--cascivo-color-surface)',
-  color: 'var(--cascivo-color-text)',
-  fontSize: 'var(--cascivo-text-sm)',
-}
 
 const cardStyle = {
   border: '1px solid var(--cascivo-color-border)',
@@ -292,24 +278,15 @@ export function ContextExplorerPage() {
       {/* ---------------- Intent browser ---------------- */}
       <section class="doc-section" style={sectionGap}>
         <h2>Intent browser</h2>
-        <div style={{ marginBlockEnd: 'var(--cascivo-space-4)' }}>
-          <label htmlFor="ctx-component" style={labelStyle}>
-            Component
-          </label>
-          <select
-            id="ctx-component"
+        <div style={{ marginBlockEnd: 'var(--cascivo-space-4)', maxInlineSize: '20rem' }}>
+          <Select
+            label="Component"
+            options={components.map((c) => ({ value: c.name, label: c.name }))}
             value={selected.value}
-            onChange={(e) => {
-              selected.value = (e.target as HTMLSelectElement).value
+            onChange={(e: { currentTarget: HTMLSelectElement }) => {
+              selected.value = e.currentTarget.value
             }}
-            style={{ ...controlStyle, minWidth: '16rem' }}
-          >
-            {components.map((c) => (
-              <option key={c.name} value={c.name}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         {current && (
@@ -478,44 +455,22 @@ export function ContextExplorerPage() {
             flexWrap: 'wrap',
           }}
         >
-          <div>
-            <label htmlFor="tok-layer" style={labelStyle}>
-              Layer
-            </label>
-            <select
-              id="tok-layer"
-              value={layerFilter.value}
-              onChange={(e) => {
-                layerFilter.value = (e.target as HTMLSelectElement).value
-              }}
-              style={controlStyle}
-            >
-              {layers.map((l) => (
-                <option key={l} value={l}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="tok-group" style={labelStyle}>
-              Group
-            </label>
-            <select
-              id="tok-group"
-              value={groupFilter.value}
-              onChange={(e) => {
-                groupFilter.value = (e.target as HTMLSelectElement).value
-              }}
-              style={controlStyle}
-            >
-              {groups.map((g) => (
-                <option key={g} value={g}>
-                  {g}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label="Layer"
+            options={layers.map((l) => ({ value: l, label: l }))}
+            value={layerFilter.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) => {
+              layerFilter.value = e.currentTarget.value
+            }}
+          />
+          <Select
+            label="Group"
+            options={groups.map((g) => ({ value: g, label: g }))}
+            value={groupFilter.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) => {
+              groupFilter.value = e.currentTarget.value
+            }}
+          />
         </div>
 
         <p style={{ ...muted, fontSize: 'var(--cascivo-text-sm)' }}>
@@ -583,20 +538,15 @@ export function ContextExplorerPage() {
           allowed.
         </p>
 
-        <textarea
+        <Textarea
           value={auditInput.value}
-          onInput={(e) => {
-            auditInput.value = (e.target as HTMLTextAreaElement).value
+          onInput={(e: { currentTarget: HTMLTextAreaElement }) => {
+            auditInput.value = e.currentTarget.value
           }}
           spellcheck={false}
           rows={12}
-          style={{
-            ...controlStyle,
-            width: '100%',
-            fontFamily: 'var(--cascivo-font-mono, monospace)',
-            fontSize: 'var(--cascivo-text-sm)',
-            resize: 'vertical',
-          }}
+          resize="vertical"
+          style={{ fontFamily: 'var(--cascivo-font-mono, monospace)' }}
         />
 
         <div style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
@@ -659,23 +609,13 @@ export function ContextExplorerPage() {
         </div>
 
         <div style={{ marginBlockStart: 'var(--cascivo-space-4)' }}>
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--cascivo-space-2)',
-              cursor: 'pointer',
+          <Checkbox
+            label="Show safe literal→token fix (CSS only)"
+            checked={showFix.value}
+            onChange={(e: { currentTarget: HTMLInputElement }) => {
+              showFix.value = e.currentTarget.checked
             }}
-          >
-            <input
-              type="checkbox"
-              checked={showFix.value}
-              onChange={(e) => {
-                showFix.value = (e.target as HTMLInputElement).checked
-              }}
-            />
-            <span>Show safe literal→token fix (CSS only)</span>
-          </label>
+          />
 
           {showFix.value && (
             <pre

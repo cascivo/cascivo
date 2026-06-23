@@ -28,6 +28,10 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    /* Cap to the grid track so a tall nav scrolls inside .nav-content instead of
+       growing past the row (overflow:visible would set the auto-min to the
+       content height and hide the bottom entries). */
+    min-block-size: 0;
   }
 
   .nav-content {

@@ -399,3 +399,8 @@ export const Activity = createIcon(
   'Activity',
   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
 )
+
+/* Generated chromicons (MIT) — see NOTICE + scripts/icons/generate.mjs.
+   Placed last so the hand-authored Feather set above always wins on a name
+   collision (the generator skips any name already exported above). */
+export * from './generated'

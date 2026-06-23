@@ -13,6 +13,7 @@ import { LayoutsPage } from './pages/LayoutsPage'
 import { DirectoryPage } from './pages/DirectoryPage'
 import { ContextExplorerPage } from './pages/ContextExplorerPage'
 import { TokensPage } from './pages/TokensPage'
+import { IconsPage } from './pages/IconsPage'
 import { WhyCascadePage } from './pages/WhyCascadePage'
 import { ParityPage } from './pages/ParityPage'
 import { MigratingPage } from './pages/MigratingPage'
@@ -40,6 +41,7 @@ export function App() {
           <Route path="/directory" component={DirectoryPage} />
           <Route path="/context" component={ContextExplorerPage} />
           <Route path="/tokens" component={TokensPage} />
+          <Route path="/icons" component={IconsPage} />
           <Route path="/why" component={WhyCascadePage} />
           <Route path="/parity" component={ParityPage} />
           <Route path="/migrating" component={MigratingPage} />

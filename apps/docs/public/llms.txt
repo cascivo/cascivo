@@ -21,6 +21,14 @@ so this file plus the linked resources are enough to build with cascivo.
 - Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
 - Context bundle (all intent + boundaries + rules): https://docs.cascivo.com/context.json
 - Token catalog (closed set, every --cascivo-* + layer + default): https://docs.cascivo.com/tokens.catalog.json
+- Icon catalog (every @cascivo/icons icon + keywords/category): https://docs.cascivo.com/icons.catalog.json
+
+## Icons
+
+439 stroked 24×24 `currentColor` SVG icons ship as tree-shakeable named exports
+from `@cascivo/icons` (e.g. `import { Camera, Anchor } from '@cascivo/icons'`).
+Browse and search them at https://docs.cascivo.com/icons; the full machine-readable list (names,
+keywords, categories) is https://docs.cascivo.com/icons.catalog.json.
 
 ## How to use it
 

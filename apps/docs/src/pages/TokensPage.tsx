@@ -4,6 +4,8 @@
 // add a token to the CSS sources, run regen, and it shows up.
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { JSX } from 'preact'
+import { Input } from '@cascivo/components/input'
+import { Select } from '@cascivo/components/select'
 
 interface CatalogToken {
   name: string
@@ -185,47 +187,23 @@ export function TokensPage() {
             alignItems: 'flex-end',
           }}
         >
-          <div>
-            <label
-              htmlFor="tok-layer"
-              style={{
-                display: 'block',
-                fontSize: 'var(--cascivo-text-sm)',
-                marginBlockEnd: '0.25rem',
-              }}
-            >
-              Layer
-            </label>
-            <select
-              id="tok-layer"
-              value={layerFilter.value}
-              onChange={(e) => (layerFilter.value = (e.target as HTMLSelectElement).value)}
-            >
-              {layers.map((l) => (
-                <option key={l} value={l}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label="Layer"
+            options={layers.map((l) => ({ value: l, label: l }))}
+            value={layerFilter.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) =>
+              (layerFilter.value = e.currentTarget.value)
+            }
+          />
           <div style={{ flex: '1 1 16rem' }}>
-            <label
-              htmlFor="tok-search"
-              style={{
-                display: 'block',
-                fontSize: 'var(--cascivo-text-sm)',
-                marginBlockEnd: '0.25rem',
-              }}
-            >
-              Filter by name
-            </label>
-            <input
-              id="tok-search"
+            <Input
+              label="Filter by name"
               type="search"
               placeholder="accent, radius, space…"
               value={query.value}
-              onInput={(e) => (query.value = (e.target as HTMLInputElement).value)}
-              style={{ inlineSize: '100%' }}
+              onInput={(e: { currentTarget: HTMLInputElement }) =>
+                (query.value = e.currentTarget.value)
+              }
             />
           </div>
         </div>

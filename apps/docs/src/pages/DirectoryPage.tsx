@@ -1,6 +1,7 @@
 import { signal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { Badge } from '@cascivo/components/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@cascivo/components/card'
+import { Input } from '@cascivo/components/input'
 
 interface RegistryEntry {
   namespace: string
@@ -63,36 +64,14 @@ export function DirectoryPage() {
       </header>
 
       <section class="doc-section">
-        <div style={{ marginBlockEnd: 'var(--cascivo-space-5)' }}>
-          <label
-            htmlFor="dir-search"
-            style={{
-              display: 'block',
-              fontSize: 'var(--cascivo-text-sm)',
-              fontWeight: 'var(--cascivo-font-medium)',
-              color: 'var(--cascivo-color-text-subtle)',
-              marginBlockEnd: 'var(--cascivo-space-2)',
-            }}
-          >
-            Filter registries
-          </label>
-          <input
-            id="dir-search"
+        <div style={{ marginBlockEnd: 'var(--cascivo-space-5)', maxInlineSize: '28rem' }}>
+          <Input
+            label="Filter registries"
             type="search"
             placeholder="Search by name, description, or tag…"
             value={filter.value}
-            onInput={(e) => {
-              filter.value = (e.target as HTMLInputElement).value
-            }}
-            style={{
-              width: '100%',
-              maxWidth: '28rem',
-              padding: 'var(--cascivo-space-2) var(--cascivo-space-3)',
-              border: '1px solid var(--cascivo-color-border)',
-              borderRadius: 'var(--cascivo-radius-md)',
-              background: 'var(--cascivo-color-surface)',
-              color: 'var(--cascivo-color-text)',
-              fontSize: 'var(--cascivo-text-sm)',
+            onInput={(e: { currentTarget: HTMLInputElement }) => {
+              filter.value = e.currentTarget.value
             }}
           />
         </div>
