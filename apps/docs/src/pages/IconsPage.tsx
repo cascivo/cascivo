@@ -8,6 +8,8 @@ import { useLocation } from 'preact-iso'
 import type { JSX } from 'preact'
 import * as Icons from '@cascivo/icons'
 import { Button } from '@cascivo/components/button'
+import { Input } from '@cascivo/components/input'
+import { Select } from '@cascivo/components/select'
 import styles from './IconsPage.module.css'
 
 interface IconEntry {
@@ -107,66 +109,40 @@ export function IconsPage() {
       <section class="doc-section">
         <div class={styles['controls']}>
           <div style={{ flex: '1 1 16rem' }}>
-            <label htmlFor="icon-search" class={styles['control-label']}>
-              Search
-            </label>
-            <input
-              id="icon-search"
+            <Input
+              label="Search"
               type="search"
               placeholder="search, arrow, heart, health…"
               value={query.value}
-              onInput={(e) => (query.value = (e.target as HTMLInputElement).value)}
-              style={{ inlineSize: '100%' }}
+              onInput={(e: { currentTarget: HTMLInputElement }) =>
+                (query.value = e.currentTarget.value)
+              }
             />
           </div>
-          <div>
-            <label htmlFor="icon-cat" class={styles['control-label']}>
-              Category
-            </label>
-            <select
-              id="icon-cat"
-              value={category.value}
-              onChange={(e) => (category.value = (e.target as HTMLSelectElement).value)}
-            >
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="icon-color" class={styles['control-label']}>
-              Color
-            </label>
-            <select
-              id="icon-color"
-              value={color.value}
-              onChange={(e) => (color.value = (e.target as HTMLSelectElement).value)}
-            >
-              {COLORS.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="icon-theme" class={styles['control-label']}>
-              Theme
-            </label>
-            <select
-              id="icon-theme"
-              value={theme.value}
-              onChange={(e) => (theme.value = (e.target as HTMLSelectElement).value)}
-            >
-              {THEMES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            label="Category"
+            options={categories.map((c) => ({ value: c, label: c }))}
+            value={category.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) =>
+              (category.value = e.currentTarget.value)
+            }
+          />
+          <Select
+            label="Color"
+            options={COLORS}
+            value={color.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) =>
+              (color.value = e.currentTarget.value)
+            }
+          />
+          <Select
+            label="Theme"
+            options={THEMES.map((t) => ({ value: t, label: t }))}
+            value={theme.value}
+            onChange={(e: { currentTarget: HTMLSelectElement }) =>
+              (theme.value = e.currentTarget.value)
+            }
+          />
           <div>
             <span class={styles['control-label']}>Size</span>
             <div class={styles['sizes']}>
