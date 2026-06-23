@@ -337,6 +337,7 @@ export default defineConfig({
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
       '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
+      '@cascivo/editor': resolve(root, 'packages/editor/src/index.ts'),
       '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),
       '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
