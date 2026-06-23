@@ -118,8 +118,9 @@ collaboration, whiteboard) is explicitly out (see below).
 | C   | **Nodes (drag, select, handles)**            | T3      | React Flow nodes + handles; X6 HTML nodes                    | core / interaction |
 | D   | **Edges (paths, markers, animation)**        | T4      | React Flow edge types + animated edges; X6 connectors        | core / display |
 | E   | **Interactive connect + Chrome**             | T5      | connect-by-handle + `<Controls>`/`<MiniMap>`/`<Panel>`      | interaction / chrome |
-| F   | **Declarative `<Flow>` API + AI + docs**     | T6      | declarative `nodes`/`edges` (agent-friendly) + auto docs     | API / AI / docs |
-| G   | **Final gate (regen, drift, CI, sweep)**     | T7      | the cascivo release discipline                              | gate |
+| F   | **Declarative `<Flow>` API + auto-gen stories + AI + docs** | T6 | declarative `nodes`/`edges` (agent-friendly) + manifest-driven stories + auto docs | API / AI / docs |
+| G   | **`FlowStory` — scripted storyline animation** | T7    | (beyond both libs) a sequenced, captioned, looping flow walkthrough | core / animation |
+| H   | **Final gate (regen, drift, CI, sweep)**     | T8      | the cascivo release discipline                              | gate |
 
 Why this order:
 
@@ -149,16 +150,28 @@ Why this order:
    (a live "connection-in-progress" SVG path following the pointer, drop → `onConnect`). `<FlowControls>`
    (zoom in / out / fit — cascivo `icon-button`s), `<FlowMiniMap>` (a scaled SVG overview with a draggable
    viewport rectangle), `<FlowPanel>` (absolutely-positioned slot for custom UI, e.g. a legend).
-6. **T6 — declarative API + AI + docs.** The headline **easy-to-use, AI-first** surface: a single
-   `<Flow nodes={...} edges={...} />` that takes plain serializable data (the agent emits JSON), with optional
-   `nodeTypes`/`edgeTypes` maps for custom renderers, and the optional `gridLayout`/`layeredLayout` helper.
-   Every flow primitive ships a `*.meta.ts` manifest (incl. **`intent`**), feeding the registry/MCP/docs/
-   storybook auto-generation; add a **`scaffold_flow`** MCP affordance / skill note and storybook stories under
-   `apps/storybook/stories/flow/`. Docs pages auto-generate from the manifests like charts.
-7. **T7 — final gate.** `pnpm regen` (registry gains the `flow/*` entries), drift gate, `breakpoint:check`,
-   `fallback:check`, `brand:check`, full `pnpm ready` / `pnpm ready:ci`, and a grep sweep proving every flow
-   primitive reached every registration surface (`src/index.ts`, registry, the four vite aliases, the four
-   `EntryType` declarations, docs, storybook).
+6. **T6 — declarative API + auto-gen stories + AI + docs.** The headline **easy-to-use, AI-first** surface: a
+   single `<Flow nodes={...} edges={...} />` that takes plain serializable data (the agent emits JSON), with
+   optional `nodeTypes`/`edgeTypes` maps for custom renderers, and the optional `gridLayout`/`layeredLayout`
+   helper. Every flow primitive ships a `*.meta.ts` manifest (incl. **`intent`** + **`examples`**), feeding the
+   registry/MCP/docs auto-generation; add a **`scaffold_flow`** MCP affordance / skill note. Crucially, this
+   tranche makes storybook **auto-generated**: a new `scripts/stories/generate.ts` (chained into `pnpm regen`)
+   emits `apps/storybook/stories/flow/*.stories.tsx` from each meta's `examples` — realising CLAUDE.md's
+   "auto-generated stories from manifests" goal rather than hand-authoring them (`audit:stories` stays green).
+7. **T7 — `FlowStory` (scripted storyline animation).** The differentiator beyond a single static animated
+   edge: a **storyline** that walks the viewer through a graph step by step, fading in a caption at each step
+   so the flow is *understood*. Driven by a super-easy serializable `script`
+   (`[{ from, to, label }, …]`) — e.g. `A<->B-->C` animated `A→B`, `B→A`, `A→B`, `B→C`, looping. The engine
+   resolves each step to an edge + travel **direction** (one `A<->B` edge animates both ways); **sequencing**
+   is a `currentStep` signal advanced by a timer in `useSignalEffect` (the `carousel`/`relative-time` idiom,
+   injectable clock for deterministic tests — never `useEffect`/wall-clock); **motion is CSS** (the T4
+   animated-edge keyframe, reversed per step; caption fade-in); **reduced-motion-safe** and **accessible**
+   (`aria-live` caption + play/pause/prev/next + step indicator). Composes `<Flow>` (T6); its story
+   auto-generates from the meta `examples` (T6 generator).
+8. **T8 — final gate.** `pnpm regen` (registry gains the `flow/*` entries; `stories:generate` emits the flow
+   stories), drift gate, `breakpoint:check`, `fallback:check`, `brand:check`, `audit:stories`, full
+   `pnpm ready` / `pnpm ready:ci`, and a grep sweep proving every flow primitive reached every registration
+   surface (`src/index.ts`, registry, the four vite aliases, the four `EntryType` declarations, docs, storybook).
 
 ---
 
@@ -171,6 +184,8 @@ Why this order:
 | Drag engine           | `@cascivo/core` **`useDraggable`** (pointer `{ x, y }` offset + handle/target refs, listeners in `useSignalEffect`) — the node-drag **and** pan engine; no new drag code. |
 | Sizing                | `@cascivo/core` **`useResizeObserver`** (v42) — the viewport/container measurement for fit-view + minimap scaling. |
 | State primitive       | Preact Signals via `@cascivo/core` (`useSignal`/`useComputed`/`useSignalEffect`/`useControllableSignal`) — replaces React Flow's Zustand store and X6's MVX. |
+| Timing idiom          | `carousel` autoplay + v42 `relative-time` (a signal + timer inside `useSignalEffect`, **injectable clock** for deterministic tests, no `useEffect`/wall-clock) — the template for the `FlowStory` sequencer. |
+| Storybook stories     | **hand-authored** `*.stories.tsx`, governed by `scripts/quality/story-check.ts` (`pnpm audit:stories` — every story must map to a registry entry). `meta.examples` is the manifest source docs render from. **No story generator** yet (despite CLAUDE.md's "auto-generated from manifests" goal). |
 | Registry `EntryType`  | `'component' \| 'layout' \| 'block' \| 'chart' \| 'section'` declared in **four** places: `scripts/registry/generate.ts`, `apps/docs/src/data.ts`, `packages/mcp/src/registry.ts`, and the MCP enum in `packages/mcp/src/server.ts`. **No `'flow'`** yet. |
 | Registry `ROOTS`      | `scripts/registry/generate.ts` maps source dirs → entry types (`components`, `layouts`, `layouts/blocks`, `charts/charts`, `layouts/sections`). **No `flow` root** yet; charts set `entry.install = '@cascivo/charts'`. |
 | Vite source aliases   | `@cascivo/charts` aliased to its `src/index.ts` in `apps/docs/vite.config.ts`, `apps/landing/vite.config.ts` (×2), `apps/storybook/.storybook/main.ts`. **No `@cascivo/flow`** alias yet. |
@@ -184,11 +199,13 @@ Why this order:
 | Concern                | Today                              | Target                                                                 |
 | ---------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
 | Packages              | charts/core/i18n/… (no flow)        | + **`@cascivo/flow`** (published, zero-runtime-dep, signal-driven)      |
-| Flow primitives       | none                                | `Flow`/`FlowCanvas`, `FlowNode`, `FlowHandle`, `FlowEdge`, `FlowBackground`, `FlowControls`, `FlowMiniMap`, `FlowPanel` (+ `useFlow`, geometry/layout helpers), each with a manifest |
+| Flow primitives       | none                                | `Flow`/`FlowCanvas`, `FlowNode`, `FlowHandle`, `FlowEdge`, `FlowBackground`, `FlowControls`, `FlowMiniMap`, `FlowPanel`, **`FlowStory`** (+ `useFlow`/`useStory`, geometry/layout/script helpers), each with a manifest |
+| Scripted storyline    | none                                | **`FlowStory`** — a serializable `script` of steps animated in sequence with fade-in captions, looping (the `A<->B-->C` storyboard) |
 | Registry `EntryType`  | 5 types                             | + `'flow'` (in all four declarations); `flow/*` entries with `install: '@cascivo/flow'` |
 | Vite aliases          | charts aliased                      | + `@cascivo/flow` source alias in docs/landing(×2)/storybook            |
-| Docs + storybook      | charts auto-generated               | flow primitives auto-generated (docs pages + `stories/flow/*`)          |
-| AI                    | no flow affordance                  | declarative `<Flow nodes edges />` + `scaffold_flow` MCP/skill note     |
+| Storybook stories     | hand-authored, `audit:stories`-checked | flow stories **auto-generated** from manifests via `scripts/stories/generate.ts` (chained into `pnpm regen`) |
+| Docs                  | charts auto-generated               | flow docs auto-generated from manifests                                  |
+| AI                    | no flow affordance                  | declarative `<Flow nodes edges />` + serializable `FlowStory` `script` + `scaffold_flow` MCP/skill note |
 
 ---
 
@@ -222,9 +239,23 @@ Why this order:
    `<Flow nodes={…} edges={…} />`_ taking plain serializable data (the agent emits JSON), with optional
    `nodeTypes`/`edgeTypes` for custom renderers and a `scaffold_flow` MCP/skill affordance. The low-level
    primitives (`FlowNode`/`FlowEdge`/…) remain available for hand-authoring.
-9. **Scope discipline — what stays out?** _Recommendation: **defer** layout engines, undo/redo, clipboard,
-   resize/rotate, snaplines, lasso/whiteboard, sub-flows, multiplayer; **reject** the Zustand store, the MVX
-   architecture, and the D3/canvas dependencies_ (recorded above). v43 is the basic set, done well.
+9. **Auto-generate storybook stories?** _Recommendation: **yes** — add `scripts/stories/generate.ts` chained
+   into `pnpm regen`._ Stories are hand-authored today; CLAUDE.md wants them "auto-generated from manifests."
+   The generator emits `stories/flow/*.stories.tsx` from each flow meta's `examples` (same data docs use), so
+   flow stories never drift and `audit:stories` stays green. The brief explicitly asks for auto-generated
+   stories.
+10. **`FlowStory` storyline — how is the "script" defined and animated?** _Recommendation: a super-easy
+    serializable `script: [{ from, to, label }]`_ that auto-resolves each step to an edge + travel direction
+    (one `A<->B` edge animates both ways), plays in sequence with fade-in captions, and loops. Sequencing is a
+    `currentStep` signal advanced by a timer in `useSignalEffect` (the `carousel`/`relative-time` idiom,
+    injectable clock — never `useEffect`/wall-clock); motion is CSS (the T4 animated edge, reversed per step);
+    reduced-motion-safe; `aria-live` + play/pause/prev/next. The JSON script is the AI-first contract. Rejected:
+    a pure-CSS sequencer (can't express arbitrary steps/durations/looping with captions) and a
+    `requestAnimationFrame` loop.
+11. **Scope discipline — what stays out?** _Recommendation: **defer** layout engines, undo/redo, clipboard,
+    resize/rotate, snaplines, lasso/whiteboard, sub-flows, multiplayer; **reject** the Zustand store, the MVX
+    architecture, and the D3/canvas dependencies_ (recorded above). v43 is the basic set + the `FlowStory`
+    storyline differentiator, done well.
 
 ---
 
@@ -317,23 +348,41 @@ Why this order:
       scaled SVG overview + draggable viewport rect), `<FlowPanel>` (positioned slot). WCAG AA, ≥44px coarse
       targets. Manifests for each, exported, in registry.
 
-### T6 — Declarative `<Flow>` API + AI + docs
+### T6 — Declarative `<Flow>` API + auto-gen stories + AI + docs
 
 - [ ] `<Flow nodes={…} edges={…} />` accepts plain serializable data (agent-emittable JSON), optional
       `nodeTypes`/`edgeTypes` maps and `onConnect`/`onNodesChange`/`onEdgesChange`; optional dependency-free
       `gridLayout`/`layeredLayout` helper. i18n-defaulted strings. No hardcoded English.
-- [ ] Every flow primitive carries a complete `*.meta.ts` (incl. **`intent`**); `intent-completeness.test.ts`
-      green. Storybook stories under `apps/storybook/stories/flow/*`; docs pages auto-generate from manifests.
-      A `scaffold_flow` MCP affordance / skill section surfaces the declarative API to agents.
+- [ ] Every flow primitive carries a complete `*.meta.ts` (incl. **`intent`** + a non-empty **`examples`**);
+      `intent-completeness.test.ts` green. A `scaffold_flow` MCP affordance / skill section surfaces the
+      declarative API to agents.
+- [ ] **Stories auto-generated:** `scripts/stories/generate.ts` emits `apps/storybook/stories/flow/*.stories.tsx`
+      from each flow meta's `examples`, chained into `pnpm regen`; `pnpm audit:stories` green (each generated
+      story maps to a `flow/*` registry entry); re-running leaves no drift. Docs pages auto-generate from
+      manifests.
 
-### T7 — Final gate
+### T7 — `FlowStory` (scripted storyline animation)
 
-- [ ] `pnpm regen` (registry gains `flow/*` entries with `install: '@cascivo/flow'`); drift gate green.
+- [ ] `packages/flow/src/flows/flow-story/` ships `flow-story.tsx` + `.module.css` + `.meta.ts` + `.test.tsx`,
+      plus `engine/script.ts` (+ test) and `core/use-story.ts` (+ test).
+- [ ] `<FlowStory>` takes a serializable `script: [{ from, to, label?, description?, duration? }]` (and a
+      `{ edge, reverse }` form), resolves each step to an edge id + travel **direction** (one `A<->B` edge
+      animates both ways), plays in sequence with fade-in captions, and **loops** (the `A<->B-->C` example).
+- [ ] Sequencing is a `currentStep` signal advanced by a timer in `useSignalEffect` (carousel/`relative-time`
+      idiom) with an **injectable clock**; tests advance deterministically (no `useEffect`, no wall-clock).
+      Motion is CSS (the T4 animated edge, reversed per step; caption fade-in) with a **static fallback** and
+      **disabled under `prefers-reduced-motion: reduce`** (captions preserved). `fallback:check` green.
+- [ ] Accessible: `aria-live` caption, play/pause/prev/next controls (≥44px coarse, i18n-defaulted), step
+      indicator. Manifest (incl. `intent` + the `A<->B-->C` `examples`); exported; its story auto-generates via
+      the T6 generator; in `registry.json` after `pnpm regen`.
+
+### T8 — Final gate
+
+- [ ] `pnpm regen` (registry gains `flow/*` entries with `install: '@cascivo/flow'`; `stories:generate` emits
+      the flow stories); drift gate green.
 - [ ] Full gate green: `vp check`, `pnpm build`, `vp run -r check`, `pnpm test`, `breakpoint:check`,
-      `fallback:check`, `brand:check`, and `pnpm ready:ci` (cold-cache, sequential — proves the source aliases
-      let docs/landing/storybook build without a prior full build).
+      `fallback:check`, `brand:check`, `audit:stories`, and `pnpm ready:ci` (cold-cache, sequential — proves the
+      source aliases let docs/landing/storybook build without a prior full build).
 - [ ] Grep sweep confirms every flow primitive reached every registration surface: `packages/flow/src/index.ts`,
       `registry.json`, the four `EntryType` declarations, the registry `ROOTS`, the four vite aliases, docs, and
-      `apps/storybook/stories/flow/`.
-</content>
-</invoke>
+      the generated `apps/storybook/stories/flow/`.
