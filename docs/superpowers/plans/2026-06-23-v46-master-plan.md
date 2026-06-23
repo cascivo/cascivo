@@ -72,6 +72,7 @@ gate for generated artifacts (registry/llms/README).
 | T4      | Save keybinding + extensibility seam                   | `onSave` on `Mod-S` (suppress browser dialog); public `keymap` + `decorations` props (the seam search/brackets use); documented. |
 | T5      | Per-instance theming + active-line gutter + brackets   | `theme` prop → scoped `--cascivo-editor-*` overrides with live switch (Zen mode); active-line **gutter** highlight; `bracketMatching` decoration. |
 | T6      | Markdown hardening, perf/wrap validation, docs & gate  | Harden `markdown.ts` (+ tests); validate windowing/wrap (large-doc test, close/document the wrap hole); update EditorPage/meta/registry/i18n/README/CHANGELOG/roadmap; `pnpm regen` + full gate + grep sweep. |
+| T7      | Try-it-out variants in docs + storybook                | Comprehensive interactive showcase of every v46 capability across `EditorPage` (docs) and `Editor/CodeEditor` (Storybook): per-feature + interactive stories (find/save/undo/theme-switch/brackets/handle/decorations/keymap/large-doc/markdown) + argTypes for new props. |
 
 Ordering rationale: **T1** builds the two foundations everything else needs — a keymap to hang commands on, and
 a history that owns edits (search-replace and the imperative handle must record undoable edits). **T2** makes
@@ -80,7 +81,9 @@ keymap + decoration approach and the history-aware edit path. **T4** formalizes 
 seam and adds save (search proved the seam; now expose it). **T5** adds theming + the decoration-based brackets
 + the gutter active-line (consumes T4's seam). **T6** hardens Markdown, validates perf/wrap, and lands all
 docs/registry/i18n/regen + the full gate. T3→T4→T5 share the decoration seam and are sequenced for one reviewer;
-T6 finalizes.
+T6 finalizes. **T7** depends on the full public surface (T1–T6) and makes every capability tryable across the
+docs page and Storybook in many variants — T6 wires the minimal demos for the gate; T7 is the comprehensive
+interactive showcase reviewers and users poke without writing code.
 
 ---
 
@@ -149,6 +152,15 @@ T6 finalizes.
 | Modify | `packages/i18n/src/builtin.ts` (finalize editor strings + `de`)                                |
 | Modify | `packages/editor/readme.body.md` (→ `README.md`), `CHANGELOG.md`, `package.json` `VERSION`/version, `docs/ROADMAP-V46.md` status |
 | Verify | `pnpm regen`; drift gate; full gate (`vp check`, `pnpm build`, `vp run -r check`, `pnpm test`, `breakpoint:check`, `fallback:check`); grep sweep |
+
+### T7 — Try-it-out variants in docs + storybook
+
+| Action | Path                                                                                          |
+| ------ | --------------------------------------------------------------------------------------------- |
+| Modify | `apps/storybook/stories/editor/code-editor.stories.tsx` (new `argTypes` + per-feature stories) |
+| Create | `apps/storybook/stories/editor/code-editor-playground.stories.tsx` (interactive: theme-switch/handle/decorations/keymap/controlled-sync — or fold into the file above) |
+| Modify | `apps/docs/src/pages/EditorPage.tsx` (Search, Save, live theme-switch, brackets/active-line, Markdown-notes sections) |
+| Verify | `apps/storybook/.storybook/main.ts` + `apps/docs/vite.config.ts` editor source alias; both apps build without a prior full build |
 
 ---
 

@@ -1,8 +1,8 @@
 # cascivo — Roadmap v46: Editor Parity — Closing the Gap-Analysis Findings
 
 **Last updated:** 2026-06-23
-**Status:** 📋 Planned (T1–T6).
-**Plan documents:** `docs/superpowers/plans/2026-06-23-v46-master-plan.md` + tranches 1–6
+**Status:** 📋 Planned (T1–T7).
+**Plan documents:** `docs/superpowers/plans/2026-06-23-v46-master-plan.md` + tranches 1–7
 **Builds on:** the existing **`@cascivo/editor`** package (`packages/editor/src/editor/code-editor/code-editor.tsx`
 — a native `<textarea>` overlaid on a syntax-highlighted `<pre>`; `packages/editor/src/editor/highlight/highlight.tsx`
 read-only renderer; the owned tokenizer in `packages/editor/src/engine/*` + grammars in
@@ -230,3 +230,20 @@ the genuine work and **validates/hardens** the rest so no finding is left unveri
       `builtin.editor` (+ `de`), `readme.body.md`/`README.md`, `CHANGELOG.md`, and `docs/ROADMAP-V46.md` status
       updated; `VERSION`/`package.json` bumped. `pnpm regen` + drift gate clean; full CI gate green; grep sweep
       confirms the new props/handle reached the meta, registry, docs, and i18n.
+
+### T7 — Try-it-out variants in docs & Storybook
+
+- [ ] **Storybook** (`apps/storybook/stories/editor/code-editor.stories.tsx`): `argTypes` exercise the new props
+      (incl. `bracketMatching`, `onSave` action) and per-feature stories exist — `FindAndReplace`, `Save`,
+      `UndoRedo`, `BracketMatching`, `ActiveLineGutter`, `Markdown`, `LargeDocument` — each with a caption noting
+      the keyboard interaction.
+- [ ] **Storybook interactive** stories demonstrate the stateful capabilities: `ThemeSwitch` (live per-instance
+      re-theming / Zen mode), `ImperativeHandle` (`applyEdit`/`undo`/`openFind`), `Decorations` + `CustomKeymap`
+      (the extension seam), and `ControlledSync` (caret preserved + no echo on a programmatic `value` set). React
+      stories call `useSignals()`; no banned hooks.
+- [ ] **Docs** (`apps/docs/src/pages/EditorPage.tsx`): new sections for Search, Save, live Theme switch, Bracket
+      matching & active line, and a realistic **Markdown notes** scenario — within the existing `doc-section`
+      layout, Preact-reactive, no banned hooks.
+- [ ] Both apps build **without** a prior full build (editor source alias in `apps/storybook/.storybook/main.ts`
+      and `apps/docs/vite.config.ts`); `pnpm breakpoint:check` and `pnpm ready` green; every interactive control is
+      keyboard-reachable and ≥44px on coarse pointers.
