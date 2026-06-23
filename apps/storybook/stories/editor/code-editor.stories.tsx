@@ -1,5 +1,12 @@
-import { CodeEditor } from '@cascivo/editor'
+import { useSignal, useSignals } from '@cascivo/core'
+import {
+  CodeEditor,
+  type CodeEditorHandle,
+  type Decoration,
+  type EditorTheme,
+} from '@cascivo/editor'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useRef } from 'react'
 
 const tsSample = `interface User {
   id: string
@@ -12,6 +19,30 @@ function greet(user: User): string {
 }
 `
 
+const notesSample = `# Meeting notes
+
+- [x] Ship the editor
+- [ ] Write the docs
+- [ ] Demo find & replace
+
+> Remember to **review** the ~~old~~ new plan before Friday.
+
+See [the roadmap](/roadmap) and \`packages/editor\`.
+
+\`\`\`ts
+const ok = true
+\`\`\`
+`
+
+const bracketSample = `function f(x) {
+  return [x, (x + 1), { y: x }]
+}
+`
+
+const longSample = Array.from({ length: 3000 }, (_, i) => `line ${i + 1}: const v${i} = ${i}`).join(
+  '\n',
+)
+
 const meta: Meta<typeof CodeEditor> = {
   title: 'Editor/CodeEditor',
   component: CodeEditor,
@@ -20,6 +51,7 @@ const meta: Meta<typeof CodeEditor> = {
     lineNumbers: true,
     readOnly: false,
     wrap: false,
+    bracketMatching: false,
     defaultValue: tsSample,
   },
   argTypes: {
@@ -27,6 +59,8 @@ const meta: Meta<typeof CodeEditor> = {
       control: 'select',
       options: ['plaintext', 'json', 'javascript', 'typescript', 'css', 'html', 'markdown', 'bash'],
     },
+    bracketMatching: { control: 'boolean' },
+    onSave: { action: 'save' },
   },
   render: (args) => (
     <div style={{ inlineSize: '40rem', blockSize: '18rem' }}>
@@ -103,4 +137,191 @@ export const Themed: Story = {
       </div>
     </div>
   ),
+}
+
+// ── v46 feature variants ──────────────────────────────────────────────────────
+
+export const FindAndReplace: Story = {
+  args: { language: 'markdown', defaultValue: notesSample },
+  parameters: {
+    docs: { description: { story: 'Press **Mod-F** to find, **Mod-Alt-F** to replace.' } },
+  },
+}
+
+export const Save: Story = {
+  parameters: {
+    docs: { description: { story: 'Press **Mod-S** — `onSave` fires (see the Actions panel).' } },
+  },
+}
+
+export const UndoRedo: Story = {
+  args: { language: 'plaintext', defaultValue: 'edit me, then press Mod-Z / Mod-Shift-Z' },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Owned history survives programmatic value changes. **Mod-Z** / **Mod-Shift-Z**.',
+      },
+    },
+  },
+}
+
+export const BracketMatching: Story = {
+  args: { language: 'javascript', defaultValue: bracketSample, bracketMatching: true },
+  parameters: {
+    docs: { description: { story: 'Move the caret onto a bracket to highlight its partner.' } },
+  },
+}
+
+export const ActiveLineGutter: Story = {
+  args: { language: 'typescript', lineNumbers: true },
+  parameters: {
+    docs: { description: { story: 'The caret’s line is highlighted in the gutter.' } },
+  },
+}
+
+export const Markdown: Story = {
+  args: { language: 'markdown', defaultValue: notesSample, bracketMatching: true },
+  parameters: {
+    docs: {
+      description: { story: 'A notes document — headings, task lists, quotes, fenced code.' },
+    },
+  },
+}
+
+export const LargeDocument: Story = {
+  args: { language: 'plaintext', defaultValue: longSample },
+  parameters: {
+    docs: { description: { story: '3,000 lines — windowing keeps scrolling/typing smooth.' } },
+  },
+}
+
+const zenTheme: EditorTheme = {
+  '--cascivo-editor-bg': '#0b1021',
+  '--cascivo-editor-fg': '#e6edf3',
+  '--cascivo-editor-gutter-bg': '#0b1021',
+  '--cascivo-editor-gutter-fg': '#56607a',
+  '--cascivo-editor-current-line': 'rgba(255, 255, 255, 0.05)',
+}
+
+function ThemeSwitchDemo(args: Parameters<typeof CodeEditor>[0]) {
+  useSignals()
+  const zen = useSignal(false)
+  return (
+    <div style={{ display: 'grid', gap: '0.75rem', inlineSize: '40rem' }}>
+      <button
+        type="button"
+        onClick={() => (zen.value = !zen.value)}
+        style={{ justifySelf: 'start' }}
+      >
+        {zen.value ? 'Default theme' : 'Zen theme'}
+      </button>
+      <div style={{ blockSize: '16rem' }}>
+        <CodeEditor {...args} theme={zen.value ? zenTheme : {}} />
+      </div>
+    </div>
+  )
+}
+
+export const ThemeSwitch: Story = {
+  render: (args) => <ThemeSwitchDemo {...args} />,
+  parameters: {
+    docs: {
+      description: { story: 'Per-instance theme that switches live (Zen mode) — no remount.' },
+    },
+  },
+}
+
+function ImperativeHandleDemo(args: Parameters<typeof CodeEditor>[0]) {
+  useSignals()
+  const ref = useRef<CodeEditorHandle>(null)
+  return (
+    <div style={{ display: 'grid', gap: '0.75rem', inlineSize: '40rem' }}>
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <button
+          type="button"
+          onClick={() => {
+            const sel = ref.current?.getSelection()
+            if (sel) ref.current?.applyEdit({ from: sel.start, to: sel.end }, '★')
+          }}
+        >
+          Insert ★ at caret
+        </button>
+        <button type="button" onClick={() => ref.current?.undo()}>
+          Undo
+        </button>
+        <button type="button" onClick={() => ref.current?.openFind()}>
+          Open find
+        </button>
+      </div>
+      <div style={{ blockSize: '16rem' }}>
+        <CodeEditor ref={ref} {...args} />
+      </div>
+    </div>
+  )
+}
+
+export const ImperativeHandle: Story = {
+  render: (args) => <ImperativeHandleDemo {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Drive the editor via its ref — applyEdit (undoable), undo, openFind.',
+      },
+    },
+  },
+}
+
+function highlightWord(value: string, word: string, className: string): Decoration[] {
+  const decos: Decoration[] = []
+  value.split('\n').forEach((line, i) => {
+    let idx = line.indexOf(word)
+    while (idx !== -1) {
+      decos.push({ line: i, start: idx, end: idx + word.length, className })
+      idx = line.indexOf(word, idx + word.length)
+    }
+  })
+  return decos
+}
+
+export const Decorations: Story = {
+  args: {
+    language: 'javascript',
+    defaultValue: '// TODO: wire it up\nconst x = 1 // TODO: rename\n',
+  },
+  render: (args) => (
+    <div style={{ inlineSize: '40rem', blockSize: '16rem' }}>
+      <style>{`.sb-todo { background: rgba(250, 204, 21, 0.5); border-radius: 2px; }`}</style>
+      <CodeEditor {...args} decorations={(value) => highlightWord(value, 'TODO', 'sb-todo')} />
+    </div>
+  ),
+  parameters: {
+    docs: { description: { story: 'A `decorations` provider highlighting every TODO.' } },
+  },
+}
+
+export const CustomKeymap: Story = {
+  args: {
+    language: 'plaintext',
+    defaultValue: 'select a word, press Mod-Backslash to wrap it in **\n',
+  },
+  render: (args) => (
+    <div style={{ inlineSize: '40rem', blockSize: '12rem' }}>
+      <CodeEditor
+        {...args}
+        keymap={{
+          'Mod-\\': ({ textarea, setText }) => {
+            const { selectionStart: s, selectionEnd: e, value } = textarea
+            textarea.setRangeText(`**${value.slice(s, e)}**`, s, e, 'end')
+            setText(textarea.value)
+            return true
+          },
+        }}
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: { story: 'A custom `keymap` binding (Mod-\\) merged over the built-ins.' },
+    },
+  },
 }

@@ -1,6 +1,8 @@
 // Preact-friendly shim for @cascivo/editor in the docs app (avoids pulling the
 // React-typed source into the Preact JSX namespace). The Vite alias resolves the
 // real source at build time; this only types the showcase usage.
+export type EditorTheme = Partial<Record<`--cascivo-editor-${string}`, string>>
+
 export declare function CodeEditor(props: {
   value?: string
   defaultValue?: string
@@ -15,6 +17,9 @@ export declare function CodeEditor(props: {
   disabled?: boolean
   placeholder?: string
   label?: string
+  onSave?: (value: string) => void
+  theme?: EditorTheme
+  bracketMatching?: boolean
   [key: string]: unknown
 }): JSX.Element
 

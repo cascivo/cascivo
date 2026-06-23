@@ -5,7 +5,8 @@
     "allowImportingTsExtensions": true,
     "paths": {
       "@cascivo/react": ["../../packages/react/src/index.ts"],
-      "@cascivo/editor": ["../../packages/editor/src/index.ts"]
+      "@cascivo/editor": ["../../packages/editor/src/index.ts"],
+      "@cascivo/core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": [

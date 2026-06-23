@@ -1,4 +1,5 @@
-import { CodeEditor, Highlight } from '@cascivo/editor'
+import { useSignal, useSignals } from '@cascivo/core'
+import { CodeEditor, Highlight, type EditorTheme } from '@cascivo/editor'
 
 const tsSample = `interface User {
   id: string
@@ -54,6 +55,34 @@ for i in 1 2 3; do
 done
 `
 
+const notesSample = `# Meeting notes
+
+- [x] Ship the editor
+- [ ] Write the docs
+- [ ] Demo find & replace
+
+> Remember to **review** the ~~old~~ new plan.
+
+See [the roadmap](/roadmap) and \`packages/editor\`.
+
+\`\`\`ts
+const ok = true
+\`\`\`
+`
+
+const bracketSample = `function f(x) {
+  return [x, (x + 1), { y: x }]
+}
+`
+
+const zenTheme: EditorTheme = {
+  '--cascivo-editor-bg': '#0b1021',
+  '--cascivo-editor-fg': '#e6edf3',
+  '--cascivo-editor-gutter-bg': '#0b1021',
+  '--cascivo-editor-gutter-fg': '#56607a',
+  '--cascivo-editor-current-line': 'rgba(255, 255, 255, 0.05)',
+}
+
 const GALLERY: Array<{ language: string; label: string; value: string }> = [
   { language: 'typescript', label: 'TypeScript', value: tsSample },
   { language: 'json', label: 'JSON', value: jsonSample },
@@ -64,6 +93,9 @@ const GALLERY: Array<{ language: string; label: string; value: string }> = [
 ]
 
 export function EditorPage() {
+  useSignals()
+  const saved = useSignal(false)
+  const zen = useSignal(false)
   return (
     <article class="doc-page">
       <header class="doc-head">
@@ -84,6 +116,72 @@ export function EditorPage() {
           Tab/Shift-Tab indent. Try editing it:
         </p>
         <CodeEditor language="typescript" defaultValue={tsSample} style={{ blockSize: '20rem' }} />
+      </section>
+
+      <section class="doc-section">
+        <h2>Find &amp; replace</h2>
+        <p>
+          Press <kbd>Mod</kbd>+<kbd>F</kbd> to search, <kbd>Mod</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> to
+          replace. Matches are highlighted in place; replacements are undoable.
+        </p>
+        <CodeEditor language="markdown" defaultValue={notesSample} style={{ blockSize: '18rem' }} />
+      </section>
+
+      <section class="doc-section">
+        <h2>Save</h2>
+        <p>
+          <code>onSave</code> fires on <kbd>Mod</kbd>+<kbd>S</kbd> and suppresses the browser
+          dialog. {saved.value ? <strong>Saved ✓</strong> : 'Edit and press Mod-S.'}
+        </p>
+        <CodeEditor
+          language="typescript"
+          defaultValue={tsSample}
+          onSave={() => (saved.value = true)}
+          onValueChange={() => (saved.value = false)}
+          style={{ blockSize: '12rem' }}
+        />
+      </section>
+
+      <section class="doc-section">
+        <h2>Themes (live switch)</h2>
+        <p>
+          A per-instance <code>theme</code> overrides the <code>--cascivo-editor-*</code> palette
+          and switches live — no remount (the “Zen mode” pattern).
+        </p>
+        <button
+          type="button"
+          onClick={() => (zen.value = !zen.value)}
+          style={{
+            padding: '0.4rem 0.8rem',
+            border: '1px solid var(--cascivo-color-border)',
+            borderRadius: 'var(--cascivo-radius-field)',
+            background: 'var(--cascivo-color-surface)',
+            color: 'inherit',
+            cursor: 'pointer',
+          }}
+        >
+          {zen.value ? 'Default theme' : 'Zen theme'}
+        </button>
+        <CodeEditor
+          language="typescript"
+          defaultValue={tsSample}
+          theme={zen.value ? zenTheme : {}}
+          style={{ blockSize: '14rem', marginBlockStart: '0.75rem' }}
+        />
+      </section>
+
+      <section class="doc-section">
+        <h2>Bracket matching &amp; active line</h2>
+        <p>
+          With <code>bracketMatching</code>, the partner of the bracket next to the caret is
+          outlined; the caret’s line is tinted in the gutter.
+        </p>
+        <CodeEditor
+          language="javascript"
+          defaultValue={bracketSample}
+          bracketMatching
+          style={{ blockSize: '12rem' }}
+        />
       </section>
 
       <section class="doc-section">
