@@ -1,7 +1,9 @@
 # cascivo — Roadmap v45: Icon Catalog Expansion — More Icons, Visible in Docs & Landing
 
 **Last updated:** 2026-06-23
-**Status:** 📋 Planned (T1–T6).
+**Status:** ✅ Shipped (T1–T6) — catalog grown 60 → ~440 via a regenerable chromicons SVG → `createIcon`
+generator + `icons.catalog.json` manifest; a searchable `/icons` docs gallery; and a landing
+`IconShowcase` section. Additive only; no existing icon changed.
 **Plan documents:** `docs/superpowers/plans/2026-06-23-v45-master-plan.md` + tranches 1–6
 **Builds on:** the existing **`@cascivo/icons`** package (`packages/icons/src/index.tsx`, 61 Feather-derived
 stroked 24×24 icons built via `createIcon`), the `pnpm regen` generated-artifact pipeline (the model is

@@ -208,7 +208,9 @@ function buildKeywords(kebab, metaKeywords) {
   if (metaKeywords) {
     for (const w of metaKeywords.split(/\s+/).filter(Boolean)) tokens.add(w.toLowerCase())
   }
-  for (const token of [...tokens]) {
+  // Snapshot before expanding so synonyms-of-synonyms don't compound.
+  const seeds = Array.from(tokens)
+  for (const token of seeds) {
     for (const syn of SYNONYMS[token] ?? []) tokens.add(syn)
   }
   return [...tokens].sort()
@@ -222,8 +224,7 @@ function buildKeywords(kebab, metaKeywords) {
 function parseExistingIcons(src) {
   const out = []
   const re = /export const \w+ = createIcon\(/g
-  let m
-  while ((m = re.exec(src))) {
+  while (re.exec(src) !== null) {
     let depth = 1
     let i = re.lastIndex
     for (; i < src.length && depth > 0; i++) {
