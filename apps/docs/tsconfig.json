@@ -69,7 +69,8 @@
       "@cascivo/components/input-group": ["./src/shims/input-group.d.ts"],
       "@cascivo/components/rating-group": ["./src/shims/rating-group.d.ts"],
       "@cascivo/components/editable": ["./src/shims/editable.d.ts"],
-      "@cascivo/charts": ["./src/shims/charts.d.ts"]
+      "@cascivo/charts": ["./src/shims/charts.d.ts"],
+      "@cascivo/editor": ["./src/shims/editor.d.ts"]
     }
   },
   "include": ["src"]

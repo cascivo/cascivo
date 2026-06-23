@@ -4,13 +4,15 @@
     "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "paths": {
-      "@cascivo/react": ["../../packages/react/src/index.ts"]
+      "@cascivo/react": ["../../packages/react/src/index.ts"],
+      "@cascivo/editor": ["../../packages/editor/src/index.ts"]
     }
   },
   "include": [
     ".storybook",
     "stories",
     "../../packages/components/src/css-modules.d.ts",
-    "../../packages/react/src/css-modules.d.ts"
+    "../../packages/react/src/css-modules.d.ts",
+    "../../packages/editor/src/css-modules.d.ts"
   ]
 }
