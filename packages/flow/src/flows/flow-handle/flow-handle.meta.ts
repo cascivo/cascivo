@@ -1,0 +1,64 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'FlowHandle',
+  description:
+    'A connection port on a node edge — where edges attach and interactive connect starts.',
+  category: 'display',
+  states: ['default', 'hover', 'focus'],
+  variants: ['source', 'target'],
+  sizes: [],
+  props: [
+    { name: 'type', type: "'source' | 'target'", required: true },
+    {
+      name: 'position',
+      type: "'top' | 'right' | 'bottom' | 'left'",
+      required: false,
+      description: 'Edge of the node (defaults: source→right, target→left).',
+    },
+    {
+      name: 'id',
+      type: 'string',
+      required: false,
+      description: 'Handle id for multi-handle nodes.',
+    },
+    { name: 'isConnectable', type: 'boolean', required: false, default: 'true' },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: ['--cascivo-color-accent', '--cascivo-color-surface', '--cascivo-target-min-coarse'],
+  accessibility: {
+    role: 'button',
+    wcag: '2.1-AA',
+    keyboard: ['Tab (focus the port)'],
+  },
+  examples: [
+    {
+      title: 'Source and target ports',
+      code: `() => (
+  <div style={{ position: 'relative', height: 160 }}>
+    <FlowNode id="api" defaultPosition={{ x: 70, y: 55 }}>
+      API
+      <FlowHandle type="target" position="left" />
+      <FlowHandle type="source" position="right" />
+    </FlowNode>
+  </div>
+)`,
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['flow', 'handle', 'port', 'connect'],
+  intent: {
+    whenToUse: [
+      'Marking where edges connect to a node',
+      'Enabling interactive connect (drag from a source to a target)',
+    ],
+    whenNotToUse: ['On nodes that are never connected'],
+    antiPatterns: [],
+    related: [
+      { name: 'FlowNode', relationship: 'contained-by', reason: 'Ports live inside a node.' },
+      { name: 'FlowEdge', relationship: 'pairs-with', reason: 'Edges anchor to handles.' },
+    ],
+    a11yRationale: 'Focusable with a ≥44px coarse-pointer hit area around the visible dot.',
+    flexibility: [{ area: 'position', level: 'flexible', note: 'top | right | bottom | left.' }],
+  },
+}

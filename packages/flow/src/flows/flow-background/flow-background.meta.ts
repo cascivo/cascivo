@@ -15,7 +15,13 @@ export const meta: ComponentMeta = {
       default: 'dots',
       description: 'Pattern style.',
     },
-    { name: 'gap', type: 'number', required: false, default: '20', description: 'Cell spacing (px).' },
+    {
+      name: 'gap',
+      type: 'number',
+      required: false,
+      default: '20',
+      description: 'Cell spacing (px).',
+    },
     {
       name: 'size',
       type: 'number',
@@ -82,9 +88,14 @@ export const meta: ComponentMeta = {
     related: [
       { name: 'FlowCanvas', relationship: 'contained-by', reason: 'Lives inside the canvas pane.' },
     ],
-    a11yRationale: 'Purely decorative — marked aria-hidden and presentation, never in the a11y tree.',
+    a11yRationale:
+      'Purely decorative — marked aria-hidden and presentation, never in the a11y tree.',
     flexibility: [
-      { area: 'pattern', level: 'flexible', note: 'dots | grid | cross with configurable gap/size.' },
+      {
+        area: 'pattern',
+        level: 'flexible',
+        note: 'dots | grid | cross with configurable gap/size.',
+      },
     ],
   },
 }

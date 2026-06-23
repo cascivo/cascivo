@@ -1,0 +1,41 @@
+@layer cascivo.component {
+  .node {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    transform: translate(var(--flow-x, 0), var(--flow-y, 0));
+    box-sizing: border-box;
+    min-inline-size: 6rem;
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-3);
+    background-color: var(--cascivo-color-surface);
+    color: var(--cascivo-color-text);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+    box-shadow: var(--cascivo-shadow-sm);
+    cursor: grab;
+    user-select: none;
+  }
+
+  /* Comfortable touch target on coarse pointers without disturbing fine density. */
+  @media (pointer: coarse) {
+    .node {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .node:focus-visible {
+    outline: 2px solid var(--cascivo-color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .node[data-dragging] {
+    cursor: grabbing;
+    box-shadow: var(--cascivo-shadow-md);
+  }
+
+  .node[data-selected] {
+    border-color: var(--cascivo-color-accent);
+    box-shadow: 0 0 0 1px var(--cascivo-color-accent);
+  }
+}

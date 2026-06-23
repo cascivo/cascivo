@@ -9,7 +9,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'children', type: 'ReactNode', required: false, description: 'Background, nodes, edges.' },
+    {
+      name: 'children',
+      type: 'ReactNode',
+      required: false,
+      description: 'Background, nodes, edges.',
+    },
     {
       name: 'viewport',
       type: '{ x: number; y: number; zoom: number }',

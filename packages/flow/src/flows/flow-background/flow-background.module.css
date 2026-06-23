@@ -18,8 +18,16 @@
 
   .background[data-variant='grid'] {
     background-image:
-      linear-gradient(to right, var(--flow-bg-color) var(--flow-bg-thick), transparent var(--flow-bg-thick)),
-      linear-gradient(to bottom, var(--flow-bg-color) var(--flow-bg-thick), transparent var(--flow-bg-thick));
+      linear-gradient(
+        to right,
+        var(--flow-bg-color) var(--flow-bg-thick),
+        transparent var(--flow-bg-thick)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--flow-bg-color) var(--flow-bg-thick),
+        transparent var(--flow-bg-thick)
+      );
     background-size: var(--flow-bg-gap) var(--flow-bg-gap);
   }
 
