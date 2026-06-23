@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (179 components)
+## Component index (181 components)
 
 ### chart
 
@@ -149,6 +149,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [contained-list](https://docs.cascivo.com/llms/contained-list.md) — Labelled list of rows inside a bordered container
 - [data-list](https://docs.cascivo.com/llms/data-list.md) — Key-value pairs rendered as a description list
 - [data-table](https://docs.cascivo.com/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
+- [editor/highlight](https://docs.cascivo.com/llms/editor/highlight.md) — Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.
 - [empty-state](https://docs.cascivo.com/llms/empty-state.md) — Placeholder for views that have no data to display
 - [flow/flow](https://docs.cascivo.com/llms/flow/flow.md) — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.
 - [flow/flow-background](https://docs.cascivo.com/llms/flow/flow-background.md) — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
@@ -204,6 +205,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [date-picker](https://docs.cascivo.com/llms/date-picker.md) — An accessible date-picker with a calendar popover.
 - [date-range-picker](https://docs.cascivo.com/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
 - [editable](https://docs.cascivo.com/llms/editable.md) — Inline click-to-edit text field
+- [editor/code-editor](https://docs.cascivo.com/llms/editor/code-editor.md) — Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.
 - [fab](https://docs.cascivo.com/llms/fab.md) — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions
 - [field](https://docs.cascivo.com/llms/field.md) — Form-field wrapper composing label, control, description, and error
 - [file-uploader](https://docs.cascivo.com/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
@@ -369,6 +371,8 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Drawer](https://docs.cascivo.com/context/drawer.md) — Use when: A side or edge panel for navigation, filters, or detail views that needs full-height space
 - [Dropdown](https://docs.cascivo.com/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
 - [Editable](https://docs.cascivo.com/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
+- [CodeEditor](https://docs.cascivo.com/context/editor/code-editor.md) — Use when: Editing code or config inline — JSON, snippets, web languages — with line numbers and syntax colors
+- [Highlight](https://docs.cascivo.com/context/editor/highlight.md) — Use when: Displaying non-editable code or config with syntax colors — docs, snippets, examples
 - [EmptyState](https://docs.cascivo.com/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
 - [Fab](https://docs.cascivo.com/context/fab.md) — Use when: A single, high-emphasis primary action that floats above scrolling content (e.g. Compose, Add)
 - [Field](https://docs.cascivo.com/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message

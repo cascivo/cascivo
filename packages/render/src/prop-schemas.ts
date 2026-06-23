@@ -844,6 +844,72 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['sm', 'md'],
     },
   ],
+  CodeEditor: [
+    {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
+      name: 'language',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'lineNumbers',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tabSize',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'insertSpaces',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'wrap',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'readOnly',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'placeholder',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   CodeSnippet: [],
   Collapsible: [
     {
@@ -2244,6 +2310,43 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'headingLevel',
       required: false,
+    },
+  ],
+  Highlight: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'language',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'lineNumbers',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'wrap',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tabSize',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
     },
   ],
   Histogram: [

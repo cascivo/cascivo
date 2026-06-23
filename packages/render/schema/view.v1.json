@@ -116,6 +116,7 @@
             "Checkbox",
             "CheckboxCard",
             "Code",
+            "CodeEditor",
             "CodeSnippet",
             "Collapsible",
             "ColorPicker",
@@ -162,6 +163,7 @@
             "Heading",
             "Heatmap",
             "Hero",
+            "Highlight",
             "Histogram",
             "HoverCard",
             "IconButton",
@@ -5656,6 +5658,102 @@
                   }
                 },
                 "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "CodeEditor"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "lineNumbers": {
+                    "type": "boolean"
+                  },
+                  "tabSize": {
+                    "type": "number"
+                  },
+                  "insertSpaces": {
+                    "type": "boolean"
+                  },
+                  "wrap": {
+                    "type": "boolean"
+                  },
+                  "readOnly": {
+                    "type": "boolean"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Highlight"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "lineNumbers": {
+                    "type": "boolean"
+                  },
+                  "wrap": {
+                    "type": "boolean"
+                  },
+                  "tabSize": {
+                    "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
               }
             }
           }

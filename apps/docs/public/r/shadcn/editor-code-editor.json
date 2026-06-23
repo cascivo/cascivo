@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "editor-code-editor",
+  "type": "registry:component",
+  "files": [],
+  "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "categories": ["inputs"],
+  "meta": {
+    "cascivo": {
+      "type": "editor",
+      "version": "0.0.0"
+    }
+  }
+}

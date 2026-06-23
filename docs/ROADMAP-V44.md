@@ -1,7 +1,8 @@
 # cascivo — Roadmap v44: `@cascivo/editor` — A Lightweight, CSS-Native Code Editor
 
 **Last updated:** 2026-06-23
-**Status:** 🟡 Planned (T1–T6). New standalone package **`@cascivo/editor`** — a lightweight, signal-driven
+**Status:** ✅ Shipped (T1–T6). `@cascivo/editor` is built, themed, performance-hardened, documented, and
+registered across the registry/MCP/docs surfaces; the full `pnpm ready` / `ready:ci` gate is green. New standalone package **`@cascivo/editor`** — a lightweight, signal-driven
 code editor (`CodeEditor`) plus a read-only `Highlight` primitive, built on the **transparent-textarea-overlay**
 technique with a **tiny owned tokenizer** (zero runtime dependencies). Line numbers + syntax highlighting +
 best-in-class performance for its weight class, themeable via tokens, AI-first, fully auto-generated into docs,
