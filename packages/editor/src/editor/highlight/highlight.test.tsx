@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import hl from './highlight.module.css'
 import { Highlight } from './highlight.tsx'
 
 describe('Highlight', () => {
@@ -31,5 +32,11 @@ describe('Highlight', () => {
   it('exposes an aria-label when provided', () => {
     const { container } = render(<Highlight value="x" label="Example" />)
     expect(container.querySelector('[aria-label="Example"]')).not.toBeNull()
+  })
+
+  it('tags token spans with their kind class so themes have a stable hook', () => {
+    const { container } = render(<Highlight language="javascript" value="const x = 1" />)
+    const keyword = [...container.querySelectorAll('span')].find((s) => s.textContent === 'const')
+    expect(keyword?.className).toBe(hl['keyword'])
   })
 })

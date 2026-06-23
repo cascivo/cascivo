@@ -1,8 +1,11 @@
 {
-  "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
+  "generatedFrom": [
+    "packages/tokens/src/index.css",
+    "packages/themes/src/light.css"
+  ],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-23",
-  "count": 230,
+  "count": 251,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1218,6 +1221,174 @@
       "layer": "semantic",
       "group": "chart",
       "resolvedDefault": "oklch(0.707 0.015 264)",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-bg",
+      "value": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-fg",
+      "value": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-gutter-bg",
+      "value": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-gutter-fg",
+      "value": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-current-line",
+      "value": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-selection",
+      "value": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-border",
+      "value": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-keyword",
+      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-string",
+      "value": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-number",
+      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-comment",
+      "value": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-function",
+      "value": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-type",
+      "value": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-operator",
+      "value": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-punctuation",
+      "value": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-variable",
+      "value": "var(--cascivo-editor-fg)",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-tag",
+      "value": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-attr",
+      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-regexp",
+      "value": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-boolean",
+      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-editor-syntax-property",
+      "value": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+      "layer": "semantic",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
       "resolvesPerTheme": false
     },
     {

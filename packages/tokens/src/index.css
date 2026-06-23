@@ -214,6 +214,37 @@
     --cascivo-chart-grid: var(--cascivo-gray-200);
     --cascivo-chart-axis: var(--cascivo-gray-400);
 
+    /* ── Code Editor (@cascivo/editor) ──────────────────────────
+       Defined once here, not per-theme, to keep theme token parity. Chrome and
+       the syntax palette reference theme-overridden semantic/chart tokens, so
+       they adapt across light/dark/warm (and every theme) automatically; the
+       literal fallbacks keep a theme-less `@cascivo/editor` import readable. */
+
+    /* Chrome */
+    --cascivo-editor-bg: var(--cascivo-color-surface, oklch(0.985 0.002 264));
+    --cascivo-editor-fg: var(--cascivo-color-foreground, oklch(0.205 0.005 264));
+    --cascivo-editor-gutter-bg: var(--cascivo-color-surface-2, oklch(0.967 0.003 264));
+    --cascivo-editor-gutter-fg: var(--cascivo-color-text-muted, oklch(0.55 0.018 264));
+    --cascivo-editor-current-line: var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%));
+    --cascivo-editor-selection: var(--cascivo-color-accent-muted, oklch(0.882 0.095 250));
+    --cascivo-editor-border: var(--cascivo-color-border, oklch(0.928 0.006 264));
+
+    /* Syntax palette — one token per TokenKind */
+    --cascivo-editor-syntax-keyword: var(--cascivo-color-accent, oklch(0.52 0.2 250));
+    --cascivo-editor-syntax-string: var(--cascivo-chart-3, oklch(0.52 0.13 150));
+    --cascivo-editor-syntax-number: var(--cascivo-chart-6, oklch(0.55 0.16 40));
+    --cascivo-editor-syntax-comment: var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264));
+    --cascivo-editor-syntax-function: var(--cascivo-chart-5, oklch(0.5 0.16 265));
+    --cascivo-editor-syntax-type: var(--cascivo-chart-7, oklch(0.52 0.15 320));
+    --cascivo-editor-syntax-operator: var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264));
+    --cascivo-editor-syntax-punctuation: var(--cascivo-color-text-subtle, oklch(0.446 0.018 264));
+    --cascivo-editor-syntax-variable: var(--cascivo-editor-fg);
+    --cascivo-editor-syntax-tag: var(--cascivo-color-accent, oklch(0.52 0.2 250));
+    --cascivo-editor-syntax-attr: var(--cascivo-chart-6, oklch(0.55 0.16 40));
+    --cascivo-editor-syntax-regexp: var(--cascivo-chart-3, oklch(0.52 0.13 150));
+    --cascivo-editor-syntax-boolean: var(--cascivo-chart-6, oklch(0.55 0.16 40));
+    --cascivo-editor-syntax-property: var(--cascivo-chart-2, oklch(0.5 0.13 240));
+
     /* ── Brand (apps/logo/OG only — never used in component CSS) ── */
     --cascivo-brand-primary: oklch(
       0.55 0.15 240
