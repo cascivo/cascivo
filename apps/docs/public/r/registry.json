@@ -7347,6 +7347,43 @@
             "description": "Accessible label (defaults to the i18n \"Code editor\")"
           },
           {
+            "name": "onSave",
+            "type": "(value: string) => void",
+            "required": false,
+            "description": "Called on Mod-S; the browser save dialog is suppressed"
+          },
+          {
+            "name": "bracketMatching",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Highlight the bracket matching the one adjacent to the caret"
+          },
+          {
+            "name": "theme",
+            "type": "EditorTheme",
+            "required": false,
+            "description": "Per-instance --cascivo-editor-* overrides; swapping it re-themes live"
+          },
+          {
+            "name": "keymap",
+            "type": "KeyMap",
+            "required": false,
+            "description": "Extra key bindings merged over the built-ins (user wins on a chord)"
+          },
+          {
+            "name": "decorations",
+            "type": "Decoration[] | ((value: string) => Decoration[])",
+            "required": false,
+            "description": "Extra offset-range → CSS class decorations"
+          },
+          {
+            "name": "ref",
+            "type": "Ref<CodeEditorHandle>",
+            "required": false,
+            "description": "Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind"
+          },
+          {
             "name": "className",
             "type": "string",
             "required": false
@@ -7357,14 +7394,26 @@
           "--cascivo-editor-fg",
           "--cascivo-editor-gutter-bg",
           "--cascivo-editor-gutter-fg",
+          "--cascivo-editor-gutter-active",
           "--cascivo-editor-current-line",
           "--cascivo-editor-selection",
-          "--cascivo-editor-border"
+          "--cascivo-editor-border",
+          "--cascivo-editor-match",
+          "--cascivo-editor-match-current",
+          "--cascivo-editor-bracket"
         ],
         "accessibility": {
           "role": "textbox",
           "wcag": "2.1-AA",
-          "keyboard": ["Tab (indent)", "Shift+Tab (dedent)", "Standard textarea editing"],
+          "keyboard": [
+            "Tab (indent)",
+            "Shift+Tab (dedent)",
+            "Mod+Z / Mod+Shift+Z (undo / redo)",
+            "Mod+F (find)",
+            "Mod+Alt+F (replace)",
+            "Mod+S (save)",
+            "Standard textarea editing"
+          ],
           "reducedMotion": true,
           "forcedColors": true
         },
@@ -7374,7 +7423,8 @@
         "intent": {
           "whenToUse": [
             "Editing code or config inline — JSON, snippets, web languages — with line numbers and syntax colors",
-            "A lightweight, themeable code field where a full IDE editor (Monaco/CodeMirror) would be overkill"
+            "A lightweight, themeable code field where a full IDE editor (Monaco/CodeMirror) would be overkill",
+            "Editing Markdown notes — find/replace, real undo/redo, save, and selection-preserving external sync"
           ],
           "whenNotToUse": [
             "You need IntelliSense/LSP, multi-cursor, folding, a minimap, or diff view — use a full editor framework",

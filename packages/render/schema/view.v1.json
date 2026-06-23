@@ -5709,6 +5709,17 @@
                   "label": {
                     "type": "string"
                   },
+                  "bracketMatching": {
+                    "type": "boolean"
+                  },
+                  "theme": {
+                    "type": "string",
+                    "enum": ["EditorTheme"]
+                  },
+                  "keymap": {
+                    "type": "string",
+                    "enum": ["KeyMap"]
+                  },
                   "className": {
                     "type": "string"
                   }

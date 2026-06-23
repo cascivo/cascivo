@@ -91,6 +91,46 @@ describe('markdown', () => {
     expect(kindOf(out[4]!, '`inline`')).toBe('string')
   })
   it('is lossless', () => expectLossless(markdown, '# h\n- item\n**bold** _em_'))
+
+  it('colors notes constructs: lists, tasks, quotes, rules, strike, links', () => {
+    const [list] = tokenizeDocument(markdown, '- item')
+    expect(kindOf(list!, '- ')).toBe('operator')
+
+    const [ordered] = tokenizeDocument(markdown, '1. item')
+    expect(kindOf(ordered!, '1. ')).toBe('operator')
+
+    const [task] = tokenizeDocument(markdown, '- [ ] todo')
+    expect(kindOf(task!, '- [ ]')).toBe('boolean')
+    const [done] = tokenizeDocument(markdown, '- [x] done')
+    expect(kindOf(done!, '- [x]')).toBe('boolean')
+
+    const [quote] = tokenizeDocument(markdown, '> quoted')
+    expect(quote![0]!.kind).toBe('comment')
+
+    const [hr] = tokenizeDocument(markdown, '---')
+    expect(hr![0]!.kind).toBe('comment')
+
+    const [strike] = tokenizeDocument(markdown, 'a ~~b~~ c')
+    expect(kindOf(strike!, '~~b~~')).toBe('comment')
+
+    const [link] = tokenizeDocument(markdown, 'see [home](/) here')
+    expect(kindOf(link!, '[home](/)')).toBe('function')
+    const [image] = tokenizeDocument(markdown, '![alt](/x.png)')
+    expect(kindOf(image!, '![alt](/x.png)')).toBe('function')
+  })
+
+  it('keeps fenced code with a language label uniform', () => {
+    const out = tokenizeDocument(markdown, '```bash\necho hi\n```')
+    expect(out[0]![0]!.kind).toBe('keyword') // ```bash open
+    expect(out[1]!.every((t) => t.kind === 'string')).toBe(true)
+    expect(out[2]![0]!.kind).toBe('keyword') // ``` close
+  })
+
+  it('is lossless across the full notes set', () =>
+    expectLossless(
+      markdown,
+      '# h\n## h2\n- [ ] a\n- [x] b\n1. one\n> q\n---\n`c` ~~s~~ **b** _e_ [l](/)',
+    ))
 })
 
 describe('bash', () => {

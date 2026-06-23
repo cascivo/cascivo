@@ -1,4 +1,8 @@
-A lightweight, CSS-native, signal-driven code editor for cascivo. `CodeEditor` overlays a native `<textarea>` on a syntax-highlighted `<pre>`, so the browser owns the caret, selection, IME, undo, and accessibility — JS is limited to a tiny owned tokenizer and scroll-sync. `Highlight` is the read-only renderer for snippets and docs. Zero runtime dependencies, themeable through the cascivo token system.
+A lightweight, CSS-native, signal-driven code editor for cascivo. `CodeEditor` overlays a native `<textarea>` on a syntax-highlighted `<pre>`, so the browser owns the caret, selection, IME, and accessibility — JS adds an owned tokenizer, scroll-sync, and a thin layer of editing affordances. `Highlight` is the read-only renderer for snippets and docs. Zero runtime dependencies, themeable through the cascivo token system.
+
+Beyond highlighting it provides the essentials for editing real documents: **owned undo/redo** (`Mod-Z` / `Mod-Shift-Z`) that survives programmatic `value` changes, **selection-preserving, echo-safe controlled sync** (external/remote updates don't jump the caret), **find & replace** (`Mod-F`), a **`Mod-S` save** hook, **per-instance theming** that can switch live, **bracket matching**, an **active-line gutter**, and an imperative **`CodeEditorHandle`**.
+
+It is deliberately not a full editor engine: no LSP/IntelliSense, multi-cursor, code folding, minimap, or vim mode — reach for a full framework (Monaco/CodeMirror) if you need those.
 
 ## Install
 
@@ -35,6 +39,32 @@ import { Highlight } from '@cascivo/editor'
 
 Ships small, tree-shakeable grammars: `plaintext`, `json`, `javascript`, `typescript`, `css`,
 `html`, `markdown`, `bash`. Register your own with `registerGrammar(grammar)`.
+
+### Extending the editor
+
+Three bounded seams — no plugin lifecycle, no transaction filters (use a full editor
+framework if you need those):
+
+- **Key bindings** — pass a `keymap` of `chord → command`. Chords use `Mod` for
+  Cmd/Ctrl (e.g. `'Mod-s'`, `'Mod-Shift-z'`, `'Shift-Tab'`); a command returns `true`
+  when it handled the event. User bindings merge over (and override) the built-ins.
+- **Decorations** — pass `decorations` (an array, or `(value) => Decoration[]`) to tag
+  `{ line, start, end, className }` column ranges; they render as extra classes in the
+  highlight layer (the same seam find and bracket-matching use).
+- **Grammars** — register a language with `registerGrammar(grammar)`.
+
+```tsx
+<CodeEditor
+  language="markdown"
+  onSave={(value) => save(value)} // Mod-S
+  keymap={{
+    'Mod-/': ({ textarea, setText }) => {
+      /* toggle comment */ return true
+    },
+  }}
+  decorations={(value) => findTodos(value)}
+/>
+```
 
 ### React apps must subscribe to signals
 

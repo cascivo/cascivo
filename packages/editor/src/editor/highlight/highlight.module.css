@@ -30,6 +30,18 @@
     min-block-size: 1lh;
   }
 
+  /* Active-line marker — positioned imperatively via --cascivo-editor-caret-line,
+     mirroring the editor's current-line row highlight. */
+  .gutterActive {
+    position: absolute;
+    inset-inline: 0;
+    top: var(--cascivo-space-3);
+    block-size: 1lh;
+    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
+    background: var(--cascivo-editor-gutter-active, var(--cascivo-editor-current-line));
+    pointer-events: none;
+  }
+
   .pre {
     flex: 1 1 auto;
     min-inline-size: 0;
@@ -107,5 +119,19 @@
   }
   .property {
     color: var(--cascivo-editor-syntax-property);
+  }
+
+  /* ── Decorations — search matches + bracket pair (overlaid on token spans). ── */
+  .match {
+    border-radius: 2px;
+    background: var(--cascivo-editor-match, rgba(125, 211, 252, 0.28));
+  }
+  .matchCurrent {
+    border-radius: 2px;
+    background: var(--cascivo-editor-match-current, rgba(250, 204, 21, 0.5));
+  }
+  .bracketMatch {
+    border-radius: 2px;
+    outline: 1px solid var(--cascivo-editor-bracket, currentColor);
   }
 }

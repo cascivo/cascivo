@@ -1,12 +1,52 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties, type KeyboardEvent, type TextareaHTMLAttributes } from 'react'
+import {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  type CSSProperties,
+  type KeyboardEvent,
+  type TextareaHTMLAttributes,
+} from 'react'
 import { getGrammar } from '../../engine/registry.ts'
 import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderRows } from '../view.tsx'
+import { Gutter, renderRows, type Decoration } from '../view.tsx'
+import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
+import { FindPanel } from './find-panel.tsx'
+import { offsetToLineCol, replaceAll, scan, toDecorations, type Match } from './find.ts'
+import { matchBracket, toBracketDecorations } from './brackets.ts'
+import { createHistory, type History, type Snapshot } from './history.ts'
+import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
+import { diff, rebaseSelection } from './sync.ts'
+
+/**
+ * Per-instance theme overrides — a partial map of `--cascivo-editor-*` custom
+ * properties spread onto the editor root. Swapping it re-themes live (Zen mode),
+ * while global `data-theme` remains the default.
+ */
+export type EditorTheme = Partial<Record<`--cascivo-editor-${string}`, string>>
+
+/**
+ * Imperative handle (via `ref`) for callers that drive their own transactions —
+ * a remote pull, a programmatic insert, a reset. Edits route through the same
+ * history as keyboard edits, so they stay undoable.
+ */
+export interface CodeEditorHandle {
+  /** Replace `[from, to)` with `text` (an undoable edit), leaving the caret after it. */
+  applyEdit(range: { from: number; to: number }, text: string): void
+  /** Current selection offsets. */
+  getSelection(): { start: number; end: number }
+  /** Focus the editing surface. */
+  focus(): void
+  /** Undo / redo the owned history. */
+  undo(): void
+  redo(): void
+  /** Open the find panel. */
+  openFind(): void
+}
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
 const VIRTUALIZE_THRESHOLD = 1000
@@ -40,6 +80,16 @@ export interface CodeEditorProps extends Omit<
   virtualize?: boolean
   /** Accessible label for the editor (defaults to the i18n "Code editor"). */
   label?: string
+  /** Called with the current value on `Mod-S` (the browser save dialog is suppressed). */
+  onSave?: (value: string) => void
+  /** Extra key bindings, merged over the built-ins (user wins on the same chord). */
+  keymap?: KeyMap
+  /** Extra decorations — offset ranges → CSS class — merged with internal ones. */
+  decorations?: readonly Decoration[] | ((value: string) => readonly Decoration[])
+  /** Per-instance `--cascivo-editor-*` overrides; swapping it re-themes live. */
+  theme?: EditorTheme
+  /** Highlight the bracket matching the one adjacent to the caret (default false). */
+  bracketMatching?: boolean
 }
 
 /**
@@ -51,26 +101,38 @@ export interface CodeEditorProps extends Omit<
  * rAF-debounced (typing never blocks), and large documents window to the visible
  * range while the textarea always holds the full text.
  */
-export function CodeEditor({
-  value,
-  defaultValue,
-  onValueChange,
-  language = 'plaintext',
-  lineNumbers = true,
-  tabSize = 2,
-  insertSpaces = true,
-  wrap = false,
-  virtualize,
-  readOnly = false,
-  disabled = false,
-  spellCheck = false,
-  label,
-  className,
-  style,
-  onKeyDown,
-  ...rest
-}: CodeEditorProps) {
+export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function CodeEditor(
+  {
+    value,
+    defaultValue,
+    onValueChange,
+    language = 'plaintext',
+    lineNumbers = true,
+    tabSize = 2,
+    insertSpaces = true,
+    wrap = false,
+    virtualize,
+    readOnly = false,
+    disabled = false,
+    spellCheck = false,
+    label,
+    onSave,
+    keymap,
+    decorations,
+    theme,
+    bracketMatching = false,
+    className,
+    style,
+    onKeyDown,
+    ...rest
+  },
+  ref,
+) {
   useSignals()
+
+  // Keep the latest onSave reachable from the keymap without rebuilding it.
+  const onSaveRef = useRef(onSave)
+  onSaveRef.current = onSave
   const [text, setText] = useControllableSignal<string>({
     value,
     defaultValue: defaultValue ?? '',
@@ -82,6 +144,69 @@ export function CodeEditor({
   const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
 
+  // Owned undo/redo history (survives programmatic `value` writes, unlike native
+  // textarea undo). Seeded once with the initial state.
+  const historyRef = useRef<History | null>(null)
+  if (historyRef.current === null) {
+    historyRef.current = createHistory()
+    historyRef.current.reset({ text: text.value, selectionStart: 0, selectionEnd: 0 })
+  }
+  const history = historyRef.current
+
+  // Edit-tracking refs: `prevText` is the last value we know about, `lastEmitted`
+  // is the value we last pushed via onValueChange (to tell our own echo from an
+  // external/controlled change), `applying` guards snapshot restores, and `sel`
+  // mirrors the live selection for history + external rebasing.
+  const prevTextRef = useRef(text.value)
+  const lastEmittedRef = useRef<string | undefined>(undefined)
+  const applyingRef = useRef(false)
+  const selRef = useRef<{ start: number; end: number }>({ start: 0, end: 0 })
+
+  // Commit an edit: route through the controllable signal and record an undo step.
+  const commit = (next: string, sel: { start: number; end: number }, coalesce: boolean): void => {
+    // Update tracking + history BEFORE setText: writing the signal runs the
+    // external-change effect synchronously, which must see this as our own edit.
+    lastEmittedRef.current = next
+    prevTextRef.current = next
+    history.record({ text: next, selectionStart: sel.start, selectionEnd: sel.end }, { coalesce })
+    setText(next)
+  }
+
+  // setText shim handed to keymap commands (indent/dedent) — reads the post-edit
+  // selection off the textarea and records a (non-coalescing) step.
+  const commitFromCommand = (next: string): void => {
+    const ta = taRef.current
+    const sel = ta ? { start: ta.selectionStart, end: ta.selectionEnd } : selRef.current
+    commit(next, sel, false)
+  }
+
+  // Apply an undo/redo snapshot: write text + selection imperatively and sync the
+  // signal, without recording a new step or tripping the external-change path.
+  const applySnapshot = (snap: Snapshot): void => {
+    const ta = taRef.current
+    if (!ta) return
+    applyingRef.current = true
+    ta.value = snap.text
+    ta.setSelectionRange(snap.selectionStart, snap.selectionEnd)
+    setText(snap.text)
+    lastEmittedRef.current = snap.text
+    prevTextRef.current = snap.text
+    selRef.current = { start: snap.selectionStart, end: snap.selectionEnd }
+    caretOffset.value = snap.selectionStart
+    const line = snap.text.slice(0, snap.selectionStart).split('\n').length - 1
+    rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+    applyingRef.current = false
+  }
+
+  const doUndo = (): void => {
+    const snap = history.undo()
+    if (snap) applySnapshot(snap)
+  }
+  const doRedo = (): void => {
+    const snap = history.redo()
+    if (snap) applySnapshot(snap)
+  }
+
   // rAF-debounced highlight: editing writes `text` synchronously (never blocked);
   // the highlight layer reads `highlightText`, updated at most once per frame.
   const highlightText = useSignal(text.value)
@@ -90,6 +215,17 @@ export function CodeEditor({
   const scrollTop = useSignal(0)
   const viewport = useSignal(0)
   const lineHeight = useSignal(0)
+
+  // Find/replace state (signals so reads are reactive).
+  const findOpen = useSignal(false)
+  const findQuery = useSignal('')
+  const replaceQuery = useSignal('')
+  const caseSensitive = useSignal(false)
+  const replaceMode = useSignal(false)
+  const currentMatch = useSignal(0)
+
+  // Live caret offset (reactive, drives bracket matching).
+  const caretOffset = useSignal(0)
 
   useSignalEffect(() => {
     const next = text.value
@@ -101,6 +237,33 @@ export function CodeEditor({
       highlightText.value = next
     })
     return () => cancelAnimationFrame(id)
+  })
+
+  // External/controlled value changes: when `text` changes to something we did not
+  // emit ourselves (a parent reset / remote pull), it is an external update. Rebase
+  // the live selection across the diff so the caret tracks the same logical spot
+  // (no jump-to-end), and seed history to the new state. The `applying` guard plus
+  // the `lastEmitted` echo check keep our own edits from looping back through here.
+  useSignalEffect(() => {
+    const next = text.value
+    if (applyingRef.current) return
+    if (next === prevTextRef.current) return
+    if (next === lastEmittedRef.current) {
+      prevTextRef.current = next
+      return
+    }
+    const ta = taRef.current
+    const change = diff(prevTextRef.current, next)
+    const sel = rebaseSelection(selRef.current.start, selRef.current.end, change)
+    if (ta) {
+      applyingRef.current = true
+      if (ta.value !== next) ta.value = next
+      ta.setSelectionRange(sel.start, sel.end)
+      applyingRef.current = false
+    }
+    selRef.current = sel
+    history.reset({ text: next, selectionStart: sel.start, selectionEnd: sel.end })
+    prevTextRef.current = next
   })
 
   // Scroll-sync (textarea → highlight + gutter), viewport measurement, and the
@@ -126,6 +289,8 @@ export function CodeEditor({
     const syncCaret = (): void => {
       const line = ta.value.slice(0, ta.selectionStart).split('\n').length - 1
       rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
+      selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
+      caretOffset.value = ta.selectionStart
     }
     measure()
     syncCaret()
@@ -158,31 +323,151 @@ export function CodeEditor({
   const topPad = start * lh
   const bottomPad = (total - end) * lh
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (event.key === 'Tab' && !readOnly && !disabled) {
-      event.preventDefault()
-      const ta = event.currentTarget
-      const { selectionStart, selectionEnd, value: current } = ta
-      const indent = insertSpaces ? ' '.repeat(tabSize) : '\t'
-      const lineStart = current.lastIndexOf('\n', selectionStart - 1) + 1
-
-      if (event.shiftKey) {
-        const block = current.slice(lineStart, selectionEnd)
-        const dedented = block.replace(new RegExp(`^(?:\\t| {1,${tabSize}})`, 'gm'), '')
-        ta.setRangeText(dedented, lineStart, selectionEnd, 'select')
-      } else if (selectionStart === selectionEnd) {
-        ta.setRangeText(indent, selectionStart, selectionEnd, 'end')
-      } else {
-        const block = current.slice(lineStart, selectionEnd)
-        const indented = block.replace(/^/gm, indent)
-        ta.setRangeText(indented, lineStart, selectionEnd, 'select')
-      }
-      setText(ta.value)
+  // ── Find / replace ──────────────────────────────────────────────────────────
+  const matches: Match[] = findOpen.value
+    ? scan(highlightText.value, findQuery.value, { caseSensitive: caseSensitive.value })
+    : []
+  if (currentMatch.value >= matches.length) currentMatch.value = Math.max(0, matches.length - 1)
+  const findDecorations: Decoration[] =
+    matches.length > 0
+      ? toDecorations(highlightText.value, matches, currentMatch.value, {
+          match: hl['match'] as string,
+          current: hl['matchCurrent'] as string,
+        })
+      : []
+  const userDecorations: readonly Decoration[] =
+    typeof decorations === 'function' ? decorations(highlightText.value) : (decorations ?? [])
+  let bracketDecorations: Decoration[] = []
+  if (bracketMatching) {
+    const m = matchBracket(highlightText.value, caretOffset.value)
+    if (m) {
+      bracketDecorations = toBracketDecorations(
+        highlightText.value,
+        m,
+        hl['bracketMatch'] as string,
+      )
     }
+  }
+  const allDecorations = [...userDecorations, ...bracketDecorations, ...findDecorations]
+  const decorationList = allDecorations.length > 0 ? allDecorations : undefined
+
+  const selectMatch = (index: number): void => {
+    const m = matches[index]
+    const ta = taRef.current
+    if (!m || !ta) return
+    ta.focus()
+    ta.setSelectionRange(m.start, m.end)
+    selRef.current = { start: m.start, end: m.end }
+    if (lh > 0) {
+      const { line } = offsetToLineCol(ta.value, m.start)
+      const top = line * lh
+      if (top < ta.scrollTop || top > ta.scrollTop + ta.clientHeight - lh) {
+        ta.scrollTop = Math.max(0, top - ta.clientHeight / 2)
+      }
+    }
+  }
+  const findNext = (): void => {
+    if (matches.length === 0) return
+    currentMatch.value = (currentMatch.value + 1) % matches.length
+    selectMatch(currentMatch.value)
+  }
+  const findPrev = (): void => {
+    if (matches.length === 0) return
+    currentMatch.value = (currentMatch.value - 1 + matches.length) % matches.length
+    selectMatch(currentMatch.value)
+  }
+  const replaceCurrent = (): void => {
+    const m = matches[currentMatch.value]
+    const ta = taRef.current
+    if (!m || !ta || readOnly || disabled) return
+    ta.setRangeText(replaceQuery.value, m.start, m.end, 'end')
+    commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+  }
+  const replaceAllNow = (): void => {
+    if (matches.length === 0 || readOnly || disabled) return
+    const next = replaceAll(highlightText.value, matches, replaceQuery.value)
+    const ta = taRef.current
+    if (ta) ta.value = next
+    commit(next, { start: ta?.selectionStart ?? 0, end: ta?.selectionEnd ?? 0 }, false)
+  }
+  const openFind = (replace: boolean): void => {
+    replaceMode.value = replace
+    findOpen.value = true
+  }
+  const closeFind = (): void => {
+    findOpen.value = false
+    taRef.current?.focus()
+  }
+
+  // Imperative handle for callers driving their own transactions. Edits go through
+  // `commit`, so they record undo steps like keyboard edits.
+  useImperativeHandle(ref, () => ({
+    applyEdit: ({ from, to }, insert) => {
+      const ta = taRef.current
+      if (!ta) return
+      ta.setRangeText(insert, from, to, 'end')
+      commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+    },
+    getSelection: () => {
+      const ta = taRef.current
+      return ta ? { start: ta.selectionStart, end: ta.selectionEnd } : { ...selRef.current }
+    },
+    focus: () => taRef.current?.focus(),
+    undo: doUndo,
+    redo: doRedo,
+    openFind: () => openFind(false),
+  }))
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
+    const ta = event.currentTarget
+    const editable = !readOnly && !disabled
+    const bindings: KeyMap = {}
+    if (editable) {
+      const { indent, dedent } = createIndentCommands({ tabSize, insertSpaces })
+      bindings['Tab'] = indent
+      bindings['Shift-Tab'] = dedent
+      bindings['Mod-z'] = () => {
+        doUndo()
+        return true
+      }
+      const redo = (): boolean => {
+        doRedo()
+        return true
+      }
+      bindings['Mod-Shift-z'] = redo
+      bindings['Mod-y'] = redo
+    }
+    bindings['Mod-f'] = () => {
+      openFind(false)
+      return true
+    }
+    bindings['Mod-Alt-f'] = () => {
+      openFind(true)
+      return true
+    }
+    bindings['Mod-s'] = () => {
+      const onSaveNow = onSaveRef.current
+      if (!onSaveNow) return false // nothing to save — let the browser default run
+      onSaveNow(text.value)
+      return true
+    }
+    if (findOpen.value) {
+      bindings['Escape'] = () => {
+        closeFind()
+        return true
+      }
+    }
+    const map = mergeKeymap(bindings, keymap)
+    const handled = dispatch(map, { textarea: ta, event, setText: commitFromCommand })
+    if (handled) event.preventDefault()
     onKeyDown?.(event)
   }
 
-  const rootStyle = { '--cascivo-editor-tab-size': tabSize, ...style } as CSSProperties
+  const rootStyle = {
+    '--cascivo-editor-tab-size': tabSize,
+    ...theme,
+    ...style,
+  } as CSSProperties
 
   return (
     <div
@@ -201,20 +486,26 @@ export function CodeEditor({
           end={end}
           topPad={topPad}
           bottomPad={bottomPad}
+          activeLine
         />
       )}
       <div className={styles['codeArea']}>
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
           {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(lines, start, end)}</code>
+          <code>{renderRows(lines, start, end, decorationList)}</code>
           {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea
           ref={taRef}
           className={styles['textarea']}
           value={text.value}
-          onChange={(event) => setText(event.currentTarget.value)}
+          onChange={(event) => {
+            const ta = event.currentTarget
+            const next = ta.value
+            const coalesce = Math.abs(next.length - prevTextRef.current.length) === 1
+            commit(next, { start: ta.selectionStart, end: ta.selectionEnd }, coalesce)
+          }}
           onKeyDown={handleKeyDown}
           readOnly={readOnly}
           disabled={disabled}
@@ -226,7 +517,29 @@ export function CodeEditor({
           wrap={wrap ? 'soft' : 'off'}
           {...rest}
         />
+        {findOpen.value && (
+          <FindPanel
+            query={findQuery.value}
+            replaceQuery={replaceQuery.value}
+            replaceMode={replaceMode.value}
+            caseSensitive={caseSensitive.value}
+            matchCount={matches.length}
+            currentIndex={matches.length > 0 ? currentMatch.value : -1}
+            onQueryChange={(v) => {
+              findQuery.value = v
+              currentMatch.value = 0
+            }}
+            onReplaceChange={(v) => (replaceQuery.value = v)}
+            onNext={findNext}
+            onPrev={findPrev}
+            onReplace={replaceCurrent}
+            onReplaceAll={replaceAllNow}
+            onToggleCase={() => (caseSensitive.value = !caseSensitive.value)}
+            onToggleReplace={() => (replaceMode.value = !replaceMode.value)}
+            onClose={closeFind}
+          />
+        )}
       </div>
     </div>
   )
-}
+})

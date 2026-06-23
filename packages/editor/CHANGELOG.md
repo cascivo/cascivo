@@ -1,5 +1,22 @@
 # @cascivo/editor
 
+## 0.1.0
+
+### Minor Changes
+
+- Editor parity (v46): close the gap-analysis findings inside the textarea-overlay
+  model — owned undo/redo history (`Mod-Z` / `Mod-Shift-Z`) that survives
+  programmatic `value` writes; selection-preserving, echo-safe controlled sync;
+  in-document find & replace (`Mod-F` / `Mod-Alt-F`); a keymap dispatch with a
+  `Mod-S` `onSave` hook and a public `keymap` + `decorations` extension seam;
+  per-instance `theme` overrides that switch live; active-line gutter and opt-in
+  `bracketMatching`; an imperative `CodeEditorHandle`
+  (`applyEdit`/`getSelection`/`focus`/`undo`/`redo`/`openFind`); and a hardened
+  Markdown grammar (task lists, strikethrough, horizontal rules, lists, quotes).
+  Additive and backward-compatible — the default render is unchanged. New exports:
+  `CodeEditorHandle`, `EditorTheme`, `Decoration`, `KeyMap`, `Command`,
+  `CommandContext`.
+
 ## 0.0.2
 
 ### Patch Changes

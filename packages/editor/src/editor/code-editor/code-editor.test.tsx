@@ -1,8 +1,9 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import { createRef } from 'react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { CodeEditor } from './code-editor.tsx'
+import { CodeEditor, type CodeEditorHandle } from './code-editor.tsx'
 
 function getTextarea(): HTMLTextAreaElement {
   return screen.getByRole('textbox') as HTMLTextAreaElement
@@ -119,6 +120,151 @@ describe('CodeEditor', () => {
     expect(rowsScrolled[0]!.textContent).toBe('line 88') // window followed the scroll
 
     vi.restoreAllMocks()
+  })
+
+  it('undoes and redoes an edit with Mod-Z / Mod-Shift-Z', () => {
+    render(<CodeEditor defaultValue="" />)
+    const ta = getTextarea()
+    fireEvent.change(ta, { target: { value: 'hello' } })
+    expect(ta.value).toBe('hello')
+
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('') // undo
+
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true, shiftKey: true })
+    expect(ta.value).toBe('hello') // redo
+  })
+
+  it('does not resurrect pre-set text on undo after a programmatic value change', () => {
+    const { rerender } = render(<CodeEditor value="a" onValueChange={() => {}} />)
+    rerender(<CodeEditor value="b" onValueChange={() => {}} />)
+    const ta = getTextarea()
+    expect(ta.value).toBe('b')
+    // Undo must not restore the externally-replaced 'a'.
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('b')
+  })
+
+  it('preserves the caret when an external value insert lands before it', () => {
+    const { rerender } = render(<CodeEditor value="hello world" onValueChange={() => {}} />)
+    const ta = getTextarea()
+    ta.setSelectionRange(5, 5) // caret after "hello"
+    act(() => {
+      fireEvent.keyUp(ta) // capture the selection into the editor
+    })
+    rerender(<CodeEditor value="Xhello world" onValueChange={() => {}} />)
+    expect(ta.value).toBe('Xhello world')
+    expect(ta.selectionStart).toBe(6) // shifted right by the inserted "X", not jumped to end
+    expect(ta.selectionEnd).toBe(6)
+  })
+
+  it('does not echo onValueChange for an external value change', () => {
+    const onValueChange = vi.fn()
+    const { rerender } = render(<CodeEditor value="a" onValueChange={onValueChange} />)
+    rerender(<CodeEditor value="ab" onValueChange={onValueChange} />)
+    expect(onValueChange).not.toHaveBeenCalled() // external set must not loop back
+  })
+
+  it('exposes an imperative handle: applyEdit is undoable', () => {
+    const ref = createRef<CodeEditorHandle>()
+    render(<CodeEditor ref={ref} defaultValue="ac" />)
+    const ta = getTextarea()
+    act(() => {
+      ref.current!.applyEdit({ from: 1, to: 1 }, 'b')
+    })
+    expect(ta.value).toBe('abc')
+    act(() => {
+      ref.current!.undo()
+    })
+    expect(ta.value).toBe('ac')
+    // Undo restores the pre-edit snapshot, whose caret was the seeded start.
+    expect(ref.current!.getSelection()).toEqual({ start: 0, end: 0 })
+  })
+
+  it('opens the find panel on Mod-F and highlights matches', () => {
+    render(<CodeEditor defaultValue={'one two one'} lineNumbers={false} />)
+    const ta = getTextarea()
+    const event = fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    expect(event).toBe(false) // preventDefault
+    const search = screen.getByRole('search')
+    const input = search.querySelector('input') as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: 'one' } })
+    })
+    // Two matches highlighted in the overlay; one is the current.
+    const current = document.querySelectorAll(
+      'pre code .matchCurrent, pre code [class*="matchCurrent"]',
+    )
+    const all = document.querySelectorAll('pre code [class*="match"]')
+    expect(all.length).toBeGreaterThanOrEqual(2)
+    expect(current.length).toBe(1)
+  })
+
+  it('replace is undoable', () => {
+    render(<CodeEditor defaultValue={'cat cat'} lineNumbers={false} />)
+    const ta = getTextarea()
+    fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    const search = screen.getByRole('search')
+    const input = search.querySelector('input') as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: 'cat' } })
+    })
+    // Toggle replace, fill it, replace all.
+    fireEvent.click(search.querySelector('button')!) // the toggle is the first button
+    const replaceInput = search.querySelectorAll('input')[1] as HTMLInputElement
+    act(() => {
+      fireEvent.change(replaceInput, { target: { value: 'dog' } })
+    })
+    fireEvent.click(screen.getByText('Replace all'))
+    expect(ta.value).toBe('dog dog')
+    // Undo restores the original document.
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('cat cat')
+  })
+
+  it('closes the find panel on Escape', () => {
+    render(<CodeEditor defaultValue="x" lineNumbers={false} />)
+    const ta = getTextarea()
+    fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    const input = screen.getByRole('search').querySelector('input') as HTMLInputElement
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(screen.queryByRole('search')).toBeNull()
+  })
+
+  it('fires onSave on Mod-S and suppresses the browser dialog', () => {
+    const onSave = vi.fn()
+    render(<CodeEditor defaultValue="content" onSave={onSave} />)
+    const ta = getTextarea()
+    const event = fireEvent.keyDown(ta, { key: 's', ctrlKey: true })
+    expect(event).toBe(false) // preventDefault
+    expect(onSave).toHaveBeenCalledWith('content')
+  })
+
+  it('does not capture Mod-S when there is no onSave', () => {
+    render(<CodeEditor defaultValue="x" />)
+    const event = fireEvent.keyDown(getTextarea(), { key: 's', ctrlKey: true })
+    expect(event).toBe(true) // not prevented — browser default runs
+  })
+
+  it('merges a custom keymap that overrides a built-in', () => {
+    const onSave = vi.fn()
+    const custom = vi.fn(() => true)
+    render(<CodeEditor defaultValue="x" onSave={onSave} keymap={{ 'Mod-s': custom }} />)
+    fireEvent.keyDown(getTextarea(), { key: 's', ctrlKey: true })
+    expect(custom).toHaveBeenCalledOnce()
+    expect(onSave).not.toHaveBeenCalled() // user binding wins
+  })
+
+  it('renders decorations from a provider prop', () => {
+    render(
+      <CodeEditor
+        language="plaintext"
+        defaultValue="hello"
+        lineNumbers={false}
+        decorations={[{ line: 0, start: 0, end: 2, className: 'udeco' }]}
+      />,
+    )
+    expect(document.querySelector('pre code .udeco')).not.toBeNull()
   })
 
   it('uses no banned React hooks', () => {
