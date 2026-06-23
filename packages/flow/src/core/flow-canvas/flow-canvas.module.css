@@ -1,0 +1,33 @@
+@layer cascivo.component {
+  .canvas {
+    position: relative;
+    inline-size: 100%;
+    min-block-size: 20rem;
+    overflow: hidden;
+    background-color: var(--cascivo-color-bg);
+    border-radius: var(--cascivo-radius-surface);
+    /* Pointer gestures (pan/zoom) own the surface — never scroll the page. */
+    touch-action: none;
+  }
+
+  .pane {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    transform-origin: 0 0;
+    transform: translate(var(--flow-tx, 0), var(--flow-ty, 0)) scale(var(--flow-scale, 1));
+  }
+
+  /* Full-size background surface behind nodes; the drag handle for panning. */
+  .panSurface {
+    position: absolute;
+    inset: 0;
+    cursor: grab;
+  }
+
+  .panSurface:active {
+    cursor: grabbing;
+  }
+}

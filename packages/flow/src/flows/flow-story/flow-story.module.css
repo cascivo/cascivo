@@ -1,0 +1,103 @@
+@layer cascivo.component {
+  .story {
+    position: relative;
+    inline-size: 100%;
+  }
+
+  .overlay {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    align-items: center;
+    padding: var(--cascivo-space-4);
+    pointer-events: none;
+  }
+
+  .caption {
+    min-block-size: 1.5rem;
+    max-inline-size: min(40rem, 90%);
+    padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-4);
+    text-align: center;
+    color: var(--cascivo-color-text);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+    box-shadow: var(--cascivo-shadow-md);
+  }
+
+  /* Caption fade-in: static fallback (visible) precedes the @starting-style enter. */
+  .captionText {
+    display: inline-block;
+    opacity: 1;
+    transition: opacity var(--cascivo-duration-300, 300ms) var(--cascivo-ease-out);
+  }
+
+  @starting-style {
+    .captionText {
+      opacity: 0;
+    }
+  }
+
+  .captionDesc {
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .controls {
+    display: flex;
+    gap: var(--cascivo-space-1);
+    align-items: center;
+    padding: var(--cascivo-space-1);
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-full);
+    box-shadow: var(--cascivo-shadow-md);
+    pointer-events: auto;
+  }
+
+  .button {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    color: var(--cascivo-color-text);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-full);
+    cursor: pointer;
+  }
+
+  @media (pointer: coarse) {
+    .button {
+      inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .button:hover {
+    background-color: var(--cascivo-color-bg-muted);
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--cascivo-color-focus-ring);
+    outline-offset: -2px;
+  }
+
+  .indicator {
+    padding-inline: var(--cascivo-space-2);
+    font-size: 0.8125rem;
+    color: var(--cascivo-color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .captionText {
+      transition: none;
+    }
+  }
+}

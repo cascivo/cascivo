@@ -239,6 +239,18 @@ export const builtin = {
   qrCode: defineMessages('cascade.qrCode', {
     label: 'QR code',
   }),
+  flow: defineMessages('cascade.flow', {
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    fitView: 'Fit view',
+    minimap: 'Minimap',
+    play: 'Play',
+    pause: 'Pause',
+    next: 'Next step',
+    previous: 'Previous step',
+    restart: 'Restart',
+    step: 'Step {current} of {total}',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -473,4 +485,16 @@ defineCatalog(builtin.comparison, 'de', {
 })
 defineCatalog(builtin.qrCode, 'de', {
   label: 'QR-Code',
+})
+defineCatalog(builtin.flow, 'de', {
+  zoomIn: 'Vergrößern',
+  zoomOut: 'Verkleinern',
+  fitView: 'Ansicht anpassen',
+  minimap: 'Übersichtskarte',
+  play: 'Abspielen',
+  pause: 'Pause',
+  next: 'Nächster Schritt',
+  previous: 'Vorheriger Schritt',
+  restart: 'Neu starten',
+  step: 'Schritt {current} von {total}',
 })

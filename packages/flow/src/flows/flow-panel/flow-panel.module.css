@@ -1,0 +1,34 @@
+@layer cascivo.component {
+  .panel {
+    position: absolute;
+    z-index: 4;
+    margin: var(--cascivo-space-3);
+  }
+
+  .panel[data-position='top-left'] {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+  }
+  .panel[data-position='top-center'] {
+    inset-block-start: 0;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+  }
+  .panel[data-position='top-right'] {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+  }
+  .panel[data-position='bottom-left'] {
+    inset-block-end: 0;
+    inset-inline-start: 0;
+  }
+  .panel[data-position='bottom-center'] {
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+  }
+  .panel[data-position='bottom-right'] {
+    inset-block-end: 0;
+    inset-inline-end: 0;
+  }
+}

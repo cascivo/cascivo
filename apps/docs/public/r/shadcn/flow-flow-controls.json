@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-controls",
+  "type": "registry:component",
+  "files": [],
+  "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.0.0"
+    }
+  }
+}

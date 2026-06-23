@@ -17,6 +17,7 @@ const config: StorybookConfig = {
       alias: {
         ...(cfg.resolve?.alias as Record<string, string> | undefined),
         '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
+        '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),
         '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
         '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
         '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),

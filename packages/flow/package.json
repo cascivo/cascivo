@@ -1,0 +1,74 @@
+{
+  "name": "@cascivo/flow",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "diagram",
+    "flow",
+    "flowchart",
+    "graph",
+    "react",
+    "signals",
+    "svg"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/flow#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/flow"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/flow.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/core": "workspace:^",
+    "@cascivo/i18n": "workspace:^"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "fast-check": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "@preact/signals-react": ">=2.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

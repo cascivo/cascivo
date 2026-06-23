@@ -1,0 +1,42 @@
+@layer cascivo.component {
+  .minimap {
+    position: absolute;
+    z-index: 4;
+    background-color: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+    box-shadow: var(--cascivo-shadow-md);
+  }
+
+  .minimap[data-position='top-left'] {
+    inset-block-start: var(--cascivo-space-3);
+    inset-inline-start: var(--cascivo-space-3);
+  }
+  .minimap[data-position='top-right'] {
+    inset-block-start: var(--cascivo-space-3);
+    inset-inline-end: var(--cascivo-space-3);
+  }
+  .minimap[data-position='bottom-left'] {
+    inset-block-end: var(--cascivo-space-3);
+    inset-inline-start: var(--cascivo-space-3);
+  }
+  .minimap[data-position='bottom-right'] {
+    inset-block-end: var(--cascivo-space-3);
+    inset-inline-end: var(--cascivo-space-3);
+  }
+
+  .node {
+    fill: var(--cascivo-color-border-strong);
+  }
+
+  .viewport {
+    fill: var(--cascivo-color-accent-subtle);
+    stroke: var(--cascivo-color-accent);
+    stroke-width: 2;
+    cursor: grab;
+  }
+
+  .viewport:active {
+    cursor: grabbing;
+  }
+}

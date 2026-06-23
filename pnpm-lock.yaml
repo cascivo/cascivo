@@ -285,6 +285,9 @@ importers:
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascivo/flow':
+        specifier: workspace:*
+        version: link:../../packages/flow
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
@@ -848,6 +851,9 @@ importers:
       '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@cascivo/flow':
+        specifier: workspace:*
+        version: link:../../packages/flow
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
@@ -1068,6 +1074,52 @@ importers:
       vite-plus:
         specifier: 'catalog:'
         version: 0.2.1(@tsdown/css@0.22.2)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
+
+  packages/flow:
+    dependencies:
+      '@cascivo/core':
+        specifier: workspace:^
+        version: link:../core
+      '@cascivo/i18n':
+        specifier: workspace:^
+        version: link:../i18n
+      '@preact/signals-react':
+        specifier: '>=2.0.0'
+        version: 3.10.1(react@19.2.7)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: 'catalog:'
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@testing-library/user-event':
+        specifier: 'catalog:'
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      fast-check:
+        specifier: 'catalog:'
+        version: 4.8.0
+      jsdom:
+        specifier: 'catalog:'
+        version: 29.1.1
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
 
   packages/i18n:
     dependencies:

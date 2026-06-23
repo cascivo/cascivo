@@ -129,7 +129,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-170 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+179 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -194,6 +194,15 @@ routing break after adding one of these, check that the import resolves to
 - **DataTable** — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
 - **EmptyDashboard** — Dashboard page showing an empty state with a call-to-action button.
 - **EmptyState** — Placeholder for views that have no data to display
+- **Flow** — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.
+- **FlowBackground** — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
+- **FlowControls** — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.
+- **FlowEdge** — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.
+- **FlowHandle** — A connection port on a node edge — where edges attach and interactive connect starts.
+- **FlowMiniMap** — A scaled SVG overview of the graph with a draggable viewport rectangle.
+- **FlowNode** — An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.
+- **FlowPanel** — An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).
+- **FlowStory** — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.
 - **Heading** — Section heading with semantic level decoupled from visual size
 - **Image** — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - **Item** — Generic content row primitive with media, content, and action regions

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-handle",
+  "type": "registry:component",
+  "files": [],
+  "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.0.0"
+    }
+  }
+}

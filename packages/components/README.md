@@ -203,6 +203,15 @@ The full catalog of what lives here:
 | section/media-masonry      | layout     | Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell. |
 | section/page-footer        | layout     | Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns.                                                      |
 | section/stats-band         | layout     | KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.                         |
+| flow/flow                  | display    | The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.                                                                                                                 |
+| flow/flow-background       | display    | Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.                                                                                                                                |
+| flow/flow-controls         | display    | Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.                                                                                                                               |
+| flow/flow-edge             | display    | An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.                                                                                                              |
+| flow/flow-handle           | display    | A connection port on a node edge — where edges attach and interactive connect starts.                                                                                                                           |
+| flow/flow-minimap          | display    | A scaled SVG overview of the graph with a draggable viewport rectangle.                                                                                                                                         |
+| flow/flow-node             | display    | An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.                                                                                                              |
+| flow/flow-panel            | display    | An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).                                                                                                                                      |
+| flow/flow-story            | display    | A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.                                                                                                               |
 
 ---
 

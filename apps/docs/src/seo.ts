@@ -26,6 +26,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'CVD-safe, signal-driven charts built on modern CSS. Browse the @cascivo/charts catalog with live previews and tokens.',
   },
+  '/flow': {
+    title: `Flow${SUFFIX}`,
+    description:
+      'CSS-native, signal-driven node/edge diagrams — flowcharts, DAGs, pipelines, and mind-maps. Pan, zoom, drag, connect, and animated edges, plus scripted FlowStory walkthroughs.',
+  },
   '/playground': {
     title: `Playground${SUFFIX}`,
     description: 'Experiment with cascivo components live in the browser.',

@@ -146,6 +146,15 @@
             "Field",
             "FileUploader",
             "Filter",
+            "Flow",
+            "FlowBackground",
+            "FlowControls",
+            "FlowEdge",
+            "FlowHandle",
+            "FlowMiniMap",
+            "FlowNode",
+            "FlowPanel",
+            "FlowStory",
             "Form",
             "Grid",
             "Header",
@@ -5840,6 +5849,377 @@
                   }
                 },
                 "required": ["stats"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Flow"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "fitView": {
+                    "type": "boolean"
+                  },
+                  "background": {
+                    "type": "string",
+                    "enum": ["boolean", "FlowBackgroundProps"]
+                  },
+                  "controls": {
+                    "type": "boolean"
+                  },
+                  "minimap": {
+                    "type": "boolean"
+                  },
+                  "interactive": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["nodes", "edges"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowBackground"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": ["dots", "grid", "cross"]
+                  },
+                  "gap": {
+                    "type": "number"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowControls"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": ["top-left", "top-right", "bottom-left", "bottom-right"]
+                  },
+                  "showZoom": {
+                    "type": "boolean"
+                  },
+                  "showFitView": {
+                    "type": "boolean"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["FlowControlsLabels"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowEdge"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "sourceX": {
+                    "type": "number"
+                  },
+                  "sourceY": {
+                    "type": "number"
+                  },
+                  "targetX": {
+                    "type": "number"
+                  },
+                  "targetY": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["bezier", "straight", "smoothstep"]
+                  },
+                  "animated": {
+                    "type": "boolean"
+                  },
+                  "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  },
+                  "markerStart": {
+                    "type": "boolean"
+                  },
+                  "markerEnd": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["sourceX", "sourceY", "targetX", "targetY"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowHandle"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["source", "target"]
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": ["top", "right", "bottom", "left"]
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "isConnectable": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowMiniMap"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "viewport": {
+                    "type": "string",
+                    "enum": ["Viewport"]
+                  },
+                  "containerWidth": {
+                    "type": "number"
+                  },
+                  "containerHeight": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": ["top-left", "top-right", "bottom-left", "bottom-right"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["nodes", "viewport"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowNode"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "zoom": {
+                    "type": "number"
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  },
+                  "draggable": {
+                    "type": "boolean"
+                  },
+                  "interactive": {
+                    "type": "boolean"
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowPanel"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "top-left",
+                      "top-center",
+                      "top-right",
+                      "bottom-left",
+                      "bottom-center",
+                      "bottom-right"
+                    ]
+                  },
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowStory"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "loop": {
+                    "type": "boolean"
+                  },
+                  "stepDuration": {
+                    "type": "number"
+                  },
+                  "stepGap": {
+                    "type": "number"
+                  },
+                  "playing": {
+                    "type": "boolean"
+                  },
+                  "currentStep": {
+                    "type": "number"
+                  },
+                  "controls": {
+                    "type": "boolean"
+                  },
+                  "autoPlay": {
+                    "type": "boolean"
+                  },
+                  "interactive": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["nodes", "edges", "script"]
               }
             }
           }

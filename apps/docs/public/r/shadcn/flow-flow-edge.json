@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-edge",
+  "type": "registry:component",
+  "files": [],
+  "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.0.0"
+    }
+  }
+}

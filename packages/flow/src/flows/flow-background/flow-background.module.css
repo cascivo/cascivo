@@ -1,0 +1,54 @@
+@layer cascivo.component {
+  .background {
+    /* Cover well beyond the pane box so the pattern persists while panning. */
+    position: absolute;
+    inset: -100%;
+    pointer-events: none;
+    --flow-bg-color: var(--cascivo-color-border);
+  }
+
+  .background[data-variant='dots'] {
+    background-image: radial-gradient(
+      circle,
+      var(--flow-bg-color) var(--flow-bg-size),
+      transparent var(--flow-bg-size)
+    );
+    background-size: var(--flow-bg-gap) var(--flow-bg-gap);
+  }
+
+  .background[data-variant='grid'] {
+    background-image:
+      linear-gradient(
+        to right,
+        var(--flow-bg-color) var(--flow-bg-thick),
+        transparent var(--flow-bg-thick)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--flow-bg-color) var(--flow-bg-thick),
+        transparent var(--flow-bg-thick)
+      );
+    background-size: var(--flow-bg-gap) var(--flow-bg-gap);
+  }
+
+  /* Crosshair lines centered in each cell (narrow center bands). */
+  .background[data-variant='cross'] {
+    --flow-bg-arm: calc(var(--flow-bg-thick) / 2);
+    background-image:
+      linear-gradient(
+        to right,
+        transparent calc(50% - var(--flow-bg-arm)),
+        var(--flow-bg-color) calc(50% - var(--flow-bg-arm)),
+        var(--flow-bg-color) calc(50% + var(--flow-bg-arm)),
+        transparent calc(50% + var(--flow-bg-arm))
+      ),
+      linear-gradient(
+        to bottom,
+        transparent calc(50% - var(--flow-bg-arm)),
+        var(--flow-bg-color) calc(50% - var(--flow-bg-arm)),
+        var(--flow-bg-color) calc(50% + var(--flow-bg-arm)),
+        transparent calc(50% + var(--flow-bg-arm))
+      );
+    background-size: var(--flow-bg-gap) var(--flow-bg-gap);
+  }
+}

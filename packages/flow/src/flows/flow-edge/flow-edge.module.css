@@ -1,0 +1,80 @@
+@layer cascivo.component {
+  .edgeSvg {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .edgePath {
+    fill: none;
+    stroke: var(--cascivo-color-border-strong);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  .hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 12;
+    pointer-events: stroke;
+    cursor: pointer;
+  }
+
+  .arrow {
+    fill: var(--cascivo-color-border-strong);
+  }
+
+  .edgeSvg[data-selected] .edgePath,
+  .edgeSvg[data-active] .edgePath {
+    stroke: var(--cascivo-color-accent);
+    stroke-width: 2;
+  }
+
+  .edgeSvg[data-selected] .arrow,
+  .edgeSvg[data-active] .arrow {
+    fill: var(--cascivo-color-accent);
+  }
+
+  /* Animated "marching ants". Static fallback (a plain dashed stroke) precedes
+     the progressive animation; the animation is disabled under reduced motion. */
+  .edgeSvg[data-animated] .edgePath {
+    stroke-dasharray: 6 4;
+    animation: cascivo-flow-dash 0.6s linear infinite;
+  }
+
+  .edgeSvg[data-animated][data-direction='reverse'] .edgePath {
+    animation-direction: reverse;
+  }
+
+  @keyframes cascivo-flow-dash {
+    to {
+      stroke-dashoffset: -10;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .edgeSvg[data-animated] .edgePath {
+      animation: none;
+    }
+  }
+
+  .label {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    transform: translate(var(--flow-label-x, 0), var(--flow-label-y, 0)) translate(-50%, -50%);
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-2);
+    background-color: var(--cascivo-color-surface);
+    color: var(--cascivo-color-text);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-sm);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+}
