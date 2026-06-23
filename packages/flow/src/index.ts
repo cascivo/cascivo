@@ -15,6 +15,7 @@ export { DEFAULT_NODE_SIZE } from './engine/types.ts'
 export * from './engine/store.ts'
 export * from './engine/transform.ts'
 export * from './engine/geometry.ts'
+export * from './engine/path.ts'
 
 // Canvas + viewport
 export * from './core/use-viewport.ts'
@@ -24,3 +25,4 @@ export * from './core/flow-canvas/flow-canvas.tsx'
 export * from './flows/flow-background/flow-background.tsx'
 export * from './flows/flow-node/flow-node.tsx'
 export * from './flows/flow-handle/flow-handle.tsx'
+export * from './flows/flow-edge/flow-edge.tsx'
