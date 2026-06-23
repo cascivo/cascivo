@@ -12,8 +12,11 @@ import {
 import { getGrammar } from '../../engine/registry.ts'
 import { tokenizeDocument } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
-import { Gutter, renderRows } from '../view.tsx'
+import { Gutter, renderRows, type Decoration } from '../view.tsx'
+import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
+import { FindPanel } from './find-panel.tsx'
+import { offsetToLineCol, replaceAll, scan, toDecorations, type Match } from './find.ts'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
 import { diff, rebaseSelection } from './sync.ts'
@@ -33,6 +36,8 @@ export interface CodeEditorHandle {
   /** Undo / redo the owned history. */
   undo(): void
   redo(): void
+  /** Open the find panel. */
+  openFind(): void
 }
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
@@ -174,24 +179,6 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     if (snap) applySnapshot(snap)
   }
 
-  // Imperative handle for callers driving their own transactions. Edits go through
-  // `commit`, so they record undo steps like keyboard edits.
-  useImperativeHandle(ref, () => ({
-    applyEdit: ({ from, to }, insert) => {
-      const ta = taRef.current
-      if (!ta) return
-      ta.setRangeText(insert, from, to, 'end')
-      commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
-    },
-    getSelection: () => {
-      const ta = taRef.current
-      return ta ? { start: ta.selectionStart, end: ta.selectionEnd } : { ...selRef.current }
-    },
-    focus: () => taRef.current?.focus(),
-    undo: doUndo,
-    redo: doRedo,
-  }))
-
   // rAF-debounced highlight: editing writes `text` synchronously (never blocked);
   // the highlight layer reads `highlightText`, updated at most once per frame.
   const highlightText = useSignal(text.value)
@@ -200,6 +187,14 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const scrollTop = useSignal(0)
   const viewport = useSignal(0)
   const lineHeight = useSignal(0)
+
+  // Find/replace state (signals so reads are reactive).
+  const findOpen = useSignal(false)
+  const findQuery = useSignal('')
+  const replaceQuery = useSignal('')
+  const caseSensitive = useSignal(false)
+  const replaceMode = useSignal(false)
+  const currentMatch = useSignal(0)
 
   useSignalEffect(() => {
     const next = text.value
@@ -296,6 +291,86 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const topPad = start * lh
   const bottomPad = (total - end) * lh
 
+  // ── Find / replace ──────────────────────────────────────────────────────────
+  const matches: Match[] = findOpen.value
+    ? scan(highlightText.value, findQuery.value, { caseSensitive: caseSensitive.value })
+    : []
+  if (currentMatch.value >= matches.length) currentMatch.value = Math.max(0, matches.length - 1)
+  const findDecorations: Decoration[] | undefined =
+    matches.length > 0
+      ? toDecorations(highlightText.value, matches, currentMatch.value, {
+          match: hl['match'] as string,
+          current: hl['matchCurrent'] as string,
+        })
+      : undefined
+
+  const selectMatch = (index: number): void => {
+    const m = matches[index]
+    const ta = taRef.current
+    if (!m || !ta) return
+    ta.focus()
+    ta.setSelectionRange(m.start, m.end)
+    selRef.current = { start: m.start, end: m.end }
+    if (lh > 0) {
+      const { line } = offsetToLineCol(ta.value, m.start)
+      const top = line * lh
+      if (top < ta.scrollTop || top > ta.scrollTop + ta.clientHeight - lh) {
+        ta.scrollTop = Math.max(0, top - ta.clientHeight / 2)
+      }
+    }
+  }
+  const findNext = (): void => {
+    if (matches.length === 0) return
+    currentMatch.value = (currentMatch.value + 1) % matches.length
+    selectMatch(currentMatch.value)
+  }
+  const findPrev = (): void => {
+    if (matches.length === 0) return
+    currentMatch.value = (currentMatch.value - 1 + matches.length) % matches.length
+    selectMatch(currentMatch.value)
+  }
+  const replaceCurrent = (): void => {
+    const m = matches[currentMatch.value]
+    const ta = taRef.current
+    if (!m || !ta || readOnly || disabled) return
+    ta.setRangeText(replaceQuery.value, m.start, m.end, 'end')
+    commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+  }
+  const replaceAllNow = (): void => {
+    if (matches.length === 0 || readOnly || disabled) return
+    const next = replaceAll(highlightText.value, matches, replaceQuery.value)
+    const ta = taRef.current
+    if (ta) ta.value = next
+    commit(next, { start: ta?.selectionStart ?? 0, end: ta?.selectionEnd ?? 0 }, false)
+  }
+  const openFind = (replace: boolean): void => {
+    replaceMode.value = replace
+    findOpen.value = true
+  }
+  const closeFind = (): void => {
+    findOpen.value = false
+    taRef.current?.focus()
+  }
+
+  // Imperative handle for callers driving their own transactions. Edits go through
+  // `commit`, so they record undo steps like keyboard edits.
+  useImperativeHandle(ref, () => ({
+    applyEdit: ({ from, to }, insert) => {
+      const ta = taRef.current
+      if (!ta) return
+      ta.setRangeText(insert, from, to, 'end')
+      commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+    },
+    getSelection: () => {
+      const ta = taRef.current
+      return ta ? { start: ta.selectionStart, end: ta.selectionEnd } : { ...selRef.current }
+    },
+    focus: () => taRef.current?.focus(),
+    undo: doUndo,
+    redo: doRedo,
+    openFind: () => openFind(false),
+  }))
+
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
     const ta = event.currentTarget
     const editable = !readOnly && !disabled
@@ -314,6 +389,20 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       }
       bindings['Mod-Shift-z'] = redo
       bindings['Mod-y'] = redo
+    }
+    bindings['Mod-f'] = () => {
+      openFind(false)
+      return true
+    }
+    bindings['Mod-Alt-f'] = () => {
+      openFind(true)
+      return true
+    }
+    if (findOpen.value) {
+      bindings['Escape'] = () => {
+        closeFind()
+        return true
+      }
     }
     const map = mergeKeymap(bindings)
     const handled = dispatch(map, { textarea: ta, event, setText: commitFromCommand })
@@ -346,7 +435,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
           {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(lines, start, end)}</code>
+          <code>{renderRows(lines, start, end, findDecorations)}</code>
           {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea
@@ -370,6 +459,28 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
           wrap={wrap ? 'soft' : 'off'}
           {...rest}
         />
+        {findOpen.value && (
+          <FindPanel
+            query={findQuery.value}
+            replaceQuery={replaceQuery.value}
+            replaceMode={replaceMode.value}
+            caseSensitive={caseSensitive.value}
+            matchCount={matches.length}
+            currentIndex={matches.length > 0 ? currentMatch.value : -1}
+            onQueryChange={(v) => {
+              findQuery.value = v
+              currentMatch.value = 0
+            }}
+            onReplaceChange={(v) => (replaceQuery.value = v)}
+            onNext={findNext}
+            onPrev={findPrev}
+            onReplace={replaceCurrent}
+            onReplaceAll={replaceAllNow}
+            onToggleCase={() => (caseSensitive.value = !caseSensitive.value)}
+            onToggleReplace={() => (replaceMode.value = !replaceMode.value)}
+            onClose={closeFind}
+          />
+        )}
       </div>
     </div>
   )

@@ -1,0 +1,93 @@
+@layer cascivo.component {
+  .panel {
+    position: absolute;
+    inset-block-start: var(--cascivo-space-2);
+    inset-inline-end: var(--cascivo-space-2);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+    padding: var(--cascivo-space-2);
+    background: var(--cascivo-editor-bg);
+    border: 1px solid var(--cascivo-editor-border);
+    border-radius: var(--cascivo-radius-field);
+    box-shadow: var(--cascivo-shadow-md, 0 4px 12px rgb(0 0 0 / 0.2));
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-editor-fg);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+  }
+
+  .input {
+    flex: 1 1 auto;
+    min-inline-size: 8rem;
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-2);
+    background: var(--cascivo-editor-gutter-bg, transparent);
+    color: inherit;
+    border: 1px solid var(--cascivo-editor-border);
+    border-radius: var(--cascivo-radius-field);
+    font: inherit;
+  }
+
+  .input:focus-visible {
+    outline: none;
+    border-color: var(--cascivo-color-accent);
+    box-shadow: var(--cascivo-focus-ring);
+  }
+
+  .count {
+    flex: 0 0 auto;
+    padding-inline: var(--cascivo-space-1);
+    color: var(--cascivo-editor-gutter-fg);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .button,
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.75rem;
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-2);
+    background: transparent;
+    color: inherit;
+    border: 1px solid transparent;
+    border-radius: var(--cascivo-radius-field);
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .button:hover,
+  .toggle:hover {
+    background: var(--cascivo-editor-current-line);
+  }
+
+  .button:focus-visible,
+  .toggle:focus-visible {
+    outline: none;
+    box-shadow: var(--cascivo-focus-ring);
+  }
+
+  .active {
+    border-color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent);
+  }
+
+  /* Coarse pointers: keep find controls comfortably tappable. */
+  @media (pointer: coarse) {
+    .button,
+    .toggle,
+    .input {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}

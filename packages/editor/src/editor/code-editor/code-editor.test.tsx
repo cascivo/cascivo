@@ -181,6 +181,56 @@ describe('CodeEditor', () => {
     expect(ref.current!.getSelection()).toEqual({ start: 0, end: 0 })
   })
 
+  it('opens the find panel on Mod-F and highlights matches', () => {
+    render(<CodeEditor defaultValue={'one two one'} lineNumbers={false} />)
+    const ta = getTextarea()
+    const event = fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    expect(event).toBe(false) // preventDefault
+    const search = screen.getByRole('search')
+    const input = search.querySelector('input') as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: 'one' } })
+    })
+    // Two matches highlighted in the overlay; one is the current.
+    const current = document.querySelectorAll(
+      'pre code .matchCurrent, pre code [class*="matchCurrent"]',
+    )
+    const all = document.querySelectorAll('pre code [class*="match"]')
+    expect(all.length).toBeGreaterThanOrEqual(2)
+    expect(current.length).toBe(1)
+  })
+
+  it('replace is undoable', () => {
+    render(<CodeEditor defaultValue={'cat cat'} lineNumbers={false} />)
+    const ta = getTextarea()
+    fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    const search = screen.getByRole('search')
+    const input = search.querySelector('input') as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: 'cat' } })
+    })
+    // Toggle replace, fill it, replace all.
+    fireEvent.click(search.querySelector('button')!) // the toggle is the first button
+    const replaceInput = search.querySelectorAll('input')[1] as HTMLInputElement
+    act(() => {
+      fireEvent.change(replaceInput, { target: { value: 'dog' } })
+    })
+    fireEvent.click(screen.getByText('Replace all'))
+    expect(ta.value).toBe('dog dog')
+    // Undo restores the original document.
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('cat cat')
+  })
+
+  it('closes the find panel on Escape', () => {
+    render(<CodeEditor defaultValue="x" lineNumbers={false} />)
+    const ta = getTextarea()
+    fireEvent.keyDown(ta, { key: 'f', ctrlKey: true })
+    const input = screen.getByRole('search').querySelector('input') as HTMLInputElement
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(screen.queryByRole('search')).toBeNull()
+  })
+
   it('uses no banned React hooks', () => {
     const files = [
       join(__dirname, 'code-editor.tsx'),

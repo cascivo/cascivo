@@ -254,6 +254,19 @@ export const builtin = {
   editor: defineMessages('cascade.editor', {
     label: 'Code editor',
     code: 'Code',
+    find: 'Find',
+    replace: 'Replace',
+    findPlaceholder: 'Find',
+    replacePlaceholder: 'Replace with',
+    next: 'Next match',
+    previous: 'Previous match',
+    replaceOne: 'Replace',
+    replaceAll: 'Replace all',
+    close: 'Close',
+    matchCase: 'Match case',
+    toggleReplace: 'Toggle replace',
+    noMatches: 'No results',
+    findCount: '{current} of {total}',
   }),
 }
 
@@ -505,4 +518,17 @@ defineCatalog(builtin.flow, 'de', {
 defineCatalog(builtin.editor, 'de', {
   label: 'Code-Editor',
   code: 'Code',
+  find: 'Suchen',
+  replace: 'Ersetzen',
+  findPlaceholder: 'Suchen',
+  replacePlaceholder: 'Ersetzen durch',
+  next: 'Nächster Treffer',
+  previous: 'Vorheriger Treffer',
+  replaceOne: 'Ersetzen',
+  replaceAll: 'Alle ersetzen',
+  close: 'Schließen',
+  matchCase: 'Groß-/Kleinschreibung',
+  toggleReplace: 'Ersetzen umschalten',
+  noMatches: 'Keine Treffer',
+  findCount: '{current} von {total}',
 })

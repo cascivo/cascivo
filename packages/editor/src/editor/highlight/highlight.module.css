@@ -108,4 +108,18 @@
   .property {
     color: var(--cascivo-editor-syntax-property);
   }
+
+  /* ── Decorations — search matches + bracket pair (overlaid on token spans). ── */
+  .match {
+    border-radius: 2px;
+    background: var(--cascivo-editor-match, rgba(125, 211, 252, 0.28));
+  }
+  .matchCurrent {
+    border-radius: 2px;
+    background: var(--cascivo-editor-match-current, rgba(250, 204, 21, 0.5));
+  }
+  .bracketMatch {
+    border-radius: 2px;
+    outline: 1px solid var(--cascivo-editor-bracket, currentColor);
+  }
 }
