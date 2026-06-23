@@ -58,6 +58,7 @@ export type { UsePopoverOptions, UsePopoverReturn } from '../../components/src/p
 export * from '../../components/src/menu/menu'
 export * from '../../components/src/alert-dialog/alert-dialog'
 export * from '../../components/src/sheet/sheet'
+export * from '../../components/src/bottom-sheet/bottom-sheet'
 export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/comparison/comparison'
 export * from '../../components/src/hover-card/hover-card'

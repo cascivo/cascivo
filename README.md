@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-165-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-166-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -257,10 +257,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**165 components** — display 45 · inputs 38 · layout 27 · navigation 18 · chart 16 · overlay 14 · feedback 7.
+**166 components** — display 45 · inputs 38 · layout 27 · navigation 18 · chart 16 · overlay 15 · feedback 7.
 
 <details>
-<summary>Browse all 165 components</summary>
+<summary>Browse all 166 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -273,6 +273,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | avatar-group               | display    | Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip                                                                                                                               |
 | badge                      | display    | Small status label or category indicator                                                                                                                                                                        |
 | blockquote                 | display    | Quoted passage with optional attribution footer                                                                                                                                                                 |
+| bottom-sheet               | overlay    | Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss                                                                                                               |
 | breadcrumb                 | navigation | Shows the current page location within a navigation hierarchy                                                                                                                                                   |
 | button                     | inputs     | Triggers an action or event                                                                                                                                                                                     |
 | button-group               | inputs     | Visually joins a set of related buttons into a single segmented control                                                                                                                                         |

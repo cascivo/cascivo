@@ -6,6 +6,7 @@ import { meta as avatarMeta } from './avatar/avatar.meta'
 import { meta as avatarGroupMeta } from './avatar-group/avatar-group.meta'
 import { meta as badgeMeta } from './badge/badge.meta'
 import { meta as blockquoteMeta } from './blockquote/blockquote.meta'
+import { meta as bottomSheetMeta } from './bottom-sheet/bottom-sheet.meta'
 import { meta as breadcrumbMeta } from './breadcrumb/breadcrumb.meta'
 import { meta as buttonMeta } from './button/button.meta'
 import { meta as cardMeta } from './card/card.meta'
@@ -97,6 +98,7 @@ export const allMetas: ComponentMeta[] = [
   avatarGroupMeta,
   badgeMeta,
   blockquoteMeta,
+  bottomSheetMeta,
   breadcrumbMeta,
   buttonMeta,
   cardMeta,

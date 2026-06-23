@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (165 components)
+## Component index (166 components)
 
 ### chart
 
@@ -275,6 +275,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 ### overlay
 
 - [alert-dialog](https://docs.cascivo.com/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
+- [bottom-sheet](https://docs.cascivo.com/llms/bottom-sheet.md) — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss
 - [command-menu](https://docs.cascivo.com/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
 - [context-menu](https://docs.cascivo.com/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
 - [drawer](https://docs.cascivo.com/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
@@ -310,6 +311,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [StatsCards](https://docs.cascivo.com/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
 - [UsersTablePage](https://docs.cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
 - [Blockquote](https://docs.cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
+- [BottomSheet](https://docs.cascivo.com/context/bottom-sheet.md) — Use when: A mobile surface that rises from the bottom and can be resized between detents by dragging
 - [Breadcrumb](https://docs.cascivo.com/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
 - [Button](https://docs.cascivo.com/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
 - [ButtonGroup](https://docs.cascivo.com/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
@@ -457,4 +459,4 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-22 from registry v0.0.0_
+_Generated: 2026-06-23 from registry v0.0.0_

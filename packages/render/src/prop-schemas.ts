@@ -341,6 +341,61 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  BottomSheet: [
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'snapPoints',
+      required: false,
+    },
+    {
+      name: 'activeSnap',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'defaultSnap',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onSnapChange',
+      required: false,
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Boxplot: [
     {
       name: 'series',

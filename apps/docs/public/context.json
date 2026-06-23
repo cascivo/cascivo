@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22",
+  "generatedAt": "2026-06-23",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -104,7 +104,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-06-22",
+    "generatedAt": "2026-06-23",
     "global": {
       "strict": [
         {
@@ -251,6 +251,23 @@
           "area": "token names",
           "level": "strict",
           "note": "Border and text colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "BottomSheet": [
+        {
+          "area": "snapPoints",
+          "level": "flexible",
+          "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+        },
+        {
+          "area": "active detent",
+          "level": "flexible",
+          "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
         }
       ],
       "Breadcrumb": [
@@ -1671,7 +1688,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-06-22",
+    "generatedAt": "2026-06-23",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -2123,6 +2140,62 @@
       },
       "contextUrl": "/context/blockquote.md",
       "aiPrompt": "I am modifying the cascivo Blockquote component (display). Quoted passage with optional attribution footer\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBlockquote is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-font-sans, --cascivo-font-medium, --cascivo-leading-relaxed, --cascivo-text-sm, --cascivo-text-base\n\nAccessibility: role \"blockquote\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Border and text colors must resolve to --cascivo-* tokens\nFlexible: attribution.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "BottomSheet",
+      "category": "overlay",
+      "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+      "intent": {
+        "whenToUse": [
+          "A mobile surface that rises from the bottom and can be resized between detents by dragging",
+          "Showing secondary content, filters, or a form where the user can peek at half height then expand",
+          "A touch-first overlay that dismisses by flinging or dragging it down past the lowest detent"
+        ],
+        "whenNotToUse": [
+          "A short yes/no confirmation — use AlertDialog",
+          "A non-resizable edge panel without gestures — use Drawer or Sheet",
+          "A desktop-first side panel for navigation — use Drawer"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<BottomSheet title=\"Delete item?\">Are you sure?</BottomSheet>",
+            "good": "<AlertDialog title=\"Delete item?\" />",
+            "why": "A resizable gesture surface is overkill for a focused yes/no decision"
+          }
+        ],
+        "related": [
+          {
+            "name": "Sheet",
+            "relationship": "alternative",
+            "reason": "Use Sheet for a fixed-height panel from any edge; BottomSheet adds resize detents"
+          },
+          {
+            "name": "Drawer",
+            "relationship": "alternative",
+            "reason": "Use Drawer for a plain edge dialog without resize detents"
+          }
+        ],
+        "a11yRationale": "Renders role=\"dialog\" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal. The grab handle is a labelled separator and a Close button gives a non-gesture dismissal path so the sheet stays keyboard-operable.",
+        "flexibility": [
+          {
+            "area": "snapPoints",
+            "level": "flexible",
+            "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          },
+          {
+            "area": "active detent",
+            "level": "flexible",
+            "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
+          }
+        ]
+      },
+      "contextUrl": "/context/bottom-sheet.md",
+      "aiPrompt": "I am modifying the cascivo BottomSheet component (overlay). Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBottomSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-target-min-coarse, --cascivo-z-overlay\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\nFlexible: snapPoints, open state, active detent.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Breadcrumb",

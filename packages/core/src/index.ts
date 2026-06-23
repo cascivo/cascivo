@@ -52,7 +52,12 @@ export type { UseDisclosureOptions, UseDisclosureReturn } from './disclosure.ts'
 export { useInfiniteScroll } from './infinite-scroll.ts'
 export type { UseInfiniteScrollOptions, UseInfiniteScrollReturn } from './infinite-scroll.ts'
 export { useDraggable } from './draggable.ts'
-export type { DragOffset, UseDraggableOptions, UseDraggableReturn } from './draggable.ts'
+export type {
+  DragOffset,
+  DragVelocity,
+  UseDraggableOptions,
+  UseDraggableReturn,
+} from './draggable.ts'
 export { useResizeObserver } from './resize-observer.ts'
 export type {
   ElementSize,

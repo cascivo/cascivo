@@ -1,0 +1,158 @@
+@layer cascivo.component {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--cascivo-z-overlay, 50);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 0.4);
+    opacity: 1;
+    transition: opacity var(--cascivo-motion-enter);
+
+    &[data-state='closed'] {
+      opacity: 0;
+      transition: opacity var(--cascivo-motion-exit);
+    }
+
+    @starting-style {
+      &[data-state='open'] {
+        opacity: 0;
+      }
+    }
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    max-inline-size: 32rem;
+    block-size: var(--_sheet-height, 92dvh);
+    max-block-size: 100dvh;
+    background: var(--cascivo-color-surface);
+    box-shadow: var(--cascivo-shadow-overlay);
+    border-start-start-radius: var(--cascivo-radius-overlay);
+    border-start-end-radius: var(--cascivo-radius-overlay);
+    /* Slide to the active detent; drag adds px on the same axis. max() clamps so the
+       panel can't be dragged above its tallest detent. */
+    translate: 0 max(0px, calc(var(--_sheet-y, 0%) + var(--_sheet-drag, 0px)));
+    transition: translate var(--cascivo-motion-enter);
+
+    /* While dragging, follow the pointer with no transition lag. */
+    &[data-dragging] {
+      transition: none;
+    }
+
+    .overlay[data-state='closed'] & {
+      translate: 0 100%;
+      transition: translate var(--cascivo-motion-exit);
+    }
+  }
+
+  /* Enter from off-screen on first mount. */
+  @starting-style {
+    .overlay[data-state='open'] .panel {
+      translate: 0 100%;
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--cascivo-space-4);
+    padding: var(--cascivo-space-3) var(--cascivo-space-6) var(--cascivo-space-4);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    flex-shrink: 0;
+    /* The whole header is the drag handle. */
+    touch-action: none;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .handle {
+    flex-basis: 100%;
+    inline-size: 2.25rem;
+    block-size: 0.25rem;
+    margin-inline: auto;
+    margin-block-end: var(--cascivo-space-2);
+    border-radius: var(--cascivo-radius-full, 9999px);
+    background: var(--cascivo-color-border);
+  }
+
+  .heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--cascivo-text-lg);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-text);
+  }
+
+  .description {
+    margin: 0;
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    color: var(--cascivo-color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--cascivo-radius-control);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+      color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    &:hover {
+      color: var(--cascivo-color-text);
+      background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--cascivo-focus-ring);
+    }
+
+    /* Comfortable touch target on coarse pointers without affecting mouse density. */
+    @media (pointer: coarse) {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .closeIcon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .body {
+    padding: var(--cascivo-space-6);
+    padding-block-end: calc(var(--cascivo-space-6) + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    flex: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel {
+      transition: none;
+    }
+  }
+}

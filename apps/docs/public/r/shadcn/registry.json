@@ -429,6 +429,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "bottom-sheet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "bottom-sheet/bottom-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "bottom-sheet/bottom-sheet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "breadcrumb",
       "type": "registry:component",
       "files": [

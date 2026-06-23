@@ -100,6 +100,7 @@
             "Badge",
             "BarChart",
             "Blockquote",
+            "BottomSheet",
             "Boxplot",
             "Breadcrumb",
             "BubbleChart",
@@ -548,6 +549,40 @@
                 "type": "object",
                 "properties": {
                   "cite": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "BottomSheet"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "activeSnap": {
+                    "type": "number"
+                  },
+                  "defaultSnap": {
+                    "type": "number"
+                  },
+                  "className": {
                     "type": "string"
                   }
                 }

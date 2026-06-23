@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22",
+  "generatedAt": "2026-06-23",
   "global": {
     "strict": [
       {
@@ -146,6 +146,23 @@
         "area": "token names",
         "level": "strict",
         "note": "Border and text colors must resolve to --cascivo-* tokens"
+      }
+    ],
+    "BottomSheet": [
+      {
+        "area": "snapPoints",
+        "level": "flexible",
+        "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      },
+      {
+        "area": "active detent",
+        "level": "flexible",
+        "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
       }
     ],
     "Breadcrumb": [
