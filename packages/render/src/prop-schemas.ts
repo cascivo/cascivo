@@ -905,6 +905,31 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'onSave',
+      required: false,
+    },
+    {
+      name: 'bracketMatching',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'theme',
+      required: false,
+    },
+    {
+      name: 'keymap',
+      required: false,
+    },
+    {
+      name: 'decorations',
+      required: false,
+    },
+    {
+      name: 'ref',
+      required: false,
+    },
+    {
       name: 'className',
       required: false,
       primitives: ['string'],

@@ -1,4 +1,8 @@
-A lightweight, CSS-native, signal-driven code editor for cascivo. `CodeEditor` overlays a native `<textarea>` on a syntax-highlighted `<pre>`, so the browser owns the caret, selection, IME, undo, and accessibility — JS is limited to a tiny owned tokenizer and scroll-sync. `Highlight` is the read-only renderer for snippets and docs. Zero runtime dependencies, themeable through the cascivo token system.
+A lightweight, CSS-native, signal-driven code editor for cascivo. `CodeEditor` overlays a native `<textarea>` on a syntax-highlighted `<pre>`, so the browser owns the caret, selection, IME, and accessibility — JS adds an owned tokenizer, scroll-sync, and a thin layer of editing affordances. `Highlight` is the read-only renderer for snippets and docs. Zero runtime dependencies, themeable through the cascivo token system.
+
+Beyond highlighting it provides the essentials for editing real documents: **owned undo/redo** (`Mod-Z` / `Mod-Shift-Z`) that survives programmatic `value` changes, **selection-preserving, echo-safe controlled sync** (external/remote updates don't jump the caret), **find & replace** (`Mod-F`), a **`Mod-S` save** hook, **per-instance theming** that can switch live, **bracket matching**, an **active-line gutter**, and an imperative **`CodeEditorHandle`**.
+
+It is deliberately not a full editor engine: no LSP/IntelliSense, multi-cursor, code folding, minimap, or vim mode — reach for a full framework (Monaco/CodeMirror) if you need those.
 
 ## Install
 
@@ -53,7 +57,11 @@ framework if you need those):
 <CodeEditor
   language="markdown"
   onSave={(value) => save(value)} // Mod-S
-  keymap={{ 'Mod-/': ({ textarea, setText }) => { /* toggle comment */ return true } }}
+  keymap={{
+    'Mod-/': ({ textarea, setText }) => {
+      /* toggle comment */ return true
+    },
+  }}
   decorations={(value) => findTodos(value)}
 />
 ```

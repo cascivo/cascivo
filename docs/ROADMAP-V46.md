@@ -1,7 +1,8 @@
 # cascivo — Roadmap v46: Editor Parity — Closing the Gap-Analysis Findings
 
 **Last updated:** 2026-06-23
-**Status:** 📋 Planned (T1–T7).
+**Status:** 🏗️ In progress — T1–T6 implemented (keymap+history, sync+handle, find/replace, save+seam,
+theming+gutter+brackets, markdown+perf+docs); T7 (docs & Storybook variants) pending.
 **Plan documents:** `docs/superpowers/plans/2026-06-23-v46-master-plan.md` + tranches 1–7
 **Builds on:** the existing **`@cascivo/editor`** package (`packages/editor/src/editor/code-editor/code-editor.tsx`
 — a native `<textarea>` overlaid on a syntax-highlighted `<pre>`; `packages/editor/src/editor/highlight/highlight.tsx`
