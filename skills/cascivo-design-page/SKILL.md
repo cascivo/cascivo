@@ -86,8 +86,7 @@ serializable data an agent can emit directly:
 ```tsx
 import { Flow } from '@cascivo/flow'
 import '@cascivo/flow/styles.css'
-
-<Flow
+;<Flow
   background
   controls
   layout="layered"

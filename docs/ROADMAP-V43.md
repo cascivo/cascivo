@@ -1,9 +1,13 @@
 # cascivo — Roadmap v43: `@cascivo/flow` — A CSS-Native, Signal-Driven Flow & Diagram Package
 
 **Last updated:** 2026-06-23
-**Status:** 📝 Planned (T1–T7 not started). New package **`@cascivo/flow`** — visualize and animate node/edge
+**Status:** ✅ Shipped (T1–T8). New package **`@cascivo/flow`** — visualize and animate node/edge
 flows (flowcharts, DAGs, pipelines, mind-maps) built from HTML + CSS + the minimum JS, signal-driven, themed
-with the rest of cascivo, AI-first.
+with the rest of cascivo, AI-first. Landed: the package + engine (signal store, transforms, geometry), the
+pan/zoom viewport + CSS background, draggable nodes + connection handles, bezier/straight/smoothstep edges with
+arrowheads, labels, and reduced-motion-safe animation, interactive connect + controls/minimap/panel, the
+declarative `<Flow nodes edges />` API + dependency-free grid/layered layout + a `scaffold_flow` MCP tool, the
+scripted **`FlowStory`** storyline, and **auto-generated** storybook stories + docs from the manifests.
 **Plan documents:** `docs/superpowers/plans/2026-06-23-v43-master-plan.md` + tranches 1–7
 **Builds on:** the **`@cascivo/charts`** package model (`packages/charts/` — a standalone, zero-runtime-dep,
 signal-driven visualization package installed via `@cascivo/charts`, registry `type: 'chart'`, source aliases

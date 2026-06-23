@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (170 components)
+## Component index (179 components)
 
 ### chart
 
@@ -150,6 +150,15 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [data-list](https://docs.cascivo.com/llms/data-list.md) — Key-value pairs rendered as a description list
 - [data-table](https://docs.cascivo.com/llms/data-table.md) — Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
 - [empty-state](https://docs.cascivo.com/llms/empty-state.md) — Placeholder for views that have no data to display
+- [flow/flow](https://docs.cascivo.com/llms/flow/flow.md) — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.
+- [flow/flow-background](https://docs.cascivo.com/llms/flow/flow-background.md) — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
+- [flow/flow-controls](https://docs.cascivo.com/llms/flow/flow-controls.md) — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.
+- [flow/flow-edge](https://docs.cascivo.com/llms/flow/flow-edge.md) — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.
+- [flow/flow-handle](https://docs.cascivo.com/llms/flow/flow-handle.md) — A connection port on a node edge — where edges attach and interactive connect starts.
+- [flow/flow-minimap](https://docs.cascivo.com/llms/flow/flow-minimap.md) — A scaled SVG overview of the graph with a draggable viewport rectangle.
+- [flow/flow-node](https://docs.cascivo.com/llms/flow/flow-node.md) — An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.
+- [flow/flow-panel](https://docs.cascivo.com/llms/flow/flow-panel.md) — An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).
+- [flow/flow-story](https://docs.cascivo.com/llms/flow/flow-story.md) — A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.
 - [heading](https://docs.cascivo.com/llms/heading.md) — Section heading with semantic level decoupled from visual size
 - [image](https://docs.cascivo.com/llms/image.md) — Image with load state, blur-up placeholder, graceful fallback, and optional zoom
 - [item](https://docs.cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions
@@ -365,6 +374,15 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Field](https://docs.cascivo.com/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
 - [FileUploader](https://docs.cascivo.com/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
 - [Filter](https://docs.cascivo.com/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
+- [Flow](https://docs.cascivo.com/context/flow/flow.md) — Use when: Rendering a graph from data — the common case and the agent-emittable surface
+- [FlowBackground](https://docs.cascivo.com/context/flow/flow-background.md) — Use when: Giving a flow canvas a sense of space and scale with a dotted or grid backdrop
+- [FlowControls](https://docs.cascivo.com/context/flow/flow-controls.md) — Use when: Giving users explicit zoom/fit controls on a flow canvas
+- [FlowEdge](https://docs.cascivo.com/context/flow/flow-edge.md) — Use when: Connecting two nodes with a directed path and arrowhead
+- [FlowHandle](https://docs.cascivo.com/context/flow/flow-handle.md) — Use when: Marking where edges connect to a node
+- [FlowMiniMap](https://docs.cascivo.com/context/flow/flow-minimap.md) — Use when: Orienting users in a large graph
+- [FlowNode](https://docs.cascivo.com/context/flow/flow-node.md) — Use when: Representing a unit in a graph that holds arbitrary themed content
+- [FlowPanel](https://docs.cascivo.com/context/flow/flow-panel.md) — Use when: Overlaying custom UI (a legend, a toolbar) on a flow canvas
+- [FlowStory](https://docs.cascivo.com/context/flow/flow-story.md) — Use when: Explaining how a flow works step by step, not just showing a static diagram
 - [Form](https://docs.cascivo.com/context/form.md) — Use when: Collecting and submitting a set of related field values together
 - [Header](https://docs.cascivo.com/context/header.md) — Use when: Providing a simple marketing or app top bar with brand, links, and actions
 - [HeaderPanel](https://docs.cascivo.com/context/header-panel.md) — Use when: Hosting a non-modal panel anchored under the shell header (notifications, switcher, settings)

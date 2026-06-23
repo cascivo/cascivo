@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-170-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-179-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -219,6 +219,12 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | [`@cascivo/registry`](packages/registry) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fregistry?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/registry) | Registry schema v2 types, validation, and static build for the cascivo ecosystem |
 | [`@cascivo/mcp`](packages/mcp)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fmcp?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/mcp)           | MCP server exposing the cascivo component registry to AI agents                  |
 
+### More
+
+| Package                          | Version                                                                                                                              | Description                                                                                                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/flow`](packages/flow) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow) | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies |
+
 ### Registry sources & internal packages
 
 Not published to npm. `components` and `layouts` are the source of truth the CLI copies from; the rest power the docs, AI, and search surfaces.
@@ -257,10 +263,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**170 components** — display 46 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 8.
+**179 components** — display 55 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 8.
 
 <details>
-<summary>Browse all 170 components</summary>
+<summary>Browse all 179 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -434,6 +440,15 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | section/media-masonry      | layout     | Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell. |
 | section/page-footer        | layout     | Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label="Footer"> wrapping the link columns.                                                      |
 | section/stats-band         | layout     | KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.                         |
+| flow/flow                  | display    | The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.                                                                                                                 |
+| flow/flow-background       | display    | Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.                                                                                                                                |
+| flow/flow-controls         | display    | Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.                                                                                                                               |
+| flow/flow-edge             | display    | An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.                                                                                                              |
+| flow/flow-handle           | display    | A connection port on a node edge — where edges attach and interactive connect starts.                                                                                                                           |
+| flow/flow-minimap          | display    | A scaled SVG overview of the graph with a draggable viewport rectangle.                                                                                                                                         |
+| flow/flow-node             | display    | An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.                                                                                                              |
+| flow/flow-panel            | display    | An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).                                                                                                                                      |
+| flow/flow-story            | display    | A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.                                                                                                               |
 
 </details>
 

@@ -1702,6 +1702,359 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['pill', 'outline'],
     },
   ],
+  Flow: [
+    {
+      name: 'nodes',
+      required: true,
+    },
+    {
+      name: 'edges',
+      required: true,
+    },
+    {
+      name: 'onNodesChange',
+      required: false,
+    },
+    {
+      name: 'onEdgesChange',
+      required: false,
+    },
+    {
+      name: 'onConnect',
+      required: false,
+    },
+    {
+      name: 'nodeTypes',
+      required: false,
+    },
+    {
+      name: 'fitView',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'background',
+      required: false,
+    },
+    {
+      name: 'controls',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'minimap',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'layout',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowBackground: [
+    {
+      name: 'variant',
+      required: false,
+      enum: ['dots', 'grid', 'cross'],
+    },
+    {
+      name: 'gap',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'color',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowControls: [
+    {
+      name: 'position',
+      required: false,
+      enum: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+    },
+    {
+      name: 'showZoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'showFitView',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onZoomIn',
+      required: false,
+    },
+    {
+      name: 'onZoomOut',
+      required: false,
+    },
+    {
+      name: 'onFitView',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowEdge: [
+    {
+      name: 'sourceX',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'sourceY',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'targetX',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'targetY',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'type',
+      required: false,
+      enum: ['bezier', 'straight', 'smoothstep'],
+    },
+    {
+      name: 'animated',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'label',
+      required: false,
+    },
+    {
+      name: 'selected',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'markerEnd',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowHandle: [
+    {
+      name: 'type',
+      required: true,
+      enum: ['source', 'target'],
+    },
+    {
+      name: 'position',
+      required: false,
+      enum: ['top', 'right', 'bottom', 'left'],
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'isConnectable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowMiniMap: [
+    {
+      name: 'nodes',
+      required: true,
+    },
+    {
+      name: 'viewport',
+      required: true,
+    },
+    {
+      name: 'containerWidth',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'containerHeight',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'position',
+      required: false,
+      enum: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+    },
+    {
+      name: 'onViewportChange',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowNode: [
+    {
+      name: 'id',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'position',
+      required: false,
+    },
+    {
+      name: 'onPositionChange',
+      required: false,
+    },
+    {
+      name: 'zoom',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'selected',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'draggable',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSelect',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowPanel: [
+    {
+      name: 'position',
+      required: false,
+      enum: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowStory: [
+    {
+      name: 'nodes',
+      required: true,
+    },
+    {
+      name: 'edges',
+      required: true,
+    },
+    {
+      name: 'script',
+      required: true,
+    },
+    {
+      name: 'loop',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'stepDuration',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'playing',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'currentStep',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onStepChange',
+      required: false,
+    },
+    {
+      name: 'controls',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'autoPlay',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Form: [
     {
       name: 'form',

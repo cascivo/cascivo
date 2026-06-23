@@ -321,6 +321,42 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/flow/flow</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-background</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-controls</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-edge</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-handle</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-minimap</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-node</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-panel</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/flow/flow-story</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/form</loc>
     <priority>0.6</priority>
   </url>

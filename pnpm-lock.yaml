@@ -848,6 +848,9 @@ importers:
       '@cascivo/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@cascivo/flow':
+        specifier: workspace:*
+        version: link:../../packages/flow
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons

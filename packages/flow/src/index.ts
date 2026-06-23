@@ -1,11 +1,12 @@
-// Flow engine — data types (type-only so they coexist with the component values
-// of the same name, e.g. `FlowNode` the type + `FlowNode` the component).
+// Flow engine — data types. The node/edge data interfaces are exported as
+// `FlowNodeData`/`FlowEdgeData` so the bare `FlowNode`/`FlowEdge` names stay the
+// component values (avoids a type-shadows-value collision in the bundled .d.ts).
 export type {
   XYPosition,
   HandlePosition,
   NodeSize,
-  FlowNode,
-  FlowEdge,
+  FlowNode as FlowNodeData,
+  FlowEdge as FlowEdgeData,
   EdgePathType,
   Viewport,
   Connection,
