@@ -1,0 +1,111 @@
+@layer cascivo.component {
+  .root {
+    display: flex;
+    overflow: auto;
+    max-block-size: 100%;
+    background: var(--cascivo-editor-bg);
+    color: var(--cascivo-editor-fg);
+    border: 1px solid var(--cascivo-editor-border);
+    border-radius: var(--cascivo-radius-field);
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-sm);
+    line-height: var(--cascivo-leading-normal);
+    tab-size: var(--cascivo-editor-tab-size, 2);
+  }
+
+  /* Line-number gutter — decorative, scroll-locked, never in the a11y tree. */
+  .gutter {
+    flex: 0 0 auto;
+    padding-block: var(--cascivo-space-3);
+    padding-inline-start: var(--cascivo-space-3);
+    padding-inline-end: var(--cascivo-space-2);
+    background: var(--cascivo-editor-gutter-bg);
+    color: var(--cascivo-editor-gutter-fg);
+    text-align: end;
+    user-select: none;
+  }
+
+  .gutterLine {
+    display: block;
+    min-block-size: 1lh;
+  }
+
+  .pre {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: var(--cascivo-space-3);
+    padding-inline: var(--cascivo-space-3);
+    white-space: pre;
+    font: inherit;
+    tab-size: inherit;
+  }
+
+  .code {
+    font: inherit;
+  }
+
+  /* Each source line is its own row so wrapping and line-numbers stay aligned. */
+  .line {
+    display: block;
+    min-block-size: 1lh;
+  }
+
+  .root[data-wrap='true'] .pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .root[data-line-numbers='false'] .gutter {
+    display: none;
+  }
+
+  /* ── Syntax palette — one class per TokenKind, colored by tokens (T3). ── */
+  .plain {
+    color: var(--cascivo-editor-fg);
+  }
+  .keyword {
+    color: var(--cascivo-editor-syntax-keyword);
+  }
+  .string {
+    color: var(--cascivo-editor-syntax-string);
+  }
+  .number {
+    color: var(--cascivo-editor-syntax-number);
+  }
+  .comment {
+    color: var(--cascivo-editor-syntax-comment);
+    font-style: italic;
+  }
+  .function {
+    color: var(--cascivo-editor-syntax-function);
+  }
+  .type {
+    color: var(--cascivo-editor-syntax-type);
+  }
+  .operator {
+    color: var(--cascivo-editor-syntax-operator);
+  }
+  .punctuation {
+    color: var(--cascivo-editor-syntax-punctuation);
+  }
+  .variable {
+    color: var(--cascivo-editor-syntax-variable);
+  }
+  .tag {
+    color: var(--cascivo-editor-syntax-tag);
+  }
+  .attr {
+    color: var(--cascivo-editor-syntax-attr);
+  }
+  .regexp {
+    color: var(--cascivo-editor-syntax-regexp);
+  }
+  .boolean {
+    color: var(--cascivo-editor-syntax-boolean);
+  }
+  .property {
+    color: var(--cascivo-editor-syntax-property);
+  }
+}

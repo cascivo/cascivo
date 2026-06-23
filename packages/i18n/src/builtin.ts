@@ -251,6 +251,10 @@ export const builtin = {
     restart: 'Restart',
     step: 'Step {current} of {total}',
   }),
+  editor: defineMessages('cascade.editor', {
+    label: 'Code editor',
+    code: 'Code',
+  }),
 }
 
 defineCatalog(builtin.pagination, 'de', {
@@ -497,4 +501,8 @@ defineCatalog(builtin.flow, 'de', {
   previous: 'Vorheriger Schritt',
   restart: 'Neu starten',
   step: 'Schritt {current} von {total}',
+})
+defineCatalog(builtin.editor, 'de', {
+  label: 'Code-Editor',
+  code: 'Code',
 })
