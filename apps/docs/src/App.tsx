@@ -3,6 +3,7 @@ import { Layout } from './Layout'
 import { Home } from './pages/Home'
 import { AiPage } from './pages/AiPage'
 import { ChartsPage } from './pages/ChartsPage'
+import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
@@ -30,6 +31,7 @@ export function App() {
           <Route path="/" component={Home} />
           <Route path="/ai" component={AiPage} />
           <Route path="/charts" component={ChartsPage} />
+          <Route path="/flow" component={FlowPage} />
           <Route path="/playground" component={PlaygroundPage} />
           <Route path="/benchmarks" component={Benchmarks} />
           <Route path="/layouts" component={LayoutsPage} />

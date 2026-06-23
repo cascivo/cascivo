@@ -285,6 +285,9 @@ importers:
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascivo/flow':
+        specifier: workspace:*
+        version: link:../../packages/flow
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons

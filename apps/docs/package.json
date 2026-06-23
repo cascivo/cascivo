@@ -18,6 +18,7 @@
     "@cascivo/charts": "workspace:*",
     "@cascivo/components": "workspace:*",
     "@cascivo/core": "workspace:*",
+    "@cascivo/flow": "workspace:*",
     "@cascivo/icons": "workspace:*",
     "@cascivo/layouts": "workspace:*",
     "@cascivo/render": "workspace:*",
