@@ -27,7 +27,21 @@ export const meta: ComponentMeta = {
     { name: 'animated', type: 'boolean', required: false, default: 'false' },
     { name: 'label', type: 'ReactNode', required: false },
     { name: 'selected', type: 'boolean', required: false, default: 'false' },
-    { name: 'markerEnd', type: 'boolean', required: false, default: 'true' },
+    {
+      name: 'markerStart',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Arrowhead at the source (points back toward the source) — set both for bidirectional.',
+    },
+    {
+      name: 'markerEnd',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Arrowhead at the target. Set false for an undirected line.',
+    },
     { name: 'className', type: 'string', required: false },
   ],
   tokens: ['--cascivo-color-border-strong', '--cascivo-color-accent', '--cascivo-color-surface'],
@@ -46,6 +60,19 @@ export const meta: ComponentMeta = {
     <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type="bezier" label="bezier" />
     <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} type="smoothstep" label="step" />
     <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} animated label="animated" />
+  </div>
+)`,
+    },
+    {
+      title: 'Arrow direction',
+      description:
+        'Forward (default), backward, bidirectional, or undirected — via markerStart/markerEnd.',
+      code: `() => (
+  <div style={{ position: 'relative', height: 260 }}>
+    <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
+    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} markerEnd={false} markerStart label="backward" />
+    <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
+    <FlowEdge sourceX={20} sourceY={210} targetX={260} targetY={210} markerEnd={false} label="undirected" />
   </div>
 )`,
     },

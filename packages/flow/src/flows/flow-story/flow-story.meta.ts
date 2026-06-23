@@ -19,6 +19,14 @@ export const meta: ComponentMeta = {
     },
     { name: 'loop', type: 'boolean', required: false, default: 'true' },
     { name: 'stepDuration', type: 'number', required: false, default: '1500' },
+    {
+      name: 'stepGap',
+      type: 'number',
+      required: false,
+      default: '0',
+      description:
+        'Extra pause after each step before advancing (ms) — makes the story easier to follow.',
+    },
     { name: 'playing', type: 'boolean', required: false },
     { name: 'currentStep', type: 'number', required: false },
     { name: 'onStepChange', type: '(step: number) => void', required: false },

@@ -27,6 +27,8 @@ export interface UseStoryOptions {
   onStepChange?: ((step: number) => void) | undefined
   /** Default per-step duration (ms). */
   stepDuration?: number | undefined
+  /** Extra pause added after each step before advancing (ms). Default 0. */
+  stepGap?: number | undefined
   /** Injectable clock for deterministic tests (default real timers). */
   clock?: StoryClock | undefined
 }
@@ -51,7 +53,7 @@ const DEFAULT_STEP_MS = 1500
  * for deterministic tests. Loops when `loop`. No `useEffect`/wall-clock.
  */
 export function useStory(options: UseStoryOptions): UseStoryReturn {
-  const { steps, loop = true, stepDuration = DEFAULT_STEP_MS } = options
+  const { steps, loop = true, stepDuration = DEFAULT_STEP_MS, stepGap = 0 } = options
 
   const [currentStep, setStep] = useControllableSignal<number>({
     value: options.currentStep,
@@ -91,7 +93,7 @@ export function useStory(options: UseStoryOptions): UseStoryReturn {
     const total = steps.length
     if (total === 0) return
     if (typeof window === 'undefined' && !clockRef.current) return
-    const dur = steps[i]?.duration ?? stepDuration
+    const dur = (steps[i]?.duration ?? stepDuration) + stepGap
     const c = clock()
     const handle = c.setTimeout(() => {
       const nextIndex = i + 1

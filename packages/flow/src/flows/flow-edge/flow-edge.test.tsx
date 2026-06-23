@@ -29,6 +29,22 @@ describe('FlowEdge', () => {
     expect(container.querySelector('svg')).toHaveAttribute('data-selected', 'true')
   })
 
+  it('arrows are configurable per end', () => {
+    const fwd = render(<FlowEdge id="f" {...coords} />)
+    expect(fwd.container.querySelector('path[marker-end]')).not.toBeNull()
+    expect(fwd.container.querySelector('path[marker-start]')).toBeNull()
+
+    const both = render(<FlowEdge id="b" markerStart {...coords} />)
+    expect(both.container.querySelector('path[marker-start]')).not.toBeNull()
+    expect(both.container.querySelector('path[marker-end]')).not.toBeNull()
+
+    const none = render(<FlowEdge id="n" markerEnd={false} {...coords} />)
+    expect(none.container.querySelector('path[marker-end]')).toBeNull()
+    expect(none.container.querySelector('path[marker-start]')).toBeNull()
+    // No marker def when neither end has an arrow.
+    expect(none.container.querySelector('marker')).toBeNull()
+  })
+
   it('label renders at the midpoint', () => {
     const { getByText } = render(<FlowEdge id="e" label="sync" {...coords} />)
     const label = getByText('sync')

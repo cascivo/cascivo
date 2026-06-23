@@ -24,6 +24,8 @@ export interface FlowStoryProps {
   loop?: boolean
   /** Per-step dwell time (ms). Default 1500. */
   stepDuration?: number
+  /** Extra pause added after each step before advancing (ms), so the story is easier to follow. Default 0. */
+  stepGap?: number
   playing?: boolean
   currentStep?: number
   onStepChange?: (step: number) => void
@@ -59,6 +61,7 @@ export function FlowStory({
   script,
   loop = true,
   stepDuration = 1500,
+  stepGap = 0,
   playing,
   currentStep,
   onStepChange,
@@ -76,6 +79,7 @@ export function FlowStory({
     steps,
     loop,
     stepDuration,
+    stepGap,
     playing,
     defaultPlaying: autoPlay,
     currentStep,

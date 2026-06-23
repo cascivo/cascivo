@@ -8368,10 +8368,18 @@
             "default": "false"
           },
           {
+            "name": "markerStart",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Arrowhead at the source (points back toward the source) — set both for bidirectional."
+          },
+          {
             "name": "markerEnd",
             "type": "boolean",
             "required": false,
-            "default": "true"
+            "default": "true",
+            "description": "Arrowhead at the target. Set false for an undirected line."
           },
           {
             "name": "className",
@@ -8875,6 +8883,13 @@
             "type": "number",
             "required": false,
             "default": "1500"
+          },
+          {
+            "name": "stepGap",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Extra pause after each step before advancing (ms) — makes the story easier to follow."
           },
           {
             "name": "playing",

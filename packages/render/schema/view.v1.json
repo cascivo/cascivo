@@ -6000,6 +6000,9 @@
                   "selected": {
                     "type": "boolean"
                   },
+                  "markerStart": {
+                    "type": "boolean"
+                  },
                   "markerEnd": {
                     "type": "boolean"
                   },
@@ -6186,6 +6189,9 @@
                     "type": "boolean"
                   },
                   "stepDuration": {
+                    "type": "number"
+                  },
+                  "stepGap": {
                     "type": "number"
                   },
                   "playing": {

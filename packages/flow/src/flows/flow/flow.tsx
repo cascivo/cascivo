@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignals } from '@cascivo/core'
+import { cn, useSignal, useSignals } from '@cascivo/core'
 import type { CSSProperties, ReactNode } from 'react'
 import { FlowCanvas } from '../../core/flow-canvas/flow-canvas.tsx'
 import { useConnection } from '../../core/use-connection.ts'
@@ -8,6 +8,7 @@ import { applyLayout, type LayoutStrategy } from '../../engine/layout.ts'
 import { handleAnchor } from '../../engine/geometry.ts'
 import { useFlow } from '../../engine/store.ts'
 import { screenToFlow } from '../../engine/transform.ts'
+import type { NodeSize } from '../../engine/types.ts'
 import type {
   Connection,
   EdgePathType,
@@ -112,10 +113,25 @@ export function Flow({
     store.setNodes(store.nodes.value.map((n) => ({ ...n, selected: n.id === id })))
   }
 
+  // Measured node sizes (kept out of the nodes array so onNodesChange stays a
+  // user-intent signal). Edges anchor to these so they reach the real node box.
+  const sizes = useSignal<Record<string, NodeSize>>({})
+  const measure = (id: string, size: NodeSize): void => {
+    const current = sizes.peek()[id]
+    if (current && current.width === size.width && current.height === size.height) return
+    sizes.value = { ...sizes.peek(), [id]: size }
+  }
+
   const currentNodes = store.nodes.value
   const currentEdges = store.edges.value
   const zoom = store.viewport.value.zoom
-  const byId = new Map(currentNodes.map((n) => [n.id, n]))
+  const measured = sizes.value
+  const byId = new Map(
+    currentNodes.map((n) => {
+      const m = measured[n.id]
+      return [n.id, m ? { ...n, width: m.width, height: m.height } : n]
+    }),
+  )
 
   const conn = connection.value
 
@@ -160,6 +176,13 @@ export function Flow({
         const s = handleAnchor(sourceNode, 'right')
         const t = handleAnchor(targetNode, 'left')
         const isActive = activeEdgeId === edge.id
+        const dir = isActive ? activeDirection : undefined
+        // The active step's arrow follows the travel direction (reverse → arrow
+        // at the source); otherwise honor the edge's own marker config.
+        const markerStart =
+          dir === 'reverse' ? true : dir === 'forward' ? false : (edge.markerStart ?? false)
+        const markerEnd =
+          dir === 'reverse' ? false : dir === 'forward' ? true : (edge.markerEnd ?? true)
         return (
           <FlowEdge
             key={edge.id}
@@ -171,7 +194,9 @@ export function Flow({
             type={(edge.type as EdgePathType) ?? 'bezier'}
             animated={edge.animated || isActive}
             active={isActive}
-            direction={isActive ? activeDirection : undefined}
+            direction={dir}
+            markerStart={markerStart}
+            markerEnd={markerEnd}
             label={edge.label}
             selected={edge.selected}
           />
@@ -198,6 +223,7 @@ export function Flow({
           zoom={zoom}
           selected={node.selected ?? false}
           onSelect={select}
+          onMeasure={(size) => measure(node.id, size)}
           onPositionChange={(position) => store.updateNode(node.id, { position })}
         >
           {nodeTypes && node.type && nodeTypes[node.type] ? (

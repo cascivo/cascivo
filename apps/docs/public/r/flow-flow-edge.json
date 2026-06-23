@@ -62,10 +62,18 @@
         "default": "false"
       },
       {
+        "name": "markerStart",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Arrowhead at the source (points back toward the source) — set both for bidirectional."
+      },
+      {
         "name": "markerEnd",
         "type": "boolean",
         "required": false,
-        "default": "true"
+        "default": "true",
+        "description": "Arrowhead at the target. Set false for an undirected line."
       },
       {
         "name": "className",
@@ -89,6 +97,11 @@
         "title": "Edge path types",
         "description": "Bezier, straight, smoothstep, and an animated edge.",
         "code": "() => (\n  <div style={{ position: 'relative', height: 220 }}>\n    <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type=\"bezier\" label=\"bezier\" />\n    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} type=\"smoothstep\" label=\"step\" />\n    <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} animated label=\"animated\" />\n  </div>\n)"
+      },
+      {
+        "title": "Arrow direction",
+        "description": "Forward (default), backward, bidirectional, or undirected — via markerStart/markerEnd.",
+        "code": "() => (\n  <div style={{ position: 'relative', height: 260 }}>\n    <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label=\"forward\" />\n    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} markerEnd={false} markerStart label=\"backward\" />\n    <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label=\"both\" />\n    <FlowEdge sourceX={20} sourceY={210} targetX={260} targetY={210} markerEnd={false} label=\"undirected\" />\n  </div>\n)"
       }
     ],
     "dependencies": ["@cascivo/core"],

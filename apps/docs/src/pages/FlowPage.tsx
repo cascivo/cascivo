@@ -24,6 +24,20 @@ const edgeTypeEdges = [
   { id: 'e3', source: 'a3', target: 'b3', type: 'straight', label: 'straight', animated: true },
 ]
 
+const arrowNodes = [
+  { id: 'f1', position: { x: 0, y: 0 }, data: { label: 'A' } },
+  { id: 'g1', position: { x: 280, y: 0 }, data: { label: 'B' } },
+  { id: 'f2', position: { x: 0, y: 90 }, data: { label: 'A' } },
+  { id: 'g2', position: { x: 280, y: 90 }, data: { label: 'B' } },
+  { id: 'f3', position: { x: 0, y: 180 }, data: { label: 'A' } },
+  { id: 'g3', position: { x: 280, y: 180 }, data: { label: 'B' } },
+]
+const arrowEdges = [
+  { id: 'fwd', source: 'f1', target: 'g1', label: 'forward' },
+  { id: 'both', source: 'f2', target: 'g2', markerStart: true, label: 'bidirectional' },
+  { id: 'none', source: 'f3', target: 'g3', markerEnd: false, label: 'undirected' },
+]
+
 const dagNodes = [
   { id: 'ingest', position: { x: 0, y: 0 }, data: { label: 'Ingest' } },
   { id: 'transform', position: { x: 0, y: 0 }, data: { label: 'Transform' } },
@@ -93,6 +107,15 @@ export function FlowPage() {
       </section>
 
       <section class="doc-section">
+        <h2>Arrow direction</h2>
+        <p>
+          Each edge configures its arrowheads with <code>markerStart</code> / <code>markerEnd</code>{' '}
+          — forward (default), bidirectional, or an undirected line.
+        </p>
+        <Flow style={{ height: 280 }} nodes={arrowNodes} edges={arrowEdges} background />
+      </section>
+
+      <section class="doc-section">
         <h2>Auto layout + minimap</h2>
         <p>
           A tiny, dependency-free <code>layered</code> layout arranges a DAG, with a draggable
@@ -113,14 +136,18 @@ export function FlowPage() {
         <p>
           Walk a viewer through a graph step by step with fade-in captions. A serializable{' '}
           <code>script</code> of <code>{'{ from, to, label }'}</code> steps animates each step in
-          sequence and loops — one <code>A&lt;-&gt;B</code> edge animates both ways. Reduced-motion
-          suppresses travel while preserving the captions.
+          sequence and loops — one <code>A&lt;-&gt;B</code> edge animates both ways, and the arrow
+          always points the way the current step flows. A <code>stepGap</code> adds a pause between
+          steps so it is easy to follow. Reduced-motion suppresses travel while preserving the
+          captions.
         </p>
         <FlowStory
           style={{ height: 360 }}
           nodes={storyNodes}
           edges={storyEdges}
           script={story}
+          stepDuration={1600}
+          stepGap={1000}
           loop
         />
       </section>

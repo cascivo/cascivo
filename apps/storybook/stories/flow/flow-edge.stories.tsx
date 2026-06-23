@@ -33,3 +33,30 @@ export const EdgePathTypes: Story = {
     </div>
   ),
 }
+
+export const ArrowDirection: Story = {
+  name: 'Arrow direction',
+  render: () => (
+    <div style={{ position: 'relative', height: 260 }}>
+      <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
+      <FlowEdge
+        sourceX={20}
+        sourceY={90}
+        targetX={260}
+        targetY={90}
+        markerEnd={false}
+        markerStart
+        label="backward"
+      />
+      <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
+      <FlowEdge
+        sourceX={20}
+        sourceY={210}
+        targetX={260}
+        targetY={210}
+        markerEnd={false}
+        label="undirected"
+      />
+    </div>
+  ),
+}

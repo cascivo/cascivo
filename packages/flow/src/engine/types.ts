@@ -39,6 +39,10 @@ export interface FlowEdge {
   animated?: boolean
   label?: string
   selected?: boolean
+  /** Arrowhead at the source end (points back toward the source). Default false. */
+  markerStart?: boolean
+  /** Arrowhead at the target end (points at the target). Default true. */
+  markerEnd?: boolean
 }
 
 /** The pan/zoom state of the canvas pane. */

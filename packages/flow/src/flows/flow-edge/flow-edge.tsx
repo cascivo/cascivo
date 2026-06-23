@@ -19,6 +19,8 @@ export interface FlowEdgeProps {
   animated?: boolean | undefined
   label?: ReactNode | undefined
   selected?: boolean | undefined
+  /** Render an arrowhead at the source (points back toward the source). Default false. */
+  markerStart?: boolean | undefined
   /** Render an arrowhead at the target. Default true. */
   markerEnd?: boolean | undefined
   /** Direction the dash travels when animated. Default 'forward'. */
@@ -46,6 +48,7 @@ export function FlowEdge({
   animated = false,
   label,
   selected = false,
+  markerStart = false,
   markerEnd = true,
   direction = 'forward',
   active,
@@ -54,6 +57,7 @@ export function FlowEdge({
   useSignals()
   const reactId = useId()
   const markerId = `flow-arrow-${id ?? reactId}`
+  const showMarker = markerStart || markerEnd
 
   const path = useComputed(() =>
     edgePath(type, {
@@ -77,8 +81,9 @@ export function FlowEdge({
         data-direction={direction}
         aria-hidden="true"
       >
-        {markerEnd && (
+        {showMarker && (
           <defs>
+            {/* orient="auto-start-reverse" flips the arrow when used as marker-start. */}
             <marker
               id={markerId}
               viewBox="0 0 10 10"
@@ -97,6 +102,7 @@ export function FlowEdge({
         <path
           className={styles['edgePath']}
           d={d}
+          markerStart={markerStart ? `url(#${markerId})` : undefined}
           markerEnd={markerEnd ? `url(#${markerId})` : undefined}
         />
       </svg>

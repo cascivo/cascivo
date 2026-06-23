@@ -66,13 +66,14 @@
     inset-block-start: 0;
     inset-inline-start: 0;
     transform: translate(var(--flow-label-x, 0), var(--flow-label-y, 0)) translate(-50%, -50%);
-    padding-block: var(--cascivo-space-0-5);
-    padding-inline: var(--cascivo-space-1-5);
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-2);
     background-color: var(--cascivo-color-surface);
     color: var(--cascivo-color-text);
     border: 1px solid var(--cascivo-color-border);
     border-radius: var(--cascivo-radius-sm);
     font-size: 0.75rem;
+    line-height: 1.4;
     white-space: nowrap;
     pointer-events: none;
   }

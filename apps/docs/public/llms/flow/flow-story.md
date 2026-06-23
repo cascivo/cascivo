@@ -23,19 +23,20 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type                     | Required | Default | Description                                                |
-| -------------- | ------------------------ | -------- | ------- | ---------------------------------------------------------- |
-| `nodes`        | `FlowNode[]`             | yes      | —       | —                                                          |
-| `edges`        | `FlowEdge[]`             | yes      | —       | —                                                          |
-| `script`       | `StoryStep[]`            | yes      | —       | Ordered steps: { from, to, label? } or { edge, reverse? }. |
-| `loop`         | `boolean`                | no       | `true`  | —                                                          |
-| `stepDuration` | `number`                 | no       | `1500`  | —                                                          |
-| `playing`      | `boolean`                | no       | —       | —                                                          |
-| `currentStep`  | `number`                 | no       | —       | —                                                          |
-| `onStepChange` | `(step: number) => void` | no       | —       | —                                                          |
-| `controls`     | `boolean`                | no       | `true`  | —                                                          |
-| `autoPlay`     | `boolean`                | no       | `true`  | —                                                          |
-| `className`    | `string`                 | no       | —       | —                                                          |
+| Prop           | Type                     | Required | Default | Description                                                                           |
+| -------------- | ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------- |
+| `nodes`        | `FlowNode[]`             | yes      | —       | —                                                                                     |
+| `edges`        | `FlowEdge[]`             | yes      | —       | —                                                                                     |
+| `script`       | `StoryStep[]`            | yes      | —       | Ordered steps: { from, to, label? } or { edge, reverse? }.                            |
+| `loop`         | `boolean`                | no       | `true`  | —                                                                                     |
+| `stepDuration` | `number`                 | no       | `1500`  | —                                                                                     |
+| `stepGap`      | `number`                 | no       | `0`     | Extra pause after each step before advancing (ms) — makes the story easier to follow. |
+| `playing`      | `boolean`                | no       | —       | —                                                                                     |
+| `currentStep`  | `number`                 | no       | —       | —                                                                                     |
+| `onStepChange` | `(step: number) => void` | no       | —       | —                                                                                     |
+| `controls`     | `boolean`                | no       | `true`  | —                                                                                     |
+| `autoPlay`     | `boolean`                | no       | `true`  | —                                                                                     |
+| `className`    | `string`                 | no       | —       | —                                                                                     |
 
 ## Examples
 

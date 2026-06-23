@@ -1,7 +1,14 @@
 'use client'
-import { cn, useControllableSignal, useDraggable, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  useControllableSignal,
+  useDraggable,
+  useResizeObserver,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { useRef, type HTMLAttributes, type ReactNode, type RefObject } from 'react'
-import type { XYPosition } from '../../engine/types.ts'
+import type { NodeSize, XYPosition } from '../../engine/types.ts'
 import styles from './flow-node.module.css'
 
 export interface FlowNodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
@@ -10,6 +17,8 @@ export interface FlowNodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onS
   position?: XYPosition
   defaultPosition?: XYPosition
   onPositionChange?: (position: XYPosition) => void
+  /** Reports the rendered box size so edges can anchor to the real node bounds. */
+  onMeasure?: (size: NodeSize) => void
   /** Current zoom — drag deltas are divided by it so the node tracks the pointer. */
   zoom?: number
   selected?: boolean
@@ -30,6 +39,7 @@ export function FlowNode({
   position,
   defaultPosition,
   onPositionChange,
+  onMeasure,
   zoom = 1,
   selected = false,
   draggable = true,
@@ -48,13 +58,23 @@ export function FlowNode({
   })
 
   const { handleRef, targetRef, offset, isDragging } = useDraggable({ isDisabled: !draggable })
-  // Same node element is both the drag handle and the moved target.
+  const { ref: measureRef, size } = useResizeObserver<HTMLDivElement>({ box: 'border-box' })
+  // Same node element is the drag handle, the moved target, and the measured box.
   const nodeRef = useRef<HTMLDivElement | null>(null)
   const setRefs = (el: HTMLDivElement | null): void => {
     nodeRef.current = el
     ;(handleRef as RefObject<HTMLElement | null>).current = el
     ;(targetRef as RefObject<HTMLElement | null>).current = el
+    ;(measureRef as RefObject<HTMLElement | null>).current = el
   }
+
+  // Report the rendered size so edges anchor to the real node bounds.
+  const onMeasureRef = useRef(onMeasure)
+  onMeasureRef.current = onMeasure
+  useSignalEffect(() => {
+    const s = size.value
+    if (s && s.width > 0 && s.height > 0) onMeasureRef.current?.(s)
+  })
 
   const zoomRef = useRef(zoom)
   zoomRef.current = zoom

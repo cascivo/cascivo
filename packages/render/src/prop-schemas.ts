@@ -1862,6 +1862,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'markerStart',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'markerEnd',
       required: false,
       primitives: ['boolean'],
@@ -2022,6 +2027,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'stepDuration',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'stepGap',
       required: false,
       primitives: ['number'],
     },

@@ -46,6 +46,13 @@
         "default": "1500"
       },
       {
+        "name": "stepGap",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Extra pause after each step before advancing (ms) — makes the story easier to follow."
+      },
+      {
         "name": "playing",
         "type": "boolean",
         "required": false

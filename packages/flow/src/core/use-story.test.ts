@@ -4,19 +4,21 @@ import type { ResolvedStep } from '../engine/script.ts'
 import { useStory, type StoryClock } from './use-story.ts'
 
 function fakeClock() {
-  let pending: { id: number; cb: () => void }[] = []
+  let pending: { id: number; cb: () => void; ms: number }[] = []
   let id = 0
+  let lastMs = 0
   const clock: StoryClock = {
-    setTimeout: (cb) => {
+    setTimeout: (cb, ms) => {
       const myId = ++id
-      pending.push({ id: myId, cb })
+      lastMs = ms
+      pending.push({ id: myId, cb, ms })
       return myId
     },
     clearTimeout: (h) => {
       pending = pending.filter((p) => p.id !== h)
     },
   }
-  return { clock, tick: () => pending.splice(0).forEach((p) => p.cb()) }
+  return { clock, tick: () => pending.splice(0).forEach((p) => p.cb()), lastMs: () => lastMs }
 }
 
 const steps: ResolvedStep[] = [
@@ -78,5 +80,11 @@ describe('useStory', () => {
     const { clock } = fakeClock()
     const { result } = renderHook(() => useStory({ steps, defaultPlaying: false, clock }))
     expect(result.current.activeStep.value).toEqual(steps[0])
+  })
+
+  it('stepGap extends the dwell before advancing', () => {
+    const { clock, lastMs } = fakeClock()
+    renderHook(() => useStory({ steps, stepDuration: 1000, stepGap: 500, clock }))
+    expect(lastMs()).toBe(1500)
   })
 })
