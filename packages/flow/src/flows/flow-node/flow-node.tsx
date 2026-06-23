@@ -1,12 +1,5 @@
 'use client'
-import {
-  cn,
-  useControllableSignal,
-  useDraggable,
-  useResizeObserver,
-  useSignalEffect,
-  useSignals,
-} from '@cascivo/core'
+import { cn, useControllableSignal, useDraggable, useSignalEffect, useSignals } from '@cascivo/core'
 import { useRef, type HTMLAttributes, type ReactNode, type RefObject } from 'react'
 import type { NodeSize, XYPosition } from '../../engine/types.ts'
 import styles from './flow-node.module.css'
@@ -58,22 +51,31 @@ export function FlowNode({
   })
 
   const { handleRef, targetRef, offset, isDragging } = useDraggable({ isDisabled: !draggable })
-  const { ref: measureRef, size } = useResizeObserver<HTMLDivElement>({ box: 'border-box' })
   // Same node element is the drag handle, the moved target, and the measured box.
   const nodeRef = useRef<HTMLDivElement | null>(null)
   const setRefs = (el: HTMLDivElement | null): void => {
     nodeRef.current = el
     ;(handleRef as RefObject<HTMLElement | null>).current = el
     ;(targetRef as RefObject<HTMLElement | null>).current = el
-    ;(measureRef as RefObject<HTMLElement | null>).current = el
   }
 
-  // Report the rendered size so edges anchor to the real node bounds.
+  // Report the rendered border-box so edges anchor to the real node bounds.
+  // `offsetWidth/offsetHeight` are layout px (flow units) and are unaffected by
+  // the pane's transform scale — unlike a ResizeObserver's content-box rect.
   const onMeasureRef = useRef(onMeasure)
   onMeasureRef.current = onMeasure
   useSignalEffect(() => {
-    const s = size.value
-    if (s && s.width > 0 && s.height > 0) onMeasureRef.current?.(s)
+    const el = nodeRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const report = (): void => {
+      const width = el.offsetWidth
+      const height = el.offsetHeight
+      if (width > 0 && height > 0) onMeasureRef.current?.({ width, height })
+    }
+    report() // initial measure (the observer covers later resizes)
+    const observer = new ResizeObserver(report)
+    observer.observe(el)
+    return () => observer.disconnect()
   })
 
   const zoomRef = useRef(zoom)

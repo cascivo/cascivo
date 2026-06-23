@@ -1,5 +1,5 @@
 'use client'
-import { cn, useComputed, useSignals } from '@cascivo/core'
+import { cn } from '@cascivo/core'
 import { useId, type ReactNode } from 'react'
 import { edgePath } from '../../engine/path.ts'
 import type { EdgePathType, HandlePosition } from '../../engine/types.ts'
@@ -54,21 +54,19 @@ export function FlowEdge({
   active,
   className,
 }: FlowEdgeProps) {
-  useSignals()
   const reactId = useId()
   const markerId = `flow-arrow-${id ?? reactId}`
   const showMarker = markerStart || markerEnd
 
-  const path = useComputed(() =>
-    edgePath(type, {
-      source: { x: sourceX, y: sourceY },
-      target: { x: targetX, y: targetY },
-      sourcePosition,
-      targetPosition,
-    }),
-  )
-
-  const { d, mid } = path.value
+  // Plain function of the (numeric) props — recompute every render so the edge
+  // tracks node position + measured size. (A `computed` with no signal deps
+  // would cache the first result forever.)
+  const { d, mid } = edgePath(type, {
+    source: { x: sourceX, y: sourceY },
+    target: { x: targetX, y: targetY },
+    sourcePosition,
+    targetPosition,
+  })
 
   return (
     <>
