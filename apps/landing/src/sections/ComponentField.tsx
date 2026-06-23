@@ -44,6 +44,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/ta
 import { TagsInput } from '@cascivo/components/tags-input'
 import { TimePicker } from '@cascivo/components/time-picker'
 import { AreaChart, BarChart, Kpi, LineChart, PieChart } from '@cascivo/charts'
+import { Flow, type FlowEdgeData, type FlowNodeData } from '@cascivo/flow'
+import { Highlight } from '@cascivo/editor'
+import { Bell, Calendar, Heart, Home, Search, Settings, Star, User } from '@cascivo/icons'
 import { peek } from '../peek'
 
 // The page backdrop: real, composed UI cards — forms, charts, lists, settings —
@@ -1210,13 +1213,91 @@ function FeatureVote() {
   )
 }
 
+const FLOW_NODES: FlowNodeData[] = [
+  { id: 'a', position: { x: 0, y: 0 }, data: { label: 'Source' } },
+  { id: 'b', position: { x: 0, y: 0 }, data: { label: 'Transform' } },
+  { id: 'c', position: { x: 0, y: 0 }, data: { label: 'Sink' } },
+]
+const FLOW_EDGES: FlowEdgeData[] = [
+  { id: 'ab', source: 'a', target: 'b', animated: true },
+  { id: 'bc', source: 'b', target: 'c', animated: true },
+]
+
+function FlowCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Pipeline</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-flow">
+          <Flow
+            nodes={FLOW_NODES}
+            edges={FLOW_EDGES}
+            layout="layered"
+            interactive={false}
+            fitView
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+const EDITOR_SNIPPET = `# Notes
+
+- edit **Markdown** live
+- find & replace (Mod-F)
+- owned undo / redo
+
+\`\`\`ts
+const editor = true
+\`\`\`
+`
+
+function EditorCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Editor</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Highlight language="markdown" value={EDITOR_SNIPPET} lineNumbers />
+      </CardContent>
+    </Card>
+  )
+}
+
+const FIELD_ICONS = [Home, Search, Settings, Heart, Star, Bell, Calendar, User]
+
+function IconsCard() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Icons</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bgc-icons">
+          {FIELD_ICONS.map((Icon, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Icon key={i} size={22} aria-hidden="true" />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 // Interleaved so charts, forms, and lists alternate down each column. Distinct
 // cards only — no card repeats, so the revealed field reads as a real gallery.
 const TILES: ReactNode[] = [
   <SignIn key="signin" />,
   <RevenueArea key="area" />,
+  <FlowCard key="flow" />,
   <Team key="team" />,
+  <EditorCard key="editor" />,
   <SettingsTabs key="settings-tabs" />,
+  <IconsCard key="icons" />,
   <PlanToggle key="plan" />,
   <Notifications key="notif" />,
   <Uploads key="uploads" />,

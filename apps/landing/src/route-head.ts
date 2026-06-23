@@ -43,6 +43,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'Why cascivo uses modern CSS: @layer for cascade control without specificity wars, @container for components that respond to their slot, and :has() for conditional styling without JavaScript.',
     ogTitle: 'Modern CSS — cascivo',
   },
+  '/highlights': {
+    title: 'Highlights — Flow, Editor & Icons — cascivo',
+    description:
+      'The newest cascivo surfaces: @cascivo/flow for signal-driven node/edge diagrams with pan, zoom and animated edges; @cascivo/editor, a CSS-native code editor with an owned tokenizer; and ~440 tree-shakeable icons. Try them live.',
+    ogTitle: 'cascivo highlights — Flow, Editor & Icons',
+  },
   '/examples': {
     title: 'Examples — cascivo',
     description:
@@ -111,6 +117,7 @@ export const PRERENDER_ROUTES = [
   'performance',
   'guides',
   'modern-css',
+  'highlights',
   'examples',
   'showcase',
   'examples/deploy',

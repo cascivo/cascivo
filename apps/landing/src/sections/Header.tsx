@@ -23,6 +23,7 @@ const PRIMARY_LINKS: NavLink[] = [
 ]
 
 const RESOURCE_LINKS: NavLink[] = [
+  { label: 'Highlights', href: '/highlights' },
   { label: 'Showcase', href: '/showcase' },
   { label: 'Create', href: '/create' },
   { label: 'Blocks', href: '/blocks' },

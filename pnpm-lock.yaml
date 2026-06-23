@@ -784,6 +784,12 @@ importers:
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascivo/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
+      '@cascivo/flow':
+        specifier: workspace:*
+        version: link:../../packages/flow
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons

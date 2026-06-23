@@ -641,6 +641,19 @@ main {
   color: var(--cascivo-color-text-subtle);
 }
 
+/* Sized frame for the backdrop Flow card — Flow needs an explicit block-size. */
+.bgc-flow {
+  block-size: 8rem;
+}
+
+.bgc-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--cascivo-space-3);
+  justify-items: center;
+  color: var(--cascivo-color-text);
+}
+
 .bgc-price {
   font-size: var(--cascivo-text-3xl);
   font-weight: var(--cascivo-font-bold);
@@ -781,6 +794,38 @@ kbd {
 
 .icon-showcase-cta a {
   color: inherit;
+}
+
+/* ── Highlights page (Flow / Editor / Icons) ──────────── */
+.highlight-section {
+  scroll-margin-block-start: 5rem;
+}
+
+/* Sized frame for the live Flow canvas — Flow needs an explicit block-size. */
+.highlight-canvas {
+  block-size: 24rem;
+  margin-block: var(--cascivo-space-6);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  overflow: hidden;
+  background-color: var(--cascivo-color-surface, var(--cascivo-color-bg));
+}
+
+.highlight-flow {
+  block-size: 100%;
+}
+
+/* Bounded, scrollable frame for the live editor instance. */
+.highlight-editor {
+  block-size: 24rem;
+  margin-block: var(--cascivo-space-6);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  overflow: hidden;
+}
+
+.highlight-editor > * {
+  block-size: 100%;
 }
 
 /* ── Ecosystem ────────────────────────────────────────── */

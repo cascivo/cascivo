@@ -27,9 +27,6 @@ const ComponentField = lazy(() =>
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
-const IconShowcase = lazy(() =>
-  import('./sections/IconShowcase').then((m) => ({ default: m.IconShowcase })),
-)
 const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
@@ -43,6 +40,9 @@ const PerformancePage = lazy(() =>
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
 const ModernCssPage = lazy(() =>
   import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
+)
+const HighlightsPage = lazy(() =>
+  import('./pages/HighlightsPage').then((m) => ({ default: m.HighlightsPage })),
 )
 const ExamplesPage = lazy(() =>
   import('./pages/ExamplesPage').then((m) => ({ default: m.ExamplesPage })),
@@ -98,10 +98,6 @@ function HomePage() {
               <QuickStart />
             </Suspense>
             <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={320} />}>
-              <IconShowcase />
-            </Suspense>
-            <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={180} />}>
               <CtaBand />
             </Suspense>
@@ -128,6 +124,7 @@ const ROUTES: Record<string, Route> = {
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
+  '/highlights': { Page: HighlightsPage, title: ROUTE_HEAD['/highlights']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/showcase': { Page: ShowcasePage, title: ROUTE_HEAD['/showcase']?.title ?? 'cascivo' },
   '/ai': { Page: AiPage, title: ROUTE_HEAD['/ai']?.title ?? 'cascivo' },

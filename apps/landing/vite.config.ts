@@ -321,6 +321,7 @@ export default defineConfig({
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
       '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
       '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),
+      '@cascivo/editor': resolve(root, 'packages/editor/src/index.ts'),
       '@cascivo/components/blocks/types': resolve(root, 'packages/components/src/blocks/types.ts'),
     },
   },
