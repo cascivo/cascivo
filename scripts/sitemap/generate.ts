@@ -25,6 +25,7 @@ const STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/directory', priority: '0.8' },
   { path: '/context', priority: '0.8' },
   { path: '/charts', priority: '0.7' },
+  { path: '/icons', priority: '0.7' },
   { path: '/layouts', priority: '0.7' },
   { path: '/benchmarks', priority: '0.7' },
   { path: '/parity', priority: '0.7' },

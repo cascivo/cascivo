@@ -26,6 +26,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'CVD-safe, signal-driven charts built on modern CSS. Browse the @cascivo/charts catalog with live previews and tokens.',
   },
+  '/icons': {
+    title: `Icons${SUFFIX}`,
+    description:
+      'Browse and search ~440 stroked 24×24 SVG icons from @cascivo/icons — tree-shakeable named exports, one import. Click any icon to copy its import.',
+  },
   '/flow': {
     title: `Flow${SUFFIX}`,
     description:

@@ -1,0 +1,92 @@
+.controls {
+  display: flex;
+  gap: var(--cascivo-space-4);
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.control-label {
+  display: block;
+  font-size: var(--cascivo-text-sm);
+  margin-block-end: 0.25rem;
+}
+
+.sizes {
+  display: flex;
+  gap: var(--cascivo-space-1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: var(--cascivo-space-3);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-3);
+  /* Comfortable hit area; the whole tile is the copy control. */
+  min-block-size: 6rem;
+  border: 1px solid var(--cascivo-color-border-subtle, var(--cascivo-color-border));
+  border-radius: var(--cascivo-radius-md, 0.5rem);
+  background: var(--cascivo-color-surface, transparent);
+  color: var(--cascivo-color-text);
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+/* Keep the interactive control at a ≥44px coarse tap target. */
+@media (pointer: coarse) {
+  .tile {
+    min-block-size: max(6rem, var(--cascivo-target-min-coarse, 2.75rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+}
+
+.tile:hover {
+  border-color: var(--cascivo-color-accent);
+  background-color: var(--cascivo-color-surface-2, var(--cascivo-color-surface));
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 3rem;
+}
+
+.name {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.copied {
+  color: var(--cascivo-color-accent);
+  font-weight: 600;
+}
+
+.empty {
+  padding: var(--cascivo-space-6);
+  text-align: center;
+  color: var(--cascivo-color-text-muted);
+}
