@@ -23,7 +23,7 @@ export interface ComponentMeta {
   tags: string[]
 }
 
-export type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section'
+export type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section' | 'flow'
 
 export interface RegistryEntry {
   name: string
