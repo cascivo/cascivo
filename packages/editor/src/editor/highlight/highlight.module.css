@@ -30,6 +30,18 @@
     min-block-size: 1lh;
   }
 
+  /* Active-line marker — positioned imperatively via --cascivo-editor-caret-line,
+     mirroring the editor's current-line row highlight. */
+  .gutterActive {
+    position: absolute;
+    inset-inline: 0;
+    top: var(--cascivo-space-3);
+    block-size: 1lh;
+    transform: translateY(calc(var(--cascivo-editor-caret-line, 0) * 1lh));
+    background: var(--cascivo-editor-gutter-active, var(--cascivo-editor-current-line));
+    pointer-events: none;
+  }
+
   .pre {
     flex: 1 1 auto;
     min-inline-size: 0;

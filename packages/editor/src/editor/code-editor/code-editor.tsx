@@ -17,9 +17,17 @@ import hl from '../highlight/highlight.module.css'
 import styles from './code-editor.module.css'
 import { FindPanel } from './find-panel.tsx'
 import { offsetToLineCol, replaceAll, scan, toDecorations, type Match } from './find.ts'
+import { matchBracket, toBracketDecorations } from './brackets.ts'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
 import { diff, rebaseSelection } from './sync.ts'
+
+/**
+ * Per-instance theme overrides — a partial map of `--cascivo-editor-*` custom
+ * properties spread onto the editor root. Swapping it re-themes live (Zen mode),
+ * while global `data-theme` remains the default.
+ */
+export type EditorTheme = Partial<Record<`--cascivo-editor-${string}`, string>>
 
 /**
  * Imperative handle (via `ref`) for callers that drive their own transactions —
@@ -78,6 +86,10 @@ export interface CodeEditorProps extends Omit<
   keymap?: KeyMap
   /** Extra decorations — offset ranges → CSS class — merged with internal ones. */
   decorations?: readonly Decoration[] | ((value: string) => readonly Decoration[])
+  /** Per-instance `--cascivo-editor-*` overrides; swapping it re-themes live. */
+  theme?: EditorTheme
+  /** Highlight the bracket matching the one adjacent to the caret (default false). */
+  bracketMatching?: boolean
 }
 
 /**
@@ -107,6 +119,8 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     onSave,
     keymap,
     decorations,
+    theme,
+    bracketMatching = false,
     className,
     style,
     onKeyDown,
@@ -178,6 +192,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     lastEmittedRef.current = snap.text
     prevTextRef.current = snap.text
     selRef.current = { start: snap.selectionStart, end: snap.selectionEnd }
+    caretOffset.value = snap.selectionStart
     const line = snap.text.slice(0, snap.selectionStart).split('\n').length - 1
     rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
     applyingRef.current = false
@@ -208,6 +223,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const caseSensitive = useSignal(false)
   const replaceMode = useSignal(false)
   const currentMatch = useSignal(0)
+
+  // Live caret offset (reactive, drives bracket matching).
+  const caretOffset = useSignal(0)
 
   useSignalEffect(() => {
     const next = text.value
@@ -272,6 +290,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       const line = ta.value.slice(0, ta.selectionStart).split('\n').length - 1
       rootRef.current?.style.setProperty('--cascivo-editor-caret-line', String(line))
       selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
+      caretOffset.value = ta.selectionStart
     }
     measure()
     syncCaret()
@@ -318,7 +337,18 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       : []
   const userDecorations: readonly Decoration[] =
     typeof decorations === 'function' ? decorations(highlightText.value) : (decorations ?? [])
-  const allDecorations = [...userDecorations, ...findDecorations]
+  let bracketDecorations: Decoration[] = []
+  if (bracketMatching) {
+    const m = matchBracket(highlightText.value, caretOffset.value)
+    if (m) {
+      bracketDecorations = toBracketDecorations(
+        highlightText.value,
+        m,
+        hl['bracketMatch'] as string,
+      )
+    }
+  }
+  const allDecorations = [...userDecorations, ...bracketDecorations, ...findDecorations]
   const decorationList = allDecorations.length > 0 ? allDecorations : undefined
 
   const selectMatch = (index: number): void => {
@@ -433,7 +463,11 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     onKeyDown?.(event)
   }
 
-  const rootStyle = { '--cascivo-editor-tab-size': tabSize, ...style } as CSSProperties
+  const rootStyle = {
+    '--cascivo-editor-tab-size': tabSize,
+    ...theme,
+    ...style,
+  } as CSSProperties
 
   return (
     <div
@@ -452,6 +486,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
           end={end}
           topPad={topPad}
           bottomPad={bottomPad}
+          activeLine
         />
       )}
       <div className={styles['codeArea']}>

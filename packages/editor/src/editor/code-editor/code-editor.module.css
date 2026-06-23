@@ -21,6 +21,7 @@
   }
 
   .gutter {
+    position: relative;
     flex: 0 0 auto;
     overflow: hidden;
     padding-block: var(--cascivo-space-3);

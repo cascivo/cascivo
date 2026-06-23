@@ -112,6 +112,8 @@ interface GutterProps {
   end?: number
   topPad?: number
   bottomPad?: number
+  /** Render the active-line marker (keyed off `--cascivo-editor-caret-line`). */
+  activeLine?: boolean
 }
 
 /** The `aria-hidden` line-number column, optionally windowed with spacers. */
@@ -123,6 +125,7 @@ export function Gutter({
   end = count,
   topPad = 0,
   bottomPad = 0,
+  activeLine = false,
 }: GutterProps) {
   const numbers = []
   for (let n = start + 1; n <= end; n++) {
@@ -134,6 +137,7 @@ export function Gutter({
   }
   return (
     <div ref={gutterRef} className={className} aria-hidden="true">
+      {activeLine && <div className={hl['gutterActive']} />}
       {topPad > 0 && <div style={{ blockSize: topPad }} />}
       {numbers}
       {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
