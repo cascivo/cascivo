@@ -29,7 +29,10 @@ const files = collectFiles(SRC_DIR)
 describe('flow — no banned React hooks', () => {
   for (const file of files) {
     it(`${file.replace(SRC_DIR + '/', '')} uses no banned hooks`, () => {
+      // Strip comments so prose documenting the rules ("No `useState`…") is ignored.
       const src = readFileSync(file, 'utf-8')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\/\/[^\n]*/g, '')
       for (const banned of BANNED) {
         // Word-boundary match so `useEffect` doesn't trip on `useSignalEffect`.
         const re = new RegExp(`\\b${banned}\\b`)

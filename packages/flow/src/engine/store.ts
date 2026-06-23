@@ -4,17 +4,17 @@ import type { FlowEdge, FlowNode, Viewport } from './types.ts'
 
 export interface UseFlowOptions {
   /** Controlled nodes. When provided, the parent owns node state. */
-  nodes?: FlowNode[]
-  defaultNodes?: FlowNode[]
-  onNodesChange?: (nodes: FlowNode[]) => void
+  nodes?: FlowNode[] | undefined
+  defaultNodes?: FlowNode[] | undefined
+  onNodesChange?: ((nodes: FlowNode[]) => void) | undefined
   /** Controlled edges. */
-  edges?: FlowEdge[]
-  defaultEdges?: FlowEdge[]
-  onEdgesChange?: (edges: FlowEdge[]) => void
+  edges?: FlowEdge[] | undefined
+  defaultEdges?: FlowEdge[] | undefined
+  onEdgesChange?: ((edges: FlowEdge[]) => void) | undefined
   /** Controlled viewport. */
-  viewport?: Viewport
-  defaultViewport?: Viewport
-  onViewportChange?: (viewport: Viewport) => void
+  viewport?: Viewport | undefined
+  defaultViewport?: Viewport | undefined
+  onViewportChange?: ((viewport: Viewport) => void) | undefined
 }
 
 export interface FlowStore {
