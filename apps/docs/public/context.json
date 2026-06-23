@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22",
+  "generatedAt": "2026-06-23",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -104,7 +104,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-06-22",
+    "generatedAt": "2026-06-23",
     "global": {
       "strict": [
         {
@@ -162,6 +162,23 @@
           "area": "token names",
           "level": "strict",
           "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
+        }
+      ],
+      "ActionSheet": [
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Any number of actions; each may be destructive or disabled"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+        },
+        {
+          "area": "cancel",
+          "level": "flexible",
+          "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
         }
       ],
       "Alert": [
@@ -251,6 +268,23 @@
           "area": "token names",
           "level": "strict",
           "note": "Border and text colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "BottomSheet": [
+        {
+          "area": "snapPoints",
+          "level": "flexible",
+          "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+        },
+        {
+          "area": "active detent",
+          "level": "flexible",
+          "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
         }
       ],
       "Breadcrumb": [
@@ -627,6 +661,23 @@
           "area": "token names",
           "level": "strict",
           "note": "Text and background colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "Fab": [
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Omit for a single-action button, or provide a speed-dial of secondary actions"
+        },
+        {
+          "area": "position",
+          "level": "strict",
+          "note": "Anchored to bottom-end or bottom-start; honours safe-area insets"
+        },
+        {
+          "area": "open state",
+          "level": "flexible",
+          "note": "Speed-dial is controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
         }
       ],
       "Field": [
@@ -1142,6 +1193,18 @@
           "note": "All typography and surface styling resolves to --cascivo-* tokens"
         }
       ],
+      "PullToRefresh": [
+        {
+          "area": "threshold",
+          "level": "flexible",
+          "note": "Pull distance required to trigger is configurable (default 64px)"
+        },
+        {
+          "area": "onRefresh",
+          "level": "flexible",
+          "note": "May return a promise; the spinner persists until it settles"
+        }
+      ],
       "QrCode": [
         {
           "area": "errorCorrection",
@@ -1437,6 +1500,18 @@
           "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
         }
       ],
+      "SwipeItem": [
+        {
+          "area": "actions",
+          "level": "flexible",
+          "note": "Any number of leading and/or trailing actions; each may be destructive"
+        },
+        {
+          "area": "reveal direction",
+          "level": "strict",
+          "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
+        }
+      ],
       "Switcher": [
         {
           "area": "dividers",
@@ -1671,7 +1746,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-06-22",
+    "generatedAt": "2026-06-23",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -1726,6 +1801,62 @@
       },
       "contextUrl": "/context/accordion.md",
       "aiPrompt": "I am modifying the cascivo Accordion component (navigation). Vertically stacked, collapsible content sections\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nAccordion is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-radius-md, --cascivo-focus-ring\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): token names — Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens\nFlexible: single vs multiple.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "ActionSheet",
+      "category": "overlay",
+      "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+      "intent": {
+        "whenToUse": [
+          "A short list of discrete actions on a touch surface, rising from the bottom",
+          "Confirming or choosing among a few operations (e.g. Share, Edit, Delete) on mobile",
+          "A mobile-first alternative to an anchored dropdown menu when there is no trigger anchor"
+        ],
+        "whenNotToUse": [
+          "A single yes/no confirmation — use AlertDialog",
+          "A form or scrollable content — use BottomSheet or Sheet",
+          "A menu anchored to a trigger on desktop — use Menu or Dropdown"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<ActionSheet actions={[{ label: \"OK\", onSelect }]} />",
+            "good": "<AlertDialog title=\"Delete item?\" />",
+            "why": "A one-action sheet is a confirmation; AlertDialog states the decision clearly"
+          }
+        ],
+        "related": [
+          {
+            "name": "BottomSheet",
+            "relationship": "alternative",
+            "reason": "Use BottomSheet for rich/resizable content; ActionSheet is a fixed list of actions"
+          },
+          {
+            "name": "Menu",
+            "relationship": "alternative",
+            "reason": "Use Menu for a trigger-anchored dropdown on pointer-first surfaces"
+          }
+        ],
+        "a11yRationale": "Renders role=\"menu\" with role=\"menuitem\" buttons under vertical roving focus (Arrow keys, Home/End, wrapping). The title labels the menu via aria-labelledby (or a built-in label otherwise) and the description via aria-describedby. FocusScope traps and restores focus; DismissableLayer handles Escape and outside-pointer dismissal; a separate Cancel button provides an explicit non-destructive exit.",
+        "flexibility": [
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Any number of actions; each may be destructive or disabled"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          },
+          {
+            "area": "cancel",
+            "level": "flexible",
+            "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
+          }
+        ]
+      },
+      "contextUrl": "/context/action-sheet.md",
+      "aiPrompt": "I am modifying the cascivo ActionSheet component (overlay). Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nActionSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-overlay\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Home/End/Enter/Space/Escape. Keep it AA.\nFlexible: actions, open state, cancel.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Alert",
@@ -2123,6 +2254,62 @@
       },
       "contextUrl": "/context/blockquote.md",
       "aiPrompt": "I am modifying the cascivo Blockquote component (display). Quoted passage with optional attribution footer\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBlockquote is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-font-sans, --cascivo-font-medium, --cascivo-leading-relaxed, --cascivo-text-sm, --cascivo-text-base\n\nAccessibility: role \"blockquote\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Border and text colors must resolve to --cascivo-* tokens\nFlexible: attribution.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "BottomSheet",
+      "category": "overlay",
+      "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+      "intent": {
+        "whenToUse": [
+          "A mobile surface that rises from the bottom and can be resized between detents by dragging",
+          "Showing secondary content, filters, or a form where the user can peek at half height then expand",
+          "A touch-first overlay that dismisses by flinging or dragging it down past the lowest detent"
+        ],
+        "whenNotToUse": [
+          "A short yes/no confirmation — use AlertDialog",
+          "A non-resizable edge panel without gestures — use Drawer or Sheet",
+          "A desktop-first side panel for navigation — use Drawer"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<BottomSheet title=\"Delete item?\">Are you sure?</BottomSheet>",
+            "good": "<AlertDialog title=\"Delete item?\" />",
+            "why": "A resizable gesture surface is overkill for a focused yes/no decision"
+          }
+        ],
+        "related": [
+          {
+            "name": "Sheet",
+            "relationship": "alternative",
+            "reason": "Use Sheet for a fixed-height panel from any edge; BottomSheet adds resize detents"
+          },
+          {
+            "name": "Drawer",
+            "relationship": "alternative",
+            "reason": "Use Drawer for a plain edge dialog without resize detents"
+          }
+        ],
+        "a11yRationale": "Renders role=\"dialog\" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal. The grab handle is a labelled separator and a Close button gives a non-gesture dismissal path so the sheet stays keyboard-operable.",
+        "flexibility": [
+          {
+            "area": "snapPoints",
+            "level": "flexible",
+            "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          },
+          {
+            "area": "active detent",
+            "level": "flexible",
+            "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
+          }
+        ]
+      },
+      "contextUrl": "/context/bottom-sheet.md",
+      "aiPrompt": "I am modifying the cascivo BottomSheet component (overlay). Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBottomSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-target-min-coarse, --cascivo-z-overlay\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\nFlexible: snapPoints, open state, active detent.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Breadcrumb",
@@ -3595,6 +3782,62 @@
       },
       "contextUrl": "/context/empty-state.md",
       "aiPrompt": "I am modifying the cascivo EmptyState component (display). Placeholder for views that have no data to display\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nEmptyState is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-full\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Text and background colors must resolve to --cascivo-* tokens\nFlexible: size and action.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "Fab",
+      "category": "inputs",
+      "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
+      "intent": {
+        "whenToUse": [
+          "A single, high-emphasis primary action that floats above scrolling content (e.g. Compose, Add)",
+          "A small cluster of related create actions revealed from one corner via a speed-dial",
+          "Touch-first screens where the primary action should stay reachable at the thumb"
+        ],
+        "whenNotToUse": [
+          "Ordinary form or toolbar buttons — use Button or IconButton in the layout flow",
+          "More than a handful of actions — use a Menu, Drawer, or full navigation",
+          "Primary navigation between top-level destinations — use Dock"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<Fab label=\"Save\"><SaveIcon /></Fab> next to a form submit button",
+            "good": "<Button type=\"submit\">Save</Button>",
+            "why": "A floating button competes with the in-flow submit and hides the action off the form"
+          }
+        ],
+        "related": [
+          {
+            "name": "IconButton",
+            "relationship": "alternative",
+            "reason": "Use IconButton for an in-flow icon control; Fab floats and is high-emphasis"
+          },
+          {
+            "name": "Dock",
+            "relationship": "alternative",
+            "reason": "Use Dock for bottom navigation between destinations rather than a single action"
+          }
+        ],
+        "a11yRationale": "The main button is icon-only and requires a `label` that becomes its aria-label. With a speed-dial it exposes aria-haspopup=\"menu\", aria-expanded, and aria-controls; the dial is a role=\"menu\" of role=\"menuitem\" buttons under vertical roving focus (Arrow keys, Home/End, wrapping). Opening moves focus to the first action and closing (Escape, outside press, or selection via DismissableLayer) returns focus to the button.",
+        "flexibility": [
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Omit for a single-action button, or provide a speed-dial of secondary actions"
+          },
+          {
+            "area": "position",
+            "level": "strict",
+            "note": "Anchored to bottom-end or bottom-start; honours safe-area insets"
+          },
+          {
+            "area": "open state",
+            "level": "flexible",
+            "note": "Speed-dial is controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+          }
+        ]
+      },
+      "contextUrl": "/context/fab.md",
+      "aiPrompt": "I am modifying the cascivo Fab component (inputs). Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nFab is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-full, --cascivo-shadow-overlay, --cascivo-target-min-coarse, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-dropdown\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space/ArrowUp/ArrowDown/Home/End/Escape. Keep it AA.\n\nDo not change (strict): position — Anchored to bottom-end or bottom-start; honours safe-area insets\nFlexible: actions, open state.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Field",
@@ -5676,6 +5919,57 @@
       "aiPrompt": "I am modifying the cascivo Prose component (display). Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nProse is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface\n\nAccessibility: role \"generic\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — All typography and surface styling resolves to --cascivo-* tokens\nFlexible: source HTML.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "PullToRefresh",
+      "category": "feedback",
+      "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+      "intent": {
+        "whenToUse": [
+          "A scrollable list or feed on touch devices that the user refreshes by pulling down from the top",
+          "Mobile screens where a dedicated refresh button would be redundant or out of reach",
+          "Content that updates on demand and benefits from a familiar pull gesture"
+        ],
+        "whenNotToUse": [
+          "Desktop, pointer-first surfaces — provide an explicit Refresh button",
+          "Content that auto-refreshes or paginates on scroll — use infinite scroll instead",
+          "Regions that are not the primary scroll container of the screen"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Wrapping a non-scrolling element and relying on pull as the only refresh path",
+            "good": "Wrap the scroll container and also expose a Refresh control for non-touch users",
+            "why": "Pull-to-refresh is touch-only; keyboard and pointer users need an explicit control"
+          }
+        ],
+        "related": [
+          {
+            "name": "Spinner",
+            "relationship": "contains",
+            "reason": "Shows the Spinner while the refresh promise settles"
+          },
+          {
+            "name": "ScrollArea",
+            "relationship": "pairs-with",
+            "reason": "Wraps a scrollable region; pair with the app’s scroll container"
+          }
+        ],
+        "a11yRationale": "The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses touch-action/overscroll containment so normal scrolling and keyboard use are unaffected. A polite aria-live status region announces the pull, release, and refreshing states (strings from the i18n catalog), and the Spinner exposes role=\"status\" while loading. Because pull-to-refresh cannot be performed without a pointer, apps should also offer an explicit refresh control for keyboard users.",
+        "flexibility": [
+          {
+            "area": "threshold",
+            "level": "flexible",
+            "note": "Pull distance required to trigger is configurable (default 64px)"
+          },
+          {
+            "area": "onRefresh",
+            "level": "flexible",
+            "note": "May return a promise; the spinner persists until it settles"
+          }
+        ]
+      },
+      "contextUrl": "/context/pull-to-refresh.md",
+      "aiPrompt": "I am modifying the cascivo PullToRefresh component (feedback). Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nPullToRefresh is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-motion-enter\n\nAccessibility: role \"status\", WCAG 2.2-AA. Keep it AA.\nFlexible: threshold, onRefresh.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "QrCode",
       "category": "display",
       "description": "Encodes a URL or short text into a scannable SVG QR code",
@@ -6923,6 +7217,57 @@
       },
       "contextUrl": "/context/swap.md",
       "aiPrompt": "I am modifying the cascivo Swap component (inputs). Animated toggle between two icon/content states with rotate or flip transition\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSwap is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-ring-width, --cascivo-ring-color, --cascivo-radius-control, --cascivo-ease-out\n\nAccessibility: role \"switch\", WCAG 2.2-AA, keyboard: Space/Enter. Keep it AA.\nFlexible: content, animation mode.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "SwipeItem",
+      "category": "display",
+      "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+      "intent": {
+        "whenToUse": [
+          "List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped",
+          "Mail/inbox-style rows that reveal contextual actions behind the content",
+          "Compact lists where always-visible action buttons would crowd each row"
+        ],
+        "whenNotToUse": [
+          "A single primary action per row — render it inline as a Button",
+          "Destructive actions that need confirmation — pair with an AlertDialog instead of swipe-only",
+          "Non-list, free-form content — swipe-to-reveal is a list-row affordance"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Relying on the swipe gesture as the only way to reach Delete",
+            "good": "Action buttons stay in the DOM and a11y tree; focusing one reveals its side",
+            "why": "Gesture-only actions are unreachable by keyboard and screen-reader users"
+          }
+        ],
+        "related": [
+          {
+            "name": "ActionSheet",
+            "relationship": "alternative",
+            "reason": "Use an ActionSheet when a row tap should present a fuller list of actions"
+          },
+          {
+            "name": "List",
+            "relationship": "contained-by",
+            "reason": "SwipeItem wraps individual rows within a list"
+          }
+        ],
+        "a11yRationale": "The action buttons are always rendered in the DOM and the accessibility tree, never gesture-only. Focusing an action (via keyboard) reveals its side so it is visible, Enter/Space activate it, and Escape closes the row — giving full keyboard and screen-reader parity with the swipe gesture. The drag uses touch-action: pan-y so vertical scrolling is unaffected.",
+        "flexibility": [
+          {
+            "area": "actions",
+            "level": "flexible",
+            "note": "Any number of leading and/or trailing actions; each may be destructive"
+          },
+          {
+            "area": "reveal direction",
+            "level": "strict",
+            "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
+          }
+        ]
+      },
+      "contextUrl": "/context/swipe-item.md",
+      "aiPrompt": "I am modifying the cascivo SwipeItem component (display). List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSwipeItem is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-destructive, --cascivo-color-text-on-destructive, --cascivo-target-min-coarse, --cascivo-motion-enter\n\nAccessibility: role \"group\", WCAG 2.2-AA, keyboard: Tab/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): reveal direction — Leading reveals on the start edge, trailing on the end edge (physical-axis drag)\nFlexible: actions.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Switcher",

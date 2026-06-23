@@ -32,6 +32,48 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ActionSheet: [
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'showCancel',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Alert: [
     {
       name: 'variant',
@@ -337,6 +379,61 @@ export const propSchemas: Record<string, PropSchema[]> = {
   Blockquote: [
     {
       name: 'cite',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  BottomSheet: [
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'snapPoints',
+      required: false,
+    },
+    {
+      name: 'activeSnap',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'defaultSnap',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'onSnapChange',
+      required: false,
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
       required: false,
       primitives: ['string'],
     },
@@ -1424,6 +1521,49 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'size',
       required: false,
       enum: ['md', 'lg'],
+    },
+  ],
+  Fab: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'label',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'onClick',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: false,
+    },
+    {
+      name: 'position',
+      required: false,
+      enum: ['bottom-end', 'bottom-start'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
     },
   ],
   FeatureGrid: [
@@ -2807,6 +2947,35 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Prose: [],
+  PullToRefresh: [
+    {
+      name: 'onRefresh',
+      required: true,
+    },
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'threshold',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   QrCode: [
     {
       name: 'value',
@@ -3711,6 +3880,25 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'aria-label',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  SwipeItem: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'leadingActions',
+      required: false,
+    },
+    {
+      name: 'trailingActions',
+      required: false,
     },
     {
       name: 'className',

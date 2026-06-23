@@ -129,7 +129,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-165 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+170 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -144,6 +144,7 @@ routing break after adding one of these, check that the import resolves to
 - **DatePicker** — An accessible date-picker with a calendar popover.
 - **DateRangePicker** — A dual-calendar picker for selecting a contiguous date range.
 - **Editable** — Inline click-to-edit text field
+- **Fab** — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions
 - **Field** — Form-field wrapper composing label, control, description, and error
 - **FileUploader** — Drag-and-drop file upload zone with file list and status indicators.
 - **Filter** — A group of toggleable pill or outline buttons for filtering content by category
@@ -212,6 +213,7 @@ routing break after adding one of these, check that the import resolves to
 - **StatsCards** — Grid of KPI stat cards with trend badges.
 - **Status** — Colored dot with a label communicating the state of a system or entity
 - **StructuredList** — Tabular row list for scannable data, optionally single-selectable
+- **SwipeItem** — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - **Tag** — Compact chip for labeling, categorizing, or filtering content
 - **Text** — Body text with size, weight, and muted variants
 - **Timeline** — Ordered sequence of events with status markers and a connector line
@@ -222,7 +224,9 @@ routing break after adding one of these, check that the import resolves to
 
 ### Overlay
 
+- **ActionSheet** — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button
 - **AlertDialog** — Confirmation dialog requiring explicit user action; no light-dismiss
+- **BottomSheet** — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss
 - **CommandMenu** — Cmd+K command palette with fuzzy search over grouped commands
 - **ContextMenu** — Right-click context menu anchored at pointer coordinates via CSS custom properties
 - **Drawer** — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
@@ -295,6 +299,7 @@ routing break after adding one of these, check that the import resolves to
 - **Progress** — Horizontal bar showing the completion progress of a tracked operation
 - **ProgressBar** — Shows determinate or indeterminate progress of a task
 - **ProgressCircle** — Circular determinate progress indicator rendered as an SVG arc
+- **PullToRefresh** — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - **RadialProgress** — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - **Spinner** — Indeterminate loading indicator
 

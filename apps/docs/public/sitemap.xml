@@ -49,6 +49,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/action-sheet</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/alert</loc>
     <priority>0.6</priority>
   </url>
@@ -118,6 +122,10 @@
   </url>
   <url>
     <loc>https://docs.cascivo.com/components/blockquote</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/bottom-sheet</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -294,6 +302,10 @@
   </url>
   <url>
     <loc>https://docs.cascivo.com/components/empty-state</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/fab</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -509,6 +521,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/pull-to-refresh</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/qr-code</loc>
     <priority>0.6</priority>
   </url>
@@ -630,6 +646,10 @@
   </url>
   <url>
     <loc>https://docs.cascivo.com/components/swap</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://docs.cascivo.com/components/swipe-item</loc>
     <priority>0.6</priority>
   </url>
   <url>

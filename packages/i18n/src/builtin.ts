@@ -97,6 +97,19 @@ export const builtin = {
   sheet: defineMessages('cascade.sheet', {
     close: 'Close panel',
   }),
+  bottomSheet: defineMessages('cascade.bottomSheet', {
+    close: 'Close',
+    handle: 'Drag to resize',
+  }),
+  actionSheet: defineMessages('cascade.actionSheet', {
+    label: 'Actions',
+    cancel: 'Cancel',
+  }),
+  pullToRefresh: defineMessages('cascade.pullToRefresh', {
+    pull: 'Pull to refresh',
+    release: 'Release to refresh',
+    refreshing: 'Refreshing',
+  }),
   fileUploader: defineMessages('cascade.fileUploader', {
     label: 'Upload files',
     drop: 'Drag and drop files here or click to upload',
@@ -315,6 +328,19 @@ defineCatalog(builtin.alertDialog, 'de', {
 })
 defineCatalog(builtin.sheet, 'de', {
   close: 'Bereich schließen',
+})
+defineCatalog(builtin.bottomSheet, 'de', {
+  close: 'Schließen',
+  handle: 'Zum Anpassen ziehen',
+})
+defineCatalog(builtin.actionSheet, 'de', {
+  label: 'Aktionen',
+  cancel: 'Abbrechen',
+})
+defineCatalog(builtin.pullToRefresh, 'de', {
+  pull: 'Zum Aktualisieren ziehen',
+  release: 'Zum Aktualisieren loslassen',
+  refreshing: 'Wird aktualisiert',
 })
 defineCatalog(builtin.fileUploader, 'de', {
   label: 'Dateien hochladen',

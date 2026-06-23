@@ -87,6 +87,7 @@
           "type": "string",
           "enum": [
             "Accordion",
+            "ActionSheet",
             "Alert",
             "AlertDialog",
             "AppShell",
@@ -100,6 +101,7 @@
             "Badge",
             "BarChart",
             "Blockquote",
+            "BottomSheet",
             "Boxplot",
             "Breadcrumb",
             "BubbleChart",
@@ -139,6 +141,7 @@
             "Editable",
             "EmptyDashboard",
             "EmptyState",
+            "Fab",
             "FeatureGrid",
             "Field",
             "FileUploader",
@@ -194,6 +197,7 @@
             "ProgressCircle",
             "ProgressIndicator",
             "Prose",
+            "PullToRefresh",
             "QrCode",
             "Radar",
             "RadialProgress",
@@ -231,6 +235,7 @@
             "Steps",
             "StructuredList",
             "Swap",
+            "SwipeItem",
             "Switcher",
             "Tabs",
             "Tag",
@@ -311,6 +316,38 @@
                     "enum": ["single", "multiple"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ActionSheet"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "showCancel": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["actions"]
               }
             }
           }
@@ -548,6 +585,40 @@
                 "type": "object",
                 "properties": {
                   "cite": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "BottomSheet"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "activeSnap": {
+                    "type": "number"
+                  },
+                  "defaultSnap": {
+                    "type": "number"
+                  },
+                  "className": {
                     "type": "string"
                   }
                 }
@@ -1539,6 +1610,42 @@
                   }
                 },
                 "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Fab"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": ["bottom-end", "bottom-start"]
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children", "label"]
               }
             }
           }
@@ -2791,6 +2898,35 @@
           "if": {
             "properties": {
               "component": {
+                "const": "PullToRefresh"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "threshold": {
+                    "type": "number"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["onRefresh", "children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "QrCode"
               }
             },
@@ -3638,6 +3774,29 @@
                   }
                 },
                 "required": ["on", "off"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "SwipeItem"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }

@@ -1,0 +1,82 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'PullToRefresh',
+  description:
+    'Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top',
+  category: 'feedback',
+  states: ['idle', 'pulling', 'ready', 'refreshing'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'onRefresh',
+      type: '() => Promise<unknown> | unknown',
+      required: true,
+      description: 'Called when the pull passes the threshold; the spinner shows until it settles',
+    },
+    { name: 'children', type: 'React.ReactNode', required: true },
+    { name: 'threshold', type: 'number', required: false, default: '64' },
+    { name: 'disabled', type: 'boolean', required: false },
+    {
+      name: 'labels',
+      type: '{ pull?: string; release?: string; refreshing?: string }',
+      required: false,
+    },
+    { name: 'className', type: 'string', required: false },
+  ],
+  tokens: ['--cascivo-color-text-muted', '--cascivo-motion-enter'],
+  accessibility: {
+    role: 'status',
+    wcag: '2.2-AA',
+    keyboard: [],
+  },
+  examples: [],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['feedback', 'pull-to-refresh', 'mobile', 'gesture', 'scroll', 'refresh'],
+  intent: {
+    whenToUse: [
+      'A scrollable list or feed on touch devices that the user refreshes by pulling down from the top',
+      'Mobile screens where a dedicated refresh button would be redundant or out of reach',
+      'Content that updates on demand and benefits from a familiar pull gesture',
+    ],
+    whenNotToUse: [
+      'Desktop, pointer-first surfaces — provide an explicit Refresh button',
+      'Content that auto-refreshes or paginates on scroll — use infinite scroll instead',
+      'Regions that are not the primary scroll container of the screen',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Wrapping a non-scrolling element and relying on pull as the only refresh path',
+        good: 'Wrap the scroll container and also expose a Refresh control for non-touch users',
+        why: 'Pull-to-refresh is touch-only; keyboard and pointer users need an explicit control',
+      },
+    ],
+    related: [
+      {
+        name: 'Spinner',
+        relationship: 'contains',
+        reason: 'Shows the Spinner while the refresh promise settles',
+      },
+      {
+        name: 'ScrollArea',
+        relationship: 'pairs-with',
+        reason: 'Wraps a scrollable region; pair with the app’s scroll container',
+      },
+    ],
+    a11yRationale:
+      'The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses touch-action/overscroll containment so normal scrolling and keyboard use are unaffected. A polite aria-live status region announces the pull, release, and refreshing states (strings from the i18n catalog), and the Spinner exposes role="status" while loading. Because pull-to-refresh cannot be performed without a pointer, apps should also offer an explicit refresh control for keyboard users.',
+    flexibility: [
+      {
+        area: 'threshold',
+        level: 'flexible',
+        note: 'Pull distance required to trigger is configurable (default 64px)',
+      },
+      {
+        area: 'onRefresh',
+        level: 'flexible',
+        note: 'May return a promise; the spinner persists until it settles',
+      },
+    ],
+  },
+}

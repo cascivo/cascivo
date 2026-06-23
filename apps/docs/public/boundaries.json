@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22",
+  "generatedAt": "2026-06-23",
   "global": {
     "strict": [
       {
@@ -57,6 +57,23 @@
         "area": "token names",
         "level": "strict",
         "note": "Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens"
+      }
+    ],
+    "ActionSheet": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Any number of actions; each may be destructive or disabled"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      },
+      {
+        "area": "cancel",
+        "level": "flexible",
+        "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
       }
     ],
     "Alert": [
@@ -146,6 +163,23 @@
         "area": "token names",
         "level": "strict",
         "note": "Border and text colors must resolve to --cascivo-* tokens"
+      }
+    ],
+    "BottomSheet": [
+      {
+        "area": "snapPoints",
+        "level": "flexible",
+        "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      },
+      {
+        "area": "active detent",
+        "level": "flexible",
+        "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
       }
     ],
     "Breadcrumb": [
@@ -522,6 +556,23 @@
         "area": "token names",
         "level": "strict",
         "note": "Text and background colors must resolve to --cascivo-* tokens"
+      }
+    ],
+    "Fab": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Omit for a single-action button, or provide a speed-dial of secondary actions"
+      },
+      {
+        "area": "position",
+        "level": "strict",
+        "note": "Anchored to bottom-end or bottom-start; honours safe-area insets"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Speed-dial is controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
       }
     ],
     "Field": [
@@ -1037,6 +1088,18 @@
         "note": "All typography and surface styling resolves to --cascivo-* tokens"
       }
     ],
+    "PullToRefresh": [
+      {
+        "area": "threshold",
+        "level": "flexible",
+        "note": "Pull distance required to trigger is configurable (default 64px)"
+      },
+      {
+        "area": "onRefresh",
+        "level": "flexible",
+        "note": "May return a promise; the spinner persists until it settles"
+      }
+    ],
     "QrCode": [
       {
         "area": "errorCorrection",
@@ -1330,6 +1393,18 @@
         "area": "animation mode",
         "level": "flexible",
         "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
+      }
+    ],
+    "SwipeItem": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Any number of leading and/or trailing actions; each may be destructive"
+      },
+      {
+        "area": "reveal direction",
+        "level": "strict",
+        "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
       }
     ],
     "Switcher": [

@@ -109,6 +109,152 @@
     },
     {
       "schemaVersion": 2,
+      "name": "action-sheet",
+      "type": "component",
+      "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
+      "category": "overlay",
+      "meta": {
+        "name": "ActionSheet",
+        "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+        "category": "overlay",
+        "states": ["open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "actions",
+            "type": "ActionSheetAction[]",
+            "required": true,
+            "description": "Choices, each with a label, onSelect, and optional destructive/disabled flags"
+          },
+          {
+            "name": "title",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "description",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "showCancel",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "labels",
+            "type": "{ cancel?: string; label?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-color-accent",
+          "--cascivo-color-destructive",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-text-muted",
+          "--cascivo-radius-overlay",
+          "--cascivo-shadow-overlay",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-z-overlay"
+        ],
+        "accessibility": {
+          "role": "menu",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowUp", "ArrowDown", "Home", "End", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
+        "intent": {
+          "whenToUse": [
+            "A short list of discrete actions on a touch surface, rising from the bottom",
+            "Confirming or choosing among a few operations (e.g. Share, Edit, Delete) on mobile",
+            "A mobile-first alternative to an anchored dropdown menu when there is no trigger anchor"
+          ],
+          "whenNotToUse": [
+            "A single yes/no confirmation — use AlertDialog",
+            "A form or scrollable content — use BottomSheet or Sheet",
+            "A menu anchored to a trigger on desktop — use Menu or Dropdown"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<ActionSheet actions={[{ label: \"OK\", onSelect }]} />",
+              "good": "<AlertDialog title=\"Delete item?\" />",
+              "why": "A one-action sheet is a confirmation; AlertDialog states the decision clearly"
+            }
+          ],
+          "related": [
+            {
+              "name": "BottomSheet",
+              "relationship": "alternative",
+              "reason": "Use BottomSheet for rich/resizable content; ActionSheet is a fixed list of actions"
+            },
+            {
+              "name": "Menu",
+              "relationship": "alternative",
+              "reason": "Use Menu for a trigger-anchored dropdown on pointer-first surfaces"
+            }
+          ],
+          "a11yRationale": "Renders role=\"menu\" with role=\"menuitem\" buttons under vertical roving focus (Arrow keys, Home/End, wrapping). The title labels the menu via aria-labelledby (or a built-in label otherwise) and the description via aria-describedby. FocusScope traps and restores focus; DismissableLayer handles Escape and outside-pointer dismissal; a separate Cancel button provides an explicit non-destructive exit.",
+          "flexibility": [
+            {
+              "area": "actions",
+              "level": "flexible",
+              "note": "Any number of actions; each may be destructive or disabled"
+            },
+            {
+              "area": "open state",
+              "level": "flexible",
+              "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+            },
+            {
+              "area": "cancel",
+              "level": "flexible",
+              "note": "showCancel toggles the separate Cancel button (Escape/outside press still dismiss)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "alert",
       "type": "component",
       "description": "Highlights a short, important message inline",
@@ -1598,6 +1744,164 @@
               "area": "token names",
               "level": "strict",
               "note": "Border and text colors must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "bottom-sheet",
+      "type": "component",
+      "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["overlay", "sheet", "bottom-sheet", "mobile", "drag", "detent", "gesture"],
+      "category": "overlay",
+      "meta": {
+        "name": "BottomSheet",
+        "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+        "category": "overlay",
+        "states": ["open", "closed", "dragging"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "snapPoints",
+            "type": "number[]",
+            "required": false,
+            "default": "[0.5, 0.92]",
+            "description": "Detent heights as ascending fractions of the viewport (0–1)"
+          },
+          {
+            "name": "activeSnap",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "defaultSnap",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "onSnapChange",
+            "type": "(index: number) => void",
+            "required": false
+          },
+          {
+            "name": "title",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "description",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "type": "{ close?: string; handle?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-overlay",
+          "--cascivo-shadow-overlay",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-target-min-coarse",
+          "--cascivo-z-overlay"
+        ],
+        "accessibility": {
+          "role": "dialog",
+          "wcag": "2.2-AA",
+          "keyboard": ["Escape", "Tab", "Shift+Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["overlay", "sheet", "bottom-sheet", "mobile", "drag", "detent", "gesture"],
+        "intent": {
+          "whenToUse": [
+            "A mobile surface that rises from the bottom and can be resized between detents by dragging",
+            "Showing secondary content, filters, or a form where the user can peek at half height then expand",
+            "A touch-first overlay that dismisses by flinging or dragging it down past the lowest detent"
+          ],
+          "whenNotToUse": [
+            "A short yes/no confirmation — use AlertDialog",
+            "A non-resizable edge panel without gestures — use Drawer or Sheet",
+            "A desktop-first side panel for navigation — use Drawer"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<BottomSheet title=\"Delete item?\">Are you sure?</BottomSheet>",
+              "good": "<AlertDialog title=\"Delete item?\" />",
+              "why": "A resizable gesture surface is overkill for a focused yes/no decision"
+            }
+          ],
+          "related": [
+            {
+              "name": "Sheet",
+              "relationship": "alternative",
+              "reason": "Use Sheet for a fixed-height panel from any edge; BottomSheet adds resize detents"
+            },
+            {
+              "name": "Drawer",
+              "relationship": "alternative",
+              "reason": "Use Drawer for a plain edge dialog without resize detents"
+            }
+          ],
+          "a11yRationale": "Renders role=\"dialog\" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal. The grab handle is a labelled separator and a Close button gives a non-gesture dismissal path so the sheet stays keyboard-operable.",
+          "flexibility": [
+            {
+              "area": "snapPoints",
+              "level": "flexible",
+              "note": "Any ascending list of viewport fractions; the sheet snaps between them"
+            },
+            {
+              "area": "open state",
+              "level": "flexible",
+              "note": "Controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+            },
+            {
+              "area": "active detent",
+              "level": "flexible",
+              "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
             }
           ]
         }
@@ -7058,6 +7362,153 @@
               "area": "token names",
               "level": "strict",
               "note": "Text and background colors must resolve to --cascivo-* tokens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "fab",
+      "type": "component",
+      "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["inputs", "fab", "floating-action-button", "mobile", "speed-dial"],
+      "category": "inputs",
+      "meta": {
+        "name": "Fab",
+        "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
+        "category": "inputs",
+        "states": ["default", "open", "closed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true,
+            "description": "The main icon"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible name for the button"
+          },
+          {
+            "name": "onClick",
+            "type": "() => void",
+            "required": false
+          },
+          {
+            "name": "actions",
+            "type": "FabAction[]",
+            "required": false,
+            "description": "Speed-dial actions; each has a label, icon, onSelect, and optional disabled"
+          },
+          {
+            "name": "position",
+            "type": "'bottom-end' | 'bottom-start'",
+            "required": false,
+            "default": "bottom-end"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-color-accent-hover",
+          "--cascivo-color-surface",
+          "--cascivo-color-border",
+          "--cascivo-radius-full",
+          "--cascivo-shadow-overlay",
+          "--cascivo-target-min-coarse",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
+          "--cascivo-z-dropdown"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space", "ArrowUp", "ArrowDown", "Home", "End", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["inputs", "fab", "floating-action-button", "mobile", "speed-dial"],
+        "intent": {
+          "whenToUse": [
+            "A single, high-emphasis primary action that floats above scrolling content (e.g. Compose, Add)",
+            "A small cluster of related create actions revealed from one corner via a speed-dial",
+            "Touch-first screens where the primary action should stay reachable at the thumb"
+          ],
+          "whenNotToUse": [
+            "Ordinary form or toolbar buttons — use Button or IconButton in the layout flow",
+            "More than a handful of actions — use a Menu, Drawer, or full navigation",
+            "Primary navigation between top-level destinations — use Dock"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "<Fab label=\"Save\"><SaveIcon /></Fab> next to a form submit button",
+              "good": "<Button type=\"submit\">Save</Button>",
+              "why": "A floating button competes with the in-flow submit and hides the action off the form"
+            }
+          ],
+          "related": [
+            {
+              "name": "IconButton",
+              "relationship": "alternative",
+              "reason": "Use IconButton for an in-flow icon control; Fab floats and is high-emphasis"
+            },
+            {
+              "name": "Dock",
+              "relationship": "alternative",
+              "reason": "Use Dock for bottom navigation between destinations rather than a single action"
+            }
+          ],
+          "a11yRationale": "The main button is icon-only and requires a `label` that becomes its aria-label. With a speed-dial it exposes aria-haspopup=\"menu\", aria-expanded, and aria-controls; the dial is a role=\"menu\" of role=\"menuitem\" buttons under vertical roving focus (Arrow keys, Home/End, wrapping). Opening moves focus to the first action and closing (Escape, outside press, or selection via DismissableLayer) returns focus to the button.",
+          "flexibility": [
+            {
+              "area": "actions",
+              "level": "flexible",
+              "note": "Omit for a single-action button, or provide a speed-dial of secondary actions"
+            },
+            {
+              "area": "position",
+              "level": "strict",
+              "note": "Anchored to bottom-end or bottom-start; honours safe-area insets"
+            },
+            {
+              "area": "open state",
+              "level": "flexible",
+              "note": "Speed-dial is controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
             }
           ]
         }
@@ -12830,6 +13281,119 @@
     },
     {
       "schemaVersion": 2,
+      "name": "pull-to-refresh",
+      "type": "component",
+      "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
+      "category": "feedback",
+      "meta": {
+        "name": "PullToRefresh",
+        "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+        "category": "feedback",
+        "states": ["idle", "pulling", "ready", "refreshing"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onRefresh",
+            "type": "() => Promise<unknown> | unknown",
+            "required": true,
+            "description": "Called when the pull passes the threshold; the spinner shows until it settles"
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "threshold",
+            "type": "number",
+            "required": false,
+            "default": "64"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "type": "{ pull?: string; release?: string; refreshing?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-color-text-muted", "--cascivo-motion-enter"],
+        "accessibility": {
+          "role": "status",
+          "wcag": "2.2-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
+        "intent": {
+          "whenToUse": [
+            "A scrollable list or feed on touch devices that the user refreshes by pulling down from the top",
+            "Mobile screens where a dedicated refresh button would be redundant or out of reach",
+            "Content that updates on demand and benefits from a familiar pull gesture"
+          ],
+          "whenNotToUse": [
+            "Desktop, pointer-first surfaces — provide an explicit Refresh button",
+            "Content that auto-refreshes or paginates on scroll — use infinite scroll instead",
+            "Regions that are not the primary scroll container of the screen"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Wrapping a non-scrolling element and relying on pull as the only refresh path",
+              "good": "Wrap the scroll container and also expose a Refresh control for non-touch users",
+              "why": "Pull-to-refresh is touch-only; keyboard and pointer users need an explicit control"
+            }
+          ],
+          "related": [
+            {
+              "name": "Spinner",
+              "relationship": "contains",
+              "reason": "Shows the Spinner while the refresh promise settles"
+            },
+            {
+              "name": "ScrollArea",
+              "relationship": "pairs-with",
+              "reason": "Wraps a scrollable region; pair with the app’s scroll container"
+            }
+          ],
+          "a11yRationale": "The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses touch-action/overscroll containment so normal scrolling and keyboard use are unaffected. A polite aria-live status region announces the pull, release, and refreshing states (strings from the i18n catalog), and the Spinner exposes role=\"status\" while loading. Because pull-to-refresh cannot be performed without a pointer, apps should also offer an explicit refresh control for keyboard users.",
+          "flexibility": [
+            {
+              "area": "threshold",
+              "level": "flexible",
+              "note": "Pull distance required to trigger is configurable (default 64px)"
+            },
+            {
+              "area": "onRefresh",
+              "level": "flexible",
+              "note": "May return a promise; the spinner persists until it settles"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "qr-code",
       "type": "component",
       "description": "Encodes a URL or short text into a scannable SVG QR code",
@@ -16356,6 +16920,118 @@
               "area": "animation mode",
               "level": "flexible",
               "note": "rotate (default) or flip — choose based on the visual metaphor of the icons"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "swipe-item",
+      "type": "component",
+      "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+      "version": "0.0.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
+      "category": "display",
+      "meta": {
+        "name": "SwipeItem",
+        "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+        "category": "display",
+        "states": ["closed", "leading", "trailing"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "required": true,
+            "description": "The row content"
+          },
+          {
+            "name": "leadingActions",
+            "type": "SwipeAction[]",
+            "required": false,
+            "description": "Actions revealed by dragging toward the end edge (shown on the start edge)"
+          },
+          {
+            "name": "trailingActions",
+            "type": "SwipeAction[]",
+            "required": false,
+            "description": "Actions revealed by dragging toward the start edge (shown on the end edge)"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-accent",
+          "--cascivo-color-accent-content",
+          "--cascivo-color-destructive",
+          "--cascivo-color-text-on-destructive",
+          "--cascivo-target-min-coarse",
+          "--cascivo-motion-enter"
+        ],
+        "accessibility": {
+          "role": "group",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab", "Enter", "Space", "Escape"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
+        "intent": {
+          "whenToUse": [
+            "List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped",
+            "Mail/inbox-style rows that reveal contextual actions behind the content",
+            "Compact lists where always-visible action buttons would crowd each row"
+          ],
+          "whenNotToUse": [
+            "A single primary action per row — render it inline as a Button",
+            "Destructive actions that need confirmation — pair with an AlertDialog instead of swipe-only",
+            "Non-list, free-form content — swipe-to-reveal is a list-row affordance"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Relying on the swipe gesture as the only way to reach Delete",
+              "good": "Action buttons stay in the DOM and a11y tree; focusing one reveals its side",
+              "why": "Gesture-only actions are unreachable by keyboard and screen-reader users"
+            }
+          ],
+          "related": [
+            {
+              "name": "ActionSheet",
+              "relationship": "alternative",
+              "reason": "Use an ActionSheet when a row tap should present a fuller list of actions"
+            },
+            {
+              "name": "List",
+              "relationship": "contained-by",
+              "reason": "SwipeItem wraps individual rows within a list"
+            }
+          ],
+          "a11yRationale": "The action buttons are always rendered in the DOM and the accessibility tree, never gesture-only. Focusing an action (via keyboard) reveals its side so it is visible, Enter/Space activate it, and Escape closes the row — giving full keyboard and screen-reader parity with the swipe gesture. The drag uses touch-action: pan-y so vertical scrolling is unaffected.",
+          "flexibility": [
+            {
+              "area": "actions",
+              "level": "flexible",
+              "note": "Any number of leading and/or trailing actions; each may be destructive"
+            },
+            {
+              "area": "reveal direction",
+              "level": "strict",
+              "note": "Leading reveals on the start edge, trailing on the end edge (physical-axis drag)"
             }
           ]
         }

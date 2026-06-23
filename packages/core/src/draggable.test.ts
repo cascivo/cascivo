@@ -21,6 +21,7 @@ function setup(options: UseDraggableOptions = {}) {
 
 afterEach(() => {
   document.body.innerHTML = ''
+  vi.useRealTimers()
 })
 
 describe('useDraggable', () => {
@@ -54,6 +55,41 @@ describe('useDraggable', () => {
     expect(result.current.offset.value).toEqual({ x: 15, y: 15 })
     act(() => result.current.reset())
     expect(result.current.offset.value).toEqual({ x: 0, y: 0 })
+  })
+
+  it('reports fling velocity (px/ms) over the final samples', () => {
+    vi.useFakeTimers() // performance.now() starts at 0, advanced explicitly below
+    const { result, handle } = setup()
+    dispatch(handle, 'pointerdown', 0, 0)
+    vi.advanceTimersByTime(10)
+    dispatch(window, 'pointermove', 20, 10)
+    vi.advanceTimersByTime(10)
+    dispatch(window, 'pointermove', 40, 20)
+    // Samples at t=0/10/20ms moving +40px x / +20px y → vx=2, vy=1.
+    dispatch(window, 'pointerup', 40, 20)
+    expect(result.current.velocity.value).toEqual({ x: 2, y: 1 })
+  })
+
+  it('zeroes velocity along the constrained axis', () => {
+    vi.useFakeTimers()
+    const { result, handle } = setup({ axis: 'y' })
+    dispatch(handle, 'pointerdown', 0, 0)
+    vi.advanceTimersByTime(10)
+    dispatch(window, 'pointermove', 50, 30)
+    dispatch(window, 'pointerup', 50, 30)
+    expect(result.current.velocity.value).toEqual({ x: 0, y: 3 })
+  })
+
+  it('reset() zeroes velocity', () => {
+    vi.useFakeTimers()
+    const { result, handle } = setup()
+    dispatch(handle, 'pointerdown', 0, 0)
+    vi.advanceTimersByTime(10)
+    dispatch(window, 'pointermove', 30, 0)
+    dispatch(window, 'pointerup', 30, 0)
+    expect(result.current.velocity.value.x).toBeGreaterThan(0)
+    act(() => result.current.reset())
+    expect(result.current.velocity.value).toEqual({ x: 0, y: 0 })
   })
 
   it('attaches no listeners when disabled', () => {

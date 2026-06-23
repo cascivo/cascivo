@@ -28,6 +28,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "action-sheet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "action-sheet/action-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "action-sheet/action-sheet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "alert",
       "type": "registry:component",
       "files": [
@@ -420,6 +444,30 @@
       "description": "Quoted passage with optional attribution footer",
       "dependencies": ["@cascivo/core"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "bottom-sheet",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "bottom-sheet/bottom-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "bottom-sheet/bottom-sheet.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["overlay"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -1330,6 +1378,30 @@
       "description": "Placeholder for views that have no data to display",
       "dependencies": ["@cascivo/core"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "fab",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "fab/fab.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "fab/fab.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -2609,6 +2681,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "pull-to-refresh",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "pull-to-refresh/pull-to-refresh.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "pull-to-refresh/pull-to-refresh.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "qr-code",
       "type": "registry:component",
       "files": [
@@ -3342,6 +3438,30 @@
       "description": "Animated toggle between two icon/content states with rotate or flip transition",
       "dependencies": ["@cascivo/core"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "swipe-item",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "swipe-item/swipe-item.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "swipe-item/swipe-item.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
       "meta": {
         "cascivo": {
           "type": "component",

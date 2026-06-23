@@ -101,7 +101,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (165 components)
+## Component index (170 components)
 
 ### chart
 
@@ -163,6 +163,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [stat](https://docs.cascivo.com/llms/stat.md) — Displays a key metric with optional delta, trend direction and help text
 - [status](https://docs.cascivo.com/llms/status.md) — Colored dot with a label communicating the state of a system or entity
 - [structured-list](https://docs.cascivo.com/llms/structured-list.md) — Tabular row list for scannable data, optionally single-selectable
+- [swipe-item](https://docs.cascivo.com/llms/swipe-item.md) — List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity
 - [tag](https://docs.cascivo.com/llms/tag.md) — Compact chip for labeling, categorizing, or filtering content
 - [text](https://docs.cascivo.com/llms/text.md) — Body text with size, weight, and muted variants
 - [timeline](https://docs.cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line
@@ -177,6 +178,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [progress](https://docs.cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation
 - [progress-bar](https://docs.cascivo.com/llms/progress-bar.md) — Shows determinate or indeterminate progress of a task
 - [progress-circle](https://docs.cascivo.com/llms/progress-circle.md) — Circular determinate progress indicator rendered as an SVG arc
+- [pull-to-refresh](https://docs.cascivo.com/llms/pull-to-refresh.md) — Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top
 - [radial-progress](https://docs.cascivo.com/llms/radial-progress.md) — Circular progress indicator using conic-gradient, with percentage label and variant colors
 - [spinner](https://docs.cascivo.com/llms/spinner.md) — Indeterminate loading indicator
 
@@ -193,6 +195,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [date-picker](https://docs.cascivo.com/llms/date-picker.md) — An accessible date-picker with a calendar popover.
 - [date-range-picker](https://docs.cascivo.com/llms/date-range-picker.md) — A dual-calendar picker for selecting a contiguous date range.
 - [editable](https://docs.cascivo.com/llms/editable.md) — Inline click-to-edit text field
+- [fab](https://docs.cascivo.com/llms/fab.md) — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions
 - [field](https://docs.cascivo.com/llms/field.md) — Form-field wrapper composing label, control, description, and error
 - [file-uploader](https://docs.cascivo.com/llms/file-uploader.md) — Drag-and-drop file upload zone with file list and status indicators.
 - [filter](https://docs.cascivo.com/llms/filter.md) — A group of toggleable pill or outline buttons for filtering content by category
@@ -274,7 +277,9 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 
 ### overlay
 
+- [action-sheet](https://docs.cascivo.com/llms/action-sheet.md) — Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button
 - [alert-dialog](https://docs.cascivo.com/llms/alert-dialog.md) — Confirmation dialog requiring explicit user action; no light-dismiss
+- [bottom-sheet](https://docs.cascivo.com/llms/bottom-sheet.md) — Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss
 - [command-menu](https://docs.cascivo.com/llms/command-menu.md) — Cmd+K command palette with fuzzy search over grouped commands
 - [context-menu](https://docs.cascivo.com/llms/context-menu.md) — Right-click context menu anchored at pointer coordinates via CSS custom properties
 - [drawer](https://docs.cascivo.com/llms/drawer.md) — Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion
@@ -292,6 +297,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 ## Component intent summaries (use when…)
 
 - [Accordion](https://docs.cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
+- [ActionSheet](https://docs.cascivo.com/context/action-sheet.md) — Use when: A short list of discrete actions on a touch surface, rising from the bottom
 - [Alert](https://docs.cascivo.com/context/alert.md) — Use when: Surfacing a persistent, contextual message inline within a view (warning, error, info, success)
 - [AlertDialog](https://docs.cascivo.com/context/alert-dialog.md) — Use when: Confirming a destructive or irreversible action (delete, overwrite, sign out) before it happens
 - [AppShell](https://docs.cascivo.com/context/app-shell.md) — Use when: Building an application screen with a persistent header and side navigation
@@ -310,6 +316,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [StatsCards](https://docs.cascivo.com/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
 - [UsersTablePage](https://docs.cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
 - [Blockquote](https://docs.cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
+- [BottomSheet](https://docs.cascivo.com/context/bottom-sheet.md) — Use when: A mobile surface that rises from the bottom and can be resized between detents by dragging
 - [Breadcrumb](https://docs.cascivo.com/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
 - [Button](https://docs.cascivo.com/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
 - [ButtonGroup](https://docs.cascivo.com/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
@@ -354,6 +361,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Dropdown](https://docs.cascivo.com/context/dropdown.md) — Use when: Revealing a short menu of actions from a trigger button (row actions, "More" overflow, account menu)
 - [Editable](https://docs.cascivo.com/context/editable.md) — Use when: Editing a single piece of text in place where the value is normally read-only — titles, names, labels
 - [EmptyState](https://docs.cascivo.com/context/empty-state.md) — Use when: Filling a view that has no data with guidance and a primary next step
+- [Fab](https://docs.cascivo.com/context/fab.md) — Use when: A single, high-emphasis primary action that floats above scrolling content (e.g. Compose, Add)
 - [Field](https://docs.cascivo.com/context/field.md) — Use when: Pairing a single control with its label, helper text, and validation message
 - [FileUploader](https://docs.cascivo.com/context/file-uploader.md) — Use when: Letting users attach one or more files via click-to-browse or drag-and-drop
 - [Filter](https://docs.cascivo.com/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
@@ -407,6 +415,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [ProgressCircle](https://docs.cascivo.com/context/progress-circle.md) — Use when: Showing determinate progress compactly as a circular arc
 - [ProgressIndicator](https://docs.cascivo.com/context/progress-indicator.md) — Use when: Showing progress through the discrete steps of a multi-step flow (wizard, checkout)
 - [Prose](https://docs.cascivo.com/context/prose.md) — Use when: Styling long-form authored content (articles, docs, CMS output)
+- [PullToRefresh](https://docs.cascivo.com/context/pull-to-refresh.md) — Use when: A scrollable list or feed on touch devices that the user refreshes by pulling down from the top
 - [QrCode](https://docs.cascivo.com/context/qr-code.md) — Use when: Letting users scan a URL, contact, or short token with a phone camera
 - [RadialProgress](https://docs.cascivo.com/context/radial-progress.md) — Use when: Dashboard KPI metrics showing completion percentage
 - [Radio](https://docs.cascivo.com/context/radio.md) — Use when: Choosing exactly one option from a small, mutually exclusive set (roughly 2–6) where all options should stay visible
@@ -438,6 +447,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Steps](https://docs.cascivo.com/context/steps.md) — Use when: Checkout flows where the user moves through a fixed sequence of screens
 - [StructuredList](https://docs.cascivo.com/context/structured-list.md) — Use when: Presenting a set of related records in aligned columns the user scans top to bottom
 - [Swap](https://docs.cascivo.com/context/swap.md) — Use when: Theme toggles where an icon animates between two states (sun/moon)
+- [SwipeItem](https://docs.cascivo.com/context/swipe-item.md) — Use when: List rows on touch surfaces where secondary actions (archive, delete) should hide until swiped
 - [Switcher](https://docs.cascivo.com/context/switcher.md) — Use when: Listing sibling apps/products the user can switch between
 - [Tabs](https://docs.cascivo.com/context/tabs.md) — Use when: Switching between peer panels of related content in the same context
 - [Tag](https://docs.cascivo.com/context/tag.md) — Use when: Labeling, categorizing, or filtering content with a compact chip
@@ -457,4 +467,4 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-22 from registry v0.0.0_
+_Generated: 2026-06-23 from registry v0.0.0_
