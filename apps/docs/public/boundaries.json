@@ -558,6 +558,23 @@
         "note": "Text and background colors must resolve to --cascivo-* tokens"
       }
     ],
+    "Fab": [
+      {
+        "area": "actions",
+        "level": "flexible",
+        "note": "Omit for a single-action button, or provide a speed-dial of secondary actions"
+      },
+      {
+        "area": "position",
+        "level": "strict",
+        "note": "Anchored to bottom-end or bottom-start; honours safe-area insets"
+      },
+      {
+        "area": "open state",
+        "level": "flexible",
+        "note": "Speed-dial is controlled (open/onOpenChange) or uncontrolled (defaultOpen)"
+      }
+    ],
     "Field": [
       {
         "area": "token names",

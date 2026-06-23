@@ -305,6 +305,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://docs.cascivo.com/components/fab</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://docs.cascivo.com/components/field</loc>
     <priority>0.6</priority>
   </url>

@@ -26,6 +26,7 @@ import { meta as dockMeta } from './dock/dock.meta'
 import { meta as dropdownMeta } from './dropdown/dropdown.meta'
 import { meta as editableMeta } from './editable/editable.meta'
 import { meta as emptyStateMeta } from './empty-state/empty-state.meta'
+import { meta as fabMeta } from './fab/fab.meta'
 import { meta as fileUploaderMeta } from './file-uploader/file-uploader.meta'
 import { meta as filterMeta } from './filter/filter.meta'
 import { meta as formMeta } from './form/form.meta'
@@ -119,6 +120,7 @@ export const allMetas: ComponentMeta[] = [
   dropdownMeta,
   editableMeta,
   emptyStateMeta,
+  fabMeta,
   fileUploaderMeta,
   filterMeta,
   formMeta,

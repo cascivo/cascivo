@@ -1523,6 +1523,49 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['md', 'lg'],
     },
   ],
+  Fab: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'label',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'onClick',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: false,
+    },
+    {
+      name: 'position',
+      required: false,
+      enum: ['bottom-end', 'bottom-start'],
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   FeatureGrid: [
     {
       name: 'items',

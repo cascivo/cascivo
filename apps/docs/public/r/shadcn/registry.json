@@ -1387,6 +1387,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "fab",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "fab/fab.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "fab/fab.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "field",
       "type": "registry:component",
       "files": [

@@ -129,7 +129,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-167 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+168 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -144,6 +144,7 @@ routing break after adding one of these, check that the import resolves to
 - **DatePicker** — An accessible date-picker with a calendar popover.
 - **DateRangePicker** — A dual-calendar picker for selecting a contiguous date range.
 - **Editable** — Inline click-to-edit text field
+- **Fab** — Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions
 - **Field** — Form-field wrapper composing label, control, description, and error
 - **FileUploader** — Drag-and-drop file upload zone with file list and status indicators.
 - **Filter** — A group of toggleable pill or outline buttons for filtering content by category

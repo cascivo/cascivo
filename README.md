@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-167-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-168-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -257,10 +257,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**167 components** — display 45 · inputs 38 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 7.
+**168 components** — display 45 · inputs 39 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 7.
 
 <details>
-<summary>Browse all 167 components</summary>
+<summary>Browse all 168 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -303,6 +303,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | dropdown                   | overlay    | Menu of actions revealed from a trigger                                                                                                                                                                         |
 | editable                   | inputs     | Inline click-to-edit text field                                                                                                                                                                                 |
 | empty-state                | display    | Placeholder for views that have no data to display                                                                                                                                                              |
+| fab                        | inputs     | Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions                                                                                                            |
 | field                      | inputs     | Form-field wrapper composing label, control, description, and error                                                                                                                                             |
 | file-uploader              | inputs     | Drag-and-drop file upload zone with file list and status indicators.                                                                                                                                            |
 | filter                     | inputs     | A group of toggleable pill or outline buttons for filtering content by category                                                                                                                                 |

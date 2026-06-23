@@ -141,6 +141,7 @@
             "Editable",
             "EmptyDashboard",
             "EmptyState",
+            "Fab",
             "FeatureGrid",
             "Field",
             "FileUploader",
@@ -1607,6 +1608,42 @@
                   }
                 },
                 "required": ["title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Fab"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": ["bottom-end", "bottom-start"]
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["children", "label"]
               }
             }
           }
