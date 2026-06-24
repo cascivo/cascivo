@@ -5483,6 +5483,25 @@
                   "height": {
                     "type": "number"
                   },
+                  "size": {
+                    "type": "number"
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "innerRadius": {
+                    "type": "number"
+                  },
+                  "centerValue": {
+                    "type": "string"
+                  },
+                  "centerLabel": {
+                    "type": "string"
+                  },
+                  "centerSlot": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
                   "legend": {
                     "type": "boolean"
                   },

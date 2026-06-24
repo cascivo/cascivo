@@ -12,13 +12,52 @@ export const meta: ComponentMeta = {
       name: 'data',
       type: 'PieChartDatum[]',
       required: true,
-      description: 'Array of { label, value } datums',
+      description:
+        'Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice.',
     },
     { name: 'title', type: 'string', required: true },
     { name: 'description', type: 'string', required: false },
     { name: 'donut', type: 'boolean', required: false, description: 'Render as donut chart' },
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false, default: '300' },
+    {
+      name: 'size',
+      type: 'number',
+      required: false,
+      description: 'Square shorthand: sets width === height. Explicit width/height win.',
+    },
+    {
+      name: 'thickness',
+      type: 'number',
+      required: false,
+      description: 'Ring width in px (donut only); defaults to 0.4 × radius.',
+    },
+    {
+      name: 'innerRadius',
+      type: 'number',
+      required: false,
+      description:
+        'Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius).',
+    },
+    {
+      name: 'centerValue',
+      type: 'string',
+      required: false,
+      description: 'Center value text rendered in the donut hole (donut only).',
+    },
+    {
+      name: 'centerLabel',
+      type: 'string',
+      required: false,
+      description: 'Center label text rendered below the value (donut only).',
+    },
+    {
+      name: 'centerSlot',
+      type: 'ReactNode',
+      required: false,
+      description:
+        'Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel.',
+    },
     { name: 'legend', type: 'boolean', required: false },
     { name: 'className', type: 'string', required: false },
     {
@@ -46,6 +85,24 @@ export const meta: ComponentMeta = {
       code: `import { PieChart } from '@cascivo/charts'
 
 <PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />`,
+    },
+    {
+      title: 'Donut with center total and custom thickness',
+      code: `import { PieChart } from '@cascivo/charts'
+
+<PieChart
+  donut
+  size={220}
+  thickness={28}
+  centerValue="142"
+  centerLabel="Total tasks"
+  data={[
+    { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },
+    { id: 'wip', label: 'In progress', value: 34, color: 'var(--cascivo-color-warning)' },
+    { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },
+  ]}
+  title="Task status"
+/>`,
     },
   ],
   dependencies: ['@cascivo/charts'],

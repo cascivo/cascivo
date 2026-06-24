@@ -3977,7 +3977,7 @@
             "name": "data",
             "type": "PieChartDatum[]",
             "required": true,
-            "description": "Array of { label, value } datums"
+            "description": "Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice."
           },
           {
             "name": "title",
@@ -4005,6 +4005,42 @@
             "type": "number",
             "required": false,
             "default": "300"
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand: sets width === height. Explicit width/height win."
+          },
+          {
+            "name": "thickness",
+            "type": "number",
+            "required": false,
+            "description": "Ring width in px (donut only); defaults to 0.4 × radius."
+          },
+          {
+            "name": "innerRadius",
+            "type": "number",
+            "required": false,
+            "description": "Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius)."
+          },
+          {
+            "name": "centerValue",
+            "type": "string",
+            "required": false,
+            "description": "Center value text rendered in the donut hole (donut only)."
+          },
+          {
+            "name": "centerLabel",
+            "type": "string",
+            "required": false,
+            "description": "Center label text rendered below the value (donut only)."
+          },
+          {
+            "name": "centerSlot",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel."
           },
           {
             "name": "legend",

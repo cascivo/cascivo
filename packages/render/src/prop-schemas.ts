@@ -3339,6 +3339,35 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'thickness',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'innerRadius',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'centerValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerSlot',
+      required: false,
+    },
+    {
       name: 'legend',
       required: false,
       primitives: ['boolean'],

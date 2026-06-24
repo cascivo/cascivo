@@ -1,5 +1,6 @@
 'use client'
 import { useSignal, useSignals } from '@cascivo/core'
+import type { ReactNode } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { Legend } from '../../chrome/legend'
 import { arcPath } from '../../engine/shape'
@@ -9,6 +10,7 @@ export interface PieChartDatum {
   id: string
   label: string
   value: number
+  /** CSS color overriding the positional palette for this slice. */
   color?: string
 }
 
@@ -19,6 +21,18 @@ export interface PieChartProps {
   donut?: boolean
   width?: number
   height?: number
+  /** Square shorthand: sets width === height. Explicit width/height win. */
+  size?: number
+  /** Donut ring width in px. Defaults to 0.4 × radius (innerRadius = 0.6 × radius). */
+  thickness?: number
+  /** Donut inner radius in px. Takes precedence over `thickness`. Clamped to [0, outerRadius). */
+  innerRadius?: number
+  /** Center value text rendered in the donut hole (donut only). */
+  centerValue?: string
+  /** Center label text rendered below the value in the donut hole (donut only). */
+  centerLabel?: string
+  /** Arbitrary content rendered in the donut hole; takes precedence over centerValue/centerLabel. */
+  centerSlot?: ReactNode
   legend?: boolean
   className?: string
   /** Render only the marks — no legend. For micro/inline charts. */
@@ -34,11 +48,18 @@ export function PieChart({
   donut = false,
   width: fixedWidth,
   height,
+  size,
+  thickness,
+  innerRadius,
+  centerValue,
+  centerLabel,
+  centerSlot,
   legend,
   className,
   plain,
 }: PieChartProps) {
-  const resolvedHeight = height ?? (plain ? 48 : 300)
+  const resolvedWidth = fixedWidth ?? size
+  const resolvedHeight = height ?? size ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? true)
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -107,7 +128,7 @@ export function PieChart({
       <ChartFrame
         title={title}
         description={description}
-        width={fixedWidth}
+        width={resolvedWidth}
         height={resolvedHeight}
         fallback={fallback}
         className={className}
@@ -119,12 +140,23 @@ export function PieChart({
           const cx = width / 2
           const cy = h / 2
           const outerR = Math.min(cx, cy) - 8
-          const innerR = donut ? outerR * 0.6 : 0
+          // Resolve the donut inner radius: innerRadius wins, then thickness,
+          // else today's 0.6 ratio. Clamp to [0, outerR) to avoid an inverted arc.
+          const rawInner =
+            innerRadius != null
+              ? innerRadius
+              : thickness != null
+                ? outerR - thickness
+                : outerR * 0.6
+          const innerR = donut ? Math.max(0, Math.min(rawInner, outerR)) : 0
 
           const visible = data.filter((d) => !hidden.value.has(d.id))
           const total = visible.reduce((s, d) => s + d.value, 0)
           // arcPath uses sin/cos with 0 at top, so startAngle=0 → top (12 o'clock)
           let startAngle = 0
+
+          const showCenter =
+            donut && (centerValue != null || centerLabel != null || centerSlot != null)
 
           return (
             <g>
@@ -145,6 +177,58 @@ export function PieChart({
                   />
                 )
               })}
+              {showCenter &&
+                (centerSlot != null ? (
+                  <foreignObject
+                    x={cx - innerR}
+                    y={cy - innerR}
+                    width={innerR * 2}
+                    height={innerR * 2}
+                    data-center-slot=""
+                  >
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {centerSlot}
+                    </div>
+                  </foreignObject>
+                ) : (
+                  <g data-center="">
+                    {centerValue != null && (
+                      <text
+                        x={cx}
+                        y={centerLabel != null ? cy - 8 : cy}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize="1.5rem"
+                        fontWeight={700}
+                        fill="var(--cascivo-color-foreground)"
+                      >
+                        {centerValue}
+                      </text>
+                    )}
+                    {centerLabel != null && (
+                      <text
+                        x={cx}
+                        y={centerValue != null ? cy + 14 : cy}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize="0.8125rem"
+                        fill="var(--cascivo-color-foreground-muted)"
+                      >
+                        {centerLabel}
+                      </text>
+                    )}
+                  </g>
+                ))}
             </g>
           )
         }}

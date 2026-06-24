@@ -43,6 +43,103 @@ describe('PieChart', () => {
     expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
   })
 
+  describe('donut center content (T2)', () => {
+    it('renders centerValue and centerLabel as text in a donut', () => {
+      render(
+        <PieChart
+          data={data}
+          title="Donut"
+          donut
+          size={200}
+          centerValue="42"
+          centerLabel="Total"
+        />,
+      )
+      expect(screen.getByText('42')).toBeTruthy()
+      expect(screen.getByText('Total')).toBeTruthy()
+    })
+
+    it('renders no center text without center props', () => {
+      const { container } = render(<PieChart data={data} title="Donut" donut size={200} />)
+      expect(container.querySelector('[data-center]')).toBeNull()
+      expect(container.querySelector('[data-center-slot]')).toBeNull()
+    })
+
+    it('renders centerSlot and gives it precedence over value/label', () => {
+      const { container } = render(
+        <PieChart
+          data={data}
+          title="Donut"
+          donut
+          size={200}
+          centerValue="42"
+          centerLabel="Total"
+          centerSlot={<span>SLOT</span>}
+        />,
+      )
+      expect(container.querySelector('[data-center-slot]')).toBeTruthy()
+      expect(screen.getByText('SLOT')).toBeTruthy()
+      expect(screen.queryByText('42')).toBeNull()
+    })
+
+    it('ignores center props on a non-donut pie', () => {
+      const { container } = render(
+        <PieChart data={data} title="Pie" size={200} centerValue="42" centerLabel="Total" />,
+      )
+      expect(container.querySelector('[data-center]')).toBeNull()
+      expect(screen.queryByText('42')).toBeNull()
+    })
+  })
+
+  describe('donut thickness / innerRadius (T2)', () => {
+    // size=200 → w=h=200, cx=cy=100, outerR = min(100,100) - 8 = 92.
+    it('reflects thickness as outerR - thickness in the slice path', () => {
+      const { container } = render(
+        <PieChart data={data} title="Donut" donut size={200} thickness={20} />,
+      )
+      const path = container.querySelector('path[data-series]')!.getAttribute('d')!
+      // innerR = 92 - 20 = 72 → arcPath emits an "A72,72" inner arc.
+      expect(path).toContain('A72,72')
+    })
+
+    it('honors innerRadius over thickness', () => {
+      const { container } = render(
+        <PieChart data={data} title="Donut" donut size={200} thickness={20} innerRadius={40} />,
+      )
+      const path = container.querySelector('path[data-series]')!.getAttribute('d')!
+      expect(path).toContain('A40,40')
+    })
+
+    it('default donut inner radius stays the 0.6 ratio (pixel-identical)', () => {
+      const { container } = render(<PieChart data={data} title="Donut" donut size={200} />)
+      const path = container.querySelector('path[data-series]')!.getAttribute('d')!
+      // 92 * 0.6 = 55.199999…
+      expect(path).toContain('A55.199')
+    })
+
+    it('clamps oversized thickness without inverting the arc (no NaN)', () => {
+      const { container } = render(
+        <PieChart data={data} title="Donut" donut size={200} thickness={500} />,
+      )
+      const paths = container.querySelectorAll('path[data-series]')
+      paths.forEach((p) => expect(p.getAttribute('d')).not.toContain('NaN'))
+    })
+  })
+
+  describe('size shorthand (T2)', () => {
+    it('renders a square frame from size', () => {
+      const { container } = render(<PieChart data={data} title="Pie" size={140} />)
+      expect(container.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 140 140')
+    })
+
+    it('lets explicit width/height win over size', () => {
+      const { container } = render(
+        <PieChart data={data} title="Pie" size={140} width={200} height={120} />,
+      )
+      expect(container.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 200 120')
+    })
+  })
+
   describe('plain mode', () => {
     it('renders no legend', () => {
       const { container } = render(<PieChart data={data} title="Plain" plain />)

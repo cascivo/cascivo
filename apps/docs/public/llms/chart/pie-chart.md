@@ -25,17 +25,23 @@ import { PieChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type              | Required | Default | Description                                                           |
-| ------------- | ----------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `data`        | `PieChartDatum[]` | yes      | —       | Array of { label, value } datums                                      |
-| `title`       | `string`          | yes      | —       | —                                                                     |
-| `description` | `string`          | no       | —       | —                                                                     |
-| `donut`       | `boolean`         | no       | —       | Render as donut chart                                                 |
-| `width`       | `number`          | no       | —       | —                                                                     |
-| `height`      | `number`          | no       | `300`   | —                                                                     |
-| `legend`      | `boolean`         | no       | —       | —                                                                     |
-| `className`   | `string`          | no       | —       | —                                                                     |
-| `plain`       | `boolean`         | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop          | Type              | Required | Default | Description                                                                                                                               |
+| ------------- | ----------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `PieChartDatum[]` | yes      | —       | Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice. |
+| `title`       | `string`          | yes      | —       | —                                                                                                                                         |
+| `description` | `string`          | no       | —       | —                                                                                                                                         |
+| `donut`       | `boolean`         | no       | —       | Render as donut chart                                                                                                                     |
+| `width`       | `number`          | no       | —       | —                                                                                                                                         |
+| `height`      | `number`          | no       | `300`   | —                                                                                                                                         |
+| `size`        | `number`          | no       | —       | Square shorthand: sets width === height. Explicit width/height win.                                                                       |
+| `thickness`   | `number`          | no       | —       | Ring width in px (donut only); defaults to 0.4 × radius.                                                                                  |
+| `innerRadius` | `number`          | no       | —       | Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius).                                            |
+| `centerValue` | `string`          | no       | —       | Center value text rendered in the donut hole (donut only).                                                                                |
+| `centerLabel` | `string`          | no       | —       | Center label text rendered below the value (donut only).                                                                                  |
+| `centerSlot`  | `ReactNode`       | no       | —       | Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel.                                                      |
+| `legend`      | `boolean`         | no       | —       | —                                                                                                                                         |
+| `className`   | `string`          | no       | —       | —                                                                                                                                         |
+| `plain`       | `boolean`         | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                     |
 
 ## Examples
 
@@ -49,6 +55,25 @@ import { PieChart } from '@cascivo/charts'
     { label: 'B', value: 40 },
   ]}
   title="Market share"
+/>
+```
+
+### Donut with center total and custom thickness
+
+```tsx
+import { PieChart } from '@cascivo/charts'
+;<PieChart
+  donut
+  size={220}
+  thickness={28}
+  centerValue="142"
+  centerLabel="Total tasks"
+  data={[
+    { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },
+    { id: 'wip', label: 'In progress', value: 34, color: 'var(--cascivo-color-warning)' },
+    { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },
+  ]}
+  title="Task status"
 />
 ```
 
