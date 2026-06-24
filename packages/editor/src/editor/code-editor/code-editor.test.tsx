@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CodeEditor, type CodeEditorHandle } from './code-editor.tsx'
+import hl from '../highlight/highlight.module.css'
 
 function getTextarea(): HTMLTextAreaElement {
   return screen.getByRole('textbox') as HTMLTextAreaElement
@@ -118,6 +119,42 @@ describe('CodeEditor', () => {
     })
     const rowsScrolled = container.querySelectorAll('pre code > span')
     expect(rowsScrolled[0]!.textContent).toBe('line 88') // window followed the scroll
+
+    vi.restoreAllMocks()
+  })
+
+  it('highlights a window that opens inside a fenced block (cross-line state)', () => {
+    const realGetComputedStyle = window.getComputedStyle.bind(window)
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((el: Element) => {
+      if (el.tagName === 'TEXTAREA') return { lineHeight: '20px' } as CSSStyleDeclaration
+      return realGetComputedStyle(el)
+    })
+
+    // A TypeScript fence opens near the top and never closes, so every body line
+    // is inside the fence. If the windowed tokenizer started a mid-document window
+    // in the wrong state, `const` would render as plain text, not a keyword.
+    const body = Array.from({ length: 2000 }, (_, i) => `const v${i} = ${i}`)
+    const doc = ['# Heading', '```ts', ...body].join('\n')
+    const { container } = render(
+      <CodeEditor language="markdown" defaultValue={doc} virtualize lineNumbers={false} />,
+    )
+    const ta = getTextarea()
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 200 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+
+    act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 8000 // ~line 400, mid-fence
+      fireEvent.scroll(ta)
+    })
+
+    const rows = container.querySelectorAll('pre code > span')
+    expect(rows.length).toBeLessThan(2002) // windowed
+    // Inside the fence, each body line is a single `string`-kind span. If the
+    // window had started in the wrong (default) state, it would be `plain` instead.
+    const fenced = [...container.querySelectorAll('pre code span')].find(
+      (s) => s.className === hl['string'] && s.textContent?.startsWith('const v'),
+    )
+    expect(fenced, 'a fenced body line renders as a string span in the window').toBeDefined()
 
     vi.restoreAllMocks()
   })

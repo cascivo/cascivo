@@ -10,7 +10,8 @@ import {
   type TextareaHTMLAttributes,
 } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
-import { tokenizeDocument } from '../../engine/tokenize.ts'
+import { createLineStateIndex, type LineStateIndex } from '../../engine/line-state.ts'
+import { tokenizeRange } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
 import { Gutter, renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
@@ -152,6 +153,13 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     historyRef.current.reset({ text: text.value, selectionStart: 0, selectionEnd: 0 })
   }
   const history = historyRef.current
+
+  // Persistent per-line grammar-state index — mutable infrastructure (like the
+  // history handle), held in a ref so the window's start-state is a read, not a
+  // re-walk from line 0. Seeded/recreated below when the grammar changes;
+  // `lastIndexedText` tracks the text it currently reflects.
+  const indexRef = useRef<LineStateIndex | null>(null)
+  const lastIndexedTextRef = useRef<string | undefined>(undefined)
 
   // Edit-tracking refs: `prevText` is the last value we know about, `lastEmitted`
   // is the value we last pushed via onValueChange (to tell our own echo from an
@@ -306,8 +314,26 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     }
   })
 
-  const lines = tokenizeDocument(getGrammar(language), highlightText.value)
-  const total = lines.length
+  // Seed/recreate the line-state index when the grammar changes (mutable infra,
+  // like the history handle — never render state).
+  const grammar = getGrammar(language)
+  if (indexRef.current === null || indexRef.current.grammar !== grammar) {
+    indexRef.current = createLineStateIndex(grammar)
+    lastIndexedTextRef.current = undefined
+  }
+  const index = indexRef.current
+
+  // Split for the line COUNT only — no token arrays built for the whole document.
+  const allLines = highlightText.value.split('\n')
+  const total = allLines.length
+
+  // Keep the index consistent with the current text. T4 narrows this to the first
+  // changed line (via diff); here a full reset on any text change is enough to keep
+  // the windowed output byte-identical to the whole-document path.
+  if (highlightText.value !== lastIndexedTextRef.current) {
+    index.invalidateFrom(0)
+    lastIndexedTextRef.current = highlightText.value
+  }
 
   // Windowing: render only the visible slice for large docs (never when wrapping,
   // where row heights are variable). Spacers preserve scroll height + alignment.
@@ -320,6 +346,8 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     const visibleRows = Math.ceil(viewport.value / lh)
     end = Math.min(total, start + visibleRows + OVERSCAN * 2)
   }
+  // Tokenize ONLY the visible window: O(viewport) per render, not O(document).
+  const rows = tokenizeRange(grammar, allLines, start, end, index)
   const topPad = start * lh
   const bottomPad = (total - end) * lh
 
@@ -493,7 +521,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
           {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(lines, start, end, decorationList)}</code>
+          <code>{renderRows(rows, start, end, decorationList)}</code>
           {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea

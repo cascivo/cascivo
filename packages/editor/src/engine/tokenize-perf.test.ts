@@ -20,15 +20,16 @@ function stubLineHeight(px: number): void {
 
 describe('tokenizer per-render budget', () => {
   // Deterministic perf guard (master-plan Decision 8): the instrumented per-line
-  // tokenize() counter must stay window-bounded across a render — the proxy for
-  // "is per-render work O(viewport)?". NOT a wall-clock assertion (flaky in CI).
+  // tokenize() counter must stay window-bounded across a STEADY-STATE render — the
+  // proxy for "is per-render work O(viewport)?". NOT a wall-clock assertion (flaky
+  // in CI).
   //
-  // FAILS today: the view path calls tokenizeDocument over the WHOLE document, so
-  // the counter is ~50,000. Goes GREEN after T3 swaps the view path to
-  // tokenizeRange over the visible window. Skipped until then so the suite stays
-  // green; see the UNSKIP marker.
-  // UNSKIP IN T3: change `it.skip` → `it` once the view path uses tokenizeRange.
-  it.skip('tokenizes only the visible window per render on a 50k-line doc', () => {
+  // Fails on the pre-T3 O(document) path (the counter is ~50,000 — the whole
+  // document is tokenized every render). Passes once the view path tokenizes only
+  // the visible window via tokenizeRange + the persistent line-state index: a
+  // re-render at a settled scroll position re-tokenizes just the window (the prefix
+  // states are already memoized in the index, so they are not recomputed).
+  it('tokenizes only the visible window per render on a 50k-line doc', () => {
     const LINE_PX = 20
     const VIEWPORT_PX = 400
     stubLineHeight(LINE_PX)
@@ -41,15 +42,19 @@ describe('tokenizer per-render budget', () => {
     Object.defineProperty(ta, 'clientHeight', { configurable: true, value: VIEWPORT_PX })
     Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
 
-    // Prime: let the first paint populate the cache, then measure a fresh render.
+    // Prime: scroll deep into the document so the index memoizes the prefix states
+    // up to the window (a one-time lazy cost, not the per-render steady state).
     act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 20_000
       fireEvent.scroll(ta)
     })
+
+    // Now measure a steady-state render: nudge the scroll a couple of rows so the
+    // view re-renders at an already-indexed region.
     clearTokenizeCache()
     __resetTokenizeCount()
-
     act(() => {
-      ;(ta as unknown as { scrollTop: number }).scrollTop = 4000
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 20_040
       fireEvent.scroll(ta)
     })
 

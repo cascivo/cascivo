@@ -29,6 +29,19 @@ describe('Highlight', () => {
     expect(code!.children[1]!.textContent).toBe('​')
   })
 
+  it('threads cross-line fenced state via the range path (identical output)', () => {
+    const value = ['# Title', '', '```ts', 'const x = 1', 'let y = 2', '```', 'after'].join('\n')
+    const { container } = render(<Highlight language="markdown" value={value} />)
+    // Inside the fence the whole line is a single `string`-kind span — identical to
+    // the whole-document path (the range tokenizer threads the fence state in).
+    const fenced = [...container.querySelectorAll('span')].find(
+      (s) => s.className === hl['string'] && s.textContent === 'const x = 1',
+    )
+    expect(fenced).toBeDefined()
+    // One row per source line (blank lines kept).
+    expect(container.querySelector('code')!.children).toHaveLength(7)
+  })
+
   it('exposes an aria-label when provided', () => {
     const { container } = render(<Highlight value="x" label="Example" />)
     expect(container.querySelector('[aria-label="Example"]')).not.toBeNull()

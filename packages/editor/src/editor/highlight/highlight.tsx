@@ -2,7 +2,8 @@
 import { cn, useSignals } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes, Ref } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
-import { tokenizeDocument } from '../../engine/tokenize.ts'
+import { createLineStateIndex } from '../../engine/line-state.ts'
+import { tokenizeRange } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
 import { Gutter, renderRows } from '../view.tsx'
 import styles from './highlight.module.css'
@@ -45,7 +46,12 @@ export function Highlight({
   ...rest
 }: HighlightProps) {
   useSignals()
-  const lines = tokenizeDocument(getGrammar(language), value)
+  // Read-only and stateless: a per-render index is enough (no useRef needed). The
+  // render set stays the whole document — only the tokenizer entry changes — so the
+  // output is byte-identical to the previous whole-document path.
+  const grammar = getGrammar(language)
+  const allLines = value.split('\n')
+  const lines = tokenizeRange(grammar, allLines, 0, allLines.length, createLineStateIndex(grammar))
   const tabStyle = { '--cascivo-editor-tab-size': tabSize, ...style } as CSSProperties
 
   return (
