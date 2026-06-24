@@ -53,11 +53,14 @@ export function MigratingPage() {
       <section style={cardStyle}>
         <h2>CSS setup</h2>
         <p>
-          Import two stylesheets once, then theme with a `data-theme` attribute — no Tailwind config
-          to mirror.
+          Import the themes once, then theme with a `data-theme` attribute — no Tailwind config to
+          mirror. Component CSS comes along with each component import and tree-shakes per
+          component.
         </p>
-        <code style={code}>{`import '@cascivo/react/styles.css' // component styles
-import '@cascivo/themes/all'        // tokens once + base typography + light & dark
+        <code
+          style={code}
+        >{`import '@cascivo/themes/all' // tokens once + base typography + light & dark
+// component CSS auto-included on import — no styles.css needed with a bundler
 
 <main data-theme="light">
   <Button>Save</Button>

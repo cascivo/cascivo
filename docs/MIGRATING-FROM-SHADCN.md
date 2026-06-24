@@ -9,13 +9,15 @@ This page maps the deltas the way a migrator hits them.
 
 shadcn relies on Tailwind: you copy a `globals.css` with `@tailwind` directives
 and a big block of CSS variables, and style with utility classes. cascivo ships
-real stylesheets — import them once and theme with a `data-theme` attribute:
+real stylesheets — import the themes once and theme with a `data-theme`
+attribute. Component CSS comes along with each component import (tree-shaken per
+component by your bundler), so there's no component stylesheet to wire up:
 
 ```tsx
 // shadcn: Tailwind directives + utility classes in markup
-// cascivo: two imports, then plain components
-import '@cascivo/react/styles.css' // component styles (@layer cascivo.component)
+// cascivo: one themes import, then plain components
 import '@cascivo/themes/all' // tokens once + base typography + light & dark
+// component CSS (@layer cascivo.component) auto-included on import
 ```
 
 ```tsx

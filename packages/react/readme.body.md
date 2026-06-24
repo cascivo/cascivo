@@ -20,28 +20,32 @@ for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
 
 ### Framework setup (Next.js App Router)
 
-In a Server Component file (e.g. `app/layout.tsx`), import the CSS once:
+In a Server Component file (e.g. `app/layout.tsx`), import the themes once:
 
 ```tsx
-import '@cascivo/react/styles.css'
 import '@cascivo/themes/all'
 ```
+
+Component CSS ships **per component** and is pulled in automatically when you
+import a component — a bundler (Vite, webpack/Next.js) includes the styles only
+for the components you actually use and tree-shakes the rest. There is no
+component-CSS import to add or maintain.
 
 Components ship with `'use client'` preserved in the bundle, so they work inside
 RSC without any extra wrapper.
 
-> **Note on the styles path:** the import specifier is `@cascivo/react/styles.css`,
-> which the package's export map points at the dist file `cascivo.css`. Always
-> import the `styles.css` specifier — never reference `cascivo.css` directly.
+> **No bundler? (CDN, import maps, plain `<link>`)** Import the aggregate sheet
+> `@cascivo/react/styles.css` — it contains every component's CSS in one file.
+> With a bundler you don't need it; import it only if you prefer one explicit
+> stylesheet over per-component tree-shaking.
 
 ## Use
 
 ```tsx
-// once, in your entry file — two imports get you a fully themed setup
-import '@cascivo/react/styles.css' // component styles
+// once, in your entry file — themes are the only global import
 import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
 
-// anywhere
+// anywhere — each component brings its own CSS along
 import { Button, Card, CardContent, Toggle } from '@cascivo/react'
 
 export function App() {
@@ -66,7 +70,6 @@ Prefer à-la-carte? Import only the themes you need — each self-imports the to
 (deduped by URL, so light + dark load tokens once):
 
 ```tsx
-import '@cascivo/react/styles.css'
 import '@cascivo/themes/base' // base typography (font/line-height/color)
 import '@cascivo/themes/light'
 import '@cascivo/themes/dark'
