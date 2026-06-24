@@ -1,7 +1,9 @@
 // Highlight engine — pure, deterministic, zero runtime dependencies.
 export type { Token, TokenKind, GrammarState, LineTokens, Grammar } from './engine/types.ts'
-export { tokenize, tokenizeDocument } from './engine/tokenize.ts'
+export { tokenize, tokenizeDocument, tokenizeRange } from './engine/tokenize.ts'
 export type { TokenizeResult } from './engine/tokenize.ts'
+export { createLineStateIndex } from './engine/line-state.ts'
+export type { LineStateIndex } from './engine/line-state.ts'
 export { registerGrammar, getGrammar, listGrammars } from './engine/registry.ts'
 export { createRuleGrammar } from './grammars/rules.ts'
 export type { Rule, RuleSpec } from './grammars/rules.ts'
