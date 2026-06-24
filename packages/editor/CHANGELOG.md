@@ -1,5 +1,26 @@
 # @cascivo/editor
 
+## 0.2.0
+
+### Minor Changes
+
+- Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-render
+  tokenization is now **O(viewport)** instead of O(document) — `CodeEditor` and `Highlight`
+  tokenize only the visible window via a new `tokenizeRange` engine entry fed by a persistent
+  per-line `LineStateIndex` (memoized grammar end-states with `ensure` / `startStateOf` /
+  `invalidateFrom`). An edit re-tokenizes only the **changed suffix** until the state
+  reconverges, not the whole file. The bounded `MAX_CACHE = 5000` per-line memo cap — the
+  source of the ~5,000-line cliff — is removed; the index supersedes it for the window.
+  Highlighting output is **byte-identical** and the overlay + owned-tokenizer model is
+  unchanged, with **zero new dependencies**. Long Markdown now edits well past ~5,000 lines
+  (50k-line keystroke ~587 ms → sub-millisecond, flat across document size). `wrap` render
+  stays O(n) (documented); a worker offload is evaluated and deferred. New exports:
+  `tokenizeRange`, `createLineStateIndex`, `LineStateIndex`.
+
+  Also: the current-line highlight now updates **instantly** when the caret moves
+  (driven by `selectionchange`), instead of waiting for `keyup` — fast arrow-key
+  navigation no longer leaves the active-row marker lagging behind the cursor.
+
 ## 0.1.1
 
 ### Patch Changes

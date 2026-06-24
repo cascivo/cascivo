@@ -7,6 +7,8 @@ import {
 } from '@cascivo/editor'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useRef } from 'react'
+// Reuse the shared benchmark/test fixture so the demo matches the measured doc shape.
+import { makeMarkdownDoc } from '../../../../packages/editor/src/engine/large-doc.fixture.ts'
 
 const tsSample = `interface User {
   id: string
@@ -39,9 +41,8 @@ const bracketSample = `function f(x) {
 }
 `
 
-const longSample = Array.from({ length: 3000 }, (_, i) => `line ${i + 1}: const v${i} = ${i}`).join(
-  '\n',
-)
+// A ~50,000-line Markdown document (generated once at module scope, not per render).
+const longSample = makeMarkdownDoc(50_000)
 
 const meta: Meta<typeof CodeEditor> = {
   title: 'Editor/CodeEditor',
@@ -189,9 +190,14 @@ export const Markdown: Story = {
 }
 
 export const LargeDocument: Story = {
-  args: { language: 'plaintext', defaultValue: longSample },
+  args: { language: 'markdown', defaultValue: longSample },
   parameters: {
-    docs: { description: { story: '3,000 lines — windowing keeps scrolling/typing smooth.' } },
+    docs: {
+      description: {
+        story:
+          'Scroll and edit a 50,000-line document — only the visible window is tokenized (O(viewport) per render), so scrolling and typing stay smooth.',
+      },
+    },
   },
 }
 

@@ -1,9 +1,11 @@
 # Editor performance — large documents
 
-Can `@cascivo/editor` edit very long Markdown files? **Up to ~5,000 lines (~125 KB)
-it is comfortable. Past that it degrades sharply**, because the per-line memo cache
-is bounded at 5,000 entries and the whole document is re-tokenized on every render.
-This doc records the measurements and where the limits are.
+Can `@cascivo/editor` edit very long Markdown files? **Yes — well past the old
+~5,000-line comfort ceiling.** As of v47 the editor tokenizes only the **visible
+window** on every render (O(viewport)), not the whole document (O(document)), and an
+edit re-tokenizes only the **changed suffix** until the grammar state reconverges —
+not the whole file. The old 5,000-entry per-line cache cap (the cliff) is gone. This
+doc records the measurements and where the remaining limits are.
 
 Reproduce with:
 
@@ -11,109 +13,139 @@ Reproduce with:
 node --experimental-strip-types scripts/bench-large-doc.mjs
 ```
 
-(uses the real `tokenizeDocument` + the built-in `markdown` grammar, over a document
-of mostly-unique lines — a real Markdown file, not a repeated block.)
+(uses the real `tokenizeDocument` / `tokenizeRange` + the built-in `markdown` grammar,
+over a document of mostly-unique lines — a real Markdown file, not a repeated block.
+The bench and the perf-regression test share one document generator, `makeMarkdownDoc`
+in `src/engine/large-doc.fixture.ts`, so they describe the **same** document shape.)
+
+## Perf budget (enforced)
+
+A deterministic Vitest guard (`src/engine/tokenize-perf.test.ts`) instruments the
+tokenizer with a test-only "lines re-tokenized this render" counter (incremented on a
+real `grammar.tokenizeLine` call — a cache miss — not on a reuse hit) and asserts:
+
+> **lines tokenized per render ≤ `visibleRows + OVERSCAN*2 + k`** (k = 8 slack)
+
+for a 50,000-line document. This is the regression gate for the windowed tokenizer —
+it is **not** a wall-clock millisecond assertion (those are flaky across machines/CI).
+It **fails** on the pre-v47 O(document) `tokenizeDocument` path (counter ≈ 50,000) and
+**passes** on the windowed path. A companion test (`code-editor/perf.test.tsx`) asserts
+a mid-document **keystroke** is bounded by the changed suffix, not the document length.
+See master-plan **Decision 8** (perf guarded deterministically).
 
 ## What the editor does per render
 
-The DOM is already virtualized: above `VIRTUALIZE_THRESHOLD` (1,000 lines, and when
-`wrap` is off) only the visible slice of rows is rendered, with spacer padding to
-keep the scroll height. So **the DOM is not the bottleneck.**
+The DOM is virtualized: above `VIRTUALIZE_THRESHOLD` (1,000 lines, and when `wrap` is
+off) only the visible slice of rows is rendered, with spacer padding to keep the scroll
+height. So **the DOM is not the bottleneck.**
 
-The bottleneck is tokenization. On every render `CodeEditor` calls:
-
-```ts
-const lines = tokenizeDocument(getGrammar(language), highlightText.value)
-```
-
-over the **entire** document — windowing only limits which rows are rendered, not
-what is tokenized. `tokenizeDocument` splits the full text and walks every line,
-threading each line's end-state into the next (so fenced code / block state carries
-across lines). Each line goes through a per-line memo (`tokenize`) keyed by
-`(grammar, startState, line)`.
-
-That memo is bounded:
+Since v47, tokenization is windowed too. On every render `CodeEditor`:
 
 ```ts
-const MAX_CACHE = 5000 // packages/editor/src/engine/tokenize.ts
+const allLines = highlightText.value.split('\n') // count only — no token arrays
+// …compute the visible window [start, end) from scrollTop / lineHeight / viewport…
+const rows = tokenizeRange(getGrammar(language), allLines, start, end, index)
 ```
 
-The highlight pass is `requestAnimationFrame`-debounced, so typing itself is never
-synchronously blocked — but the tokenize work still lands on the main thread one
-frame later, and if it takes >16 ms it stalls scrolling and input.
+`tokenizeRange` tokenizes **only `[start, end)`**, using a persistent `LineStateIndex`
+(`src/engine/line-state.ts`) for the window's start-state instead of re-walking the
+document from line 0. The index memoizes the grammar **end-state after each line**
+(line `i`'s start-state is line `i-1`'s end-state), so:
 
-## Measured: tokenization cost vs. document size
+- **Scrolling** never recomputes states above the window — they are read from the index.
+- **Editing** invalidates the index from the first changed line (via v46's `diff`), and
+  the next render re-threads only from there until the state reconverges or the window
+  bottom is reached.
 
-Markdown grammar, mostly-unique lines. `cold` = empty cache (first paint / language
-switch). `warm` = cache already primed (steady-state re-render while scrolling).
+The per-line memo (`tokenize`, keyed `(grammar, startState, line)`) is now **unbounded**
+— the cliff-causing `MAX_CACHE = 5000` cap is removed. It no longer needs a cap because
+`tokenizeRange` only ever builds token arrays for the window, so the memo grows with the
+lines actually viewed and never evicts a line a later render still needs.
 
-| lines   | size   | cold (ms) | warm/render (ms) | state                     |
-| ------- | ------ | --------- | ---------------- | ------------------------- |
-| 500     | 12 KB  | ~10       | 0.5              | fully cached              |
-| 1,000   | 24 KB  | ~7        | 1.5              | fully cached              |
-| 2,000   | 49 KB  | ~16       | 2.5              | fully cached              |
-| 5,000   | 125 KB | ~32       | ~10              | fully cached (cache full) |
-| 10,000  | 250 KB | ~74       | **~110**         | **cache thrash**          |
-| 25,000  | 631 KB | ~223      | **~273**         | **cache thrash**          |
-| 50,000  | 1.3 MB | ~498      | **~554**         | **cache thrash**          |
-| 100,000 | 2.6 MB | ~1,098    | **~1,117**       | **cache thrash**          |
+The highlight pass is `requestAnimationFrame`-debounced, so typing is never synchronously
+blocked.
 
-And the cost of a **single keystroke** (one edit on a middle line, warm cache):
+## Measured: whole-document vs. windowed
 
-| lines  | re-tokenize per keystroke |
-| ------ | ------------------------- |
-| 2,000  | ~2 ms                     |
-| 5,000  | ~10 ms                    |
-| 10,000 | **~106 ms**               |
-| 50,000 | **~587 ms**               |
+Markdown grammar, mostly-unique lines, measured on the bench harness above. The
+whole-document numbers are the **pre-v47** per-render cost (every line tokenized); the
+windowed numbers are the **v47** path (only the visible window).
+
+Whole-document tokenization (BEFORE — the cost the windowed path avoids):
+
+| lines   | size   | cold (ms) | warm/render (ms) |
+| ------- | ------ | --------- | ---------------- |
+| 5,000   | 125 KB | ~19       | ~2               |
+| 10,000  | 250 KB | ~40       | ~4               |
+| 25,000  | 631 KB | ~97       | ~10              |
+| 50,000  | 1.3 MB | ~200      | ~21              |
+| 100,000 | 2.6 MB | ~380      | ~44              |
+
+Single-keystroke re-tokenize — **BEFORE vs. AFTER**:
+
+| lines   | whole-document (BEFORE) | windowed (AFTER) |
+| ------- | ----------------------- | ---------------- |
+| 2,000   | ~0.6 ms                 | **~0.02 ms**     |
+| 5,000   | ~1.8 ms                 | **~0.02 ms**     |
+| 10,000  | ~4.8 ms                 | **~0.03 ms**     |
+| 50,000  | ~22 ms                  | **~0.02 ms**     |
+| 100,000 | ~48 ms                  | **~0.02 ms**     |
+
+The windowed keystroke is **flat across document size** — it re-tokenizes only the
+visible window (plus the changed suffix until reconvergence), so 100k lines costs the
+same as 2k. (Historically, _with_ the old `MAX_CACHE = 5000` cap, a 50k-line keystroke
+thrashed the cache and cost **~587 ms**; removing the cap and windowing the work is what
+this roadmap, v47, did.)
 
 ## Where the limits are
 
-There are two distinct ceilings:
+The two pre-v47 ceilings are gone:
 
-1. **Hard cliff at 5,000 distinct lines (`MAX_CACHE`).** Below it, after the first
-   paint every subsequent render is cache hits, so re-renders are cheap (≤10 ms) and
-   a keystroke re-tokenizes only the edited line until the state reconverges
-   (≤10 ms). The moment a document has **more than ~5,000 distinct lines, the cache
-   can no longer hold them all** — each full-document pass evicts the entries the
-   next pass needs, so it collapses to a near-total recompute _every render_. At
-   10k lines that's ~110 ms per render and ~106 ms per keystroke; at 50k it's
-   ~550 ms / ~590 ms. That is well past the point of a responsive editor (>16 ms
-   drops frames; >100 ms feels broken).
+1. **The 5,000-line `MAX_CACHE` cliff is removed.** The line-state index supersedes the
+   bounded memo for steady-state correctness and speed, and the memo itself is now
+   unbounded, so there is no eviction thrash. Documents with far more than 5,000 distinct
+   lines no longer collapse to a near-total recompute every render.
 
-2. **An O(n) floor even with a perfect cache.** Even if every line is a cache hit,
-   `tokenizeDocument` still allocates a key string and does a `Map` lookup per line,
-   and rebuilds the full `Token[][]` array, on every render. That's ~0.6 µs/line, so
-   even a hypothetical unbounded cache bottoms out around ~60 ms/render at 100k lines.
+2. **The O(n) per-render floor is now O(viewport).** Per render the tokenizer builds
+   `Token[]` arrays only for the visible window, not the whole document, so the cost is
+   independent of document length. The remaining O(n) cost is the **`wrap` render path**
+   (below) and the native `<textarea>` holding the full multi-MB string (secondary).
 
-The native `<textarea>` holding the full multi-MB string and the controlled
-`value={text.value}` round-trip add some cost at the very top end (multi-MB), but
-they are secondary to tokenization.
+### `wrap` mode (soft-wrap)
+
+With `wrap` on, row heights are **variable**, so DOM windowing is disabled and **every
+row renders** — rendering is **O(n)** regardless of the tokenization win. This is
+irreducible without wrap-aware pixel virtualization, which is out of scope (engine
+territory). **Edits stay cheap** under `wrap` — the index/memo still re-tokenize only the
+changed suffix — but the render cost grows with the line count. Content is never hidden
+(no `display:none`). **Guidance:** disable `wrap` for very large documents (≳10k lines)
+if sustained editing matters; read-only or occasional-edit wrapped viewing is fine.
 
 ### Practical guidance
 
-- **≤ 5,000 lines (~125 KB): fine.** This covers the overwhelming majority of
-  hand-written Markdown — READMEs, docs pages, long notes, changelogs.
-- **5,000–10,000 lines: usable but laggy**, especially while typing. Acceptable for
-  read/occasional-edit, not for sustained editing.
-- **> 10,000 lines: not recommended** with the current defaults — typing latency
-  exceeds 100 ms and grows linearly.
+- **Long-form Markdown — generated docs, concatenated books, big notes — is in scope.**
+  Scrolling and typing stay smooth well past 50,000 lines with the default (windowed)
+  path.
+- **Disable `wrap` above ~10,000 lines** for sustained editing (render is O(n) under
+  `wrap`).
+- **Beyond ~100,000 lines with sustained editing**, reach for a full editor framework /
+  dedicated worker pipeline (see below).
 
-## Options to raise the ceiling (not yet implemented)
+## Options considered
 
-In rough order of effort vs. payoff:
+1. **Raise / make `MAX_CACHE` adaptive** — a complementary cleanup, **not** the fix. It
+   would defer the cliff but keep every render O(document). Superseded: the cap is removed
+   and the index makes per-render work O(viewport).
+2. **Windowed (viewport-scoped) tokenization** — **shipped (v47).** A persistent
+   `LineStateIndex` + `tokenizeRange` make per-render work O(viewport) and per-edit work
+   O(changed suffix until reconvergence). This is the fix; everything above measures it.
+3. **Move tokenization off the main thread (worker)** — **evaluated and deferred.** Now
+   that per-render is O(viewport), the main-thread tokenization cost is small for realistic
+   documents (sub-millisecond keystrokes even at 100k lines). A worker adds message-passing
+   complexity and async token delivery (highlight flicker) for a case outside the editor's
+   stated scope. **Trigger to revisit:** a real, sustained **100,000+-line editing** target
+   (not read-only display). The bench script remains the harness to re-validate if that
+   trigger fires.
 
-1. **Raise / make `MAX_CACHE` adaptive** (e.g. `max(5000, lineCount * 2)`). Cheapest
-   change; pushes the cliff out roughly in proportion to the cache size, at the cost
-   of memory (each entry is a small token array). A 50k-line doc would need ~50k+
-   entries to stay warm.
-2. **Tokenize only the windowed range plus the threaded prefix states.** Keep a
-   persistent array of per-line end-states; on an edit, re-thread states only from
-   the changed line until reconvergence, and build `Token[]` arrays only for visible
-   rows. This makes per-render work O(viewport) instead of O(document) and is the
-   real fix, but it's a non-trivial refactor of the tokenize/window seam.
-3. **Move tokenization off the main thread** (worker) for very large docs — biggest
-   change, only worth it if 50k+ line editing is a real target.
-
-The benchmark script (`scripts/bench-large-doc.mjs`) is the harness to validate any
-of these.
+The benchmark script (`scripts/bench-large-doc.mjs`) is the harness to validate any of
+these.

@@ -59,23 +59,30 @@ function renderToken(tok: Token, col: number, decos: readonly Decoration[], key:
 }
 
 /**
- * Render a slice of tokenized lines as block rows of colored `<span>`s. Shared by
+ * Render a window of tokenized lines as block rows of colored `<span>`s. Shared by
  * `Highlight` and `CodeEditor` so the highlight grid is identical in each, and so
- * `CodeEditor` can render only the visible window. Keys are absolute line indices
- * (stable across scrolling). Empty lines emit a zero-width space to keep height.
+ * `CodeEditor` can render only the visible window. Keys are **absolute** line
+ * indices (stable across scrolling). Empty lines emit a zero-width space to keep
+ * height.
  *
- * `decorations` (optional) tags column ranges with extra CSS classes; lines without
- * any decoration take the original fast path, so `Highlight` is unaffected.
+ * `lines` is **range-indexed**: element `0` is absolute line `start` (so a windowed
+ * `tokenizeRange(…, start, end, …)` result aligns without re-indexing). When `start`
+ * is `0` the relative index equals the absolute index, so a whole-document
+ * `Token[][]` works unchanged (the `Highlight` path).
+ *
+ * `decorations` (optional) tags column ranges with extra CSS classes (matched on the
+ * **absolute** line); lines without any decoration take the original fast path, so
+ * `Highlight` is unaffected.
  */
 export function renderRows(
   lines: readonly Token[][],
   start = 0,
-  end = lines.length,
+  end = start + lines.length,
   decorations?: readonly Decoration[],
 ) {
   const rows = []
   for (let i = start; i < end; i++) {
-    const tokens = lines[i] as Token[]
+    const tokens = lines[i - start] as Token[]
     const lineDecos = decorations?.filter((d) => d.line === i)
     rows.push(
       <span key={i} className={hl['line']}>

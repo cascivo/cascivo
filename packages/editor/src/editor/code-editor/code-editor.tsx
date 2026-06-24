@@ -10,7 +10,8 @@ import {
   type TextareaHTMLAttributes,
 } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
-import { tokenizeDocument } from '../../engine/tokenize.ts'
+import { createLineStateIndex, type LineStateIndex } from '../../engine/line-state.ts'
+import { tokenizeRange } from '../../engine/tokenize.ts'
 import '../../grammars/builtins.ts'
 import { Gutter, renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
@@ -49,9 +50,9 @@ export interface CodeEditorHandle {
 }
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
-const VIRTUALIZE_THRESHOLD = 1000
+export const VIRTUALIZE_THRESHOLD = 1000
 /** Extra rows rendered above/below the viewport so fast scrolls stay covered. */
-const OVERSCAN = 12
+export const OVERSCAN = 12
 
 export interface CodeEditorProps extends Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -152,6 +153,13 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     historyRef.current.reset({ text: text.value, selectionStart: 0, selectionEnd: 0 })
   }
   const history = historyRef.current
+
+  // Persistent per-line grammar-state index — mutable infrastructure (like the
+  // history handle), held in a ref so the window's start-state is a read, not a
+  // re-walk from line 0. Seeded/recreated below when the grammar changes;
+  // `lastIndexedText` tracks the text it currently reflects.
+  const indexRef = useRef<LineStateIndex | null>(null)
+  const lastIndexedTextRef = useRef<string | undefined>(undefined)
 
   // Edit-tracking refs: `prevText` is the last value we know about, `lastEmitted`
   // is the value we last pushed via onValueChange (to tell our own echo from an
@@ -292,25 +300,68 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
       caretOffset.value = ta.selectionStart
     }
+    // `selectionchange` fires the instant the caret moves for ANY reason (arrow
+    // keys, Home/End, mouse, typing) — unlike `keyup`, which waits for the key to
+    // be released, leaving the current-line highlight visibly lagging behind fast
+    // arrow-key navigation. It's a document-level event, so guard on focus.
+    const syncCaretIfActive = (): void => {
+      if (document.activeElement === ta) syncCaret()
+    }
     measure()
     syncCaret()
     ta.addEventListener('scroll', syncScroll)
     ta.addEventListener('keyup', syncCaret)
     ta.addEventListener('click', syncCaret)
     ta.addEventListener('input', syncCaret)
+    document.addEventListener('selectionchange', syncCaretIfActive)
     return () => {
       ta.removeEventListener('scroll', syncScroll)
       ta.removeEventListener('keyup', syncCaret)
       ta.removeEventListener('click', syncCaret)
       ta.removeEventListener('input', syncCaret)
+      document.removeEventListener('selectionchange', syncCaretIfActive)
     }
   })
 
-  const lines = tokenizeDocument(getGrammar(language), highlightText.value)
-  const total = lines.length
+  // Seed/recreate the line-state index when the grammar changes (mutable infra,
+  // like the history handle — never render state).
+  const grammar = getGrammar(language)
+  if (indexRef.current === null || indexRef.current.grammar !== grammar) {
+    indexRef.current = createLineStateIndex(grammar)
+    lastIndexedTextRef.current = undefined
+  }
+  const index = indexRef.current
+
+  // Split for the line COUNT only — no token arrays built for the whole document.
+  const allLines = highlightText.value.split('\n')
+  const total = allLines.length
+
+  // Keep the index consistent with the current text by invalidating only from the
+  // FIRST CHANGED LINE (via v46's diff), not from line 0 — so an edit re-threads
+  // just the changed suffix, bounded by where it reconverges or the window bottom,
+  // never the whole document. Keying off the rAF-debounced `highlightText` (the text
+  // the tokenizer actually consumes) covers every edit path uniformly: typing,
+  // indent, find/replace, applyEdit, undo/redo, and external/controlled sync.
+  const indexText = highlightText.value
+  const lastText = lastIndexedTextRef.current
+  if (indexText !== lastText) {
+    const changedLine =
+      lastText === undefined
+        ? 0
+        : (() => {
+            const change = diff(lastText, indexText)
+            return lastText.slice(0, change.from).split('\n').length - 1
+          })()
+    index.invalidateFrom(changedLine)
+    lastIndexedTextRef.current = indexText
+  }
 
   // Windowing: render only the visible slice for large docs (never when wrapping,
   // where row heights are variable). Spacers preserve scroll height + alignment.
+  // Under `wrap` the window is the whole document, so RENDER is O(n) — irreducible
+  // without wrap-aware pixel virtualization (out of scope). Edits stay cheap: the
+  // index/memo above re-tokenize only the changed suffix. Disable `wrap` for very
+  // large docs if sustained editing matters (see PERFORMANCE.md).
   const lh = lineHeight.value
   const windowed = (virtualize ?? total > VIRTUALIZE_THRESHOLD) && !wrap && lh > 0
   let start = 0
@@ -320,6 +371,8 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     const visibleRows = Math.ceil(viewport.value / lh)
     end = Math.min(total, start + visibleRows + OVERSCAN * 2)
   }
+  // Tokenize ONLY the visible window: O(viewport) per render, not O(document).
+  const rows = tokenizeRange(grammar, allLines, start, end, index)
   const topPad = start * lh
   const bottomPad = (total - end) * lh
 
@@ -493,7 +546,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
         <pre ref={preRef} className={styles['pre']} aria-hidden="true">
           <div className={styles['currentLine']} />
           {topPad > 0 && <div style={{ blockSize: topPad }} />}
-          <code>{renderRows(lines, start, end, decorationList)}</code>
+          <code>{renderRows(rows, start, end, decorationList)}</code>
           {bottomPad > 0 && <div style={{ blockSize: bottomPad }} />}
         </pre>
         <textarea

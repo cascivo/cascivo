@@ -1,8 +1,10 @@
 # cascivo — Roadmap v47: Editor Large-Document Performance — Windowed Tokenization
 
 **Last updated:** 2026-06-24
-**Status:** 📋 Planned — T1–T6 specified (benchmark+budget, line-state index, window-scoped tokenization,
-edit/sync integration, wrap-mode + very-large strategy, docs/regen/gate). Not yet implemented.
+**Status:** ✅ Shipped — T1–T6 implemented (benchmark+budget, line-state index, window-scoped tokenization,
+edit/sync integration, wrap-mode + very-large strategy, docs/regen/gate). Per-render tokenization is now
+O(viewport); the 5k `MAX_CACHE` cliff is removed; edits re-tokenize only the changed suffix; a deterministic
+perf regression test guards the win.
 **Plan documents:** `docs/superpowers/plans/2026-06-24-v47-master-plan.md` + tranches 1–6
 **Builds on:** the **`@cascivo/editor`** package as shipped in v46 — the tokenizer engine
 (`packages/editor/src/engine/{tokenize,registry,types}.ts`), the view layer
@@ -169,68 +171,68 @@ guarded by a perf regression test (T1) and shipped with refreshed docs/benchmark
 
 ### T1 — Benchmark harness as a fixture + perf budget + regression guard
 
-- [ ] The ad-hoc `scripts/bench-large-doc.mjs` is promoted to a reusable fixture (shared doc generator) and a
+- [x] The ad-hoc `scripts/bench-large-doc.mjs` is promoted to a reusable fixture (shared doc generator) and a
       deterministic **perf regression test** is added: it instruments the tokenizer with a test-only "lines
       tokenized this render" counter and asserts the count is window-bounded for a 50k-line doc (fails on O(n)).
-- [ ] A documented **perf budget** (lines-tokenized-per-render ≤ `visibleRows + OVERSCAN*2 + k`) is recorded in
+- [x] A documented **perf budget** (lines-tokenized-per-render ≤ `visibleRows + OVERSCAN*2 + k`) is recorded in
       `PERFORMANCE.md` and referenced by the test. No wall-clock assertions (machine-stable).
-- [ ] `pnpm exec vp run @cascivo/editor#test` green; the new test **fails** against today's full-document path
+- [x] `pnpm exec vp run @cascivo/editor#test` green; the new test **fails** against today's full-document path
       (proving it guards the right thing) and will pass after T3.
 
 ### T2 — Persistent per-line state index (incremental state threading)
 
-- [ ] A pure `LineStateIndex` (new `engine/line-state.ts`): stores per-line end-states; `ensure(lines, upto)`
+- [x] A pure `LineStateIndex` (new `engine/line-state.ts`): stores per-line end-states; `ensure(lines, upto)`
       computes states lazily up to a line; `invalidateFrom(line)` drops states at/after an edit; `startStateOf(i)`
       returns the threaded start state for line `i`. Framework-free, unit-tested.
-- [ ] An `tokenizeRange(grammar, lines, from, to, index)` engine function tokenizes only `[from, to)`, using the
+- [x] An `tokenizeRange(grammar, lines, from, to, index)` engine function tokenizes only `[from, to)`, using the
       index for the start state and updating it. Returns `Token[][]` for the range.
-- [ ] **Property test:** for adversarial docs (unclosed/Nested fences, block comments crossing boundaries) and
+- [x] **Property test:** for adversarial docs (unclosed/Nested fences, block comments crossing boundaries) and
       arbitrary `[from, to)`, `tokenizeRange` output equals `tokenizeDocument(...).slice(from, to)`. Exported from
       `engine/index` paths as needed; `tokenizeDocument` unchanged.
 
 ### T3 — Window-scoped tokenization in the view path
 
-- [ ] `code-editor.tsx` no longer calls `tokenizeDocument` over the full text per render. It computes the window
+- [x] `code-editor.tsx` no longer calls `tokenizeDocument` over the full text per render. It computes the window
       (`start`/`end`) first, calls `tokenizeRange(grammar, allLines, start, end, index)`, and feeds the window
       tokens to `renderRows`. The line-state index lives in a `useRef`, seeded on mount and rAF-refreshed like the
       highlight text. `Gutter` count still reflects total lines.
-- [ ] `Highlight` uses the same range path for its rendered window (read-only; identical output). Decorations,
+- [x] `Highlight` uses the same range path for its rendered window (read-only; identical output). Decorations,
       find-match highlighting, bracket matching, and the active-line gutter still align (they map offsets → the
       same rows).
-- [ ] The T1 perf test now **passes** (per-render lines tokenized is window-bounded at 50k). Highlighting output
+- [x] The T1 perf test now **passes** (per-render lines tokenized is window-bounded at 50k). Highlighting output
       is unchanged (snapshot/property check). No banned hooks.
 
 ### T4 — Edit & controlled-sync integration + cache rework
 
-- [ ] On every edit (typing, indent, undo/redo, find-replace, `applyEdit`, external controlled `value`), the state
+- [x] On every edit (typing, indent, undo/redo, find-replace, `applyEdit`, external controlled `value`), the state
       index is invalidated from the first changed line (via v46's `diff()` in `sync.ts`) and lazily re-threaded —
       not rebuilt from line 0. Keystroke cost on a 50k-line doc is bounded by the changed suffix until
       reconvergence, **not** the document length (measured in `PERFORMANCE.md`).
-- [ ] The bounded per-line memo `MAX_CACHE` is reworked: either removed (the index supersedes it for the window) or
+- [x] The bounded per-line memo `MAX_CACHE` is reworked: either removed (the index supersedes it for the window) or
       raised/justified — no path depends on a 5,000-entry cap for steady-state correctness or speed. Memory stays
       O(document end-states) ≈ a small int/array per line.
-- [ ] Tests: editing inside a fenced block mid-document recolors correctly; undo/redo restore highlighting; a
+- [x] Tests: editing inside a fenced block mid-document recolors correctly; undo/redo restore highlighting; a
       programmatic `value` swap re-seeds the index without a full-document stall; find/replace decorations still
       land on the right ranges.
 
 ### T5 — Wrap-mode handling + very-large-document strategy
 
-- [ ] With `wrap` on, edits still re-tokenize only the changed suffix (the index applies); the irreducible O(n)
+- [x] With `wrap` on, edits still re-tokenize only the changed suffix (the index applies); the irreducible O(n)
       **render** cost is documented in `README`/`PERFORMANCE.md`, with an optional, documented soft guidance
       ("disable wrap above ~N lines") — no behavior change that hides content.
-- [ ] The worker-offload option is evaluated and **explicitly deferred** in `PERFORMANCE.md` + the component meta
+- [x] The worker-offload option is evaluated and **explicitly deferred** in `PERFORMANCE.md` + the component meta
       `whenNotToUse`, with the trigger that would reopen it (sustained 100k+-line editing).
-- [ ] Re-run the benchmark; record **before/after** numbers (e.g. 50k-line keystroke from ~587 ms → bounded) in
+- [x] Re-run the benchmark; record **before/after** numbers (e.g. 50k-line keystroke from ~587 ms → bounded) in
       `PERFORMANCE.md`; the cliff/floor section is rewritten to reflect the windowed path.
 
 ### T6 — Docs, meta, registry, Storybook, regen & gate
 
-- [ ] `PERFORMANCE.md` refreshed (post-fix table + methodology), `packages/editor/README.md`/`readme.body.md`
+- [x] `PERFORMANCE.md` refreshed (post-fix table + methodology), `packages/editor/README.md`/`readme.body.md`
       large-document section updated, `CHANGELOG.md` + `package.json` version bumped, `code-editor.meta.ts` notes
       the large-document support, `docs/ROADMAP-V47.md` status flipped to Shipped.
-- [ ] A **`LargeDocument`** Storybook story (and/or an `apps/docs/src/pages/EditorPage.tsx` section) lets a
+- [x] A **`LargeDocument`** Storybook story (and/or an `apps/docs/src/pages/EditorPage.tsx` section) lets a
       reviewer scroll/edit a 50k-line doc and feel the windowed path; React stories call `useSignals()`, no banned
       hooks; both apps build without a prior full build (editor source alias intact).
-- [ ] `pnpm regen` + drift gate clean; full CI gate green (`vp check`, `pnpm build`, `vp run -r check`, `pnpm test`,
+- [x] `pnpm regen` + drift gate clean; full CI gate green (`vp check`, `pnpm build`, `vp run -r check`, `pnpm test`,
       `breakpoint:check`, `fallback:check`); grep sweep confirms the new engine surface reached the meta, README,
       and tests.
