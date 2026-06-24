@@ -28,14 +28,27 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   height?: number
   xTicks?: number
   yTicks?: number
+  /** Show every Nth category label (and always the last) to thin a crowded x-axis. */
+  xLabelEvery?: number
   legend?: boolean
   tooltip?: boolean
+  /** Custom tooltip formatter. Stacked default lists "label · total" + per-layer values. */
+  tooltipFormat?: (p: ChartPoint) => string
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
+
+/** Default stacked tooltip text: "label · total — Layer: v, Layer: v" (aria-live + fallback). */
+function stackedFormat(p: ChartPoint): string {
+  const segs = p.segments?.filter((s) => s.value !== 0) ?? []
+  const head = `${p.label} · ${p.value}`
+  return segs.length > 0
+    ? `${head} — ${segs.map((s) => `${s.label}: ${s.value}`).join(', ')}`
+    : head
+}
 
 export function BarChart<Datum = { x: string; y: number }>({
   series,
@@ -49,8 +62,10 @@ export function BarChart<Datum = { x: string; y: number }>({
   height,
   xTicks = 5,
   yTicks = 5,
+  xLabelEvery,
   legend,
   tooltip,
+  tooltipFormat,
   className,
   plain,
 }: BarChartProps<Datum>) {
@@ -115,6 +130,18 @@ export function BarChart<Datum = { x: string; y: number }>({
       stackedOffsets = stackSeries(values)
     }
 
+    // Stacked default (no custom formatter): attach the per-category breakdown so
+    // the tooltip can show "label · total" + each non-zero layer in its color.
+    const useStackedDefault = mode === 'stacked' && !tooltipFormat
+    const breakdownByCat = categories.map((_, di) => {
+      const segs = visibleSeries.map((s) => ({
+        label: s.label,
+        value: y(s.data[di]!),
+        color: s.color ?? COLORS[series.indexOf(s) % COLORS.length]!,
+      }))
+      return { segs, total: segs.reduce((sum, seg) => sum + seg.value, 0) }
+    })
+
     const points: ChartPoint[] = visibleSeries.flatMap((s) => {
       const seriesIdx = series.indexOf(s)
       const subBandW =
@@ -142,12 +169,14 @@ export function BarChart<Datum = { x: string; y: number }>({
           cx: margins.left + (isVertical ? barCenter : valMid),
           cy: margins.top + (isVertical ? valMid : barCenter),
           label: x(d),
-          value: y(d),
+          value: useStackedDefault ? breakdownByCat[di]!.total : y(d),
           seriesId: s.id,
+          ...(useStackedDefault && { segments: breakdownByCat[di]!.segs }),
         }
       })
     })
-    return { points }
+    const format = tooltipFormat ?? (useStackedDefault ? stackedFormat : undefined)
+    return format ? { points, format } : { points }
   }
 
   return (
@@ -251,6 +280,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       orientation="x"
                       length={innerW}
                       tickCount={xTicks}
+                      labelEvery={xLabelEvery}
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis scale={valScale} orientation="y" length={innerH} tickCount={yTicks} />
@@ -265,7 +295,13 @@ export function BarChart<Datum = { x: string; y: number }>({
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
                     />
-                    <Axis scale={catScale} orientation="y" length={innerH} tickCount={yTicks} />
+                    <Axis
+                      scale={catScale}
+                      orientation="y"
+                      length={innerH}
+                      tickCount={yTicks}
+                      labelEvery={xLabelEvery}
+                    />
                   </>
                 )}
               </g>

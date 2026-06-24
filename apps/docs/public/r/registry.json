@@ -2833,7 +2833,8 @@
           {
             "name": "series",
             "type": "BarChartSeries<Datum>[]",
-            "required": true
+            "required": true,
+            "description": "Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer."
           },
           {
             "name": "x",
@@ -2890,9 +2891,26 @@
             "default": "5"
           },
           {
+            "name": "xLabelEvery",
+            "type": "number",
+            "required": false,
+            "description": "Show every Nth category label (always the last) to thin a crowded x-axis."
+          },
+          {
             "name": "legend",
             "type": "boolean",
             "required": false
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "(p: ChartPoint) => string",
+            "required": false,
+            "description": "Custom tooltip formatter. The stacked default lists \"label · total\" + each non-zero layer in its color."
           },
           {
             "name": "className",
@@ -3977,7 +3995,7 @@
             "name": "data",
             "type": "PieChartDatum[]",
             "required": true,
-            "description": "Array of { label, value } datums"
+            "description": "Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice."
           },
           {
             "name": "title",
@@ -4005,6 +4023,54 @@
             "type": "number",
             "required": false,
             "default": "300"
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand: sets width === height. Explicit width/height win."
+          },
+          {
+            "name": "thickness",
+            "type": "number",
+            "required": false,
+            "description": "Ring width in px (donut only); defaults to 0.4 × radius."
+          },
+          {
+            "name": "innerRadius",
+            "type": "number",
+            "required": false,
+            "description": "Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius)."
+          },
+          {
+            "name": "centerValue",
+            "type": "string",
+            "required": false,
+            "description": "Center value text rendered in the donut hole (donut only)."
+          },
+          {
+            "name": "centerLabel",
+            "type": "string",
+            "required": false,
+            "description": "Center label text rendered below the value (donut only)."
+          },
+          {
+            "name": "centerSlot",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel."
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "description": "Visible placeholder text when data is empty. Defaults to the i18n \"No data\"."
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "(p: ChartPoint) => string",
+            "required": false,
+            "description": "Custom tooltip formatter. Defaults to \"value (pct%)\" in the slice color."
           },
           {
             "name": "legend",

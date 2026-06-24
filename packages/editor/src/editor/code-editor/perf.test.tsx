@@ -39,9 +39,11 @@ describe('CodeEditor performance', () => {
     expect(ta.value.split('\n').length).toBe(5000)
   })
 
-  // Large-document perf test: the 50k-line first paint + edit is heavy in jsdom
-  // (the initial render mounts the whole doc before the measure effect enables
-  // windowing), so it needs a generous timeout — well beyond the 5s default.
+  // Large-document perf test: proves a mid-document keystroke re-tokenizes only
+  // the changed suffix (bounded by the window), not the whole doc. The doc stays
+  // well above the old `MAX_CACHE = 5000` memo cliff so the regression is still
+  // exercised, but at 8k lines (not 50k) the initial jsdom mount is fast and
+  // reliable on constrained CI runners — a 50k mount could exceed the timeout.
   it('bounds a mid-document keystroke to the changed suffix, not the doc length', () => {
     const LINE_PX = 20
     const VIEWPORT_PX = 400
@@ -56,7 +58,9 @@ describe('CodeEditor performance', () => {
         for (const f of frames.splice(0)) f(0)
       })
 
-    const doc = makeMarkdownDoc(50_000)
+    const DOC_LINES = 8000
+    const MID_LINE = DOC_LINES / 2 // 4000
+    const doc = makeMarkdownDoc(DOC_LINES)
     const { container } = render(
       <CodeEditor language="markdown" defaultValue={doc} lineNumbers={false} />,
     )
@@ -67,13 +71,13 @@ describe('CodeEditor performance', () => {
 
     // Scroll to the middle so the window (and its prefix states) settle there.
     act(() => {
-      ;(ta as unknown as { scrollTop: number }).scrollTop = 500_000 // ~line 25,000
+      ;(ta as unknown as { scrollTop: number }).scrollTop = MID_LINE * LINE_PX
       fireEvent.scroll(ta)
     })
 
     // Type one character into a middle line (the visible window).
     const lines = doc.split('\n')
-    lines[25_000] = `${lines[25_000]}x`
+    lines[MID_LINE] = `${lines[MID_LINE]}x`
     const next = lines.join('\n')
     act(() => {
       fireEvent.change(ta, { target: { value: next } })
@@ -87,7 +91,7 @@ describe('CodeEditor performance', () => {
     const visibleRows = Math.ceil(VIEWPORT_PX / LINE_PX)
     const k = 8
     const budget = visibleRows + OVERSCAN * 2 + k
-    // Bounded by the window; a re-tokenize-from-line-0 path would be ~25,000.
+    // Bounded by the window; a re-tokenize-from-line-0 path would be ~4,000.
     expect(__tokenizeCount()).toBeLessThanOrEqual(budget)
   }, 30_000)
 

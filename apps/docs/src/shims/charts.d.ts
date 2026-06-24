@@ -29,3 +29,8 @@ export declare function Heatmap(props: { data?: unknown[]; [key: string]: unknow
 export declare function Treemap(props: { data?: unknown[]; [key: string]: unknown }): JSX.Element
 export declare function Radar(props: { series?: unknown[]; [key: string]: unknown }): JSX.Element
 export declare function Bullet(props: { value?: number; [key: string]: unknown }): JSX.Element
+export declare function toStackedSeries(rows: readonly unknown[]): {
+  series: unknown[]
+  x: Accessor<unknown>
+  y: Accessor<unknown>
+}

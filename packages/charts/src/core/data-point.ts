@@ -11,6 +11,12 @@ export interface ChartPoint {
   /** Datum value (y or measure) */
   value: number | string
   seriesId?: string
+  /** Share of the whole, 0–100 (pie/donut). Available to a custom formatter. */
+  percent?: number
+  /** Mark color for this point — used to tint the tooltip text. */
+  color?: string
+  /** Per-segment breakdown for a stacked category, in layer order. */
+  segments?: readonly { label: string; value: number; color?: string }[]
 }
 
 export interface TooltipModel {

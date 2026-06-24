@@ -5050,7 +5050,13 @@
                   "yTicks": {
                     "type": "number"
                   },
+                  "xLabelEvery": {
+                    "type": "number"
+                  },
                   "legend": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
                     "type": "boolean"
                   },
                   "className": {
@@ -5482,6 +5488,28 @@
                   },
                   "height": {
                     "type": "number"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "thickness": {
+                    "type": "number"
+                  },
+                  "innerRadius": {
+                    "type": "number"
+                  },
+                  "centerValue": {
+                    "type": "string"
+                  },
+                  "centerLabel": {
+                    "type": "string"
+                  },
+                  "centerSlot": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "emptyLabel": {
+                    "type": "string"
                   },
                   "legend": {
                     "type": "boolean"

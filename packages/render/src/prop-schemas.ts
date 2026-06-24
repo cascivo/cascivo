@@ -361,9 +361,23 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'xLabelEvery',
+      required: false,
+      primitives: ['number'],
+    },
+    {
       name: 'legend',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tooltipFormat',
+      required: false,
     },
     {
       name: 'className',
@@ -3337,6 +3351,44 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'height',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'thickness',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'innerRadius',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'centerValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerSlot',
+      required: false,
+    },
+    {
+      name: 'emptyLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'tooltipFormat',
+      required: false,
     },
     {
       name: 'legend',
