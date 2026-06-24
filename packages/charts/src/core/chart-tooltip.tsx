@@ -9,6 +9,7 @@ interface ChartTooltipProps {
 
 export function ChartTooltip({ point, model }: ChartTooltipProps) {
   const text = model.format ? model.format(point) : defaultFormat(point)
+  const segments = point.segments?.filter((s) => s.value !== 0)
   return (
     <div
       role="tooltip"
@@ -28,7 +29,21 @@ export function ChartTooltip({ point, model }: ChartTooltipProps) {
         zIndex: 10,
       }}
     >
-      {text}
+      {segments && segments.length > 0 ? (
+        // Stacked breakdown: "label · total" header + each non-zero layer in its color.
+        <span style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <span style={{ fontWeight: 600 }} data-tooltip-header="">
+            {point.label} · {point.value}
+          </span>
+          {segments.map((s) => (
+            <span key={s.label} style={s.color ? { color: s.color } : undefined}>
+              {s.label}: {s.value}
+            </span>
+          ))}
+        </span>
+      ) : (
+        <span style={point.color ? { color: point.color } : undefined}>{text}</span>
+      )}
     </div>
   )
 }

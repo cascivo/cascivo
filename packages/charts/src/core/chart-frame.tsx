@@ -1,5 +1,6 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
 import styles from './chart-frame.module.css'
@@ -16,6 +17,8 @@ export interface ChartFrameProps {
   children: (size: { width: number; height: number }) => ReactNode
   className?: string | undefined
   'data-state'?: string | undefined
+  /** Visible placeholder text shown when data-state is "empty". Defaults to the i18n built-in. */
+  emptyLabel?: string | undefined
   plain?: boolean | undefined
   /**
    * Tooltip model. Pass a TooltipModel directly, or a factory function that
@@ -36,6 +39,7 @@ export function ChartFrame({
   children,
   className,
   'data-state': dataState,
+  emptyLabel,
   plain,
   tooltip,
 }: ChartFrameProps) {
@@ -91,6 +95,19 @@ export function ChartFrame({
       >
         {description && <desc id={descId}>{description}</desc>}
         {children({ width: w, height: h })}
+        {dataState === 'empty' && (
+          <text
+            x={w / 2}
+            y={h / 2}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="var(--cascivo-color-foreground-muted)"
+            fontSize="0.875rem"
+            data-empty=""
+          >
+            {emptyLabel ?? t(builtin.charts.noData)}
+          </text>
+        )}
       </svg>
       {fallback && <div className={styles['fallback']}>{fallback}</div>}
       {resolvedTooltip !== undefined && (

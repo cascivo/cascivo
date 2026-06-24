@@ -3368,6 +3368,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'emptyLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'tooltipFormat',
+      required: false,
+    },
+    {
       name: 'legend',
       required: false,
       primitives: ['boolean'],

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { PieChart } from './pie-chart'
 
 const data = [
@@ -137,6 +137,68 @@ describe('PieChart', () => {
         <PieChart data={data} title="Pie" size={140} width={200} height={120} />,
       )
       expect(container.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 200 120')
+    })
+  })
+
+  describe('empty state (T3)', () => {
+    it('renders a visible "No data" placeholder and no slice paths when empty', () => {
+      const { container } = render(<PieChart data={[]} title="Empty" />)
+      const placeholder = container.querySelector('[data-empty]')
+      expect(placeholder?.textContent).toBe('No data')
+      expect(container.querySelectorAll('path[data-series]')).toHaveLength(0)
+    })
+
+    it('renders no NaN path with empty data', () => {
+      const { container } = render(<PieChart data={[]} title="Empty" donut />)
+      expect(container.querySelector('svg')?.innerHTML).not.toContain('NaN')
+    })
+
+    it('keeps the a11y fallback table when empty', () => {
+      const { container } = render(<PieChart data={[]} title="Empty" />)
+      expect(container.querySelector('table')).toBeTruthy()
+    })
+
+    it('honors a custom emptyLabel', () => {
+      const { container } = render(
+        <PieChart data={[]} title="Empty" emptyLabel="Nothing tracked yet" />,
+      )
+      expect(container.querySelector('[data-empty]')?.textContent).toBe('Nothing tracked yet')
+    })
+  })
+
+  describe('percentage tooltip (T3)', () => {
+    const pct = [
+      { id: 'a', label: 'A', value: 60, color: 'rebeccapurple' },
+      { id: 'b', label: 'B', value: 40 },
+    ]
+
+    it('default tooltip announces "value (pct%)" via aria-live', () => {
+      render(<PieChart data={pct} title="Share" />)
+      const layer = screen.getByRole('application')
+      act(() => {
+        fireEvent.focus(layer)
+      })
+      expect(document.querySelector('[aria-live="polite"]')?.textContent).toBe('60 (60%)')
+    })
+
+    it('renders the visible tooltip text in the slice color', () => {
+      render(<PieChart data={pct} title="Share" />)
+      const layer = screen.getByRole('application')
+      act(() => {
+        fireEvent.focus(layer)
+      })
+      const tooltip = screen.getByRole('tooltip')
+      expect(tooltip.textContent).toBe('60 (60%)')
+      expect(tooltip.querySelector('span')?.style.color).toBe('rebeccapurple')
+    })
+
+    it('lets tooltipFormat override the default', () => {
+      render(<PieChart data={pct} title="Share" tooltipFormat={(p) => p.label.toUpperCase()} />)
+      const layer = screen.getByRole('application')
+      act(() => {
+        fireEvent.focus(layer)
+      })
+      expect(document.querySelector('[aria-live="polite"]')?.textContent).toBe('A')
     })
   })
 

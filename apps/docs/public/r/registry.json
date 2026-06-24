@@ -4043,6 +4043,18 @@
             "description": "Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel."
           },
           {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "description": "Visible placeholder text when data is empty. Defaults to the i18n \"No data\"."
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "(p: ChartPoint) => string",
+            "required": false,
+            "description": "Custom tooltip formatter. Defaults to \"value (pct%)\" in the slice color."
+          },
+          {
             "name": "legend",
             "type": "boolean",
             "required": false

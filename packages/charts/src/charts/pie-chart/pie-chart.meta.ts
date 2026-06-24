@@ -58,6 +58,18 @@ export const meta: ComponentMeta = {
       description:
         'Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel.',
     },
+    {
+      name: 'emptyLabel',
+      type: 'string',
+      required: false,
+      description: 'Visible placeholder text when data is empty. Defaults to the i18n "No data".',
+    },
+    {
+      name: 'tooltipFormat',
+      type: '(p: ChartPoint) => string',
+      required: false,
+      description: 'Custom tooltip formatter. Defaults to "value (pct%)" in the slice color.',
+    },
     { name: 'legend', type: 'boolean', required: false },
     { name: 'className', type: 'string', required: false },
     {
@@ -103,6 +115,16 @@ export const meta: ComponentMeta = {
   ]}
   title="Task status"
 />`,
+    },
+    {
+      title: 'Percentage tooltip + empty state',
+      code: `import { PieChart } from '@cascivo/charts'
+
+// Default tooltip shows "value (pct%)" in the slice color; pass tooltipFormat to override.
+<PieChart data={[{id:'a',label:'A',value:60},{id:'b',label:'B',value:40}]} title="Share" />
+
+// Empty data renders a visible "No data" placeholder (override via emptyLabel).
+<PieChart data={[]} title="Share" emptyLabel="Nothing tracked yet" />`,
     },
   ],
   dependencies: ['@cascivo/charts'],

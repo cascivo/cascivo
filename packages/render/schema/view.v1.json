@@ -5502,6 +5502,9 @@
                     "type": "string",
                     "enum": ["ReactNode"]
                   },
+                  "emptyLabel": {
+                    "type": "string"
+                  },
                   "legend": {
                     "type": "boolean"
                   },

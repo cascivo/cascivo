@@ -33,10 +33,19 @@ export interface PieChartProps {
   centerLabel?: string
   /** Arbitrary content rendered in the donut hole; takes precedence over centerValue/centerLabel. */
   centerSlot?: ReactNode
+  /** Visible placeholder text when data is empty. Defaults to the i18n built-in ("No data"). */
+  emptyLabel?: string
+  /** Custom tooltip formatter. Defaults to "value (pct%)". Receives ChartPoint.percent. */
+  tooltipFormat?: (p: ChartPoint) => string
   legend?: boolean
   className?: string
   /** Render only the marks — no legend. For micro/inline charts. */
   plain?: boolean
+}
+
+function pieDefaultFormat(p: ChartPoint): string {
+  const pct = p.percent != null ? Math.round(p.percent) : 0
+  return `${p.value} (${pct}%)`
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -54,6 +63,8 @@ export function PieChart({
   centerValue,
   centerLabel,
   centerSlot,
+  emptyLabel,
+  tooltipFormat,
   legend,
   className,
   plain,
@@ -92,9 +103,11 @@ export function PieChart({
         label: d.label,
         value: d.value,
         seriesId: String(i),
+        percent: total > 0 ? (d.value / total) * 100 : 0,
+        color: d.color ?? COLORS[i % COLORS.length]!,
       }
     })
-    return { points }
+    return { points, format: tooltipFormat ?? pieDefaultFormat }
   }
 
   const fallback = (
@@ -133,6 +146,7 @@ export function PieChart({
         fallback={fallback}
         className={className}
         data-state={hasData ? undefined : 'empty'}
+        emptyLabel={emptyLabel}
         plain={plain}
         tooltip={hasData ? buildTooltip : undefined}
       >

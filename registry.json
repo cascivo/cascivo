@@ -18741,6 +18741,18 @@
             "description": "Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel."
           },
           {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "description": "Visible placeholder text when data is empty. Defaults to the i18n \"No data\"."
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "(p: ChartPoint) => string",
+            "required": false,
+            "description": "Custom tooltip formatter. Defaults to \"value (pct%)\" in the slice color."
+          },
+          {
             "name": "legend",
             "type": "boolean",
             "required": false
@@ -18781,6 +18793,10 @@
           {
             "title": "Donut with center total and custom thickness",
             "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart\n  donut\n  size={220}\n  thickness={28}\n  centerValue=\"142\"\n  centerLabel=\"Total tasks\"\n  data={[\n    { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },\n    { id: 'wip', label: 'In progress', value: 34, color: 'var(--cascivo-color-warning)' },\n    { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },\n  ]}\n  title=\"Task status\"\n/>"
+          },
+          {
+            "title": "Percentage tooltip + empty state",
+            "code": "import { PieChart } from '@cascivo/charts'\n\n// Default tooltip shows \"value (pct%)\" in the slice color; pass tooltipFormat to override.\n<PieChart data={[{id:'a',label:'A',value:60},{id:'b',label:'B',value:40}]} title=\"Share\" />\n\n// Empty data renders a visible \"No data\" placeholder (override via emptyLabel).\n<PieChart data={[]} title=\"Share\" emptyLabel=\"Nothing tracked yet\" />"
           }
         ],
         "dependencies": ["@cascivo/charts"],
