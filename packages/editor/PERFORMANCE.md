@@ -12,7 +12,23 @@ node --experimental-strip-types scripts/bench-large-doc.mjs
 ```
 
 (uses the real `tokenizeDocument` + the built-in `markdown` grammar, over a document
-of mostly-unique lines — a real Markdown file, not a repeated block.)
+of mostly-unique lines — a real Markdown file, not a repeated block. The bench and the
+perf-regression test share one document generator, `makeMarkdownDoc` in
+`src/engine/large-doc.fixture.ts`, so they describe the **same** document shape.)
+
+## Perf budget (enforced)
+
+A deterministic Vitest guard (`src/engine/tokenize-perf.test.ts`) instruments the
+tokenizer with a test-only per-line "lines tokenized this render" counter and asserts:
+
+> **lines tokenized per render ≤ `visibleRows + OVERSCAN*2 + k`** (k = 8 slack)
+
+for a 50,000-line document. This is the regression gate for the windowed tokenizer —
+it is **not** a wall-clock millisecond assertion (those are flaky across machines/CI).
+It **fails** on today's O(document) `tokenizeDocument` path (counter ≈ 50,000) and goes
+green once the view path tokenizes only the visible window. See master-plan **Decision 8**
+(perf guarded deterministically). The wall-clock before/after numbers in the tables below
+are refreshed separately when the windowed path lands.
 
 ## What the editor does per render
 

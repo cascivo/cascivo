@@ -9,52 +9,10 @@
 // Run: node --experimental-strip-types scripts/bench-large-doc.mjs
 import { tokenizeDocument, clearTokenizeCache } from '../src/engine/tokenize.ts'
 import { getGrammar } from '../src/engine/registry.ts'
+import { makeMarkdownDoc as makeDoc } from '../src/engine/large-doc.fixture.ts'
 import '../src/grammars/builtins.ts'
 
 const grammar = getGrammar('markdown')
-
-/** A representative Markdown block — mixed headings, prose, lists, code, links. */
-const BLOCK = `## Section heading
-
-Some **bold** and _italic_ prose with a [link](https://example.com) and \`inline code\`.
-
-- list item one
-- list item two with *emphasis*
-- [ ] an unchecked task
-- [x] a checked task
-
-> a blockquote line that carries on for a while to look like real text
-
-\`\`\`ts
-const x: number = 41 + 1
-function f(a: string) { return a.length }
-\`\`\`
-
-| col a | col b |
-| ----- | ----- |
-| 1     | 2     |
-
-Trailing paragraph with some more words to pad the line length out a bit further.
-`
-
-// Build a doc of mostly-UNIQUE lines (a real Markdown file is not a repeated
-// block). Each emitted line gets a unique suffix so the per-line memo can't
-// collapse the document down to a handful of distinct cache keys — this is what
-// exposes the true MAX_CACHE = 5000 thrash cliff.
-function makeDoc(lines) {
-  const block = BLOCK.split('\n')
-  const out = []
-  let n = 0
-  while (out.length < lines) {
-    for (const l of block) {
-      // Keep blank lines / fence delimiters intact (state-significant); pad the
-      // rest with a unique token so each is a distinct cache key.
-      out.push(l === '' || l.startsWith('```') ? l : `${l} #${n}`)
-    }
-    n++
-  }
-  return out.slice(0, lines).join('\n')
-}
 
 function timeIt(fn, runs = 1) {
   const t0 = performance.now()

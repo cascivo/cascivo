@@ -49,9 +49,9 @@ export interface CodeEditorHandle {
 }
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
-const VIRTUALIZE_THRESHOLD = 1000
+export const VIRTUALIZE_THRESHOLD = 1000
 /** Extra rows rendered above/below the viewport so fast scrolls stay covered. */
-const OVERSCAN = 12
+export const OVERSCAN = 12
 
 export interface CodeEditorProps extends Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
