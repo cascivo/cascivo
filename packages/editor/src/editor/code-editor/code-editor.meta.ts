@@ -163,6 +163,7 @@ import '@cascivo/editor/styles.css'
       'Editing code or config inline — JSON, snippets, web languages — with line numbers and syntax colors',
       'A lightweight, themeable code field where a full IDE editor (Monaco/CodeMirror) would be overkill',
       'Editing Markdown notes — find/replace, real undo/redo, save, and selection-preserving external sync',
+      'Editing long-form Markdown — generated docs, concatenated books, big notes — windowed (viewport-scoped) tokenization keeps scrolling/typing smooth well past ~5,000 lines',
     ],
     whenNotToUse: [
       'You need IntelliSense/LSP, multi-cursor, folding, a minimap, or diff view — use a full editor framework',
@@ -196,6 +197,11 @@ import '@cascivo/editor/styles.css'
         area: 'languages',
         level: 'flexible',
         note: 'Ships a small grammar set; registerGrammar adds custom languages without bundle bloat',
+      },
+      {
+        area: 'large documents',
+        level: 'flexible',
+        note: 'Windowed tokenization (tokenizeRange + LineStateIndex) makes per-render work O(viewport) and per-edit work O(changed suffix); long Markdown edits well past ~5,000 lines. Worker offload / 100k+-line sustained editing stay out of scope',
       },
     ],
   },

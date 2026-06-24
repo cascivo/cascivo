@@ -1,5 +1,7 @@
 import { useSignal, useSignals } from '@cascivo/core'
 import { CodeEditor, Highlight, type EditorTheme } from '@cascivo/editor'
+// Reuse the shared benchmark/test fixture so the demo matches the measured doc shape.
+import { makeMarkdownDoc } from '../../../../packages/editor/src/engine/large-doc.fixture.ts'
 
 const tsSample = `interface User {
   id: string
@@ -82,6 +84,9 @@ const zenTheme: EditorTheme = {
   '--cascivo-editor-gutter-fg': '#56607a',
   '--cascivo-editor-current-line': 'rgba(255, 255, 255, 0.05)',
 }
+
+// A ~50,000-line Markdown document (generated once at module scope).
+const largeSample = makeMarkdownDoc(50_000)
 
 const GALLERY: Array<{ language: string; label: string; value: string }> = [
   { language: 'typescript', label: 'TypeScript', value: tsSample },
@@ -200,6 +205,17 @@ export function EditorPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section class="doc-section">
+        <h2>Large document</h2>
+        <p>
+          A 50,000-line Markdown document. Only the visible window is tokenized on each render (
+          <code>O(viewport)</code>), and an edit re-tokenizes just the changed suffix — so scrolling
+          and typing stay smooth. Same overlay + owned-tokenizer model, zero new dependencies,
+          identical highlighting.
+        </p>
+        <CodeEditor language="markdown" defaultValue={largeSample} style={{ blockSize: '20rem' }} />
       </section>
 
       <section class="doc-section">

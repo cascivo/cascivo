@@ -40,6 +40,21 @@ import { Highlight } from '@cascivo/editor'
 Ships small, tree-shakeable grammars: `plaintext`, `json`, `javascript`, `typescript`, `css`,
 `html`, `markdown`, `bash`. Register your own with `registerGrammar(grammar)`.
 
+### Large documents
+
+The editor edits long Markdown documents — generated docs, concatenated books, big notes —
+well past the old ~5,000-line ceiling. On every render it tokenizes only the **visible window**
+(O(viewport)) rather than the whole document, and an edit re-tokenizes only the **changed
+suffix** until the grammar state reconverges. This is the same overlay + owned-tokenizer model,
+with **zero new dependencies** and **byte-identical highlighting output** — just a persistent
+per-line state index (`LineStateIndex`) feeding a viewport-scoped `tokenizeRange`. Scrolling and
+typing stay smooth well past 50,000 lines.
+
+One trade-off: with `wrap` (soft-wrap) on, row heights are variable so DOM windowing is disabled
+and every row renders (O(n) render). Edits stay cheap, but for sustained editing of very large
+documents (≳10,000 lines) disable `wrap`. See [`PERFORMANCE.md`](./PERFORMANCE.md) for the
+measured before/after numbers and the deferred worker-offload boundary.
+
 ### Extending the editor
 
 Three bounded seams — no plugin lifecycle, no transaction filters (use a full editor
