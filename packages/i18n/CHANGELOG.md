@@ -1,5 +1,11 @@
 # @cascivo/i18n
 
+## 0.1.7
+
+### Patch Changes
+
+- 75ab15e: Improvements
+
 ## 0.1.6
 
 ### Patch Changes
