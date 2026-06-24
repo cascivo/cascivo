@@ -199,6 +199,19 @@ export function App() {
   })
 
   const pathname = currentPath.value
+
+  // `/docs[...]` is the separate docs app (docs.cascivo.com), not this SPA — it
+  // has no route here and would 404. Redirect the path (and any subpath) there
+  // so stray `/docs` links never dead-end. Covers both clicked links (via the
+  // router) and a directly-entered URL.
+  if (pathname === '/docs' || pathname.startsWith('/docs/')) {
+    if (typeof window !== 'undefined') {
+      const rest = pathname.slice('/docs'.length)
+      window.location.replace(`https://docs.cascivo.com${rest || '/'}`)
+    }
+    return null
+  }
+
   const route = ROUTES[pathname]
 
   const search = hasOpenedSearch.value ? (
