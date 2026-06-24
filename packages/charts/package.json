@@ -52,6 +52,7 @@
     "@cascivo/i18n": "workspace:^"
   },
   "devDependencies": {
+    "@preact/signals": "^2",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
@@ -59,6 +60,7 @@
     "@types/react-dom": "catalog:",
     "fast-check": "catalog:",
     "jsdom": "catalog:",
+    "preact": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",

@@ -61,6 +61,31 @@ describe('BarChart', () => {
     expect(document.querySelector('[aria-live="polite"]')).toBeTruthy()
   })
 
+  describe('per-series color override (T5, C7)', () => {
+    const colored = [
+      { id: 'a', label: 'Done', color: 'rebeccapurple', data: [{ x: 'Jan', y: 10 }] },
+      { id: 'b', label: 'Todo', data: [{ x: 'Jan', y: 5 }] },
+    ]
+
+    it('uses the series color for its stacked layer rects, palette otherwise', () => {
+      const { container } = render(
+        <BarChart series={colored} x={x} y={y} title="Stacked" mode="stacked" />,
+      )
+      expect(container.querySelector('rect[data-series="a"]')?.getAttribute('fill')).toBe(
+        'rebeccapurple',
+      )
+      expect(container.querySelector('rect[data-series="b"]')?.getAttribute('fill')).toBe(
+        'var(--cascivo-chart-2)',
+      )
+    })
+
+    it('mirrors the override in the legend swatch', () => {
+      const { container } = render(<BarChart series={colored} x={x} y={y} title="Stacked" />)
+      const swatch = container.querySelector('button[aria-pressed] span[aria-hidden="true"]')
+      expect((swatch as HTMLElement | null)?.style.background).toBe('rebeccapurple')
+    })
+  })
+
   describe('stacked tooltip (T4)', () => {
     // Stacked: Jan → Q1 10 + Q2 5 = 15; first focusable point is Q1/Jan.
     it('default announces "label · total" + per-layer breakdown via aria-live', () => {

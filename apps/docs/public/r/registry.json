@@ -2833,7 +2833,8 @@
           {
             "name": "series",
             "type": "BarChartSeries<Datum>[]",
-            "required": true
+            "required": true,
+            "description": "Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer."
           },
           {
             "name": "x",

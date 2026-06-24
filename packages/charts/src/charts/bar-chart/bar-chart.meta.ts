@@ -9,7 +9,13 @@ export const meta: ComponentMeta = {
   variants: ['grouped', 'stacked'],
   sizes: [],
   props: [
-    { name: 'series', type: 'BarChartSeries<Datum>[]', required: true },
+    {
+      name: 'series',
+      type: 'BarChartSeries<Datum>[]',
+      required: true,
+      description:
+        'Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer.',
+    },
     { name: 'x', type: '(d: Datum) => string', required: true },
     { name: 'y', type: '(d: Datum) => number', required: true },
     { name: 'title', type: 'string', required: true },

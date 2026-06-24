@@ -140,6 +140,27 @@ describe('PieChart', () => {
     })
   })
 
+  describe('per-datum color override (T5, C1)', () => {
+    const mixed = [
+      { id: 'a', label: 'Alpha', value: 40, color: 'rebeccapurple' },
+      { id: 'b', label: 'Beta', value: 60 },
+    ]
+
+    it('uses the datum color for its slice and falls back to the palette otherwise', () => {
+      const { container } = render(<PieChart data={mixed} title="Pie" />)
+      const paths = container.querySelectorAll('path[data-series]')
+      expect(paths[0]?.getAttribute('fill')).toBe('rebeccapurple')
+      // The uncolored datum keeps the positional palette var.
+      expect(paths[1]?.getAttribute('fill')).toBe('var(--cascivo-chart-2)')
+    })
+
+    it('mirrors the override in the legend swatch', () => {
+      const { container } = render(<PieChart data={mixed} title="Pie" />)
+      const swatch = container.querySelector('button[aria-pressed] span[aria-hidden="true"]')
+      expect((swatch as HTMLElement | null)?.style.background).toBe('rebeccapurple')
+    })
+  })
+
   describe('empty state (T3)', () => {
     it('renders a visible "No data" placeholder and no slice paths when empty', () => {
       const { container } = render(<PieChart data={[]} title="Empty" />)
