@@ -17,6 +17,8 @@ export type {
   StateConfig,
   ComponentMeta,
   PropMeta,
+  TypeFieldMeta,
+  TypeDefMeta,
   AccessibilityMeta,
   WcagLevel,
   ExampleMeta,

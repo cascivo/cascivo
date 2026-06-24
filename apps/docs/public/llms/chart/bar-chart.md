@@ -45,6 +45,49 @@ import { BarChart } from '@cascivo/charts'
 | `className`     | `string`                    | no            | —       | —                                                                                                                                      |
 | `plain`         | `boolean`                   | no            | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                  |
 
+## Object types
+
+### `BarChartSeries<Datum>`
+
+One series (a set of bars). Pass an array via the `series` prop.
+
+| Field   | Type               | Required | Description                                                                                          |
+| ------- | ------------------ | -------- | ---------------------------------------------------------------------------------------------------- |
+| `id`    | `string`           | yes      | Stable series identity.                                                                              |
+| `label` | `string`           | yes      | Legend + tooltip label.                                                                              |
+| `data`  | `readonly Datum[]` | yes      | Row data read by the `x`/`y` accessors.                                                              |
+| `color` | `string`           | no       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. |
+
+### `StackedRow`
+
+Row-oriented input to the `toStackedSeries(rows)` pivot helper.
+
+| Field      | Type               | Required | Description                                                                       |
+| ---------- | ------------------ | -------- | --------------------------------------------------------------------------------- |
+| `label`    | `string`           | yes      | Category (one bar).                                                               |
+| `segments` | `StackedSegment[]` | yes      | Per-layer values: { key, value, color? }. First non-undefined color per key wins. |
+
+### `StackedSegment`
+
+One layer of a stacked bar within a StackedRow.
+
+| Field   | Type     | Required | Description                                            |
+| ------- | -------- | -------- | ------------------------------------------------------ |
+| `key`   | `string` | yes      | Layer key — becomes the series id/label (e.g. "Done"). |
+| `value` | `number` | yes      | —                                                      |
+| `color` | `string` | no       | Optional CSS color for this layer.                     |
+
+### `ChartPoint`
+
+Argument passed to the `tooltipFormat` callback.
+
+| Field      | Type                                                          | Required | Description                                                                          |
+| ---------- | ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
+| `label`    | `string`                                                      | yes      | Category label.                                                                      |
+| `value`    | `number \| string`                                            | yes      | —                                                                                    |
+| `color`    | `string`                                                      | no       | Resolved mark color (the default tooltip tints its text with this).                  |
+| `segments` | `readonly { label: string; value: number; color?: string }[]` | no       | Per-layer breakdown for a stacked category; the default stacked tooltip lists these. |
+
 ## Examples
 
 ### Basic bar chart

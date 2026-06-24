@@ -22,6 +22,19 @@ interface PropMeta {
   description?: string
 }
 
+interface TypeFieldMeta {
+  name: string
+  type: string
+  required?: boolean
+  description?: string
+}
+
+interface TypeDefMeta {
+  name: string
+  description?: string
+  fields: TypeFieldMeta[]
+}
+
 interface ExampleMeta {
   title: string
   code: string
@@ -42,6 +55,7 @@ interface ComponentMeta {
   variants?: string[]
   sizes?: string[]
   props?: PropMeta[]
+  typeDefs?: TypeDefMeta[]
   tokens?: string[]
   accessibility?: AccessibilityMeta
   examples?: ExampleMeta[]
@@ -82,6 +96,27 @@ function propsTable(props: PropMeta[]): string {
     return `| \`${p.name}\` | \`${p.type}\` | ${p.required ? 'yes' : 'no'} | ${def} | ${desc} |`
   })
   return [header, sep, ...rows].join('\n') + '\n'
+}
+
+function typeDefsSection(typeDefs: TypeDefMeta[]): string {
+  const lines: string[] = []
+  for (const def of typeDefs) {
+    lines.push(`### \`${def.name}\``)
+    lines.push('')
+    if (def.description) {
+      lines.push(def.description)
+      lines.push('')
+    }
+    lines.push('| Field | Type | Required | Description |')
+    lines.push('|-------|------|----------|-------------|')
+    for (const f of def.fields) {
+      const type = f.type.replace(/\|/g, '\\|')
+      const desc = (f.description ?? '—').replace(/\|/g, '\\|')
+      lines.push(`| \`${f.name}\` | \`${type}\` | ${f.required ? 'yes' : 'no'} | ${desc} |`)
+    }
+    lines.push('')
+  }
+  return lines.join('\n')
 }
 
 /**
@@ -172,6 +207,12 @@ function componentMarkdown(entry: RegistryEntry): string {
   lines.push('## Props')
   lines.push('')
   lines.push(propsTable(meta?.props ?? []))
+
+  if (meta?.typeDefs && meta.typeDefs.length > 0) {
+    lines.push('## Object types')
+    lines.push('')
+    lines.push(typeDefsSection(meta.typeDefs))
+  }
 
   if (meta?.examples && meta.examples.length > 0) {
     lines.push('## Examples')

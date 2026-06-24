@@ -112,6 +112,108 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
+    "typeDefs": [
+      {
+        "name": "BarChartSeries<Datum>",
+        "description": "One series (a set of bars). Pass an array via the `series` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "Stable series identity."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Legend + tooltip label."
+          },
+          {
+            "name": "data",
+            "type": "readonly Datum[]",
+            "required": true,
+            "description": "Row data read by the `x`/`y` accessors."
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer."
+          }
+        ]
+      },
+      {
+        "name": "StackedRow",
+        "description": "Row-oriented input to the `toStackedSeries(rows)` pivot helper.",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Category (one bar)."
+          },
+          {
+            "name": "segments",
+            "type": "StackedSegment[]",
+            "required": true,
+            "description": "Per-layer values: { key, value, color? }. First non-undefined color per key wins."
+          }
+        ]
+      },
+      {
+        "name": "StackedSegment",
+        "description": "One layer of a stacked bar within a StackedRow.",
+        "fields": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true,
+            "description": "Layer key — becomes the series id/label (e.g. \"Done\")."
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Optional CSS color for this layer."
+          }
+        ]
+      },
+      {
+        "name": "ChartPoint",
+        "description": "Argument passed to the `tooltipFormat` callback.",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Category label."
+          },
+          {
+            "name": "value",
+            "type": "number | string",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Resolved mark color (the default tooltip tints its text with this)."
+          },
+          {
+            "name": "segments",
+            "type": "readonly { label: string; value: number; color?: string }[]",
+            "required": false,
+            "description": "Per-layer breakdown for a stacked category; the default stacked tooltip lists these."
+          }
+        ]
+      }
+    ],
     "tokens": [
       "--cascivo-chart-1",
       "--cascivo-chart-2",
