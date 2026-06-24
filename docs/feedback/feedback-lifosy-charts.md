@@ -80,14 +80,28 @@ other bars and shows a `label · total` + per-segment breakdown tooltip.
 
 A Cascivo-backed `DonutChart`/`StackedBarChart` can replace the custom ones when:
 
-- [ ] `PieChartDatum.color` and `BarChartSeries.color` overrides land (#1 both).
-- [ ] Donut `centerValue`/`centerLabel` (or center slot) lands.
-- [ ] Donut `thickness`/`innerRadius` is controllable.
-- [ ] Zero-data and tiny-size (<160px) rendering are defined and crisp.
-- [ ] Tooltips can show `value (pct%)` (pie) and per-segment breakdown (bar), or
-      accept a formatter.
-- [ ] Chart palette tokens are mapped in the LifeOS bridge and charts mount under
-      Preact (smoke test green).
+- [x] `PieChartDatum.color` and `BarChartSeries.color` overrides land (#1 both).
+      **Verified already present in source** (v48 T5); now documented in the metas
+      and covered by explicit override tests, and shipped via the `@cascivo/charts`
+      minor changeset.
+- [x] Donut `centerValue`/`centerLabel` (or center slot) lands. (v48 T2 — plus
+      `centerSlot` for arbitrary content.)
+- [x] Donut `thickness`/`innerRadius` is controllable. (v48 T2 — clamped; default
+      reproduces the prior `0.6` ratio pixel-for-pixel.)
+- [x] Zero-data and tiny-size (<160px) rendering are defined and crisp. (v48 T3
+      visible "No data" placeholder; v48 T4 tiny-size `plain` 280×140 test asserting
+      no clipped/NaN marks.)
+- [x] Tooltips can show `value (pct%)` (pie) and per-segment breakdown (bar), or
+      accept a formatter. (v48 T3 pie default `value (pct%)` in the slice color +
+      `tooltipFormat`; v48 T4 stacked `label · total` + per-layer breakdown in layer
+      colors + `tooltipFormat`.)
+- [x] Chart palette tokens are mapped in the LifeOS bridge and charts mount under
+      Preact (smoke test green). (v48 T5 — `docs/cookbooks/charts-lifeos-bridge.md`
+      + `charts-preact-compat.test.tsx` mounting pie + bar under the preact/compat
+      bridge.)
 
-Until #1 (per-datum/series color) ships, keep the custom charts — that's the
-only true blocker; the rest are polish that can follow.
+**Resolved (v48).** All acceptance items above are met; `@cascivo/charts` is
+republished via the v48 changeset so the per-datum/series `color` override (#1 —
+the only true blocker) reaches the consumer. The remaining items shipped as the
+donut center/thickness/size, empty-state, percentage/stacked tooltips, the
+`toStackedSeries` helper, and the bridge recipe.

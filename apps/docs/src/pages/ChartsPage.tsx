@@ -1,6 +1,7 @@
 import { LineChart } from '@cascivo/charts'
 import { AreaChart } from '@cascivo/charts'
 import { BarChart } from '@cascivo/charts'
+import { toStackedSeries } from '@cascivo/charts'
 import { PieChart } from '@cascivo/charts'
 import { ScatterChart } from '@cascivo/charts'
 import { Sparkline } from '@cascivo/charts'
@@ -105,6 +106,23 @@ const pieData = [
   { id: 'social', label: 'Social', value: 15 },
 ]
 
+// v48: per-slice semantic color + donut center demo
+const statusPie = [
+  { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },
+  { id: 'wip', label: 'In progress', value: 34, color: 'var(--cascivo-color-warning)' },
+  { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },
+]
+
+// v48: row-oriented stacked data pivoted via toStackedSeries
+const stackedRows = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((label, i) => ({
+  label,
+  segments: [
+    { key: 'Done', value: [5, 8, 6, 9, 7][i]!, color: 'var(--cascivo-color-success)' },
+    { key: 'In progress', value: [3, 2, 4, 1, 3][i]!, color: 'var(--cascivo-color-warning)' },
+    { key: 'Blocked', value: [2, 1, 0, 2, 1][i]!, color: 'var(--cascivo-color-destructive)' },
+  ],
+}))
+
 const scatterSeries = [
   {
     id: 'group-a',
@@ -200,6 +218,21 @@ export function ChartsPage() {
             orientation="horizontal"
           />
         </div>
+        <div style={{ marginTop: '1rem' }}>
+          <strong>Stacked from row data (toStackedSeries) + per-segment tooltip:</strong>
+          <p>
+            Pivot <code>{'{ label, segments[] }'}</code> rows into series with{' '}
+            <code>toStackedSeries</code>; per-segment colors are preserved and the stacked tooltip
+            lists <code>label · total</code> plus each non-zero layer. Hover or focus a bar.
+          </p>
+          <BarChart
+            {...toStackedSeries(stackedRows)}
+            title="Throughput by day"
+            height={280}
+            mode="stacked"
+            tooltip
+          />
+        </div>
       </section>
 
       <section class="doc-section">
@@ -208,6 +241,26 @@ export function ChartsPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <PieChart data={pieData} title="Traffic sources (pie)" height={260} />
           <PieChart data={pieData} title="Traffic sources (donut)" height={260} donut />
+        </div>
+        <div style={{ marginTop: '1rem' }}>
+          <strong>Donut center, thickness, square size, and per-slice color:</strong>
+          <p>
+            <code>centerValue</code>/<code>centerLabel</code> render in the ring center;{' '}
+            <code>thickness</code> controls the ring; <code>size</code> makes it square; per-datum{' '}
+            <code>color</code> assigns semantic status colors. Hover for <code>value (pct%)</code>.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <PieChart
+              donut
+              size={240}
+              thickness={28}
+              centerValue="142"
+              centerLabel="Total tasks"
+              data={statusPie}
+              title="Task status (donut)"
+            />
+            <PieChart data={[]} title="No data yet" height={240} donut emptyLabel="No data yet" />
+          </div>
         </div>
       </section>
 

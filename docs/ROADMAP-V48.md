@@ -1,8 +1,8 @@
 # cascivo — Roadmap v48: Consumer-Adoption Parity — Charts Fidelity + Editor Publish Fix
 
 **Last updated:** 2026-06-24
-**Status:** 📋 Planned — T1–T6 specified (editor publish fix, pie center/thickness/size, pie empty-state +
-tooltip, stacked-bar ergonomics + tooltip, charts adoption hardening, docs/regen/gate). Not yet implemented.
+**Status:** ✅ Shipped — T1–T6 implemented (editor publish fix, pie center/thickness/size, pie empty-state +
+tooltip, stacked-bar ergonomics + tooltip, charts adoption hardening, docs/regen/gate).
 **Plan documents:** `docs/superpowers/plans/2026-06-24-v48-master-plan.md` + tranches 1–6
 **Builds on:** the **`@cascivo/charts`** package (`packages/charts/src/charts/{pie-chart,bar-chart}/*`, the
 `ChartFrame` + tooltip system in `packages/charts/src/core/*`, the `Legend`/`Axis`/`GridLines` chrome, the
@@ -208,51 +208,51 @@ Legend: ✅ already addressed (ship/doc/test only) · ⚠️ partially present �
 
 ### T2 — PieChart donut center + thickness + square size
 
-- [ ] `centerValue?: string` + `centerLabel?: string` (and optional `centerSlot?: ReactNode`) render in the donut
+- [x] `centerValue?: string` + `centerLabel?: string` (and optional `centerSlot?: ReactNode`) render in the donut
       center (only when `donut`); pixel-centered, theme-aware, in the a11y tree. Pie (non-donut) is unaffected.
-- [ ] `thickness?: number` / `innerRadius?: number` control the ring; default reproduces today's `outerR*0.6`
+- [x] `thickness?: number` / `innerRadius?: number` control the ring; default reproduces today's `outerR*0.6`
       exactly; values are clamped to a valid range. `size?: number` shorthand sets `width===height`.
-- [ ] Meta (`pie-chart.meta.ts`) lists the new props; tests cover center content, custom thickness geometry, and
+- [x] Meta (`pie-chart.meta.ts`) lists the new props; tests cover center content, custom thickness geometry, and
       `size` shorthand; default render is unchanged (snapshot).
 
 ### T3 — PieChart empty-state + percentage tooltip
 
-- [ ] At `total === 0`, a visible, theme-aware `NO DATA` placeholder renders (configurable `emptyLabel?`, i18n
+- [x] At `total === 0`, a visible, theme-aware `NO DATA` placeholder renders (configurable `emptyLabel?`, i18n
       built-in default) instead of an empty/NaN arc; the a11y fallback table is preserved.
-- [ ] A `tooltipFormat?: (p) => string` escape hatch is added; the pie default tooltip shows `value (pct%)` in the
+- [x] A `tooltipFormat?: (p) => string` escape hatch is added; the pie default tooltip shows `value (pct%)` in the
       slice color (percent reaches the formatter via `ChartPoint`). Existing non-tooltip render unchanged.
-- [ ] Meta updated; tests cover the empty placeholder, the percentage default, and a custom formatter; a11y aria-live
+- [x] Meta updated; tests cover the empty placeholder, the percentage default, and a custom formatter; a11y aria-live
       announcement still fires.
 
 ### T4 — StackedBarChart ergonomics + per-segment tooltip + label thinning + tiny sizing
 
-- [ ] A pure, dependency-free `toStackedSeries(rows)` helper pivots `{ label, segments: { key, value, color }[] }[]`
+- [x] A pure, dependency-free `toStackedSeries(rows)` helper pivots `{ label, segments: { key, value, color }[] }[]`
       into `BarChartSeries[]` + `x`/`y`, preserving per-segment `color`; exported from `@cascivo/charts` and unit-tested.
       A cookbook documents both the helper and the manual pivot recipe.
-- [ ] The stacked tooltip default lists `label · total` then each non-zero segment in its layer color; a
+- [x] The stacked tooltip default lists `label · total` then each non-zero segment in its layer color; a
       `tooltipFormat?` escape hatch is available. `xTicks` is documented to always include the final category, or
       `xLabelEvery?` is added and tested.
-- [ ] A test confirms `plain` + explicit `width`/`height` render crisply < 200px tall with no clipped axis; meta
+- [x] A test confirms `plain` + explicit `width`/`height` render crisply < 200px tall with no clipped axis; meta
       updated; default grouped/stacked render unchanged.
 
 ### T5 — Charts adoption hardening: color (ship/doc/test), Preact compat, bridge docs
 
-- [ ] `PieChartDatum.color` and `BarChartSeries.color` are added to the component metas, covered by explicit tests
+- [x] `PieChartDatum.color` and `BarChartSeries.color` are added to the component metas, covered by explicit tests
       (palette override beats positional color), and called out in a migration/cookbook doc as the resolution of the
       feedback's headline blocker (C1/C7). `@cascivo/charts` is queued for republish via the T6 changeset.
-- [ ] A chart **Preact-compat smoke test** mounts `PieChart` + `BarChart` under the `preact/compat` +
+- [x] A chart **Preact-compat smoke test** mounts `PieChart` + `BarChart` under the `preact/compat` +
       `@preact/signals-react → @preact/signals` bridge and asserts they render + update (mirrors the `Button` spike).
-- [ ] A cookbook documents the **LifeOS bridge recipe**: mapping `--cascivo-chart-1..8`, `--cascivo-chart-grid`,
+- [x] A cookbook documents the **LifeOS bridge recipe**: mapping `--cascivo-chart-1..8`, `--cascivo-chart-grid`,
       `--cascivo-chart-axis` onto a consumer palette (C9), with a worked `cascivo.css` example.
 
 ### T6 — Docs, meta, registry, Storybook, changeset, regen & gate
 
-- [ ] `ChartsPage.tsx` (docs) + Storybook stories show the new pie (center/thickness/size, empty, pct tooltip) and
+- [x] `ChartsPage.tsx` (docs) + Storybook stories show the new pie (center/thickness/size, empty, pct tooltip) and
       stacked-bar (helper, per-segment tooltip) capabilities; React stories call `useSignals()`, no banned hooks; apps
       build without a prior full build (charts source alias intact).
-- [ ] Changesets land the `@cascivo/charts` minor bump (new props + helper) and the `@cascivo/editor` `0.1.2` patch;
+- [x] Changesets land the `@cascivo/charts` minor bump (new props + helper) and the `@cascivo/editor` `0.1.2` patch;
       `CHANGELOG`s/versions updated via changesets; both feedback files' acceptance checklists are satisfied or their
       remaining items explicitly deferred with a note.
-- [ ] `pnpm regen` + drift gate clean; full CI gate green (`vp check`, `pnpm build`, `vp run -r check`, `pnpm test`,
+- [x] `pnpm regen` + drift gate clean; full CI gate green (`vp check`, `pnpm build`, `vp run -r check`, `pnpm test`,
       `breakpoint:check`, `fallback:check`, `pnpm ready:ci`); grep sweep confirms the new chart surface reached the
       metas, READMEs, registry, and tests; `docs/ROADMAP-V48.md` status flipped to Shipped.

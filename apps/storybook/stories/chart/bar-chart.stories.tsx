@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BarChart } from '@cascivo/charts'
+import { BarChart, toStackedSeries } from '@cascivo/charts'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -53,6 +53,27 @@ export const Stacked: Story = {
     y: (d) => (d as Pt).y,
     title: 'Stacked annual revenue vs cost',
     mode: 'stacked',
+    legend: true,
+  },
+}
+
+const rows = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((label, i) => ({
+  label,
+  segments: [
+    { key: 'Done', value: [5, 8, 6, 9, 7][i]!, color: 'var(--cascivo-color-success)' },
+    { key: 'In progress', value: [3, 2, 4, 1, 3][i]!, color: 'var(--cascivo-color-warning)' },
+    { key: 'Blocked', value: [2, 1, 0, 2, 1][i]!, color: 'var(--cascivo-color-destructive)' },
+  ],
+}))
+
+export const StackedFromRows: Story = {
+  args: {
+    series: toStackedSeries(rows).series,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
+    title: 'Throughput by day (from row data)',
+    mode: 'stacked',
+    tooltip: true,
     legend: true,
   },
 }

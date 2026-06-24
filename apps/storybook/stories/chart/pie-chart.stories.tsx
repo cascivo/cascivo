@@ -40,3 +40,51 @@ export const Donut: Story = {
     legend: true,
   },
 }
+
+const status = [
+  { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },
+  { id: 'wip', label: 'In progress', value: 34, color: 'var(--cascivo-color-warning)' },
+  { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },
+]
+
+export const DonutWithCenter: Story = {
+  args: {
+    data: status,
+    title: 'Task status',
+    donut: true,
+    size: 240,
+    thickness: 28,
+    centerValue: '142',
+    centerLabel: 'Total tasks',
+    legend: true,
+  },
+}
+
+export const DonutThickness: Story = {
+  args: {
+    data,
+    title: 'Thin ring donut',
+    donut: true,
+    size: 240,
+    thickness: 12,
+    legend: true,
+  },
+}
+
+export const PercentTooltip: Story = {
+  args: {
+    data: [
+      { id: 'a', label: 'A', value: 60 },
+      { id: 'b', label: 'B', value: 40 },
+    ],
+    title: 'Share — hover for value (pct%)',
+    legend: true,
+  },
+}
+
+export const Empty: Story = {
+  args: {
+    data: [],
+    title: 'No data yet',
+  },
+}
