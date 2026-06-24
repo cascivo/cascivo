@@ -19421,7 +19421,9 @@
           ],
           "whenNotToUse": [
             "You need IntelliSense/LSP, multi-cursor, folding, a minimap, or diff view — use a full editor framework",
-            "Plain prose or a single-line value — use Textarea or Input"
+            "Plain prose or a single-line value — use Textarea or Input",
+            "Sustained editing of 100k+-line documents — use a full editor framework / dedicated worker pipeline (the windowed tokenizer keeps per-render work O(viewport), but a worker offload is intentionally out of scope)",
+            "Soft-wrap (wrap) on a very large document — rendering is O(n) under wrap; disable wrap above ~10k lines for sustained editing"
           ],
           "antiPatterns": [
             {

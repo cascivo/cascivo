@@ -349,6 +349,10 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
 
   // Windowing: render only the visible slice for large docs (never when wrapping,
   // where row heights are variable). Spacers preserve scroll height + alignment.
+  // Under `wrap` the window is the whole document, so RENDER is O(n) — irreducible
+  // without wrap-aware pixel virtualization (out of scope). Edits stay cheap: the
+  // index/memo above re-tokenize only the changed suffix. Disable `wrap` for very
+  // large docs if sustained editing matters (see PERFORMANCE.md).
   const lh = lineHeight.value
   const windowed = (virtualize ?? total > VIRTUALIZE_THRESHOLD) && !wrap && lh > 0
   let start = 0

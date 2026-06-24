@@ -98,4 +98,42 @@ describe('CodeEditor performance', () => {
     const rows = container.querySelectorAll('pre code > span')
     expect(rows.length).toBe(1200)
   })
+
+  it('under wrap, an edit re-tokenizes only the changed suffix while all rows render', () => {
+    // Wrap disables DOM windowing (render is O(n)), but an edit must still
+    // re-tokenize only the changed suffix until the state reconverges — not every
+    // row. No content is hidden (no display:none): all rows stay in the DOM.
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const N = 1500
+    const doc = Array.from({ length: N }, (_, i) => `paragraph number ${i} with words`).join('\n')
+    const { container } = render(
+      <CodeEditor language="markdown" defaultValue={doc} lineNumbers={false} wrap />,
+    )
+    flush()
+    expect(container.querySelectorAll('pre code > span').length).toBe(N) // all rows
+
+    // Edit a middle line, then measure only the highlight-repaint render.
+    const lines = doc.split('\n')
+    lines[750] = `${lines[750]} edited`
+    const next = lines.join('\n')
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    act(() => {
+      fireEvent.change(ta, { target: { value: next } })
+    })
+    __resetTokenizeCount()
+    flush()
+
+    // Bounded by the changed suffix (here a single prose line reconverges at once),
+    // NOT the document length — proof the index/memo apply under wrap too.
+    expect(__tokenizeCount()).toBeLessThanOrEqual(8)
+    // All rows still render after the edit (no hidden content).
+    expect(container.querySelectorAll('pre code > span').length).toBe(N)
+  })
 })
