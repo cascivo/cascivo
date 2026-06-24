@@ -14,8 +14,8 @@ const STEPS = [
   },
   {
     title: 'Use them',
-    code: "import { Button } from './components/ui/button/button'",
-    note: 'No provider, no wrapper. Just import and render.',
+    code: "import '@cascivo/themes/all'\nimport { Button } from './components/ui/button/button'",
+    note: 'Import a theme once; each component brings its own CSS. No provider, no wrapper.',
   },
 ]
 
@@ -48,15 +48,18 @@ export function QuickStart() {
         </p>
         <div className="quickstart-prebuilt-steps">
           <div>
-            <CopyCommand command="npm add @cascivo/react @cascivo/tokens @cascivo/themes" />
-            <p className="quickstart-note">Install the prebuilt package and its peer assets.</p>
+            <CopyCommand command="npm add @cascivo/react @cascivo/themes @preact/signals-react" />
+            <p className="quickstart-note">
+              Install the components, the themes, and the signals runtime.
+            </p>
           </div>
           <div>
             <CopyCommand
-              command={`import { Button } from '@cascivo/react'\nimport '@cascivo/themes/light.css'`}
+              command={`import '@cascivo/themes/all'\nimport { Button } from '@cascivo/react'`}
             />
             <p className="quickstart-note">
-              Import the component and a theme CSS file. No provider, no wrapper.
+              Import a theme once. Each component&apos;s CSS is bundled with it — no stylesheet to
+              wire up.
             </p>
           </div>
         </div>

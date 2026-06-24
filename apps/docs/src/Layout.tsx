@@ -19,6 +19,7 @@ import {
   Menu as MenuIcon,
   Server,
   Terminal,
+  Zap,
 } from '@cascivo/icons'
 import { buildNav } from './nav'
 import { DocsSearch } from './search'
@@ -57,6 +58,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
   }, [route])
 
   const exploreItems = [
+    { label: 'Getting Started', href: '/getting-started', icon: <Zap size={16} /> },
     { label: 'AI / MCP', href: '/ai', icon: <Server size={16} /> },
     { label: 'Context Explorer', href: '/context', icon: <Eye size={16} /> },
     { label: 'Design Tokens', href: '/tokens', icon: <Layers size={16} /> },

@@ -1,6 +1,7 @@
 import { LocationProvider, Route, Router } from 'preact-iso'
 import { Layout } from './Layout'
 import { Home } from './pages/Home'
+import { GettingStartedPage } from './pages/GettingStartedPage'
 import { AiPage } from './pages/AiPage'
 import { ChartsPage } from './pages/ChartsPage'
 import { EditorPage } from './pages/EditorPage'
@@ -31,6 +32,7 @@ export function App() {
       <Layout>
         <Router>
           <Route path="/" component={Home} />
+          <Route path="/getting-started" component={GettingStartedPage} />
           <Route path="/ai" component={AiPage} />
           <Route path="/charts" component={ChartsPage} />
           <Route path="/editor" component={EditorPage} />
