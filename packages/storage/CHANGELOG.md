@@ -1,5 +1,12 @@
 # @cascivo/storage
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [4554af1]
+  - @cascivo/core@0.2.0
+
 ## 0.1.2
 
 ### Patch Changes
