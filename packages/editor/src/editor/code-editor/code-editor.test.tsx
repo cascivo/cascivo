@@ -159,6 +159,113 @@ describe('CodeEditor', () => {
     vi.restoreAllMocks()
   })
 
+  it('recolors lines below when an edit opens a fenced block (state reconvergence)', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const { container } = render(
+      <CodeEditor language="markdown" defaultValue={'alpha\nbeta\ngamma'} lineNumbers={false} />,
+    )
+    flush()
+    const ta = getTextarea()
+    const stringBeta = (): Element | undefined =>
+      [...container.querySelectorAll('pre code span')].find(
+        (s) => s.className === hl['string'] && s.textContent === 'beta',
+      )
+    expect(stringBeta(), 'beta is plain before the fence opens').toBeUndefined()
+
+    // Open a fence on line 0 → lines below enter the fence (string) state.
+    act(() => {
+      fireEvent.change(ta, { target: { value: '```ts\nbeta\ngamma' } })
+    })
+    flush()
+    expect(stringBeta(), 'beta recolors once the fence opens above it').toBeDefined()
+
+    vi.unstubAllGlobals()
+  })
+
+  it('restores downstream highlighting on undo', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const { container } = render(
+      <CodeEditor language="markdown" defaultValue={'```ts\nbeta'} lineNumbers={false} />,
+    )
+    flush()
+    const ta = getTextarea()
+    const stringBeta = (): Element | undefined =>
+      [...container.querySelectorAll('pre code span')].find(
+        (s) => s.className === hl['string'] && s.textContent === 'beta',
+      )
+    expect(stringBeta(), 'beta starts inside the fence').toBeDefined()
+
+    // Close the fence by replacing line 0 → beta becomes plain.
+    act(() => {
+      fireEvent.change(ta, { target: { value: 'plain\nbeta' } })
+    })
+    flush()
+    expect(stringBeta(), 'beta is plain after the fence closes').toBeUndefined()
+
+    // Undo restores both the text AND the downstream highlighting.
+    act(() => {
+      fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    })
+    flush()
+    expect(ta.value).toBe('```ts\nbeta')
+    expect(stringBeta(), 'undo re-threads the fence state below the edit').toBeDefined()
+
+    vi.unstubAllGlobals()
+  })
+
+  it('re-seeds highlighting when the controlled value is swapped', () => {
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const { container, rerender } = render(
+      <CodeEditor
+        language="markdown"
+        value={'one\ntwo'}
+        onValueChange={() => {}}
+        lineNumbers={false}
+      />,
+    )
+    flush()
+    const stringTwo = (): Element | undefined =>
+      [...container.querySelectorAll('pre code span')].find(
+        (s) => s.className === hl['string'] && s.textContent === 'two',
+      )
+    expect(stringTwo()).toBeUndefined()
+
+    // Programmatic whole-document swap whose 2nd line is inside a fence.
+    rerender(
+      <CodeEditor
+        language="markdown"
+        value={'```ts\ntwo'}
+        onValueChange={() => {}}
+        lineNumbers={false}
+      />,
+    )
+    flush()
+    expect(stringTwo(), 'the swapped document re-seeds the state index').toBeDefined()
+
+    vi.unstubAllGlobals()
+  })
+
   it('undoes and redoes an edit with Mod-Z / Mod-Shift-Z', () => {
     render(<CodeEditor defaultValue="" />)
     const ta = getTextarea()

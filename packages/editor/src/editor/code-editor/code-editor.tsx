@@ -327,12 +327,24 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const allLines = highlightText.value.split('\n')
   const total = allLines.length
 
-  // Keep the index consistent with the current text. T4 narrows this to the first
-  // changed line (via diff); here a full reset on any text change is enough to keep
-  // the windowed output byte-identical to the whole-document path.
-  if (highlightText.value !== lastIndexedTextRef.current) {
-    index.invalidateFrom(0)
-    lastIndexedTextRef.current = highlightText.value
+  // Keep the index consistent with the current text by invalidating only from the
+  // FIRST CHANGED LINE (via v46's diff), not from line 0 — so an edit re-threads
+  // just the changed suffix, bounded by where it reconverges or the window bottom,
+  // never the whole document. Keying off the rAF-debounced `highlightText` (the text
+  // the tokenizer actually consumes) covers every edit path uniformly: typing,
+  // indent, find/replace, applyEdit, undo/redo, and external/controlled sync.
+  const indexText = highlightText.value
+  const lastText = lastIndexedTextRef.current
+  if (indexText !== lastText) {
+    const changedLine =
+      lastText === undefined
+        ? 0
+        : (() => {
+            const change = diff(lastText, indexText)
+            return lastText.slice(0, change.from).split('\n').length - 1
+          })()
+    index.invalidateFrom(changedLine)
+    lastIndexedTextRef.current = indexText
   }
 
   // Windowing: render only the visible slice for large docs (never when wrapping,
