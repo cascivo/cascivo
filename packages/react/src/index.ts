@@ -2,8 +2,9 @@
  * @cascivo/react — the prebuilt distribution of every cascivo component.
  *
  * For users who want to consume cascivo as a normal library instead of
- * copy-pasting source via the CLI. Bundles all components + their CSS
- * (import '@cascivo/react/styles.css').
+ * copy-pasting source via the CLI. Each component ships its own CSS, pulled in
+ * automatically on import and tree-shaken per component by the consumer's
+ * bundler. A no-bundler aggregate is available at '@cascivo/react/styles.css'.
  */
 export * from '../../components/src/button/button'
 export * from '../../components/src/input/input'

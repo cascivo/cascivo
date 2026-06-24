@@ -33,10 +33,10 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/react/src/index.js",
+      "default": "./dist/react/src/index.js"
     },
-    "./styles.css": "./dist/cascivo.css",
+    "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },
   "publishConfig": {
