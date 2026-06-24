@@ -266,6 +266,23 @@ describe('CodeEditor', () => {
     vi.unstubAllGlobals()
   })
 
+  it('updates the current-line marker immediately when the caret moves', () => {
+    const { container } = render(<CodeEditor defaultValue={'a\nb\nc\nd'} lineNumbers={false} />)
+    const ta = getTextarea()
+    const root = container.firstChild as HTMLElement
+    // Starts on line 0.
+    expect(root.style.getPropertyValue('--cascivo-editor-caret-line')).toBe('0')
+
+    // Move the caret to line 2 and fire selectionchange (what arrow keys trigger) —
+    // the marker must update at once, not wait for keyup.
+    ta.focus()
+    ta.setSelectionRange(4, 4) // offset 4 = start of line index 2 ('a\nb\n')
+    act(() => {
+      document.dispatchEvent(new Event('selectionchange'))
+    })
+    expect(root.style.getPropertyValue('--cascivo-editor-caret-line')).toBe('2')
+  })
+
   it('undoes and redoes an edit with Mod-Z / Mod-Shift-Z', () => {
     render(<CodeEditor defaultValue="" />)
     const ta = getTextarea()

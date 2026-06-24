@@ -17,6 +17,10 @@
   stays O(n) (documented); a worker offload is evaluated and deferred. New exports:
   `tokenizeRange`, `createLineStateIndex`, `LineStateIndex`.
 
+  Also: the current-line highlight now updates **instantly** when the caret moves
+  (driven by `selectionchange`), instead of waiting for `keyup` — fast arrow-key
+  navigation no longer leaves the active-row marker lagging behind the cursor.
+
 ## 0.1.1
 
 ### Patch Changes

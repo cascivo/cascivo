@@ -300,17 +300,26 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
       caretOffset.value = ta.selectionStart
     }
+    // `selectionchange` fires the instant the caret moves for ANY reason (arrow
+    // keys, Home/End, mouse, typing) — unlike `keyup`, which waits for the key to
+    // be released, leaving the current-line highlight visibly lagging behind fast
+    // arrow-key navigation. It's a document-level event, so guard on focus.
+    const syncCaretIfActive = (): void => {
+      if (document.activeElement === ta) syncCaret()
+    }
     measure()
     syncCaret()
     ta.addEventListener('scroll', syncScroll)
     ta.addEventListener('keyup', syncCaret)
     ta.addEventListener('click', syncCaret)
     ta.addEventListener('input', syncCaret)
+    document.addEventListener('selectionchange', syncCaretIfActive)
     return () => {
       ta.removeEventListener('scroll', syncScroll)
       ta.removeEventListener('keyup', syncCaret)
       ta.removeEventListener('click', syncCaret)
       ta.removeEventListener('input', syncCaret)
+      document.removeEventListener('selectionchange', syncCaretIfActive)
     }
   })
 
