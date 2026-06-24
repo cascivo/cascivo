@@ -1,5 +1,19 @@
 # @cascivo/editor
 
+## 0.2.1
+
+### Patch Changes
+
+- 75ab15e: Improvements
+- 75ab15e: Fix the published tarball shipping no `dist/`: add `@cascivo/editor` to the
+  release build filter (`build:release`), add a defensive `prepack` build, and
+  verify the tarball contains `dist/index.js`, `dist/index.d.ts`, and
+  `dist/editor.css` via a `npm pack --dry-run` assertion. Without the build
+  filter entry, `changeset publish` shipped the package unbuilt and unimportable.
+  Unblocks the `@lifosy/ui` CodeMirror → Cascivo `CodeEditor` migration (Phase 4).
+- Updated dependencies [75ab15e]
+  - @cascivo/i18n@0.1.7
+
 ## 0.2.0
 
 ### Minor Changes
