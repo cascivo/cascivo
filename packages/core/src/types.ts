@@ -20,6 +20,26 @@ export interface PropMeta {
   description?: string
 }
 
+export interface TypeFieldMeta {
+  name: string
+  type: string
+  required: boolean
+  description?: string
+}
+
+/**
+ * The shape of an object-valued prop type (e.g. `PieChartDatum`, `BarChartSeries`).
+ * Props whose `type` references a named object should declare that object's fields
+ * here so the field list — not just the type string — is machine-readable to the
+ * registry, MCP, and llms.txt surfaces.
+ */
+export interface TypeDefMeta {
+  /** The named type as written in a prop's `type` (e.g. 'PieChartDatum'). */
+  name: string
+  description?: string
+  fields: TypeFieldMeta[]
+}
+
 /**
  * WCAG conformance level with explicit version.
  * 'AA' / 'AAA' are deprecated aliases for '2.1-AA' / '2.1-AAA' — migrate to versioned form.
@@ -71,6 +91,8 @@ export interface ComponentMeta {
   variants: string[]
   sizes: string[]
   props: PropMeta[]
+  /** Field shapes for object-valued props (datums, series, callback args). */
+  typeDefs?: TypeDefMeta[]
   tokens: string[]
   accessibility: AccessibilityMeta
   examples: ExampleMeta[]

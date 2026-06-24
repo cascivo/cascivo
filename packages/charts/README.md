@@ -55,6 +55,70 @@ The charts are signal-driven. In a plain React app (no Babel signals transform),
 from `@cascivo/core` as the first statement of any component that reads a signal during render. The
 docs app (Preact) does not need this.
 
+## Coloring
+
+By default every slice/series/layer is colored from the positional palette
+(`--cascivo-chart-1` … `--cascivo-chart-8`, theme-driven and CVD-safe). To pin a specific color,
+set `color` on the **datum** (`PieChartDatum`) or **series** (`BarChartSeries`) — not on the chart
+component. Any CSS color works, including a token:
+
+```tsx
+<PieChart
+  title="Task status"
+  data={[
+    { id: 'done', label: 'Done', value: 92, color: 'var(--cascivo-color-success)' },
+    { id: 'blocked', label: 'Blocked', value: 16, color: 'var(--cascivo-color-destructive)' },
+  ]}
+/>
+```
+
+Omit `color` and the slice falls back to its positional palette entry.
+
+## Donut with a center label
+
+Pass `donut`, then `centerValue`/`centerLabel` (or arbitrary `centerSlot` content) to fill the hole.
+`thickness` (ring width, px) or `innerRadius` (px, wins over `thickness`) tune the ring; `size` is a
+square width/height shorthand:
+
+```tsx
+<PieChart
+  donut
+  size={220}
+  thickness={28}
+  centerValue="142"
+  centerLabel="Total tasks"
+  title="Task status"
+  data={data}
+/>
+```
+
+Empty `data` renders a visible placeholder ("No data", override with `emptyLabel`).
+
+## Stacked bars from row data
+
+`toStackedSeries(rows)` pivots row-oriented `{ label, segments: [{ key, value, color? }] }` data into
+the `series` + `x`/`y` shape `BarChart` consumes, preserving per-segment color. Spread the result in:
+
+```tsx
+import { BarChart, toStackedSeries } from '@cascivo/charts'
+
+const rows = [
+  { label: 'Mon', segments: [
+    { key: 'Done', value: 5, color: 'var(--cascivo-color-success)' },
+    { key: 'Blocked', value: 2, color: 'var(--cascivo-color-destructive)' },
+  ] },
+  { label: 'Tue', segments: [
+    { key: 'Done', value: 8, color: 'var(--cascivo-color-success)' },
+    { key: 'Blocked', value: 1, color: 'var(--cascivo-color-destructive)' },
+  ] },
+]
+
+<BarChart mode="stacked" tooltip {...toStackedSeries(rows)} title="Throughput" />
+```
+
+The stacked tooltip lists `label · total` then each non-zero layer in its color; pass `tooltipFormat`
+to override, or `xLabelEvery={n}` to thin a crowded x-axis.
+
 ## Install
 
 ```sh

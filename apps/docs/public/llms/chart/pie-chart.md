@@ -45,6 +45,30 @@ import { PieChart } from '@cascivo/charts'
 | `className`     | `string`                    | no       | —       | —                                                                                                                                         |
 | `plain`         | `boolean`                   | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                     |
 
+## Object types
+
+### `PieChartDatum`
+
+One slice. Pass via the `data` prop.
+
+| Field   | Type     | Required | Description                                                                         |
+| ------- | -------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`    | `string` | no       | Stable identity (used for legend toggle state).                                     |
+| `label` | `string` | yes      | —                                                                                   |
+| `value` | `number` | yes      | —                                                                                   |
+| `color` | `string` | no       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
+
+### `ChartPoint`
+
+Argument passed to the `tooltipFormat` callback.
+
+| Field     | Type               | Required | Description                                                              |
+| --------- | ------------------ | -------- | ------------------------------------------------------------------------ |
+| `label`   | `string`           | yes      | Slice label.                                                             |
+| `value`   | `number \| string` | yes      | —                                                                        |
+| `percent` | `number`           | no       | Share of the whole, 0–100. Used by the default "value (pct%)" formatter. |
+| `color`   | `string`           | no       | Resolved slice color (the default tooltip tints its text with this).     |
+
 ## Examples
 
 ### Basic pie chart

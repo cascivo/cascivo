@@ -116,6 +116,65 @@
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
       }
     ],
+    "typeDefs": [
+      {
+        "name": "PieChartDatum",
+        "description": "One slice. Pass via the `data` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "description": "Stable identity (used for legend toggle state)."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice."
+          }
+        ]
+      },
+      {
+        "name": "ChartPoint",
+        "description": "Argument passed to the `tooltipFormat` callback.",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Slice label."
+          },
+          {
+            "name": "value",
+            "type": "number | string",
+            "required": true
+          },
+          {
+            "name": "percent",
+            "type": "number",
+            "required": false,
+            "description": "Share of the whole, 0–100. Used by the default \"value (pct%)\" formatter."
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Resolved slice color (the default tooltip tints its text with this)."
+          }
+        ]
+      }
+    ],
     "tokens": [
       "--cascivo-chart-1",
       "--cascivo-chart-2",
