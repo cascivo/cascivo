@@ -25,7 +25,21 @@ export const meta: ComponentMeta = {
     { name: 'height', type: 'number', required: false, default: '300' },
     { name: 'xTicks', type: 'number', required: false },
     { name: 'yTicks', type: 'number', required: false, default: '5' },
+    {
+      name: 'xLabelEvery',
+      type: 'number',
+      required: false,
+      description: 'Show every Nth category label (always the last) to thin a crowded x-axis.',
+    },
     { name: 'legend', type: 'boolean', required: false },
+    { name: 'tooltip', type: 'boolean', required: false },
+    {
+      name: 'tooltipFormat',
+      type: '(p: ChartPoint) => string',
+      required: false,
+      description:
+        'Custom tooltip formatter. The stacked default lists "label · total" + each non-zero layer in its color.',
+    },
     { name: 'className', type: 'string', required: false },
     {
       name: 'plain',
@@ -53,6 +67,24 @@ export const meta: ComponentMeta = {
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />`,
+    },
+    {
+      title: 'Stacked bar from row-oriented data',
+      code: `import { BarChart, toStackedSeries } from '@cascivo/charts'
+
+// Pivot { label, segments[] } rows into series + x/y. Per-segment color is preserved.
+const rows = [
+  { label: 'Mon', segments: [
+    { key: 'Done', value: 5, color: 'var(--cascivo-color-success)' },
+    { key: 'Blocked', value: 2, color: 'var(--cascivo-color-destructive)' },
+  ] },
+  { label: 'Tue', segments: [
+    { key: 'Done', value: 8, color: 'var(--cascivo-color-success)' },
+    { key: 'Blocked', value: 1, color: 'var(--cascivo-color-destructive)' },
+  ] },
+]
+// Tooltip shows "Mon · 7" then each non-zero layer in its color.
+<BarChart mode="stacked" tooltip {...toStackedSeries(rows)} title="Throughput" />`,
     },
   ],
   dependencies: ['@cascivo/charts'],

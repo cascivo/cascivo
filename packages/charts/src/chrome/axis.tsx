@@ -18,6 +18,8 @@ export interface AxisProps {
   length: number
   format?: (value: number | string | Date) => string
   tickCount?: number
+  /** For band scales: render every Nth category label (and always the last) to avoid crowding. */
+  labelEvery?: number | undefined
   transform?: string
 }
 
@@ -33,15 +35,23 @@ export function Axis({
   length,
   format = defaultFormat,
   tickCount = 5,
+  labelEvery,
   transform,
 }: AxisProps) {
   let ticks: Array<{ position: number; label: string }>
 
   if (isBand(scale)) {
-    ticks = scale.domain.map((d) => ({
-      position: (scale.map(d) ?? 0) + scale.bandwidth / 2,
-      label: format(d),
-    }))
+    const last = scale.domain.length - 1
+    ticks = scale.domain
+      .map((d, i) => ({
+        position: (scale.map(d) ?? 0) + scale.bandwidth / 2,
+        label: format(d),
+        i,
+      }))
+      // Thin labels for crowded categorical axes: keep every Nth and always the last.
+      .filter(({ i }) =>
+        labelEvery != null && labelEvery > 1 ? i % labelEvery === 0 || i === last : true,
+      )
   } else if (isTime(scale)) {
     ticks = scale.ticks(tickCount).map((d) => ({
       position: scale.map(d),

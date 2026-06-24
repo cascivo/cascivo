@@ -361,9 +361,23 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'xLabelEvery',
+      required: false,
+      primitives: ['number'],
+    },
+    {
       name: 'legend',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tooltipFormat',
+      required: false,
     },
     {
       name: 'className',

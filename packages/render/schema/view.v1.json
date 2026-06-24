@@ -5050,7 +5050,13 @@
                   "yTicks": {
                     "type": "number"
                   },
+                  "xLabelEvery": {
+                    "type": "number"
+                  },
                   "legend": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
                     "type": "boolean"
                   },
                   "className": {

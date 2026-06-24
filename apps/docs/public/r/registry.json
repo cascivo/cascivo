@@ -2890,9 +2890,26 @@
             "default": "5"
           },
           {
+            "name": "xLabelEvery",
+            "type": "number",
+            "required": false,
+            "description": "Show every Nth category label (always the last) to thin a crowded x-axis."
+          },
+          {
             "name": "legend",
             "type": "boolean",
             "required": false
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "tooltipFormat",
+            "type": "(p: ChartPoint) => string",
+            "required": false,
+            "description": "Custom tooltip formatter. The stacked default lists \"label · total\" + each non-zero layer in its color."
           },
           {
             "name": "className",
