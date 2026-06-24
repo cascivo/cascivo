@@ -47,8 +47,11 @@ jobs:
       - name: Story audit (orphan stories)
         run: pnpm run audit:stories
 
+      # Parallel build: vp orders by the dependency graph, so independent
+      # packages build concurrently while dependents still wait for their deps.
+      # The cold-cache *sequential* ordering guard lives in local `pnpm ready:ci`.
       - name: Build (vp run -r build)
-        run: pnpm exec vp run -r --concurrency-limit 1 build
+        run: pnpm exec vp run -r build
 
       - name: Bundle budgets
         run: pnpm run audit:bundle
