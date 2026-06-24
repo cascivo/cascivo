@@ -192,16 +192,19 @@ Legend: ✅ already addressed (ship/doc/test only) · ⚠️ partially present �
 
 ### T1 — Editor publish fix (unblocks Phase 4)
 
-- [ ] `@cascivo/editor` is added to the root `build:release` filter in `package.json` so the release workflow builds
-      its `dist/` before `changeset publish`. A defensive `prepack` (or `prepublishOnly`) running the package `build`
-      is added so a stray manual publish cannot ship an empty tarball.
-- [ ] A `npm pack --dry-run` assertion (script or CI step) confirms the tarball lists `dist/index.js`,
-      `dist/index.d.ts`, and `dist/editor.css`; it **fails** against today's no-`dist` state and passes after the fix.
-- [ ] A changeset bumps `@cascivo/editor` to `0.1.2` (so consumers aren't served the cached-empty `0.1.1`); the
-      registry `files: []` is **left as-is** (npm-installed by design) with a one-line note recording why E3 is
-      declined.
-- [ ] `pnpm ready:ci` green (cold-cache build includes editor); `pnpm exec vp run @cascivo/editor#build` then
-      `npm pack --dry-run` shows the three entry points.
+- [x] `@cascivo/editor` is added to the root `build:release` filter in `package.json` so the release workflow builds
+      its `dist/` before `changeset publish`. A defensive `prepack` running the package `build` is added so a stray
+      manual publish cannot ship an empty tarball.
+- [x] A `npm pack --dry-run` assertion (`packages/editor/scripts/check-pack.mjs`, exposed as `verify:pack`) confirms
+      the tarball lists `dist/index.js`, `dist/index.d.ts`, and `dist/editor.css`; it **fails** against the no-`dist`
+      state and passes after the fix.
+- [x] A changeset (`.changeset/editor-dist-publish-fix.md`) bumps `@cascivo/editor` (`patch`; the package is now at
+      `0.2.0`, so this lands `0.2.1` — supersedes the stale `0.1.1`/`0.2.0` cached-empty artifacts). The registry
+      `files: []` is **left as-is** (npm-installed by design): `generate.ts:127` marks `type: 'editor'`
+      `isNpmInstalled` → `install: "@cascivo/editor"`, so populating `files[]` would contradict the generator —
+      feedback suggestion #3 (E3) is **declined**.
+- [x] `pnpm exec vp run @cascivo/editor#build` then `verify:pack` shows the three entry points; `pnpm ready:ci`
+      cold-cache build includes the editor (verified in T6).
 
 ### T2 — PieChart donut center + thickness + square size
 

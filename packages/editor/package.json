@@ -45,7 +45,9 @@
   "scripts": {
     "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs",
     "check": "tsc --noEmit",
-    "test": "vp test"
+    "test": "vp test",
+    "verify:pack": "node scripts/check-pack.mjs",
+    "prepack": "pnpm build"
   },
   "dependencies": {
     "@cascivo/core": "workspace:^",
