@@ -1,5 +1,13 @@
 # @cascivo/react
 
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependencies [4554af1]
+  - @cascivo/core@0.2.0
+  - @cascivo/i18n@0.1.8
+
 ## 0.3.3
 
 ### Patch Changes
