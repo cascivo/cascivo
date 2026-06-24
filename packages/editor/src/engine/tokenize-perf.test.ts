@@ -29,6 +29,10 @@ describe('tokenizer per-render budget', () => {
   // the visible window via tokenizeRange + the persistent line-state index: a
   // re-render at a settled scroll position re-tokenizes just the window (the prefix
   // states are already memoized in the index, so they are not recomputed).
+  //
+  // Large-doc test: the 50k-line first paint is heavy in jsdom (the whole doc mounts
+  // before the measure effect enables windowing), so it needs a generous timeout —
+  // well beyond the 5s default — to stay stable on slower CI.
   it('tokenizes only the visible window per render on a 50k-line doc', () => {
     const LINE_PX = 20
     const VIEWPORT_PX = 400
@@ -62,5 +66,5 @@ describe('tokenizer per-render budget', () => {
     const k = 8 // boundary-threading slack
     const budget = visibleRows + OVERSCAN * 2 + k
     expect(__tokenizeCount()).toBeLessThanOrEqual(budget)
-  })
+  }, 30_000)
 })

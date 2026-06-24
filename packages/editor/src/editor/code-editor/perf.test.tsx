@@ -39,6 +39,9 @@ describe('CodeEditor performance', () => {
     expect(ta.value.split('\n').length).toBe(5000)
   })
 
+  // Large-document perf test: the 50k-line first paint + edit is heavy in jsdom
+  // (the initial render mounts the whole doc before the measure effect enables
+  // windowing), so it needs a generous timeout — well beyond the 5s default.
   it('bounds a mid-document keystroke to the changed suffix, not the doc length', () => {
     const LINE_PX = 20
     const VIEWPORT_PX = 400
@@ -86,7 +89,7 @@ describe('CodeEditor performance', () => {
     const budget = visibleRows + OVERSCAN * 2 + k
     // Bounded by the window; a re-tokenize-from-line-0 path would be ~25,000.
     expect(__tokenizeCount()).toBeLessThanOrEqual(budget)
-  })
+  }, 30_000)
 
   it('renders every row (no windowing) when wrapping is on', () => {
     stubLineHeight(20)
