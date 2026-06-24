@@ -39,7 +39,7 @@ import {
 
 // A curated, representative subset — varied domains so the breadth reads
 // visually. Tree-shaking keeps the bundle cost to just these glyphs; the full
-// ~440-icon catalog lives behind the /docs/icons gallery link.
+// ~440-icon catalog lives behind the docs.cascivo.com/icons gallery link.
 const ICONS = [
   { Icon: Home, name: 'Home' },
   { Icon: Search, name: 'Search' },
@@ -103,7 +103,7 @@ export function IconShowcase() {
       </ul>
 
       <p className="icon-showcase-cta">
-        <a href="/docs/icons">Browse all ~440 icons in the docs →</a>
+        <a href="https://docs.cascivo.com/icons">Browse all ~440 icons in the docs →</a>
       </p>
     </section>
   )
