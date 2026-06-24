@@ -1,5 +1,11 @@
 # @cascivo/react
 
+## 0.3.5
+
+### Patch Changes
+
+- 0c2a9f7: Tree-shakeable css
+
 ## 0.3.4
 
 ### Patch Changes
