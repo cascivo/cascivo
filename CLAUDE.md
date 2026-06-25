@@ -342,7 +342,7 @@ Tiered automation:
 ### Browser & Accessibility Targets
 
 - **Browsers**: last 2 versions of Chrome, Firefox, Safari (required for `:has()`, `@container`)
-- **Accessibility**: WCAG 2.1 AA minimum
+- **Accessibility**: WCAG 2.2 AA minimum
 - **RTL**: CSS logical properties throughout (`margin-inline-start`, `padding-block`, etc.)
 
 ### Component Authoring Rules

@@ -94,7 +94,7 @@ function ThemesPanel() {
         ))}
       </div>
       <div className="adv-copy">
-        <h3>Twelve themes, one token swap</h3>
+        <h3>{__CASCIVO_THEME_COUNT__} themes, one token swap</h3>
         <p>
           Three first-party themes plus eight more, all token-driven. Set <code>data-theme</code> on
           any element and every component restyles — no component changes.
@@ -150,7 +150,7 @@ function AiPanel() {
   name: 'Button',
   variants: ['primary', 'secondary', 'ghost'],
   props: [{ name: 'size', type: 'sm | md | lg' }],
-  a11y: { role: 'button', wcag: 'AA' },
+  accessibility: { role: 'button', wcag: 'AA' },
 }`}
       />
       <div className="adv-copy">
@@ -247,7 +247,7 @@ export function AdvantageCarousel() {
     >
       <div className="flow-header">
         <p className="flow-eyebrow">Why cascivo</p>
-        <h2 className="flow-title">Five reasons it feels different</h2>
+        <h2 className="flow-title">{ADVANTAGES.length} reasons it feels different</h2>
       </div>
       <Tabs
         value={active.value}
