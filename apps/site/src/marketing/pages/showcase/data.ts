@@ -61,6 +61,14 @@ export const SHOWCASE: ShowcaseSite[] = [
     tagline:
       'A curated directory of AI tools, MCP servers, jobs, and instructions — structured for both humans and LLMs.',
   },
+  {
+    slug: 'kaihuman',
+    url: 'https://kaihuman.com',
+    name: 'kaihuman',
+    category: 'Productivity',
+    tagline:
+      'An operating system for personal improvement — track habits, goals, and knowledge on a local-first, GitHub-backed platform.',
+  },
 ]
 
 /** Host without protocol/trailing slash, for the faux browser URL bar. */

@@ -52,6 +52,11 @@ export function ShowcasePage() {
                           height={800}
                           loading="lazy"
                           decoding="async"
+                          onError={(e) => {
+                            // Degrade gracefully to the neutral panel if a
+                            // screenshot hasn't been captured yet.
+                            ;(e.currentTarget as HTMLImageElement).style.display = 'none'
+                          }}
                         />
                       </span>
                     </a>

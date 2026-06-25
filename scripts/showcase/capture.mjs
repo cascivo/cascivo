@@ -27,6 +27,7 @@ const SITES = [
   { slug: 'u11g', url: 'https://u11g.com' },
   { slug: 'sharu', url: 'https://new.sharu.io' },
   { slug: 'aime', url: 'https://aime.directory' },
+  { slug: 'kaihuman', url: 'https://kaihuman.com' },
 ]
 
 const DESKTOP = { width: 1280, height: 800 }

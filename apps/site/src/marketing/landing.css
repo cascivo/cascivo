@@ -3284,6 +3284,8 @@ kbd {
   display: block;
   aspect-ratio: 1280 / 800;
   overflow: hidden;
+  /* Neutral panel shown until a screenshot loads (or if one is missing). */
+  background: var(--cascivo-color-bg-subtle);
 }
 
 .showcase-shot img {
