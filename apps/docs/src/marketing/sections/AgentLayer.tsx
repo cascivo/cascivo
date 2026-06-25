@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
 import { CascadeView } from '@cascivo/render'
 import type { ViewConfig } from '@cascivo/render'
-import buttonMetaSource from '../../../../packages/components/src/button/button.meta.ts?raw'
+import buttonMetaSource from '../../../../../packages/components/src/button/button.meta.ts?raw'
 import { CopyCommand } from './CopyCommand'
 
 function escapeHTML(s: string): string {

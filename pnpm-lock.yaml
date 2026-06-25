@@ -69,9 +69,6 @@ catalogs:
     preact:
       specifier: ^10
       version: 10.29.2
-    preact-iso:
-      specifier: ^2.12.0
-      version: 2.12.0
     react:
       specifier: ^19.2.7
       version: 19.2.7
@@ -285,18 +282,30 @@ importers:
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@cascivo/editor':
+        specifier: workspace:*
+        version: link:../../packages/editor
       '@cascivo/flow':
         specifier: workspace:*
         version: link:../../packages/flow
+      '@cascivo/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
       '@cascivo/layouts':
         specifier: workspace:*
         version: link:../../packages/layouts
+      '@cascivo/registry':
+        specifier: workspace:*
+        version: link:../../packages/registry
       '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
+      '@cascivo/search':
+        specifier: workspace:*
+        version: link:../../packages/search
       '@cascivo/storage':
         specifier: workspace:^
         version: link:../../packages/storage
@@ -309,9 +318,6 @@ importers:
       preact:
         specifier: 'catalog:'
         version: 10.29.2
-      preact-iso:
-        specifier: 'catalog:'
-        version: 2.12.0(preact-render-to-string@6.7.0(preact@10.29.2))(preact@10.29.2)
     devDependencies:
       '@axe-core/playwright':
         specifier: 'catalog:'
@@ -328,6 +334,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
+      vite-imagetools:
+        specifier: 'catalog:'
+        version: 10.0.1(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
       vite-plus:
         specifier: 'catalog:'
         version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
@@ -6675,17 +6684,6 @@ packages:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact-iso@2.12.0:
-    resolution: {integrity: sha512-k0Y44UONBJ1zBXXCBhJRAa5O4ww8a5FHdLD6l21IxcnsTmDBto4n7KPQAH6xqegsKDMX4SuJ02qItiUlciIlZQ==}
-    peerDependencies:
-      preact: '>=10 || >= 11.0.0-0'
-      preact-render-to-string: '>=6.4.0'
-
-  preact-render-to-string@6.7.0:
-    resolution: {integrity: sha512-Z4WR8fmLMRpdYqJ9i7vrlXSsSrxVJydwrkEXHapexfARbWfGb7vGcnvNQnIzN0cXciMVOlz/XLoiMCi9gUsy9Q==}
-    peerDependencies:
-      preact: '>=10 || >= 11.0.0-0'
-
   preact@10.29.2:
     resolution: {integrity: sha512-7tNmwg/7mzzAoB/8kSg6Hl37JraAZw3Z3A0JSY7VXlZwo82Xn0G7wKbNNs2qoF4ZEEsQGTwDAroNdqKs1ofJxQ==}
 
@@ -12897,15 +12895,6 @@ snapshots:
       nanoid: 3.3.12
       picocolors: 1.1.1
       source-map-js: 1.2.1
-
-  preact-iso@2.12.0(preact-render-to-string@6.7.0(preact@10.29.2))(preact@10.29.2):
-    dependencies:
-      preact: 10.29.2
-      preact-render-to-string: 6.7.0(preact@10.29.2)
-
-  preact-render-to-string@6.7.0(preact@10.29.2):
-    dependencies:
-      preact: 10.29.2
 
   preact@10.29.2: {}
 

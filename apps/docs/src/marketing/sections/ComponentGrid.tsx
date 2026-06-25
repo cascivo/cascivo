@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@cascivo/components/accordion'
-import registry from '../../../../registry.json'
+import registry from '../../../../../registry.json'
 
 const componentCount = (registry as { components: unknown[] }).components.length
 

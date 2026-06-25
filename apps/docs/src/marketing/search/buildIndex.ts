@@ -1,4 +1,4 @@
-import registry from '../../../../registry.json'
+import registry from '../../../../../registry.json'
 import { SearchIndex, type SearchItem } from '@cascivo/search'
 
 interface RegEntry {

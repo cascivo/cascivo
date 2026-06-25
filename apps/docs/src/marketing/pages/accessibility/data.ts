@@ -1,4 +1,4 @@
-import registry from '../../../../../registry.json'
+import registry from '../../../../../../registry.json'
 import bench from 'virtual:bench'
 
 interface RegistryEntry {

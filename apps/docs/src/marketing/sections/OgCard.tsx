@@ -1,6 +1,6 @@
 import { Badge } from '@cascivo/components/badge'
 import { Card } from '@cascivo/components/card'
-import registry from '../../../../registry.json'
+import registry from '../../../../../registry.json'
 
 const componentCount = (registry as { components: unknown[] }).components.length
 
