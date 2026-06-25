@@ -7,10 +7,10 @@
 // of live third-party sites is not byte-deterministic and the sites change
 // over time. Re-run this on demand to refresh:
 //
-//   # Installs the chromium binary AND its OS libraries (libicu, libjpeg, …).
-//   # --with-deps needs root, so prefix with sudo on a local machine; CI runs
-//   # as root already. Without --with-deps the browser downloads but won't launch.
-//   sudo pnpm exec playwright install --with-deps chromium   # once
+//   pnpm exec playwright install chromium      # download the browser binary
+//   # …then install Chromium's OS libraries (it won't launch without them):
+//   #   Debian/Ubuntu: sudo pnpm exec playwright install-deps chromium
+//   #   Fedora/RHEL:   sudo dnf install -y libicu libjpeg-turbo  (+ nss atk … if needed)
 //   node scripts/showcase/capture.mjs
 //
 // The site list mirrors apps/site/src/pages/showcase/data.ts.
@@ -66,8 +66,10 @@ async function main() {
   try {
     ;({ chromium } = await import('@playwright/test'))
   } catch {
-    console.error('Playwright not available. Install it (with OS libs), then re-run:')
-    console.error('  sudo pnpm exec playwright install --with-deps chromium')
+    console.error('Playwright not available. Install it (and Chromium OS libs), then re-run:')
+    console.error('  pnpm exec playwright install chromium')
+    console.error('  # Debian/Ubuntu: sudo pnpm exec playwright install-deps chromium')
+    console.error('  # Fedora/RHEL:   sudo dnf install -y libicu libjpeg-turbo')
     process.exit(1)
   }
 
