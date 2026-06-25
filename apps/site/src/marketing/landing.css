@@ -3527,6 +3527,70 @@ kbd {
   scroll-margin-block-start: 5rem;
 }
 
+/* Social-proof / credibility strip — sits directly under the hero CTAs. */
+.social-proof {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--cascivo-space-6);
+  margin-block-start: calc(-1 * var(--cascivo-space-8));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-4);
+  text-align: center;
+}
+
+.social-proof-lead {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.social-proof-lead a {
+  color: var(--cascivo-color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.social-proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascivo-space-3);
+}
+
+.social-proof-list a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: var(--cascivo-space-2) var(--cascivo-space-4);
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--cascivo-color-bg-subtle);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.social-proof-list a:hover {
+  border-color: var(--cascivo-color-accent);
+}
+
+.social-proof-list strong {
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+}
+
+.social-proof-list span {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-subtle);
+}
+
 .hero h1 {
   margin: 0;
   font-size: clamp(2rem, 5vw, 3.25rem);
