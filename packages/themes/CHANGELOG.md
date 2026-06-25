@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.2.6
+
+### Patch Changes
+
+- f0b5654: Fixes
+
 ## 0.2.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @cascivo/registry
 
+## 0.1.4
+
+### Patch Changes
+
+- f0b5654: Fixes
+
 ## 0.1.3
 
 ### Patch Changes

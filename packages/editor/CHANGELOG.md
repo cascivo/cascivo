@@ -1,5 +1,14 @@
 # @cascivo/editor
 
+## 0.2.4
+
+### Patch Changes
+
+- f0b5654: Fixes
+- Updated dependencies [f0b5654]
+  - @cascivo/core@0.2.2
+  - @cascivo/i18n@0.1.10
+
 ## 0.2.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # cascivo
 
+## 0.1.6
+
+### Patch Changes
+
+- f0b5654: Fixes
+- Updated dependencies [f0b5654]
+  - @cascivo/registry@0.1.4
+
 ## 0.1.5
 
 ### Patch Changes
