@@ -4,7 +4,7 @@
  * Builds a deterministic map from design intent (a semantic colour role + a
  * state slot, e.g. "accent" + "hover") to the exact token name, and resolves
  * every semantic / component token to a concrete value in EACH first-party
- * theme. Writes apps/docs/public/tokens.variants.json.
+ * theme. Writes apps/site/public/tokens.variants.json.
  *
  * The token catalog (tokens.catalog.json) already gives agents the closed set
  * of token names and their light-theme value. The variant matrix answers the
@@ -221,7 +221,7 @@ async function main() {
 
   const matrix = buildVariantMatrix(indexCss, themes)
 
-  const outDir = join(ROOT, 'apps/docs/public')
+  const outDir = join(ROOT, 'apps/site/public')
   await mkdir(outDir, { recursive: true })
   await writeFile(join(outDir, 'tokens.variants.json'), JSON.stringify(matrix, null, 2) + '\n')
   console.log(

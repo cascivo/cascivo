@@ -69,9 +69,6 @@ catalogs:
     preact:
       specifier: ^10
       version: 10.29.2
-    preact-iso:
-      specifier: ^2.12.0
-      version: 2.12.0
     react:
       specifier: ^19.2.7
       version: 19.2.7
@@ -270,67 +267,6 @@ importers:
       vitest:
         specifier: 4.1.9
         version: 4.1.9(@types/node@25.9.2)(@vitest/browser-preview@4.1.9)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
-
-  apps/docs:
-    dependencies:
-      '@cascivo/ai':
-        specifier: workspace:*
-        version: link:../../packages/ai
-      '@cascivo/charts':
-        specifier: workspace:*
-        version: link:../../packages/charts
-      '@cascivo/components':
-        specifier: workspace:*
-        version: link:../../packages/components
-      '@cascivo/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@cascivo/flow':
-        specifier: workspace:*
-        version: link:../../packages/flow
-      '@cascivo/icons':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@cascivo/layouts':
-        specifier: workspace:*
-        version: link:../../packages/layouts
-      '@cascivo/render':
-        specifier: workspace:*
-        version: link:../../packages/render
-      '@cascivo/storage':
-        specifier: workspace:^
-        version: link:../../packages/storage
-      '@cascivo/themes':
-        specifier: workspace:*
-        version: link:../../packages/themes
-      '@cascivo/tokens':
-        specifier: workspace:*
-        version: link:../../packages/tokens
-      preact:
-        specifier: 'catalog:'
-        version: 10.29.2
-      preact-iso:
-        specifier: 'catalog:'
-        version: 2.12.0(preact-render-to-string@6.7.0(preact@10.29.2))(preact@10.29.2)
-    devDependencies:
-      '@axe-core/playwright':
-        specifier: 'catalog:'
-        version: 4.11.3(playwright-core@1.60.0)
-      '@playwright/test':
-        specifier: 'catalog:'
-        version: 1.61.0
-      '@types/node':
-        specifier: 'catalog:'
-        version: 25.9.2
-      shiki:
-        specifier: 'catalog:'
-        version: 4.2.0
-      typescript:
-        specifier: 'catalog:'
-        version: 5.9.3
-      vite-plus:
-        specifier: 'catalog:'
-        version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
 
   apps/examples/deploy:
     dependencies:
@@ -773,8 +709,11 @@ importers:
         specifier: 4.1.9
         version: 4.1.9(@types/node@25.9.2)(@vitest/browser-preview@4.1.9)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
 
-  apps/landing:
+  apps/site:
     dependencies:
+      '@cascivo/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai
       '@cascivo/charts':
         specifier: workspace:*
         version: link:../../packages/charts
@@ -790,9 +729,21 @@ importers:
       '@cascivo/flow':
         specifier: workspace:*
         version: link:../../packages/flow
+      '@cascivo/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@cascivo/icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@cascivo/layouts':
+        specifier: workspace:*
+        version: link:../../packages/layouts
+      '@cascivo/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@cascivo/registry':
+        specifier: workspace:*
+        version: link:../../packages/registry
       '@cascivo/render':
         specifier: workspace:*
         version: link:../../packages/render
@@ -800,7 +751,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/search
       '@cascivo/storage':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/storage
       '@cascivo/themes':
         specifier: workspace:*
@@ -808,34 +759,22 @@ importers:
       '@cascivo/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      react:
+      preact:
         specifier: 'catalog:'
-        version: 19.2.7
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.7(react@19.2.7)
+        version: 10.29.2
     devDependencies:
       '@axe-core/playwright':
         specifier: 'catalog:'
-        version: 4.11.3(playwright-core@1.60.0)
+        version: 4.11.3(playwright-core@1.61.0)
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.61.0
-      '@testing-library/jest-dom':
-        specifier: ^6
-        version: 6.9.1
-      '@testing-library/react':
+      '@types/node':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@testing-library/user-event':
-        specifier: ^14
-        version: 14.6.1(@testing-library/dom@10.4.1)
-      '@types/react':
+        version: 25.9.2
+      shiki:
         specifier: 'catalog:'
-        version: 19.2.17
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
+        version: 4.2.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -6675,17 +6614,6 @@ packages:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact-iso@2.12.0:
-    resolution: {integrity: sha512-k0Y44UONBJ1zBXXCBhJRAa5O4ww8a5FHdLD6l21IxcnsTmDBto4n7KPQAH6xqegsKDMX4SuJ02qItiUlciIlZQ==}
-    peerDependencies:
-      preact: '>=10 || >= 11.0.0-0'
-      preact-render-to-string: '>=6.4.0'
-
-  preact-render-to-string@6.7.0:
-    resolution: {integrity: sha512-Z4WR8fmLMRpdYqJ9i7vrlXSsSrxVJydwrkEXHapexfARbWfGb7vGcnvNQnIzN0cXciMVOlz/XLoiMCi9gUsy9Q==}
-    peerDependencies:
-      preact: '>=10 || >= 11.0.0-0'
-
   preact@10.29.2:
     resolution: {integrity: sha512-7tNmwg/7mzzAoB/8kSg6Hl37JraAZw3Z3A0JSY7VXlZwo82Xn0G7wKbNNs2qoF4ZEEsQGTwDAroNdqKs1ofJxQ==}
 
@@ -7882,6 +7810,11 @@ snapshots:
     dependencies:
       axe-core: 4.11.4
       playwright-core: 1.60.0
+
+  '@axe-core/playwright@4.11.3(playwright-core@1.61.0)':
+    dependencies:
+      axe-core: 4.11.4
+      playwright-core: 1.61.0
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -12897,15 +12830,6 @@ snapshots:
       nanoid: 3.3.12
       picocolors: 1.1.1
       source-map-js: 1.2.1
-
-  preact-iso@2.12.0(preact-render-to-string@6.7.0(preact@10.29.2))(preact@10.29.2):
-    dependencies:
-      preact: 10.29.2
-      preact-render-to-string: 6.7.0(preact@10.29.2)
-
-  preact-render-to-string@6.7.0(preact@10.29.2):
-    dependencies:
-      preact: 10.29.2
 
   preact@10.29.2: {}
 

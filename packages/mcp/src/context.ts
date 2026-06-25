@@ -54,7 +54,7 @@ const CONTEXT_BASE_URL = 'https://cascivo.com'
 
 export async function loadContext(fetchFn?: FetchFn): Promise<ContextBundle> {
   const localPaths = [
-    join(HERE, '..', '..', '..', 'apps', 'docs', 'public', 'context.json'),
+    join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'context.json'),
     join(HERE, 'context.json'),
   ]
   for (const p of localPaths) {
@@ -73,7 +73,7 @@ export async function loadComponentMarkdown(
 ): Promise<string | null> {
   const slug = name.toLowerCase().replace(/\s+/g, '-')
   const localPaths = [
-    join(HERE, '..', '..', '..', 'apps', 'docs', 'public', 'context', `${slug}.md`),
+    join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'context', `${slug}.md`),
     join(HERE, 'context', `${slug}.md`),
   ]
   for (const p of localPaths) {

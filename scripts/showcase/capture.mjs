@@ -1,5 +1,5 @@
 // Capture screenshots of the third-party sites built with cascivo, shown on
-// the landing /showcase page. Output: apps/landing/public/showcase/<slug>.jpg
+// the landing /showcase page. Output: apps/site/public/showcase/<slug>.jpg
 // (1280×800 @2x).
 //
 // Like public/og.png and the demo screenshots, these are committed binary
@@ -7,19 +7,22 @@
 // of live third-party sites is not byte-deterministic and the sites change
 // over time. Re-run this on demand to refresh:
 //
-//   pnpm exec playwright install chromium   # once, if no browser
+//   pnpm exec playwright install chromium      # download the browser binary
+//   # …then install Chromium's OS libraries (it won't launch without them):
+//   #   Debian/Ubuntu: sudo pnpm exec playwright install-deps chromium
+//   #   Fedora/RHEL:   sudo dnf install -y libicu libjpeg-turbo  (+ nss atk … if needed)
 //   node scripts/showcase/capture.mjs
 //
-// The site list mirrors apps/landing/src/pages/showcase/data.ts.
+// The site list mirrors apps/site/src/pages/showcase/data.ts.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..', '..')
-const OUT = resolve(root, 'apps/landing/public/showcase')
+const OUT = resolve(root, 'apps/site/public/showcase')
 
-/** Keep in sync with apps/landing/src/pages/showcase/data.ts. */
+/** Keep in sync with apps/site/src/pages/showcase/data.ts. */
 const SITES = [
   { slug: 'pagome', url: 'https://pagome.com' },
   { slug: 'bpmnkit', url: 'https://bpmnkit.com' },
@@ -27,6 +30,7 @@ const SITES = [
   { slug: 'u11g', url: 'https://u11g.com' },
   { slug: 'sharu', url: 'https://new.sharu.io' },
   { slug: 'aime', url: 'https://aime.directory' },
+  { slug: 'kaihuman', url: 'https://kaihuman.com' },
 ]
 
 const DESKTOP = { width: 1280, height: 800 }
@@ -62,8 +66,10 @@ async function main() {
   try {
     ;({ chromium } = await import('@playwright/test'))
   } catch {
-    console.error('Playwright not available. Install it, then re-run:')
+    console.error('Playwright not available. Install it (and Chromium OS libs), then re-run:')
     console.error('  pnpm exec playwright install chromium')
+    console.error('  # Debian/Ubuntu: sudo pnpm exec playwright install-deps chromium')
+    console.error('  # Fedora/RHEL:   sudo dnf install -y libicu libjpeg-turbo')
     process.exit(1)
   }
 
@@ -83,7 +89,7 @@ async function main() {
     await captureOne(ctxFactory, site, DESKTOP)
   }
   await browser.close()
-  console.log(`\nWrote ${SITES.length} site screenshots to apps/landing/public/showcase/`)
+  console.log(`\nWrote ${SITES.length} site screenshots to apps/site/public/showcase/`)
 }
 
 await main()

@@ -5,7 +5,7 @@
  * Reads docs/specs/parity-matrix.md (the human-authored source), cross-checks every
  * `covered`/`partial` row against the REAL cascivo surface (packages/react/src/index.ts
  * exports + registry.json), and writes:
- *   apps/docs/public/parity.json — derived coverage scoreboard (do NOT hand-edit)
+ *   apps/site/public/parity.json — derived coverage scoreboard (do NOT hand-edit)
  *
  * Coverage is DERIVED: a row marked `covered`/`partial` whose named cascivo component is not
  * actually shipped/exported makes the generator FAIL loudly. The coverage page therefore can
@@ -23,7 +23,7 @@ const ROOT = join(HERE, '..', '..')
 const MATRIX_PATH = join(ROOT, 'docs', 'specs', 'parity-matrix.md')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
 const REACT_INDEX_PATH = join(ROOT, 'packages', 'react', 'src', 'index.ts')
-const OUT_PATH = join(ROOT, 'apps', 'docs', 'public', 'parity.json')
+const OUT_PATH = join(ROOT, 'apps', 'site', 'public', 'parity.json')
 
 export type ParityStatus = 'covered' | 'partial' | 'gap' | 'by-convention' | 'deferred'
 

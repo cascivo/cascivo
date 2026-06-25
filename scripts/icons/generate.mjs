@@ -25,7 +25,7 @@ const SVG_DIR = join(ROOT, 'packages/icons/svg')
 const OUT_TSX = join(ROOT, 'packages/icons/src/generated.tsx')
 const INDEX_TSX = join(ROOT, 'packages/icons/src/index.tsx')
 const META_JSON = join(SVG_DIR, 'metadata.json')
-const OUT_CATALOG = join(ROOT, 'apps/docs/public/icons.catalog.json')
+const OUT_CATALOG = join(ROOT, 'apps/site/public/icons.catalog.json')
 
 /**
  * The 60 hand-authored Feather-derived icons already exported from index.tsx.
@@ -298,7 +298,7 @@ function main() {
   //      tags: string[]       // source grouping ('feather' | 'ui' | 'health' | …)
   //      keywords: string[]   // search terms: name tokens + synonyms + source keywords
   //      svg: string          // inner geometry markup (no <svg> wrapper)
-  //    }> }  — consumed by apps/docs IconsPage + global search + llms.txt.
+  //    }> }  — consumed by apps/site IconsPage + global search + llms.txt.
   const existing = parseExistingIcons(readFileSync(INDEX_TSX, 'utf8')).map(({ pascal, svg }) => {
     const kebab = toKebabCase(pascal)
     return {

@@ -9,9 +9,9 @@
  *   registry.json               — per-component flexibility from meta.intent
  *
  * Writes:
- *   apps/docs/public/specs.json
- *   apps/docs/public/boundaries.json
- *   apps/docs/public/exceptions.json
+ *   apps/site/public/specs.json
+ *   apps/site/public/boundaries.json
+ *   apps/site/public/exceptions.json
  *
  * Run with: `pnpm specs:generate`
  */
@@ -194,7 +194,7 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..', '..')
 const SPECS_DIR = join(ROOT, 'docs', 'specs')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
-const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
+const OUT_DIR = join(ROOT, 'apps', 'site', 'public')
 
 function main() {
   mkdirSync(OUT_DIR, { recursive: true })

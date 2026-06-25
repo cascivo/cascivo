@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
-  <title>cascivo</title>
-  <rect x="2" y="3" width="22" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
-  <rect x="2" y="13" width="17" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
-  <rect x="2" y="23" width="22" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
-</svg>

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generates llms.txt and per-component markdown files for AI agents.
- * Reads registry.json and outputs to apps/docs/public/.
+ * Reads registry.json and outputs to apps/site/public/.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
-const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
+const OUT_DIR = join(ROOT, 'apps', 'site', 'public')
 const LLMS_DIR = join(OUT_DIR, 'llms')
 
 interface PropMeta {
@@ -471,16 +471,12 @@ function main() {
     writeFileSync(outPath, md, 'utf8')
   }
 
-  // Generate llms.txt. It uses absolute URLs throughout, so the same file is
-  // correct whether served from cascivo.com (landing) or docs.cascivo.com (docs).
-  // Write it to both so the front door (cascivo.com/llms.txt) never drifts.
+  // Generate llms.txt. It uses absolute URLs throughout. The unified site serves
+  // it from cascivo.com/llms.txt.
   const llmsTxt = generateLlmsTxt(registry, entries)
   writeFileSync(join(OUT_DIR, 'llms.txt'), llmsTxt, 'utf8')
-  const LANDING_PUBLIC = join(ROOT, 'apps', 'landing', 'public')
-  mkdirSync(LANDING_PUBLIC, { recursive: true })
-  writeFileSync(join(LANDING_PUBLIC, 'llms.txt'), llmsTxt, 'utf8')
 
-  console.log(`Generated llms.txt (docs + landing) + ${sorted.length} component markdown files`)
+  console.log(`Generated llms.txt + ${sorted.length} component markdown files`)
 }
 
 main()

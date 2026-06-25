@@ -2,7 +2,7 @@
 //
 // Each demo is a standalone Vite SPA built with `base: './'` (relative asset
 // URLs), so its `dist/` can be served unchanged from any sub-path. This script
-// copies each demo's built `dist/` into `apps/landing/dist/demos/<slug>/`, so a
+// copies each demo's built `dist/` into `apps/site/dist/demos/<slug>/`, so a
 // single Cloudflare Pages deploy of the landing serves the homepage, the
 // `/examples/*` marketing pages, AND every live demo under `/demos/<slug>/`.
 //
@@ -10,7 +10,7 @@
 //   node scripts/assemble-demos.mjs            # copy already-built demos
 //   node scripts/assemble-demos.mjs --build    # build each demo first, then copy
 //
-// The landing itself must already be built (so `apps/landing/dist/` exists);
+// The landing itself must already be built (so `apps/site/dist/` exists);
 // the `build:landing-demos` root script enforces that ordering.
 
 import { execFileSync } from 'node:child_process'
@@ -32,7 +32,7 @@ const DEMOS = {
 
 const shouldBuild = process.argv.includes('--build')
 
-const landingDist = resolve(root, 'apps/landing/dist')
+const landingDist = resolve(root, 'apps/site/dist')
 if (!existsSync(landingDist)) {
   console.error(
     `[assemble-demos] ${landingDist} does not exist — build the landing first (pnpm build:landing-demos).`,
@@ -67,7 +67,7 @@ for (const [slug, pkg] of Object.entries(DEMOS)) {
   rmSync(target, { recursive: true, force: true })
   mkdirSync(target, { recursive: true })
   cpSync(demoDist, target, { recursive: true })
-  console.log(`[assemble-demos] ${slug} → apps/landing/dist/demos/${slug}/`)
+  console.log(`[assemble-demos] ${slug} → apps/site/dist/demos/${slug}/`)
 }
 
 console.log(

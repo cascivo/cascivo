@@ -90,8 +90,8 @@ function loadRegistry(config: CascadeConfig): Promise<RegistryFile> | RegistryFi
 
 function loadCatalog(config: CascadeConfig): Promise<CatalogFile> | CatalogFile {
   const local =
-    findUp(HERE, join('apps', 'docs', 'public', 'tokens.catalog.json')) ??
-    findUp(process.cwd(), join('apps', 'docs', 'public', 'tokens.catalog.json'))
+    findUp(HERE, join('apps', 'site', 'public', 'tokens.catalog.json')) ??
+    findUp(process.cwd(), join('apps', 'site', 'public', 'tokens.catalog.json'))
   if (local) return JSON.parse(readFileSync(local, 'utf8')) as CatalogFile
   const catalogUrl = config.registry.replace(/registry\.json$/, 'tokens.catalog.json')
   return fetchJson(catalogUrl) as Promise<CatalogFile>

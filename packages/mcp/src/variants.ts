@@ -25,7 +25,7 @@ const BASE_URL = 'https://cascivo.com'
 
 export async function loadVariantMatrix(fetchFn?: FetchFn): Promise<VariantMatrix> {
   const localPaths = [
-    join(HERE, '..', '..', '..', 'apps', 'docs', 'public', 'tokens.variants.json'),
+    join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'tokens.variants.json'),
     join(HERE, 'tokens.variants.json'),
   ]
   for (const p of localPaths) {

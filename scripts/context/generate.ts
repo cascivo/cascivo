@@ -3,8 +3,8 @@
  * Context bundle generator.
  *
  * Reads registry.json and writes:
- *   apps/docs/public/context.json          — component index with intent
- *   apps/docs/public/context/<name>.md     — per-component agent-readable pages
+ *   apps/site/public/context.json          — component index with intent
+ *   apps/site/public/context/<name>.md     — per-component agent-readable pages
  *
  * Run with: `pnpm context:generate`
  */
@@ -367,7 +367,7 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
-const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
+const OUT_DIR = join(ROOT, 'apps', 'site', 'public')
 const CONTEXT_DIR = join(OUT_DIR, 'context')
 
 /** Read a generated JSON artifact; returns null if it doesn't exist yet. */

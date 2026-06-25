@@ -261,8 +261,8 @@ async function main(): Promise<void> {
     `Wrote ${components.length} component entries and ${blocks.length} block entries to registry.json (base: ${BASE_URL})`,
   )
 
-  // Emit per-item static files under apps/docs/public/r/
-  const docsPublicR = join(REPO_ROOT, 'apps', 'docs', 'public', 'r')
+  // Emit per-item static files under apps/site/public/r/
+  const docsPublicR = join(REPO_ROOT, 'apps', 'site', 'public', 'r')
   const index = parseLegacyRegistry(registry)
   await buildRegistry(index, docsPublicR)
 
@@ -288,7 +288,7 @@ async function main(): Promise<void> {
   console.log(`Wrote shadcn-compatible registry to ${shadcnDir}`)
 
   // Copy JSON Schemas to docs public
-  const schemaDir = join(REPO_ROOT, 'apps', 'docs', 'public', 'schema')
+  const schemaDir = join(REPO_ROOT, 'apps', 'site', 'public', 'schema')
   const { mkdir, copyFile } = await import('node:fs/promises')
   await mkdir(schemaDir, { recursive: true })
   const schemaFiles = ['registry.v2.json', 'registry-item.v2.json', 'registries.v1.json']

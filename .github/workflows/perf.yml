@@ -5,7 +5,7 @@ on:
     paths:
       - 'packages/components/**'
       - 'packages/core/**'
-      - 'apps/docs/**'
+      - 'apps/site/**'
   workflow_dispatch:
 
 jobs:
@@ -25,13 +25,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Chromium
-        run: pnpm --filter @cascivo/docs exec playwright install chromium --with-deps
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 
       - name: Build docs
-        run: pnpm exec vp run @cascivo/docs#build
+        run: pnpm exec vp run @cascivo/site#build
 
       - name: Run latency benchmarks
-        run: pnpm --filter @cascivo/docs run test:perf
+        run: pnpm --filter @cascivo/site run test:perf
         env:
           PERF_SCALE: 10
 
@@ -40,5 +40,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: perf-report
-          path: apps/docs/test-results
+          path: apps/site/test-results
           retention-days: 7
