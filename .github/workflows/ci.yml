@@ -47,6 +47,9 @@ jobs:
       - name: Story audit (orphan stories)
         run: pnpm run audit:stories
 
+      - name: Landing link check (no broken internal routes)
+        run: pnpm run links:check
+
       # Parallel build: vp orders by the dependency graph, so independent
       # packages build concurrently while dependents still wait for their deps.
       # The cold-cache *sequential* ordering guard lives in local `pnpm ready:ci`.

@@ -3,10 +3,13 @@ import { Separator } from '@cascivo/components/separator'
 const REPO = 'https://github.com/cascivo/cascivo'
 
 // Internal targets resolve to OTHER apps/assets on the deployed cascivo.com
-// domain (not the landing SPA): /docs + /storybook (separate CF Pages apps),
-// /why + /docs/benchmarks (docs app), /llms.txt + /registry.json (served at
-// site root by the deploy). If a target ever 404s, that's a deploy-config
-// follow-up, not a landing change.
+// domain (not the landing SPA): /docs + /docs/benchmarks + /docs/why (docs app),
+// /storybook → storybook.cascivo.com (separate CF Pages app), /llms.txt +
+// /registry.json (served at site root by the deploy). Ecosystem packages link to
+// their source under the GitHub repo (one canonical domain — no separate
+// cascivo.dev microsite to drift). `pnpm links:check` (scripts/quality/
+// landing-links.ts, run in CI) asserts every internal href maps to a known route,
+// so a 404 fails the build rather than becoming a manual follow-up.
 interface NavLink {
   label: string
   href: string
@@ -49,8 +52,8 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Ecosystem',
     links: [
-      { label: '@cascivo/charts', href: 'https://cascivo.dev/charts', mono: true },
-      { label: '@cascivo/layouts', href: 'https://cascivo.dev/layouts', mono: true },
+      { label: '@cascivo/charts', href: `${REPO}/tree/main/packages/charts`, mono: true },
+      { label: '@cascivo/layouts', href: `${REPO}/tree/main/packages/layouts`, mono: true },
       { label: '@cascivo/i18n', href: `${REPO}/tree/main/packages/i18n`, mono: true },
       { label: '@cascivo/icons', href: `${REPO}/tree/main/packages/icons`, mono: true },
       { label: '@cascivo/storage', href: `${REPO}/tree/main/packages/storage`, mono: true },
