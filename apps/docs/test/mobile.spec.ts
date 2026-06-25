@@ -4,7 +4,7 @@ const WIDTHS = [320, 375, 390, 414]
 
 const PAGES = [
   { path: '/', name: 'home' },
-  { path: '/components/button', name: 'button' },
+  { path: '/docs/components/button', name: 'button' },
   { path: '/charts', name: 'charts' },
   { path: '/benchmarks', name: 'benchmarks' },
 ]

@@ -4,14 +4,14 @@ import { expect, test } from '@playwright/test'
 // ── Smoke ─────────────────────────────────────────────────────────────────────
 
 test('layouts page renders group headings', async ({ page }) => {
-  await page.goto('/layouts')
+  await page.goto('/docs/layouts')
   await expect(page.getByRole('heading', { name: 'Primitives' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Sections' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Blocks' })).toBeVisible()
 })
 
 test('layouts page has copy buttons for all entries (≥ 9)', async ({ page }) => {
-  await page.goto('/layouts')
+  await page.goto('/docs/layouts')
   // Each entry renders a CopyButton with "npx cascivo add …"
   const copyButtons = page.locator('button code').filter({ hasText: 'npx cascivo add' })
   const count = await copyButtons.count()
@@ -20,14 +20,14 @@ test('layouts page has copy buttons for all entries (≥ 9)', async ({ page }) =
 })
 
 test('layouts page has npx cascivo add hero copy button', async ({ page }) => {
-  await page.goto('/layouts')
+  await page.goto('/docs/layouts')
   await expect(
     page.locator('button code').filter({ hasText: 'npx cascivo add hero' }),
   ).toBeVisible()
 })
 
 test('masonry preview contains child tiles', async ({ page }) => {
-  await page.goto('/layouts')
+  await page.goto('/docs/layouts')
   // The masonry preview renders tile divs inside a Masonry wrapper
   const masonryPreview = page
     .locator('h3 code', { hasText: 'layout/masonry' })
@@ -41,7 +41,7 @@ test('masonry preview contains child tiles', async ({ page }) => {
 })
 
 test('charts page plain chart in table cell has no legend', async ({ page }) => {
-  await page.goto('/charts')
+  await page.goto('/docs/charts')
   // Scroll to Micro charts section
   await page.getByRole('heading', { name: 'Micro charts' }).scrollIntoViewIfNeeded()
   // Find the table with plain charts
@@ -63,7 +63,7 @@ for (const theme of ['light', 'dark'] as const) {
       key: 'cascade-theme',
       val: JSON.stringify({ v: 1, value: theme }),
     })
-    await page.goto('/layouts')
+    await page.goto('/docs/layouts')
     await expect(page.getByRole('heading', { name: 'Primitives' })).toBeVisible()
     const results = await new AxeBuilder({ page }).analyze()
     expect(results.violations).toEqual([])
@@ -73,7 +73,7 @@ for (const theme of ['light', 'dark'] as const) {
 // ── RTL overflow check ────────────────────────────────────────────────────────
 
 test('hero and page-footer previews have no horizontal overflow under RTL', async ({ page }) => {
-  await page.goto('/layouts')
+  await page.goto('/docs/layouts')
 
   // Inject RTL on document
   await page.evaluate(() => {

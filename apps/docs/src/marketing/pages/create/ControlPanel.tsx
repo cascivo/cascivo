@@ -1,4 +1,5 @@
 'use client'
+import type { TargetedEvent } from 'preact/compat'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { Button } from '@cascivo/components/button'
 import { Select } from '@cascivo/components/select'
@@ -114,7 +115,7 @@ export function ControlPanel() {
             type="color"
             className="ctrl-hex-picker"
             value={oklchToHex(DISPLAY_L, current.accentChroma, current.accentHue)}
-            onChange={(e) => applyHex(e.target.value)}
+            onChange={(e) => applyHex(e.currentTarget.value)}
             aria-label="Pick accent colour"
           />
           <input
@@ -122,13 +123,13 @@ export function ControlPanel() {
             className="ctrl-hex-text"
             value={hexDraft.value}
             onChange={(e) => {
-              hexDraft.value = e.target.value
-              applyHex(e.target.value)
+              hexDraft.value = e.currentTarget.value
+              applyHex(e.currentTarget.value)
             }}
             placeholder="#3b82f6"
             aria-label="Hex colour value"
             maxLength={7}
-            spellCheck={false}
+            spellcheck={false}
           />
         </div>
 
@@ -146,7 +147,11 @@ export function ControlPanel() {
               step={1}
               value={current.accentHue}
               onChange={(e) =>
-                (config.value = { ...current, accentHue: Number(e.target.value), presetId: null })
+                (config.value = {
+                  ...current,
+                  accentHue: Number(e.currentTarget.value),
+                  presetId: null,
+                })
               }
             />
           </div>
@@ -178,7 +183,7 @@ export function ControlPanel() {
               onChange={(e) =>
                 (config.value = {
                   ...current,
-                  accentChroma: Number(e.target.value),
+                  accentChroma: Number(e.currentTarget.value),
                   presetId: null,
                 })
               }
@@ -205,7 +210,7 @@ export function ControlPanel() {
             step={1}
             value={RADIUS_STOPS.indexOf(current.radiusBase)}
             onChange={(e) => {
-              const stop = RADIUS_STOPS[Number(e.target.value)] as RadiusStop
+              const stop = RADIUS_STOPS[Number(e.currentTarget.value)] as RadiusStop
               config.value = { ...current, radiusBase: stop, presetId: null }
             }}
             aria-label="Border radius"
@@ -228,10 +233,10 @@ export function ControlPanel() {
           label="Font"
           value={current.fontFamily}
           options={FONT_OPTIONS}
-          onChange={(e) =>
+          onChange={(e: TargetedEvent<HTMLSelectElement>) =>
             (config.value = {
               ...current,
-              fontFamily: (e as React.ChangeEvent<HTMLSelectElement>).target.value as FontFamily,
+              fontFamily: e.currentTarget.value as FontFamily,
               presetId: null,
             })
           }

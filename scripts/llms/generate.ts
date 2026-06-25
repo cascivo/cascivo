@@ -471,16 +471,12 @@ function main() {
     writeFileSync(outPath, md, 'utf8')
   }
 
-  // Generate llms.txt. It uses absolute URLs throughout, so the same file is
-  // correct whether served from cascivo.com (landing) or docs.cascivo.com (docs).
-  // Write it to both so the front door (cascivo.com/llms.txt) never drifts.
+  // Generate llms.txt. It uses absolute URLs throughout. The unified site serves
+  // it from cascivo.com/llms.txt.
   const llmsTxt = generateLlmsTxt(registry, entries)
   writeFileSync(join(OUT_DIR, 'llms.txt'), llmsTxt, 'utf8')
-  const LANDING_PUBLIC = join(ROOT, 'apps', 'landing', 'public')
-  mkdirSync(LANDING_PUBLIC, { recursive: true })
-  writeFileSync(join(LANDING_PUBLIC, 'llms.txt'), llmsTxt, 'utf8')
 
-  console.log(`Generated llms.txt (docs + landing) + ${sorted.length} component markdown files`)
+  console.log(`Generated llms.txt + ${sorted.length} component markdown files`)
 }
 
 main()

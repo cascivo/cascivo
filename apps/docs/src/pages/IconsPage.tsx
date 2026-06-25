@@ -4,7 +4,6 @@
 // packages/icons/svg, run regen, and it shows up. Signal-driven (no
 // useState/useEffect), per CLAUDE.md (the docs app is Preact).
 import { useClipboard, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
-import { useLocation } from 'preact-iso'
 import type { JSX } from 'preact'
 import * as Icons from '@cascivo/icons'
 import { Button } from '@cascivo/components/button'
@@ -41,7 +40,11 @@ const THEMES = ['auto', 'light', 'dark', 'warm']
 
 export function IconsPage() {
   useSignals()
-  const { query: urlQuery } = useLocation()
+  // Read the ?q= deep-link from the URL (the unified app uses a signal router).
+  const urlQuery =
+    typeof window !== 'undefined'
+      ? Object.fromEntries(new URLSearchParams(window.location.search))
+      : {}
   const { copy } = useClipboard()
 
   const loading = useSignal(true)

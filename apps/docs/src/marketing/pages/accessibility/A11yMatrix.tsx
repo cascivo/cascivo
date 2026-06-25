@@ -87,7 +87,7 @@ export function A11yMatrix() {
           size="sm"
           options={FILTER_OPTIONS}
           value={category.value}
-          onValueChange={(v) => {
+          onValueChange={(v: string) => {
             category.value = v
           }}
         />

@@ -12,7 +12,7 @@ for (const { name } of registry.components) {
   for (const theme of THEMES) {
     test(`${name} renders in ${theme}`, async ({ page }) => {
       await page.addInitScript((t) => localStorage.setItem('cascade-theme', t), theme)
-      await page.goto(`/components/${name}`)
+      await page.goto(`/docs/components/${name}`)
       const preview = page.locator('.preview')
       await expect(preview).toBeVisible()
       await expect(preview).toHaveScreenshot(`${name}-${theme}.png`)

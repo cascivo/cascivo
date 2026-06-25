@@ -10,7 +10,7 @@ const BUDGET = {
 
 test('10k-row DataTable stays within latency budgets', async ({ page }) => {
   const start = Date.now()
-  await page.goto('/perf/data-table')
+  await page.goto('/docs/perf/data-table')
   await page.locator('tbody tr').first().waitFor()
   expect(Date.now() - start).toBeLessThan(BUDGET.initialRender)
 
