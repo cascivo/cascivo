@@ -1,5 +1,15 @@
 # cascivo
 
+## 0.1.5
+
+### Patch Changes
+
+- 2458391: Improvements
+- 52c08b6: Improvements
+- Updated dependencies [2458391]
+- Updated dependencies [52c08b6]
+  - @cascivo/registry@0.1.3
+
 ## 0.1.4
 
 ### Patch Changes

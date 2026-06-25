@@ -1,5 +1,16 @@
 # @cascivo/charts
 
+## 0.3.2
+
+### Patch Changes
+
+- 2458391: Improvements
+- 52c08b6: Improvements
+- Updated dependencies [2458391]
+- Updated dependencies [52c08b6]
+  - @cascivo/core@0.2.1
+  - @cascivo/i18n@0.1.9
+
 ## 0.3.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/themes",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": false,
   "description": "First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk, arcade",
   "keywords": [
