@@ -1,6 +1,6 @@
 'use client'
 import { useRef, type ReactElement } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useMediaQuery, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader, type ShellHeaderNavItem } from '@cascivo/components/shell-header'
 import { Tooltip } from '@cascivo/components/tooltip'
 import { Dropdown, type DropdownItem } from '@cascivo/components/dropdown'
@@ -193,6 +193,10 @@ function GitHubIcon() {
 export function Header() {
   useSignals()
   const isNavOpen = useSignal(false)
+  // The hamburger + drawer are the mobile nav; on desktop the inline nav shows
+  // and the drawer is display:none, so the button would be dead. Only wire it
+  // (and let ShellHeader render it) below the drawer breakpoint.
+  const isMobileNav = useMediaQuery('(max-width: 47.99rem)').value
 
   // Active detection is reactive: reads currentPath so navigation re-renders it.
   const isActive = (href: string) => !isExternalHref(href) && currentPath.value.startsWith(href)
@@ -283,12 +287,17 @@ export function Header() {
         // disable ShellHeader's built-in skip link so its default #cascade-main
         // target (which the landing doesn't render) can't dangle.
         skipToContentHref={false}
-        onMenuClick={() => {
-          // Capture the toggle so focus can return to it on close.
-          if (!isNavOpen.value) toggleRef.current = document.activeElement as HTMLElement | null
-          isNavOpen.value = !isNavOpen.value
-        }}
-        menuExpanded={isNavOpen.value}
+        {...(isMobileNav
+          ? {
+              onMenuClick: () => {
+                // Capture the toggle so focus can return to it on close.
+                if (!isNavOpen.value)
+                  toggleRef.current = document.activeElement as HTMLElement | null
+                isNavOpen.value = !isNavOpen.value
+              },
+              menuExpanded: isNavOpen.value,
+            }
+          : {})}
         end={
           <>
             {currentPath.value === '/' && (
