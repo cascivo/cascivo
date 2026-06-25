@@ -1142,7 +1142,7 @@ kbd {
 /* ── Scroll progress bar ────────────────────────────────── */
 .scroll-progress {
   position: sticky;
-  top: var(--cascivo-shell-header-block-size, 3.5rem);
+  top: var(--cascivo-shell-header-block-size, 3rem);
   z-index: calc(var(--cascivo-z-overlay) - 1);
   block-size: 2px;
   background: transparent;
@@ -2296,14 +2296,18 @@ kbd {
 
 .mobile-nav-drawer {
   position: fixed;
-  inset-block: 0;
+  /* Start below the sticky header (which stays above at z-overlay/200) so the
+     first link clears the bar — mirrors the .scroll-progress offset idiom. */
+  inset-block-start: var(--cascivo-shell-header-block-size);
+  inset-block-end: 0;
   inset-inline-end: 0;
   inline-size: min(320px, 85vw);
   background: var(--cascivo-color-surface, white);
   border-inline-start: 1px solid var(--cascivo-color-border);
   z-index: 100;
-  padding: var(--cascivo-space-8) var(--cascivo-space-6);
-  padding-block-start: max(var(--cascivo-space-8), env(safe-area-inset-top));
+  padding: var(--cascivo-space-6);
+  /* Clear the home indicator on notched phones; long link lists scroll. */
+  padding-block-end: max(var(--cascivo-space-8), env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-4);
