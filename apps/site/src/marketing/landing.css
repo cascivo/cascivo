@@ -3542,7 +3542,9 @@ kbd {
   }
 }
 
-@media (max-width: 47.99rem) {
+/* Nav collapse — kept in lock-step with the JS `isMobileNav` media query in
+   Header.tsx. 39.99rem = just under the canonical `md` (40rem). */
+@media (max-width: 39.99rem) {
   .mobile-nav-toggle {
     display: flex;
   }

@@ -195,8 +195,11 @@ export function Header() {
   const isNavOpen = useSignal(false)
   // The hamburger + drawer are the mobile nav; on desktop the inline nav shows
   // and the drawer is display:none, so the button would be dead. Only wire it
-  // (and let ShellHeader render it) below the drawer breakpoint.
-  const isMobileNav = useMediaQuery('(max-width: 47.99rem)').value
+  // (and let ShellHeader render it) below the drawer breakpoint. 39.99rem = just
+  // under the canonical `md` (40rem); this must stay in lock-step with the CSS
+  // that hides the inline nav / shows the toggle (`.mobile-nav-toggle` rule in
+  // landing.css) or the button goes dead in the gap.
+  const isMobileNav = useMediaQuery('(max-width: 39.99rem)').value
 
   // Active detection is reactive: reads currentPath so navigation re-renders it.
   const isActive = (href: string) => !isExternalHref(href) && currentPath.value.startsWith(href)

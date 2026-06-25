@@ -1,5 +1,4 @@
 // Single source of truth for the five v21 showcase demos, shared by:
-//   - sections/ExamplesGallery.tsx  (homepage teaser cards)
 //   - pages/ExamplesPage.tsx        (the /examples hub)
 //   - pages/ExampleDetailPage.tsx   (the /examples/<slug> detail pages)
 //
