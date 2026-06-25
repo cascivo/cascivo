@@ -2347,7 +2347,9 @@ kbd {
   outline: none;
 }
 
-@media (min-width: 48rem) {
+/* Match the nav-collapse boundary (40rem) used by the toggle, the inline-nav
+   hide, and the JS `isMobileNav` — one breakpoint for the whole mobile nav. */
+@media (min-width: 40rem) {
   .mobile-nav-drawer {
     display: none;
   }
@@ -3496,6 +3498,18 @@ kbd {
 .header-search-btn:focus-visible {
   outline: 2px solid var(--cascivo-color-accent);
   outline-offset: 2px;
+}
+
+/* Touch devices: raise the compact 2.25rem header controls to the ≥44px target
+   minimum (WCAG 2.2 SC 2.5.8). Desktop (pointer: fine) keeps the dense size. */
+@media (pointer: coarse) {
+  .header-theme-cycle,
+  .header-peek-toggle,
+  .header-icon-link,
+  .header-search-btn {
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+  }
 }
 
 .header-search-shortcut {
