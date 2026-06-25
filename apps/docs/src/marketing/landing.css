@@ -3348,3 +3348,478 @@ kbd {
   color: var(--cascivo-color-text-muted);
   font-size: var(--cascivo-text-sm);
 }
+
+/* ── Home above-the-fold (header, hero, bg-field backdrop, home-sheet) ──────
+   Moved out of the old landing index.html inlined critical CSS during the
+   docs+landing merge. Tokens/theme/base resets come from app.css. */
+.landing-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--cascivo-z-overlay);
+  background: var(--cascivo-color-surface);
+  border-block-end: 1px solid color-mix(in oklch, var(--cascivo-color-border) 60%, transparent);
+}
+
+/* ── Header safe-area + mobile padding ────────────────── */
+.header {
+  padding-inline: max(var(--cascivo-space-3), env(safe-area-inset-left));
+}
+
+/* ── Theme cycle button ───────────────────────────────── */
+.header-theme-cycle,
+.header-peek-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--cascivo-color-text-subtle);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.header-theme-cycle:hover,
+.header-peek-toggle:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface-raised);
+}
+
+.header-theme-cycle:focus-visible,
+.header-peek-toggle:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+/* Lit state when the peek view is active. */
+.header-peek-toggle[aria-pressed='true'] {
+  color: var(--cascivo-color-text-on-accent);
+  background: var(--cascivo-color-accent);
+}
+
+/* ── Header icon links ────────────────────────────────── */
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  color: var(--cascivo-color-text-subtle);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.header-icon-link:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface-raised);
+}
+
+.header-icon-link:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Header search button ─────────────────────────────── */
+.header-search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-inline: var(--cascivo-space-3);
+  block-size: 2.25rem;
+  border-radius: var(--cascivo-radius-sm);
+  background: var(--cascivo-color-surface-raised);
+  border: 1px solid var(--cascivo-color-border);
+  cursor: pointer;
+  color: var(--cascivo-color-text-subtle);
+  font-size: var(--cascivo-text-sm);
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+  white-space: nowrap;
+}
+
+.header-search-btn:hover {
+  color: var(--cascivo-color-text);
+  background: var(--cascivo-color-surface);
+}
+
+.header-search-btn:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.header-search-shortcut {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .header-search-shortcut {
+    display: inline-flex;
+  }
+}
+
+/* ── Mobile nav toggle ────────────────────────────────── */
+.mobile-nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  inline-size: 44px;
+  block-size: 44px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--cascivo-space-2);
+  color: var(--cascivo-color-text);
+  flex-shrink: 0;
+}
+
+.mobile-nav-toggle:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+  border-radius: var(--cascivo-radius-sm);
+}
+
+.hamburger-bar {
+  display: block;
+  inline-size: 22px;
+  block-size: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-bar {
+    transition: none;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .mobile-nav-toggle {
+    display: flex;
+  }
+
+  [role='banner'] nav {
+    display: none;
+  }
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding: var(--cascivo-space-20) var(--cascivo-space-6) var(--cascivo-space-16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-5);
+  text-align: center;
+  scroll-margin-block-start: 5rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: var(--cascivo-font-bold);
+  letter-spacing: var(--cascivo-tracking-tight);
+  line-height: 1.15;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--cascivo-color-accent);
+}
+
+.hero-tagline {
+  margin: 0;
+  max-width: 38rem;
+  font-size: var(--cascivo-text-lg);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-3);
+  justify-content: center;
+}
+
+.hero-stage-wrap {
+  inline-size: min(100%, 560px);
+  margin-block-start: var(--cascivo-space-6);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-surface);
+  overflow: hidden;
+}
+
+.hero-stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--cascivo-space-2) var(--cascivo-space-4);
+  border-block-end: 1px solid var(--cascivo-color-border);
+  background-color: var(--cascivo-color-bg-subtle);
+}
+
+.hero-stage-label {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.hero-theme-switcher {
+  display: flex;
+  gap: var(--cascivo-space-1);
+}
+
+.hero-theme-btn {
+  padding: var(--cascivo-space-1) var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xs);
+  font-family: var(--cascivo-font-sans);
+  background: transparent;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-sm);
+  color: var(--cascivo-color-text-subtle);
+  cursor: pointer;
+}
+
+.hero-theme-btn.active {
+  background-color: var(--cascivo-color-accent);
+  border-color: var(--cascivo-color-accent);
+  color: var(--cascivo-color-text-on-accent);
+}
+
+.hero-stage {
+  view-transition-name: hero-stage;
+  display: grid;
+  place-items: center;
+  min-block-size: 14rem;
+  padding: var(--cascivo-space-8);
+  text-align: start;
+}
+
+.hero-slide-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-3);
+  justify-content: center;
+}
+
+.hero-slide-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+  inline-size: min(100%, 20rem);
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 5vw + 0.5rem, 3rem);
+  font-weight: var(--cascivo-font-bold);
+  letter-spacing: var(--cascivo-tracking-tight);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.hero-title-accent {
+  color: var(--cascivo-color-accent);
+}
+
+.hero-sub {
+  margin: 0;
+  max-width: min(100%, 34rem);
+  font-size: var(--cascivo-text-lg);
+  color: var(--cascivo-color-text-subtle);
+  text-wrap: balance;
+}
+
+/* ── Component backdrop field + "peek" gimmick ────────── */
+/* A field of real components sits behind the page: blurred + muted by
+         default so the content reads, sharpened (and the content hidden) when
+         the navbar "peek" toggle is on. */
+.bg-field {
+  position: fixed;
+  inset: 0;
+  /* Start below the sticky header so its first row of cards isn't clipped
+           behind the navbar. */
+  top: var(--cascivo-shell-header-block-size);
+  z-index: -1;
+  overflow: hidden;
+  filter: blur(7px);
+  transition: filter 450ms ease;
+  /* Columns have content-driven heights, so their last cards never land on
+           one line. Fade the bottom edge so every column visually terminates on
+           the same horizontal line (and the hard viewport clip softens too). */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 6rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 6rem), transparent);
+}
+
+.bg-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cascivo-color-bg);
+  /* Lighter scrim than before: the content sheet now carries contrast, so
+           the wallpaper can read more vividly in the gutters. */
+  opacity: 0.55;
+  transition: opacity 450ms ease;
+}
+
+/* The home content rides on its own sheet so it reads cleanly over the
+         component wallpaper; the field shows in the gutters and on peek. */
+.home-sheet {
+  position: relative;
+  z-index: 0;
+  inline-size: 100%;
+  max-inline-size: 70rem;
+  margin-inline: auto;
+  background: var(--cascivo-color-bg);
+  background: color-mix(in srgb, var(--cascivo-color-bg) 93%, transparent);
+  border-inline: 1px solid var(--cascivo-color-border);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.08);
+  transition: opacity 350ms ease;
+}
+
+/* Explicit flex columns (count set in JS to match the breakpoints below).
+         Each column is its own flex stack so it can end in a stretching filler;
+         align-items:stretch makes every column as tall as the tallest, and the
+         fillers absorb the slack — so all columns end on one horizontal line
+         despite content-driven card heights. */
+.bg-field-grid {
+  display: flex;
+  align-items: stretch;
+  gap: var(--cascivo-space-4);
+  padding: var(--cascivo-space-4);
+}
+
+.bg-field-col {
+  display: flex;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+/* Each tile is a full composed Card; the wrapper only carries the theme. */
+.bg-field-tile {
+  color: var(--cascivo-color-text);
+}
+
+/* Grows to fill whatever height a column is short of the tallest one, so
+         every column visually terminates on the same line. */
+.bg-field-filler {
+  flex: 1 1 0;
+  min-block-size: 4rem;
+  border-radius: var(--cascivo-radius-lg, 0.75rem);
+  border: 1px solid color-mix(in oklch, var(--cascivo-color-border) 60%, transparent);
+  background: var(--cascivo-color-surface);
+}
+
+/* Peek on: sharpen the field, drop the scrim, fade the page away, and let
+         the field scroll so all cards are reachable (not just the first screen).
+         Lock the page so only the field scrolls. */
+[data-peek] {
+  overflow: hidden;
+}
+
+[data-peek] .bg-field {
+  filter: none;
+  /* Above the (hidden) content so it is the scroll/pointer target, but
+           below the sticky header so the toggle stays clickable. */
+  z-index: 2;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  /* The per-column fillers align the bottoms here, so drop the fade and
+           let the aligned card/filler edges read crisply. */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+[data-peek] .bg-field::after {
+  opacity: 0;
+}
+
+/* Breathing room below the aligned card/filler bottoms at full scroll. */
+[data-peek] .bg-field-grid {
+  padding-block-end: 4rem;
+}
+
+[data-peek] .home-sheet,
+[data-peek] .scroll-progress {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity 350ms ease,
+    visibility 0s 350ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-field,
+  .bg-field::after,
+  .home-sheet {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(hero-stage) {
+    animation: hero-out 200ms ease both;
+  }
+
+  ::view-transition-new(hero-stage) {
+    animation: hero-in 250ms ease both;
+  }
+
+  @keyframes hero-out {
+    to {
+      opacity: 0;
+      translate: 0 -0.5rem;
+    }
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+  }
+}
+
+/* ── Lazy-section reserved space (avoid CLS while a split chunk loads) ── */
+.lazy-fallback {
+  min-block-size: 40vh;
+}
+
+.lazy-fallback--tall {
+  min-block-size: 70vh;
+}
+
+/* ── Narrow (≤29.99rem / 479px) hero overrides ────────── */
+@media (max-width: 29.99rem) {
+  .hero {
+    padding-block: var(--cascivo-space-10) var(--cascivo-space-6);
+    padding-inline: var(--cascivo-space-4);
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    align-self: stretch;
+  }
+
+  .hero-ctas > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
