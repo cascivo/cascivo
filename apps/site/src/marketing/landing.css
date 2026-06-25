@@ -440,6 +440,9 @@ main {
   align-items: center;
   gap: var(--cascivo-space-3);
   padding: var(--cascivo-space-4);
+  /* Let the grid item shrink below its content so the tagline wraps instead of
+     overflowing the 2-col layout at the narrowest widths (320px). */
+  min-inline-size: 0;
   text-align: start;
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-lg);
@@ -1819,6 +1822,15 @@ kbd {
   justify-content: center;
   gap: var(--cascivo-space-4);
   flex-wrap: wrap;
+}
+
+/* Narrow screens: stack the two buttons + copy-command into a clean vertical
+   CTA instead of a centered wrap. */
+@media (max-width: 39.99rem) {
+  .cta-band-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 /* ── Incident pulse dot ───────────────────────────────── */
@@ -3604,6 +3616,15 @@ kbd {
   align-items: center;
   gap: var(--cascivo-space-4);
   text-align: center;
+}
+
+/* The negative tuck assumes the shorter desktop hero; on mobile the hero wraps
+   taller and the CTAs stack, so drop the pull-up to avoid colliding with the
+   hero's copy-command. */
+@media (max-width: 39.99rem) {
+  .social-proof {
+    margin-block-start: var(--cascivo-space-4);
+  }
 }
 
 .social-proof-lead {

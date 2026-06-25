@@ -1,7 +1,9 @@
 # cascivo — Roadmap v50: Mobile-Mode Credibility — Three-Lens Audit (Business · Architect · Designer)
 
 **Last updated:** 2026-06-25
-**Status:** 📋 Planned — T1–T5 specified; not yet implemented.
+**Status:** ✅ Shipped — T1–T5 implemented (drawer below the navbar; 40rem breakpoint reconciliation; 44px
+header touch targets; theme/GitHub relocated into the mobile menu; mobile sweep + SocialProof collision fix +
+320px overflow fix). Verified in a real headless Chromium at 320/360/390/414.
 **Plan documents:** `docs/superpowers/plans/2026-06-25-v50-master-plan.md` + tranches 1–5
 **Builds on:** the v49 landing-page work and the mobile surface in `apps/site/src/marketing/*` — the header +
 off-canvas drawer (`sections/Header.tsx`, the `.mobile-nav-drawer` / `.nav-scrim` / `.mobile-nav-toggle` rules in
@@ -116,4 +118,45 @@ sequenced for one reviewer.
   a CTA are visible above the fold at 360×640.
 - `pnpm ready` green; `breakpoint:check` + `fallback:check` + `links:check` clean; the mobile overflow + touch
   sweep passes at 320/360/390/414.
+
+---
+
+## Implementation log (2026-06-25)
+
+Verified with a real headless Chromium (`/opt/pw-browsers/chromium`) serving the production `dist` at
+320/360/390/414, opening the drawer and measuring geometry.
+
+- **T1 — Drawer below the navbar.** `.mobile-nav-drawer` now starts at `inset-block-start:
+  var(--cascivo-shell-header-block-size)` with `inset-block-end: 0`, normalized top padding, and a
+  `max(space-8, env(safe-area-inset-bottom))` floor; `.scroll-progress` fallback corrected `3.5rem → 3rem`.
+  **Measured:** header bottom = 48px, drawer top = 48px, first link top = 72px → `firstLinkClearsHeader: true`. The
+  reported bug is fixed (screenshot confirms "Docs" sits below the bar, header fully visible).
+- **T2 — Breakpoint reconciliation.** The drawer/scrim hide moved `48rem → 40rem`. Verified at 360px the inline nav
+  is `display:none` and the hamburger shows; at ≥40rem the inline nav returns.
+- **T3 — Touch targets.** Added a `@media (pointer: coarse)` floor of `var(--cascivo-target-min-coarse, 2.75rem)` to
+  the four header controls. **Measured:** peek + search render at 44×44 in a touch context (were 36px); desktop
+  (`pointer: fine`) unchanged.
+- **T4 — Menu completeness + header density.** Theme + GitHub relocated into a `.mobile-nav-controls` row inside the
+  drawer (gated by `isMobileNav`), shared render helpers keep desktop + drawer in sync. **Verified:** on mobile the
+  header carries only hamburger + peek (home) + search; the drawer exposes theme + GitHub (`controlsPresent: true`).
+- **T5 — Mobile sweep & polish.** `.cta-band-actions` stacks column/stretch under `40rem`. The browser sweep caught
+  **two real issues the static read missed**, both fixed:
+  1. **SocialProof collision** — the v49 `margin-block-start: calc(-1 * space-8)` tuck overlapped the hero's
+     copy-command on the taller mobile hero; reset to a positive `space-4` under `40rem` (now a 40px gap, no
+     collision at any width).
+  2. **320px horizontal overflow** — the AdvantageCarousel tab cards (`.adv-card`, a 2-col grid) couldn't shrink
+     (`min-width: auto`), pushing ~7px past the viewport; added `min-inline-size: 0` so the tagline wraps. All four
+     widths now report `scrollWidth == clientWidth` (no overflow).
+
+### Notes / out-of-scope observations
+
+- `.mobile-nav-toggle` + `.hamburger-bar` in `landing.css` appear to be **unused** — the actual hamburger is
+  `ShellHeader`'s own `_menuButton` (this is what the JS `isMobileNav` wires and what the browser test clicked). The
+  v50 findings referenced `.mobile-nav-toggle` as "the hamburger"; the *behavior* is correct (the real toggle works),
+  but those landing classes look like dead CSS — flagged for a follow-up cleanup, not removed here (out of the
+  mobile-fix scope, and entangled like the v49 orphan CSS).
+- The SocialProof collision + 320px carousel overflow were **pre-existing from v49** (not introduced by v50) but were
+  in the path of the T5 mobile sweep, so they were fixed here.
+- The pre-existing repo-wide `regen` drift documented in v49 remains independent of this work; no regen output was
+  committed.
 </content>
