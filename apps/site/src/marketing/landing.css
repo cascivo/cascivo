@@ -2347,6 +2347,14 @@ kbd {
   outline: none;
 }
 
+/* Secondary controls (theme, GitHub) relocated into the drawer on mobile. */
+.mobile-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-block-start: var(--cascivo-space-4);
+}
+
 /* Match the nav-collapse boundary (40rem) used by the toggle, the inline-nav
    hide, and the JS `isMobileNav` — one breakpoint for the whole mobile nav. */
 @media (min-width: 40rem) {

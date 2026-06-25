@@ -280,6 +280,44 @@ export function Header() {
     }
   })
 
+  // Theme + GitHub render inline on desktop and relocate into the drawer on
+  // mobile (where the header would otherwise crowd) — relocated, never hidden,
+  // so they stay keyboard-reachable. Helpers keep the two render sites in sync.
+  const renderThemeDropdown = () => (
+    <Dropdown
+      placement="bottom-end"
+      items={THEMES.map(
+        (t): DropdownItem => ({
+          label: titleCase(t),
+          value: t,
+          ...(theme.value === t ? { icon: <CheckIcon /> } : {}),
+        }),
+      )}
+      onSelect={(value) => setTheme(value as ThemeName)}
+      trigger={
+        <button
+          type="button"
+          className="header-theme-cycle"
+          aria-label={`Switch theme, current: ${theme.value}`}
+        >
+          {(THEME_ICONS[theme.value] ?? PaletteIcon)()}
+        </button>
+      }
+    />
+  )
+
+  const renderGitHubLink = () => (
+    <a
+      href={GITHUB_HREF}
+      className="header-icon-link"
+      aria-label="GitHub"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <GitHubIcon />
+    </a>
+  )
+
   return (
     <>
       <ShellHeader
@@ -325,40 +363,13 @@ export function Header() {
                 </button>
               </Tooltip>
             )}
-            <Dropdown
-              placement="bottom-end"
-              items={THEMES.map(
-                (t): DropdownItem => ({
-                  label: titleCase(t),
-                  value: t,
-                  ...(theme.value === t ? { icon: <CheckIcon /> } : {}),
-                }),
-              )}
-              onSelect={(value) => setTheme(value as ThemeName)}
-              trigger={
-                <button
-                  type="button"
-                  className="header-theme-cycle"
-                  aria-label={`Switch theme, current: ${theme.value}`}
-                >
-                  {(THEME_ICONS[theme.value] ?? PaletteIcon)()}
-                </button>
-              }
-            />
+            {!isMobileNav && renderThemeDropdown()}
             <SearchButton
               onClick={() => {
                 searchOpen.value = true
               }}
             />
-            <a
-              href={GITHUB_HREF}
-              className="header-icon-link"
-              aria-label="GitHub"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GitHubIcon />
-            </a>
+            {!isMobileNav && renderGitHubLink()}
           </>
         }
       />
@@ -402,6 +413,12 @@ export function Header() {
             </a>
           )
         })}
+        {isMobileNav && (
+          <div className="mobile-nav-controls">
+            {renderThemeDropdown()}
+            {renderGitHubLink()}
+          </div>
+        )}
       </nav>
     </>
   )
