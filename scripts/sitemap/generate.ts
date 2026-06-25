@@ -13,7 +13,11 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { PRERENDER_ROUTES, canonicalFor, SITE_URL } from '../../apps/docs/src/marketing/route-head.ts'
+import {
+  PRERENDER_ROUTES,
+  canonicalFor,
+  SITE_URL,
+} from '../../apps/docs/src/marketing/route-head.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')

@@ -1,775 +1,839 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://docs.cascivo.com/</loc>
+    <loc>https://cascivo.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/why</loc>
+    <loc>https://cascivo.com/accessibility</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/ai</loc>
+    <loc>https://cascivo.com/performance</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/directory</loc>
+    <loc>https://cascivo.com/guides</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/context</loc>
+    <loc>https://cascivo.com/modern-css</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/charts</loc>
+    <loc>https://cascivo.com/highlights</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/examples</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/showcase</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/examples/deploy</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/icons</loc>
+    <loc>https://cascivo.com/examples/pay</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/layouts</loc>
+    <loc>https://cascivo.com/examples/flow</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/benchmarks</loc>
+    <loc>https://cascivo.com/examples/track</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/parity</loc>
+    <loc>https://cascivo.com/examples/pulse</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/migrating</loc>
+    <loc>https://cascivo.com/ai</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/create</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/blocks</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/why</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/ai</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/directory</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/context</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/charts</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/brand</loc>
+    <loc>https://cascivo.com/docs/icons</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/layouts</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/benchmarks</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/parity</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/migrating</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/brand</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/accordion</loc>
+    <loc>https://cascivo.com/docs/components/accordion</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/action-sheet</loc>
+    <loc>https://cascivo.com/docs/components/action-sheet</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/alert</loc>
+    <loc>https://cascivo.com/docs/components/alert</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/alert-dialog</loc>
+    <loc>https://cascivo.com/docs/components/alert-dialog</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/app-shell</loc>
+    <loc>https://cascivo.com/docs/components/app-shell</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/aspect-ratio</loc>
+    <loc>https://cascivo.com/docs/components/aspect-ratio</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/avatar</loc>
+    <loc>https://cascivo.com/docs/components/avatar</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/avatar-group</loc>
+    <loc>https://cascivo.com/docs/components/avatar-group</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/badge</loc>
+    <loc>https://cascivo.com/docs/components/badge</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/console-app</loc>
+    <loc>https://cascivo.com/docs/components/block/console-app</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/dashboard-charts</loc>
+    <loc>https://cascivo.com/docs/components/block/dashboard-charts</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/empty-dashboard</loc>
+    <loc>https://cascivo.com/docs/components/block/empty-dashboard</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/login-page</loc>
+    <loc>https://cascivo.com/docs/components/block/login-page</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/notification-center</loc>
+    <loc>https://cascivo.com/docs/components/block/notification-center</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/page-with-breadcrumb</loc>
+    <loc>https://cascivo.com/docs/components/block/page-with-breadcrumb</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/settings-form-page</loc>
+    <loc>https://cascivo.com/docs/components/block/settings-form-page</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/sidebar-app</loc>
+    <loc>https://cascivo.com/docs/components/block/sidebar-app</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/stats-cards</loc>
+    <loc>https://cascivo.com/docs/components/block/stats-cards</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/block/users-table-page</loc>
+    <loc>https://cascivo.com/docs/components/block/users-table-page</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/blockquote</loc>
+    <loc>https://cascivo.com/docs/components/blockquote</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/bottom-sheet</loc>
+    <loc>https://cascivo.com/docs/components/bottom-sheet</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/breadcrumb</loc>
+    <loc>https://cascivo.com/docs/components/breadcrumb</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/button</loc>
+    <loc>https://cascivo.com/docs/components/button</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/button-group</loc>
+    <loc>https://cascivo.com/docs/components/button-group</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/calendar</loc>
+    <loc>https://cascivo.com/docs/components/calendar</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/card</loc>
+    <loc>https://cascivo.com/docs/components/card</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/carousel</loc>
+    <loc>https://cascivo.com/docs/components/carousel</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/area-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/area-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/bar-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/bar-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/boxplot</loc>
+    <loc>https://cascivo.com/docs/components/chart/boxplot</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/bubble-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/bubble-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/bullet</loc>
+    <loc>https://cascivo.com/docs/components/chart/bullet</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/combo-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/combo-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/heatmap</loc>
+    <loc>https://cascivo.com/docs/components/chart/heatmap</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/histogram</loc>
+    <loc>https://cascivo.com/docs/components/chart/histogram</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/kpi</loc>
+    <loc>https://cascivo.com/docs/components/chart/kpi</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/line-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/line-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/meter</loc>
+    <loc>https://cascivo.com/docs/components/chart/meter</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/pie-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/pie-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/radar</loc>
+    <loc>https://cascivo.com/docs/components/chart/radar</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/scatter-chart</loc>
+    <loc>https://cascivo.com/docs/components/chart/scatter-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/sparkline</loc>
+    <loc>https://cascivo.com/docs/components/chart/sparkline</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chart/treemap</loc>
+    <loc>https://cascivo.com/docs/components/chart/treemap</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/chat-bubble</loc>
+    <loc>https://cascivo.com/docs/components/chat-bubble</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/checkbox</loc>
+    <loc>https://cascivo.com/docs/components/checkbox</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/checkbox-card</loc>
+    <loc>https://cascivo.com/docs/components/checkbox-card</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/code</loc>
+    <loc>https://cascivo.com/docs/components/code</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/code-snippet</loc>
+    <loc>https://cascivo.com/docs/components/code-snippet</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/collapsible</loc>
+    <loc>https://cascivo.com/docs/components/collapsible</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/color-picker</loc>
+    <loc>https://cascivo.com/docs/components/color-picker</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/combobox</loc>
+    <loc>https://cascivo.com/docs/components/combobox</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/command-menu</loc>
+    <loc>https://cascivo.com/docs/components/command-menu</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/comparison</loc>
+    <loc>https://cascivo.com/docs/components/comparison</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/contained-list</loc>
+    <loc>https://cascivo.com/docs/components/contained-list</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/context-menu</loc>
+    <loc>https://cascivo.com/docs/components/context-menu</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/copy-button</loc>
+    <loc>https://cascivo.com/docs/components/copy-button</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/data-list</loc>
+    <loc>https://cascivo.com/docs/components/data-list</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/data-table</loc>
+    <loc>https://cascivo.com/docs/components/data-table</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/date-picker</loc>
+    <loc>https://cascivo.com/docs/components/date-picker</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/date-range-picker</loc>
+    <loc>https://cascivo.com/docs/components/date-range-picker</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/dock</loc>
+    <loc>https://cascivo.com/docs/components/dock</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/drawer</loc>
+    <loc>https://cascivo.com/docs/components/drawer</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/dropdown</loc>
+    <loc>https://cascivo.com/docs/components/dropdown</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/editable</loc>
+    <loc>https://cascivo.com/docs/components/editable</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/editor/code-editor</loc>
+    <loc>https://cascivo.com/docs/components/editor/code-editor</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/editor/highlight</loc>
+    <loc>https://cascivo.com/docs/components/editor/highlight</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/empty-state</loc>
+    <loc>https://cascivo.com/docs/components/empty-state</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/fab</loc>
+    <loc>https://cascivo.com/docs/components/fab</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/field</loc>
+    <loc>https://cascivo.com/docs/components/field</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/file-uploader</loc>
+    <loc>https://cascivo.com/docs/components/file-uploader</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/filter</loc>
+    <loc>https://cascivo.com/docs/components/filter</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-background</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-background</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-controls</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-controls</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-edge</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-edge</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-handle</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-handle</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-minimap</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-minimap</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-node</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-node</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-panel</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-panel</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/flow/flow-story</loc>
+    <loc>https://cascivo.com/docs/components/flow/flow-story</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/form</loc>
+    <loc>https://cascivo.com/docs/components/form</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/header</loc>
+    <loc>https://cascivo.com/docs/components/header</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/header-panel</loc>
+    <loc>https://cascivo.com/docs/components/header-panel</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/heading</loc>
+    <loc>https://cascivo.com/docs/components/heading</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/hover-card</loc>
+    <loc>https://cascivo.com/docs/components/hover-card</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/icon-button</loc>
+    <loc>https://cascivo.com/docs/components/icon-button</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/image</loc>
+    <loc>https://cascivo.com/docs/components/image</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/indicator</loc>
+    <loc>https://cascivo.com/docs/components/indicator</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/inline-loading</loc>
+    <loc>https://cascivo.com/docs/components/inline-loading</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/input</loc>
+    <loc>https://cascivo.com/docs/components/input</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/input-group</loc>
+    <loc>https://cascivo.com/docs/components/input-group</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/item</loc>
+    <loc>https://cascivo.com/docs/components/item</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/join</loc>
+    <loc>https://cascivo.com/docs/components/join</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/kbd</loc>
+    <loc>https://cascivo.com/docs/components/kbd</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/label</loc>
+    <loc>https://cascivo.com/docs/components/label</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/app-shell</loc>
+    <loc>https://cascivo.com/docs/components/layout/app-shell</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/auth-layout</loc>
+    <loc>https://cascivo.com/docs/components/layout/auth-layout</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/auto-grid</loc>
+    <loc>https://cascivo.com/docs/components/layout/auto-grid</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/center</loc>
+    <loc>https://cascivo.com/docs/components/layout/center</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/columns</loc>
+    <loc>https://cascivo.com/docs/components/layout/columns</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/dashboard-layout</loc>
+    <loc>https://cascivo.com/docs/components/layout/dashboard-layout</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/grid</loc>
+    <loc>https://cascivo.com/docs/components/layout/grid</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/masonry</loc>
+    <loc>https://cascivo.com/docs/components/layout/masonry</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/page-header</loc>
+    <loc>https://cascivo.com/docs/components/layout/page-header</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/section</loc>
+    <loc>https://cascivo.com/docs/components/layout/section</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/settings-layout</loc>
+    <loc>https://cascivo.com/docs/components/layout/settings-layout</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/spacer</loc>
+    <loc>https://cascivo.com/docs/components/layout/spacer</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/split-view</loc>
+    <loc>https://cascivo.com/docs/components/layout/split-view</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/layout/stack</loc>
+    <loc>https://cascivo.com/docs/components/layout/stack</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/link</loc>
+    <loc>https://cascivo.com/docs/components/link</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/list</loc>
+    <loc>https://cascivo.com/docs/components/list</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/menu</loc>
+    <loc>https://cascivo.com/docs/components/menu</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/menu-button</loc>
+    <loc>https://cascivo.com/docs/components/menu-button</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/menubar</loc>
+    <loc>https://cascivo.com/docs/components/menubar</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/modal</loc>
+    <loc>https://cascivo.com/docs/components/modal</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/multi-select</loc>
+    <loc>https://cascivo.com/docs/components/multi-select</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/native-select</loc>
+    <loc>https://cascivo.com/docs/components/native-select</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/navigation-menu</loc>
+    <loc>https://cascivo.com/docs/components/navigation-menu</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/notification</loc>
+    <loc>https://cascivo.com/docs/components/notification</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/number-input</loc>
+    <loc>https://cascivo.com/docs/components/number-input</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/otp-input</loc>
+    <loc>https://cascivo.com/docs/components/otp-input</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/overflow-menu</loc>
+    <loc>https://cascivo.com/docs/components/overflow-menu</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/pagination</loc>
+    <loc>https://cascivo.com/docs/components/pagination</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/password-input</loc>
+    <loc>https://cascivo.com/docs/components/password-input</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/popover</loc>
+    <loc>https://cascivo.com/docs/components/popover</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/progress</loc>
+    <loc>https://cascivo.com/docs/components/progress</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/progress-bar</loc>
+    <loc>https://cascivo.com/docs/components/progress-bar</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/progress-circle</loc>
+    <loc>https://cascivo.com/docs/components/progress-circle</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/progress-indicator</loc>
+    <loc>https://cascivo.com/docs/components/progress-indicator</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/prose</loc>
+    <loc>https://cascivo.com/docs/components/prose</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/pull-to-refresh</loc>
+    <loc>https://cascivo.com/docs/components/pull-to-refresh</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/qr-code</loc>
+    <loc>https://cascivo.com/docs/components/qr-code</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/radial-progress</loc>
+    <loc>https://cascivo.com/docs/components/radial-progress</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/radio</loc>
+    <loc>https://cascivo.com/docs/components/radio</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/radio-card</loc>
+    <loc>https://cascivo.com/docs/components/radio-card</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/rating-group</loc>
+    <loc>https://cascivo.com/docs/components/rating-group</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/relative-time</loc>
+    <loc>https://cascivo.com/docs/components/relative-time</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/resizable</loc>
+    <loc>https://cascivo.com/docs/components/resizable</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/scroll-area</loc>
+    <loc>https://cascivo.com/docs/components/scroll-area</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/search</loc>
+    <loc>https://cascivo.com/docs/components/search</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/cta</loc>
+    <loc>https://cascivo.com/docs/components/section/cta</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/feature-grid</loc>
+    <loc>https://cascivo.com/docs/components/section/feature-grid</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/hero</loc>
+    <loc>https://cascivo.com/docs/components/section/hero</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/media-masonry</loc>
+    <loc>https://cascivo.com/docs/components/section/media-masonry</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/page-footer</loc>
+    <loc>https://cascivo.com/docs/components/section/page-footer</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/section/stats-band</loc>
+    <loc>https://cascivo.com/docs/components/section/stats-band</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/segmented-control</loc>
+    <loc>https://cascivo.com/docs/components/segmented-control</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/select</loc>
+    <loc>https://cascivo.com/docs/components/select</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/separator</loc>
+    <loc>https://cascivo.com/docs/components/separator</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/sheet</loc>
+    <loc>https://cascivo.com/docs/components/sheet</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/shell-header</loc>
+    <loc>https://cascivo.com/docs/components/shell-header</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/side-nav</loc>
+    <loc>https://cascivo.com/docs/components/side-nav</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/skeleton</loc>
+    <loc>https://cascivo.com/docs/components/skeleton</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/skip-nav</loc>
+    <loc>https://cascivo.com/docs/components/skip-nav</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/slider</loc>
+    <loc>https://cascivo.com/docs/components/slider</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/spinner</loc>
+    <loc>https://cascivo.com/docs/components/spinner</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/stack</loc>
+    <loc>https://cascivo.com/docs/components/stack</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/stat</loc>
+    <loc>https://cascivo.com/docs/components/stat</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/status</loc>
+    <loc>https://cascivo.com/docs/components/status</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/steps</loc>
+    <loc>https://cascivo.com/docs/components/steps</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/structured-list</loc>
+    <loc>https://cascivo.com/docs/components/structured-list</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/swap</loc>
+    <loc>https://cascivo.com/docs/components/swap</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/swipe-item</loc>
+    <loc>https://cascivo.com/docs/components/swipe-item</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/switcher</loc>
+    <loc>https://cascivo.com/docs/components/switcher</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tabs</loc>
+    <loc>https://cascivo.com/docs/components/tabs</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tag</loc>
+    <loc>https://cascivo.com/docs/components/tag</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tags-input</loc>
+    <loc>https://cascivo.com/docs/components/tags-input</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/text</loc>
+    <loc>https://cascivo.com/docs/components/text</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/textarea</loc>
+    <loc>https://cascivo.com/docs/components/textarea</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tile</loc>
+    <loc>https://cascivo.com/docs/components/tile</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/time-picker</loc>
+    <loc>https://cascivo.com/docs/components/time-picker</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/timeline</loc>
+    <loc>https://cascivo.com/docs/components/timeline</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/toast</loc>
+    <loc>https://cascivo.com/docs/components/toast</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/toc</loc>
+    <loc>https://cascivo.com/docs/components/toc</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/toggle</loc>
+    <loc>https://cascivo.com/docs/components/toggle</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/toggle-group</loc>
+    <loc>https://cascivo.com/docs/components/toggle-group</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/toggletip</loc>
+    <loc>https://cascivo.com/docs/components/toggletip</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tooltip</loc>
+    <loc>https://cascivo.com/docs/components/tooltip</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/tree-view</loc>
+    <loc>https://cascivo.com/docs/components/tree-view</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/user</loc>
+    <loc>https://cascivo.com/docs/components/user</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://docs.cascivo.com/components/visually-hidden</loc>
+    <loc>https://cascivo.com/docs/components/visually-hidden</loc>
     <priority>0.6</priority>
   </url>
 </urlset>

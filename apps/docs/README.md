@@ -2,8 +2,8 @@
 
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
-  <h1>@cascivo/docs</h1>
-  <p><strong>Documentation site for cascivo — generated from component manifests</strong></p>
+  <h1>@cascivo/site</h1>
+  <p><strong>cascivo site — the unified front door (cascivo.com) and docs, generated from component manifests</strong></p>
 
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)

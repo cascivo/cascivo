@@ -240,13 +240,7 @@ for (const n of BLOCK_NAMES) {
 }
 
 export default defineConfig({
-  plugins: [
-    imagetools(),
-    injectCounts(),
-    prerenderHeads(),
-    benchData(),
-    serveExampleDemos(),
-  ],
+  plugins: [imagetools(), injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
