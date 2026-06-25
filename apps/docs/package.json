@@ -27,6 +27,7 @@
     "@cascivo/i18n": "workspace:*",
     "@cascivo/icons": "workspace:*",
     "@cascivo/layouts": "workspace:*",
+    "@cascivo/react": "workspace:*",
     "@cascivo/registry": "workspace:*",
     "@cascivo/render": "workspace:*",
     "@cascivo/search": "workspace:*",

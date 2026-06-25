@@ -274,6 +274,7 @@ export default defineConfig({
       '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
       '@cascivo/editor': resolve(root, 'packages/editor/src/index.ts'),
       '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),
+      '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
       '@cascivo/registry': resolve(root, 'packages/registry/src/index.ts'),
       '@cascivo/search/SearchDialog': resolve(root, 'packages/search/src/SearchDialog.tsx'),
       '@cascivo/search': resolve(root, 'packages/search/src/index.ts'),
