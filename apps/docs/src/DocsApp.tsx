@@ -1,14 +1,10 @@
 import type { ComponentType } from 'preact'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useSignalEffect, useSignals } from '@cascivo/core'
 import { AppShell } from '@cascivo/layouts/app-shell'
 import { createShellState } from '@cascivo/layouts/shell-state'
-import { ShellHeader } from '@cascivo/components/shell-header'
 import { SideNav } from '@cascivo/components/side-nav'
-import { HeaderPanel } from '@cascivo/components/header-panel'
 import {
   AlertCircle,
-  BarChart,
-  Check,
   Edit,
   Eye,
   Bell,
@@ -18,11 +14,13 @@ import {
   Server,
   Terminal,
   Zap,
+  BarChart,
+  Check,
 } from '@cascivo/icons'
 import { buildNav } from './nav'
 import { applyDocsSeo } from './seo'
-import { applyTheme, theme, THEMES } from './theme'
 import { currentPath } from './router'
+import { Header } from './marketing/sections/Header'
 import { Home } from './pages/Home'
 import { GettingStartedPage } from './pages/GettingStartedPage'
 import { AiPage } from './pages/AiPage'
@@ -95,18 +93,6 @@ const CATEGORY_ICONS = {
   Feedback: <AlertCircle size={16} />,
 }
 
-const themeIcon = (
-  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none">
-    <circle cx="8" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.9 11.9l1.06 1.06M3.05 12.95l1.06-1.06M11.9 4.1l1.06-1.06"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-)
-
 /** Resolve the docs page component for the current path. */
 function pageFor(path: string) {
   const Static = DOCS_ROUTES[path]
@@ -122,15 +108,13 @@ export function DocsApp() {
   useSignals()
   const nav = buildNav()
   const path = currentPath.value
-  const themePanelOpen = useSignal(false)
 
   // Per-navigation side effects: update head + scroll the main pane to top.
-  // The unified router (router.ts) already handles link interception and view
-  // transitions, so no click handler is needed here.
+  // The unified router (router.ts) handles link interception + view transitions.
   useSignalEffect(() => {
     const p = currentPath.value
     applyDocsSeo(p)
-    document.getElementById('cascivo-main')?.scrollTo(0, 0)
+    document.getElementById('cascade-main')?.scrollTo(0, 0)
   })
 
   const sideNavItems = [
@@ -157,24 +141,8 @@ export function DocsApp() {
   return (
     <AppShell
       state={shell}
-      header={
-        <ShellHeader
-          brand={{ prefix: 'cascivo', name: 'Docs', href: '/' }}
-          onMenuClick={shell.toggleSideNav}
-          menuExpanded={shell.sideNavOpen.value || !shell.sideNavCollapsed.value}
-          actions={[
-            {
-              id: 'theme',
-              label: 'Theme',
-              icon: themeIcon,
-              active: themePanelOpen.value,
-              onClick: () => {
-                themePanelOpen.value = !themePanelOpen.value
-              },
-            },
-          ]}
-        />
-      }
+      // The single, app-wide navbar — identical to every marketing page.
+      header={<Header />}
       sideNav={
         <SideNav
           items={sideNavItems}
@@ -185,26 +153,17 @@ export function DocsApp() {
         />
       }
     >
-      <HeaderPanel
-        open={themePanelOpen.value}
-        onClose={() => {
-          themePanelOpen.value = false
+      {/* Mobile-only affordance to open the component rail (the navbar's own
+          hamburger drives the primary nav drawer, so the sidenav needs its own). */}
+      <button
+        type="button"
+        class="docs-nav-toggle"
+        onClick={() => {
+          shell.sideNavOpen.value = true
         }}
-        label="Theme"
       >
-        <div class="theme-panel">
-          {THEMES.map((t) => (
-            <button
-              key={t}
-              type="button"
-              class={`theme-btn ${theme.value === t ? 'active' : ''}`}
-              onClick={() => applyTheme(t)}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      </HeaderPanel>
+        <MenuIcon size={16} /> Browse components
+      </button>
       <div class="page">{pageFor(path)}</div>
     </AppShell>
   )

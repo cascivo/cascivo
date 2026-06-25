@@ -36,6 +36,29 @@ a {
   padding: var(--cascivo-space-6);
 }
 
+/* Mobile-only toggle to open the component sidenav drawer (desktop shows the
+   rail). Hidden at/above the AppShell drawer breakpoint (lg = 64rem). */
+.docs-nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  margin: var(--cascivo-space-4) var(--cascivo-space-6) 0;
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  background: var(--cascivo-color-surface);
+  color: var(--cascivo-color-text);
+  font: inherit;
+  cursor: pointer;
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+}
+
+@media (min-width: 64rem) {
+  .docs-nav-toggle {
+    display: none;
+  }
+}
+
 @media (max-width: 29.99rem) {
   .page {
     padding: var(--cascivo-space-3);
