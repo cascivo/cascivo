@@ -7,7 +7,10 @@
 // of live third-party sites is not byte-deterministic and the sites change
 // over time. Re-run this on demand to refresh:
 //
-//   pnpm exec playwright install chromium   # once, if no browser
+//   # Installs the chromium binary AND its OS libraries (libicu, libjpeg, …).
+//   # --with-deps needs root, so prefix with sudo on a local machine; CI runs
+//   # as root already. Without --with-deps the browser downloads but won't launch.
+//   sudo pnpm exec playwright install --with-deps chromium   # once
 //   node scripts/showcase/capture.mjs
 //
 // The site list mirrors apps/site/src/pages/showcase/data.ts.
@@ -63,8 +66,8 @@ async function main() {
   try {
     ;({ chromium } = await import('@playwright/test'))
   } catch {
-    console.error('Playwright not available. Install it, then re-run:')
-    console.error('  pnpm exec playwright install chromium')
+    console.error('Playwright not available. Install it (with OS libs), then re-run:')
+    console.error('  sudo pnpm exec playwright install --with-deps chromium')
     process.exit(1)
   }
 
