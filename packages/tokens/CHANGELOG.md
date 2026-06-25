@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.3.4
+
+### Patch Changes
+
+- f0b5654: Fixes
+
 ## 0.3.3
 
 ### Patch Changes

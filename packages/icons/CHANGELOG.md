@@ -1,5 +1,11 @@
 # @cascivo/icons
 
+## 0.2.2
+
+### Patch Changes
+
+- f0b5654: Fixes
+
 ## 0.2.1
 
 ### Patch Changes
