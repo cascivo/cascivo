@@ -1,6 +1,6 @@
 /**
  * Reusable mobile-overflow + touch-target assertions for Playwright tests.
- * Mirrors apps/landing/test/mobile.spec.ts patterns.
+ * Mirrors apps/docs/test/mobile.spec.ts patterns.
  */
 import type { Page } from '@playwright/test'
 

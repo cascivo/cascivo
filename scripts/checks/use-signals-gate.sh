@@ -4,7 +4,7 @@
 # must also contain `useSignals()`. (Preact docs app excluded — natively reactive.)
 set -euo pipefail
 fail=0
-for f in $(grep -rl --include='*.tsx' 'useSignal(' apps/landing/src apps/examples apps/bench 2>/dev/null); do
+for f in $(grep -rl --include='*.tsx' 'useSignal(' apps/docs/src apps/examples apps/bench 2>/dev/null); do
   if grep -q '\.value' "$f" && ! grep -q 'useSignals()' "$f"; then
     echo "MISSING useSignals(): $f"
     fail=1

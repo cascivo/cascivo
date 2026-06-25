@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react'
+import type { VNode } from 'preact'
 import { useComputed, useSignal, useSignals } from '@cascivo/core'
 import { Button } from '@cascivo/react'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
@@ -63,7 +64,7 @@ function BlockDetailInner({ entry, name }: InnerProps) {
   const copyLabel = useSignal('Copy')
   const cmdCopyLabel = useSignal('Copy')
 
-  const Block = getLazyBlock(entry)
+  const Block = getLazyBlock(entry) as unknown as (props: Record<string, never>) => VNode
 
   const tsxSource = `// Run: npx cascivo add block/${name}\n// Source: packages/components/src/blocks/${name}/${name}.tsx`
   const cssSource = `/* Run: npx cascivo add block/${name} */\n/* Source: packages/components/src/blocks/${name}/${name}.module.css */`

@@ -34,7 +34,7 @@ const columns: Column<Deploy>[] = [
     render: (row) => (
       <Badge
         variant={STATUS_VARIANT[row.status]}
-        className={row.status === 'building' ? 'badge-building' : undefined}
+        {...(row.status === 'building' ? { className: 'badge-building' } : {})}
       >
         {row.status}
       </Badge>

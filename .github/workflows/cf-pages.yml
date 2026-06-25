@@ -14,8 +14,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      docs: ${{ steps.out.outputs.docs }}
-      landing: ${{ steps.out.outputs.landing }}
+      site: ${{ steps.out.outputs.site }}
       storybook: ${{ steps.out.outputs.storybook }}
       playground: ${{ steps.out.outputs.playground }}
     steps:
@@ -25,15 +24,11 @@ jobs:
         if: github.event_name == 'push'
         with:
           filters: |
-            docs:
+            site:
+              # The unified site (cascivo.com) serves the marketing front door,
+              # the docs, AND the five demos under /demos/<slug>/, so a change to
+              # the app, any demo, the example kit, or shared packages redeploys it.
               - 'apps/docs/**'
-              - 'packages/**'
-              - 'pnpm-lock.yaml'
-            landing:
-              # The landing now also assembles the five demos under /demos/<slug>/
-              # (roadmap v22), so a change to any demo or the example kit must
-              # redeploy the landing.
-              - 'apps/landing/**'
               - 'apps/examples/deploy/**'
               - 'apps/examples/pay/**'
               - 'apps/examples/flow/**'
@@ -55,13 +50,11 @@ jobs:
       - id: out
         env:
           FORCE: ${{ github.event_name == 'workflow_dispatch' }}
-          DOCS: ${{ steps.filter.outputs.docs }}
-          LANDING: ${{ steps.filter.outputs.landing }}
+          SITE: ${{ steps.filter.outputs.site }}
           STORYBOOK: ${{ steps.filter.outputs.storybook }}
           PLAYGROUND: ${{ steps.filter.outputs.playground }}
         run: |
-          echo "docs=$(     [ "$FORCE" = "true" ] && echo true || echo "$DOCS"      )" >> $GITHUB_OUTPUT
-          echo "landing=$(  [ "$FORCE" = "true" ] && echo true || echo "$LANDING"   )" >> $GITHUB_OUTPUT
+          echo "site=$(     [ "$FORCE" = "true" ] && echo true || echo "$SITE"      )" >> $GITHUB_OUTPUT
           echo "storybook=$([ "$FORCE" = "true" ] && echo true || echo "$STORYBOOK" )" >> $GITHUB_OUTPUT
           echo "playground=$([ "$FORCE" = "true" ] && echo true || echo "$PLAYGROUND" )" >> $GITHUB_OUTPUT
 
@@ -69,9 +62,9 @@ jobs:
   # Each app builds in its own job so failures are isolated and CF Pages
   # deployments happen in parallel.
 
-  deploy-docs:
+  deploy-site:
     needs: changes
-    if: needs.changes.outputs.docs == 'true'
+    if: needs.changes.outputs.site == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -81,34 +74,13 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec vp run @cascivo/docs#build
-      - run: >
-          npx wrangler pages deploy apps/docs/dist
-          --project-name=${{ vars.CF_PROJECT_DOCS || 'cascade-ui-docs' }}
-          ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-
-  deploy-landing:
-    needs: changes
-    if: needs.changes.outputs.landing == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      # Build the landing, then build + assemble the five demos into
-      # apps/landing/dist/demos/<slug>/ so one deploy serves the homepage,
-      # /examples/* marketing pages, and every live demo (roadmap v22).
+      # Build the unified site, then build + assemble the five demos into
+      # apps/docs/dist/demos/<slug>/ so one deploy serves the marketing front
+      # door, the docs, the /examples/* pages, and every live demo.
       - run: pnpm run build:landing-demos
       - run: >
-          npx wrangler pages deploy apps/landing/dist
-          --project-name=${{ vars.CF_PROJECT_LANDING || 'cascade-ui-landing' }}
+          npx wrangler pages deploy apps/docs/dist
+          --project-name=${{ vars.CF_PROJECT_SITE || 'cascade-ui-site' }}
           ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

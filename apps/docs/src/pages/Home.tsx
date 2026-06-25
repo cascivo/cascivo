@@ -121,7 +121,7 @@ export function Home() {
             <Icon key={i} size={24} aria-hidden="true" />
           ))}
         </div>
-        <a href="/icons" class="home-card-label" style={{ color: 'var(--cascivo-color-accent)' }}>
+        <a href="/docs/icons" class="home-card-label" style={{ color: 'var(--cascivo-color-accent)' }}>
           Browse all ~440 icons →
         </a>
       </section>

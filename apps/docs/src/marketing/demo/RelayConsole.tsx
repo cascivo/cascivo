@@ -9,7 +9,6 @@ import {
   Tag,
   Zap,
 } from '@cascivo/icons'
-import type { MouseEvent } from 'react'
 import { Card } from '@cascivo/components/card'
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascivo/components/menu'
 import { SideNav } from '@cascivo/components/side-nav'
@@ -88,7 +87,7 @@ export function RelayConsole() {
     icon: NAV_ICONS[label as (typeof NAV)[number]],
     active: activeNav.value === i,
     href: '#',
-    onClick: (e: MouseEvent<HTMLAnchorElement>) => {
+    onClick: (e: MouseEvent) => {
       e.preventDefault()
       activeNav.value = i
     },

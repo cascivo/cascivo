@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react'
+import type { VNode } from 'preact'
 import { findBlock } from './blocks-data'
 
 type Props = { name: string }
@@ -16,10 +17,11 @@ function getBlock(name: string) {
 }
 
 export function BlockPreviewPage({ name }: Props) {
-  const Block = getBlock(name)
-  if (!Block) {
+  const block = getBlock(name)
+  if (!block) {
     return <p>Block &quot;{name}&quot; not found.</p>
   }
+  const Block = block as unknown as (props: Record<string, never>) => VNode
   return (
     <Suspense fallback={null}>
       <Block />

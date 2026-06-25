@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react'
+import type { Ref, VNode } from 'preact'
 import { useComputed, useResizeObserver, useSignal, useSignals } from '@cascivo/core'
 import { Badge, Button, Input } from '@cascivo/react'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
@@ -39,10 +40,10 @@ function BlockThumbnail({ entry }: { entry: BlockEntry }) {
     const width = size.value?.width
     return width ? width / PREVIEW_WIDTH : null
   })
-  const Block = getLazyBlock(entry)
+  const Block = getLazyBlock(entry) as unknown as (props: Record<string, never>) => VNode
 
   return (
-    <div ref={ref} className="block-card__preview" aria-hidden="true">
+    <div ref={ref as Ref<HTMLDivElement>} className="block-card__preview" aria-hidden="true">
       <div
         className="block-card__preview-frame"
         style={{
@@ -113,7 +114,7 @@ export function BlocksPage() {
               placeholder="Search blocks…"
               value={query.value}
               onChange={(e) => {
-                query.value = e.target.value
+                query.value = (e.currentTarget as HTMLInputElement).value
                 activeCategory.value = 'all'
               }}
             />

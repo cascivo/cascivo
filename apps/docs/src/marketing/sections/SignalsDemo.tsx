@@ -36,7 +36,7 @@ function SigInput({ sig, label }: { sig: Signal<string>; label: string }) {
       label={label}
       value={sig.value}
       onChange={(e) => {
-        sig.value = e.currentTarget.value
+        sig.value = (e.currentTarget as HTMLInputElement).value
       }}
     />
   )
@@ -96,8 +96,16 @@ function StateForm() {
   }
   return (
     <form className="twin-form" aria-label="useState form">
-      <Input label="Name" value={name} onChange={(e) => setName(e.currentTarget.value)} />
-      <Input label="Email" value={email} onChange={(e) => setEmail(e.currentTarget.value)} />
+      <Input
+        label="Name"
+        value={name}
+        onChange={(e) => setName((e.currentTarget as HTMLInputElement).value)}
+      />
+      <Input
+        label="Email"
+        value={email}
+        onChange={(e) => setEmail((e.currentTarget as HTMLInputElement).value)}
+      />
       <Checkbox
         label="Subscribe to changelog"
         checked={newsletter}
