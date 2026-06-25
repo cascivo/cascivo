@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Generates the single sitemap.xml for the unified site (cascivo.com):
- *   - marketing routes   from apps/docs/src/marketing/route-head.ts (PRERENDER_ROUTES)
- *   - docs static routes  (under /docs), kept in sync with apps/docs/src/seo.ts
+ *   - marketing routes   from apps/site/src/marketing/route-head.ts (PRERENDER_ROUTES)
+ *   - docs static routes  (under /docs), kept in sync with apps/site/src/seo.ts
  *   - docs component pages from registry.json (under /docs/components/<name>)
  *
  * Both surfaces now live in one app at one domain, so there is one sitemap.
@@ -17,12 +17,12 @@ import {
   PRERENDER_ROUTES,
   canonicalFor,
   SITE_URL,
-} from '../../apps/docs/src/marketing/route-head.ts'
+} from '../../apps/site/src/marketing/route-head.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
-const OUT_PATH = join(ROOT, 'apps', 'docs', 'public', 'sitemap.xml')
+const OUT_PATH = join(ROOT, 'apps', 'site', 'public', 'sitemap.xml')
 
 /** Indexable static docs routes (under /docs), in priority order. */
 const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [

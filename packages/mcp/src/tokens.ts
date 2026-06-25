@@ -24,7 +24,7 @@ const CATALOG_BASE_URL = 'https://cascivo.com'
 
 export async function loadTokenCatalog(fetchFn?: FetchFn): Promise<TokenCatalog> {
   const localPaths = [
-    join(HERE, '..', '..', '..', 'apps', 'docs', 'public', 'tokens.catalog.json'),
+    join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'tokens.catalog.json'),
     join(HERE, 'tokens.catalog.json'),
   ]
   for (const p of localPaths) {

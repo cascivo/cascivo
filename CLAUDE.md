@@ -180,10 +180,9 @@ The alias maps the package name to its TypeScript source entry so Rolldown can b
 
 1. Check if the package's `package.json` `exports["."].import` points to `./dist/`.
 2. If yes, add a source alias to **all** of the following:
-   - `apps/docs/vite.config.ts`
-   - `apps/landing/vite.config.ts`
+   - `apps/site/vite.config.ts`
    - `apps/storybook/.storybook/main.ts` (`viteFinal` alias block)
-3. Verify each builds locally: `pnpm exec vp run @cascivo/docs#build @cascivo/landing#build @cascivo/storybook#build`
+3. Verify each builds locally: `pnpm exec vp run @cascivo/site#build @cascivo/storybook#build`
 
 Packages that export source directly (components, layouts, charts, themes, tokens) do **not** need aliases — Rolldown resolves them via the `exports` map to their `.tsx`/`.css` source files.
 
@@ -314,7 +313,7 @@ export const meta: ComponentMeta = {
 | Component manifest  | `component.meta.ts` per component | Ground truth for all AI surfaces                                                             |
 | MCP server          | `@cascivo/mcp`                    | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
 | Claude Code skills  | `skills/`                         | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`               |
-| Auto-generated docs | `apps/docs/`                      | Markdown + interactive examples generated from manifests                                     |
+| Auto-generated docs | `apps/site/` (docs routes)        | Markdown + interactive examples generated from manifests                                     |
 | Registry manifest   | `registry.json`                   | Machine-readable index — CLI + MCP + docs all read from this                                 |
 
 ### Dark Factory Pipeline
@@ -388,8 +387,8 @@ Run: `pnpm breakpoint:check` to confirm no off-scale literals.
 
 #### React apps must subscribe explicitly
 
-The docs app is Preact (signals are natively reactive there). The React apps —
-`apps/landing`, `apps/examples/*`, `apps/bench/*` — get NO Babel signals transform:
+The site app (`apps/site`) is Preact (signals are natively reactive there). The
+React apps — `apps/examples/*`, `apps/bench/*` — get NO Babel signals transform:
 **any component that reads `signal.value` during render must call `useSignals()`
 (from `@cascivo/core`) as its first statement**, or it will never re-render on
 signal writes. Symptom: handlers fire, UI freezes (toggles that don't toggle, modals

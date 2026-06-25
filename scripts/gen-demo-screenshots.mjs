@@ -1,5 +1,5 @@
 // Generate the showcase screenshots used by the /examples hub + detail pages
-// (roadmap v22 T4). Output: apps/docs/public/screenshots/<slug>/<theme>-<viewport>.png
+// (roadmap v22 T4). Output: apps/site/public/screenshots/<slug>/<theme>-<viewport>.png
 //
 // Two modes:
 //   --capture     real Playwright screenshots of each live demo (needs Chromium:
@@ -11,7 +11,7 @@
 //
 // Like public/og.png, these are committed binary assets and are NOT part of
 // `pnpm regen`/the drift gate (rasterized output is not byte-identical across
-// machines — see apps/docs/scripts/gen-og.mjs).
+// machines — see apps/site/scripts/gen-og.mjs).
 //
 // Usage:
 //   node scripts/gen-demo-screenshots.mjs            # placeholders
@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..')
-const OUT_ROOT = resolve(root, 'apps/docs/public/screenshots')
+const OUT_ROOT = resolve(root, 'apps/site/public/screenshots')
 
 // All five demo apps use @cascivo/example-kit's AppShell, which stores the
 // active theme under a single shared key in the persistedSignal envelope format:
@@ -189,7 +189,7 @@ async function capture() {
   const { spawn, execFileSync } = await import('node:child_process')
   const { existsSync } = await import('node:fs')
 
-  const landingDist = resolve(root, 'apps/docs/dist')
+  const landingDist = resolve(root, 'apps/site/dist')
   if (!existsSync(landingDist)) {
     throw new Error(
       'Landing is not built. Run `pnpm build:landing-demos` from the repo root first.',
@@ -208,7 +208,7 @@ async function capture() {
   const PORT = Number(process.env.SHOT_PORT ?? 4190)
   // Serve the assembled landing dist so /demos/<slug>/ is live.
   const server = spawn('pnpm', ['exec', 'vp', 'preview', '--port', String(PORT), '--strictPort'], {
-    cwd: resolve(root, 'apps/docs'),
+    cwd: resolve(root, 'apps/site'),
     stdio: 'ignore',
   })
   await new Promise((r) => setTimeout(r, 4000))

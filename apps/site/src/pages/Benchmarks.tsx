@@ -1,6 +1,6 @@
 // Results imported directly — stays in sync with the artifact automatically.
 // If the relative import escapes the app root in your build, copy results.json
-// into apps/docs/src/data/ via a predev/prebuild script instead.
+// into apps/site/src/data/ via a predev/prebuild script instead.
 import results from '../../../bench/results/results.json'
 
 const LIBS = ['cascade', 'shadcn', 'carbon'] as const

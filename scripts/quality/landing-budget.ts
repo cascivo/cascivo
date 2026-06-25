@@ -4,7 +4,7 @@ import { join, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
-const distDir = join(root, 'apps/docs/dist')
+const distDir = join(root, 'apps/site/dist')
 
 // CascadeView (@cascivo/render) loads all cascade components for its runtime component map;
 // tree-shaking cannot eliminate them. Budget raised from 120 to 135 KB to accommodate.

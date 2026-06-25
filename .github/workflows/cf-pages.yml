@@ -28,7 +28,7 @@ jobs:
               # The unified site (cascivo.com) serves the marketing front door,
               # the docs, AND the five demos under /demos/<slug>/, so a change to
               # the app, any demo, the example kit, or shared packages redeploys it.
-              - 'apps/docs/**'
+              - 'apps/site/**'
               - 'apps/examples/deploy/**'
               - 'apps/examples/pay/**'
               - 'apps/examples/flow/**'
@@ -75,11 +75,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # Build the unified site, then build + assemble the five demos into
-      # apps/docs/dist/demos/<slug>/ so one deploy serves the marketing front
+      # apps/site/dist/demos/<slug>/ so one deploy serves the marketing front
       # door, the docs, the /examples/* pages, and every live demo.
       - run: pnpm run build:landing-demos
       - run: >
-          npx wrangler pages deploy apps/docs/dist
+          npx wrangler pages deploy apps/site/dist
           --project-name=${{ vars.CF_PROJECT_SITE || 'cascade-ui-site' }}
           ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
         env:

@@ -59,7 +59,7 @@ function makeFailFetch(status: number): (url: string) => Promise<Response> {
 describe('loadTokenCatalog', () => {
   it('returns all tokens when no filter (remote fetch path)', async () => {
     const catalog = await loadTokenCatalog(makeFetch(fixtureCatalog))
-    // The local file in apps/docs/public/ is found first in the monorepo, so test the fetch path
+    // The local file in apps/site/public/ is found first in the monorepo, so test the fetch path
     // by checking the returned shape is correct
     expect(catalog.tokens).toBeDefined()
     expect(Array.isArray(catalog.tokens)).toBe(true)

@@ -2,7 +2,7 @@
  * Token catalog generator.
  *
  * Reads the token sources, parses all --cascivo-* custom properties, and
- * writes apps/docs/public/tokens.catalog.json.
+ * writes apps/site/public/tokens.catalog.json.
  *
  * Run with: `pnpm catalog:generate`
  */
@@ -30,7 +30,7 @@ async function main() {
   const json = JSON.stringify(catalog, null, 2) + '\n'
   // Written to both the docs and Storybook public dirs so each app's
   // auto-generated Design Tokens page can fetch it at runtime.
-  const outDirs = [join(ROOT, 'apps/docs/public'), join(ROOT, 'apps/storybook/public')]
+  const outDirs = [join(ROOT, 'apps/site/public'), join(ROOT, 'apps/storybook/public')]
   for (const outDir of outDirs) {
     await mkdir(outDir, { recursive: true })
     await writeFile(join(outDir, 'tokens.catalog.json'), json)

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generates llms.txt and per-component markdown files for AI agents.
- * Reads registry.json and outputs to apps/docs/public/.
+ * Reads registry.json and outputs to apps/site/public/.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
-const OUT_DIR = join(ROOT, 'apps', 'docs', 'public')
+const OUT_DIR = join(ROOT, 'apps', 'site', 'public')
 const LLMS_DIR = join(OUT_DIR, 'llms')
 
 interface PropMeta {

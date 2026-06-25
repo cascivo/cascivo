@@ -101,7 +101,7 @@ export function BrandPage() {
           Verified at 320, 375, 390, and 414px with zero horizontal overflow.
         </p>
         <p>
-          Playwright specs: <code>apps/docs/test/mobile.spec.ts</code>
+          Playwright specs: <code>apps/site/test/mobile.spec.ts</code>
         </p>
       </section>
     </article>

@@ -244,7 +244,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 | App                                    | Description                                                                                      |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [`@cascivo/site`](apps/docs)           | cascivo site — the unified front door (cascivo.com) and docs, generated from component manifests |
+| [`@cascivo/site`](apps/site)           | cascivo site — the unified front door (cascivo.com) and docs, generated from component manifests |
 | [`@cascivo/storybook`](apps/storybook) | Storybook stories generated from every cascivo component manifest                                |
 
 ### Examples

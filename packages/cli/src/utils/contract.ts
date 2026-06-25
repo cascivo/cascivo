@@ -9,11 +9,11 @@ import { buildContract } from './contract-pure.js'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 
-/** Walk up from a start directory looking for the apps/docs/public dir. */
+/** Walk up from a start directory looking for the apps/site/public dir. */
 function findDocsPublic(startDir: string): string | null {
   let dir = startDir
   for (let i = 0; i < 10; i++) {
-    const candidate = join(dir, 'apps', 'docs', 'public')
+    const candidate = join(dir, 'apps', 'site', 'public')
     if (existsSync(candidate)) return candidate
     dir = join(dir, '..')
   }
@@ -33,9 +33,9 @@ function findRegistry(startDir: string): string | null {
 
 /**
  * Load the published cascade contract from local generated artifacts:
- * - token catalog (apps/docs/public/tokens.catalog.json) → value→token map
+ * - token catalog (apps/site/public/tokens.catalog.json) → value→token map
  * - registry.json (repo root) → component prop index
- * - context bundle (apps/docs/public/context.json) → which components have chrome text
+ * - context bundle (apps/site/public/context.json) → which components have chrome text
  */
 export async function loadContract(options?: {
   catalogPath?: string
@@ -49,13 +49,13 @@ export async function loadContract(options?: {
   const registryPath = options?.registryPath ?? findRegistry(HERE) ?? findRegistry(process.cwd())
 
   if (!catalogPath || !existsSync(catalogPath)) {
-    throw new Error('token catalog not found (apps/docs/public/tokens.catalog.json)')
+    throw new Error('token catalog not found (apps/site/public/tokens.catalog.json)')
   }
   if (!registryPath || !existsSync(registryPath)) {
     throw new Error('registry.json not found')
   }
   if (!contextPath || !existsSync(contextPath)) {
-    throw new Error('context bundle not found (apps/docs/public/context.json)')
+    throw new Error('context bundle not found (apps/site/public/context.json)')
   }
 
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as Parameters<

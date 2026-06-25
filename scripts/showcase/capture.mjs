@@ -1,5 +1,5 @@
 // Capture screenshots of the third-party sites built with cascivo, shown on
-// the landing /showcase page. Output: apps/docs/public/showcase/<slug>.jpg
+// the landing /showcase page. Output: apps/site/public/showcase/<slug>.jpg
 // (1280×800 @2x).
 //
 // Like public/og.png and the demo screenshots, these are committed binary
@@ -10,16 +10,16 @@
 //   pnpm exec playwright install chromium   # once, if no browser
 //   node scripts/showcase/capture.mjs
 //
-// The site list mirrors apps/docs/src/pages/showcase/data.ts.
+// The site list mirrors apps/site/src/pages/showcase/data.ts.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..', '..')
-const OUT = resolve(root, 'apps/docs/public/showcase')
+const OUT = resolve(root, 'apps/site/public/showcase')
 
-/** Keep in sync with apps/docs/src/pages/showcase/data.ts. */
+/** Keep in sync with apps/site/src/pages/showcase/data.ts. */
 const SITES = [
   { slug: 'pagome', url: 'https://pagome.com' },
   { slug: 'bpmnkit', url: 'https://bpmnkit.com' },
@@ -83,7 +83,7 @@ async function main() {
     await captureOne(ctxFactory, site, DESKTOP)
   }
   await browser.close()
-  console.log(`\nWrote ${SITES.length} site screenshots to apps/docs/public/showcase/`)
+  console.log(`\nWrote ${SITES.length} site screenshots to apps/site/public/showcase/`)
 }
 
 await main()
