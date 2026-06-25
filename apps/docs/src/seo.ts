@@ -1,6 +1,6 @@
 import { getComponent } from './data'
 
-const SITE_URL = 'https://docs.cascivo.com'
+const SITE_URL = 'https://cascivo.com'
 const SUFFIX = ' — cascivo docs'
 const DEFAULT_DESCRIPTION =
   'Documentation for cascivo — the CSS-native, signal-driven, AI-first React design system. Browse components, explore context, and build with AI.'
@@ -105,10 +105,13 @@ function canonicalFor(path: string): string {
 
 /** Resolve the head (title + description) for a path, including component pages. */
 function headFor(path: string): { head: RouteHead; index: boolean } {
-  const known = ROUTE_HEAD[path]
+  // Docs lives under /docs on the unified domain; ROUTE_HEAD keys are
+  // docs-relative ('/', '/ai', '/components/:name'), so strip the prefix first.
+  const rel = path === '/docs' ? '/' : path.replace(/^\/docs/, '') || '/'
+  const known = ROUTE_HEAD[rel]
   if (known) return { head: known, index: true }
 
-  const componentMatch = path.match(/^\/components\/([^/]+)$/)
+  const componentMatch = rel.match(/^\/components\/([^/]+)$/)
   if (componentMatch) {
     const entry = getComponent(decodeURIComponent(componentMatch[1] ?? ''))
     if (entry) {

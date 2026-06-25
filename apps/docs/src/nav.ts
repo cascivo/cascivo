@@ -23,7 +23,7 @@ export function buildNav(): NavGroup[] {
       .map((c) => ({
         name: c.name,
         label: c.meta.name,
-        href: `/components/${c.name}`,
+        href: `/docs/components/${c.name}`,
       })),
   })).filter((group) => group.items.length > 0)
 }

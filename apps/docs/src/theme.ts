@@ -73,3 +73,7 @@ export function applyTheme(next: Theme): void {
   }
   theme.value = next
 }
+
+// Aliases for the marketing surface, which adopted `setTheme`/`ThemeName` names.
+export type ThemeName = Theme
+export const setTheme = applyTheme

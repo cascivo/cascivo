@@ -1,58 +1,99 @@
-import { LocationProvider, Route, Router } from 'preact-iso'
-import { Layout } from './Layout'
-import { Home } from './pages/Home'
-import { GettingStartedPage } from './pages/GettingStartedPage'
-import { AiPage } from './pages/AiPage'
-import { ChartsPage } from './pages/ChartsPage'
-import { EditorPage } from './pages/EditorPage'
-import { FlowPage } from './pages/FlowPage'
-import { ComponentPage } from './pages/ComponentPage'
-import { PerfDataTable } from './pages/PerfDataTable'
-import { PlaygroundPage } from './pages/PlaygroundPage'
-import { Benchmarks } from './pages/Benchmarks'
-import { LayoutsPage } from './pages/LayoutsPage'
-import { DirectoryPage } from './pages/DirectoryPage'
-import { ContextExplorerPage } from './pages/ContextExplorerPage'
-import { TokensPage } from './pages/TokensPage'
-import { IconsPage } from './pages/IconsPage'
-import { WhyCascadePage } from './pages/WhyCascadePage'
-import { ParityPage } from './pages/ParityPage'
-import { MigratingPage } from './pages/MigratingPage'
-import { BrandPage } from './pages/BrandPage'
+import { Suspense, lazy } from 'react'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { currentPath, initRouter, navigate, scrollToHash } from './router'
+import { initReveal } from './marketing/reveal'
+import { peek } from './marketing/peek'
+import { landingIndex } from './marketing/search/buildIndex'
+import { searchOpen } from './marketing/search/state'
+import { MarketingApp } from './marketing/App'
+import { DocsApp } from './DocsApp'
 import { theme } from './theme'
 
+const SearchDialog = lazy(() =>
+  import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
+)
+
+/**
+ * Navigate to a search result. External links are full browser navigations
+ * (`history.pushState` would throw cross-origin). Same-origin hash links jump to
+ * the path, then to the anchor.
+ */
+function navigateToResult(href: string) {
+  if (/^https?:\/\//.test(href)) {
+    window.location.href = href
+    return
+  }
+  const hashIndex = href.indexOf('#')
+  if (hashIndex >= 0) {
+    const path = href.slice(0, hashIndex) || '/'
+    const hash = href.slice(hashIndex)
+    navigate(path)
+    scrollToHash(hash)
+    return
+  }
+  navigate(href)
+}
+
 export function App() {
-  // Apply stored theme to DOM before first render so there is no flash.
+  useSignals()
+
+  // Apply the stored theme before first paint (the theme module also keeps the
+  // DOM in sync via an effect, but this avoids a flash on the very first render).
   if (typeof document !== 'undefined') {
     document.documentElement.setAttribute('data-theme', theme.value)
   }
 
+  const hasOpenedSearch = useSignal(false)
+  useSignalEffect(() => {
+    if (searchOpen.value) hasOpenedSearch.value = true
+  })
+
+  // App-wide concerns owned by the root so they apply across both surfaces.
+  useSignalEffect(() => initReveal())
+  useSignalEffect(() => {
+    initRouter()
+  })
+
+  // Home "peek" gimmick — gate on the home route so it can't strand another page.
+  useSignalEffect(() => {
+    const home = currentPath.value === '/'
+    if (!home && peek.value) peek.value = false
+    document.documentElement.toggleAttribute('data-peek', home && peek.value)
+  })
+
+  // Cmd+K / Ctrl+K opens the unified search dialog (components + pages).
+  useSignalEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        searchOpen.value = true
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  })
+
+  const pathname = currentPath.value
+
+  const search = hasOpenedSearch.value ? (
+    <Suspense fallback={null}>
+      <SearchDialog
+        index={landingIndex}
+        open={searchOpen.value}
+        onClose={() => {
+          searchOpen.value = false
+        }}
+        onNavigate={navigateToResult}
+      />
+    </Suspense>
+  ) : null
+
+  const isDocs = pathname === '/docs' || pathname.startsWith('/docs/')
+
   return (
-    <LocationProvider>
-      <Layout>
-        <Router>
-          <Route path="/" component={Home} />
-          <Route path="/getting-started" component={GettingStartedPage} />
-          <Route path="/ai" component={AiPage} />
-          <Route path="/charts" component={ChartsPage} />
-          <Route path="/editor" component={EditorPage} />
-          <Route path="/flow" component={FlowPage} />
-          <Route path="/playground" component={PlaygroundPage} />
-          <Route path="/benchmarks" component={Benchmarks} />
-          <Route path="/layouts" component={LayoutsPage} />
-          <Route path="/directory" component={DirectoryPage} />
-          <Route path="/context" component={ContextExplorerPage} />
-          <Route path="/tokens" component={TokensPage} />
-          <Route path="/icons" component={IconsPage} />
-          <Route path="/why" component={WhyCascadePage} />
-          <Route path="/parity" component={ParityPage} />
-          <Route path="/migrating" component={MigratingPage} />
-          <Route path="/brand" component={BrandPage} />
-          <Route path="/perf/data-table" component={PerfDataTable} />
-          <Route path="/components/:name" component={ComponentPage} />
-          <Route default component={ComponentPage} />
-        </Router>
-      </Layout>
-    </LocationProvider>
+    <>
+      {isDocs ? <DocsApp /> : <MarketingApp />}
+      {search}
+    </>
   )
 }
