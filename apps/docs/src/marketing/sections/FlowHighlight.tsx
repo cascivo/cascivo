@@ -42,7 +42,7 @@ export function FlowHighlight() {
       </div>
 
       <p className="icon-showcase-cta">
-        <a href="https://docs.cascivo.com">Read the flow docs →</a>
+        <a href="/docs/flow">Read the flow docs →</a>
       </p>
     </section>
   )

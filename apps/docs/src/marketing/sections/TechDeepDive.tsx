@@ -140,7 +140,7 @@ export function TechDeepDive({ teaser = false }: { teaser?: boolean }) {
         ))}
       </div>
       <p className="tech-deep-dive-footer">
-        <a href="https://docs.cascivo.com/why" className="tech-learn-more">
+        <a href="/docs/why" className="tech-learn-more">
           Full technical rationale →
         </a>
       </p>

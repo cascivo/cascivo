@@ -40,7 +40,7 @@ export function EditorHighlight() {
       </div>
 
       <p className="icon-showcase-cta">
-        <a href="https://docs.cascivo.com">Read the editor docs →</a>
+        <a href="/docs/editor">Read the editor docs →</a>
       </p>
     </section>
   )

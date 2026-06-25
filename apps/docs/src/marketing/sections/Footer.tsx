@@ -19,7 +19,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Build',
     links: [
-      { label: 'Docs', href: 'https://docs.cascivo.com' },
+      { label: 'Docs', href: '/docs' },
       { label: 'Storybook', href: 'https://storybook.cascivo.com' },
       { label: 'Examples', href: '/examples' },
       { label: 'Showcase', href: '/showcase' },
@@ -41,7 +41,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Proof',
     links: [
-      { label: 'Why cascivo', href: 'https://docs.cascivo.com/why' },
+      { label: 'Why cascivo', href: '/docs/why' },
       { label: 'Benchmarks', href: '/docs/benchmarks' },
       { label: 'Methodology', href: `${REPO}/blob/main/apps/bench/METHODOLOGY.md` },
     ],

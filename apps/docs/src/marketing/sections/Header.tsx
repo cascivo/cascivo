@@ -17,7 +17,7 @@ type NavLink = { label: string; href: string }
 // Slim primary nav (v36): three top-level links. Secondary routes group under a
 // "Resources" menu; every route is also reachable from the footer link map.
 const PRIMARY_LINKS: NavLink[] = [
-  { label: 'Components', href: 'https://docs.cascivo.com' },
+  { label: 'Docs', href: '/docs' },
   { label: 'Examples', href: '/examples' },
   { label: 'Guides', href: '/guides' },
 ]

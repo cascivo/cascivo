@@ -18,7 +18,7 @@ const componentItems: SearchItem[] = (registry as { components: RegEntry[] }).co
       title: e.meta.name,
       section: e.category,
       ...(description ? { description } : {}),
-      href: `https://docs.cascivo.com/components/${e.name}`,
+      href: `/docs/components/${e.name}`,
       type: 'component' as const,
       category: e.category,
     }
