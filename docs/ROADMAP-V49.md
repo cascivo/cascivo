@@ -1,7 +1,10 @@
 # cascivo — Roadmap v49: Landing-Page Credibility — Three-Lens Audit (Business · Architect · Designer)
 
 **Last updated:** 2026-06-25
-**Status:** 📋 Planned — T1–T6 specified; not yet implemented.
+**Status:** ✅ Shipped — T1–T6 implemented (manifest sample + derived headings; home proof + social
+strip; unified conversion path + headline; 12-theme showcase + reduced-motion carousel; ecosystem-domain
+unification + CI link-check; orphan-section removal + canonical nav breakpoint). Two scoped deviations recorded in
+the implementation log below.
 **Plan documents:** `docs/superpowers/plans/2026-06-25-v49-master-plan.md` + tranches 1–6
 **Builds on:** the marketing surface in `apps/site/src/marketing/*` — the home composition
 (`App.tsx` → `HomePage`), the home sections (`sections/{Hero,AdvantageCarousel,QuickStart,CtaBand,Header,Footer,SectionNav}.tsx`),
@@ -131,5 +134,56 @@ files and are sequenced for one reviewer; T5/T6 are independent infra/cleanup.
 - Footer ecosystem links resolve on one domain (or are documented), and CI fails on a broken internal route.
 - The four orphan sections are gone; the JS nav breakpoint is on the canonical scale.
 - `pnpm ready` / `pnpm ready:ci` green; `pnpm breakpoint:check` + `pnpm fallback:check` clean; drift gate clean.
+
+---
+
+## Implementation log (2026-06-25)
+
+What shipped, per tranche, with the decisions made against the real code:
+
+- **T1 — Truth.** `AdvantageCarousel` AiPanel sample `a11y:` → `accessibility:`; the carousel heading now derives
+  from `ADVANTAGES.length`; the themes headline + tagline + "plus N more" copy read `__CASCIVO_THEME_COUNT__`;
+  CLAUDE.md reconciled to **WCAG 2.2 AA**.
+- **T2 — Proof on home.** `ProofTeasers` promoted into `HomePage` (between the carousel and QuickStart) via a new
+  optional `withLeadingDivider` prop so its self-guarding `null` never leaves a dangling divider; a `proof`
+  scroll-spy dot added; a new honest `SocialProof` strip (open-source/MIT, dogfooding, WCAG 2.2 AA — each links its
+  evidence) with a one-line "why not shadcn" framing to `/docs/why`. No fabricated logos or testimonials.
+- **T3 — One path.** Primary CTA unified to **"Get started" → `/guides`** in Hero + CtaBand (docs demoted to a
+  secondary "Read the docs"); `npx cascivo init` made the single canonical command; the `@cascivo/react` npm route
+  surfaced out of the QuickStart `Collapsible` into a visible block; headline → **"Fluent with agents."**
+- **T4 — Fidelity.** Themes panel now renders all 12 `THEMES` as compact, **non-focusable** color-chip swatches
+  (no focusable controls inside the `aria-hidden` showcase); the carousel auto-advance is gated on
+  `prefers-reduced-motion: reduce` via `useMediaQuery`.
+- **T5 — Links.** `@cascivo/charts` / `@cascivo/layouts` repointed from the separate `cascivo.dev` microsite to
+  their GitHub source dirs (one canonical domain, all resolvable); the "404 is a follow-up" comment replaced;
+  `scripts/quality/landing-links.ts` (`links:check`) added to CI — it parses the router's known routes and fails the
+  build on any unresolved internal href (verified: fails on a bogus link, passes on the tree).
+- **T6 — Cleanup.** The four orphan sections deleted; the Header JS nav breakpoint + its matching `landing.css` rule
+  moved from off-scale `47.99rem` to canonical-`md` `39.99rem`, kept in lock-step.
+
+### Deviations from the plan (recorded honestly)
+
+1. **T4 test deferred — the site has no wired unit-test harness.** `@testing-library/react` is not a dependency of
+   `apps/site` and no jsdom environment / `setupFiles` is configured; even the pre-existing
+   `BlocksPage.test.tsx` fails to run (`Cannot find package '@testing-library/react'`, `environment 0ms`). Shipping a
+   test that imports `@testing-library/react` would be a non-running, false-signal test — exactly what this audit
+   fights. The planned `AdvantageCarousel.test.tsx` is therefore deferred to a **harness-wiring follow-up**; the
+   reduced-motion gate and 12-theme rendering were verified via type-check + build + review instead.
+2. **T6 dead-CSS removal narrowed to the sections only.** The CSS for the removed sections is interleaved with
+   multi-selector rules (e.g. `landing.css:77`, `:2167`) and the **still-live, shared `examples-*` family** (used by
+   `ExamplesPage` / `ExampleDetailPage`), so removing it safely is a separate surgical pass. The orphan `.tsx` files
+   (the A2 finding) are deleted; the dead CSS is flagged for follow-up. Landing CSS is at 59.2/60 KB — the cleanup
+   would also reclaim budget headroom.
+
+### Observations surfaced during implementation (out of this scope)
+
+- **Pre-existing regen drift.** `pnpm regen` in this environment rewrites ~857 generated files (icons, render
+  schema/prop-schemas, storybook flow stories, READMEs, llms) with no input from this work — the committed artifacts
+  are stale relative to the generator here. Reverted from this change set; flagged as an independent drift-gate issue.
+- **Other off-scale `47.99rem` literals** remain in `apps/site/src/app.css` (the separate DocsApp shell) and
+  `landing.css:2192` (the Relay console demo) — distinct from the Header nav finding, and `breakpoint:check` only
+  scans `packages/`, so they're outside both the finding and the gate. Flagged for a follow-up scale pass.
+- **`audit:landing` is not a gate** (absent from `ready` / `ready:ci` / CI); its JS figure reflects a non-production
+  local dist, so it was not treated as blocking.
 </content>
 </invoke>
