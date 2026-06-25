@@ -1,5 +1,18 @@
 # @cascivo/mcp
 
+## 0.1.8
+
+### Patch Changes
+
+- f0b5654: Fixes
+
+## 0.1.7
+
+### Patch Changes
+
+- 2458391: Improvements
+- 52c08b6: Improvements
+
 ## 0.1.6
 
 ### Patch Changes
