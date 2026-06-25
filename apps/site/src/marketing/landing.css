@@ -931,6 +931,13 @@ kbd {
   border-block-start: 1px solid var(--cascivo-color-border);
 }
 
+.quickstart-prebuilt-title {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-lg);
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+}
+
 .quickstart-prebuilt-note {
   color: var(--cascivo-color-text-muted);
   margin-block-end: var(--cascivo-space-5);
