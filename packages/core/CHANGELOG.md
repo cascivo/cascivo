@@ -1,5 +1,12 @@
 # @cascivo/core
 
+## 0.2.1
+
+### Patch Changes
+
+- 2458391: Improvements
+- 52c08b6: Improvements
+
 ## 0.2.0
 
 ### Minor Changes
