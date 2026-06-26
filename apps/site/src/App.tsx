@@ -3,15 +3,20 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
 import { initReveal } from './marketing/reveal'
 import { peek } from './marketing/peek'
-import { landingIndex } from './marketing/search/buildIndex'
 import { searchOpen } from './marketing/search/state'
 import { MarketingApp } from './marketing/App'
-import { DocsApp } from './DocsApp'
 import { theme } from './theme'
 
-const SearchDialog = lazy(() =>
-  import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
+// The dialog AND its index (built from registry.json, ~130 KB gzip) live behind
+// this one lazy boundary, so the registry never lands in the home entry chunk.
+const SearchDialogLazy = lazy(() =>
+  import('./marketing/search/SearchDialogLazy').then((m) => ({ default: m.SearchDialogLazy })),
 )
+
+// Docs surface (every component page, AppShell, charts, editor, flow) is a large
+// subtree only reached under /docs. Lazy so it never weighs on the home bundle —
+// its JS and CSS load on demand instead of blocking the marketing landing page.
+const DocsApp = lazy(() => import('./DocsApp').then((m) => ({ default: m.DocsApp })))
 
 /**
  * Navigate to a search result. External links are full browser navigations
@@ -77,8 +82,7 @@ export function App() {
 
   const search = hasOpenedSearch.value ? (
     <Suspense fallback={null}>
-      <SearchDialog
-        index={landingIndex}
+      <SearchDialogLazy
         open={searchOpen.value}
         onClose={() => {
           searchOpen.value = false
@@ -92,7 +96,13 @@ export function App() {
 
   return (
     <>
-      {isDocs ? <DocsApp /> : <MarketingApp />}
+      {isDocs ? (
+        <Suspense fallback={null}>
+          <DocsApp />
+        </Suspense>
+      ) : (
+        <MarketingApp />
+      )}
       {search}
     </>
   )

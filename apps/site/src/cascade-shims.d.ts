@@ -6,6 +6,12 @@ declare module '*.module.css' {
   export default classes
 }
 
+// Plain side-effect CSS imports (e.g. dynamic `import('./themes-extra.css')`).
+declare module '*.css' {
+  const css: string
+  export default css
+}
+
 declare module '@cascivo/components/button' {
   import type { ComponentChildren } from 'preact'
   export interface ButtonProps {

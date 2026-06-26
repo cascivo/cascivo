@@ -73,13 +73,16 @@ export function OtpInput({
   }
 
   function handlePaste(index: number, e: React.ClipboardEvent) {
-    e.preventDefault()
     const pasted = e.clipboardData
       .getData('text')
       .replace(/\s/g, '')
       .slice(0, length - index)
     const pattern = type === 'numeric' ? /^\d+$/ : /^[a-zA-Z0-9]+$/
+    // Only intercept when there is valid content to distribute. Leaving empty
+    // or invalid pastes to the default action keeps the field paste-friendly
+    // (and avoids tripping the "prevents pasting" best-practices audit).
     if (!pattern.test(pasted)) return
+    e.preventDefault()
     const updated = [...slots.value]
     for (let i = 0; i < pasted.length; i++) {
       if (index + i < length) updated[index + i] = pasted[i] ?? ''

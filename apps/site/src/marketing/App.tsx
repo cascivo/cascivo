@@ -3,7 +3,6 @@ import { useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
-import { AdvantageCarousel } from './sections/AdvantageCarousel'
 import { SocialProof } from './sections/SocialProof'
 import { SectionNav } from './sections/SectionNav'
 import { currentPath } from '../router'
@@ -17,6 +16,12 @@ import { DEMOS } from './pages/examples/data'
 // weigh on the initial paint.
 const ComponentField = lazy(() =>
   import('./sections/ComponentField').then((m) => ({ default: m.ComponentField })),
+)
+// Below-the-fold and the only eager home component that pulled in `@cascivo/icons`.
+// Keeping it eager anchored the whole icon barrel (~every icon used app-wide) into
+// the home entry chunk; lazy-loading it lets the icons land in on-demand chunks.
+const AdvantageCarousel = lazy(() =>
+  import('./sections/AdvantageCarousel').then((m) => ({ default: m.AdvantageCarousel })),
 )
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
@@ -90,7 +95,9 @@ function HomePage() {
             <Hero />
             <SocialProof />
             <hr className="flow-divider" />
-            <AdvantageCarousel />
+            <Suspense fallback={<SectionFallback height={520} />}>
+              <AdvantageCarousel />
+            </Suspense>
             <Suspense fallback={<SectionFallback height={360} />}>
               <ProofTeasers withLeadingDivider />
             </Suspense>
