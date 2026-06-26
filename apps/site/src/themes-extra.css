@@ -1,0 +1,12 @@
+/* Non-first-party themes, loaded on demand (not render-blocking). Imported
+   lazily from theme.ts only when an extra theme is active or selected, so the
+   home page's critical CSS carries just light/dark/warm. */
+@import '@cascivo/themes/flat';
+@import '@cascivo/themes/minimal';
+@import '@cascivo/themes/midnight';
+@import '@cascivo/themes/pastel';
+@import '@cascivo/themes/brutalist';
+@import '@cascivo/themes/corporate';
+@import '@cascivo/themes/terminal';
+@import '@cascivo/themes/cyberpunk';
+@import '@cascivo/themes/arcade';

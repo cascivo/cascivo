@@ -54,12 +54,24 @@
     </script>
     <script>
       // Apply the persisted theme before paint to avoid a flash of the wrong theme.
+      // Storage holds a versioned envelope ({"v":1,"value":"dark"}); older builds
+      // stored the bare string. Only light/dark/warm are render-blocking, so any
+      // other (deferred) theme paints as `dark` here and the app swaps it in once
+      // its CSS loads. Default is `dark` to match the app's theme signal.
       ;(function () {
         try {
-          var t = localStorage.getItem('cascade-theme')
+          var raw = localStorage.getItem('cascade-theme')
+          var v = 'dark'
+          if (raw) {
+            v = raw
+            try {
+              var env = JSON.parse(raw)
+              if (env && typeof env === 'object' && 'value' in env) v = env.value
+            } catch (e) {}
+          }
           document.documentElement.setAttribute(
             'data-theme',
-            t === 'dark' || t === 'warm' || t === 'light' ? t : 'light',
+            v === 'light' || v === 'dark' || v === 'warm' ? v : 'dark',
           )
         } catch (e) {}
       })()

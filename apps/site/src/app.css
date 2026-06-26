@@ -1,16 +1,10 @@
-/* Import tokens + all twelve themes (theme switching via data-theme) */
+/* Render-blocking: tokens + the three first-party themes (covers the default
+   `dark` plus light/warm). The other nine themes load on demand via a JS
+   dynamic import (see theme.ts → themes-extra.css), keeping them off the
+   critical path. */
 @import '@cascivo/themes/light';
 @import '@cascivo/themes/dark';
 @import '@cascivo/themes/warm';
-@import '@cascivo/themes/flat';
-@import '@cascivo/themes/minimal';
-@import '@cascivo/themes/midnight';
-@import '@cascivo/themes/pastel';
-@import '@cascivo/themes/brutalist';
-@import '@cascivo/themes/corporate';
-@import '@cascivo/themes/terminal';
-@import '@cascivo/themes/cyberpunk';
-@import '@cascivo/themes/arcade';
 
 *,
 *::before,
