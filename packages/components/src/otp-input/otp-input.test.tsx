@@ -57,4 +57,25 @@ describe('OtpInput', () => {
     expect(screen.getByLabelText('Digit 2')).toBeTruthy()
     expect(screen.getByLabelText('Digit 3')).toBeTruthy()
   })
+
+  it('distributes a valid pasted code across slots', async () => {
+    const handler = vi.fn()
+    render(<OtpInput value="" onValueChange={handler} />)
+    const inputs = screen.getAllByRole('textbox')
+    await userEvent.click(inputs[0]!)
+    await userEvent.paste('123456')
+    expect(handler).toHaveBeenCalledWith('123456')
+  })
+
+  it('does not prevent default for an empty or invalid paste', () => {
+    render(<OtpInput value="" onValueChange={() => {}} />)
+    const input = screen.getAllByRole('textbox')[0]!
+    const event = new Event('paste', { bubbles: true, cancelable: true })
+    Object.defineProperty(event, 'clipboardData', {
+      value: { getData: () => '' },
+    })
+    input.dispatchEvent(event)
+    // A non-prevented paste keeps the input paste-friendly (Lighthouse audit).
+    expect(event.defaultPrevented).toBe(false)
+  })
 })

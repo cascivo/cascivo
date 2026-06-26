@@ -6,12 +6,16 @@ import { peek } from './marketing/peek'
 import { landingIndex } from './marketing/search/buildIndex'
 import { searchOpen } from './marketing/search/state'
 import { MarketingApp } from './marketing/App'
-import { DocsApp } from './DocsApp'
 import { theme } from './theme'
 
 const SearchDialog = lazy(() =>
   import('@cascivo/search/SearchDialog').then((m) => ({ default: m.SearchDialog })),
 )
+
+// Docs surface (every component page, AppShell, charts, editor, flow) is a large
+// subtree only reached under /docs. Lazy so it never weighs on the home bundle —
+// its JS and CSS load on demand instead of blocking the marketing landing page.
+const DocsApp = lazy(() => import('./DocsApp').then((m) => ({ default: m.DocsApp })))
 
 /**
  * Navigate to a search result. External links are full browser navigations
@@ -92,7 +96,13 @@ export function App() {
 
   return (
     <>
-      {isDocs ? <DocsApp /> : <MarketingApp />}
+      {isDocs ? (
+        <Suspense fallback={null}>
+          <DocsApp />
+        </Suspense>
+      ) : (
+        <MarketingApp />
+      )}
       {search}
     </>
   )

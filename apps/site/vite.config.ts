@@ -245,6 +245,10 @@ export default defineConfig({
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
   },
+  // Emit source maps for the production bundle. The project is public (MIT), so
+  // there is nothing to hide, and Lighthouse's "valid source maps" best-practices
+  // audit needs them to map the large first-party JS back to source.
+  build: { sourcemap: true },
   preview: { port: 4180, strictPort: true },
   server: {
     port: 4180,
