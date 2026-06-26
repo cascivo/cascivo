@@ -4,6 +4,7 @@ import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
 import { AdvantageCarousel } from './sections/AdvantageCarousel'
+import { SocialProof } from './sections/SocialProof'
 import { SectionNav } from './sections/SectionNav'
 import { currentPath } from '../router'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
@@ -22,6 +23,9 @@ const QuickStart = lazy(() =>
 )
 const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
+const ProofTeasers = lazy(() =>
+  import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
+)
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -84,8 +88,12 @@ function HomePage() {
         <SkipNavTarget>
           <main>
             <Hero />
+            <SocialProof />
             <hr className="flow-divider" />
             <AdvantageCarousel />
+            <Suspense fallback={<SectionFallback height={360} />}>
+              <ProofTeasers withLeadingDivider />
+            </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />

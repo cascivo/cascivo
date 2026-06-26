@@ -19,6 +19,7 @@
     "audit:animation": "node scripts/quality/animation-audit.ts",
     "audit:bundle": "node scripts/quality/bundle-check.ts",
     "audit:landing": "node scripts/quality/landing-budget.ts",
+    "links:check": "node scripts/quality/landing-links.ts",
     "audit:treeshake": "pnpm --filter bench-runner bench treeshake",
     "bench": "pnpm --filter bench-runner bench all",
     "audit:stories": "node scripts/quality/story-check.ts",

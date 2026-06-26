@@ -440,6 +440,9 @@ main {
   align-items: center;
   gap: var(--cascivo-space-3);
   padding: var(--cascivo-space-4);
+  /* Let the grid item shrink below its content so the tagline wraps instead of
+     overflowing the 2-col layout at the narrowest widths (320px). */
+  min-inline-size: 0;
   text-align: start;
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-lg);
@@ -555,31 +558,62 @@ main {
 
 .adv-themes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--cascivo-space-3);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--cascivo-space-2);
+}
+
+@media (min-width: 30rem) {
+  .adv-themes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 40rem) {
+  .adv-themes {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .adv-theme-card {
   display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-3);
-  padding: var(--cascivo-space-4);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-md);
   background-color: var(--cascivo-color-bg);
   color: var(--cascivo-color-text);
 }
 
-.adv-theme-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .adv-theme-name {
   font-family: var(--cascivo-font-mono);
   font-size: var(--cascivo-text-xs);
   text-transform: capitalize;
+}
+
+.adv-theme-chips {
+  display: inline-flex;
+  gap: 0.1875rem;
+  flex-shrink: 0;
+}
+
+.adv-theme-chip {
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  border-radius: var(--cascivo-radius-full, 50%);
+}
+
+.adv-theme-chip--accent {
+  background-color: var(--cascivo-color-accent);
+}
+
+.adv-theme-chip--fg {
+  background-color: var(--cascivo-color-text);
+}
+
+.adv-theme-chip--border {
+  background-color: var(--cascivo-color-border);
 }
 
 @media (min-width: 64rem) {
@@ -931,6 +965,13 @@ kbd {
   border-block-start: 1px solid var(--cascivo-color-border);
 }
 
+.quickstart-prebuilt-title {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-lg);
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+}
+
 .quickstart-prebuilt-note {
   color: var(--cascivo-color-text-muted);
   margin-block-end: var(--cascivo-space-5);
@@ -1104,7 +1145,7 @@ kbd {
 /* ── Scroll progress bar ────────────────────────────────── */
 .scroll-progress {
   position: sticky;
-  top: var(--cascivo-shell-header-block-size, 3.5rem);
+  top: var(--cascivo-shell-header-block-size, 3rem);
   z-index: calc(var(--cascivo-z-overlay) - 1);
   block-size: 2px;
   background: transparent;
@@ -1783,6 +1824,15 @@ kbd {
   flex-wrap: wrap;
 }
 
+/* Narrow screens: stack the two buttons + copy-command into a clean vertical
+   CTA instead of a centered wrap. */
+@media (max-width: 39.99rem) {
+  .cta-band-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 /* ── Incident pulse dot ───────────────────────────────── */
 .incident-wrap {
   position: relative;
@@ -2258,14 +2308,18 @@ kbd {
 
 .mobile-nav-drawer {
   position: fixed;
-  inset-block: 0;
+  /* Start below the sticky header (which stays above at z-overlay/200) so the
+     first link clears the bar — mirrors the .scroll-progress offset idiom. */
+  inset-block-start: var(--cascivo-shell-header-block-size);
+  inset-block-end: 0;
   inset-inline-end: 0;
   inline-size: min(320px, 85vw);
   background: var(--cascivo-color-surface, white);
   border-inline-start: 1px solid var(--cascivo-color-border);
   z-index: 100;
-  padding: var(--cascivo-space-8) var(--cascivo-space-6);
-  padding-block-start: max(var(--cascivo-space-8), env(safe-area-inset-top));
+  padding: var(--cascivo-space-6);
+  /* Clear the home indicator on notched phones; long link lists scroll. */
+  padding-block-end: max(var(--cascivo-space-8), env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-4);
@@ -2305,7 +2359,17 @@ kbd {
   outline: none;
 }
 
-@media (min-width: 48rem) {
+/* Secondary controls (theme, GitHub) relocated into the drawer on mobile. */
+.mobile-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  padding-block-start: var(--cascivo-space-4);
+}
+
+/* Match the nav-collapse boundary (40rem) used by the toggle, the inline-nav
+   hide, and the JS `isMobileNav` — one breakpoint for the whole mobile nav. */
+@media (min-width: 40rem) {
   .mobile-nav-drawer {
     display: none;
   }
@@ -3456,6 +3520,18 @@ kbd {
   outline-offset: 2px;
 }
 
+/* Touch devices: raise the compact 2.25rem header controls to the ≥44px target
+   minimum (WCAG 2.2 SC 2.5.8). Desktop (pointer: fine) keeps the dense size. */
+@media (pointer: coarse) {
+  .header-theme-cycle,
+  .header-peek-toggle,
+  .header-icon-link,
+  .header-search-btn {
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+  }
+}
+
 .header-search-shortcut {
   display: none;
 }
@@ -3504,7 +3580,9 @@ kbd {
   }
 }
 
-@media (max-width: 47.99rem) {
+/* Nav collapse — kept in lock-step with the JS `isMobileNav` media query in
+   Header.tsx. 39.99rem = just under the canonical `md` (40rem). */
+@media (max-width: 39.99rem) {
   .mobile-nav-toggle {
     display: flex;
   }
@@ -3525,6 +3603,79 @@ kbd {
   gap: var(--cascivo-space-5);
   text-align: center;
   scroll-margin-block-start: 5rem;
+}
+
+/* Social-proof / credibility strip — sits directly under the hero CTAs. */
+.social-proof {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--cascivo-space-6);
+  margin-block-start: calc(-1 * var(--cascivo-space-8));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cascivo-space-4);
+  text-align: center;
+}
+
+/* The negative tuck assumes the shorter desktop hero; on mobile the hero wraps
+   taller and the CTAs stack, so drop the pull-up to avoid colliding with the
+   hero's copy-command. */
+@media (max-width: 39.99rem) {
+  .social-proof {
+    margin-block-start: var(--cascivo-space-4);
+  }
+}
+
+.social-proof-lead {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.social-proof-lead a {
+  color: var(--cascivo-color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.social-proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascivo-space-3);
+}
+
+.social-proof-list a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: var(--cascivo-space-2) var(--cascivo-space-4);
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background: var(--cascivo-color-bg-subtle);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.social-proof-list a:hover {
+  border-color: var(--cascivo-color-accent);
+}
+
+.social-proof-list strong {
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+}
+
+.social-proof-list span {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-subtle);
 }
 
 .hero h1 {

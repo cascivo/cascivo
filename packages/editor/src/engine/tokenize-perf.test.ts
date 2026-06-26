@@ -30,15 +30,18 @@ describe('tokenizer per-render budget', () => {
   // re-render at a settled scroll position re-tokenizes just the window (the prefix
   // states are already memoized in the index, so they are not recomputed).
   //
-  // Large-doc test: the 50k-line first paint is heavy in jsdom (the whole doc mounts
-  // before the measure effect enables windowing), so it needs a generous timeout —
-  // well beyond the 5s default — to stay stable on slower CI.
-  it('tokenizes only the visible window per render on a 50k-line doc', () => {
+  // Large-doc test: 8k lines (not 50k) keeps the doc well above the old
+  // MAX_CACHE = 5000 memo cliff so the O(document) regression is still exercised,
+  // while the initial jsdom mount (the whole doc mounts before the measure effect
+  // enables windowing) stays fast and reliable on constrained CI runners — a 50k
+  // mount could exceed the timeout (matches perf.test.tsx). The timeout stays
+  // generous as a margin for slow CI.
+  it('tokenizes only the visible window per render on an 8k-line doc', () => {
     const LINE_PX = 20
     const VIEWPORT_PX = 400
     stubLineHeight(LINE_PX)
 
-    const doc = makeMarkdownDoc(50_000)
+    const doc = makeMarkdownDoc(8_000)
     const { container } = render(
       createElement(CodeEditor, { language: 'markdown', defaultValue: doc, lineNumbers: false }),
     )

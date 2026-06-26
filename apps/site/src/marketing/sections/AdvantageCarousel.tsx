@@ -1,11 +1,10 @@
 'use client'
 import type { ReactNode } from 'react'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useMediaQuery, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@cascivo/components/tabs'
-import { Badge } from '@cascivo/components/badge'
-import { Button } from '@cascivo/components/button'
 import { CodeSnippet } from '@cascivo/components/code-snippet'
 import { Download, Layers, Sun, Terminal, Zap } from '@cascivo/icons'
+import { THEMES } from '../../theme'
 import bench from 'virtual:bench'
 
 const typing = bench.renders?.['type-20-chars']
@@ -81,23 +80,23 @@ function ThemesPanel() {
   return (
     <>
       <div className="adv-themes" aria-hidden="true">
-        {(['light', 'dark', 'warm'] as const).map((t) => (
+        {THEMES.map((t) => (
           <div key={t} className="adv-theme-card" data-theme={t}>
-            <div className="adv-theme-card-top">
-              <span className="adv-theme-name">{t}</span>
-              <Badge variant="success" size="sm">
-                live
-              </Badge>
-            </div>
-            <Button size="sm">Get started</Button>
+            <span className="adv-theme-name">{t}</span>
+            <span className="adv-theme-chips">
+              <span className="adv-theme-chip adv-theme-chip--accent" />
+              <span className="adv-theme-chip adv-theme-chip--fg" />
+              <span className="adv-theme-chip adv-theme-chip--border" />
+            </span>
           </div>
         ))}
       </div>
       <div className="adv-copy">
-        <h3>Twelve themes, one token swap</h3>
+        <h3>{__CASCIVO_THEME_COUNT__} themes, one token swap</h3>
         <p>
-          Three first-party themes plus eight more, all token-driven. Set <code>data-theme</code> on
-          any element and every component restyles — no component changes.
+          Three first-party themes plus {__CASCIVO_THEME_COUNT__ - 3} more, all token-driven. Set{' '}
+          <code>data-theme</code> on any element and every component restyles — no component
+          changes.
         </p>
         <a className="adv-link" href="/create">
           Create a theme &rarr;
@@ -150,7 +149,7 @@ function AiPanel() {
   name: 'Button',
   variants: ['primary', 'secondary', 'ghost'],
   props: [{ name: 'size', type: 'sm | md | lg' }],
-  a11y: { role: 'button', wcag: 'AA' },
+  accessibility: { role: 'button', wcag: 'AA' },
 }`}
       />
       <div className="adv-copy">
@@ -187,7 +186,7 @@ const ADVANTAGES: Advantage[] = [
     id: 'themes',
     icon: <Sun />,
     title: 'Beautiful by default',
-    tagline: 'Twelve themes, one token swap',
+    tagline: `${__CASCIVO_THEME_COUNT__} themes, one token swap`,
     panel: <ThemesPanel />,
   },
   {
@@ -215,8 +214,13 @@ export function AdvantageCarousel() {
   // Pause the auto-rotation while a visitor is reading (hover) or interacting
   // (focus within) — they shouldn't be yanked to the next panel mid-thought.
   const paused = useSignal(false)
+  // Respect the visitor's motion preference: under `prefers-reduced-motion:
+  // reduce` the carousel never auto-advances — it becomes a static, manually
+  // controlled tabset (the tabs still switch on click/keyboard).
+  const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   useSignalEffect(() => {
+    if (reduceMotion.value) return
     const id = setInterval(() => {
       if (paused.value) return
       const idx = ADVANTAGES.findIndex((a) => a.id === active.value)
@@ -247,7 +251,7 @@ export function AdvantageCarousel() {
     >
       <div className="flow-header">
         <p className="flow-eyebrow">Why cascivo</p>
-        <h2 className="flow-title">Five reasons it feels different</h2>
+        <h2 className="flow-title">{ADVANTAGES.length} reasons it feels different</h2>
       </div>
       <Tabs
         value={active.value}

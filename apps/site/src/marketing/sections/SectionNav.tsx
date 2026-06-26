@@ -4,6 +4,7 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 const SECTIONS = [
   { id: 'hero', label: 'Top' },
   { id: 'advantages', label: 'Why cascivo' },
+  { id: 'proof', label: 'Proof' },
   { id: 'quickstart', label: 'Quick start' },
   { id: 'cta', label: 'Get started' },
 ] as const

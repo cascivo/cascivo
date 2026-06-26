@@ -7,7 +7,10 @@ export function CtaBand() {
       <h2>Own your UI.</h2>
       <p>Copy the code. Keep the platform. Bring your agent.</p>
       <div className="cta-band-actions">
-        <LinkButton href="/docs">Start building</LinkButton>
+        <LinkButton href="/guides">Get started</LinkButton>
+        <LinkButton href="/docs" variant="secondary">
+          Read the docs
+        </LinkButton>
         <CopyCommand command="npx cascivo init" />
       </div>
     </section>
