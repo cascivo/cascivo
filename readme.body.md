@@ -19,7 +19,10 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 ## Quick Start
 
 ```sh
-# Scaffold config + tokens, then copy a component into your project
+# Scaffold a complete app — Vite + React, app shell, side nav, and a theme
+npx cascivo create my-app
+
+# …or add cascivo to an existing project, then copy components in
 npx cascivo init
 npx cascivo add button card dialog
 ```

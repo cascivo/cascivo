@@ -1,6 +1,7 @@
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
+import { create } from './commands/create.js'
 import { runDoctor } from './commands/doctor.js'
 import { generate } from './commands/generate.js'
 import { init } from './commands/init.js'
@@ -21,6 +22,7 @@ const HELP = `cascivo ${VERSION} — the CSS-native, signal-driven, AI-first des
 Usage: cascivo <command> [options]
 
 Commands:
+  create [name]            Scaffold a new ready-to-run app (shell + nav + theme)
   init                     Set up cascivo in the current project
   add <component...>       Add one or more components to your project
   list [--installed]       List available components
@@ -40,6 +42,9 @@ export async function run(args: string[]): Promise<void> {
   const [command, ...rest] = args
 
   switch (command) {
+    case 'create':
+      await create(rest)
+      break
     case 'init':
       await init()
       break
