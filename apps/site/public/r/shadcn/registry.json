@@ -711,6 +711,21 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-funnel",
+      "type": "registry:component",
+      "files": [],
+      "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-heatmap",
       "type": "registry:component",
       "files": [],
@@ -805,6 +820,21 @@
       "type": "registry:component",
       "files": [],
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-radial-bar",
+      "type": "registry:component",
+      "files": [],
+      "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {

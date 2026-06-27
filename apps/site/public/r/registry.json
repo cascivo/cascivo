@@ -2759,6 +2759,18 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
           }
         ],
         "tokens": [
@@ -2923,6 +2935,18 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
           }
         ],
         "typeDefs": [
@@ -3473,6 +3497,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
@@ -3509,6 +3539,124 @@
               "name": "LineChart",
               "relationship": "alternative",
               "reason": "Use when all series are trends on one scale"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "chart/funnel",
+      "type": "chart",
+      "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
+      "category": "chart",
+      "install": "@cascivo/charts",
+      "meta": {
+        "name": "Funnel",
+        "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "FunnelStage[]",
+            "required": true,
+            "description": "Ordered stages (descending): { id, label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle below the title."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "showConversion",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Append each stage’s % of the first stage to its label."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no labels. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate stages)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing drop-off across the ordered stages of a process (signup, checkout)",
+            "Communicating stage-to-stage conversion at a glance"
+          ],
+          "whenNotToUse": [
+            "Stages are not strictly decreasing — use BarChart",
+            "Showing a trend over time — use LineChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "BarChart",
+              "relationship": "alternative",
+              "reason": "Use when stages aren’t monotonically decreasing"
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
@@ -3921,6 +4069,18 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
           }
         ],
         "tokens": [
@@ -4190,6 +4350,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
           }
         ],
         "typeDefs": [
@@ -4409,6 +4575,166 @@
     },
     {
       "schemaVersion": 2,
+      "name": "chart/radial-bar",
+      "type": "chart",
+      "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
+      "category": "chart",
+      "install": "@cascivo/charts",
+      "meta": {
+        "name": "RadialBar",
+        "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "RadialBarDatum[]",
+            "required": true,
+            "description": "One ring per datum: { id, label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle below the title."
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand (width === height). Explicit width/height win."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain top — the value a full sweep represents. Defaults to the largest datum."
+          },
+          {
+            "name": "sweep",
+            "type": "number",
+            "required": false,
+            "default": "270",
+            "description": "Sweep angle in degrees (270 = a gauge arc; 360 = a full ring)."
+          },
+          {
+            "name": "centerValue",
+            "type": "string",
+            "required": false,
+            "description": "Text in the hole."
+          },
+          {
+            "name": "centerLabel",
+            "type": "string",
+            "required": false,
+            "description": "Caption below centerValue."
+          },
+          {
+            "name": "centerSlot",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Arbitrary hole content; wins over centerValue/centerLabel."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "description": "Show ring legend."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no legend. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8",
+          "--cascivo-chart-grid"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate rings)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a few progress-to-goal values in a compact circular form",
+            "A dashboard KPI cluster where each metric is a ring toward its target"
+          ],
+          "whenNotToUse": [
+            "Comparing many categories precisely — use BarChart",
+            "Part-of-whole of a single total — use PieChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Meter",
+              "relationship": "alternative",
+              "reason": "Use for a single value against thresholds"
+            },
+            {
+              "name": "PieChart",
+              "relationship": "alternative",
+              "reason": "Use for part-of-whole proportions of one total"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "chart/scatter-chart",
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -4493,6 +4819,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
           }
         ],
         "tokens": [

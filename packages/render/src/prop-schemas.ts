@@ -209,6 +209,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'annotations',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
   ],
   AspectRatio: [
     {
@@ -388,6 +396,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'annotations',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Blockquote: [
@@ -1077,6 +1093,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'annotations',
+      required: false,
     },
   ],
   Combobox: [
@@ -2204,6 +2224,52 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  Funnel: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'showConversion',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Grid: [
     {
       name: 'cols',
@@ -2774,6 +2840,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'annotations',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Link: [
@@ -3405,6 +3479,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'labels',
+      required: false,
+    },
   ],
   Popover: [],
   Progress: [
@@ -3604,6 +3682,81 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'height',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
+  RadialBar: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'sweep',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'centerValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'centerSlot',
+      required: false,
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'legend',
+      required: false,
+      primitives: ['boolean'],
     },
     {
       name: 'className',
@@ -3837,6 +3990,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'annotations',
+      required: false,
     },
   ],
   ScrollArea: [

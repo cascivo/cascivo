@@ -1,0 +1,140 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'RadialBar',
+  description:
+    'Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.',
+  category: 'chart',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'data',
+      type: 'RadialBarDatum[]',
+      required: true,
+      description: 'One ring per datum: { id, label, value, color? }.',
+    },
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      description: 'Chart title (also used as aria-label).',
+    },
+    {
+      name: 'description',
+      type: 'string',
+      required: false,
+      description: 'Subtitle below the title.',
+    },
+    {
+      name: 'size',
+      type: 'number',
+      required: false,
+      description: 'Square shorthand (width === height). Explicit width/height win.',
+    },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '300' },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      description: 'Domain top — the value a full sweep represents. Defaults to the largest datum.',
+    },
+    {
+      name: 'sweep',
+      type: 'number',
+      required: false,
+      default: '270',
+      description: 'Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).',
+    },
+    { name: 'centerValue', type: 'string', required: false, description: 'Text in the hole.' },
+    {
+      name: 'centerLabel',
+      type: 'string',
+      required: false,
+      description: 'Caption below centerValue.',
+    },
+    {
+      name: 'centerSlot',
+      type: 'ReactNode',
+      required: false,
+      description: 'Arbitrary hole content; wins over centerValue/centerLabel.',
+    },
+    { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip.' },
+    { name: 'legend', type: 'boolean', required: false, description: 'Show ring legend.' },
+    { name: 'className', type: 'string', required: false },
+    {
+      name: 'plain',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Marks only — no legend. For micro/inline charts.',
+    },
+  ],
+  tokens: [
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
+    '--cascivo-chart-grid',
+  ],
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate rings)',
+      'Escape (clear focus)',
+    ],
+  },
+  examples: [
+    {
+      title: 'Goal progress rings',
+      code: `import { RadialBar } from '@cascivo/charts'
+
+<RadialBar
+  title="Quarterly goals"
+  max={100}
+  centerValue="72%"
+  centerLabel="On track"
+  data={[
+    { id: 'rev', label: 'Revenue', value: 84 },
+    { id: 'nps', label: 'NPS', value: 61 },
+    { id: 'ret', label: 'Retention', value: 72 },
+  ]}
+/>`,
+    },
+  ],
+  dependencies: ['@cascivo/charts'],
+  tags: ['chart', 'radial', 'gauge', 'progress', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing a few progress-to-goal values in a compact circular form',
+      'A dashboard KPI cluster where each metric is a ring toward its target',
+    ],
+    whenNotToUse: [
+      'Comparing many categories precisely — use BarChart',
+      'Part-of-whole of a single total — use PieChart',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Meter',
+        relationship: 'alternative',
+        reason: 'Use for a single value against thresholds',
+      },
+      {
+        name: 'PieChart',
+        relationship: 'alternative',
+        reason: 'Use for part-of-whole proportions of one total',
+      },
+    ],
+    a11yRationale: 'Renders with role="img" and requires a title prop for screen reader labeling.',
+    flexibility: [],
+  },
+}

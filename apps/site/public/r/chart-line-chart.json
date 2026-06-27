@@ -110,6 +110,18 @@
         "required": false,
         "default": "false",
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+      },
+      {
+        "name": "labels",
+        "type": "boolean | { format?: (v: number) => string; position?: string }",
+        "required": false,
+        "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
       }
     ],
     "tokens": [
@@ -136,6 +148,10 @@
       {
         "title": "Basic line chart",
         "code": "import { LineChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+      },
+      {
+        "title": "With an SLO target line",
+        "code": "<LineChart\n  series={series}\n  x={d => d.x}\n  y={d => d.y}\n  title=\"Latency\"\n  annotations={[{ kind: 'line', axis: 'y', value: 200, label: 'SLO' }]}\n/>"
       }
     ],
     "dependencies": ["@cascivo/charts"],

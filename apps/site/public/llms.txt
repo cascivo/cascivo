@@ -109,7 +109,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (181 components)
+## Component index (183 components)
 
 ### chart
 
@@ -119,6 +119,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [chart/bubble-chart](https://docs.cascivo.com/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
 - [chart/bullet](https://docs.cascivo.com/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick.
 - [chart/combo-chart](https://docs.cascivo.com/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes.
+- [chart/funnel](https://docs.cascivo.com/llms/chart/funnel.md) — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.
 - [chart/heatmap](https://docs.cascivo.com/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation.
 - [chart/histogram](https://docs.cascivo.com/llms/chart/histogram.md) — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 - [chart/kpi](https://docs.cascivo.com/llms/chart/kpi.md) — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
@@ -126,6 +127,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [chart/meter](https://docs.cascivo.com/llms/chart/meter.md) — Progress meter in bar or gauge variant with threshold coloring.
 - [chart/pie-chart](https://docs.cascivo.com/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend.
 - [chart/radar](https://docs.cascivo.com/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
+- [chart/radial-bar](https://docs.cascivo.com/llms/chart/radial-bar.md) — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.
 - [chart/scatter-chart](https://docs.cascivo.com/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
 - [chart/sparkline](https://docs.cascivo.com/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 - [chart/treemap](https://docs.cascivo.com/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
@@ -348,6 +350,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [BubbleChart](https://docs.cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
 - [Bullet](https://docs.cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
 - [ComboChart](https://docs.cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
+- [Funnel](https://docs.cascivo.com/context/chart/funnel.md) — Use when: Showing drop-off across the ordered stages of a process (signup, checkout)
 - [Heatmap](https://docs.cascivo.com/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
 - [Histogram](https://docs.cascivo.com/context/chart/histogram.md) — Use when: Showing the frequency distribution of a single continuous variable
 - [Kpi](https://docs.cascivo.com/context/chart/kpi.md) — Use when: Highlighting a single headline metric with an optional change delta
@@ -355,6 +358,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Meter](https://docs.cascivo.com/context/chart/meter.md) — Use when: Showing a rated or gauged value within a known min/max range
 - [PieChart](https://docs.cascivo.com/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
 - [Radar](https://docs.cascivo.com/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
+- [RadialBar](https://docs.cascivo.com/context/chart/radial-bar.md) — Use when: Showing a few progress-to-goal values in a compact circular form
 - [ScatterChart](https://docs.cascivo.com/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
 - [Sparkline](https://docs.cascivo.com/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
 - [Treemap](https://docs.cascivo.com/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
@@ -497,4 +501,4 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-06-26 from registry v0.0.0_
+_Generated: 2026-06-27 from registry v0.0.0_

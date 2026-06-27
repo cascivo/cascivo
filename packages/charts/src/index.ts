@@ -36,3 +36,7 @@ export * from './charts/heatmap/heatmap'
 export * from './charts/treemap/treemap'
 export * from './charts/radar/radar'
 export * from './charts/bullet/bullet'
+
+// Wave-3 chart components
+export * from './charts/radial-bar/radial-bar'
+export * from './charts/funnel/funnel'

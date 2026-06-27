@@ -157,6 +157,7 @@
             "FlowPanel",
             "FlowStory",
             "Form",
+            "Funnel",
             "Grid",
             "Header",
             "HeaderPanel",
@@ -211,6 +212,7 @@
             "PullToRefresh",
             "QrCode",
             "Radar",
+            "RadialBar",
             "RadialProgress",
             "Radio",
             "RadioCard",
@@ -5242,6 +5244,50 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Funnel"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "showConversion": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Heatmap"
               }
             },
@@ -5563,6 +5609,69 @@
                   }
                 },
                 "required": ["axes", "series", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "RadialBar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "sweep": {
+                    "type": "number"
+                  },
+                  "centerValue": {
+                    "type": "string"
+                  },
+                  "centerLabel": {
+                    "type": "string"
+                  },
+                  "centerSlot": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "legend": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
               }
             }
           }

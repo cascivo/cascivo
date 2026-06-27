@@ -20,20 +20,21 @@ import { ScatterChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type                   | Required                       | Default | Description                                                           |
-| ------------- | ---------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | ------------------------ |
-| `series`      | `ScatterChartSeries[]` | yes                            | —       | —                                                                     |
-| `title`       | `string`               | yes                            | —       | —                                                                     |
-| `description` | `string`               | no                             | —       | —                                                                     |
-| `r`           | `number                | ((d: ScatterDatum) => number)` | no      | `4`                                                                   | Point radius or accessor |
-| `width`       | `number`               | no                             | —       | —                                                                     |
-| `height`      | `number`               | no                             | `300`   | —                                                                     |
-| `xTicks`      | `number`               | no                             | `5`     | —                                                                     |
-| `yTicks`      | `number`               | no                             | `5`     | —                                                                     |
-| `legend`      | `boolean`              | no                             | —       | —                                                                     |
-| `tooltip`     | `boolean`              | no                             | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`               | no                             | —       | —                                                                     |
-| `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop          | Type                   | Required                       | Default | Description                                                                                    |
+| ------------- | ---------------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- | ------------------------ |
+| `series`      | `ScatterChartSeries[]` | yes                            | —       | —                                                                                              |
+| `title`       | `string`               | yes                            | —       | —                                                                                              |
+| `description` | `string`               | no                             | —       | —                                                                                              |
+| `r`           | `number                | ((d: ScatterDatum) => number)` | no      | `4`                                                                                            | Point radius or accessor |
+| `width`       | `number`               | no                             | —       | —                                                                                              |
+| `height`      | `number`               | no                             | `300`   | —                                                                                              |
+| `xTicks`      | `number`               | no                             | `5`     | —                                                                                              |
+| `yTicks`      | `number`               | no                             | `5`     | —                                                                                              |
+| `legend`      | `boolean`              | no                             | —       | —                                                                                              |
+| `tooltip`     | `boolean`              | no                             | —       | Enable hover/keyboard tooltip                                                                  |
+| `className`   | `string`               | no                             | —       | —                                                                                              |
+| `plain`       | `boolean`              | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
+| `annotations` | `Annotation[]`         | no                             | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 
 ## Examples
 

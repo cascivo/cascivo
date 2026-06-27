@@ -150,7 +150,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-181 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+183 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -343,6 +343,7 @@ routing break after adding one of these, check that the import resolves to
 - **BubbleChart** — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
 - **Bullet** — Bullet chart with background range bands, measure bar, and target tick.
 - **ComboChart** — Combination bar + line chart on shared or dual y-axes.
+- **Funnel** — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.
 - **Heatmap** — Two-dimensional heatmap with band scales and color-mix cell interpolation.
 - **Histogram** — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 - **Kpi** — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
@@ -350,6 +351,7 @@ routing break after adding one of these, check that the import resolves to
 - **Meter** — Progress meter in bar or gauge variant with threshold coloring.
 - **PieChart** — Pie or donut chart with hover segments and optional legend.
 - **Radar** — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
+- **RadialBar** — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.
 - **ScatterChart** — Scatter plot with variable point radius, multi-series, and hover tooltip.
 - **Sparkline** — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 - **Treemap** — Squarified treemap for visualizing part-to-whole hierarchical data.
