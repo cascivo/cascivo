@@ -15,6 +15,8 @@ import { Heatmap } from '@cascivo/charts'
 import { Treemap } from '@cascivo/charts'
 import { Radar } from '@cascivo/charts'
 import { Bullet } from '@cascivo/charts'
+import { RadialBar } from '@cascivo/charts'
+import { Funnel } from '@cascivo/charts'
 
 // Palette gallery — all 12 themes, 8-series BarChart (one slot per Okabe-Ito color)
 const PALETTE_THEMES = [
@@ -440,6 +442,100 @@ export function ChartsPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
           <Bullet value={55} target={70} ranges={[30, 60, 100]} label="Satisfaction" />
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h2>RadialBar</h2>
+        <p>Concentric radial bars — a circular gauge family for progress-to-goal clusters.</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+          <RadialBar
+            data={[
+              { id: 'rev', label: 'Revenue', value: 84 },
+              { id: 'nps', label: 'NPS', value: 61 },
+              { id: 'ret', label: 'Retention', value: 72 },
+            ]}
+            title="Quarterly goals"
+            max={100}
+            size={260}
+            centerValue="72%"
+            centerLabel="On track"
+            tooltip
+            legend
+          />
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h2>Funnel</h2>
+        <p>
+          Conversion funnel — each stage narrows toward the next, with optional conversion labels.
+        </p>
+        <Funnel
+          data={[
+            { id: 'visit', label: 'Visited', value: 8200 },
+            { id: 'signup', label: 'Signed up', value: 3100 },
+            { id: 'active', label: 'Activated', value: 1400 },
+            { id: 'paid', label: 'Paid', value: 520 },
+          ]}
+          title="Signup funnel"
+          showConversion
+          height={300}
+          tooltip
+        />
+      </section>
+
+      <section class="doc-section">
+        <h2>Annotations &amp; data labels</h2>
+        <p>
+          Any cartesian chart accepts <code>annotations</code> (reference lines, shaded bands,
+          markers) and opt-in <code>labels</code>. Bars also support 100%-stacked mode.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <LineChart
+            series={[lineSeries[0]!]}
+            x={(d) => d.x}
+            y={(d) => d.y}
+            title="Revenue with a target line + goal band"
+            height={260}
+            tooltip
+            annotations={[
+              { kind: 'area', axis: 'y', from: 3800, to: 5000, label: 'Goal band' },
+              {
+                kind: 'line',
+                axis: 'y',
+                value: 4200,
+                label: 'Target',
+                color: 'var(--cascivo-color-destructive)',
+              },
+            ]}
+          />
+          <BarChart
+            series={[
+              {
+                id: 'done',
+                label: 'Done',
+                data: months.slice(0, 4).map((m, i) => ({ x: m, y: 5 + i })),
+              },
+              {
+                id: 'wip',
+                label: 'In progress',
+                data: months.slice(0, 4).map((m, i) => ({ x: m, y: 3 + (i % 2) })),
+              },
+              {
+                id: 'todo',
+                label: 'Todo',
+                data: months.slice(0, 4).map((m, i) => ({ x: m, y: 4 - (i % 3) })),
+              },
+            ]}
+            x={(d) => d.x}
+            y={(d) => d.y}
+            title="Status mix (100% stacked)"
+            mode="percent"
+            height={260}
+            tooltip
+            legend
+          />
         </div>
       </section>
 

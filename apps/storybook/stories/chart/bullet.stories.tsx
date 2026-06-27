@@ -17,28 +17,8 @@ export default meta
 type Story = StoryObj<typeof Bullet>
 
 export const Default: Story = {
-  args: {
-    value: 72,
-    target: 80,
-    ranges: [40, 70, 100],
-    label: 'Revenue %',
-  },
+  args: { label: 'Revenue', value: 72, target: 80, ranges: [50, 75, 100], max: 100 },
 }
-
-export const AboveTarget: Story = {
-  args: {
-    value: 88,
-    target: 80,
-    ranges: [40, 70, 100],
-    label: 'Q2 attainment',
-  },
-}
-
-export const BelowWarning: Story = {
-  args: {
-    value: 35,
-    target: 60,
-    ranges: [40, 70, 100],
-    label: 'Pipeline coverage',
-  },
+export const OverTarget: Story = {
+  args: { label: 'Signups', value: 94, target: 80, ranges: [50, 75, 100], max: 100 },
 }

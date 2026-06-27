@@ -7,7 +7,7 @@ const meta: Meta<typeof Meter> = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
-      <div style={{ inlineSize: 'min(40rem, 90vw)', padding: '2rem' }}>
+      <div style={{ inlineSize: 'min(32rem, 90vw)', padding: '2rem' }}>
         <Story />
       </div>
     ),
@@ -16,33 +16,8 @@ const meta: Meta<typeof Meter> = {
 export default meta
 type Story = StoryObj<typeof Meter>
 
-export const Default: Story = {
-  args: {
-    value: 72,
-    label: 'CPU usage',
-  },
-}
-
+export const Bar: Story = { args: { label: 'Disk usage', value: 68, variant: 'bar' } }
+export const Gauge: Story = { args: { label: 'CPU', value: 82, variant: 'gauge' } }
 export const WithThresholds: Story = {
-  args: {
-    value: 85,
-    label: 'Memory usage',
-    thresholds: { warning: 70, critical: 90 },
-  },
-}
-
-export const Gauge: Story = {
-  args: {
-    value: 65,
-    label: 'Disk I/O',
-    variant: 'gauge',
-  },
-}
-
-export const Low: Story = {
-  args: {
-    value: 15,
-    label: 'Network load',
-    thresholds: { warning: 60, critical: 80 },
-  },
+  args: { label: 'Memory', value: 91, thresholds: { warning: 70, critical: 85 } },
 }

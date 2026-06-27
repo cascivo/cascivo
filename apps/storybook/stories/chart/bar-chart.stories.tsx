@@ -96,3 +96,56 @@ export const Horizontal: Story = {
     orientation: 'horizontal',
   },
 }
+
+const mix = [
+  {
+    id: 'done',
+    label: 'Done',
+    data: [
+      { x: 'Mon', y: 5 },
+      { x: 'Tue', y: 8 },
+      { x: 'Wed', y: 6 },
+    ],
+  },
+  {
+    id: 'wip',
+    label: 'In progress',
+    data: [
+      { x: 'Mon', y: 3 },
+      { x: 'Tue', y: 2 },
+      { x: 'Wed', y: 4 },
+    ],
+  },
+  {
+    id: 'todo',
+    label: 'Todo',
+    data: [
+      { x: 'Mon', y: 4 },
+      { x: 'Tue', y: 1 },
+      { x: 'Wed', y: 5 },
+    ],
+  },
+]
+
+export const PercentStacked: Story = {
+  args: {
+    series: mix,
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
+    title: 'Status mix (100% stacked)',
+    mode: 'percent',
+    tooltip: true,
+    legend: true,
+  },
+}
+
+export const WithLabelsAndTarget: Story = {
+  args: {
+    series: [mix[0]!],
+    x: (d) => (d as Pt).x,
+    y: (d) => (d as Pt).y,
+    title: 'Throughput with labels + SLA line',
+    labels: true,
+    annotations: [{ kind: 'line', axis: 'y', value: 6, label: 'SLA' }],
+  },
+}

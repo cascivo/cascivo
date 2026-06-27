@@ -73,3 +73,66 @@ export const LinearCurve: Story = {
     legend: true,
   },
 }
+
+export const WithTargetLine: Story = {
+  args: {
+    series: [series[0]!],
+    x: xDate,
+    y: yVal,
+    title: 'Revenue with target + band (annotations)',
+    tooltip: true,
+    annotations: [
+      { kind: 'area', axis: 'y', from: 80, to: 110, label: 'Goal band' },
+      {
+        kind: 'line',
+        axis: 'y',
+        value: 90,
+        label: 'Target',
+        color: 'var(--cascivo-color-destructive)',
+      },
+    ],
+  },
+}
+
+export const WithDataLabels: Story = {
+  args: {
+    series: [series[0]!],
+    x: xDate,
+    y: yVal,
+    title: 'Revenue with value labels',
+    labels: true,
+  },
+}
+
+// A gap (NaN) in the data — the line breaks at the gap by default.
+const gappy = [
+  {
+    id: 'uptime',
+    label: 'Uptime %',
+    data: [99, 98, Number.NaN, 97, 99, 100, Number.NaN, 98].map((y, i) => ({
+      x: new Date(2024, i, 1),
+      y,
+    })),
+  },
+]
+
+export const ConnectNulls: Story = {
+  args: {
+    series: gappy,
+    x: xDate,
+    y: yVal,
+    title: 'Gaps bridged (connectNulls)',
+    connectNulls: true,
+    tooltip: true,
+  },
+}
+
+export const BrokenAtGaps: Story = {
+  args: {
+    series: gappy,
+    x: xDate,
+    y: yVal,
+    title: 'Gaps break the line (default)',
+    tooltip: true,
+  },
+}
