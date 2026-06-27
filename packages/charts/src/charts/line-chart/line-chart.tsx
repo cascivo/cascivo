@@ -18,6 +18,7 @@ import { linePath, splitDefined } from '../../engine/shape'
 import { decimate as decimatePoints, type DecimateMethod, type Pt } from '../../engine/decimate'
 import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
+import type { ReactNode } from 'react'
 
 export interface DecimateOptions {
   method?: DecimateMethod
@@ -70,6 +71,12 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   decimate?: boolean | DecimateOptions
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
   toolbox?: boolean | ToolboxOptions
+  /** Tune the reduced-motion-gated transitions: `false` disables; an object sets duration/easing/properties. */
+  transition?: boolean | { duration?: number; easing?: string; properties?: string[] }
+  /** Render custom SVG behind the marks (watermark/region) — a lightweight extension seam. */
+  onBeforeDraw?: (ctx: { width: number; height: number }) => ReactNode
+  /** Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam. */
+  onAfterDraw?: (ctx: { width: number; height: number }) => ReactNode
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -101,6 +108,9 @@ export function LineChart<Datum = { x: number; y: number }>({
   tooltipMode,
   decimate,
   toolbox,
+  transition,
+  onBeforeDraw,
+  onAfterDraw,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -310,6 +320,9 @@ export function LineChart<Datum = { x: number; y: number }>({
               }
             : undefined
         }
+        transition={transition}
+        onBeforeDraw={onBeforeDraw}
+        onAfterDraw={onAfterDraw}
       >
         {({ width: w, height: h }) => {
           const innerW = w - margins.left - margins.right

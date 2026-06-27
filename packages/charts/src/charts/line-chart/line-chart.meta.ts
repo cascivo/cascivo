@@ -164,6 +164,27 @@ export const meta: ComponentMeta = {
       description:
         'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom).',
     },
+    {
+      name: 'transition',
+      type: 'boolean | { duration?: number; easing?: string; properties?: string[] }',
+      required: false,
+      description:
+        'Tune the reduced-motion-gated enter/update transitions (false disables). Always suppressed under prefers-reduced-motion.',
+    },
+    {
+      name: 'onBeforeDraw',
+      type: '(ctx: { width: number; height: number }) => ReactNode',
+      required: false,
+      description:
+        'Render custom SVG behind the marks (watermark/region) — a lightweight extension seam.',
+    },
+    {
+      name: 'onAfterDraw',
+      type: '(ctx: { width: number; height: number }) => ReactNode',
+      required: false,
+      description:
+        'Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

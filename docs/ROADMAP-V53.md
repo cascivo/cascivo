@@ -1,8 +1,15 @@
 # cascivo — Roadmap v53: Charts — Chart.js + ECharts Audit (Interaction, Data Pipeline & Reach)
 
 **Last updated:** 2026-06-27
-**Status:** 📋 Planned — gap analysis complete and verified against today's `@cascivo/charts` source (post-v52); no
-code written yet. This roadmap defines the work; the plan documents below decompose it into seven tranches.
+**Status:** ✅ Shipped (core) — T1–T7 implemented: a DataZoom slider + inside wheel/drag/keyboard zoom-pan + `syncId`
+chart connect; a `visualMap` (continuous + piecewise, CVD-safe oklch ramps); a pure `transform`/`encode` data
+pipeline (filter/sort/aggregate/bin/regression); an axis-pointer crosshair + shared tooltip + LTTB/min-max
+decimation; a `toolbox` (PNG/SVG export, data view, restore); three new types (Candlestick, Polar, Gauge); and
+configurable, reduced-motion-gated animation + `onBeforeDraw`/`onAfterDraw` draw hooks. `@cascivo/charts` is now
+**~25 chart types** with **zero runtime dependencies still intact**. Deferred to a follow-up: Bar/Scatter zoom
+windowing (Line/Area shipped), progressive Canvas paint for Line/Area, and the interactive apps/site recipe gallery
+(an honest comparison + copyable recipes ship as `docs/CHART-LIBRARIES.md`). See the implementation log at the end.
+`pnpm ready` green.
 **Plan documents:** `docs/superpowers/plans/2026-06-27-v53-master-plan.md` + tranches 1–7
 **Builds on:** the v51 + v52 charts work — the engine (`packages/charts/src/engine/{scale,scale-log,scale-time,shape,stacked,nearest,voronoi,stats,treemap,stream,hierarchy,sankey}.ts`),
 the chrome (`chrome/{axis,grid-lines,legend,reference,data-label,defs,glyph,text,brush}.tsx`), the frame/canvas core
@@ -169,3 +176,43 @@ the finished surface. T1–T5 are largely independent; T6/T7 depend on them.
   (v51 → here T1), plus the v52 follow-ups it can absorb (crosshair/shared tooltip).
 - The verification figures (0 dataZoom/visualMap/transform/toolbox/decimation/candlestick/polar/gauge hits, 22 types)
   are point-in-time reads of `main` at 2026-06-27 and should be re-confirmed at implementation start.
+
+---
+
+## Implementation log (2026-06-27)
+
+Shipped across seven commits; `pnpm ready` green (build + type-check + 414 chart tests + repo-wide gate). **No
+runtime dependency added** — the moat (zero deps + a11y + theming) is intact.
+
+- **T1 — dataZoom + zoom-pan + connect.** `chrome/data-zoom.tsx` (a Brush with a pannable body), `core/zoom.ts`
+  (pure window math) + in-frame wheel/drag/keyboard zoom-pan with a reset and re-ticked axes, and `core/sync.ts`
+  (a ref-counted `syncId` registry) so connected charts mirror zoom + hover. Wired into Line/Area. **Closes E-1/E-2.**
+  *Deferred:* Bar/Scatter window slicing.
+- **T2 — visualMap.** `engine/ramp.ts` (CVD-safe sequential/diverging ramps interpolated in oklch) +
+  `chrome/visual-map.tsx` (`mapVisual` + a continuous/piecewise legend that filters the range). Wired into
+  Heatmap/Scatter/Calendar. **Closes E-3.**
+- **T3 — data pipeline.** `engine/transform.ts` (filter/sort/aggregate/bin/least-squares regression) +
+  `engine/dataset.ts` (`encode` a table → series) — pure, composable, dependency-free pre-processors; the component
+  contract is unchanged. **Closes E-4.**
+- **T4 — crosshair + shared tooltip + decimation.** `TooltipModel` gains `mode:'axis'` → an axis crosshair + one
+  tooltip listing every series at the hovered x (keyboard + `aria-live` follow the x); `engine/decimate.ts`
+  (LTTB + min-max) decimates dense Line/Area while the fallback table keeps full data. **Closes E-5/C-1.**
+  *Deferred:* progressive Canvas paint.
+- **T5 — toolbox.** `core/export.ts` (standalone SVG with tokens inlined + a dpr PNG + download) +
+  `chrome/toolbox.tsx` (real `<button>`s: PNG/SVG/data-view/restore, i18n-labelled, ≥44px coarse). Wired into
+  Line/Area/Heatmap/Scatter, off by default. **Closes E-6.**
+- **T6 — new types.** **Candlestick** (OHLC wicks + bodies, up/down colours, optional volume), a **Polar**
+  coordinate system (`engine/polar.ts`) powering rose / polar line-area, and a **Gauge** speedometer (value arc +
+  threshold zones + ticks + needle + readout) — each with a meta (intent), tests, a story, and generated docs.
+  3D/geo/network stay out of scope. **Closes E-8.**
+- **T7 — animation + draw hook + docs.** A `transition` prop tunes the reduced-motion-gated enter/update animation
+  (duration/easing/properties → CSS vars); `onBeforeDraw`/`onAfterDraw` render slots inject custom SVG behind/over
+  the marks (the owned-code answer to Chart.js plugins); `docs/CHART-LIBRARIES.md` publishes an honest
+  cascivo/Chart.js/ECharts matrix + a copyable recipe gallery covering the v53 surface. **Closes C-2/C-3.**
+
+### Deferred to a follow-up
+
+- **Bar/Scatter zoom windowing** — Line/Area slice to the zoom window; Bar/Scatter forward the props in a follow-up.
+- **Progressive Canvas paint** for very large Line/Area series (decimation already keeps them fast).
+- **Interactive apps/site recipe gallery** — the comparison + recipes ship as `docs/CHART-LIBRARIES.md`; a live,
+  embedded gallery on the marketing/docs site is the remaining step.

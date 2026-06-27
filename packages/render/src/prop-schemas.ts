@@ -3111,6 +3111,18 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'toolbox',
       required: false,
     },
+    {
+      name: 'transition',
+      required: false,
+    },
+    {
+      name: 'onBeforeDraw',
+      required: false,
+    },
+    {
+      name: 'onAfterDraw',
+      required: false,
+    },
   ],
   Link: [
     {

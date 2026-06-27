@@ -53,6 +53,16 @@ export interface ChartFrameProps {
   toolbox?: boolean | ToolboxOptions | undefined
   /** Extra reset run by the toolbox's Restore (e.g. clearing a visualMap filter). */
   onRestore?: (() => void) | undefined
+  /**
+   * Tune the (reduced-motion-gated) enter/update transitions. `false` disables them;
+   * an object sets `duration` (ms), `easing`, and the transitioned `properties`. Unset
+   * keeps the defaults. Always fully suppressed under `prefers-reduced-motion`.
+   */
+  transition?: boolean | { duration?: number; easing?: string; properties?: string[] } | undefined
+  /** Render custom SVG behind the marks (a watermark, a region) — a lightweight extension seam. */
+  onBeforeDraw?: ((ctx: { width: number; height: number }) => ReactNode) | undefined
+  /** Render custom SVG over the marks (an overlay, an extra series) — a lightweight extension seam. */
+  onAfterDraw?: ((ctx: { width: number; height: number }) => ReactNode) | undefined
 }
 
 export function ChartFrame({
@@ -74,6 +84,9 @@ export function ChartFrame({
   zoom,
   toolbox,
   onRestore,
+  transition,
+  onBeforeDraw,
+  onAfterDraw,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -154,8 +167,23 @@ export function ChartFrame({
   const useCanvas = renderer === 'canvas' && paint !== undefined
   const interactive = resolvedTooltip !== undefined || zoom !== undefined
 
+  // Animation tuning → CSS custom properties consumed by chart-frame.module.css.
+  const animVars: React.CSSProperties = {}
+  if (transition && typeof transition === 'object') {
+    const v = animVars as Record<string, string>
+    if (transition.duration !== undefined)
+      v['--cascivo-chart-anim-dur'] = `${transition.duration}ms`
+    if (transition.easing) v['--cascivo-chart-anim-ease'] = transition.easing
+    if (transition.properties) v['--cascivo-chart-anim-props'] = transition.properties.join(', ')
+  }
+
   const containerStyle: React.CSSProperties | undefined =
-    interactive || useCanvas || toolboxOptions ? { position: 'relative' } : undefined
+    interactive || useCanvas || toolboxOptions || Object.keys(animVars).length > 0
+      ? {
+          ...animVars,
+          ...(interactive || useCanvas || toolboxOptions ? { position: 'relative' } : {}),
+        }
+      : undefined
 
   return (
     <div
@@ -164,6 +192,7 @@ export function ChartFrame({
       style={containerStyle}
       {...(dataState !== undefined && { 'data-state': dataState })}
       {...(plain === true && { 'data-plain': '' })}
+      {...(transition === false && { 'data-no-anim': '' })}
     >
       {toolboxOptions && (
         <div style={{ position: 'absolute', top: 4, right: 4, zIndex: 12 }}>
@@ -195,7 +224,9 @@ export function ChartFrame({
         viewBox={`0 0 ${w} ${h}`}
       >
         {description && <desc id={descId}>{description}</desc>}
+        {onBeforeDraw?.({ width: w, height: h })}
         {children({ width: w, height: h })}
+        {onAfterDraw?.({ width: w, height: h })}
         {dataState === 'empty' && (
           <text
             x={w / 2}
