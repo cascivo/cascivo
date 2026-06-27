@@ -711,6 +711,21 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-candlestick",
+      "type": "registry:component",
+      "files": [],
+      "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-combo-chart",
       "type": "registry:component",
       "files": [],
@@ -730,6 +745,21 @@
       "type": "registry:component",
       "files": [],
       "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-gauge",
+      "type": "registry:component",
+      "files": [],
+      "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {
@@ -820,6 +850,21 @@
       "type": "registry:component",
       "files": [],
       "description": "Pie or donut chart with hover segments and optional legend.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-polar",
+      "type": "registry:component",
+      "files": [],
+      "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {

@@ -20,6 +20,7 @@ export * from './engine/stream'
 export * from './engine/hierarchy'
 export * from './engine/sankey'
 export * from './engine/ramp'
+export * from './engine/polar'
 // Data pipeline — filter/sort/aggregate/bin/regression + encode (table → series).
 export * from './engine/transform'
 export * from './engine/dataset'
@@ -75,3 +76,8 @@ export * from './charts/stream/stream'
 export * from './charts/sunburst/sunburst'
 export * from './charts/sankey/sankey'
 export * from './charts/calendar/calendar'
+
+// Wave-5 chart components (chart.js/echarts types)
+export * from './charts/candlestick/candlestick'
+export * from './charts/polar/polar'
+export * from './charts/gauge/gauge'

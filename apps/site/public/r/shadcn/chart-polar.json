@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-polar",
+  "type": "registry:component",
+  "files": [],
+  "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

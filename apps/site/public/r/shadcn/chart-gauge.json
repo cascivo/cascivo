@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-gauge",
+  "type": "registry:component",
+  "files": [],
+  "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+  "dependencies": ["@cascivo/charts"],
+  "categories": ["chart"],
+  "meta": {
+    "cascivo": {
+      "type": "chart",
+      "version": "0.0.0"
+    }
+  }
+}

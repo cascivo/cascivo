@@ -110,6 +110,7 @@
             "ButtonGroup",
             "Calendar",
             "Calendar",
+            "Candlestick",
             "Card",
             "Carousel",
             "Center",
@@ -159,6 +160,7 @@
             "FlowStory",
             "Form",
             "Funnel",
+            "Gauge",
             "Grid",
             "Header",
             "HeaderPanel",
@@ -204,6 +206,7 @@
             "Pagination",
             "PasswordInput",
             "PieChart",
+            "Polar",
             "Popover",
             "Progress",
             "ProgressBar",
@@ -5303,6 +5306,59 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Candlestick"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "yTicks": {
+                    "type": "number"
+                  },
+                  "upColor": {
+                    "type": "string"
+                  },
+                  "downColor": {
+                    "type": "string"
+                  },
+                  "volume": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ComboChart"
               }
             },
@@ -5383,6 +5439,62 @@
                   }
                 },
                 "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Gauge"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "sweep": {
+                    "type": "number"
+                  },
+                  "ticks": {
+                    "type": "number"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["value", "title"]
               }
             }
           }
@@ -5702,6 +5814,57 @@
                     "type": "string"
                   },
                   "legend": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Polar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["bar", "line", "area"]
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "rings": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "tooltip": {
                     "type": "boolean"
                   },
                   "className": {

@@ -249,11 +249,19 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chart/candlestick</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/combo-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/chart/funnel</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/gauge</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -278,6 +286,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/chart/pie-chart</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/polar</loc>
     <priority>0.6</priority>
   </url>
   <url>

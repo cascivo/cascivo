@@ -1,0 +1,118 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Polar',
+  description:
+    'A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.',
+  category: 'chart',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'data',
+      type: 'PolarDatum[]',
+      required: true,
+      description: 'One entry per category: { label, value, color? }.',
+    },
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      description: 'Chart title (also aria-label).',
+    },
+    { name: 'description', type: 'string', required: false },
+    {
+      name: 'mode',
+      type: "'bar' | 'line' | 'area'",
+      required: false,
+      default: 'bar',
+      description: 'Bars (rose), a polar line, or a filled polar area.',
+    },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '320' },
+    {
+      name: 'rings',
+      type: 'number',
+      required: false,
+      default: '4',
+      description: 'Radial ring count.',
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      description: 'Domain top (full radius). Defaults to the largest value.',
+    },
+    { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip.' },
+    { name: 'className', type: 'string', required: false },
+    {
+      name: 'plain',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Marks only — no rings or labels. For micro/inline charts.',
+    },
+  ],
+  tokens: [
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
+    '--cascivo-chart-grid',
+  ],
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: ['Tab (focus chart)', 'ArrowLeft/ArrowRight (navigate)', 'Escape (clear focus)'],
+  },
+  examples: [
+    {
+      title: 'Wind rose',
+      code: `import { Polar } from '@cascivo/charts'
+
+<Polar
+  title="Wind by direction"
+  mode="bar"
+  tooltip
+  data={[
+    { label: 'N', value: 12 },
+    { label: 'E', value: 8 },
+    { label: 'S', value: 5 },
+    { label: 'W', value: 15 },
+  ]}
+/>`,
+    },
+  ],
+  dependencies: ['@cascivo/charts'],
+  tags: ['chart', 'polar', 'rose', 'radial', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Cyclical/directional categories where the circle is meaningful (wind, hours, months)',
+      'A rose chart comparing a value across directions',
+    ],
+    whenNotToUse: [
+      'Precise magnitude comparison — use BarChart',
+      'Multi-metric profiles on shared axes — use Radar',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Radar',
+        relationship: 'alternative',
+        reason: 'Use to compare several series across the same axes',
+      },
+      {
+        name: 'RadialBar',
+        relationship: 'alternative',
+        reason: 'Use concentric rings for progress-to-goal',
+      },
+    ],
+    a11yRationale: 'Renders with role="img"; values are in the fallback table.',
+    flexibility: [],
+  },
+}

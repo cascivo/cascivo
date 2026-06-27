@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/gauge",
+  "type": "chart",
+  "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+  "version": "0.0.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "meta": {
+    "name": "Gauge",
+    "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+    "category": "chart",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "description": "The value the needle points to."
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100"
+      },
+      {
+        "name": "thresholds",
+        "type": "{ upTo: number; color: string }[]",
+        "required": false,
+        "description": "Coloured zones from min upward; the last should reach max."
+      },
+      {
+        "name": "unit",
+        "type": "string",
+        "required": false,
+        "description": "Suffix after the centre value."
+      },
+      {
+        "name": "sweep",
+        "type": "number",
+        "required": false,
+        "default": "270",
+        "description": "Total sweep angle in degrees (270 = a speedometer arc)."
+      },
+      {
+        "name": "ticks",
+        "type": "number",
+        "required": false,
+        "default": "5",
+        "description": "Major tick count."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Chart title (also aria-label)."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "240"
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no ticks/labels. For micro/inline charts."
+      }
+    ],
+    "tokens": ["--cascivo-color-accent", "--cascivo-color-foreground", "--cascivo-chart-grid"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": ["Tab (focus chart)"]
+    },
+    "examples": [
+      {
+        "title": "Speedometer with zones",
+        "code": "import { Gauge } from '@cascivo/charts'\n\n<Gauge\n  title=\"CPU load\"\n  value={72}\n  unit=\"%\"\n  thresholds={[\n    { upTo: 50, color: 'var(--cascivo-chart-2)' },\n    { upTo: 80, color: 'var(--cascivo-chart-3)' },\n    { upTo: 100, color: 'var(--cascivo-chart-4)' },\n  ]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "A single value against a range with a needle and threshold zones",
+        "Dashboard KPIs where a speedometer metaphor aids quick reading"
+      ],
+      "whenNotToUse": [
+        "Several progress values — use RadialBar",
+        "A simple bar against thresholds — use Meter"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Meter",
+          "relationship": "alternative",
+          "reason": "Use a linear bar for a single value against thresholds"
+        },
+        {
+          "name": "RadialBar",
+          "relationship": "alternative",
+          "reason": "Use concentric rings for multiple progress values"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\"; the value and range are in the fallback table.",
+      "flexibility": []
+    }
+  }
+}

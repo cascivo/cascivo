@@ -809,6 +809,67 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
   ],
+  Candlestick: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'yTicks',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'upColor',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'downColor',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'volume',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Card: [
     {
       name: 'variant',
@@ -2345,6 +2406,72 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
   ],
+  Gauge: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'min',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'thresholds',
+      required: false,
+    },
+    {
+      name: 'unit',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'sweep',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'ticks',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Grid: [
     {
       name: 'cols',
@@ -3621,6 +3748,62 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onSelect',
       required: false,
+    },
+  ],
+  Polar: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'mode',
+      required: false,
+      enum: ['bar', 'line', 'area'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'rings',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'max',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Popover: [],

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/candlestick",
+  "type": "chart",
+  "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+  "version": "0.0.0",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "meta": {
+    "name": "Candlestick",
+    "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+    "category": "chart",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "data",
+        "type": "CandlestickDatum[]",
+        "required": true,
+        "description": "One candle per period: { t, open, high, low, close, volume? }."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Chart title (also aria-label)."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "yTicks",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "upColor",
+        "type": "string",
+        "required": false,
+        "description": "Colour for up candles (close ≥ open)."
+      },
+      {
+        "name": "downColor",
+        "type": "string",
+        "required": false,
+        "description": "Colour for down candles (close < open)."
+      },
+      {
+        "name": "volume",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Render volume bars beneath the candles."
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean",
+        "required": false,
+        "description": "Enable hover tooltip (OHLC)."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes. For micro/inline charts."
+      }
+    ],
+    "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate candles)",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "OHLC price series",
+        "code": "import { Candlestick } from '@cascivo/charts'\n\n<Candlestick\n  title=\"ACME daily\"\n  tooltip\n  data={[\n    { t: 'Mon', open: 10, high: 14, low: 9, close: 13 },\n    { t: 'Tue', open: 13, high: 15, low: 11, close: 11 },\n    { t: 'Wed', open: 11, high: 12, low: 8, close: 9 },\n  ]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing open/high/low/close price movement over time",
+        "Financial or trading dashboards needing per-period range + direction"
+      ],
+      "whenNotToUse": [
+        "A single value trend — use LineChart",
+        "Non-financial categorical data — use BarChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use when only the closing price trend matters"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\"; OHLC values are in the fallback table and tooltip.",
+      "flexibility": []
+    }
+  }
+}

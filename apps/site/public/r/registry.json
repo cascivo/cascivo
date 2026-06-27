@@ -3632,6 +3632,132 @@
     },
     {
       "schemaVersion": 2,
+      "name": "chart/candlestick",
+      "type": "chart",
+      "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+      "category": "chart",
+      "install": "@cascivo/charts",
+      "meta": {
+        "name": "Candlestick",
+        "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "CandlestickDatum[]",
+            "required": true,
+            "description": "One candle per period: { t, open, high, low, close, volume? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "upColor",
+            "type": "string",
+            "required": false,
+            "description": "Colour for up candles (close ≥ open)."
+          },
+          {
+            "name": "downColor",
+            "type": "string",
+            "required": false,
+            "description": "Colour for down candles (close < open)."
+          },
+          {
+            "name": "volume",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Render volume bars beneath the candles."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip (OHLC)."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes. For micro/inline charts."
+          }
+        ],
+        "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate candles)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing open/high/low/close price movement over time",
+            "Financial or trading dashboards needing per-period range + direction"
+          ],
+          "whenNotToUse": [
+            "A single value trend — use LineChart",
+            "Non-financial categorical data — use BarChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "LineChart",
+              "relationship": "alternative",
+              "reason": "Use when only the closing price trend matters"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; OHLC values are in the fallback table and tooltip.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "chart/combo-chart",
       "type": "chart",
       "description": "Combination bar + line chart on shared or dual y-axes.",
@@ -3868,6 +3994,140 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "chart/gauge",
+      "type": "chart",
+      "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+      "category": "chart",
+      "install": "@cascivo/charts",
+      "meta": {
+        "name": "Gauge",
+        "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "The value the needle points to."
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "thresholds",
+            "type": "{ upTo: number; color: string }[]",
+            "required": false,
+            "description": "Coloured zones from min upward; the last should reach max."
+          },
+          {
+            "name": "unit",
+            "type": "string",
+            "required": false,
+            "description": "Suffix after the centre value."
+          },
+          {
+            "name": "sweep",
+            "type": "number",
+            "required": false,
+            "default": "270",
+            "description": "Total sweep angle in degrees (270 = a speedometer arc)."
+          },
+          {
+            "name": "ticks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Major tick count."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "240"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no ticks/labels. For micro/inline charts."
+          }
+        ],
+        "tokens": ["--cascivo-color-accent", "--cascivo-color-foreground", "--cascivo-chart-grid"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": ["Tab (focus chart)"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "A single value against a range with a needle and threshold zones",
+            "Dashboard KPIs where a speedometer metaphor aids quick reading"
+          ],
+          "whenNotToUse": [
+            "Several progress values — use RadialBar",
+            "A simple bar against thresholds — use Meter"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Meter",
+              "relationship": "alternative",
+              "reason": "Use a linear bar for a single value against thresholds"
+            },
+            {
+              "name": "RadialBar",
+              "relationship": "alternative",
+              "reason": "Use concentric rings for multiple progress values"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; the value and range are in the fallback table.",
           "flexibility": []
         }
       }
@@ -4743,6 +5003,142 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "chart/polar",
+      "type": "chart",
+      "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "polar", "rose", "radial", "data-viz"],
+      "category": "chart",
+      "install": "@cascivo/charts",
+      "meta": {
+        "name": "Polar",
+        "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "PolarDatum[]",
+            "required": true,
+            "description": "One entry per category: { label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "mode",
+            "type": "'bar' | 'line' | 'area'",
+            "required": false,
+            "default": "bar",
+            "description": "Bars (rose), a polar line, or a filled polar area."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "rings",
+            "type": "number",
+            "required": false,
+            "default": "4",
+            "description": "Radial ring count."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain top (full radius). Defaults to the largest value."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no rings or labels. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8",
+          "--cascivo-chart-grid"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "polar", "rose", "radial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Cyclical/directional categories where the circle is meaningful (wind, hours, months)",
+            "A rose chart comparing a value across directions"
+          ],
+          "whenNotToUse": [
+            "Precise magnitude comparison — use BarChart",
+            "Multi-metric profiles on shared axes — use Radar"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Radar",
+              "relationship": "alternative",
+              "reason": "Use to compare several series across the same axes"
+            },
+            {
+              "name": "RadialBar",
+              "relationship": "alternative",
+              "reason": "Use concentric rings for progress-to-goal"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; values are in the fallback table.",
           "flexibility": []
         }
       }
