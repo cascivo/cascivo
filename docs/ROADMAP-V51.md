@@ -1,9 +1,17 @@
 # cascivo — Roadmap v51: Charts — Recharts-Informed Parity & Docs Audit
 
 **Last updated:** 2026-06-27
-**Status:** 📋 Planned — gap analysis complete and verified against today's `@cascivo/charts` source; no code
-written yet. This roadmap defines the work; the plan documents below decompose it into seven tranches.
+**Status:** ✅ Shipped (core) — T1–T6 implemented: annotation layer, data labels, `connectNulls` + percent
+stacking, `onSelect` events + reduced-motion entrance, RadialBar + Funnel, and full Storybook + docs coverage.
+Deferred to a follow-up: Brush + `syncId` (T4 remainder), axis titles + explicit domain + generalized dual-axis
+(T3 remainder), the recipe gallery + live-edit playground (T7), and Sankey + Sunburst (always out of scope). See
+the implementation log at the end. `pnpm ready` green.
 **Plan documents:** `docs/superpowers/plans/2026-06-27-v51-master-plan.md` + tranches 1–7
+
+> **Correction (verified during implementation):** the "LLM docs cover 7 of 17 charts" finding (C-D2) and the
+> matching registry claim were a measurement error — an earlier `find | head` truncation. The LLM docs and registry
+> are **generated** (`pnpm llms:generate` / `registry:generate`) and already covered all 16 charts. The real docs
+> gap was **Storybook stories** (8 of 17), which T6 closed (now 17 + the 2 new types). C-D1 stands; C-D2 was wrong.
 **Builds on:** the chart package in `packages/charts/src/*` — the engine (`engine/{scale,scale-log,scale-time,shape,stacked,nearest,stats,treemap}.ts`),
 the chrome (`chrome/{axis,grid-lines,legend}.tsx`), the frame/tooltip core (`core/{chart-frame,chart-tooltip,use-chart,data-point,nearest}.*`),
 the 17 chart components (`charts/*`), and the docs surfaces that read from them — the showcase
@@ -165,10 +173,36 @@ independent and could parallelize across reviewers; T6/T7 depend on them.
 
 ---
 
-## Notes
+## Implementation log (2026-06-27)
 
-- This roadmap is **Planned, not Shipped** — per the task that produced it (study Recharts, plan the gaps, do not
-  implement). The tranche docs carry the task-by-task steps for when implementation begins.
-- The verification figures above (8/17 stories, 7/17 LLM docs, zero annotation/label/event hits) are point-in-time
-  reads of `main` at 2026-06-27 and should be re-confirmed at implementation start in case other roadmaps have moved
-  the surface.
+Shipped across six commits; `pnpm ready` green (build + type-check + 270 chart tests + repo-wide gate).
+
+- **T1 — Annotation layer.** `chrome/reference.tsx` adds `ReferenceLine` / `ReferenceArea` / `ReferenceDot` mapping
+  onto each chart's scales, plus an `annotations` prop on Line/Area/Bar/Scatter/Combo. Annotations render behind the
+  marks, carry an accessible `<title>`, and are skipped in `plain` mode. 11 tests. **Closes C-F1.**
+- **T2 — Data labels.** `chrome/data-label.tsx` + a `labels` prop on Bar/Line/Area/Pie. Bars flip above→inside when
+  short and skip tiny stacked segments; pie defaults to percentage labels (thin slices skipped); labels are
+  `aria-hidden` (value already in the a11y tree). **Closes C-F2.**
+- **T3 — connectNulls + percent stacking.** `engine/splitDefined` + LineChart `connectNulls` (a `null`/`NaN` y now
+  *breaks* the line instead of drawing a `NaN` path — a latent-bug fix; opt back in to bridge). BarChart `mode:
+  'percent'` normalizes each category to 100% and formats the value axis as `%`. **Closes C-F3/C-F4.** *Deferred:*
+  axis titles + explicit domain (C-F5) and generalized per-series dual-axis (C-F6).
+- **T4 — onSelect + motion.** `ChartFrame` fires `onSelect(point)` on click and Enter/Space over the focused point
+  (keyboard-reachable, pointer cursor when selectable), threaded through Line/Area/Bar/Scatter/Pie. A subtle SVG
+  fade-in entrance is wrapped in `@media (prefers-reduced-motion: no-preference)` so it is fully suppressed when the
+  user opts out. **Closes C-F7 + C-F10.** *Deferred:* Brush (C-F8) and `syncId` (C-F9).
+- **T5 — RadialBar + Funnel.** Two new chart components (reusing `arcPath` + scales), each with a meta (`intent`),
+  tests, a Storybook story, and generated registry/llms/context docs; exported from `@cascivo/charts`. **Partially
+  closes C-F11** (Sankey + Sunburst remain out of scope — new layout engines).
+- **T6 — Docs + Storybook.** Added the 9 missing Storybook stories (boxplot, bullet, heatmap, histogram, kpi, meter,
+  radar, sparkline, treemap) + stories for the 2 new types + feature-demo stories (target line/band, data labels,
+  connectNulls, 100%-stacked) on line/bar. The docs `ChartsPage` gained RadialBar + Funnel sections and an
+  "Annotations & data labels" showcase. LLM/registry/context docs regenerated from the metas. **Closes C-D1; C-D2
+  was a measurement error (see correction above); C-D3/C-D4 (per-chart pages + chooser) and C-D5/C-D6/C-D7 (live-edit
+  + recipe gallery + engine reference, T7) remain a follow-up.**
+
+### Deferred to a follow-up roadmap
+
+Brush + `syncId`; axis titles + explicit domain + generalized dual-axis; the per-chart documentation pages + "which
+chart?" chooser; the live-edit/recipe gallery + engine reference (T7); and Sankey + Sunburst. None blocks the shipped
+surface; each is independently addable.
