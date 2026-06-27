@@ -34,6 +34,13 @@ export const meta: ComponentMeta = {
     { name: 'tooltip', type: 'boolean', required: false },
     { name: 'className', type: 'string', required: false },
     { name: 'plain', type: 'boolean', required: false, default: 'false' },
+    {
+      name: 'visualMap',
+      type: 'VisualMapOptions',
+      required: false,
+      description:
+        'Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range.',
+    },
   ],
   tokens: ['--cascivo-chart-2'],
   accessibility: {

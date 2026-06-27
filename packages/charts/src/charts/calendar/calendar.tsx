@@ -1,6 +1,7 @@
 'use client'
-import { useSignals } from '@cascivo/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
+import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface CalendarDatum {
@@ -20,6 +21,8 @@ export interface CalendarProps {
   tooltip?: boolean
   className?: string
   plain?: boolean
+  /** Map day value → CVD-safe colour via a continuous/piecewise legend that filters the range. */
+  visualMap?: VisualMapOptions
 }
 
 const MS_DAY = 86_400_000
@@ -44,9 +47,12 @@ export function Calendar({
   tooltip,
   className,
   plain,
+  visualMap,
 }: CalendarProps) {
   useSignals()
   const hasData = data.length > 0
+  const vmRange = useSignal<[number, number]>([visualMap?.min ?? 0, visualMap?.max ?? 1])
+  const vmHidden = useSignal(new Set<number>())
 
   const byDay = new Map<string, number>()
   for (const d of data) byDay.set(iso(toDate(d.day)), d.value)
@@ -108,7 +114,7 @@ export function Calendar({
     return { points, format: (p) => `${p.label}: ${p.value}` }
   }
 
-  return (
+  const frame = (
     <ChartFrame
       title={title}
       description={description}
@@ -125,22 +131,45 @@ export function Calendar({
         const cell = Math.max(2, (width - (weeks - 1) * gap) / weeks)
         return (
           <g>
-            {cells.map((c, i) => (
-              <rect
-                key={i}
-                x={c.col * (cell + gap)}
-                y={c.row * (cell + gap)}
-                width={cell - 1}
-                height={cell - 1}
-                rx={1.5}
-                fill="var(--cascivo-chart-2)"
-                fillOpacity={c.value > 0 ? 0.15 + 0.85 * (c.value / maxValue) : 0.06}
-                data-day={iso(c.date)}
-              />
-            ))}
+            {cells.map((c, i) => {
+              const vmFill = visualMap ? mapVisual(c.value, visualMap).color : undefined
+              const visible = visualMap
+                ? visualVisible(c.value, visualMap, vmRange.value, vmHidden.value)
+                : true
+              return (
+                <rect
+                  key={i}
+                  x={c.col * (cell + gap)}
+                  y={c.row * (cell + gap)}
+                  width={cell - 1}
+                  height={cell - 1}
+                  rx={1.5}
+                  fill={vmFill ?? 'var(--cascivo-chart-2)'}
+                  fillOpacity={
+                    visualMap
+                      ? c.value > 0 && visible
+                        ? 1
+                        : 0.08
+                      : c.value > 0
+                        ? 0.15 + 0.85 * (c.value / maxValue)
+                        : 0.06
+                  }
+                  data-day={iso(c.date)}
+                />
+              )
+            })}
           </g>
         )
       }}
     </ChartFrame>
+  )
+
+  if (!visualMap || !hasData) return frame
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      {frame}
+      <VisualMap options={visualMap} range={vmRange} hidden={vmHidden} label={title} />
+    </div>
   )
 }

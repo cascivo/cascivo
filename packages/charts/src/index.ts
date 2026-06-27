@@ -19,6 +19,7 @@ export * from './engine/treemap'
 export * from './engine/stream'
 export * from './engine/hierarchy'
 export * from './engine/sankey'
+export * from './engine/ramp'
 
 // Frame & chrome — the SVG/Canvas shell + the reusable visual primitives.
 export * from './core/chart-frame'
@@ -35,6 +36,7 @@ export * from './chrome/glyph'
 export * from './chrome/text'
 export * from './chrome/brush'
 export * from './chrome/data-zoom'
+export * from './chrome/visual-map'
 export * from './chrome/legend'
 
 // Wave-1 chart components

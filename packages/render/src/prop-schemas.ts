@@ -2447,6 +2447,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'visualMap',
+      required: false,
+    },
   ],
   Hero: [
     {
@@ -4157,6 +4161,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'renderer',
       required: false,
       enum: ['svg', 'canvas', 'auto'],
+    },
+    {
+      name: 'visualMap',
+      required: false,
     },
   ],
   ScrollArea: [

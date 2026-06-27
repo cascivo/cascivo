@@ -5280,6 +5280,10 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
                   }
                 },
                 "required": ["data", "title"]
@@ -5406,6 +5410,10 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
                   }
                 },
                 "required": ["data", "title"]
@@ -5880,6 +5888,10 @@
                   "renderer": {
                     "type": "string",
                     "enum": ["svg", "canvas", "auto"]
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
                   }
                 },
                 "required": ["series", "title"]

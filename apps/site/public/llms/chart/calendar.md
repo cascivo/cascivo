@@ -20,18 +20,19 @@ import { Calendar } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type              | Required | Default | Description         |
-| ------------- | ----------------- | -------- | ------- | ------------------- | ---------------------------------- |
-| `data`        | `CalendarDatum[]` | yes      | —       | Days: { day: string | Date, value }.                     |
-| `title`       | `string`          | yes      | —       | —                   |
-| `description` | `string`          | no       | —       | —                   |
-| `from`        | `string           | Date`    | no      | —                   | Range start (defaults to min day). |
-| `to`          | `string           | Date`    | no      | —                   | Range end (defaults to max day).   |
-| `width`       | `number`          | no       | —       | —                   |
-| `height`      | `number`          | no       | `160`   | —                   |
-| `tooltip`     | `boolean`         | no       | —       | —                   |
-| `className`   | `string`          | no       | —       | —                   |
-| `plain`       | `boolean`         | no       | `false` | —                   |
+| Prop          | Type               | Required | Default | Description                                                                                                              |
+| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
+| `data`        | `CalendarDatum[]`  | yes      | —       | Days: { day: string                                                                                                      | Date, value }.                     |
+| `title`       | `string`           | yes      | —       | —                                                                                                                        |
+| `description` | `string`           | no       | —       | —                                                                                                                        |
+| `from`        | `string            | Date`    | no      | —                                                                                                                        | Range start (defaults to min day). |
+| `to`          | `string            | Date`    | no      | —                                                                                                                        | Range end (defaults to max day).   |
+| `width`       | `number`           | no       | —       | —                                                                                                                        |
+| `height`      | `number`           | no       | `160`   | —                                                                                                                        |
+| `tooltip`     | `boolean`          | no       | —       | —                                                                                                                        |
+| `className`   | `string`           | no       | —       | —                                                                                                                        |
+| `plain`       | `boolean`          | no       | `false` | —                                                                                                                        |
+| `visualMap`   | `VisualMapOptions` | no       | —       | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
 
 ## Examples
 

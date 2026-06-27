@@ -26,6 +26,13 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'visualMap',
+      type: 'VisualMapOptions',
+      required: false,
+      description:
+        'Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range.',
+    },
   ],
   tokens: ['--cascivo-chart-1', '--cascivo-color-neutral-100'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },

@@ -7,6 +7,7 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { Glyph, type GlyphShape } from '../../chrome/glyph'
+import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
 import { resolveColor, type CanvasPaint } from '../../core/canvas-layer'
 import { linearScale } from '../../engine/scale'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -46,6 +47,8 @@ export interface ScatterChartProps {
   glyph?: GlyphShape | ((d: ScatterDatum, seriesId: string) => GlyphShape)
   /** Renderer: `svg` (default), `canvas` (force), or `auto` (canvas past ~2000 points). */
   renderer?: 'svg' | 'canvas' | 'auto'
+  /** Map each point's y → CVD-safe colour and/or size via a legend that filters the range. */
+  visualMap?: VisualMapOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -67,6 +70,7 @@ export function ScatterChart({
   onSelect,
   glyph,
   renderer = 'svg',
+  visualMap,
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -74,7 +78,13 @@ export function ScatterChart({
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
   const pointCount = series.reduce((n, s) => n + s.data.length, 0)
-  const useCanvas = renderer === 'canvas' || (renderer === 'auto' && pointCount > 2000)
+  // visualMap forces the SVG path (per-point colour/size encoding).
+  const useCanvas =
+    !visualMap && (renderer === 'canvas' || (renderer === 'auto' && pointCount > 2000))
+
+  // visualMap filter signals (continuous range + piecewise hidden buckets).
+  const vmRange = useSignal<[number, number]>([visualMap?.min ?? 0, visualMap?.max ?? 1])
+  const vmHidden = useSignal(new Set<number>())
 
   /** Paint the points to a canvas (large-data path). Mirrors the SVG marks. */
   const paint: CanvasPaint = (ctx, { width: cw, height: ch }) => {
@@ -203,7 +213,14 @@ export function ScatterChart({
                     return (
                       <g key={s.id} data-series={s.id}>
                         {s.data.map((d, di) => {
-                          const radius = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
+                          const baseR = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
+                          const vm = visualMap ? mapVisual(d.y, visualMap) : undefined
+                          const radius = vm?.size ?? baseR
+                          const markColor = vm?.color ?? color
+                          const visible = visualMap
+                            ? visualVisible(d.y, visualMap, vmRange.value, vmHidden.value)
+                            : true
+                          const op = visible ? 0.7 : 0.1
                           const shape = typeof glyph === 'function' ? glyph(d, s.id) : glyph
                           if (shape && shape !== 'circle') {
                             return (
@@ -213,9 +230,9 @@ export function ScatterChart({
                                 x={xScale.map(d.x)}
                                 y={yScale.map(d.y)}
                                 size={radius * 2}
-                                color={color}
-                                opacity={0.75}
-                                stroke={color}
+                                color={markColor}
+                                opacity={visible ? 0.75 : 0.1}
+                                stroke={markColor}
                                 strokeWidth={1}
                               />
                             )
@@ -226,9 +243,9 @@ export function ScatterChart({
                               cx={xScale.map(d.x)}
                               cy={yScale.map(d.y)}
                               r={radius}
-                              fill={color}
-                              fillOpacity={0.7}
-                              stroke={color}
+                              fill={markColor}
+                              fillOpacity={op}
+                              stroke={markColor}
                               strokeWidth={1}
                             />
                           )
@@ -253,6 +270,9 @@ export function ScatterChart({
           )
         }}
       </ChartFrame>
+      {visualMap && hasData && (
+        <VisualMap options={visualMap} range={vmRange} hidden={vmHidden} label={title} />
+      )}
       {showLegend && (
         <Legend
           series={series.map((s, i) => ({

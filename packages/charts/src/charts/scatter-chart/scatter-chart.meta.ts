@@ -65,6 +65,13 @@ export const meta: ComponentMeta = {
       description:
         'Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.',
     },
+    {
+      name: 'visualMap',
+      type: 'VisualMapOptions',
+      required: false,
+      description:
+        'Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',
