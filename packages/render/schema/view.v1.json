@@ -5038,7 +5038,7 @@
                   },
                   "mode": {
                     "type": "string",
-                    "enum": ["grouped", "stacked"]
+                    "enum": ["grouped", "stacked", "percent"]
                   },
                   "width": {
                     "type": "number"
@@ -5452,6 +5452,9 @@
                     "type": "string"
                   },
                   "plain": {
+                    "type": "boolean"
+                  },
+                  "connectNulls": {
                     "type": "boolean"
                   }
                 },

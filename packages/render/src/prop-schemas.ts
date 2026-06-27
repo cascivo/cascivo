@@ -217,6 +217,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'labels',
       required: false,
     },
+    {
+      name: 'onSelect',
+      required: false,
+    },
   ],
   AspectRatio: [
     {
@@ -346,7 +350,7 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'mode',
       required: false,
-      enum: ['grouped', 'stacked'],
+      enum: ['grouped', 'stacked', 'percent'],
     },
     {
       name: 'width',
@@ -403,6 +407,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'labels',
+      required: false,
+    },
+    {
+      name: 'onSelect',
       required: false,
     },
   ],
@@ -2849,6 +2857,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'labels',
       required: false,
     },
+    {
+      name: 'connectNulls',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSelect',
+      required: false,
+    },
   ],
   Link: [
     {
@@ -3483,6 +3500,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'labels',
       required: false,
     },
+    {
+      name: 'onSelect',
+      required: false,
+    },
   ],
   Popover: [],
   Progress: [
@@ -3993,6 +4014,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'annotations',
+      required: false,
+    },
+    {
+      name: 'onSelect',
       required: false,
     },
   ],
