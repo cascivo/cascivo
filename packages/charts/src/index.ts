@@ -20,6 +20,9 @@ export * from './engine/stream'
 export * from './engine/hierarchy'
 export * from './engine/sankey'
 export * from './engine/ramp'
+// Data pipeline — filter/sort/aggregate/bin/regression + encode (table → series).
+export * from './engine/transform'
+export * from './engine/dataset'
 
 // Frame & chrome — the SVG/Canvas shell + the reusable visual primitives.
 export * from './core/chart-frame'
