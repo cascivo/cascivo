@@ -7,9 +7,11 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
+import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
+import { useId } from 'react'
 import { linearScale } from '../../engine/scale'
 import { areaPath, linePath, stackSeries } from '../../engine/shape'
-import type { Point } from '../../engine/shape'
+import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface AreaChartSeries<Datum> {
@@ -26,7 +28,11 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   title: string
   description?: string
   stacked?: boolean
-  curve?: 'linear' | 'monotone'
+  curve?: Curve
+  /** Area fill style: solid (default), a top→bottom gradient, or a pattern. */
+  fill?: FillKind
+  /** Pattern motif when `fill="pattern"`. */
+  patternKind?: PatternKind
   width?: number
   height?: number
   xTicks?: number
@@ -54,6 +60,8 @@ export function AreaChart<Datum = { x: number; y: number }>({
   description,
   stacked = false,
   curve = 'monotone',
+  fill = 'solid',
+  patternKind,
   width: fixedWidth,
   height,
   xTicks = 5,
@@ -67,6 +75,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   onSelect,
 }: AreaChartProps<Datum>) {
   useSignals()
+  const defsId = useId()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
@@ -168,6 +177,17 @@ export function AreaChart<Datum = { x: number; y: number }>({
 
           return (
             <g>
+              {fill !== 'solid' && (
+                <ChartDefs
+                  prefix={defsId}
+                  fill={fill}
+                  patternKind={patternKind}
+                  series={series.map((s, si) => ({
+                    id: s.id,
+                    color: s.color ?? COLORS[si % COLORS.length]!,
+                  }))}
+                />
+              )}
               <g transform={`translate(${margins.left},${margins.top})`}>
                 {!plain && (
                   <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
@@ -195,7 +215,12 @@ export function AreaChart<Datum = { x: number; y: number }>({
                     const d = `${topPath}L${last[0]},${last[1]}${basePath}L${first[0]},${first[1]}Z`
                     return (
                       <g key={s.id} data-series={s.id}>
-                        <path d={d} fill={color} fillOpacity={0.25} stroke="none" />
+                        <path
+                          d={d}
+                          fill={fillFor(defsId, s.id, fill, color)}
+                          fillOpacity={fill === 'solid' ? 0.25 : 1}
+                          stroke="none"
+                        />
                         <path
                           d={linePath(points, curve)}
                           fill="none"
@@ -220,8 +245,8 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       <g key={s.id} data-series={s.id}>
                         <path
                           d={areaPath(points, baseline, curve)}
-                          fill={color}
-                          fillOpacity={0.25}
+                          fill={fillFor(defsId, s.id, fill, color)}
+                          fillOpacity={fill === 'solid' ? 0.25 : 1}
                           stroke="none"
                         />
                         <path

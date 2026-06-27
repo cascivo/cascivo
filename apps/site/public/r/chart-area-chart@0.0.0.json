@@ -53,9 +53,23 @@
       },
       {
         "name": "curve",
-        "type": "'linear' | 'monotone'",
+        "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
         "required": false,
-        "default": "monotone"
+        "default": "monotone",
+        "description": "Line/area interpolation curve."
+      },
+      {
+        "name": "fill",
+        "type": "'solid' | 'gradient' | 'pattern'",
+        "required": false,
+        "default": "solid",
+        "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+      },
+      {
+        "name": "patternKind",
+        "type": "'dots' | 'lines' | 'cross'",
+        "required": false,
+        "description": "Pattern motif when fill=\"pattern\"."
       },
       {
         "name": "width",

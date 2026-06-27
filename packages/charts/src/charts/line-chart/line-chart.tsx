@@ -10,7 +10,7 @@ import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-l
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath, splitDefined } from '../../engine/shape'
-import type { Point } from '../../engine/shape'
+import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface LineChartSeries<Datum> {
@@ -26,7 +26,7 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   y: (d: Datum) => number
   title: string
   description?: string
-  curve?: 'linear' | 'monotone'
+  curve?: Curve
   width?: number
   height?: number
   xTicks?: number

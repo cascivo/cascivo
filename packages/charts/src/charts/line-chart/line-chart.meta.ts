@@ -36,7 +36,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'curve',
-      type: "'linear' | 'monotone'",
+      type: "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
       required: false,
       default: 'monotone',
       description: 'Line interpolation curve',

@@ -7,6 +7,8 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
+import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
+import { useId } from 'react'
 import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -48,6 +50,10 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   labels?: LabelOptions
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
+  /** Bar fill style: solid (default), a gradient, or a pattern. */
+  fill?: FillKind
+  /** Pattern motif when `fill="pattern"`. */
+  patternKind?: PatternKind
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -82,8 +88,11 @@ export function BarChart<Datum = { x: string; y: number }>({
   annotations,
   labels,
   onSelect,
+  fill = 'solid',
+  patternKind,
 }: BarChartProps<Datum>) {
   useSignals()
+  const defsId = useId()
   const resolvedLabels = plain ? null : resolveLabels(labels)
   const hidden = useSignal(new Set<string>())
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
@@ -247,6 +256,17 @@ export function BarChart<Datum = { x: string; y: number }>({
 
           return (
             <g>
+              {fill !== 'solid' && (
+                <ChartDefs
+                  prefix={defsId}
+                  fill={fill}
+                  patternKind={patternKind}
+                  series={series.map((s, si) => ({
+                    id: s.id,
+                    color: s.color ?? COLORS[si % COLORS.length]!,
+                  }))}
+                />
+              )}
               <g transform={`translate(${margins.left},${margins.top})`}>
                 {!plain && isVertical && (
                   <GridLines scale={valScale} orientation="y" length={innerW} tickCount={yTicks} />
@@ -323,7 +343,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                         y={valStart}
                         width={subBandW}
                         height={valLen}
-                        fill={color}
+                        fill={fillFor(defsId, s.id, fill, color)}
                         rx={2}
                         data-series={s.id}
                       />
@@ -333,7 +353,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                         y={barStart}
                         width={valLen}
                         height={subBandW}
-                        fill={color}
+                        fill={fillFor(defsId, s.id, fill, color)}
                         rx={2}
                         data-series={s.id}
                       />

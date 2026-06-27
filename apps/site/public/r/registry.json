@@ -2710,9 +2710,23 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
-            "default": "monotone"
+            "default": "monotone",
+            "description": "Line/area interpolation curve."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           },
           {
             "name": "width",
@@ -2960,6 +2974,19 @@
             "type": "(point: ChartPoint) => void",
             "required": false,
             "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Bar fill style — solid, a gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           }
         ],
         "typeDefs": [
@@ -4021,7 +4048,7 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
             "default": "monotone",
             "description": "Line interpolation curve"

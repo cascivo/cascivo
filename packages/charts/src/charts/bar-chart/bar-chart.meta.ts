@@ -80,6 +80,19 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
     },
+    {
+      name: 'fill',
+      type: "'solid' | 'gradient' | 'pattern'",
+      required: false,
+      default: 'solid',
+      description: 'Bar fill style — solid, a gradient, or a pattern.',
+    },
+    {
+      name: 'patternKind',
+      type: "'dots' | 'lines' | 'cross'",
+      required: false,
+      description: 'Pattern motif when fill="pattern".',
+    },
   ],
   typeDefs: [
     {

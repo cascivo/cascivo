@@ -48,6 +48,8 @@ import { BarChart } from '@cascivo/charts'
 | `annotations`   | `Annotation[]`                | no                                                     | —          | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                         |
 | `labels`        | `boolean                      | { format?: (v: number) => string; position?: string }` | no         | —                                                                                                                                      | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
 | `onSelect`      | `(point: ChartPoint) => void` | no                                                     | —          | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                             |
+| `fill`          | `'solid'                      | 'gradient'                                             | 'pattern'` | no                                                                                                                                     | `solid`                                                                            | Bar fill style — solid, a gradient, or a pattern.         |
+| `patternKind`   | `'dots'                       | 'lines'                                                | 'cross'`   | no                                                                                                                                     | —                                                                                  | Pattern motif when fill="pattern".                        |
 
 ## Object types
 
