@@ -7,6 +7,7 @@ export * from './engine/stacked'
 export * from './engine/nearest'
 export * from './engine/stats'
 export * from './engine/treemap'
+export * from './engine/voronoi'
 
 // Chart chrome
 export * from './core/chart-frame'
@@ -17,6 +18,7 @@ export * from './chrome/reference'
 export * from './chrome/data-label'
 export * from './chrome/defs'
 export * from './chrome/glyph'
+export * from './chrome/brush'
 export * from './chrome/legend'
 
 // Wave-1 chart components

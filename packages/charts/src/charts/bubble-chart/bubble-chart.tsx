@@ -132,6 +132,7 @@ export function BubbleChart({
       className={className}
       plain={plain}
       tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
+      hover="voronoi"
     >
       {({ width, height: h }) => {
         const inner = {

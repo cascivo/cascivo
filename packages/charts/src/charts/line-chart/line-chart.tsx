@@ -7,6 +7,7 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
+import { Brush } from '../../chrome/brush'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath, splitDefined } from '../../engine/shape'
@@ -45,12 +46,14 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   connectNulls?: boolean
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
+  /** Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window. */
+  brush?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function LineChart<Datum = { x: number; y: number }>({
-  series,
+  series: rawSeries,
   x,
   y,
   title,
@@ -69,10 +72,19 @@ export function LineChart<Datum = { x: number; y: number }>({
   labels,
   connectNulls,
   onSelect,
+  brush,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
+
+  // Brush window — when enabled, the plot renders only the selected index range.
+  const fullLen = rawSeries.reduce((m, s) => Math.max(m, s.data.length), 0)
+  const win = useSignal<[number, number]>([0, Math.max(0, fullLen - 1)])
+  const series =
+    brush && fullLen > 0
+      ? rawSeries.map((s) => ({ ...s, data: s.data.slice(win.value[0], win.value[1] + 1) }))
+      : rawSeries
 
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
@@ -278,6 +290,7 @@ export function LineChart<Datum = { x: number; y: number }>({
           )
         }}
       </ChartFrame>
+      {brush && fullLen > 1 && <Brush count={fullLen} window={win} label="Time range" />}
       {showLegend && (
         <Legend
           series={series.map((s, i) => ({

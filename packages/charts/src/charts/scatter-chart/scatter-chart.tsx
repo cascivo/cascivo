@@ -146,6 +146,7 @@ export function ScatterChart({
         plain={plain}
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
+        hover="voronoi"
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

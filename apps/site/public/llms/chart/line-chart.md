@@ -41,6 +41,7 @@ import { LineChart } from '@cascivo/charts'
 | `labels`        | `boolean                                                   | { format?: (v: number) => string; position?: string }` | no      | —                                                                                              | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
 | `connectNulls`  | `boolean`                                                  | no                                                     | `false` | Bridge non-finite y gaps instead of breaking the line at them.                                 |
 | `onSelect`      | `(point: ChartPoint) => void`                              | no                                                     | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                     |
+| `brush`         | `boolean`                                                  | no                                                     | `false` | Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window.         |
 
 ## Examples
 

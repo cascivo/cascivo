@@ -7,6 +7,7 @@ import styles from './chart-frame.module.css'
 import { defaultFormat, type ChartPoint, type TooltipModel } from './data-point'
 import { ChartTooltip } from './chart-tooltip'
 import { nearest } from './nearest'
+import { voronoiFind } from '../engine/voronoi'
 
 export interface ChartFrameProps {
   title: string
@@ -30,6 +31,8 @@ export interface ChartFrameProps {
     | undefined
   /** Fired when the focused/hovered point is clicked or activated (Enter/Space). */
   onSelect?: ((point: ChartPoint) => void) | undefined
+  /** Hover hit-test strategy: `rect` (default, nearest by x/y) or `voronoi` (precise cell membership). */
+  hover?: 'rect' | 'voronoi' | undefined
 }
 
 export function ChartFrame({
@@ -45,6 +48,7 @@ export function ChartFrame({
   plain,
   tooltip,
   onSelect,
+  hover = 'rect',
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -174,7 +178,14 @@ export function ChartFrame({
               const rect = e.currentTarget.getBoundingClientRect()
               const relX = e.clientX - rect.left
               const relY = e.clientY - rect.top
-              focusedIndex.value = nearest(resolvedTooltip.points, relX, relY, 'xy')
+              focusedIndex.value =
+                hover === 'voronoi'
+                  ? voronoiFind(
+                      resolvedTooltip.points.map((p) => [p.cx, p.cy] as const),
+                      relX,
+                      relY,
+                    )
+                  : nearest(resolvedTooltip.points, relX, relY, 'xy')
             }}
             onPointerLeave={() => {
               focusedIndex.value = null

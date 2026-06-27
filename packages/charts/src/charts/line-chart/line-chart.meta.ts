@@ -111,6 +111,14 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
     },
+    {
+      name: 'brush',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',
