@@ -38,6 +38,25 @@ export type Annotation =
       label?: string
       color?: string
     }
+  | {
+      /** A subject marker at (x, y) with a connector/leader line to an offset note label. */
+      kind: 'note'
+      x: number | string | Date
+      y: number
+      label: string
+      /** Label offset from the subject, in px (default up-right). */
+      dx?: number
+      dy?: number
+      color?: string
+    }
+  | {
+      /** Shade the region above/below a y value — a difference-from-threshold band. */
+      kind: 'threshold'
+      value: number
+      side: 'above' | 'below'
+      label?: string
+      color?: string
+    }
 
 export interface AnnotationContext {
   xScale: AnnotationScale
@@ -122,6 +141,56 @@ export function renderAnnotation(
     )
   }
 
+  if (annotation.kind === 'note') {
+    const nx = center(xScale, annotation.x)
+    const ny = center(yScale, annotation.y)
+    if (nx == null || ny == null) return null
+    const color = annotation.color ?? AREA_COLOR
+    const dx = annotation.dx ?? 24
+    const dy = annotation.dy ?? -24
+    const lx = Math.max(2, Math.min(innerW - 2, nx + dx))
+    const ly = Math.max(8, Math.min(innerH - 2, ny + dy))
+    return (
+      <g key={key} data-annotation="note">
+        <line x1={nx} y1={ny} x2={lx} y2={ly} stroke={color} strokeWidth={1} aria-hidden="true" />
+        <circle cx={nx} cy={ny} r={3.5} fill={color} aria-hidden="true" />
+        <text
+          x={lx}
+          y={ly}
+          dy={dy < 0 ? '-0.2em' : '1em'}
+          fontSize="0.6875rem"
+          fontWeight={500}
+          fill={color}
+          textAnchor={dx < 0 ? 'end' : 'start'}
+        >
+          {annotation.label}
+        </text>
+      </g>
+    )
+  }
+
+  if (annotation.kind === 'threshold') {
+    const py = yScale.map(annotation.value as never)
+    if (py == null || Number.isNaN(py)) return null
+    const color = annotation.color ?? AREA_COLOR
+    const y = annotation.side === 'above' ? 0 : py
+    const height = annotation.side === 'above' ? py : innerH - py
+    return (
+      <g key={key} data-annotation="threshold" aria-hidden="true">
+        <rect
+          x={0}
+          y={y}
+          width={innerW}
+          height={Math.max(0, height)}
+          fill={color}
+          fillOpacity={0.1}
+        >
+          <title>{annotation.label ?? `${annotation.side} ${annotation.value}`}</title>
+        </rect>
+      </g>
+    )
+  }
+
   // dot
   const cx = center(xScale, annotation.x)
   const cy = center(yScale, annotation.y)
@@ -161,5 +230,7 @@ export function renderAnnotations(
 export function annotationSummary(a: Annotation): string {
   if (a.kind === 'line') return a.label ?? `${a.axis}=${String(a.value)}`
   if (a.kind === 'area') return a.label ?? `${a.axis} ${String(a.from)}–${String(a.to)}`
+  if (a.kind === 'threshold') return a.label ?? `${a.side} ${a.value}`
+  if (a.kind === 'note') return a.label
   return a.label ?? `(${String(a.x)}, ${a.y})`
 }

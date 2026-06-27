@@ -71,6 +71,37 @@ describe('renderAnnotations', () => {
   })
 })
 
+describe('note + threshold annotations', () => {
+  it('note renders a subject, a connector, and the label (in the a11y tree)', () => {
+    const { container } = renderSvg(
+      renderAnnotation({ kind: 'note', x: 5, y: 50, label: 'peak' }, ctx, 0),
+    )
+    expect(container.querySelector('[data-annotation="note"]')).toBeTruthy()
+    expect(container.querySelector('line')).toBeTruthy()
+    expect(container.querySelector('circle')).toBeTruthy()
+    const text = container.querySelector('text')!
+    expect(text.textContent).toBe('peak')
+    expect(text.getAttribute('aria-hidden')).toBeNull() // notes are information
+  })
+
+  it('threshold shades the requested side of the value', () => {
+    // map(50) === 100, innerH === 200
+    const above = renderSvg(
+      renderAnnotation({ kind: 'threshold', value: 50, side: 'above' }, ctx, 0),
+    )
+    const r1 = above.container.querySelector('rect')!
+    expect(r1.getAttribute('y')).toBe('0')
+    expect(r1.getAttribute('height')).toBe('100')
+
+    const below = renderSvg(
+      renderAnnotation({ kind: 'threshold', value: 50, side: 'below' }, ctx, 0),
+    )
+    const r2 = below.container.querySelector('rect')!
+    expect(r2.getAttribute('y')).toBe('100')
+    expect(r2.getAttribute('height')).toBe('100')
+  })
+})
+
 describe('annotationSummary', () => {
   it('summarizes each annotation kind', () => {
     expect(annotationSummary({ kind: 'line', axis: 'y', value: 80, label: 'Goal' })).toBe('Goal')

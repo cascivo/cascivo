@@ -21,11 +21,11 @@ import { ScatterChart } from '@cascivo/charts'
 ## Props
 
 | Prop          | Type                          | Required                       | Default | Description                                                                                    |
-| ------------- | ----------------------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- | ------------------------ |
+| ------------- | ----------------------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `series`      | `ScatterChartSeries[]`        | yes                            | —       | —                                                                                              |
 | `title`       | `string`                      | yes                            | —       | —                                                                                              |
 | `description` | `string`                      | no                             | —       | —                                                                                              |
-| `r`           | `number                       | ((d: ScatterDatum) => number)` | no      | `4`                                                                                            | Point radius or accessor |
+| `r`           | `number                       | ((d: ScatterDatum) => number)` | no      | `4`                                                                                            | Point radius or accessor                                                                                                   |
 | `width`       | `number`                      | no                             | —       | —                                                                                              |
 | `height`      | `number`                      | no                             | `300`   | —                                                                                              |
 | `xTicks`      | `number`                      | no                             | `5`     | —                                                                                              |
@@ -36,6 +36,7 @@ import { ScatterChart } from '@cascivo/charts'
 | `plain`       | `boolean`                     | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
 | `annotations` | `Annotation[]`                | no                             | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 | `onSelect`    | `(point: ChartPoint) => void` | no                             | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                     |
+| `glyph`       | `GlyphShape                   | ((d, seriesId) => GlyphShape)` | no      | —                                                                                              | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
 
 ## Examples
 

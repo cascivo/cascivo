@@ -4,6 +4,7 @@ import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
+import { Glyph, type GlyphShape } from '../../chrome/glyph'
 import { linearScale, sqrtScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -29,6 +30,8 @@ export interface BubbleChartProps {
   className?: string
   /** Render only the marks — no axes or grid lines. For micro/inline charts. */
   plain?: boolean
+  /** Point glyph shape — a fixed shape, or a function to encode a category by shape. Defaults to a circle. */
+  glyph?: GlyphShape | ((d: BubbleDatum, seriesName: string) => GlyphShape)
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -44,6 +47,7 @@ export function BubbleChart({
   tooltip,
   className,
   plain,
+  glyph,
 }: BubbleChartProps) {
   useSignals()
   const hovered = useSignal<string | null>(null)
@@ -158,19 +162,39 @@ export function BubbleChart({
                     hovered.value = null
                   }}
                 >
-                  {s.data.map((d, di) => (
-                    <circle
-                      key={di}
-                      cx={xScale.map(d.x)}
-                      cy={yScale.map(d.y)}
-                      r={sizeMap(d.size)}
-                      fill={color}
-                      fillOpacity={0.6}
-                      stroke={color}
-                      strokeWidth={1}
-                      aria-label={`${s.name}: x=${d.x}, y=${d.y}, size=${d.size}`}
-                    />
-                  ))}
+                  {s.data.map((d, di) => {
+                    const shape = typeof glyph === 'function' ? glyph(d, s.name) : glyph
+                    const label = `${s.name}: x=${d.x}, y=${d.y}, size=${d.size}`
+                    if (shape && shape !== 'circle') {
+                      return (
+                        <g key={di} aria-label={label}>
+                          <Glyph
+                            shape={shape}
+                            x={xScale.map(d.x)}
+                            y={yScale.map(d.y)}
+                            size={sizeMap(d.size) * 2}
+                            color={color}
+                            opacity={0.6}
+                            stroke={color}
+                            strokeWidth={1}
+                          />
+                        </g>
+                      )
+                    }
+                    return (
+                      <circle
+                        key={di}
+                        cx={xScale.map(d.x)}
+                        cy={yScale.map(d.y)}
+                        r={sizeMap(d.size)}
+                        fill={color}
+                        fillOpacity={0.6}
+                        stroke={color}
+                        strokeWidth={1}
+                        aria-label={label}
+                      />
+                    )
+                  })}
                 </g>
               )
             })}

@@ -16,6 +16,7 @@ export * from './chrome/grid-lines'
 export * from './chrome/reference'
 export * from './chrome/data-label'
 export * from './chrome/defs'
+export * from './chrome/glyph'
 export * from './chrome/legend'
 
 // Wave-1 chart components

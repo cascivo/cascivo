@@ -6,6 +6,7 @@ import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
+import { Glyph, type GlyphShape } from '../../chrome/glyph'
 import { linearScale } from '../../engine/scale'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -40,6 +41,8 @@ export interface ScatterChartProps {
   annotations?: readonly Annotation[]
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
+  /** Point glyph shape — a fixed shape, or a function to encode a category by shape. Defaults to a circle. */
+  glyph?: GlyphShape | ((d: ScatterDatum, seriesId: string) => GlyphShape)
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -59,6 +62,7 @@ export function ScatterChart({
   plain,
   annotations,
   onSelect,
+  glyph,
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -163,6 +167,22 @@ export function ScatterChart({
                     <g key={s.id} data-series={s.id}>
                       {s.data.map((d, di) => {
                         const radius = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
+                        const shape = typeof glyph === 'function' ? glyph(d, s.id) : glyph
+                        if (shape && shape !== 'circle') {
+                          return (
+                            <Glyph
+                              key={di}
+                              shape={shape}
+                              x={xScale.map(d.x)}
+                              y={yScale.map(d.y)}
+                              size={radius * 2}
+                              color={color}
+                              opacity={0.75}
+                              stroke={color}
+                              strokeWidth={1}
+                            />
+                          )
+                        }
                         return (
                           <circle
                             key={di}

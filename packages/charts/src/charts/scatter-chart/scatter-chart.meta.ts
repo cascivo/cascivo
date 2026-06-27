@@ -50,6 +50,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
     },
+    {
+      name: 'glyph',
+      type: 'GlyphShape | ((d, seriesId) => GlyphShape)',
+      required: false,
+      description:
+        'Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

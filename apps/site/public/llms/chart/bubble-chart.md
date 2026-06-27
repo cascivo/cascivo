@@ -20,16 +20,17 @@ import { BubbleChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type                                                                 | Required | Default | Description                                                           |
-| ------------- | -------------------------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes      | —       | —                                                                     |
-| `title`       | `string`                                                             | yes      | —       | —                                                                     |
-| `description` | `string`                                                             | no       | —       | —                                                                     |
-| `width`       | `number`                                                             | no       | —       | —                                                                     |
-| `height`      | `number`                                                             | no       | `320`   | —                                                                     |
-| `tooltip`     | `boolean`                                                            | no       | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                                                             | no       | —       | —                                                                     |
-| `plain`       | `boolean`                                                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop          | Type                                                                 | Required                       | Default | Description                                                           |
+| ------------- | -------------------------------------------------------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes                            | —       | —                                                                     |
+| `title`       | `string`                                                             | yes                            | —       | —                                                                     |
+| `description` | `string`                                                             | no                             | —       | —                                                                     |
+| `width`       | `number`                                                             | no                             | —       | —                                                                     |
+| `height`      | `number`                                                             | no                             | `320`   | —                                                                     |
+| `tooltip`     | `boolean`                                                            | no                             | —       | Enable hover/keyboard tooltip                                         |
+| `className`   | `string`                                                             | no                             | —       | —                                                                     |
+| `plain`       | `boolean`                                                            | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| `glyph`       | `GlyphShape                                                          | ((d, seriesId) => GlyphShape)` | no      | —                                                                     | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
 
 ## Examples
 
