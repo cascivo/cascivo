@@ -6,7 +6,7 @@ export const meta: ComponentMeta = {
     'Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.',
   category: 'chart',
   states: [],
-  variants: ['grouped', 'stacked'],
+  variants: ['grouped', 'stacked', 'percent'],
   sizes: [],
   props: [
     {
@@ -26,7 +26,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'vertical',
     },
-    { name: 'mode', type: "'grouped' | 'stacked'", required: false, default: 'grouped' },
+    {
+      name: 'mode',
+      type: "'grouped' | 'stacked' | 'percent'",
+      required: false,
+      default: 'grouped',
+      description: "'percent' stacks each category and normalizes it to 100%.",
+    },
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false, default: '300' },
     { name: 'xTicks', type: 'number', required: false },

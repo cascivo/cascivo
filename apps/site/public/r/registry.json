@@ -2839,7 +2839,7 @@
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
         "category": "chart",
         "states": [],
-        "variants": ["grouped", "stacked"],
+        "variants": ["grouped", "stacked", "percent"],
         "sizes": [],
         "props": [
           {
@@ -2876,9 +2876,10 @@
           },
           {
             "name": "mode",
-            "type": "'grouped' | 'stacked'",
+            "type": "'grouped' | 'stacked' | 'percent'",
             "required": false,
-            "default": "grouped"
+            "default": "grouped",
+            "description": "'percent' stacks each category and normalizes it to 100%."
           },
           {
             "name": "width",
@@ -4081,6 +4082,13 @@
             "type": "boolean | { format?: (v: number) => string; position?: string }",
             "required": false,
             "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "connectNulls",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Bridge non-finite y gaps instead of breaking the line at them."
           }
         ],
         "tokens": [

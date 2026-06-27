@@ -25,7 +25,7 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   title: string
   description?: string
   orientation?: 'vertical' | 'horizontal'
-  mode?: 'grouped' | 'stacked'
+  mode?: 'grouped' | 'stacked' | 'percent'
   width?: number
   height?: number
   xTicks?: number
@@ -91,11 +91,31 @@ export function BarChart<Datum = { x: string; y: number }>({
   const allY = series.flatMap((s) => s.data.map((d) => y(d)))
   const hasData = categories.length > 0
 
-  const yMin = mode === 'stacked' ? 0 : Math.min(0, ...allY)
-  const yMaxStacked = hasData
-    ? Math.max(...categories.map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0)))
-    : 1
-  const yMax = mode === 'stacked' ? yMaxStacked : Math.max(1, ...allY)
+  // 'stacked' and 'percent' both stack; 'percent' normalizes each category to 1.
+  const isStackLike = mode === 'stacked' || mode === 'percent'
+  const categoryTotals = categories.map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0))
+
+  /** Stacked [y0, y1] offsets per series/category; normalized to [0,1] in percent mode. */
+  const computeOffsets = (): [number, number][][] => {
+    const raw = stackSeries(series.map((s) => s.data.map((d) => y(d))))
+    if (mode !== 'percent') return raw
+    return raw.map((seriesOffsets) =>
+      seriesOffsets.map(([y0, y1], i) => {
+        const t = categoryTotals[i] || 1
+        return [y0 / t, y1 / t] as [number, number]
+      }),
+    )
+  }
+
+  const yMin = isStackLike ? 0 : Math.min(0, ...allY)
+  const yMaxStacked = hasData ? Math.max(...categoryTotals) : 1
+  const yMax = mode === 'percent' ? 1 : mode === 'stacked' ? yMaxStacked : Math.max(1, ...allY)
+
+  /** Value-axis tick format — percent mode shows 0–100%. */
+  const valFormat =
+    mode === 'percent'
+      ? (v: number | string | Date) => `${Math.round(Number(v) * 100)}%`
+      : undefined
 
   const fallback = (
     <table>
@@ -137,14 +157,13 @@ export function BarChart<Datum = { x: string; y: number }>({
     const visibleSeries = series.filter((s) => !hidden.value.has(s.id))
 
     let stackedOffsets: [number, number][][] = []
-    if (mode === 'stacked') {
-      const values = series.map((s) => s.data.map((d) => y(d)))
-      stackedOffsets = stackSeries(values)
+    if (isStackLike) {
+      stackedOffsets = computeOffsets()
     }
 
     // Stacked default (no custom formatter): attach the per-category breakdown so
     // the tooltip can show "label · total" + each non-zero layer in its color.
-    const useStackedDefault = mode === 'stacked' && !tooltipFormat
+    const useStackedDefault = isStackLike && !tooltipFormat
     const breakdownByCat = categories.map((_, di) => {
       const segs = visibleSeries.map((s) => ({
         label: s.label,
@@ -162,7 +181,7 @@ export function BarChart<Datum = { x: string; y: number }>({
         const catPos = catScale.map(x(d)) ?? 0
         let val: number
         let baseVal: number
-        if (mode === 'stacked' && stackedOffsets[seriesIdx]) {
+        if (isStackLike && stackedOffsets[seriesIdx]) {
           const offset = stackedOffsets[seriesIdx]![di]!
           val = offset[1]
           baseVal = offset[0]
@@ -218,9 +237,8 @@ export function BarChart<Datum = { x: string; y: number }>({
           const visibleSeries = series.filter((s) => !hidden.value.has(s.id))
 
           let stackedOffsets: [number, number][][] = []
-          if (mode === 'stacked') {
-            const values = series.map((s) => s.data.map((d) => y(d)))
-            stackedOffsets = stackSeries(values)
+          if (isStackLike) {
+            stackedOffsets = computeOffsets()
           }
 
           return (
@@ -251,7 +269,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     const catPos = catScale.map(x(d)) ?? 0
                     let val: number
                     let baseVal: number
-                    if (mode === 'stacked' && stackedOffsets[seriesIdx]) {
+                    if (isStackLike && stackedOffsets[seriesIdx]) {
                       const offset = stackedOffsets[seriesIdx]![di]!
                       val = offset[1]
                       baseVal = offset[0]
@@ -269,7 +287,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     if (resolvedLabels) {
                       const text = resolvedLabels.format(y(d))
                       const center = barStart + subBandW / 2
-                      const inside = mode === 'stacked' || valLen < 18 || valStart < 14
+                      const inside = isStackLike || valLen < 18 || valStart < 14
                       if (isVertical) {
                         label = (
                           <DataLabel
@@ -292,7 +310,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                         )
                       }
                       // A stacked segment too small to hold a label gets none.
-                      if (mode === 'stacked' && valLen < 14) label = null
+                      if (isStackLike && valLen < 14) label = null
                     }
 
                     const rect = isVertical ? (
@@ -334,7 +352,13 @@ export function BarChart<Datum = { x: string; y: number }>({
                       labelEvery={xLabelEvery}
                       transform={`translate(0,${innerH})`}
                     />
-                    <Axis scale={valScale} orientation="y" length={innerH} tickCount={yTicks} />
+                    <Axis
+                      scale={valScale}
+                      orientation="y"
+                      length={innerH}
+                      tickCount={yTicks}
+                      {...(valFormat && { format: valFormat })}
+                    />
                   </>
                 )}
                 {!plain && !isVertical && (
@@ -344,6 +368,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       orientation="x"
                       length={innerW}
                       tickCount={xTicks}
+                      {...(valFormat && { format: valFormat })}
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis

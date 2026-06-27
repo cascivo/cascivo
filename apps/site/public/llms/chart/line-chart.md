@@ -39,6 +39,7 @@ import { LineChart } from '@cascivo/charts'
 | `plain`         | `boolean`                                                  | no                                                     | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
 | `annotations`   | `Annotation[]`                                             | no                                                     | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 | `labels`        | `boolean                                                   | { format?: (v: number) => string; position?: string }` | no      | —                                                                                              | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
+| `connectNulls`  | `boolean`                                                  | no                                                     | `false` | Bridge non-finite y gaps instead of breaking the line at them.                                 |
 
 ## Examples
 

@@ -98,6 +98,13 @@ export const meta: ComponentMeta = {
       description:
         'Print each value as a label on the mark (collision-aware, decorative/aria-hidden).',
     },
+    {
+      name: 'connectNulls',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Bridge non-finite y gaps instead of breaking the line at them.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

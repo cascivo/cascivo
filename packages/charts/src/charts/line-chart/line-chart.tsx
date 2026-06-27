@@ -9,7 +9,7 @@ import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
-import { linePath } from '../../engine/shape'
+import { linePath, splitDefined } from '../../engine/shape'
 import type { Point } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -41,6 +41,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   annotations?: readonly Annotation[]
   /** Print each point's value as a label above the mark. */
   labels?: LabelOptions
+  /** Bridge `null`/non-finite y gaps instead of breaking the line at them (default: break). */
+  connectNulls?: boolean
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -63,6 +65,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   plain,
   annotations,
   labels,
+  connectNulls,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -73,7 +76,8 @@ export function LineChart<Datum = { x: number; y: number }>({
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const allX = series.flatMap((s) => s.data.map((d) => x(d)))
-  const allY = series.flatMap((s) => s.data.map((d) => y(d)))
+  // Drop non-finite y (gaps) so the domain isn't poisoned by NaN.
+  const allY = series.flatMap((s) => s.data.map((d) => y(d))).filter((v) => Number.isFinite(v))
   const hasData = allX.length > 0
 
   const usesDate = hasData && allX[0] instanceof Date
@@ -131,12 +135,14 @@ export function LineChart<Datum = { x: number; y: number }>({
 
     const points: ChartPoint[] = series.flatMap((s) => {
       if (hidden.value.has(s.id)) return []
-      return s.data.map((d, i) => {
+      return s.data.flatMap((d, i) => {
+        const yv = y(d)
+        if (!Number.isFinite(yv)) return [] // gap — no focusable point
         const xv = x(d)
         const xPos = usesDate
           ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
           : (xScale as ReturnType<typeof linearScale>).map(xv as number)
-        const yPos = yScale.map(y(d))
+        const yPos = yScale.map(yv)
         const label = xv instanceof Date ? xv.toLocaleDateString() : String(xv)
         return {
           id: `${s.id}-${i}`,
@@ -209,34 +215,45 @@ export function LineChart<Datum = { x: number; y: number }>({
                   })}
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
-                  const pts: Point[] = s.data.map((d) => {
+                  // null marks a gap (missing / non-finite y) so the line breaks there.
+                  const rawPts: (Point | null)[] = s.data.map((d) => {
+                    const yv = y(d)
+                    if (!Number.isFinite(yv)) return null
                     const xv = x(d)
                     const xPos = usesDate
                       ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
                       : (xScale as ReturnType<typeof linearScale>).map(xv as number)
-                    return [xPos, yScale.map(y(d))]
+                    return [xPos, yScale.map(yv)] as Point
                   })
+                  const runs = splitDefined(rawPts, connectNulls)
                   const color = s.color ?? COLORS[i % COLORS.length]!
                   return (
                     <g key={s.id}>
-                      <path
-                        d={linePath(pts, curve)}
-                        fill="none"
-                        stroke={color}
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        data-series={s.id}
-                      />
+                      {runs.map((run, ri) => (
+                        <path
+                          key={ri}
+                          d={linePath(run, curve)}
+                          fill="none"
+                          stroke={color}
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          data-series={s.id}
+                        />
+                      ))}
                       {resolvedLabels &&
-                        s.data.map((d, di) => (
-                          <DataLabel
-                            key={di}
-                            x={pts[di]![0]}
-                            y={pts[di]![1] - 8}
-                            text={resolvedLabels.format(y(d))}
-                          />
-                        ))}
+                        s.data.map((d, di) => {
+                          const p = rawPts[di]
+                          if (!p) return null
+                          return (
+                            <DataLabel
+                              key={di}
+                              x={p[0]}
+                              y={p[1] - 8}
+                              text={resolvedLabels.format(y(d))}
+                            />
+                          )
+                        })}
                     </g>
                   )
                 })}

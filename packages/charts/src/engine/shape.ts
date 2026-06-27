@@ -1,5 +1,31 @@
 export type Point = readonly [x: number, y: number]
 
+/**
+ * Split a list of points (where `null` marks a gap / missing value) into
+ * contiguous defined runs. With `connectNulls`, drops the gaps and returns one
+ * run bridging them. A series `[a, null, b]` yields `[[a], [b]]` by default,
+ * or `[[a, b]]` when connecting — so a gap renders as a real break, not an
+ * invented straight segment.
+ */
+export function splitDefined(points: readonly (Point | null)[], connectNulls = false): Point[][] {
+  if (connectNulls) {
+    const kept = points.filter((p): p is Point => p !== null)
+    return kept.length > 0 ? [kept] : []
+  }
+  const runs: Point[][] = []
+  let current: Point[] = []
+  for (const p of points) {
+    if (p === null) {
+      if (current.length > 0) runs.push(current)
+      current = []
+    } else {
+      current.push(p)
+    }
+  }
+  if (current.length > 0) runs.push(current)
+  return runs
+}
+
 export function linePath(
   points: readonly Point[],
   curve: 'linear' | 'monotone' = 'linear',
