@@ -177,6 +177,42 @@ export function createServer(options: ServerOptions = {}): McpServer {
   )
 
   server.registerTool(
+    'create_app',
+    {
+      title: 'Create app',
+      description:
+        'Scaffold a complete, ready-to-run cascivo app (Vite + React + TypeScript) wired with the app shell, side navigation, header, and a theme — one page per nav section, with signal-driven section switching. Runs `cascivo create` as a child process, writing the project into a new <name> directory.',
+      inputSchema: {
+        name: z.string().describe('Project name and directory, e.g. "my-app"'),
+        theme: z
+          .enum(['light', 'dark', 'warm'])
+          .optional()
+          .describe('Theme to wire in (default: light)'),
+        sections: z
+          .array(z.string())
+          .optional()
+          .describe(
+            'Side-nav section labels; one page is generated per section (default: Dashboard, Reports, Settings)',
+          ),
+        cwd: z
+          .string()
+          .optional()
+          .describe('Directory to create the app in (default: current directory)'),
+      },
+    },
+    ({ name, theme, sections, cwd }) => {
+      const args = ['-y', 'cascivo', 'create', name, '--yes']
+      if (theme) args.push('--theme', theme)
+      if (sections && sections.length > 0) args.push('--sections', sections.join(', '))
+      const result = spawnSync('npx', args, { encoding: 'utf8', ...(cwd ? { cwd } : {}) })
+      if (result.status !== 0) {
+        return error(result.stderr || result.error?.message || `Failed to create "${name}".`)
+      }
+      return text(result.stdout || `Created ${name}.`)
+    },
+  )
+
+  server.registerTool(
     'create_theme',
     {
       title: 'Create theme',

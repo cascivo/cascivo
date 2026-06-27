@@ -41,6 +41,7 @@ The server speaks the MCP stdio transport. By default it reads the `registry.jso
 | `get_component`      | `{ name }`                            | The full manifest for one component                                                                                                     |
 | `search_components`  | `{ query }`                           | Components matching name, tags, or description                                                                                          |
 | `add_to_project`     | `{ name, outputDir? }`                | Runs `cascivo add <name>` as a child process                                                                                            |
+| `create_app`         | `{ name, theme?, sections?, cwd? }`   | Scaffolds a full Vite + React app (shell + side nav + theme) via `cascivo create`                                                       |
 | `create_theme`       | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer)                                                                                            |
 | `scaffold_page`      | `{ description, components? }`        | A JSX page layout string                                                                                                                |
 | `scaffold_view`      | `{ description, components? }`        | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
