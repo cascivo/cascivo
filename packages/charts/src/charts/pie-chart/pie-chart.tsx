@@ -3,6 +3,7 @@ import { useSignal, useSignals } from '@cascivo/core'
 import type { ReactNode } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { Legend } from '../../chrome/legend'
+import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { arcPath } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -41,6 +42,8 @@ export interface PieChartProps {
   className?: string
   /** Render only the marks — no legend. For micro/inline charts. */
   plain?: boolean
+  /** Label each slice. Defaults to its percentage; pass `{ format }` to show the value instead. */
+  labels?: LabelOptions
 }
 
 function pieDefaultFormat(p: ChartPoint): string {
@@ -68,7 +71,10 @@ export function PieChart({
   legend,
   className,
   plain,
+  labels,
 }: PieChartProps) {
+  const resolvedLabels = plain ? null : resolveLabels(labels)
+  const labelsCustom = typeof labels === 'object' && labels !== null && labels.format != null
   const resolvedWidth = fixedWidth ?? size
   const resolvedHeight = height ?? size ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? true)
@@ -177,18 +183,32 @@ export function PieChart({
               {visible.map((d, i) => {
                 const slice = total > 0 ? (d.value / total) * 2 * Math.PI : 0
                 const endAngle = startAngle + slice
+                const midAngle = (startAngle + endAngle) / 2
                 const color = d.color ?? COLORS[i % COLORS.length]!
                 const path = arcPath(cx, cy, outerR, innerR, startAngle, endAngle)
                 startAngle = endAngle
+                const pct = total > 0 ? (d.value / total) * 100 : 0
+                // Skip labels on slices too thin to hold readable text.
+                const showLabel = resolvedLabels && pct >= 4
+                const labelR = innerR > 0 ? (innerR + outerR) / 2 : outerR * 0.6
                 return (
-                  <path
-                    key={d.id}
-                    d={path}
-                    fill={color}
-                    stroke="var(--cascivo-color-surface)"
-                    strokeWidth={1}
-                    data-series={d.id}
-                  />
+                  <g key={d.id}>
+                    <path
+                      d={path}
+                      fill={color}
+                      stroke="var(--cascivo-color-surface)"
+                      strokeWidth={1}
+                      data-series={d.id}
+                    />
+                    {showLabel && (
+                      <DataLabel
+                        x={cx + Math.sin(midAngle) * labelR}
+                        y={cy - Math.cos(midAngle) * labelR + 4}
+                        text={labelsCustom ? resolvedLabels.format(d.value) : `${Math.round(pct)}%`}
+                        tone="muted"
+                      />
+                    )}
+                  </g>
                 )
               })}
               {showCenter &&

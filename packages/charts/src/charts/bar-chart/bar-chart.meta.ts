@@ -61,6 +61,13 @@ export const meta: ComponentMeta = {
       description:
         'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
     },
+    {
+      name: 'labels',
+      type: 'boolean | { format?: (v: number) => string; position?: string }',
+      required: false,
+      description:
+        'Print each value as a label on the mark (collision-aware, decorative/aria-hidden).',
+    },
   ],
   typeDefs: [
     {

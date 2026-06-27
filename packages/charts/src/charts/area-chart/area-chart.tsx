@@ -6,6 +6,7 @@ import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
+import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { linearScale } from '../../engine/scale'
 import { areaPath, linePath, stackSeries } from '../../engine/shape'
 import type { Point } from '../../engine/shape'
@@ -37,6 +38,8 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   plain?: boolean
   /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
   annotations?: readonly Annotation[]
+  /** Print each point's value as a label above the top edge. */
+  labels?: LabelOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -58,9 +61,11 @@ export function AreaChart<Datum = { x: number; y: number }>({
   className,
   plain,
   annotations,
+  labels,
 }: AreaChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
+  const resolvedLabels = plain ? null : resolveLabels(labels)
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
@@ -193,6 +198,15 @@ export function AreaChart<Datum = { x: number; y: number }>({
                           stroke={color}
                           strokeWidth={2}
                         />
+                        {resolvedLabels &&
+                          points.map((p, i) => (
+                            <DataLabel
+                              key={i}
+                              x={p[0]}
+                              y={p[1] - 8}
+                              text={resolvedLabels.format(y(s.data[i]!))}
+                            />
+                          ))}
                       </g>
                     )
                   } else {
@@ -212,6 +226,15 @@ export function AreaChart<Datum = { x: number; y: number }>({
                           stroke={color}
                           strokeWidth={2}
                         />
+                        {resolvedLabels &&
+                          points.map((p, i) => (
+                            <DataLabel
+                              key={i}
+                              x={p[0]}
+                              y={p[1] - 8}
+                              text={resolvedLabels.format(y(s.data[i]!))}
+                            />
+                          ))}
                       </g>
                     )
                   }

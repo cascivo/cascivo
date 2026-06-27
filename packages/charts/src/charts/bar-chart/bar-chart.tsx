@@ -6,6 +6,7 @@ import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
+import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -43,6 +44,8 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
    * vertical axis (a threshold on a vertical bar chart's value), `x` is horizontal.
    */
   annotations?: readonly Annotation[]
+  /** Print each bar's value as a label. `true` for defaults, or tune format/position. */
+  labels?: LabelOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -75,8 +78,10 @@ export function BarChart<Datum = { x: string; y: number }>({
   className,
   plain,
   annotations,
+  labels,
 }: BarChartProps<Datum>) {
   useSignals()
+  const resolvedLabels = plain ? null : resolveLabels(labels)
   const hidden = useSignal(new Set<string>())
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
@@ -258,33 +263,65 @@ export function BarChart<Datum = { x: string; y: number }>({
                     const valStart = Math.min(valScale.map(val), valScale.map(baseVal))
                     const valLen = Math.abs(valScale.map(val) - valScale.map(baseVal))
 
-                    if (isVertical) {
-                      return (
-                        <rect
-                          key={`${s.id}-${di}`}
-                          x={barStart}
-                          y={valStart}
-                          width={subBandW}
-                          height={valLen}
-                          fill={color}
-                          rx={2}
-                          data-series={s.id}
-                        />
-                      )
-                    } else {
-                      return (
-                        <rect
-                          key={`${s.id}-${di}`}
-                          x={valStart}
-                          y={barStart}
-                          width={valLen}
-                          height={subBandW}
-                          fill={color}
-                          rx={2}
-                          data-series={s.id}
-                        />
-                      )
+                    // Optional value label, collision-aware: above the bar, flipping
+                    // inside when there's no room (short bar or stacked segment).
+                    let label: React.ReactNode = null
+                    if (resolvedLabels) {
+                      const text = resolvedLabels.format(y(d))
+                      const center = barStart + subBandW / 2
+                      const inside = mode === 'stacked' || valLen < 18 || valStart < 14
+                      if (isVertical) {
+                        label = (
+                          <DataLabel
+                            x={center}
+                            y={inside ? valStart + 13 : valStart - 4}
+                            text={text}
+                            tone={inside ? 'muted' : 'default'}
+                          />
+                        )
+                      } else {
+                        const end = valStart + valLen
+                        label = (
+                          <DataLabel
+                            x={inside ? end - 4 : end + 4}
+                            y={center + 4}
+                            text={text}
+                            anchor={inside ? 'end' : 'start'}
+                            tone={inside ? 'muted' : 'default'}
+                          />
+                        )
+                      }
+                      // A stacked segment too small to hold a label gets none.
+                      if (mode === 'stacked' && valLen < 14) label = null
                     }
+
+                    const rect = isVertical ? (
+                      <rect
+                        x={barStart}
+                        y={valStart}
+                        width={subBandW}
+                        height={valLen}
+                        fill={color}
+                        rx={2}
+                        data-series={s.id}
+                      />
+                    ) : (
+                      <rect
+                        x={valStart}
+                        y={barStart}
+                        width={valLen}
+                        height={subBandW}
+                        fill={color}
+                        rx={2}
+                        data-series={s.id}
+                      />
+                    )
+                    return (
+                      <g key={`${s.id}-${di}`}>
+                        {rect}
+                        {label}
+                      </g>
+                    )
                   })
                 })}
                 {!plain && isVertical && (

@@ -6,6 +6,7 @@ import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
+import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath } from '../../engine/shape'
@@ -38,6 +39,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   plain?: boolean
   /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
   annotations?: readonly Annotation[]
+  /** Print each point's value as a label above the mark. */
+  labels?: LabelOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -59,9 +62,11 @@ export function LineChart<Datum = { x: number; y: number }>({
   className,
   plain,
   annotations,
+  labels,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
+  const resolvedLabels = plain ? null : resolveLabels(labels)
 
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
@@ -213,16 +218,26 @@ export function LineChart<Datum = { x: number; y: number }>({
                   })
                   const color = s.color ?? COLORS[i % COLORS.length]!
                   return (
-                    <path
-                      key={s.id}
-                      d={linePath(pts, curve)}
-                      fill="none"
-                      stroke={color}
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      data-series={s.id}
-                    />
+                    <g key={s.id}>
+                      <path
+                        d={linePath(pts, curve)}
+                        fill="none"
+                        stroke={color}
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        data-series={s.id}
+                      />
+                      {resolvedLabels &&
+                        s.data.map((d, di) => (
+                          <DataLabel
+                            key={di}
+                            x={pts[di]![0]}
+                            y={pts[di]![1] - 8}
+                            text={resolvedLabels.format(y(d))}
+                          />
+                        ))}
+                    </g>
                   )
                 })}
                 {!plain && (
