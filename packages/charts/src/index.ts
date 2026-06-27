@@ -13,6 +13,7 @@ export * from './core/chart-frame'
 export * from './core/use-chart'
 export * from './chrome/axis'
 export * from './chrome/grid-lines'
+export * from './chrome/reference'
 export * from './chrome/legend'
 
 // Wave-1 chart components

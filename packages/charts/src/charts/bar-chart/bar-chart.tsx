@@ -5,6 +5,7 @@ import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
+import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -37,6 +38,11 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
+  /**
+   * Reference lines, bands, and markers drawn over the plot. Geometric axes: `y` is the
+   * vertical axis (a threshold on a vertical bar chart's value), `x` is horizontal.
+   */
+  annotations?: readonly Annotation[]
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -68,6 +74,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   tooltipFormat,
   className,
   plain,
+  annotations,
 }: BarChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -220,6 +227,13 @@ export function BarChart<Datum = { x: string; y: number }>({
                 {!plain && !isVertical && (
                   <GridLines scale={valScale} orientation="x" length={innerH} tickCount={xTicks} />
                 )}
+                {!plain &&
+                  renderAnnotations(annotations, {
+                    xScale: isVertical ? catScale : valScale,
+                    yScale: isVertical ? valScale : catScale,
+                    innerW,
+                    innerH,
+                  })}
                 {visibleSeries.map((s, si) => {
                   const color = s.color ?? COLORS[series.indexOf(s) % COLORS.length]!
                   const seriesIdx = series.indexOf(s)

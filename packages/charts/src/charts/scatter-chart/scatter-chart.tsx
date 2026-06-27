@@ -5,6 +5,7 @@ import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
+import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { linearScale } from '../../engine/scale'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -35,6 +36,8 @@ export interface ScatterChartProps {
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
+  /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
+  annotations?: readonly Annotation[]
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -52,6 +55,7 @@ export function ScatterChart({
   tooltip,
   className,
   plain,
+  annotations,
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -147,6 +151,7 @@ export function ScatterChart({
                 {!plain && (
                   <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
                 )}
+                {!plain && renderAnnotations(annotations, { xScale, yScale, innerW, innerH })}
                 {series.map((s, si) => {
                   if (hidden.value.has(s.id)) return null
                   const color = s.color ?? COLORS[si % COLORS.length]!

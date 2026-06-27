@@ -5,6 +5,7 @@ import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
+import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath } from '../../engine/shape'
@@ -35,6 +36,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
+  /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
+  annotations?: readonly Annotation[]
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -55,6 +58,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   formatTooltip,
   className,
   plain,
+  annotations,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -191,6 +195,13 @@ export function LineChart<Datum = { x: number; y: number }>({
                 {!plain && (
                   <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
                 )}
+                {!plain &&
+                  renderAnnotations(annotations, {
+                    xScale: xScale as { map: (v: never) => number | undefined },
+                    yScale,
+                    innerW,
+                    innerH,
+                  })}
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
                   const pts: Point[] = s.data.map((d) => {

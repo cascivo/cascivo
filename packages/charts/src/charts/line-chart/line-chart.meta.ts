@@ -84,6 +84,13 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'annotations',
+      type: 'Annotation[]',
+      required: false,
+      description:
+        'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',
@@ -112,6 +119,16 @@ export const meta: ComponentMeta = {
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]
 <LineChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />`,
+    },
+    {
+      title: 'With an SLO target line',
+      code: `<LineChart
+  series={series}
+  x={d => d.x}
+  y={d => d.y}
+  title="Latency"
+  annotations={[{ kind: 'line', axis: 'y', value: 200, label: 'SLO' }]}
+/>`,
     },
   ],
   dependencies: ['@cascivo/charts'],

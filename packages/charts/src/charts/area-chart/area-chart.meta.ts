@@ -39,6 +39,13 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'annotations',
+      type: 'Annotation[]',
+      required: false,
+      description:
+        'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

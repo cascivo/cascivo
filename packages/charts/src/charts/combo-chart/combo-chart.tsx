@@ -4,6 +4,7 @@ import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
+import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { linearScale, bandScale } from '../../engine/scale'
 import { linePath } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -30,6 +31,8 @@ export interface ComboChartProps {
   className?: string
   /** Render only the marks — no axes or grid lines. For micro/inline charts. */
   plain?: boolean
+  /** Reference lines, bands, and markers. `y` maps to the bar value axis. */
+  annotations?: readonly Annotation[]
 }
 
 export function ComboChart({
@@ -43,6 +46,7 @@ export function ComboChart({
   tooltip,
   className,
   plain,
+  annotations,
 }: ComboChartProps) {
   useSignals()
   const resolvedHeight = height ?? (plain ? 48 : 320)
@@ -169,6 +173,13 @@ export function ComboChart({
         return (
           <g transform={`translate(${margins.left},${margins.top})`}>
             {!plain && <GridLines scale={barYScale} orientation="y" length={inner.width} />}
+            {!plain &&
+              renderAnnotations(annotations, {
+                xScale,
+                yScale: barYScale,
+                innerW: inner.width,
+                innerH: inner.height,
+              })}
             {bars.map((b) => {
               const bx = xScale.map(b.label) ?? 0
               const by = barYScale.map(b.value)
