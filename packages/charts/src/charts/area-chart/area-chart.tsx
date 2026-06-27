@@ -11,11 +11,17 @@ import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-l
 import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
 import { Brush } from '../../chrome/brush'
 import { DataZoom } from '../../chrome/data-zoom'
+import { decimate as decimatePoints, type DecimateMethod, type Pt } from '../../engine/decimate'
 import { useId, useRef } from 'react'
 import { linearScale } from '../../engine/scale'
 import { areaPath, linePath, stackSeries } from '../../engine/shape'
 import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
+
+export interface AreaDecimateOptions {
+  method?: DecimateMethod
+  threshold?: number
+}
 
 export interface AreaChartSeries<Datum> {
   id: string
@@ -59,6 +65,10 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   zoom?: boolean
   /** Connect this chart to others sharing the same id — they mirror zoom window + hovered x. */
   syncId?: string
+  /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
+  tooltipMode?: 'item' | 'axis'
+  /** Downsample dense (non-stacked) series before drawing (LTTB/min-max). The fallback table keeps full data. */
+  decimate?: boolean | AreaDecimateOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -88,11 +98,19 @@ export function AreaChart<Datum = { x: number; y: number }>({
   dataZoom,
   zoom,
   syncId,
+  tooltipMode,
+  decimate,
 }: AreaChartProps<Datum>) {
   useSignals()
   const defsId = useId()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
+  const decConf =
+    decimate === true
+      ? { method: 'lttb' as DecimateMethod, threshold: 1000 }
+      : decimate
+        ? { method: decimate.method ?? 'lttb', threshold: decimate.threshold ?? 1000 }
+        : null
 
   // Index window — when any zoom affordance is on, the plot renders only this range.
   const fullLen = rawSeries.reduce((m, s) => Math.max(m, s.data.length), 0)
@@ -178,6 +196,45 @@ export function AreaChart<Datum = { x: number; y: number }>({
     const innerH = h - margins.top - margins.bottom
     const xScale = linearScale([xMin, xMax], [0, innerW])
     const yScale = linearScale([yMin, yMax], [innerH, 0])
+
+    // Axis mode — one focusable point per x index carrying every series as segments.
+    if (tooltipMode === 'axis') {
+      const len = series.reduce((m, s) => Math.max(m, s.data.length), 0)
+      const axisPoints: ChartPoint[] = []
+      for (let i = 0; i < len; i++) {
+        const segments: { label: string; value: number; color?: string }[] = []
+        let cyTop = Infinity
+        let labelX = ''
+        let cx = margins.left
+        series.forEach((s, si) => {
+          if (hidden.value.has(s.id)) return
+          const d = s.data[i]
+          if (d === undefined) return
+          const yv = y(d)
+          if (!Number.isFinite(yv)) return
+          cx = margins.left + xScale.map(x(d))
+          cyTop = Math.min(cyTop, yScale.map(yv))
+          labelX = String(x(d))
+          segments.push({
+            label: s.label,
+            value: yv,
+            color: s.color ?? COLORS[si % COLORS.length]!,
+          })
+        })
+        if (segments.length === 0) continue
+        axisPoints.push({
+          id: `x-${i}`,
+          cx,
+          cy: margins.top + (cyTop === Infinity ? 0 : cyTop),
+          label: labelX,
+          value: labelX,
+          segments,
+        })
+      }
+      const format = (p: ChartPoint): string =>
+        `${p.label}: ${(p.segments ?? []).map((s) => `${s.label} ${s.value}`).join(', ')}`
+      return { points: axisPoints, mode: 'axis', format }
+    }
 
     const points: ChartPoint[] = series.flatMap((s) => {
       if (hidden.value.has(s.id)) return []
@@ -287,6 +344,27 @@ export function AreaChart<Datum = { x: number; y: number }>({
                   } else {
                     points = s.data.map((d) => [xScale.map(x(d)), yScale.map(y(d))])
                     baseline = yScale.map(0)
+                    // Dense, non-stacked series: downsample for a fast, crisp path.
+                    if (decConf && points.length > decConf.threshold) {
+                      const dec = decimatePoints(points as Pt[], decConf.threshold, decConf.method)
+                      const decPts = dec.map((p) => [p[0], p[1]] as Point)
+                      return (
+                        <g key={s.id} data-series={s.id}>
+                          <path
+                            d={areaPath(decPts, baseline, curve)}
+                            fill={fillFor(defsId, s.id, fill, color)}
+                            fillOpacity={fill === 'solid' ? 0.25 : 1}
+                            stroke="none"
+                          />
+                          <path
+                            d={linePath(decPts, curve)}
+                            fill="none"
+                            stroke={color}
+                            strokeWidth={2}
+                          />
+                        </g>
+                      )
+                    }
                     return (
                       <g key={s.id} data-series={s.id}>
                         <path

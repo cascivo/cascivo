@@ -23,6 +23,8 @@ export * from './engine/ramp'
 // Data pipeline — filter/sort/aggregate/bin/regression + encode (table → series).
 export * from './engine/transform'
 export * from './engine/dataset'
+// Decimation — LTTB / min-max downsampling for dense series.
+export * from './engine/decimate'
 
 // Frame & chrome — the SVG/Canvas shell + the reusable visual primitives.
 export * from './core/chart-frame'

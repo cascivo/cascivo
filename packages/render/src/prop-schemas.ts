@@ -261,6 +261,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'tooltipMode',
+      required: false,
+      enum: ['item', 'axis'],
+    },
+    {
+      name: 'decimate',
+      required: false,
+    },
   ],
   AspectRatio: [
     {
@@ -2953,6 +2962,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'syncId',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'tooltipMode',
+      required: false,
+      enum: ['item', 'axis'],
+    },
+    {
+      name: 'decimate',
+      required: false,
     },
   ],
   Link: [

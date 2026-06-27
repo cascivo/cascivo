@@ -142,6 +142,21 @@ export const meta: ComponentMeta = {
       description:
         'Connect this chart to others sharing the same id — they mirror the zoom window and hovered x.',
     },
+    {
+      name: 'tooltipMode',
+      type: "'item' | 'axis'",
+      required: false,
+      default: 'item',
+      description:
+        'Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).',
+    },
+    {
+      name: 'decimate',
+      type: "boolean | { method?: 'lttb' | 'minmax'; threshold?: number }",
+      required: false,
+      description:
+        'Downsample dense series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

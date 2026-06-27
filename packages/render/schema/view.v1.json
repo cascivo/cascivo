@@ -5039,6 +5039,10 @@
                   },
                   "syncId": {
                     "type": "string"
+                  },
+                  "tooltipMode": {
+                    "type": "string",
+                    "enum": ["item", "axis"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5577,6 +5581,10 @@
                   },
                   "syncId": {
                     "type": "string"
+                  },
+                  "tooltipMode": {
+                    "type": "string",
+                    "enum": ["item", "axis"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]

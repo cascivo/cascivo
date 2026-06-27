@@ -188,6 +188,24 @@ export function ChartFrame({
                   border: 0,
                 }}
               />
+              {/* Axis crosshair — a vertical rule at the hovered x (axis-trigger mode) */}
+              {resolvedTooltip.mode === 'axis' &&
+                focusedIndex.value !== null &&
+                resolvedTooltip.points[focusedIndex.value] !== undefined && (
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: resolvedTooltip.points[focusedIndex.value]!.cx,
+                      top: 0,
+                      width: 1,
+                      height: h,
+                      background: 'var(--cascivo-chart-grid, currentColor)',
+                      pointerEvents: 'none',
+                      zIndex: 9,
+                    }}
+                  />
+                )}
               {/* Focus ring indicator — shown at the focused data point */}
               {focusedIndex.value !== null &&
                 resolvedTooltip.points[focusedIndex.value] !== undefined &&
@@ -275,13 +293,15 @@ export function ChartFrame({
               const relX = e.clientX - rect.left
               const relY = e.clientY - rect.top
               focusedIndex.value =
-                hover === 'voronoi'
-                  ? voronoiFind(
-                      resolvedTooltip.points.map((p) => [p.cx, p.cy] as const),
-                      relX,
-                      relY,
-                    )
-                  : nearest(resolvedTooltip.points, relX, relY, 'xy')
+                resolvedTooltip.mode === 'axis'
+                  ? nearest(resolvedTooltip.points, relX, relY, 'x')
+                  : hover === 'voronoi'
+                    ? voronoiFind(
+                        resolvedTooltip.points.map((p) => [p.cx, p.cy] as const),
+                        relX,
+                        relY,
+                      )
+                    : nearest(resolvedTooltip.points, relX, relY, 'xy')
             }}
             onPointerUp={() => {
               panStart.current = null

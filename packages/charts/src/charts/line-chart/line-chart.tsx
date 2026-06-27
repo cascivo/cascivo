@@ -14,8 +14,14 @@ import { DataZoom } from '../../chrome/data-zoom'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath, splitDefined } from '../../engine/shape'
+import { decimate as decimatePoints, type DecimateMethod, type Pt } from '../../engine/decimate'
 import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
+
+export interface DecimateOptions {
+  method?: DecimateMethod
+  threshold?: number
+}
 
 export interface LineChartSeries<Datum> {
   id: string
@@ -57,6 +63,10 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   zoom?: boolean
   /** Connect this chart to others sharing the same id — they mirror zoom window + hovered x. */
   syncId?: string
+  /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
+  tooltipMode?: 'item' | 'axis'
+  /** Downsample dense series before drawing (LTTB/min-max). The fallback table keeps full data. */
+  decimate?: boolean | DecimateOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -85,10 +95,18 @@ export function LineChart<Datum = { x: number; y: number }>({
   dataZoom,
   zoom,
   syncId,
+  tooltipMode,
+  decimate,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
+  const decConf =
+    decimate === true
+      ? { method: 'lttb' as DecimateMethod, threshold: 1000 }
+      : decimate
+        ? { method: decimate.method ?? 'lttb', threshold: decimate.threshold ?? 1000 }
+        : null
 
   // Index window — when any zoom affordance is on, the plot renders only this range.
   const fullLen = rawSeries.reduce((m, s) => Math.max(m, s.data.length), 0)
@@ -182,6 +200,54 @@ export function LineChart<Datum = { x: number; y: number }>({
       : linearScale([xMin, xMax], [0, innerW])
     const yScale = linearScale([yMin, yMax], [innerH, 0])
 
+    const xPosOf = (xv: number | Date): number =>
+      usesDate
+        ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
+        : (xScale as ReturnType<typeof linearScale>).map(xv as number)
+
+    // Axis mode — one focusable point per x index, carrying every series' value
+    // as segments, with a crosshair + shared (multi-series) tooltip.
+    if (tooltipMode === 'axis') {
+      const len = series.reduce((m, s) => Math.max(m, s.data.length), 0)
+      const axisPoints: ChartPoint[] = []
+      for (let i = 0; i < len; i++) {
+        const segments: { label: string; value: number; color?: string }[] = []
+        let cxSum = 0
+        let cnt = 0
+        let cyTop = Infinity
+        let labelX = ''
+        series.forEach((s, si) => {
+          if (hidden.value.has(s.id)) return
+          const d = s.data[i]
+          if (d === undefined) return
+          const yv = y(d)
+          if (!Number.isFinite(yv)) return
+          const xv = x(d)
+          cxSum += xPosOf(xv)
+          cnt++
+          cyTop = Math.min(cyTop, yScale.map(yv))
+          labelX = xv instanceof Date ? xv.toLocaleDateString() : String(xv)
+          segments.push({
+            label: s.label,
+            value: yv,
+            color: s.color ?? COLORS[si % COLORS.length]!,
+          })
+        })
+        if (cnt === 0) continue
+        axisPoints.push({
+          id: `x-${i}`,
+          cx: margins.left + cxSum / cnt,
+          cy: margins.top + (cyTop === Infinity ? 0 : cyTop),
+          label: labelX,
+          value: labelX,
+          segments,
+        })
+      }
+      const format = (p: ChartPoint): string =>
+        `${p.label}: ${(p.segments ?? []).map((s) => `${s.label} ${s.value}`).join(', ')}`
+      return { points: axisPoints, mode: 'axis', format }
+    }
+
     const points: ChartPoint[] = series.flatMap((s) => {
       if (hidden.value.has(s.id)) return []
       return s.data.flatMap((d, i) => {
@@ -266,18 +332,44 @@ export function LineChart<Datum = { x: number; y: number }>({
                   })}
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
+                  const color = s.color ?? COLORS[i % COLORS.length]!
+                  const xPos = (xv: number | Date) =>
+                    usesDate
+                      ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
+                      : (xScale as ReturnType<typeof linearScale>).map(xv as number)
+
+                  // Dense series: downsample the finite points into a single crisp path.
+                  if (decConf && s.data.length > decConf.threshold) {
+                    const finite: Pt[] = []
+                    for (const d of s.data) {
+                      const yv = y(d)
+                      if (Number.isFinite(yv)) finite.push([xPos(x(d)), yScale.map(yv)])
+                    }
+                    const dec = decimatePoints(finite, decConf.threshold, decConf.method)
+                    return (
+                      <path
+                        key={s.id}
+                        d={linePath(
+                          dec.map((p) => [p[0], p[1]] as Point),
+                          curve,
+                        )}
+                        fill="none"
+                        stroke={color}
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        data-series={s.id}
+                      />
+                    )
+                  }
+
                   // null marks a gap (missing / non-finite y) so the line breaks there.
                   const rawPts: (Point | null)[] = s.data.map((d) => {
                     const yv = y(d)
                     if (!Number.isFinite(yv)) return null
-                    const xv = x(d)
-                    const xPos = usesDate
-                      ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
-                      : (xScale as ReturnType<typeof linearScale>).map(xv as number)
-                    return [xPos, yScale.map(yv)] as Point
+                    return [xPos(x(d)), yScale.map(yv)] as Point
                   })
                   const runs = splitDefined(rawPts, connectNulls)
-                  const color = s.color ?? COLORS[i % COLORS.length]!
                   return (
                     <g key={s.id}>
                       {runs.map((run, ri) => (
