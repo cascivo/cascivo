@@ -74,6 +74,12 @@ export const meta: ComponentMeta = {
       description:
         'Print each value as a label on the mark (collision-aware, decorative/aria-hidden).',
     },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
   ],
   typeDefs: [
     {

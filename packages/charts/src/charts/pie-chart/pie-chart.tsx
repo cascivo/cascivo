@@ -44,6 +44,8 @@ export interface PieChartProps {
   plain?: boolean
   /** Label each slice. Defaults to its percentage; pass `{ format }` to show the value instead. */
   labels?: LabelOptions
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
 }
 
 function pieDefaultFormat(p: ChartPoint): string {
@@ -72,6 +74,7 @@ export function PieChart({
   className,
   plain,
   labels,
+  onSelect,
 }: PieChartProps) {
   const resolvedLabels = plain ? null : resolveLabels(labels)
   const labelsCustom = typeof labels === 'object' && labels !== null && labels.format != null
@@ -155,6 +158,7 @@ export function PieChart({
         emptyLabel={emptyLabel}
         plain={plain}
         tooltip={hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width, height: h }) => {
           const cx = width / 2

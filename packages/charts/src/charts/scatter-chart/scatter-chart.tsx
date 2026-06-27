@@ -38,6 +38,8 @@ export interface ScatterChartProps {
   plain?: boolean
   /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
   annotations?: readonly Annotation[]
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -56,6 +58,7 @@ export function ScatterChart({
   className,
   plain,
   annotations,
+  onSelect,
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -138,6 +141,7 @@ export function ScatterChart({
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

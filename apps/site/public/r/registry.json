@@ -2771,6 +2771,12 @@
             "type": "boolean | { format?: (v: number) => string; position?: string }",
             "required": false,
             "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "tokens": [
@@ -2948,6 +2954,12 @@
             "type": "boolean | { format?: (v: number) => string; position?: string }",
             "required": false,
             "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "typeDefs": [
@@ -4089,6 +4101,12 @@
             "required": false,
             "default": "false",
             "description": "Bridge non-finite y gaps instead of breaking the line at them."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "tokens": [
@@ -4364,6 +4382,12 @@
             "type": "boolean | { format?: (v: number) => string; position?: string }",
             "required": false,
             "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "typeDefs": [
@@ -4833,6 +4857,12 @@
             "type": "Annotation[]",
             "required": false,
             "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "tokens": [

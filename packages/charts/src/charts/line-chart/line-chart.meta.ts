@@ -105,6 +105,12 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Bridge non-finite y gaps instead of breaking the line at them.',
     },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

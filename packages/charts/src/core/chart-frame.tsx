@@ -4,7 +4,7 @@ import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
 import styles from './chart-frame.module.css'
-import { defaultFormat, type TooltipModel } from './data-point'
+import { defaultFormat, type ChartPoint, type TooltipModel } from './data-point'
 import { ChartTooltip } from './chart-tooltip'
 import { nearest } from './nearest'
 
@@ -28,6 +28,8 @@ export interface ChartFrameProps {
     | TooltipModel
     | ((size: { width: number; height: number }) => TooltipModel | undefined)
     | undefined
+  /** Fired when the focused/hovered point is clicked or activated (Enter/Space). */
+  onSelect?: ((point: ChartPoint) => void) | undefined
 }
 
 export function ChartFrame({
@@ -42,6 +44,7 @@ export function ChartFrame({
   emptyLabel,
   plain,
   tooltip,
+  onSelect,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -70,7 +73,7 @@ export function ChartFrame({
   const focusableLayerStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
-    cursor: 'crosshair',
+    cursor: onSelect ? 'pointer' : 'crosshair',
     background: 'transparent',
   }
 
@@ -195,7 +198,17 @@ export function ChartFrame({
                 focusedIndex.value = resolvedTooltip.points.length - 1
               } else if (e.key === 'Escape') {
                 focusedIndex.value = null
+              } else if (onSelect && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault()
+                const idx = focusedIndex.value
+                const pt = idx !== null ? resolvedTooltip.points[idx] : undefined
+                if (pt) onSelect(pt)
               }
+            }}
+            onClick={() => {
+              const idx = focusedIndex.value
+              const pt = idx !== null ? resolvedTooltip.points[idx] : undefined
+              if (onSelect && pt) onSelect(pt)
             }}
             onFocus={() => {
               if (resolvedTooltip.points.length > 0 && focusedIndex.value === null) {

@@ -46,6 +46,8 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   annotations?: readonly Annotation[]
   /** Print each bar's value as a label. `true` for defaults, or tune format/position. */
   labels?: LabelOptions
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -79,6 +81,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   plain,
   annotations,
   labels,
+  onSelect,
 }: BarChartProps<Datum>) {
   useSignals()
   const resolvedLabels = plain ? null : resolveLabels(labels)
@@ -222,6 +225,7 @@ export function BarChart<Datum = { x: string; y: number }>({
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
         tooltip={tooltip && hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

@@ -43,6 +43,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   labels?: LabelOptions
   /** Bridge `null`/non-finite y gaps instead of breaking the line at them (default: break). */
   connectNulls?: boolean
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -66,6 +68,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   annotations,
   labels,
   connectNulls,
+  onSelect,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -181,6 +184,7 @@ export function LineChart<Datum = { x: number; y: number }>({
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width: w, height: h }) => {
           const innerW = w - margins.left - margins.right

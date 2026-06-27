@@ -44,6 +44,12 @@ export const meta: ComponentMeta = {
       description:
         'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
     },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

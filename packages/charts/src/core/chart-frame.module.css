@@ -4,6 +4,23 @@
     inline-size: 100%;
   }
 
+  /* Subtle entrance — progressive enhancement, fully off under reduced-motion.
+     A fade has no layout shift and reads correctly as a static frame when suppressed. */
+  @media (prefers-reduced-motion: no-preference) {
+    .frame > svg {
+      animation: cascivo-chart-in 320ms ease-out both;
+    }
+
+    @keyframes cascivo-chart-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
   .fallback {
     position: absolute;
     inset-inline-start: -9999px;

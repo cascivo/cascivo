@@ -40,6 +40,7 @@ import { LineChart } from '@cascivo/charts'
 | `annotations`   | `Annotation[]`                                             | no                                                     | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 | `labels`        | `boolean                                                   | { format?: (v: number) => string; position?: string }` | no      | —                                                                                              | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
 | `connectNulls`  | `boolean`                                                  | no                                                     | `false` | Bridge non-finite y gaps instead of breaking the line at them.                                 |
+| `onSelect`      | `(point: ChartPoint) => void`                              | no                                                     | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                     |
 
 ## Examples
 

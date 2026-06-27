@@ -40,6 +40,8 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   annotations?: readonly Annotation[]
   /** Print each point's value as a label above the top edge. */
   labels?: LabelOptions
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -62,6 +64,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   plain,
   annotations,
   labels,
+  onSelect,
 }: AreaChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -149,6 +152,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
