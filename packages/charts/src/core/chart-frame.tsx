@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals, type Signal } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
@@ -9,6 +9,13 @@ import { ChartTooltip } from './chart-tooltip'
 import { nearest } from './nearest'
 import { voronoiFind } from '../engine/voronoi'
 import { CanvasLayer, type CanvasPaint } from './canvas-layer'
+import { isZoomed, panWindow, zoomWindow } from './zoom'
+
+/** In-plot zoom-pan config: a shared index window + the total item count. */
+export interface ZoomConfig {
+  window: Signal<[number, number]>
+  count: number
+}
 
 export interface ChartFrameProps {
   title: string
@@ -38,6 +45,8 @@ export interface ChartFrameProps {
   renderer?: 'svg' | 'canvas' | undefined
   /** Canvas paint callback (marks only) — used when `renderer === 'canvas'`. */
   paint?: CanvasPaint | undefined
+  /** Enable in-plot wheel/drag zoom-pan + keyboard (`+`/`-`/`0`) bound to an index window. */
+  zoom?: ZoomConfig | undefined
 }
 
 export function ChartFrame({
@@ -56,6 +65,7 @@ export function ChartFrame({
   hover = 'rect',
   renderer = 'svg',
   paint,
+  zoom,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -66,6 +76,29 @@ export function ChartFrame({
   // Must be called unconditionally (rules of hooks)
   const focusedIndex = useSignal<number | null>(null)
   const ariaLiveRef = useRef<HTMLSpanElement>(null)
+  // Pan gesture state (drag start clientX + the window at grab time).
+  const panStart = useRef<{ x: number; win: [number, number] } | null>(null)
+  const layerRef = useRef<HTMLDivElement>(null)
+
+  // Wheel zoom toward the cursor — attached natively so it can be non-passive
+  // (a React onWheel handler can't reliably preventDefault the page scroll).
+  useSignalEffect(() => {
+    const el = layerRef.current
+    if (!el || !zoom) return
+    const onWheel = (ev: WheelEvent) => {
+      ev.preventDefault()
+      const rect = el.getBoundingClientRect()
+      const frac = rect.width ? (ev.clientX - rect.left) / rect.width : 0.5
+      const factor = ev.deltaY > 0 ? 1.25 : 1 / 1.25
+      zoom.window.value = zoomWindow(zoom.window.value, zoom.count, factor, frac)
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  })
+
+  const resetZoom = () => {
+    if (zoom) zoom.window.value = [0, Math.max(0, zoom.count - 1)]
+  }
 
   const w = fixedWidth ?? width.value
   const h = fixedHeight ?? height.value
@@ -84,14 +117,16 @@ export function ChartFrame({
   const focusableLayerStyle: React.CSSProperties = {
     position: 'absolute',
     inset: 0,
-    cursor: onSelect ? 'pointer' : 'crosshair',
+    cursor: zoom ? 'grab' : onSelect ? 'pointer' : 'crosshair',
     background: 'transparent',
+    touchAction: zoom ? 'none' : undefined,
   }
 
   const useCanvas = renderer === 'canvas' && paint !== undefined
+  const interactive = resolvedTooltip !== undefined || zoom !== undefined
 
   const containerStyle: React.CSSProperties | undefined =
-    resolvedTooltip !== undefined || useCanvas ? { position: 'relative' } : undefined
+    interactive || useCanvas ? { position: 'relative' } : undefined
 
   return (
     <div
@@ -132,64 +167,110 @@ export function ChartFrame({
         )}
       </svg>
       {fallback && <div className={styles['fallback']}>{fallback}</div>}
-      {resolvedTooltip !== undefined && (
+      {interactive && (
         <>
-          {/* Visually-hidden aria-live region for screen-reader announcements */}
-          <span
-            id={ariaLiveId}
-            ref={ariaLiveRef}
-            aria-live="polite"
-            style={{
-              position: 'absolute',
-              width: '1px',
-              height: '1px',
-              padding: 0,
-              margin: '-1px',
-              overflow: 'hidden',
-              clip: 'rect(0,0,0,0)',
-              whiteSpace: 'nowrap',
-              border: 0,
-            }}
-          />
-          {/* Focus ring indicator — shown at the focused data point */}
-          {focusedIndex.value !== null &&
-            resolvedTooltip.points[focusedIndex.value] !== undefined &&
-            (() => {
-              const fp = resolvedTooltip.points[focusedIndex.value!]!
-              return (
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    left: fp.cx - 4,
-                    top: fp.cy - 4,
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    border: '2px solid var(--cascivo-focus-ring, var(--cascivo-color-accent))',
-                    background: 'var(--cascivo-color-background, white)',
-                    pointerEvents: 'none',
-                    zIndex: 10,
-                  }}
-                />
-              )
-            })()}
-          {/* Tooltip overlay — shown when a point is focused */}
-          {focusedIndex.value !== null &&
-            resolvedTooltip.points[focusedIndex.value] !== undefined && (
-              <ChartTooltip
-                point={resolvedTooltip.points[focusedIndex.value]!}
-                model={resolvedTooltip}
+          {resolvedTooltip !== undefined && (
+            <>
+              {/* Visually-hidden aria-live region for screen-reader announcements */}
+              <span
+                id={ariaLiveId}
+                ref={ariaLiveRef}
+                aria-live="polite"
+                style={{
+                  position: 'absolute',
+                  width: '1px',
+                  height: '1px',
+                  padding: 0,
+                  margin: '-1px',
+                  overflow: 'hidden',
+                  clip: 'rect(0,0,0,0)',
+                  whiteSpace: 'nowrap',
+                  border: 0,
+                }}
               />
-            )}
-          {/* Focusable layer covering the SVG for keyboard navigation */}
+              {/* Focus ring indicator — shown at the focused data point */}
+              {focusedIndex.value !== null &&
+                resolvedTooltip.points[focusedIndex.value] !== undefined &&
+                (() => {
+                  const fp = resolvedTooltip.points[focusedIndex.value!]!
+                  return (
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: 'absolute',
+                        left: fp.cx - 4,
+                        top: fp.cy - 4,
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        border: '2px solid var(--cascivo-focus-ring, var(--cascivo-color-accent))',
+                        background: 'var(--cascivo-color-background, white)',
+                        pointerEvents: 'none',
+                        zIndex: 10,
+                      }}
+                    />
+                  )
+                })()}
+              {/* Tooltip overlay — shown when a point is focused */}
+              {focusedIndex.value !== null &&
+                resolvedTooltip.points[focusedIndex.value] !== undefined && (
+                  <ChartTooltip
+                    point={resolvedTooltip.points[focusedIndex.value]!}
+                    model={resolvedTooltip}
+                  />
+                )}
+            </>
+          )}
+          {/* Reset-zoom control — only while a zoom window is active */}
+          {zoom && isZoomed(zoom.window.value, zoom.count) && (
+            <button
+              type="button"
+              onClick={resetZoom}
+              style={{
+                position: 'absolute',
+                top: 4,
+                right: 4,
+                zIndex: 11,
+                padding: '0.25rem 0.5rem',
+                fontSize: '0.75rem',
+                lineHeight: 1.2,
+                borderRadius: '0.375rem',
+                border: '1px solid var(--cascivo-chart-grid, currentColor)',
+                background: 'var(--cascivo-color-background, white)',
+                color: 'var(--cascivo-color-foreground, inherit)',
+                cursor: 'pointer',
+              }}
+            >
+              {t(builtin.charts.resetZoom)}
+            </button>
+          )}
+          {/* Focusable layer covering the SVG for keyboard nav + zoom-pan gestures */}
           <div
+            ref={layerRef}
             role="application"
-            aria-label="Chart data — use arrow keys to navigate points"
+            aria-label={
+              zoom
+                ? 'Chart — arrow keys navigate points; + and - zoom, 0 resets, drag to pan'
+                : 'Chart data — use arrow keys to navigate points'
+            }
             tabIndex={0}
             style={focusableLayerStyle}
+            onPointerDown={(e) => {
+              if (!zoom) return
+              panStart.current = { x: e.clientX, win: [...zoom.window.value] }
+              e.currentTarget.setPointerCapture(e.pointerId)
+            }}
             onPointerMove={(e) => {
-              if (!resolvedTooltip.points.length) return
+              // Drag-pan takes precedence while zooming.
+              if (zoom && panStart.current && e.buttons === 1) {
+                const rect = e.currentTarget.getBoundingClientRect()
+                const span = panStart.current.win[1] - panStart.current.win[0] + 1
+                const deltaPx = e.clientX - panStart.current.x
+                const deltaIdx = rect.width ? -(deltaPx / rect.width) * span : 0
+                zoom.window.value = panWindow(panStart.current.win, zoom.count, deltaIdx)
+                return
+              }
+              if (!resolvedTooltip || !resolvedTooltip.points.length) return
               const rect = e.currentTarget.getBoundingClientRect()
               const relX = e.clientX - rect.left
               const relY = e.clientY - rect.top
@@ -202,11 +283,32 @@ export function ChartFrame({
                     )
                   : nearest(resolvedTooltip.points, relX, relY, 'xy')
             }}
+            onPointerUp={() => {
+              panStart.current = null
+            }}
             onPointerLeave={() => {
-              focusedIndex.value = null
+              panStart.current = null
+              if (resolvedTooltip) focusedIndex.value = null
             }}
             onKeyDown={(e) => {
-              if (!resolvedTooltip.points.length) return
+              if (zoom) {
+                if (e.key === '+' || e.key === '=') {
+                  e.preventDefault()
+                  zoom.window.value = zoomWindow(zoom.window.value, zoom.count, 1 / 1.25, 0.5)
+                  return
+                }
+                if (e.key === '-' || e.key === '_') {
+                  e.preventDefault()
+                  zoom.window.value = zoomWindow(zoom.window.value, zoom.count, 1.25, 0.5)
+                  return
+                }
+                if (e.key === '0') {
+                  e.preventDefault()
+                  resetZoom()
+                  return
+                }
+              }
+              if (!resolvedTooltip || !resolvedTooltip.points.length) return
               const current = focusedIndex.value
               if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                 e.preventDefault()
@@ -232,17 +334,22 @@ export function ChartFrame({
               }
             }}
             onClick={() => {
+              if (!resolvedTooltip) return
               const idx = focusedIndex.value
               const pt = idx !== null ? resolvedTooltip.points[idx] : undefined
               if (onSelect && pt) onSelect(pt)
             }}
             onFocus={() => {
-              if (resolvedTooltip.points.length > 0 && focusedIndex.value === null) {
+              if (
+                resolvedTooltip &&
+                resolvedTooltip.points.length > 0 &&
+                focusedIndex.value === null
+              ) {
                 focusedIndex.value = 0
               }
             }}
             onBlur={() => {
-              focusedIndex.value = null
+              if (resolvedTooltip) focusedIndex.value = null
             }}
           />
         </>

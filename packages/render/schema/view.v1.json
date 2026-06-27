@@ -5027,6 +5027,18 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "brush": {
+                    "type": "boolean"
+                  },
+                  "dataZoom": {
+                    "type": "boolean"
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "syncId": {
+                    "type": "string"
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5548,6 +5560,15 @@
                   },
                   "brush": {
                     "type": "boolean"
+                  },
+                  "dataZoom": {
+                    "type": "boolean"
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "syncId": {
+                    "type": "string"
                   }
                 },
                 "required": ["series", "x", "y", "title"]

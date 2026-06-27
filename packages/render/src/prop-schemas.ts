@@ -241,6 +241,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onSelect',
       required: false,
     },
+    {
+      name: 'brush',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'dataZoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'zoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'syncId',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   AspectRatio: [
     {
@@ -2914,6 +2934,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'brush',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'dataZoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'zoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'syncId',
+      required: false,
+      primitives: ['string'],
     },
   ],
   Link: [

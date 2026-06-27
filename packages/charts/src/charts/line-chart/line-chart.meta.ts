@@ -119,6 +119,29 @@ export const meta: ComponentMeta = {
       description:
         'Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window.',
     },
+    {
+      name: 'dataZoom',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Show a DataZoom slider below the plot — a Brush whose body also pans the window.',
+    },
+    {
+      name: 'zoom',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes.',
+    },
+    {
+      name: 'syncId',
+      type: 'string',
+      required: false,
+      description:
+        'Connect this chart to others sharing the same id — they mirror the zoom window and hovered x.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

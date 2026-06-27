@@ -90,6 +90,7 @@ export const builtin = {
   charts: defineMessages('cascade.charts', {
     legendToggle: 'Toggle series {name}',
     noData: 'No data',
+    resetZoom: 'Reset zoom',
   }),
   alertDialog: defineMessages('cascade.alertDialog', {
     confirm: 'Confirm',
@@ -352,6 +353,7 @@ defineCatalog(builtin.appShell, 'de', {
 defineCatalog(builtin.charts, 'de', {
   legendToggle: 'Reihe {name} umschalten',
   noData: 'Keine Daten',
+  resetZoom: 'Zoom zurücksetzen',
 })
 defineCatalog(builtin.alertDialog, 'de', {
   confirm: 'Bestätigen',

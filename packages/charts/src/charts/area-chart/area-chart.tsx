@@ -1,14 +1,17 @@
 'use client'
-import { useSignal, useSignals } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
+import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
-import { useId } from 'react'
+import { Brush } from '../../chrome/brush'
+import { DataZoom } from '../../chrome/data-zoom'
+import { useId, useRef } from 'react'
 import { linearScale } from '../../engine/scale'
 import { areaPath, linePath, stackSeries } from '../../engine/shape'
 import type { Point, Curve } from '../../engine/shape'
@@ -48,12 +51,20 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   labels?: LabelOptions
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
+  /** Show a keyboard-operable Brush below the plot to subset the series to a window. */
+  brush?: boolean
+  /** Show a DataZoom slider below the plot — a Brush whose body also pans the window. */
+  dataZoom?: boolean
+  /** Enable in-plot wheel/drag/keyboard zoom-pan (`+`/`-`/`0`) over the series index window. */
+  zoom?: boolean
+  /** Connect this chart to others sharing the same id — they mirror zoom window + hovered x. */
+  syncId?: string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
 
 export function AreaChart<Datum = { x: number; y: number }>({
-  series,
+  series: rawSeries,
   x,
   y,
   title,
@@ -73,11 +84,45 @@ export function AreaChart<Datum = { x: number; y: number }>({
   annotations,
   labels,
   onSelect,
+  brush,
+  dataZoom,
+  zoom,
+  syncId,
 }: AreaChartProps<Datum>) {
   useSignals()
   const defsId = useId()
   const hidden = useSignal(new Set<string>())
   const resolvedLabels = plain ? null : resolveLabels(labels)
+
+  // Index window — when any zoom affordance is on, the plot renders only this range.
+  const fullLen = rawSeries.reduce((m, s) => Math.max(m, s.data.length), 0)
+  const windowed = (brush || dataZoom || zoom || syncId !== undefined) && fullLen > 0
+  const win = useSignal<[number, number]>([0, Math.max(0, fullLen - 1)])
+
+  // Connect: mirror this chart's window to/from the shared sync group (no feedback loop).
+  const syncRef = useRef<SyncGroup | null>(null)
+  if (syncId && !syncRef.current) syncRef.current = getSyncGroup(syncId)
+  useSignalEffect(() => () => {
+    if (syncId) releaseSyncGroup(syncId)
+  })
+  useSignalEffect(() => {
+    const g = syncRef.current
+    if (!g) return
+    const shared = g.window.value
+    const local = win.peek()
+    if (shared && (shared[0] !== local[0] || shared[1] !== local[1])) win.value = shared
+  })
+  useSignalEffect(() => {
+    const g = syncRef.current
+    if (!g) return
+    const local = win.value
+    const shared = g.window.peek()
+    if (!shared || shared[0] !== local[0] || shared[1] !== local[1]) g.window.value = local
+  })
+
+  const series = windowed
+    ? rawSeries.map((s) => ({ ...s, data: s.data.slice(win.value[0], win.value[1] + 1) }))
+    : rawSeries
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
@@ -162,6 +207,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
         plain={plain}
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
+        zoom={zoom && fullLen > 1 ? { window: win, count: fullLen } : undefined}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -285,6 +331,8 @@ export function AreaChart<Datum = { x: number; y: number }>({
           )
         }}
       </ChartFrame>
+      {brush && !dataZoom && fullLen > 1 && <Brush count={fullLen} window={win} label="Range" />}
+      {dataZoom && fullLen > 1 && <DataZoom count={fullLen} window={win} label="Range" />}
       {showLegend && (
         <Legend
           series={series.map((s, i) => ({
