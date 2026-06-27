@@ -1,8 +1,13 @@
 # cascivo — Roadmap v52: Charts — nivo + visx Audit (Expressiveness, Performance & Composability)
 
 **Last updated:** 2026-06-27
-**Status:** 📋 Planned — gap analysis complete and verified against today's `@cascivo/charts` source (post-v51); no
-code written yet. This roadmap defines the work; the plan documents below decompose it into seven tranches.
+**Status:** ✅ Shipped (core) — T1–T7 implemented: gradient/pattern fills + 7 new curves, point glyphs +
+note/threshold annotations, a Voronoi engine + keyboard Brush, an opt-in Canvas renderer (a11y-preserving), four new
+chart types (Sankey, Sunburst, Stream, Calendar), a wrapping `Text` primitive + curated toolkit surface, and
+reduced-motion-gated enter/update transitions. `@cascivo/charts` is now **22 chart types** with **zero runtime
+dependencies still intact**. Deferred to a follow-up: zoom/pan (T3), Canvas for Line/Heatmap (T4 — Scatter shipped),
+`Axis` text-wrap wiring + the build-your-own-chart docs page (T5), and the "vs nivo / vs visx" comparison page +
+recipe gallery (T7). See the implementation log at the end. `pnpm ready` green.
 **Plan documents:** `docs/superpowers/plans/2026-06-27-v52-master-plan.md` + tranches 1–7
 **Builds on:** the v51 charts work — the engine (`packages/charts/src/engine/{scale,scale-log,scale-time,shape,stacked,nearest,stats,treemap}.ts`),
 the chrome (`chrome/{axis,grid-lines,legend,reference,data-label}.tsx`), the frame/tooltip core
@@ -160,11 +165,44 @@ exotic types. **T7** animates and documents the finished surface. T1–T4 are la
 
 ---
 
-## Notes
+## Implementation log (2026-06-27)
 
-- This roadmap is **Planned, not Shipped** — per the task that produced it (study nivo + visx, plan the gaps, do not
-  implement). The tranche docs carry the task-by-task steps for when implementation begins.
-- v52 **subsumes the v51 deferrals**: Brush + voronoi (→ T3), Sankey + Sunburst (→ T6), the engine/toolkit reference +
-  recipe gallery (→ T5/T7). The v51 follow-up list is closed by this plan.
-- The verification figures (0 Canvas/brush/zoom/voronoi/gradient hits, 2 curves, 18 types) are point-in-time reads of
-  `main` at 2026-06-27 and should be re-confirmed at implementation start.
+Shipped across seven commits; `pnpm ready` green (build + type-check + 329 chart tests + repo-wide gate). **No runtime
+dependency added** — the moat (zero deps + a11y + theming) is intact.
+
+- **T1 — Gradients, patterns & curves.** `chrome/defs.tsx` mints theme-derived SVG gradient/pattern fills (opt-in
+  `fill="gradient"|"pattern"` on Area/Bar, default solid); `engine/shape.ts` gains step/stepBefore/stepAfter/natural/
+  basis/cardinal/catmull-rom alongside linear/monotone, all hand-rolled. **Closes N-2/N-3.**
+- **T2 — Glyphs & annotations.** `chrome/glyph.tsx` (circle/square/diamond/triangle/cross/star) for scatter/bubble
+  category-by-shape encoding; `reference.tsx` gains a `note` (connector + label, in the a11y tree) and a `threshold`
+  difference band. **Closes V-3/V-4.**
+- **T3 — Interaction.** `engine/voronoi.ts` (cell-membership find + half-plane-clipped cell polygons, brute-force
+  tested) + `hover="voronoi"` (scatter/bubble default); `chrome/brush.tsx` keyboard-operable range Brush wired into
+  LineChart. **Closes V-2 + the Brush half of V-1.** *Deferred:* zoom/pan.
+- **T4 — Canvas.** `core/canvas-layer.tsx` paints via `useSignalEffect` (dpr-scaled, aria-hidden); ScatterChart gains
+  `renderer="svg"|"canvas"|"auto"` (canvas past ~2000 points) while the **full a11y tree** (keyboard layer, aria-live,
+  fallback table) stays in the DOM over the canvas. **Closes N-1 for Scatter.** *Deferred:* Line/Heatmap canvas
+  (same path).
+- **T5 — Toolkit.** `chrome/text.tsx` wrapping `Text` (the `@visx/text` analogue); the package index curated/grouped
+  as a documented composable-primitives surface. **Closes V-5; partial V-6.** *Deferred:* `Axis` wrap wiring + the
+  build-your-own-chart docs page.
+- **T6 — Exotic types.** **Sankey** (`engine/sankey.ts` rank + ribbon routing), **Sunburst** (`engine/hierarchy.ts`
+  radial partition), **Stream** (`engine/stream.ts` silhouette offset), **Calendar** (day-grid heatmap) — each with a
+  meta (intent), tests, a Storybook story, and generated docs. **Closes N-5.** Sankey/Sunburst close the v51
+  deferral.
+- **T7 — Transitions.** Reduced-motion-gated enter (fade + rise) + update (fill/opacity tween on legend toggle / theme
+  change) in `chart-frame.module.css` — CSS/SVG-native, no react-spring. **Closes N-4** (path-geometry `d` tweening
+  needs JS interpolation — deferred). *Deferred:* the "vs nivo / vs visx" comparison page + recipe gallery.
+
+### Deferred to a follow-up
+
+Zoom/pan; Canvas for Line/Heatmap; `Axis` text-wrap wiring; the build-your-own-chart walkthrough + the "vs nivo / vs
+visx" comparison page + recipe gallery; the exotic long tail and GIS/network (always out of scope — Flow covers
+node/edge). None blocks the shipped surface.
+
+### Notes
+
+- v52 **subsumed the v51 deferrals**: Brush + voronoi (T3), Sankey + Sunburst (T6), the engine/toolkit reference
+  (T5). The remaining docs-page work (recipe gallery, comparison) carries forward.
+- The verification figures (0 Canvas/brush/voronoi/gradient hits, 2 curves, 18 types) were point-in-time reads of
+  `main` at 2026-06-27 before implementation.

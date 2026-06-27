@@ -4,8 +4,11 @@
     inline-size: 100%;
   }
 
-  /* Subtle entrance — progressive enhancement, fully off under reduced-motion.
-     A fade has no layout shift and reads correctly as a static frame when suppressed. */
+  /* Enter + update transitions — progressive enhancement, fully off under
+     reduced-motion (a correct static frame when suppressed; no react-spring, no JS).
+     Entrance: a subtle fade + rise. Update: marks tween fill/opacity on legend
+     toggle and theme change. Path geometry (`d`) is not CSS-tweenable, so a
+     data-shape change snaps — acceptable and dependency-free. */
   @media (prefers-reduced-motion: no-preference) {
     .frame > svg {
       animation: cascivo-chart-in 320ms ease-out both;
@@ -14,10 +17,22 @@
     @keyframes cascivo-chart-in {
       from {
         opacity: 0;
+        transform: translateY(4px);
       }
       to {
         opacity: 1;
+        transform: translateY(0);
       }
+    }
+
+    .frame svg :is(path, rect, circle, line)[data-series],
+    .frame svg path[data-link],
+    .frame svg path[data-depth],
+    .frame svg rect[data-day] {
+      transition:
+        opacity 240ms ease,
+        fill 240ms ease,
+        fill-opacity 240ms ease;
     }
   }
 
