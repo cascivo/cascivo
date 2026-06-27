@@ -17364,9 +17364,23 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
-            "default": "monotone"
+            "default": "monotone",
+            "description": "Line/area interpolation curve."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           },
           {
             "name": "width",
@@ -17618,6 +17632,19 @@
             "type": "(point: ChartPoint) => void",
             "required": false,
             "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Bar fill style — solid, a gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           }
         ],
         "typeDefs": [
@@ -17945,6 +17972,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "glyph",
+            "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
+            "required": false,
+            "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
           }
         ],
         "tokens": [
@@ -18110,6 +18143,120 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a label prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/calendar",
+      "type": "chart",
+      "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
+      "meta": {
+        "name": "Calendar",
+        "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "CalendarDatum[]",
+            "required": true,
+            "description": "Days: { day: string | Date, value }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "from",
+            "type": "string | Date",
+            "required": false,
+            "description": "Range start (defaults to min day)."
+          },
+          {
+            "name": "to",
+            "type": "string | Date",
+            "required": false,
+            "description": "Range end (defaults to max day)."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "160"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": ["--cascivo-chart-2"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate days)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Contribution calendar",
+            "code": "import { Calendar } from '@cascivo/charts'\n\n<Calendar\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a daily value over weeks/months (activity, contributions)",
+            "Spotting weekly/seasonal patterns at a glance"
+          ],
+          "whenNotToUse": [
+            "Precise daily values — use a LineChart",
+            "Non-date categories — use Heatmap"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Heatmap",
+              "relationship": "alternative",
+              "reason": "Use for arbitrary x/y category grids"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback day/value table.",
           "flexibility": []
         }
       },
@@ -18719,7 +18866,7 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
             "default": "monotone",
             "description": "Line interpolation curve"
@@ -18805,6 +18952,13 @@
             "type": "(point: ChartPoint) => void",
             "required": false,
             "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "brush",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window."
           }
         ],
         "tokens": [
@@ -19498,6 +19652,123 @@
       "install": "@cascivo/charts"
     },
     {
+      "name": "chart/sankey",
+      "type": "chart",
+      "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+      "meta": {
+        "name": "Sankey",
+        "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "nodes",
+            "type": "SankeyNode[]",
+            "required": true,
+            "description": "Nodes: { id, label, color? }."
+          },
+          {
+            "name": "links",
+            "type": "SankeyLink[]",
+            "required": true,
+            "description": "Links: { source, target, value }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate nodes)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Sankey flow",
+            "code": "import { Sankey } from '@cascivo/charts'\n\n<Sankey\n  title=\"Traffic flow\"\n  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}\n  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing flow/throughput between stages or categories",
+            "Visualizing where volume splits and merges"
+          ],
+          "whenNotToUse": [
+            "Strict ordered stages with one path — use Funnel",
+            "Arbitrary node/edge graphs — use @cascivo/flow"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Funnel",
+              "relationship": "alternative",
+              "reason": "Use for a single decreasing path"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback from/to/value table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
       "name": "chart/scatter-chart",
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -19593,6 +19864,19 @@
             "type": "(point: ChartPoint) => void",
             "required": false,
             "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "glyph",
+            "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
+            "required": false,
+            "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
+          },
+          {
+            "name": "renderer",
+            "type": "'svg' | 'canvas' | 'auto'",
+            "required": false,
+            "default": "svg",
+            "description": "Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer."
           }
         ],
         "tokens": [
@@ -19742,6 +20026,259 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a label prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/stream",
+      "type": "chart",
+      "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
+      "meta": {
+        "name": "Stream",
+        "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "StreamSeries[]",
+            "required": true,
+            "description": "Series, each with values[] aligned to categories."
+          },
+          {
+            "name": "categories",
+            "type": "(string | number)[]",
+            "required": true,
+            "description": "X-axis labels aligned with each series values."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "type": "'silhouette' | 'zero'",
+            "required": false,
+            "default": "silhouette",
+            "description": "silhouette centers the stack (streamgraph); zero is a baseline stack."
+          },
+          {
+            "name": "curve",
+            "type": "Curve",
+            "required": false,
+            "default": "basis",
+            "description": "Interpolation curve."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Streamgraph",
+            "code": "import { Stream } from '@cascivo/charts'\n\n<Stream\n  title=\"Topics over time\"\n  categories={['Jan','Feb','Mar','Apr']}\n  series={[\n    { id: 'a', label: 'A', values: [4, 6, 5, 8] },\n    { id: 'b', label: 'B', values: [2, 3, 7, 4] },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing how several series ebb and flow over time as proportions of a whole",
+            "An organic, aesthetic alternative to a stacked area chart"
+          ],
+          "whenNotToUse": [
+            "Reading precise values — use LineChart or AreaChart",
+            "Few categories with exact comparison — use BarChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "AreaChart",
+              "relationship": "alternative",
+              "reason": "Use a zero-baseline stacked area for precise reading"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback data table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/sunburst",
+      "type": "chart",
+      "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
+      "meta": {
+        "name": "Sunburst",
+        "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "HierNode",
+            "required": true,
+            "description": "Root of the tree; leaves carry value, parents sum their children."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand (width === height)."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate nodes)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Sunburst",
+            "code": "import { Sunburst } from '@cascivo/charts'\n\n<Sunburst\n  title=\"Disk usage\"\n  data={{ label: 'root', children: [\n    { label: 'src', children: [{ label: 'app', value: 40 }, { label: 'lib', value: 25 }] },\n    { label: 'docs', value: 15 },\n  ] }}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a part-of-whole hierarchy across multiple levels",
+            "A radial alternative to a Treemap for nested proportions"
+          ],
+          "whenNotToUse": [
+            "A flat set of proportions — use PieChart",
+            "Precise leaf comparison — use a Treemap or bars"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Treemap",
+              "relationship": "alternative",
+              "reason": "Use the rectilinear layout for dense leaves"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback path/value table.",
           "flexibility": []
         }
       },
