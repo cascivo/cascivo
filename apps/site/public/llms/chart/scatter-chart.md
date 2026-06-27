@@ -39,6 +39,7 @@ import { ScatterChart } from '@cascivo/charts'
 | `glyph`       | `GlyphShape                   | ((d, seriesId) => GlyphShape)` | no      | —                                                                                                               | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
 | `renderer`    | `'svg'                        | 'canvas'                       | 'auto'` | no                                                                                                              | `svg`                                                                                                                      | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer. |
 | `visualMap`   | `VisualMapOptions`            | no                             | —       | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range. |
+| `toolbox`     | `boolean                      | ToolboxOptions`                | no      | —                                                                                                               | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).  |
 
 ## Examples
 

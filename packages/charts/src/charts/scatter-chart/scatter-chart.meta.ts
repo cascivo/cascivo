@@ -72,6 +72,13 @@ export const meta: ComponentMeta = {
       description:
         'Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.',
     },
+    {
+      name: 'toolbox',
+      type: 'boolean | ToolboxOptions',
+      required: false,
+      description:
+        'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

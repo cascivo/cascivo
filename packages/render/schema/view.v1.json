@@ -5043,6 +5043,10 @@
                   "tooltipMode": {
                     "type": "string",
                     "enum": ["item", "axis"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5418,6 +5422,10 @@
                   "visualMap": {
                     "type": "string",
                     "enum": ["VisualMapOptions"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["data", "title"]
@@ -5585,6 +5593,10 @@
                   "tooltipMode": {
                     "type": "string",
                     "enum": ["item", "axis"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5900,6 +5912,10 @@
                   "visualMap": {
                     "type": "string",
                     "enum": ["VisualMapOptions"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "title"]

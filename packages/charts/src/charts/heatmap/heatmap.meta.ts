@@ -33,6 +33,13 @@ export const meta: ComponentMeta = {
       description:
         'Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range.',
     },
+    {
+      name: 'toolbox',
+      type: 'boolean | ToolboxOptions',
+      required: false,
+      description:
+        'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).',
+    },
   ],
   tokens: ['--cascivo-chart-1', '--cascivo-color-neutral-100'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },

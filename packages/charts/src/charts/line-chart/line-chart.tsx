@@ -11,6 +11,7 @@ import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
 import { Brush } from '../../chrome/brush'
 import { DataZoom } from '../../chrome/data-zoom'
+import type { ToolboxOptions } from '../../chrome/toolbox'
 import { linearScale } from '../../engine/scale'
 import { timeScale } from '../../engine/scale-time'
 import { linePath, splitDefined } from '../../engine/shape'
@@ -67,6 +68,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   tooltipMode?: 'item' | 'axis'
   /** Downsample dense series before drawing (LTTB/min-max). The fallback table keeps full data. */
   decimate?: boolean | DecimateOptions
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -97,6 +100,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   syncId,
   tooltipMode,
   decimate,
+  toolbox,
 }: LineChartProps<Datum>) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -298,6 +302,14 @@ export function LineChart<Datum = { x: number; y: number }>({
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
         zoom={zoom && fullLen > 1 ? { window: win, count: fullLen } : undefined}
+        toolbox={toolbox}
+        onRestore={
+          windowed
+            ? () => {
+                win.value = [0, Math.max(0, fullLen - 1)]
+              }
+            : undefined
+        }
       >
         {({ width: w, height: h }) => {
           const innerW = w - margins.left - margins.right

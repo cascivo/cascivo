@@ -270,6 +270,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'decimate',
       required: false,
     },
+    {
+      name: 'toolbox',
+      required: false,
+    },
   ],
   AspectRatio: [
     {
@@ -2460,6 +2464,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'visualMap',
       required: false,
     },
+    {
+      name: 'toolbox',
+      required: false,
+    },
   ],
   Hero: [
     {
@@ -2970,6 +2978,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'decimate',
+      required: false,
+    },
+    {
+      name: 'toolbox',
       required: false,
     },
   ],
@@ -4182,6 +4194,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'visualMap',
+      required: false,
+    },
+    {
+      name: 'toolbox',
       required: false,
     },
   ],

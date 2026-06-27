@@ -8,6 +8,7 @@ import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { Glyph, type GlyphShape } from '../../chrome/glyph'
 import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
+import type { ToolboxOptions } from '../../chrome/toolbox'
 import { resolveColor, type CanvasPaint } from '../../core/canvas-layer'
 import { linearScale } from '../../engine/scale'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -49,6 +50,8 @@ export interface ScatterChartProps {
   renderer?: 'svg' | 'canvas' | 'auto'
   /** Map each point's y → CVD-safe colour and/or size via a legend that filters the range. */
   visualMap?: VisualMapOptions
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -71,6 +74,7 @@ export function ScatterChart({
   glyph,
   renderer = 'svg',
   visualMap,
+  toolbox,
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -192,6 +196,15 @@ export function ScatterChart({
         hover="voronoi"
         renderer={useCanvas ? 'canvas' : 'svg'}
         paint={useCanvas ? paint : undefined}
+        toolbox={toolbox}
+        onRestore={
+          visualMap
+            ? () => {
+                vmRange.value = [visualMap.min, visualMap.max]
+                vmHidden.value = new Set<number>()
+              }
+            : undefined
+        }
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

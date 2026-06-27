@@ -11,6 +11,7 @@ import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-l
 import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
 import { Brush } from '../../chrome/brush'
 import { DataZoom } from '../../chrome/data-zoom'
+import type { ToolboxOptions } from '../../chrome/toolbox'
 import { decimate as decimatePoints, type DecimateMethod, type Pt } from '../../engine/decimate'
 import { useId, useRef } from 'react'
 import { linearScale } from '../../engine/scale'
@@ -69,6 +70,8 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   tooltipMode?: 'item' | 'axis'
   /** Downsample dense (non-stacked) series before drawing (LTTB/min-max). The fallback table keeps full data. */
   decimate?: boolean | AreaDecimateOptions
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -100,6 +103,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   syncId,
   tooltipMode,
   decimate,
+  toolbox,
 }: AreaChartProps<Datum>) {
   useSignals()
   const defsId = useId()
@@ -265,6 +269,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
         zoom={zoom && fullLen > 1 ? { window: win, count: fullLen } : undefined}
+        toolbox={toolbox}
+        onRestore={
+          windowed
+            ? () => {
+                win.value = [0, Math.max(0, fullLen - 1)]
+              }
+            : undefined
+        }
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right

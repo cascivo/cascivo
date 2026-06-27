@@ -10,6 +10,8 @@ import { nearest } from './nearest'
 import { voronoiFind } from '../engine/voronoi'
 import { CanvasLayer, type CanvasPaint } from './canvas-layer'
 import { isZoomed, panWindow, zoomWindow } from './zoom'
+import { Toolbox, type ToolboxOptions } from '../chrome/toolbox'
+import { download, serializeSvg, svgToPngBlob } from './export'
 
 /** In-plot zoom-pan config: a shared index window + the total item count. */
 export interface ZoomConfig {
@@ -47,6 +49,10 @@ export interface ChartFrameProps {
   paint?: CanvasPaint | undefined
   /** Enable in-plot wheel/drag zoom-pan + keyboard (`+`/`-`/`0`) bound to an index window. */
   zoom?: ZoomConfig | undefined
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions | undefined
+  /** Extra reset run by the toolbox's Restore (e.g. clearing a visualMap filter). */
+  onRestore?: (() => void) | undefined
 }
 
 export function ChartFrame({
@@ -66,6 +72,8 @@ export function ChartFrame({
   renderer = 'svg',
   paint,
   zoom,
+  toolbox,
+  onRestore,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -75,7 +83,9 @@ export function ChartFrame({
 
   // Must be called unconditionally (rules of hooks)
   const focusedIndex = useSignal<number | null>(null)
+  const showData = useSignal(false)
   const ariaLiveRef = useRef<HTMLSpanElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
   // Pan gesture state (drag start clientX + the window at grab time).
   const panStart = useRef<{ x: number; win: [number, number] } | null>(null)
   const layerRef = useRef<HTMLDivElement>(null)
@@ -103,6 +113,25 @@ export function ChartFrame({
   const w = fixedWidth ?? width.value
   const h = fixedHeight ?? height.value
 
+  const toolboxOptions: ToolboxOptions | null = toolbox === true ? {} : toolbox ? toolbox : null
+  const exportSvgString = (): string | null =>
+    svgRef.current ? serializeSvg(svgRef.current) : null
+  const onExportSvg = () => {
+    const s = exportSvgString()
+    if (s) download(s, `${title || 'chart'}.svg`)
+  }
+  const onExportPng = () => {
+    const s = exportSvgString()
+    if (!s) return
+    void svgToPngBlob(s, { width: w, height: h, dpr: 2 }).then((blob) => {
+      if (blob) download(blob, `${title || 'chart'}.png`)
+    })
+  }
+  const onRestoreAll = () => {
+    resetZoom()
+    onRestore?.()
+  }
+
   // Resolve tooltip: function form receives resolved size, value form is used as-is
   const resolvedTooltip: TooltipModel | undefined =
     typeof tooltip === 'function' ? tooltip({ width: w, height: h }) : tooltip
@@ -126,7 +155,7 @@ export function ChartFrame({
   const interactive = resolvedTooltip !== undefined || zoom !== undefined
 
   const containerStyle: React.CSSProperties | undefined =
-    interactive || useCanvas ? { position: 'relative' } : undefined
+    interactive || useCanvas || toolboxOptions ? { position: 'relative' } : undefined
 
   return (
     <div
@@ -136,6 +165,20 @@ export function ChartFrame({
       {...(dataState !== undefined && { 'data-state': dataState })}
       {...(plain === true && { 'data-plain': '' })}
     >
+      {toolboxOptions && (
+        <div style={{ position: 'absolute', top: 4, right: 4, zIndex: 12 }}>
+          <Toolbox
+            options={toolboxOptions}
+            onPng={onExportPng}
+            onSvg={onExportSvg}
+            onToggleData={() => {
+              showData.value = !showData.value
+            }}
+            onRestore={onRestoreAll}
+            showData={showData.value}
+          />
+        </div>
+      )}
       {useCanvas && (
         <CanvasLayer
           size={() => ({ width: fixedWidth ?? width.value, height: fixedHeight ?? height.value })}
@@ -143,6 +186,7 @@ export function ChartFrame({
         />
       )}
       <svg
+        ref={svgRef}
         role="img"
         aria-label={title}
         aria-describedby={description ? descId : undefined}
@@ -167,6 +211,11 @@ export function ChartFrame({
         )}
       </svg>
       {fallback && <div className={styles['fallback']}>{fallback}</div>}
+      {toolboxOptions && showData.value && fallback && (
+        <div data-data-view="" style={{ overflowX: 'auto' }}>
+          {fallback}
+        </div>
+      )}
       {interactive && (
         <>
           {resolvedTooltip !== undefined && (
@@ -239,8 +288,8 @@ export function ChartFrame({
                 )}
             </>
           )}
-          {/* Reset-zoom control — only while a zoom window is active */}
-          {zoom && isZoomed(zoom.window.value, zoom.count) && (
+          {/* Reset-zoom control — only while a zoom window is active (toolbox subsumes it) */}
+          {zoom && !toolboxOptions && isZoomed(zoom.window.value, zoom.count) && (
             <button
               type="button"
               onClick={resetZoom}

@@ -4,6 +4,7 @@ import { ChartFrame } from '../../core/chart-frame'
 import { PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
+import type { ToolboxOptions } from '../../chrome/toolbox'
 import { bandScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -25,6 +26,8 @@ export interface HeatmapProps {
   plain?: boolean
   /** Map cell value → CVD-safe colour via a continuous/piecewise legend that filters the range. */
   visualMap?: VisualMapOptions
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions
 }
 
 export function Heatmap({
@@ -36,6 +39,7 @@ export function Heatmap({
   className,
   plain,
   visualMap,
+  toolbox,
 }: HeatmapProps) {
   useSignals()
   const resolvedHeight = height ?? (plain ? 48 : 320)
@@ -113,6 +117,15 @@ export function Heatmap({
       className={className}
       plain={plain}
       tooltip={data.length > 0 ? buildTooltip : undefined}
+      toolbox={toolbox}
+      onRestore={
+        visualMap
+          ? () => {
+              vmRange.value = [visualMap.min, visualMap.max]
+              vmHidden.value = new Set<number>()
+            }
+          : undefined
+      }
     >
       {({ width, height: h }) => {
         const inner = {

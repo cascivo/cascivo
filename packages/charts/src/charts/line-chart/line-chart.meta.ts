@@ -157,6 +157,13 @@ export const meta: ComponentMeta = {
       description:
         'Downsample dense series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data.',
     },
+    {
+      name: 'toolbox',
+      type: 'boolean | ToolboxOptions',
+      required: false,
+      description:
+        'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom).',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',
