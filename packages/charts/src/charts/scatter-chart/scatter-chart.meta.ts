@@ -57,6 +57,14 @@ export const meta: ComponentMeta = {
       description:
         'Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.',
     },
+    {
+      name: 'renderer',
+      type: "'svg' | 'canvas' | 'auto'",
+      required: false,
+      default: 'svg',
+      description:
+        'Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

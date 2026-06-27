@@ -11,6 +11,7 @@ export * from './engine/voronoi'
 
 // Chart chrome
 export * from './core/chart-frame'
+export * from './core/canvas-layer'
 export * from './core/use-chart'
 export * from './chrome/axis'
 export * from './chrome/grid-lines'

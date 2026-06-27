@@ -8,6 +8,7 @@ import { defaultFormat, type ChartPoint, type TooltipModel } from './data-point'
 import { ChartTooltip } from './chart-tooltip'
 import { nearest } from './nearest'
 import { voronoiFind } from '../engine/voronoi'
+import { CanvasLayer, type CanvasPaint } from './canvas-layer'
 
 export interface ChartFrameProps {
   title: string
@@ -33,6 +34,10 @@ export interface ChartFrameProps {
   onSelect?: ((point: ChartPoint) => void) | undefined
   /** Hover hit-test strategy: `rect` (default, nearest by x/y) or `voronoi` (precise cell membership). */
   hover?: 'rect' | 'voronoi' | undefined
+  /** When `'canvas'` and `paint` is given, dense marks paint to a `<canvas>` under the SVG chrome. */
+  renderer?: 'svg' | 'canvas' | undefined
+  /** Canvas paint callback (marks only) — used when `renderer === 'canvas'`. */
+  paint?: CanvasPaint | undefined
 }
 
 export function ChartFrame({
@@ -49,6 +54,8 @@ export function ChartFrame({
   tooltip,
   onSelect,
   hover = 'rect',
+  renderer = 'svg',
+  paint,
 }: ChartFrameProps) {
   useSignals()
   const id = useId()
@@ -81,8 +88,10 @@ export function ChartFrame({
     background: 'transparent',
   }
 
+  const useCanvas = renderer === 'canvas' && paint !== undefined
+
   const containerStyle: React.CSSProperties | undefined =
-    resolvedTooltip !== undefined ? { position: 'relative' } : undefined
+    resolvedTooltip !== undefined || useCanvas ? { position: 'relative' } : undefined
 
   return (
     <div
@@ -92,6 +101,12 @@ export function ChartFrame({
       {...(dataState !== undefined && { 'data-state': dataState })}
       {...(plain === true && { 'data-plain': '' })}
     >
+      {useCanvas && (
+        <CanvasLayer
+          size={() => ({ width: fixedWidth ?? width.value, height: fixedHeight ?? height.value })}
+          paint={paint!}
+        />
+      )}
       <svg
         role="img"
         aria-label={title}

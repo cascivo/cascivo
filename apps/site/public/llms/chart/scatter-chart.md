@@ -21,7 +21,7 @@ import { ScatterChart } from '@cascivo/charts'
 ## Props
 
 | Prop          | Type                          | Required                       | Default | Description                                                                                    |
-| ------------- | ----------------------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| ------------- | ----------------------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `series`      | `ScatterChartSeries[]`        | yes                            | —       | —                                                                                              |
 | `title`       | `string`                      | yes                            | —       | —                                                                                              |
 | `description` | `string`                      | no                             | —       | —                                                                                              |
@@ -37,6 +37,7 @@ import { ScatterChart } from '@cascivo/charts'
 | `annotations` | `Annotation[]`                | no                             | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 | `onSelect`    | `(point: ChartPoint) => void` | no                             | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                     |
 | `glyph`       | `GlyphShape                   | ((d, seriesId) => GlyphShape)` | no      | —                                                                                              | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
+| `renderer`    | `'svg'                        | 'canvas'                       | 'auto'` | no                                                                                             | `svg`                                                                                                                      | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer. |
 
 ## Examples
 

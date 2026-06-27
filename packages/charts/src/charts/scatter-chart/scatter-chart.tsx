@@ -7,6 +7,7 @@ import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
 import { renderAnnotations, type Annotation } from '../../chrome/reference'
 import { Glyph, type GlyphShape } from '../../chrome/glyph'
+import { resolveColor, type CanvasPaint } from '../../core/canvas-layer'
 import { linearScale } from '../../engine/scale'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -43,6 +44,8 @@ export interface ScatterChartProps {
   onSelect?: (point: ChartPoint) => void
   /** Point glyph shape — a fixed shape, or a function to encode a category by shape. Defaults to a circle. */
   glyph?: GlyphShape | ((d: ScatterDatum, seriesId: string) => GlyphShape)
+  /** Renderer: `svg` (default), `canvas` (force), or `auto` (canvas past ~2000 points). */
+  renderer?: 'svg' | 'canvas' | 'auto'
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -63,12 +66,42 @@ export function ScatterChart({
   annotations,
   onSelect,
   glyph,
+  renderer = 'svg',
 }: ScatterChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
+  const pointCount = series.reduce((n, s) => n + s.data.length, 0)
+  const useCanvas = renderer === 'canvas' || (renderer === 'auto' && pointCount > 2000)
+
+  /** Paint the points to a canvas (large-data path). Mirrors the SVG marks. */
+  const paint: CanvasPaint = (ctx, { width: cw, height: ch }) => {
+    const innerW = cw - margins.left - margins.right
+    const innerH = ch - margins.top - margins.bottom
+    if (innerW <= 0 || innerH <= 0) return
+    const xScale = linearScale([xMin, xMax], [0, innerW])
+    const yScale = linearScale([yMin, yMax], [innerH, 0])
+    series.forEach((s, si) => {
+      if (hidden.value.has(s.id)) return
+      ctx.fillStyle = resolveColor(ctx, s.color ?? COLORS[si % COLORS.length]!)
+      ctx.globalAlpha = 0.7
+      for (const d of s.data) {
+        const radius = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
+        ctx.beginPath()
+        ctx.arc(
+          margins.left + xScale.map(d.x),
+          margins.top + yScale.map(d.y),
+          radius,
+          0,
+          Math.PI * 2,
+        )
+        ctx.fill()
+      }
+    })
+    ctx.globalAlpha = 1
+  }
 
   const allX = series.flatMap((s) => s.data.map((d) => d.x))
   const allY = series.flatMap((s) => s.data.map((d) => d.y))
@@ -147,6 +180,8 @@ export function ScatterChart({
         tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
         hover="voronoi"
+        renderer={useCanvas ? 'canvas' : 'svg'}
+        paint={useCanvas ? paint : undefined}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -161,45 +196,46 @@ export function ScatterChart({
                   <GridLines scale={yScale} orientation="y" length={innerW} tickCount={yTicks} />
                 )}
                 {!plain && renderAnnotations(annotations, { xScale, yScale, innerW, innerH })}
-                {series.map((s, si) => {
-                  if (hidden.value.has(s.id)) return null
-                  const color = s.color ?? COLORS[si % COLORS.length]!
-                  return (
-                    <g key={s.id} data-series={s.id}>
-                      {s.data.map((d, di) => {
-                        const radius = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
-                        const shape = typeof glyph === 'function' ? glyph(d, s.id) : glyph
-                        if (shape && shape !== 'circle') {
+                {!useCanvas &&
+                  series.map((s, si) => {
+                    if (hidden.value.has(s.id)) return null
+                    const color = s.color ?? COLORS[si % COLORS.length]!
+                    return (
+                      <g key={s.id} data-series={s.id}>
+                        {s.data.map((d, di) => {
+                          const radius = typeof rProp === 'function' ? rProp(d) : (d.r ?? rProp)
+                          const shape = typeof glyph === 'function' ? glyph(d, s.id) : glyph
+                          if (shape && shape !== 'circle') {
+                            return (
+                              <Glyph
+                                key={di}
+                                shape={shape}
+                                x={xScale.map(d.x)}
+                                y={yScale.map(d.y)}
+                                size={radius * 2}
+                                color={color}
+                                opacity={0.75}
+                                stroke={color}
+                                strokeWidth={1}
+                              />
+                            )
+                          }
                           return (
-                            <Glyph
+                            <circle
                               key={di}
-                              shape={shape}
-                              x={xScale.map(d.x)}
-                              y={yScale.map(d.y)}
-                              size={radius * 2}
-                              color={color}
-                              opacity={0.75}
+                              cx={xScale.map(d.x)}
+                              cy={yScale.map(d.y)}
+                              r={radius}
+                              fill={color}
+                              fillOpacity={0.7}
                               stroke={color}
                               strokeWidth={1}
                             />
                           )
-                        }
-                        return (
-                          <circle
-                            key={di}
-                            cx={xScale.map(d.x)}
-                            cy={yScale.map(d.y)}
-                            r={radius}
-                            fill={color}
-                            fillOpacity={0.7}
-                            stroke={color}
-                            strokeWidth={1}
-                          />
-                        )
-                      })}
-                    </g>
-                  )
-                })}
+                        })}
+                      </g>
+                    )
+                  })}
                 {!plain && (
                   <>
                     <Axis
