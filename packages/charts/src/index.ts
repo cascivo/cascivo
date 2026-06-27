@@ -8,6 +8,9 @@ export * from './engine/nearest'
 export * from './engine/stats'
 export * from './engine/treemap'
 export * from './engine/voronoi'
+export * from './engine/stream'
+export * from './engine/hierarchy'
+export * from './engine/sankey'
 
 // Chart chrome
 export * from './core/chart-frame'
@@ -45,3 +48,9 @@ export * from './charts/bullet/bullet'
 // Wave-3 chart components
 export * from './charts/radial-bar/radial-bar'
 export * from './charts/funnel/funnel'
+
+// Wave-4 chart components (nivo/visx exotic types)
+export * from './charts/stream/stream'
+export * from './charts/sunburst/sunburst'
+export * from './charts/sankey/sankey'
+export * from './charts/calendar/calendar'

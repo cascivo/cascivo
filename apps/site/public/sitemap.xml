@@ -245,6 +245,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chart/calendar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/combo-chart</loc>
     <priority>0.6</priority>
   </url>
@@ -285,11 +289,23 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chart/sankey</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/scatter-chart</loc>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/chart/sparkline</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/stream</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/sunburst</loc>
     <priority>0.6</priority>
   </url>
   <url>

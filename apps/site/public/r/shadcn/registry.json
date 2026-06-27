@@ -696,6 +696,21 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-calendar",
+      "type": "registry:component",
+      "files": [],
+      "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-combo-chart",
       "type": "registry:component",
       "files": [],
@@ -846,6 +861,21 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-sankey",
+      "type": "registry:component",
+      "files": [],
+      "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-scatter-chart",
       "type": "registry:component",
       "files": [],
@@ -865,6 +895,36 @@
       "type": "registry:component",
       "files": [],
       "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-stream",
+      "type": "registry:component",
+      "files": [],
+      "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-sunburst",
+      "type": "registry:component",
+      "files": [],
+      "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {

@@ -109,7 +109,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (183 components)
+## Component index (187 components)
 
 ### chart
 
@@ -118,6 +118,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [chart/boxplot](https://docs.cascivo.com/llms/chart/boxplot.md) — Box-and-whisker plot with five-number summary and outlier dots per series.
 - [chart/bubble-chart](https://docs.cascivo.com/llms/chart/bubble-chart.md) — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
 - [chart/bullet](https://docs.cascivo.com/llms/chart/bullet.md) — Bullet chart with background range bands, measure bar, and target tick.
+- [chart/calendar](https://docs.cascivo.com/llms/chart/calendar.md) — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
 - [chart/combo-chart](https://docs.cascivo.com/llms/chart/combo-chart.md) — Combination bar + line chart on shared or dual y-axes.
 - [chart/funnel](https://docs.cascivo.com/llms/chart/funnel.md) — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.
 - [chart/heatmap](https://docs.cascivo.com/llms/chart/heatmap.md) — Two-dimensional heatmap with band scales and color-mix cell interpolation.
@@ -128,8 +129,11 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [chart/pie-chart](https://docs.cascivo.com/llms/chart/pie-chart.md) — Pie or donut chart with hover segments and optional legend.
 - [chart/radar](https://docs.cascivo.com/llms/chart/radar.md) — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
 - [chart/radial-bar](https://docs.cascivo.com/llms/chart/radial-bar.md) — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.
+- [chart/sankey](https://docs.cascivo.com/llms/chart/sankey.md) — Flow diagram — ranked nodes connected by throughput-sized link ribbons.
 - [chart/scatter-chart](https://docs.cascivo.com/llms/chart/scatter-chart.md) — Scatter plot with variable point radius, multi-series, and hover tooltip.
 - [chart/sparkline](https://docs.cascivo.com/llms/chart/sparkline.md) — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
+- [chart/stream](https://docs.cascivo.com/llms/chart/stream.md) — Streamgraph — stacked areas on a centered (silhouette) flowing baseline.
+- [chart/sunburst](https://docs.cascivo.com/llms/chart/sunburst.md) — Radial hierarchy — concentric rings where each node is an annular segment sized by value.
 - [chart/treemap](https://docs.cascivo.com/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data.
 
 ### display
@@ -349,6 +353,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Boxplot](https://docs.cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
 - [BubbleChart](https://docs.cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
 - [Bullet](https://docs.cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
+- [Calendar](https://docs.cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
 - [ComboChart](https://docs.cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
 - [Funnel](https://docs.cascivo.com/context/chart/funnel.md) — Use when: Showing drop-off across the ordered stages of a process (signup, checkout)
 - [Heatmap](https://docs.cascivo.com/context/chart/heatmap.md) — Use when: Showing magnitude across two categorical dimensions as a color-coded matrix
@@ -359,8 +364,11 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [PieChart](https://docs.cascivo.com/context/chart/pie-chart.md) — Use when: Showing part-of-whole proportions with five or fewer slices
 - [Radar](https://docs.cascivo.com/context/chart/radar.md) — Use when: Comparing several entities across the same set of quantitative dimensions
 - [RadialBar](https://docs.cascivo.com/context/chart/radial-bar.md) — Use when: Showing a few progress-to-goal values in a compact circular form
+- [Sankey](https://docs.cascivo.com/context/chart/sankey.md) — Use when: Showing flow/throughput between stages or categories
 - [ScatterChart](https://docs.cascivo.com/context/chart/scatter-chart.md) — Use when: Revealing correlation or clustering between two numeric variables
 - [Sparkline](https://docs.cascivo.com/context/chart/sparkline.md) — Use when: Embedding a compact micro-trend inline in text, tables, or KPI cards
+- [Stream](https://docs.cascivo.com/context/chart/stream.md) — Use when: Showing how several series ebb and flow over time as proportions of a whole
+- [Sunburst](https://docs.cascivo.com/context/chart/sunburst.md) — Use when: Showing a part-of-whole hierarchy across multiple levels
 - [Treemap](https://docs.cascivo.com/context/chart/treemap.md) — Use when: Showing part-to-whole proportions across many segments in a compact area
 - [ChatBubble](https://docs.cascivo.com/context/chat-bubble.md) — Use when: Chat UIs and messaging features showing conversation history
 - [Checkbox](https://docs.cascivo.com/context/checkbox.md) — Use when: Selecting zero or more options from a list where each choice is independent

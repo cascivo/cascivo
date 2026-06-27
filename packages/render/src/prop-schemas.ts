@@ -167,7 +167,27 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'curve',
       required: false,
-      enum: ['linear', 'monotone'],
+      enum: [
+        'linear',
+        'monotone',
+        'step',
+        'stepBefore',
+        'stepAfter',
+        'natural',
+        'basis',
+        'cardinal',
+        'catmullRom',
+      ],
+    },
+    {
+      name: 'fill',
+      required: false,
+      enum: ['solid', 'gradient', 'pattern'],
+    },
+    {
+      name: 'patternKind',
+      required: false,
+      enum: ['dots', 'lines', 'cross'],
     },
     {
       name: 'width',
@@ -413,6 +433,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onSelect',
       required: false,
     },
+    {
+      name: 'fill',
+      required: false,
+      enum: ['solid', 'gradient', 'pattern'],
+    },
+    {
+      name: 'patternKind',
+      required: false,
+      enum: ['dots', 'lines', 'cross'],
+    },
   ],
   Blockquote: [
     {
@@ -572,6 +602,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'glyph',
+      required: false,
     },
   ],
   Bullet: [
@@ -2803,7 +2837,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'curve',
       required: false,
-      enum: ['linear', 'monotone'],
+      enum: [
+        'linear',
+        'monotone',
+        'step',
+        'stepBefore',
+        'stepAfter',
+        'natural',
+        'basis',
+        'cardinal',
+        'catmullRom',
+      ],
     },
     {
       name: 'width',
@@ -2865,6 +2909,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onSelect',
       required: false,
+    },
+    {
+      name: 'brush',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Link: [
@@ -3953,6 +4002,51 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  Sankey: [
+    {
+      name: 'nodes',
+      required: true,
+    },
+    {
+      name: 'links',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   ScatterChart: [
     {
       name: 'series',
@@ -4019,6 +4113,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onSelect',
       required: false,
+    },
+    {
+      name: 'glyph',
+      required: false,
+    },
+    {
+      name: 'renderer',
+      required: false,
+      enum: ['svg', 'canvas', 'auto'],
     },
   ],
   ScrollArea: [
@@ -4564,6 +4667,65 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  Stream: [
+    {
+      name: 'series',
+      required: true,
+    },
+    {
+      name: 'categories',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'offset',
+      required: false,
+      enum: ['silhouette', 'zero'],
+    },
+    {
+      name: 'curve',
+      required: false,
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'legend',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   StructuredList: [
     {
       name: 'items',
@@ -4591,6 +4753,52 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onSelect',
       required: false,
+    },
+  ],
+  Sunburst: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Swap: [
