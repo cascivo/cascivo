@@ -1,18 +1,26 @@
-// Chart engine
+// ── Composable primitives toolkit ────────────────────────────────────────────
+// Build a custom chart by assembling these with <ChartFrame>: scales + shapes/
+// curves + chrome (axes, grids, glyphs, gradients, text, brush, annotations) +
+// hit-testing (nearest/voronoi) + stats + layouts (treemap/sankey/hierarchy/stream).
+
+// Scales — d0/d1 domain → r0/r1 range; expose .map / .ticks / .domain / .bandwidth.
 export * from './engine/scale'
 export * from './engine/scale-log'
 export * from './engine/scale-time'
+// Shapes & curves — linePath/areaPath/arcPath + the Curve set + splitDefined gaps.
 export * from './engine/shape'
 export * from './engine/stacked'
+// Hit-testing — rectilinear nearest + voronoi cell membership / cell polygons.
 export * from './engine/nearest'
+export * from './engine/voronoi'
+// Stats & layouts — extent/quantiles; squarified treemap, sankey, radial partition, stream.
 export * from './engine/stats'
 export * from './engine/treemap'
-export * from './engine/voronoi'
 export * from './engine/stream'
 export * from './engine/hierarchy'
 export * from './engine/sankey'
 
-// Chart chrome
+// Frame & chrome — the SVG/Canvas shell + the reusable visual primitives.
 export * from './core/chart-frame'
 export * from './core/canvas-layer'
 export * from './core/use-chart'
@@ -22,6 +30,7 @@ export * from './chrome/reference'
 export * from './chrome/data-label'
 export * from './chrome/defs'
 export * from './chrome/glyph'
+export * from './chrome/text'
 export * from './chrome/brush'
 export * from './chrome/legend'
 
