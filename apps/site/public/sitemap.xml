@@ -57,6 +57,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/charts</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/create</loc>
     <priority>0.8</priority>
   </url>

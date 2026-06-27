@@ -765,6 +765,198 @@ kbd {
   color: inherit;
 }
 
+/* ── Charts page (/charts) ────────────────────────────── */
+.charts-page {
+  padding-block-start: var(--cascivo-shell-header-block-size, 3rem);
+}
+
+.cx-hero {
+  text-align: center;
+}
+
+.cx-eyebrow {
+  margin: 0 0 var(--cascivo-space-2);
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-sm);
+  letter-spacing: 0.04em;
+  color: var(--cascivo-color-accent);
+}
+
+.cx-hero h1 {
+  margin-inline: auto;
+  max-inline-size: 20ch;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.08;
+}
+
+.cx-hero h1 em {
+  font-style: normal;
+  color: var(--cascivo-color-accent);
+}
+
+.cx-hero .section-sub {
+  margin-inline: auto;
+}
+
+.cx-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascivo-space-5) var(--cascivo-space-8);
+  margin-block-start: var(--cascivo-space-7);
+}
+
+.cx-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cx-stat strong {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--cascivo-color-text);
+}
+
+.cx-stat span {
+  margin-block-start: var(--cascivo-space-1);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+/* Shared card chrome for the dashboard panels, gallery cards, and spotlights. */
+.cx-panel,
+.cx-card,
+.cx-spot,
+.cx-drill-readout {
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-surface, var(--cascivo-color-bg));
+  /* Let the card shrink below its chart's intrinsic SVG width so the
+     ResizeObserver-driven chart can scale down — no horizontal overflow on phones. */
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.cx-panel,
+.cx-card,
+.cx-spot {
+  padding: var(--cascivo-space-5);
+}
+
+.cx-panel h3,
+.cx-card h3,
+.cx-spot-head h3 {
+  margin: 0 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-semibold);
+  font-family: var(--cascivo-font-mono);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.cx-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: var(--cascivo-space-4);
+  margin-block-end: var(--cascivo-space-5);
+}
+
+.cx-dashboard,
+.cx-gallery,
+.cx-spotlights {
+  display: grid;
+  gap: var(--cascivo-space-4);
+}
+
+.cx-dashboard {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.cx-gallery {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.cx-spotlights {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+/* Let the headline line + heatmap span two columns on wide layouts. */
+@media (min-width: 64rem) {
+  .cx-panel--wide {
+    grid-column: span 2;
+  }
+}
+
+.cx-card--mini {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.cx-drill {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-4);
+}
+
+@media (min-width: 40rem) {
+  .cx-drill {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.cx-drill-readout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--cascivo-space-6);
+}
+
+.cx-readout-eyebrow {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.cx-readout-value {
+  margin: var(--cascivo-space-1) 0;
+  font-size: 2.75rem;
+  font-weight: var(--cascivo-font-semibold);
+  line-height: 1;
+  color: var(--cascivo-color-accent);
+}
+
+.cx-readout-label,
+.cx-readout-hint {
+  margin: 0;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.cx-spot-head p {
+  margin: 0 0 var(--cascivo-space-4);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.cx-closing {
+  text-align: center;
+}
+
+.cx-keys {
+  margin-block: var(--cascivo-space-4) var(--cascivo-space-5);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.cx-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-3);
+  justify-content: center;
+}
+
 /* ── Icon showcase ────────────────────────────────────── */
 .icon-showcase-grid {
   display: grid;
