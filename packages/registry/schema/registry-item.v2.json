@@ -15,12 +15,66 @@
     "tags"
   ],
   "additionalProperties": true,
+  "$defs": {
+    "templateMeta": {
+      "type": "object",
+      "required": ["intent", "framework", "category", "screenshots", "fileRoles"],
+      "properties": {
+        "intent": { "type": "string", "minLength": 1 },
+        "framework": { "type": "string", "enum": ["react-vite", "react-next"] },
+        "category": { "type": "string", "minLength": 1 },
+        "screenshots": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["light", "alt"],
+            "properties": {
+              "light": { "type": "string" },
+              "dark": { "type": "string" },
+              "alt": { "type": "string" }
+            }
+          }
+        },
+        "demoUrl": { "type": "string" },
+        "fileRoles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["page", "fixture", "asset", "config"]
+          }
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "target"],
+            "properties": {
+              "name": { "type": "string" },
+              "target": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "type": { "const": "template" } }
+      },
+      "then": {
+        "required": ["license", "meta"],
+        "properties": { "meta": { "$ref": "#/$defs/templateMeta" } }
+      }
+    }
+  ],
   "properties": {
     "schemaVersion": { "type": "integer", "const": 2 },
     "name": { "type": "string", "minLength": 1 },
     "type": {
       "type": "string",
-      "enum": ["component", "layout", "block", "chart", "section", "theme", "style"]
+      "enum": ["component", "layout", "block", "chart", "section", "theme", "style", "template"]
     },
     "description": { "type": "string" },
     "category": { "type": "string" },

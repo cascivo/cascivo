@@ -6,10 +6,15 @@ export type {
   RegistryIndex,
   LegacyRegistry,
   LegacyRegistryEntry,
+  TemplateMeta,
+  TemplateScreenshot,
+  TemplateFileRole,
 } from './types.ts'
 
 export { validateItem, validateIndex, parseLegacyRegistry } from './validate.ts'
 export type { ValidationResult } from './validate.ts'
+
+export { isTemplateItem, asTemplateMeta, validateTemplate } from './template.ts'
 
 export { buildRegistry } from './build.ts'
 
