@@ -86,6 +86,8 @@ export { Presence } from './presence.tsx'
 export type { PresenceProps } from './presence.tsx'
 export { createStreamBuffer, useStreamBuffer } from './stream-buffer.ts'
 export type { StreamBuffer, StreamBufferOptions } from './stream-buffer.ts'
+export { createScope, useScope } from './scope.ts'
+export type { SignalScope } from './scope.ts'
 export { useAnchorPosition, computePosition } from './anchor.tsx'
 export type {
   UseAnchorPositionOptions,
