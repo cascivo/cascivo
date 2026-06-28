@@ -1,12 +1,14 @@
 # cascivo — Roadmap v56: Real-Time & Scale — Production-Grade Streaming Primitives for Data Dashboards
 
 **Last updated:** 2026-06-28
-**Status:** 📐 Planned — not yet implemented. This roadmap turns an external evaluation (building a Vercel-like
-dashboard on cascivo) into a verified gap list and a five-tranche plan. The headline work is the genuinely-missing
-**streaming/scale** layer — a bounded stream-buffer primitive, a virtualized log console, a live chart-binding
-pattern, and a disposable signal scope — plus an end-to-end dashboard that proves them. The pieces the feedback
-assumed were missing (layout shells, a chart package, a dashboard template) **already ship**; this plan corrects that
-and builds only what is real.
+**Status:** ✅ Shipped — T1–T5 implemented: a bounded `createStreamBuffer`/`useStreamBuffer` ring buffer
+(`@cascivo/core`); a virtualized `LogViewer` stream console (`@cascivo/react`); `useStreamSeries`/`bindStream` +
+multi-axis on `LineChart`/`AreaChart` (`@cascivo/charts`) with a streaming cookbook; a disposable
+`createScope`/`useScope` (`@cascivo/core`); and an end-to-end proof — the `apps/examples/deploy` **Build monitor**
+streams a mock build log + a live throughput chart under a per-build scope, plus `docs/cookbooks/vercel-dashboard.md`
+and streaming pointers in the `dashboard` template. The pieces the feedback assumed were missing (layout shells, a
+chart package, a dashboard template) already shipped; this work corrected that and built only the real streaming/scale
+gaps. See the implementation log at the end.
 **Plan documents:** `docs/superpowers/plans/2026-06-28-v56-master-plan.md` + tranches 1–5
 **Builds on:** `@cascivo/core` (signals + `useMachine` + `infinite-scroll` + `FocusScope` — `packages/core/src/`),
 `@cascivo/storage` (`persistedSignal` — `packages/storage/src/persisted-signal.ts`), `@cascivo/charts` (25 chart
@@ -168,6 +170,42 @@ cookbook. T1→T2 and T1→T3 are the critical path; T4 is parallelizable; T5 de
   together.
 - `pnpm ready` green; `pnpm breakpoint:check` and the drift check clean; **no new runtime dependency** in any
   published package; nothing rebuilds an already-shipping shell/chart/template (C-1/C-2 honored).
+
+---
+
+## Implementation log (2026-06-28)
+
+Shipped across five commits. No new runtime dependency in any published package; no existing shell/chart/template was
+rebuilt (C-1/C-2 held).
+
+- **T1 — Bounded stream buffer.** `createStreamBuffer`/`useStreamBuffer` in `@cascivo/core` — a fixed-capacity ring
+  with O(1) `append`/`appendMany`, a `dispose()`, and rAF-coalesced flushing (one render per frame). Tests prove
+  eviction, single-flush-per-frame coalescing, and the O(capacity) memory bound under a 200k-append loop. Replaces the
+  feedback's O(n)-per-line `slice` pattern. **Closes M-1.**
+- **T2 — Virtualized `LogViewer`.** A monospace console (`packages/components/src/log-viewer`) backed by the T1
+  buffer: only visible rows mount, pin-to-bottom auto-follow that releases on scroll-up, ANSI/level coloring, search
+  highlight, copy-all, `role="log"` + `aria-live`, i18n (en+de), ≥44px coarse controls; exported from `@cascivo/react`.
+  **Closes M-2.**
+- **T3 — Live chart binding + multi-axis.** `useStreamSeries`/`bindStream` (`@cascivo/charts/src/stream`) feed a
+  poll/SSE/WS source into a capped, index-decimated series (reusing `engine/decimate.ts`). `secondAxis` + per-series
+  `axis:'left'|'right'` generalized from `ComboChart` to `LineChart` and non-stacked `AreaChart`, **guarded so the
+  single-axis default is byte-identical** (all 421 chart tests still pass). `docs/cookbooks/charts-streaming.md`.
+  Also hardened the T1 coalescing against synchronous rAF. **Closes M-3 / C-2.**
+- **T4 — Disposable signal scope.** `createScope`/`useScope` in `@cascivo/core` — own signals/computeds/effects, tear
+  them down with an idempotent `dispose()`. A 1000-iteration workspace-switch loop leaks zero active effects. **Closes
+  M-4.**
+- **T5 — End-to-end proof.** `apps/examples/deploy` gained a **Build monitor** view wiring all four primitives
+  (`useStreamBuffer`+`LogViewer` for the log, `useStreamSeries`+`AreaChart` for throughput, `createScope` per build);
+  added `@cascivo/charts` dep + source alias. `docs/cookbooks/vercel-dashboard.md` documents the full recipe and the
+  real-transport seam; the `dashboard` template gained streaming pointers. **Closes M-5 / C-1.**
+
+### Deferred to a follow-up
+
+- **Rebuilding the published `dashboard` template's `public/r/*.json`.** The template page gained streaming guidance
+  inline (copy-paste-safe, no new imports that would couple it to charts in a bare project); wiring live components
+  into the *published* bundle + regenerating its registry artifacts is a follow-up.
+- **Real screenshots / live demo for the Build monitor.** It runs from a deterministic mock; a Pages demo + screenshot
+  are a follow-up.
 
 ---
 

@@ -270,6 +270,9 @@ importers:
 
   apps/examples/deploy:
     dependencies:
+      '@cascivo/charts':
+        specifier: workspace:*
+        version: link:../../../packages/charts
       '@cascivo/core':
         specifier: workspace:*
         version: link:../../../packages/core

@@ -54,23 +54,6 @@ const { handleRef, targetRef, offset } = useDraggable({ axis: 'both' })
 // apply offset.value as translate(offset.x, offset.y) on the target element.
 ```
 
-## Scoped state
-
-### `createScope` / `useScope`
-
-A disposable owner for a set of signals/computeds/effects — one per tenant boundary (a workspace, an org). On
-workspace switch, `dispose()` the old scope and create a fresh one; every effect it started stops firing at once.
-
-```tsx
-const scope = useScope()
-const projects = scope.signal<Project[]>([])
-scope.effect(() => syncProjects(activeWorkspace.value, projects))
-// switching workspace: scope.dispose() — no orphaned effects, no stale state
-```
-
-Prefer this over accumulating per-workspace state in one global signal root, where effects from a previous
-workspace keep firing against unmounted UI. It is a thin ownership wrapper over signals — not a store or context.
-
 ## Install
 
 ```sh

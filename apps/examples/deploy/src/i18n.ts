@@ -95,4 +95,11 @@ export const deployMsg = defineMessages('deploy', {
   flagsMarketplaceSub: 'Set up a provider to start creating feature flags and experiments.',
   flagsProvidersTitle: 'Marketplace Providers',
   flagsProviderCreateBtn: 'Create',
+
+  // Build monitor (live streaming)
+  buildsTitle: 'Build monitor',
+  buildsSubtitle: 'Live build output and throughput, streamed into bounded signals.',
+  buildsRestart: 'Restart build',
+  buildsThroughput: 'Requests / sec',
+  buildsLog: 'Build log',
 })

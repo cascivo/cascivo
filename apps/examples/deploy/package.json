@@ -12,6 +12,7 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
+    "@cascivo/charts": "workspace:*",
     "@cascivo/core": "workspace:*",
     "@cascivo/example-kit": "workspace:*",
     "@cascivo/i18n": "workspace:*",
