@@ -7,6 +7,7 @@ Claude Code skills for working with the cascivo design system.
 | Skill                  | File                                   | Purpose                                                                           |
 | ---------------------- | -------------------------------------- | --------------------------------------------------------------------------------- |
 | `cascivo:add`          | `skills/cascivo-add/SKILL.md`          | Add components to your project — fuzzy name resolution, CLI, compile verification |
+| `cascivo:add-template` | `skills/cascivo-add-template/SKILL.md` | Install a marketplace template (whole-page composition) — browse, install, verify |
 | `cascivo:design-page`  | `skills/cascivo-design-page/SKILL.md`  | Natural language → scaffold_view → validate_view → cascivo generate               |
 | `cascivo:create-theme` | `skills/cascivo-create-theme/SKILL.md` | Brand colors → semantic token overrides → WCAG AA contrast check                  |
 | `cascivo:extend`       | `skills/cascivo-extend/SKILL.md`       | Scaffold a new component following cascivo authoring rules (signals, CSS tokens)  |

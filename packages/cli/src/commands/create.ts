@@ -429,6 +429,15 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     }
 
     console.log(`\nCreated ${name} with the ${resolvedTheme} theme (${files.length} files).`)
+
+    const templateSpec = flagValue(args, 'template')
+    if (templateSpec) {
+      const { add } = await import('./add.js')
+      const { loadConfig } = await import('../utils/config.js')
+      console.log(`\nInstalling template "${templateSpec}"…`)
+      await add([templateSpec], await loadConfig(), { cwd: targetDir })
+    }
+
     console.log('\nNext steps:')
     console.log(`  cd ${name}`)
     console.log('  npm install')

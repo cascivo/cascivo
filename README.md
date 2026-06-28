@@ -37,6 +37,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **Earned accessibility** — WCAG 2.2 AA + APG-conformant, CI-enforced; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT support matrix (NVDA / JAWS / VoiceOver).
 - **Mobile-first & RTL-ready** — fluid type, container queries, CSS logical properties, ≥44px touch targets, and zero overflow from 320–414px.
 - **Open registry** — publish your own components and host your own registry; install from any registry with `cascivo add owner/repo/component`.
+- **Templates & marketplace** — install whole-page compositions (a page + its components + fixtures) you own and adapt with `cascivo add @ns/<template>`; a backend-free, GitHub-hosted, community-contributed catalog.
 
 ## Quick Start
 
@@ -97,6 +98,15 @@ The cascivo registry model is open — anyone can publish components and host th
 - **[Contributor guide](docs/CONTRIBUTING-REGISTRY.md)** — the full loop: write → build → host → list in the directory.
 - **Install from any registry:** `cascivo add owner/repo/component-name`.
 - **Migrating from shadcn/ui?** See [docs/MIGRATING-FROM-SHADCN.md](docs/MIGRATING-FROM-SHADCN.md).
+
+### Templates & marketplace
+
+Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
+
+- **Install a template:** `cascivo add @ns/<template>` (or `cascivo create my-app --template @ns/<template>`).
+- **[Template starter](apps/examples/template-starter/)** — copy-paste starting point for publishing a template.
+- **[Contributor guide](docs/CONTRIBUTING-TEMPLATES.md)** — author → build → host on GitHub → submit to the marketplace.
+- **First-party seed templates:** [`dashboard`](templates/dashboard/), [`auth`](templates/auth/), [`landing`](templates/landing/).
 
 ## Repository structure
 
@@ -263,6 +273,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | [`@cascivo/example-react-next`](apps/examples/react-next)     | Next.js App Router example using cascivo                                           |
 | [`@cascivo/example-react-vite`](apps/examples/react-vite)     | Vite + React example app using cascivo                                             |
 | [`@cascivo/registry-starter`](apps/examples/registry-starter) | Starter template for publishing a third-party cascivo component registry           |
+| [`@cascivo/template-starter`](apps/examples/template-starter) | Starter template for publishing a cascivo template to the marketplace              |
 | [`@cascivo/example-track`](apps/examples/track)               | Example app — a Linear-style keyboard-first issue tracker built with cascivo       |
 
 ## Components

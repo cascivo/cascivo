@@ -59,6 +59,7 @@ const TYPE_MAP: Record<RegistryItemType, ShadcnItemType> = {
   chart: 'registry:component',
   theme: 'registry:theme',
   style: 'registry:style',
+  template: 'registry:block',
 }
 
 /** Flatten a possibly-prefixed cascivo name ("block/x") into a shadcn slug. */

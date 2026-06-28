@@ -1,7 +1,52 @@
 import type { CascadeConfig } from '../utils/config.js'
 import { parseAddress, resolveItemUrl } from '../utils/resolve.js'
 import { fetchJson } from '../utils/http.js'
-import type { RegistryItem } from '@cascivo/registry'
+import { asTemplateMeta, isTemplateItem, type RegistryItem } from '@cascivo/registry'
+
+/** Render an item's details as text. Pure, so it can be unit-tested. */
+export function formatItem(item: RegistryItem): string {
+  const lines: string[] = []
+  lines.push(`\n${item.name}  v${item.version}`)
+  lines.push(`Type: ${item.type}${item.category ? ` / ${item.category}` : ''}`)
+  lines.push(item.description)
+  if (item.author) lines.push(`Author: ${item.author}`)
+  if (item.license) lines.push(`License: ${item.license}`)
+  if (item.homepage) lines.push(`Homepage: ${item.homepage}`)
+
+  if (isTemplateItem(item)) {
+    try {
+      const meta = asTemplateMeta(item.meta)
+      lines.push(`\nTemplate: ${meta.intent}`)
+      lines.push(`Framework: ${meta.framework}`)
+      if (meta.demoUrl) lines.push(`Demo: ${meta.demoUrl}`)
+      if (meta.pages?.length) {
+        lines.push('Pages:')
+        for (const p of meta.pages) lines.push(`  ${p.name} → ${p.target}`)
+      }
+    } catch {
+      // meta is malformed — base fields above are still useful.
+    }
+  }
+
+  if (item.changelog?.length) {
+    lines.push('\nChangelog:')
+    for (const c of item.changelog.slice(0, 5)) lines.push(`  ${c.version}: ${c.note}`)
+  }
+
+  if (item.files?.length) {
+    lines.push('\nFiles:')
+    for (const f of item.files) lines.push(`  ${f.url}${f.target ? ` → ${f.target}` : ''}`)
+  }
+
+  if (item.dependencies?.length) lines.push(`\nDependencies: ${item.dependencies.join(', ')}`)
+
+  if (item.registryDependencies?.length) {
+    const label = isTemplateItem(item) ? 'Components' : 'Registry dependencies'
+    lines.push(`${label}: ${item.registryDependencies.join(', ')}`)
+  }
+
+  return lines.join('\n')
+}
 
 export async function view(args: string[], config: CascadeConfig): Promise<void> {
   const spec = args[0]
@@ -17,33 +62,5 @@ export async function view(args: string[], config: CascadeConfig): Promise<void>
   if (params) fetchOpts.params = params
   const item = (await fetchJson(url, fetchOpts)) as RegistryItem
 
-  console.log(`\n${item.name}  v${item.version}`)
-  console.log(`Type: ${item.type}${item.category ? ` / ${item.category}` : ''}`)
-  console.log(`${item.description}`)
-  if (item.author) console.log(`Author: ${item.author}`)
-  if (item.license) console.log(`License: ${item.license}`)
-  if (item.homepage) console.log(`Homepage: ${item.homepage}`)
-
-  if (item.changelog?.length) {
-    console.log('\nChangelog:')
-    for (const c of item.changelog.slice(0, 5)) {
-      console.log(`  ${c.version}: ${c.note}`)
-    }
-  }
-
-  if (item.files?.length) {
-    console.log('\nFiles:')
-    for (const f of item.files) {
-      const target = f.target ? ` → ${f.target}` : ''
-      console.log(`  ${f.url}${target}`)
-    }
-  }
-
-  if (item.dependencies?.length) {
-    console.log(`\nDependencies: ${item.dependencies.join(', ')}`)
-  }
-
-  if (item.registryDependencies?.length) {
-    console.log(`Registry dependencies: ${item.registryDependencies.join(', ')}`)
-  }
+  console.log(formatItem(item))
 }

@@ -4,6 +4,7 @@
  * tests.
  */
 import { describe, expect, it } from 'vitest'
+import { resolveTemplateTarget } from './add.js'
 
 /**
  * Mirrors the outputName computation in add.ts so we can assert it without
@@ -28,5 +29,17 @@ describe('outputName (prefix stripping)', () => {
 
   it('strips only the last segment for deeply nested names', () => {
     expect(outputName('a/b/c')).toBe('c')
+  })
+})
+
+describe('resolveTemplateTarget', () => {
+  it('resolves a template file target relative to the project root', () => {
+    expect(resolveTemplateTarget('/proj', 'src/pages/dashboard.tsx')).toBe(
+      '/proj/src/pages/dashboard.tsx',
+    )
+  })
+
+  it('normalizes nested relative segments', () => {
+    expect(resolveTemplateTarget('/proj', './src/../src/app.tsx')).toBe('/proj/src/app.tsx')
   })
 })

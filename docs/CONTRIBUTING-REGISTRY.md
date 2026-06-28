@@ -256,6 +256,7 @@ Verification is optional. Unverified registries are listed but shown with a warn
 
 ## Further reading
 
+- [Contributing a Template](./CONTRIBUTING-TEMPLATES.md) — publish a whole-page composition (the registry's higher-level sibling)
 - [Registry starter example](../apps/examples/registry-starter/) — copy-paste starting point
 - [`cascade registry` CLI reference](../packages/cli/README.md)
 - [Component manifest schema](../packages/core/src/types.ts)

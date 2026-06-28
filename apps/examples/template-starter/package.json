@@ -1,0 +1,13 @@
+{
+  "name": "@cascivo/template-starter",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Starter template for publishing a cascivo template to the marketplace",
+  "type": "module",
+  "scripts": {
+    "build": "cascivo registry build --in cascivo-registry.json --out public/r"
+  },
+  "devDependencies": {
+    "cascivo": "workspace:^"
+  }
+}

@@ -6,7 +6,16 @@ export interface ValidationResult {
   warnings: string[]
 }
 
-const VALID_TYPES = new Set(['component', 'layout', 'block', 'chart', 'section', 'theme', 'style'])
+const VALID_TYPES = new Set([
+  'component',
+  'layout',
+  'block',
+  'chart',
+  'section',
+  'theme',
+  'style',
+  'template',
+])
 const VALID_SEVERITIES = new Set(['low', 'moderate', 'high', 'critical'])
 
 function ok(warnings: string[] = []): ValidationResult {

@@ -27,7 +27,11 @@
           "homepage": { "type": "string", "format": "uri" },
           "registryUrl": { "type": "string" },
           "tags": { "type": "array", "items": { "type": "string" } },
-          "verified": { "type": "boolean" }
+          "verified": { "type": "boolean" },
+          "provides": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["component", "template", "theme"] }
+          }
         }
       }
     }

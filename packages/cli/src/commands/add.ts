@@ -1,3 +1,4 @@
+import { resolve as resolvePath } from 'node:path'
 import type { CascadeConfig } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
@@ -5,7 +6,7 @@ import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
 import { resolveClosure } from '../utils/resolve.js'
 import { resolveFromDirectory } from '../utils/directory.js'
-import type { RegistryItem } from '@cascivo/registry'
+import { isTemplateItem, type RegistryItem } from '@cascivo/registry'
 
 /** Dependencies always present in a cascade project — never auto-installed. */
 const ASSUMED_DEPS = new Set(['react', 'react-dom'])
@@ -16,6 +17,11 @@ async function fetchText(url: string): Promise<string> {
     throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`)
   }
   return res.text()
+}
+
+/** Resolve where a template's own file is written — relative to the project root. */
+export function resolveTemplateTarget(cwd: string, target: string): string {
+  return resolvePath(cwd, target)
 }
 
 function isMultiRegistrySpec(name: string): boolean {
@@ -32,17 +38,18 @@ function isMultiRegistrySpec(name: string): boolean {
 export async function add(
   names: string[],
   config: CascadeConfig,
-  opts: { dryRun?: boolean; yes?: boolean } = {},
+  opts: { dryRun?: boolean; yes?: boolean; cwd?: string } = {},
 ): Promise<void> {
   if (names.length === 0) {
     console.error('Usage: cascivo add <component...>')
     return
   }
 
+  const cwd = opts.cwd ?? process.cwd()
   const multiSpecs = names.filter(isMultiRegistrySpec)
   const bareSpecs = names.filter((n) => !isMultiRegistrySpec(n))
 
-  let lock = (await readLock()) ?? createLock()
+  let lock = (await readLock(cwd)) ?? createLock()
 
   // Handle multi-registry specs (namespaces, URLs, GitHub)
   if (multiSpecs.length > 0) {
@@ -51,9 +58,16 @@ export async function add(
     if (opts.dryRun) {
       console.log('Dry run — would install:')
       for (const item of plan.items) {
-        console.log(`  ${item.spec} (${item.item.name}@${item.item.version}) from ${item.itemUrl}`)
+        const kind = isTemplateItem(item.item) ? ' [template]' : ''
+        console.log(
+          `  ${item.spec} (${item.item.name}@${item.item.version})${kind} from ${item.itemUrl}`,
+        )
         for (const f of item.item.files) {
-          console.log(`    ${f.url}`)
+          const arrow = isTemplateItem(item.item) && f.target ? ` → ${f.target}` : ''
+          console.log(`    ${f.url}${arrow}`)
+        }
+        if (item.item.registryDependencies?.length) {
+          console.log(`    components: ${item.item.registryDependencies.join(', ')}`)
         }
       }
       return
@@ -69,15 +83,15 @@ export async function add(
         )
       }
 
-      await installItem(item, config, lock, registryBase)
+      const fileHashes = await installItem(item, config, cwd)
       lock = updateLockEntry(lock, item.name, {
         registry: registryBase,
         version: item.version,
         installedAt: new Date().toISOString().slice(0, 10),
-        files: {},
+        files: fileHashes,
       })
     }
-    await writeLock(lock)
+    await writeLock(lock, cwd)
     return
   }
 
@@ -105,7 +119,7 @@ export async function add(
 
     for (const url of entry.files) {
       const content = await fetchText(url)
-      const dest = resolveOutputPath(config.outputDir, outputName, fileName(url))
+      const dest = resolveOutputPath(config.outputDir, outputName, fileName(url), cwd)
       await writeFileSafe(dest, content)
       fileHashes[dest] = sha256(content)
     }
@@ -129,23 +143,35 @@ export async function add(
     installPackages([...missingDeps])
   }
 
-  await writeLock(lock)
+  await writeLock(lock, cwd)
 }
 
+/**
+ * Install a single resolved item, returning a map of written path → content
+ * hash for the lockfile. A template writes its own files to their `target`
+ * paths (relative to the project root); every other item writes its files under
+ * the components output directory. A template's components are installed
+ * separately as their own plan entries (via `registryDependencies`).
+ */
 async function installItem(
   item: RegistryItem,
   config: CascadeConfig,
-  _lock: ReturnType<typeof createLock>,
-  _registryBase: string,
-): Promise<void> {
-  const outputName = item.name.includes('/') ? item.name.split('/').pop()! : item.name
+  cwd: string,
+): Promise<Record<string, string>> {
+  const fileHashes: Record<string, string> = {}
   const missingDeps = new Set<string>()
+  const template = isTemplateItem(item)
+  const outputName = item.name.includes('/') ? item.name.split('/').pop()! : item.name
 
   for (const file of item.files ?? []) {
     try {
       const content = await fetchText(file.url)
-      const dest = resolveOutputPath(config.outputDir, outputName, fileName(file.url))
+      const dest =
+        template && file.target
+          ? resolveTemplateTarget(cwd, file.target)
+          : resolveOutputPath(config.outputDir, outputName, fileName(file.url), cwd)
       await writeFileSafe(dest, content)
+      fileHashes[dest] = sha256(content)
     } catch {
       console.warn(`  Could not fetch ${file.url}`)
     }
@@ -159,5 +185,12 @@ async function installItem(
     installPackages([...missingDeps])
   }
 
-  console.log(`Added ${item.name} to ${config.outputDir}/${outputName}/`)
+  if (template) {
+    const pages = item.files?.filter((f) => f.target).map((f) => f.target) ?? []
+    console.log(`Installed template ${item.name} (${pages.length} files)`)
+  } else {
+    console.log(`Added ${item.name} to ${config.outputDir}/${outputName}/`)
+  }
+
+  return fileHashes
 }

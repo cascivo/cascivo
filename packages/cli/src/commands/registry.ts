@@ -1,7 +1,41 @@
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { resolve, dirname } from 'node:path'
-import { buildRegistry, validateIndex, parseLegacyRegistry } from '@cascivo/registry'
+import {
+  buildRegistry,
+  validateIndex,
+  parseLegacyRegistry,
+  isTemplateItem,
+  validateTemplate,
+  type RegistryIndex,
+} from '@cascivo/registry'
+
+/**
+ * Validate every template item in an index: each must pass `validateTemplate`,
+ * and any bare `registryDependencies` not present in the same index produce a
+ * warning (they are expected to resolve from another registry at install time).
+ * Returns `{ errors, warnings }`.
+ */
+export function validateTemplates(index: RegistryIndex): { errors: string[]; warnings: string[] } {
+  const errors: string[] = []
+  const warnings: string[] = []
+  const localNames = new Set(index.items.map((i) => i.name))
+
+  for (const item of index.items) {
+    if (!isTemplateItem(item)) continue
+    for (const e of validateTemplate(item)) errors.push(`template "${item.name}": ${e}`)
+    for (const dep of item.registryDependencies ?? []) {
+      const isCrossRegistry = dep.includes('/') || dep.startsWith('@') || dep.startsWith('http')
+      if (!isCrossRegistry && !localNames.has(dep)) {
+        warnings.push(
+          `template "${item.name}": component "${dep}" is not in this index — it must resolve from another registry at install time`,
+        )
+      }
+    }
+  }
+
+  return { errors, warnings }
+}
 
 export async function registryBuild(args: string[]): Promise<void> {
   let inFile = 'cascade-registry.json'
@@ -45,6 +79,14 @@ export async function registryBuild(args: string[]): Promise<void> {
   }
   if (!result.ok) {
     for (const e of result.errors) console.error(`error: ${e}`)
+    process.exitCode = 1
+    return
+  }
+
+  const templateResult = validateTemplates(index as RegistryIndex)
+  for (const w of templateResult.warnings) console.warn(`warn: ${w}`)
+  if (templateResult.errors.length > 0) {
+    for (const e of templateResult.errors) console.error(`error: ${e}`)
     process.exitCode = 1
     return
   }

@@ -6,10 +6,15 @@ export type {
   RegistryIndex,
   LegacyRegistry,
   LegacyRegistryEntry,
+  TemplateMeta,
+  TemplateScreenshot,
+  TemplateFileRole,
 } from './types.ts'
 
 export { validateItem, validateIndex, parseLegacyRegistry } from './validate.ts'
 export type { ValidationResult } from './validate.ts'
+
+export { isTemplateItem, asTemplateMeta, validateTemplate } from './template.ts'
 
 export { buildRegistry } from './build.ts'
 
@@ -23,5 +28,13 @@ export type {
 
 export { matchAdvisories } from './advisories.ts'
 
-export type { DirectoryEntry, RegistryDirectory, DirectoryValidationResult } from './directory.ts'
+export type {
+  DirectoryEntry,
+  DirectoryProvides,
+  RegistryDirectory,
+  DirectoryValidationResult,
+} from './directory.ts'
 export { validateDirectory } from './directory.ts'
+
+export { projectTemplate, buildCatalog } from './marketplace.ts'
+export type { MarketplaceTemplate, MarketplaceCatalog, MarketplaceSource } from './marketplace.ts'
