@@ -52,6 +52,23 @@ describe('validateDirectory', () => {
     expect(result.ok).toBe(false)
   })
 
+  it('accepts a valid provides facet', () => {
+    const result = validateDirectory({
+      ...VALID_DIR,
+      registries: [{ ...VALID_DIR.registries[0], provides: ['component', 'template'] }],
+    })
+    expect(result.ok).toBe(true)
+  })
+
+  it('fails on an invalid provides value', () => {
+    const result = validateDirectory({
+      ...VALID_DIR,
+      registries: [{ ...VALID_DIR.registries[0], provides: ['widget'] }],
+    })
+    expect(result.ok).toBe(false)
+    expect(result.errors.some((e) => e.includes('provides'))).toBe(true)
+  })
+
   it('warns on similar namespaces', () => {
     const result = validateDirectory({
       schemaVersion: 1,

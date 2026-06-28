@@ -13,6 +13,8 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { validateDirectory } from '../../packages/registry/src/directory.ts'
 import { validateIndex } from '../../packages/registry/src/validate.ts'
+import { isTemplateItem, validateTemplate } from '../../packages/registry/src/template.ts'
+import type { RegistryItem } from '../../packages/registry/src/types.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -61,7 +63,12 @@ if (!dirResult.ok) {
 // ── 2. Fetch and validate each registry index ─────────────────────────────
 
 const obj = raw as {
-  registries: Array<{ registryUrl: string; namespace: string; verified: boolean }>
+  registries: Array<{
+    registryUrl: string
+    namespace: string
+    verified: boolean
+    provides?: string[]
+  }>
 }
 
 for (const entry of obj.registries) {
@@ -79,6 +86,18 @@ for (const entry of obj.registries) {
   const result = validateIndex(index)
   for (const e of result.errors) hardFail(`[${entry.namespace}] ${e}`)
   for (const w of result.warnings) warn(`[${entry.namespace}] ${w}`)
+
+  // ── Template-providing registries: require ≥1 valid template ──────────────
+  if (entry.provides?.includes('template') && result.ok) {
+    const items = ((index as { items?: RegistryItem[] }).items ?? []).filter(isTemplateItem)
+    if (items.length === 0) {
+      hardFail(`[${entry.namespace}] provides "template" but exposes no template items`)
+    }
+    for (const item of items) {
+      for (const e of validateTemplate(item))
+        hardFail(`[${entry.namespace}] template "${item.name}": ${e}`)
+    }
+  }
 
   // ── 3. Verified registries: enforce license on every item ───────────────
   if (entry.verified && result.ok) {

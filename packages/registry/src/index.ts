@@ -28,5 +28,13 @@ export type {
 
 export { matchAdvisories } from './advisories.ts'
 
-export type { DirectoryEntry, RegistryDirectory, DirectoryValidationResult } from './directory.ts'
+export type {
+  DirectoryEntry,
+  DirectoryProvides,
+  RegistryDirectory,
+  DirectoryValidationResult,
+} from './directory.ts'
 export { validateDirectory } from './directory.ts'
+
+export { projectTemplate, buildCatalog } from './marketplace.ts'
+export type { MarketplaceTemplate, MarketplaceCatalog, MarketplaceSource } from './marketplace.ts'

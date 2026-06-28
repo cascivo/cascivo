@@ -1,3 +1,6 @@
+/** What kinds of items a directory-listed registry publishes. */
+export type DirectoryProvides = 'component' | 'template' | 'theme'
+
 export interface DirectoryEntry {
   namespace: string
   name: string
@@ -6,7 +9,11 @@ export interface DirectoryEntry {
   registryUrl: string
   tags: string[]
   verified: boolean
+  /** Item kinds this registry provides. Absent ⇒ component-only. */
+  provides?: DirectoryProvides[]
 }
+
+const VALID_PROVIDES = new Set<DirectoryProvides>(['component', 'template', 'theme'])
 
 export interface RegistryDirectory {
   schemaVersion: 1
@@ -72,6 +79,18 @@ export function validateDirectory(raw: unknown): DirectoryValidationResult {
     if (!Array.isArray(entry['tags'])) errors.push(`registries[${i}].tags must be an array`)
     if (typeof entry['verified'] !== 'boolean')
       errors.push(`registries[${i}].verified must be a boolean`)
+    if (entry['provides'] !== undefined) {
+      if (!Array.isArray(entry['provides'])) {
+        errors.push(`registries[${i}].provides must be an array when present`)
+      } else {
+        for (const p of entry['provides'] as unknown[]) {
+          if (!VALID_PROVIDES.has(p as DirectoryProvides))
+            errors.push(
+              `registries[${i}].provides has invalid value ${JSON.stringify(p)} (allowed: ${[...VALID_PROVIDES].join('|')})`,
+            )
+        }
+      }
+    }
   }
 
   for (let i = 0; i < namespaces.length; i++) {
