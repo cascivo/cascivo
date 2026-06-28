@@ -54,6 +54,24 @@ const { handleRef, targetRef, offset } = useDraggable({ axis: 'both' })
 // apply offset.value as translate(offset.x, offset.y) on the target element.
 ```
 
+## Streaming data
+
+### `createStreamBuffer` / `useStreamBuffer`
+
+A fixed-capacity ring buffer for high-frequency streams (build logs, live metrics). Append is O(1) and never
+reallocates; memory is O(capacity), not O(total appended). A burst of appends within one animation frame coalesces
+into a single `signal` write — one render per frame regardless of append rate.
+
+```tsx
+const logs = useStreamBuffer<string>({ capacity: 1000 })
+socket.onmessage = (e) => logs.append(e.data) // O(1), evicts the oldest past 1000
+return <LogViewer lines={logs.signal} />
+```
+
+This replaces the O(n)-per-line anti-pattern `logs.value = [...logs.value.slice(1), line]`, which reallocates and
+re-copies the whole array on every append and renders once per line — the exact GC pressure it appears to prevent.
+Pass `flush: 'sync'` for deterministic, immediate publishing (e.g. tests).
+
 ## Install
 
 ```sh
