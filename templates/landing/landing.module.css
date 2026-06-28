@@ -1,0 +1,53 @@
+@layer components {
+  .landing {
+    display: grid;
+    gap: var(--cascivo-space-8, 2rem);
+    padding: var(--cascivo-space-8, 2rem) var(--cascivo-space-6, 1.5rem);
+    max-inline-size: 64rem;
+    margin-inline: auto;
+  }
+
+  .landing__hero {
+    display: grid;
+    gap: var(--cascivo-space-3, 0.75rem);
+    text-align: center;
+  }
+
+  .landing__eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--cascivo-text-xs, 0.75rem);
+    color: var(--cascivo-color-text-subtle, #6b7280);
+  }
+
+  .landing__cta {
+    justify-self: center;
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--cascivo-space-5, 1.25rem);
+    border-radius: var(--cascivo-radius-md, 0.5rem);
+    background: var(--cascivo-color-accent, #2563eb);
+    color: var(--cascivo-color-accent-foreground, #fff);
+    text-decoration: none;
+  }
+
+  .landing__features {
+    display: grid;
+    gap: var(--cascivo-space-4, 1rem);
+  }
+
+  @container (min-width: 40rem) {
+    .landing__features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .landing__feature {
+    padding: var(--cascivo-space-4, 1rem);
+    background: var(--cascivo-color-surface, #fff);
+    border: 1px solid var(--cascivo-color-border, #e5e7eb);
+    border-radius: var(--cascivo-radius-md, 0.5rem);
+  }
+}

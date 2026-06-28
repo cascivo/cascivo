@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="dashboard template preview">
+  <rect width="1280" height="720" fill="#f9fafb"/>
+  <rect x="0" y="0" width="1280" height="64" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="40" y="40" font-family="system-ui, sans-serif" font-size="22" fill="#111827">cascivo — dashboard template</text>
+  <rect x="40" y="104" width="1200" height="560" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="640" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#6b7280">dashboard preview</text>
+</svg>

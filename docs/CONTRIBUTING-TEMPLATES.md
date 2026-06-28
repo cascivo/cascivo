@@ -235,6 +235,28 @@ Verification is optional. Unverified templates are listed but shown with a warni
 
 ---
 
+## Security, safety & advisories
+
+Templates are **owned, copy-paste source** — exactly like components. Installing one writes files you review and own;
+nothing is ever executed remotely, and the gallery hosts only static metadata plus author-hosted screenshots/demos.
+
+**Maintainer verification checklist** (run before flipping `"verified": true`):
+
+- [ ] `validateTemplate` passes (schema, screenshots, license, `fileRoles`).
+- [ ] Source reviewed for malicious code (no exfiltration, no obfuscation, no network calls to unexpected hosts).
+- [ ] House rules: no `useState`/`useEffect`/`useContext`/`useReducer`; `@layer`-scoped CSS, no Tailwind; logical
+      properties; ≥44px coarse touch targets.
+- [ ] `cascivo doctor` / `cascivo audit --ai` run clean over the template's source files.
+- [ ] Accessibility spot-check: roles, keyboard operability, alt text on screenshots.
+- [ ] Components in `registryDependencies` resolve and carry no unaddressed advisories.
+
+**Advisories propagation.** A template doesn't re-declare its components' security advisories — it inherits them. When
+you `cascivo add` a template, each component installs through the normal component path, so any `advisories[]` on a
+component surface at that point just as they would installing the component directly. Keep `registryDependencies`
+pointed at maintained components so this inheritance stays meaningful.
+
+---
+
 ## Updating your template
 
 1. Bump `version` in the item

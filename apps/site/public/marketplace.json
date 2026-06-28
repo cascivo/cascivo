@@ -1,9 +1,70 @@
 {
   "generatedAt": "2026-06-28",
-  "templates": [],
+  "templates": [
+    {
+      "name": "auth",
+      "namespace": "@cascivo",
+      "description": "A centered sign-in screen with email/password fields and a submit action",
+      "category": "auth",
+      "framework": "react-vite",
+      "tags": ["auth", "login", "template"],
+      "components": ["card", "input", "button"],
+      "screenshots": [
+        {
+          "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/auth/screenshot-light.svg",
+          "alt": "Centered sign-in card with email and password fields"
+        }
+      ],
+      "version": "1.0.0",
+      "license": "MIT",
+      "verified": true,
+      "installSpec": "@cascivo/auth",
+      "homepage": "https://github.com/cascivo/cascivo/tree/main/templates/auth"
+    },
+    {
+      "name": "dashboard",
+      "namespace": "@cascivo",
+      "description": "An analytics dashboard with KPI cards, a chart slot, and a recent-activity table",
+      "category": "dashboard",
+      "framework": "react-vite",
+      "tags": ["dashboard", "analytics", "template"],
+      "components": ["card", "badge", "data-table"],
+      "screenshots": [
+        {
+          "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/screenshot-light.svg",
+          "alt": "Analytics dashboard with KPI cards and a recent-activity table"
+        }
+      ],
+      "version": "1.0.0",
+      "license": "MIT",
+      "verified": true,
+      "installSpec": "@cascivo/dashboard",
+      "homepage": "https://github.com/cascivo/cascivo/tree/main/templates/dashboard"
+    },
+    {
+      "name": "landing",
+      "namespace": "@cascivo",
+      "description": "A marketing landing page with a hero, a feature grid, and a call-to-action",
+      "category": "marketing",
+      "framework": "react-vite",
+      "tags": ["marketing", "landing", "template"],
+      "components": ["button", "card", "badge"],
+      "screenshots": [
+        {
+          "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/screenshot-light.svg",
+          "alt": "Landing page with a hero headline and a three-column feature grid"
+        }
+      ],
+      "version": "1.0.0",
+      "license": "MIT",
+      "verified": true,
+      "installSpec": "@cascivo/landing",
+      "homepage": "https://github.com/cascivo/cascivo/tree/main/templates/landing"
+    }
+  ],
   "facets": {
-    "categories": [],
-    "frameworks": [],
-    "tags": []
+    "categories": ["auth", "dashboard", "marketing"],
+    "frameworks": ["react-vite"],
+    "tags": ["analytics", "auth", "dashboard", "landing", "login", "marketing", "template"]
   }
 }

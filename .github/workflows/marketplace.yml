@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'directory/**'
+      - 'templates/**'
       - 'scripts/registry/build-marketplace.ts'
       - 'packages/registry/src/marketplace.ts'
   schedule:

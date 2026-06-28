@@ -1,9 +1,13 @@
 # cascivo — Roadmap v55: Templates & Marketplace — A Backend-Free, GitHub-Hosted Composition Layer on the Registry
 
 **Last updated:** 2026-06-28
-**Status:** 🟡 Planned (not shipped) — per the task that produced it (study the idea, decide if it makes sense, decide
-whether it conflicts with the registry, design a backend-free GitHub-only shape; **do not implement**). The tranche
-docs carry the task-by-task steps for when implementation begins.
+**Status:** ✅ Shipped — T1–T6 implemented: a `template` registry item type + `TemplateMeta` schema; CLI consumption
+(`add`/`create --template`/`view`); GitHub-only authoring (`template init`, template-aware `registry build`,
+`CONTRIBUTING-TEMPLATES.md`, a template-starter); a backend-free marketplace (a `provides` directory facet, a
+CI-built static `marketplace.json`, directory validation); a static gallery (`/docs/marketplace`) + MCP
+`list/get/add_template` + a `cascivo:add-template` skill; and three first-party seed templates (dashboard, auth,
+landing) with a verification/safety model. The registry stays the single transport — templates are a registry item
+type, the marketplace a static view over it. See the implementation log at the end. `pnpm ready` green.
 **Plan documents:** `docs/superpowers/plans/2026-06-28-v55-master-plan.md` + tranches 1–6
 **Builds on:** the existing registry transport (`packages/registry/src/types.ts` — `RegistryItem`/`RegistryIndex`,
 multi-file `files[]` with `target`, `registryDependencies` for item composition, `meta`, `advisories`), the CLI
@@ -214,11 +218,50 @@ path; T4/T5 layer discovery; T6 validates the whole loop.
 
 ---
 
+## Implementation log (2026-06-28)
+
+Shipped across six commits; the registry remained the single transport (no fork, no backend) in every tranche.
+
+- **T1 — Template item type & schema.** Added `'template'` to `RegistryItemType` and a `TemplateMeta`
+  (intent/framework/category/screenshots/demo/fileRoles/pages) in `@cascivo/registry`; `validateTemplate` + a type
+  guard; a conditional in `registry-item.v2.json` requiring `license` + a valid `TemplateMeta` for templates. **Closes
+  M-1/M-2.**
+- **T2 — CLI consume.** `cascivo add owner/repo/<template>` resolves the component closure (existing
+  `registryDependencies` walk) and copies the template's own files to their `fileRoles` targets, recording each in the
+  lockfile; added `create --template <spec>` and template-aware `view`. Threaded an explicit project root through
+  `add`. **Closes M-3.**
+- **T3 — Authoring & publishing.** `cascivo template init` scaffolds a template + `cascivo-registry.json` entry;
+  `registry build` runs `validateTemplate` per item (warn on bare component deps not in the index, error on malformed);
+  `docs/CONTRIBUTING-TEMPLATES.md` documents the GitHub-only loop; an `apps/examples/template-starter` example.
+  **Closes M-4.**
+- **T4 — Marketplace directory & catalog.** A `provides` directory facet (schema + validation); a pure
+  `projectTemplate`/`buildCatalog` in `@cascivo/registry`; `scripts/registry/build-marketplace.ts` writes a static
+  `apps/site/public/marketplace.json` (stars baked at CI time); directory validation requires template-providing
+  registries to expose ≥1 valid template; a `marketplace.yml` Action rebuilds the catalog. **Closes M-5.**
+- **T5 — Gallery + AI discovery.** A static `/docs/marketplace` gallery rendered from `marketplace.json` (cards,
+  category chips, verified toggle, search, copy-install, demo link) with no runtime backend calls; MCP
+  `list_templates`/`get_template`/`add_template`; a `cascivo:add-template` skill + a "start from a template" step in
+  `cascivo:design-page`. **Closes M-6/M-7.**
+- **T6 — Seed templates + safety.** Three first-party templates (dashboard, auth, landing) under `templates/`, read
+  locally by the catalog builder so the gallery seeds deterministically without a deploy; a verification checklist +
+  advisories-propagation note in `CONTRIBUTING-TEMPLATES.md`. **Closes M-8/M-9.**
+
+### Deferred to a follow-up
+
+- **Flipping the live first-party directory entry to `provides:['template']`.** The seed templates ship in-repo and
+  seed the catalog locally; advertising them on the live `@cascivo` directory entry waits until they're served from
+  `cascivo.com/r` so directory validation (which fetches the live index) stays green.
+- **Offline end-to-end `add` of a local template artifact.** `fetchJson`/`fetchText` are HTTP-only (a pre-existing
+  limitation shared by the component flow); the template install logic is covered by unit tests instead.
+- **Per-template live demos + screenshots.** Seed templates ship SVG placeholders + raw-URL screenshot references;
+  real screenshots and GitHub Pages demos are a follow-up.
+
+---
+
 ## Notes
 
-- This roadmap is **Planned, not Shipped** — per the task that produced it (decide if it makes sense, decide if it
-  conflicts with the registry, design a backend-free GitHub shape; do not implement). The tranche docs carry the
-  task-by-task steps for when implementation begins.
+- This roadmap was **planned and then implemented** in the same session. The governing decision held throughout:
+  templates are a registry item type; the marketplace is a static view over the registry.
 - The governing decision — **templates are a registry item type; the marketplace is a static view over the registry** —
   is what keeps this additive instead of a second platform. Every tranche is checked against "did we just fork the
   registry?" The answer must stay *no*.

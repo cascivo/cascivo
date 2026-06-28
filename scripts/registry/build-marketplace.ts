@@ -19,6 +19,9 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
 const DIRECTORY_PATH = join(REPO_ROOT, 'directory', 'registries.json')
 const OUT_PATH = join(REPO_ROOT, 'apps', 'site', 'public', 'marketplace.json')
+/** The in-repo first-party templates index — seeds the catalog without a deploy. */
+const FIRST_PARTY_TEMPLATES = join(REPO_ROOT, 'templates', 'cascivo-registry.json')
+const FIRST_PARTY_HOMEPAGE = 'https://github.com/cascivo/cascivo'
 
 interface DirEntry {
   namespace: string
@@ -68,6 +71,23 @@ async function fetchStars(homepage: string): Promise<number | undefined> {
 const raw = JSON.parse(await readFile(DIRECTORY_PATH, 'utf8')) as { registries: DirEntry[] }
 const sources: MarketplaceSource[] = []
 const warnings: string[] = []
+
+// First-party templates ship in this repo — read them locally so the catalog is
+// seeded deterministically (and offline), independent of any deploy.
+try {
+  const local = JSON.parse(await readFile(FIRST_PARTY_TEMPLATES, 'utf8')) as {
+    items?: RegistryItem[]
+  }
+  if (local.items?.length) {
+    console.log(`Including ${local.items.length} first-party templates from templates/`)
+    sources.push({
+      entry: { namespace: '@cascivo', verified: true, homepage: FIRST_PARTY_HOMEPAGE },
+      items: local.items,
+    })
+  }
+} catch (err) {
+  warnings.push(`[@cascivo] could not read first-party templates: ${(err as Error).message}`)
+}
 
 for (const entry of raw.registries) {
   if (!entry.provides?.includes('template')) continue
