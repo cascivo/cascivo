@@ -57,6 +57,7 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
 
   const view = signal<readonly T[]>([])
   let frame: number | null = null
+  let scheduled = false
 
   const canRaf = typeof requestAnimationFrame !== 'undefined'
 
@@ -67,16 +68,23 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
   }
 
   function publish(): void {
+    scheduled = false
     frame = null
     view.value = materialize()
   }
 
+  // A `scheduled` flag (not just `frame === null`) keeps coalescing correct even
+  // if requestAnimationFrame runs the callback synchronously: publish() clears
+  // the flag before this function's `frame = …` assignment lands.
   function schedule(): void {
     if (flush === 'sync' || !canRaf) {
       publish()
       return
     }
-    if (frame === null) frame = requestAnimationFrame(publish)
+    if (!scheduled) {
+      scheduled = true
+      frame = requestAnimationFrame(publish)
+    }
   }
 
   function pushOne(item: T): void {
@@ -111,6 +119,7 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
     dispose(): void {
       if (frame !== null && canRaf) cancelAnimationFrame(frame)
       frame = null
+      scheduled = false
     },
     get size(): number {
       return length

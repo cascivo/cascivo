@@ -29,6 +29,8 @@ export interface AreaChartSeries<Datum> {
   label: string
   data: readonly Datum[]
   color?: string
+  /** Which y-axis this series is measured against (ignored when `stacked`). Default 'left'. */
+  axis?: 'left' | 'right'
 }
 
 export interface AreaChartProps<Datum = { x: number; y: number }> {
@@ -68,6 +70,8 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   syncId?: string
   /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
   tooltipMode?: 'item' | 'axis'
+  /** Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only). */
+  secondAxis?: { label?: string; format?: (value: number) => string }
   /** Downsample dense (non-stacked) series before drawing (LTTB/min-max). The fallback table keeps full data. */
   decimate?: boolean | AreaDecimateOptions
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
@@ -102,6 +106,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   zoom,
   syncId,
   tooltipMode,
+  secondAxis,
   decimate,
   toolbox,
 }: AreaChartProps<Datum>) {
@@ -145,22 +150,33 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const series = windowed
     ? rawSeries.map((s) => ({ ...s, data: s.data.slice(win.value[0], win.value[1] + 1) }))
     : rawSeries
-  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  // A right y-axis is added only when a (non-stacked) series opts in; otherwise
+  // the layout and scales are byte-identical to the single-axis default.
+  const hasRight = !plain && !stacked && series.some((s) => s.axis === 'right')
+  const baseMargins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const allX = (series[0]?.data ?? []).map((d) => x(d))
-  const allY = series.flatMap((s) => s.data.map((d) => y(d)))
+  const leftYvals = (hasRight ? series.filter((s) => s.axis !== 'right') : series).flatMap((s) =>
+    s.data.map((d) => y(d)),
+  )
+  const rightYvals = hasRight
+    ? series.filter((s) => s.axis === 'right').flatMap((s) => s.data.map((d) => y(d)))
+    : []
   const hasData = allX.length > 0
 
   const xMin = hasData ? Math.min(...allX) : 0
   const xMax = hasData ? Math.max(...allX) : 1
-  const yMin = stacked ? 0 : Math.min(0, ...allY)
+  const yMin = stacked ? 0 : Math.min(0, ...leftYvals)
   const yMax = stacked
     ? Math.max(
         ...(series[0]?.data ?? []).map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0)),
       )
-    : Math.max(...allY)
+    : Math.max(...leftYvals)
+  const yMinR = hasRight ? Math.min(0, ...rightYvals) : yMin
+  const yMaxR = hasRight ? Math.max(...rightYvals) : yMax
 
   const fallback = (
     <table>
@@ -200,6 +216,8 @@ export function AreaChart<Datum = { x: number; y: number }>({
     const innerH = h - margins.top - margins.bottom
     const xScale = linearScale([xMin, xMax], [0, innerW])
     const yScale = linearScale([yMin, yMax], [innerH, 0])
+    const yScaleRight = hasRight ? linearScale([yMinR, yMaxR], [innerH, 0]) : yScale
+    const yOf = (s: AreaChartSeries<Datum>) => (s.axis === 'right' ? yScaleRight : yScale)
 
     // Axis mode — one focusable point per x index carrying every series as segments.
     if (tooltipMode === 'axis') {
@@ -217,7 +235,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
           const yv = y(d)
           if (!Number.isFinite(yv)) return
           cx = margins.left + xScale.map(x(d))
-          cyTop = Math.min(cyTop, yScale.map(yv))
+          cyTop = Math.min(cyTop, yOf(s).map(yv))
           labelX = String(x(d))
           segments.push({
             label: s.label,
@@ -245,7 +263,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
       return s.data.map((d, i) => ({
         id: `${s.id}-${i}`,
         cx: margins.left + xScale.map(x(d)),
-        cy: margins.top + yScale.map(y(d)),
+        cy: margins.top + yOf(s).map(y(d)),
         label: String(x(d)),
         value: y(d),
         seriesId: s.id,
@@ -283,6 +301,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
           const innerH = h - margins.top - margins.bottom
           const xScale = linearScale([xMin, xMax], [0, innerW])
           const yScale = linearScale([yMin, yMax], [innerH, 0])
+          const yScaleRight = hasRight ? linearScale([yMinR, yMaxR], [innerH, 0]) : yScale
 
           let stackedOffsets: [number, number][][] = []
           if (stacked) {
@@ -354,8 +373,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       </g>
                     )
                   } else {
-                    points = s.data.map((d) => [xScale.map(x(d)), yScale.map(y(d))])
-                    baseline = yScale.map(0)
+                    const ys = s.axis === 'right' ? yScaleRight : yScale
+                    points = s.data.map((d) => [xScale.map(x(d)), ys.map(y(d))])
+                    baseline = ys.map(0)
                     // Dense, non-stacked series: downsample for a fast, crisp path.
                     if (decConf && points.length > decConf.threshold) {
                       const dec = decimatePoints(points as Pt[], decConf.threshold, decConf.method)
@@ -414,6 +434,18 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                    {hasRight && (
+                      <Axis
+                        scale={yScaleRight}
+                        orientation="y"
+                        length={innerH}
+                        tickCount={yTicks}
+                        transform={`translate(${innerW},0)`}
+                        {...(secondAxis?.format
+                          ? { format: (v: number | string | Date) => secondAxis.format!(Number(v)) }
+                          : {})}
+                      />
+                    )}
                   </>
                 )}
               </g>
