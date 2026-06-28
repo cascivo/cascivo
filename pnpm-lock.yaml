@@ -654,6 +654,12 @@ importers:
         specifier: workspace:^
         version: link:../../../packages/cli
 
+  apps/examples/template-starter:
+    devDependencies:
+      cascivo:
+        specifier: workspace:^
+        version: link:../../../packages/cli
+
   apps/examples/track:
     dependencies:
       '@cascivo/core':

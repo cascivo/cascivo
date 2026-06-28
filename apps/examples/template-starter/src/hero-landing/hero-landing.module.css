@@ -1,0 +1,24 @@
+@layer components {
+  .hero-landing {
+    display: grid;
+    gap: var(--cascivo-space-6, 1.5rem);
+    padding: var(--cascivo-space-6, 1.5rem);
+  }
+
+  .hero-landing__hero {
+    display: grid;
+    gap: var(--cascivo-space-3, 0.75rem);
+    text-align: center;
+  }
+
+  .hero-landing__features {
+    display: grid;
+    gap: var(--cascivo-space-4, 1rem);
+  }
+
+  @container (min-width: 40rem) {
+    .hero-landing__features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

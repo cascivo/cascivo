@@ -263,6 +263,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | [`@cascivo/example-react-next`](apps/examples/react-next)     | Next.js App Router example using cascivo                                           |
 | [`@cascivo/example-react-vite`](apps/examples/react-vite)     | Vite + React example app using cascivo                                             |
 | [`@cascivo/registry-starter`](apps/examples/registry-starter) | Starter template for publishing a third-party cascivo component registry           |
+| [`@cascivo/template-starter`](apps/examples/template-starter) | Starter template for publishing a cascivo template to the marketplace              |
 | [`@cascivo/example-track`](apps/examples/track)               | Example app — a Linear-style keyboard-first issue tracker built with cascivo       |
 
 ## Components
