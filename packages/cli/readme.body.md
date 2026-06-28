@@ -3,15 +3,20 @@ The `cascivo` CLI drives the copy-paste workflow — it scaffolds config, copies
 ## Commands
 
 ```sh
-npx cascivo create my-app     # scaffold a full app — Vite + React, app shell, side nav, theme
-npx cascivo init              # scaffold cascivo.config.ts + tokens; detects your package manager
-cascivo add button card       # copy component source from the registry into your project
-cascivo add owner/repo/button # install from any third-party registry
-cascivo list                  # list available components
-cascivo update                # pull newer versions of copied components
-cascivo audit --ai            # flag hard-coded values, invented props, missing wiring
-cascivo build                 # build a registry from your own components
+npx cascivo create my-app          # scaffold a full app — Vite + React, app shell, side nav, theme
+npx cascivo create my-app --template owner/repo/dashboard  # …and start from a template
+npx cascivo init                   # scaffold cascivo.config.ts + tokens; detects your package manager
+cascivo add button card            # copy component source from the registry into your project
+cascivo add owner/repo/button      # install from any third-party registry
+cascivo add owner/repo/dashboard   # install a template (its components + page/fixture files)
+cascivo view owner/repo/dashboard  # preview an item (or template) before installing
+cascivo list                       # list available components
+cascivo update                     # pull newer versions of copied components
+cascivo audit --ai                 # flag hard-coded values, invented props, missing wiring
+cascivo build                      # build a registry from your own components
 ```
+
+A **template** is a registry item (`type: "template"`) that bundles a working page with the components it composes (in `registryDependencies`) and its own page/fixture files (each with a `target`). `cascivo add` installs the component closure into your components directory and writes the template's files to their targets; `create --template` does the same into a freshly scaffolded app.
 
 ## How it works
 

@@ -23,8 +23,9 @@ Usage: cascivo <command> [options]
 
 Commands:
   create [name]            Scaffold a new ready-to-run app (shell + nav + theme)
+                           (--template <spec>: start from a marketplace template)
   init                     Set up cascivo in the current project
-  add <component...>       Add one or more components to your project
+  add <component...>       Add components or a template to your project
   list [--installed]       List available components
   update [component]       Update installed components (--check: list outdated)
   search <query>           Search components across registries
