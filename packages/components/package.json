@@ -55,6 +55,7 @@
     "./label": "./src/label/label.tsx",
     "./link": "./src/link/link.tsx",
     "./list": "./src/list/list.tsx",
+    "./log-viewer": "./src/log-viewer/log-viewer.tsx",
     "./menu": "./src/menu/menu.tsx",
     "./menu-button": "./src/menu-button/menu-button.tsx",
     "./menubar": "./src/menubar/menubar.tsx",

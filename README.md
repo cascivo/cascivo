@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-190-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-191-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -278,10 +278,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**190 components** — display 56 · inputs 40 · layout 27 · chart 25 · navigation 18 · overlay 16 · feedback 8.
+**191 components** — display 57 · inputs 40 · layout 27 · chart 25 · navigation 18 · overlay 16 · feedback 8.
 
 <details>
-<summary>Browse all 190 components</summary>
+<summary>Browse all 191 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -345,6 +345,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | label                      | inputs     | Accessible caption for a form control                                                                                                                                                                           |
 | link                       | navigation | Styled anchor for navigation, standalone or inline within prose                                                                                                                                                 |
 | list                       | display    | Styled unordered or ordered list with ListItem                                                                                                                                                                  |
+| log-viewer                 | display    | Virtualized monospace console for high-frequency log and stream output                                                                                                                                          |
 | menu                       | overlay    | Dropdown menu with keyboard navigation, built on usePopover                                                                                                                                                     |
 | menu-button                | navigation | A button that opens an anchored action menu of one-shot commands                                                                                                                                                |
 | menubar                    | navigation | Horizontal application menu bar with keyboard-navigable dropdown menus                                                                                                                                          |

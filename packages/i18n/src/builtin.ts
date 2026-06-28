@@ -257,6 +257,17 @@ export const builtin = {
     restart: 'Restart',
     step: 'Step {current} of {total}',
   }),
+  logViewer: defineMessages('cascade.logViewer', {
+    label: 'Log output',
+    search: 'Search log',
+    follow: 'Following',
+    paused: 'Jump to latest',
+    copy: 'Copy',
+    copied: 'Copied',
+    empty: 'No log output',
+    matches: '{count} matches',
+    lines: '{count} lines',
+  }),
   editor: defineMessages('cascade.editor', {
     label: 'Code editor',
     code: 'Code',
@@ -528,6 +539,17 @@ defineCatalog(builtin.flow, 'de', {
   previous: 'Vorheriger Schritt',
   restart: 'Neu starten',
   step: 'Schritt {current} von {total}',
+})
+defineCatalog(builtin.logViewer, 'de', {
+  label: 'Protokollausgabe',
+  search: 'Protokoll durchsuchen',
+  follow: 'Folgt',
+  paused: 'Zum Neuesten springen',
+  copy: 'Kopieren',
+  copied: 'Kopiert',
+  empty: 'Keine Protokollausgabe',
+  matches: '{count} Treffer',
+  lines: '{count} Zeilen',
 })
 defineCatalog(builtin.editor, 'de', {
   label: 'Code-Editor',

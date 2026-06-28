@@ -2525,6 +2525,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "log-viewer",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "log-viewer/log-viewer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "log-viewer/log-viewer.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Virtualized monospace console for high-frequency log and stream output",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "menu",
       "type": "registry:component",
       "files": [

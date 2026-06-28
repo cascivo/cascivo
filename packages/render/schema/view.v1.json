@@ -184,6 +184,7 @@
             "LineChart",
             "Link",
             "List",
+            "LogViewer",
             "LoginPage",
             "Masonry",
             "MediaMasonry",
@@ -2296,6 +2297,48 @@
                     "enum": ["disc", "decimal", "none"]
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "LogViewer"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "rowHeight": {
+                    "type": "number"
+                  },
+                  "overscan": {
+                    "type": "number"
+                  },
+                  "follow": {
+                    "type": "boolean"
+                  },
+                  "ansi": {
+                    "type": "boolean"
+                  },
+                  "search": {
+                    "type": "string"
+                  },
+                  "maxHeight": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["LogViewerLabels"]
+                  }
+                },
+                "required": ["lines"]
               }
             }
           }
