@@ -1,11 +1,15 @@
 # cascivo — Roadmap v54: Editor — Slash Commands (Trigger · Caret Positioning · Command Menu)
 
 **Last updated:** 2026-06-28
-**Status:** 🟡 Planned (not Shipped) — produced by a study of `@cascivo/editor` against the slash-command/typeahead
-patterns in CodeMirror, Monaco, ProseMirror/TipTap, Lexical, and the plain-`<textarea>` libraries. The task was to
-**research feasibility and plan the gaps, not implement.** The tranche docs (T1–T5) carry the task-by-task steps for
-when implementation begins. Verification figures (0 caret-to-pixel / trigger / slash-menu hits) are point-in-time
-reads of the branch at 2026-06-28 and should be re-confirmed at implementation start.
+**Status:** ✅ Shipped — T1–T5 implemented on the existing monospace `<textarea>` (no contenteditable rewrite, no
+runtime dependency): a pure caret-coordinate primitive (`caret.ts`), reactive `/`-trigger detection
+(`slash-trigger.ts`), a caret-anchored `role="listbox"` menu (`slash-menu.tsx`) bridged to `@cascivo/core`'s
+`useAnchorPosition`, conditional Arrow/Enter/Tab/Escape navigation reusing the find-panel-while-open keymap pattern,
+undoable insertion via `applyEdit`, and a public `commands` prop + `SlashCommand` type + `openCommandMenu()` handle.
+Signals only (no banned hooks); 139 editor tests pass; `pnpm ready` + `breakpoint:check` green. Shipped in PR #106.
+See the implementation log at the end. The roadmap below was produced by a prior study of `@cascivo/editor` against the
+slash-command/typeahead patterns in CodeMirror, Monaco, ProseMirror/TipTap, Lexical, and the plain-`<textarea>`
+libraries.
 **Plan documents:** `docs/superpowers/plans/2026-06-28-v54-master-plan.md` + tranches 1–5
 **Builds on:** the existing editor — the `CodeEditor` surface (`packages/editor/src/editor/code-editor/code-editor.tsx`),
 its keymap seam (`code-editor/keymap.ts`), the `FindPanel` overlay (`code-editor/find-panel.tsx` +
@@ -158,13 +162,54 @@ are independent and can land in parallel; T3 depends on T1; T4 depends on T2+T3;
 
 ## Notes
 
-- This roadmap is **Planned, not Shipped** — per the task that produced it (study slash-command feasibility for
-  `@cascivo/editor`, plan the gaps, do not implement). The tranche docs carry the task-by-task steps.
+- This roadmap began as a feasibility study (plan the gaps, do not implement) and is now **Shipped** — the tranche
+  docs carry the task-by-task steps that were followed.
 - The earlier feasibility analysis estimated **~2–3 days** for a solid v1, with the caret primitive (T1) and the menu
   UI/positioning (T3) as the bulk of the work and the rest reusing existing seams.
 - A subtle correctness note carried into T2: the `/` keystroke **must type into the textarea normally** and be detected
   *reactively after input* — it must **not** be bound as a keymap command that `preventDefault`s, or the slash never
   reaches the document. (An early sketch got this wrong; the tranche pins it.)
 - The verification figures (0 caret-to-pixel / trigger / slash-menu hits; the `findOpen`-while-open keyboard precedent;
-  the monospace + `lineHeight` + `offsetToLineCol` foundation) are point-in-time reads of the branch at 2026-06-28 and
-  should be re-confirmed at implementation start.
+  the monospace + `lineHeight` + `offsetToLineCol` foundation) were point-in-time reads of the branch at 2026-06-28 and
+  were re-confirmed at implementation start.
+
+---
+
+## Implementation log (2026-06-28)
+
+Shipped in one commit on `claude/slash-commands-research-dne00l` (PR #106); `pnpm ready` green (regen + format + build +
+type-check + 139 editor tests) and `pnpm breakpoint:check` clean. **No runtime dependency added**; **signals only** (a
+banned-hooks scan covers the new files).
+
+- **T1 — caret coordinate primitive.** `code-editor/caret.ts`: a pure `caretCoords(text, offset, metrics)` (monospace
+  `visualCol × charWidth` with tab-stop expansion, `line × lineHeight`, minus scroll), a `.pre` DOM-`Range` path
+  (`caretRectFromPre`) for tab/soft-wrap fidelity, and a one-time `measureCharWidth` probe. 7 unit tests. **Closes S-1/S-7/S-9.**
+- **T2 — trigger detection + menu state.** `code-editor/slash-trigger.ts`: pure `detectTrigger` (word-boundary `/`,
+  whitespace-free query, backward scan stopping at the first whitespace/`/`) + `filterCommands`; wired into the component
+  as `slashOpen`/`slashStart`/`slashQuery`/`slashIndex` signals updated by a `useSignalEffect` on `caretOffset`+`text`.
+  The `/` types normally and is detected after input — never a keymap binding. 11 unit tests. **Closes S-2.**
+- **T3 — caret-anchored command menu.** `code-editor/slash-menu.tsx` + `.module.css`: a themed `role="listbox"` mirroring
+  `FindPanel`, positioned at a 0×0 caret-proxy (set to the T1 coords) bridged to `@cascivo/core`'s `useAnchorPosition`
+  (`bottom-start`); ≥44px coarse targets. 3 component tests. **Closes S-3/S-6.**
+- **T4 — keyboard nav + undoable insertion.** An `if (slashOpen.value)` keymap block (Arrow/Enter/Tab/Escape) added
+  after the editable bindings so it overrides `Tab`/`Enter` while open — the same conditional-binding shape used for
+  `Escape` when `findOpen`; `selectCommand` replaces the `/query` span via `applyEdit` (one undoable step) or runs
+  `cmd.run(handle)`; `aria-expanded`/`aria-controls`/`aria-activedescendant` on the textarea; an Escape-dismissal guard
+  (`slashDismissed`) so a dismissed trigger does not reactively reopen. 7 integration tests. **Closes S-4/S-5.**
+- **T5 — public API, registry, i18n & docs.** A `commands?: SlashCommand[]` prop + the `SlashCommand` type +
+  `openCommandMenu()` handle (exported from `index.ts`); `builtin.editor` menu strings (en + de); meta prop + example;
+  a Storybook `SlashCommands` story; an `apps/site` EditorPage demo (+ the Preact `editor.d.ts` shim extended with
+  `SlashCommand`/`commands`); regenerated registry/llms/context. **Closes S-8.**
+
+### Notes from implementation (beyond the plan)
+
+- **Stale-caret re-trigger.** An inserted snippet can itself contain `/` (e.g. `// TODO:`); a stale `caretOffset` would
+  mis-read it as a new trigger. Fixed by syncing `caretOffset`/`selRef` after every programmatic slash edit
+  (`selectCommand`, `openCommandMenu`) so detection sees the real post-insert caret.
+- **`charWidth` is a signal, not a ref** — removing the only `useRef`-as-state gray area; refs are DOM-only.
+- **apps/site shim.** The docs app types `@cascivo/editor` through a hand-written Preact shim
+  (`apps/site/src/shims/editor.d.ts`); it was extended with `SlashCommand`, `CodeEditorHandle`, and the `commands` prop.
+- **Anchored-menu mount visibility.** In the `useAnchorPosition` JS fallback (Firefox/Safari/jsdom; Chrome uses the CSS
+  anchor path), a freshly-mounted floating element is `visibility:hidden` until first positioned — a known, accepted
+  trait shared with `menu-button`/`popover`; the integration tests query the listbox with `{ hidden: true }` per the
+  established convention.
