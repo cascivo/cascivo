@@ -273,6 +273,8 @@ export const builtin = {
     toggleReplace: 'Toggle replace',
     noMatches: 'No results',
     findCount: '{current} of {total}',
+    commandMenu: 'Command menu',
+    commandMenuEmpty: 'No commands',
   }),
 }
 
@@ -543,4 +545,6 @@ defineCatalog(builtin.editor, 'de', {
   toggleReplace: 'Ersetzen umschalten',
   noMatches: 'Keine Treffer',
   findCount: '{current} von {total}',
+  commandMenu: 'Befehlsmenü',
+  commandMenuEmpty: 'Keine Befehle',
 })

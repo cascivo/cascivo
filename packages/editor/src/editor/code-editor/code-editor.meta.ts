@@ -98,10 +98,17 @@ export const meta: ComponentMeta = {
       description: 'Extra offset-range → CSS class decorations',
     },
     {
+      name: 'commands',
+      type: 'SlashCommand[]',
+      required: false,
+      description: 'Slash-command entries; typing "/" opens a filtered menu. Omit to disable.',
+    },
+    {
       name: 'ref',
       type: 'Ref<CodeEditorHandle>',
       required: false,
-      description: 'Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind',
+      description:
+        'Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu',
     },
     { name: 'className', type: 'string', required: false },
   ],
@@ -128,6 +135,8 @@ export const meta: ComponentMeta = {
       'Mod+F (find)',
       'Mod+Alt+F (replace)',
       'Mod+S (save)',
+      '/ (open slash-command menu when commands are provided)',
+      'Up/Down + Enter/Tab (navigate + insert a command), Escape (dismiss)',
       'Standard textarea editing',
     ],
     reducedMotion: true,
@@ -154,6 +163,17 @@ import '@cascivo/editor/styles.css'
   onSave={save} // Mod-S
   bracketMatching
 /> // Mod-F to search`,
+    },
+    {
+      title: 'Slash commands',
+      description: 'Type "/" to open a filtered command menu; arrows + Enter insert.',
+      code: `const commands = [
+  { id: 'fence', label: 'Code block', keywords: ['code'], insert: '\\u0060\\u0060\\u0060\\n\\n\\u0060\\u0060\\u0060' },
+  { id: 'todo', label: 'TODO', insert: '// TODO: ' },
+  { id: 'date', label: 'Date', run: (e) => e.applyEdit(e.getSelection(), new Date().toISOString()) },
+]
+
+<CodeEditor language="markdown" commands={commands} />`,
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],

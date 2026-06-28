@@ -4,6 +4,7 @@ import {
   type CodeEditorHandle,
   type Decoration,
   type EditorTheme,
+  type SlashCommand,
 } from '@cascivo/editor'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useRef } from 'react'
@@ -302,6 +303,31 @@ export const Decorations: Story = {
   ),
   parameters: {
     docs: { description: { story: 'A `decorations` provider highlighting every TODO.' } },
+  },
+}
+
+const slashCommands: SlashCommand[] = [
+  { id: 'fence', label: 'Code block', hint: '```', keywords: ['code'], insert: '```\n\n```' },
+  { id: 'todo', label: 'TODO comment', keywords: ['task'], insert: '// TODO: ' },
+  { id: 'divider', label: 'Divider', keywords: ['hr', 'rule'], insert: '---\n' },
+  { id: 'date', label: 'Insert date', keywords: ['now', 'time'], insert: '2026-06-28' },
+  { id: 'focus', label: 'Refocus editor', hint: 'action', run: (editor) => editor.focus() },
+]
+
+export const SlashCommands: Story = {
+  args: { language: 'markdown', defaultValue: 'Type "/" on a new line…\n\n' },
+  render: (args) => (
+    <div style={{ inlineSize: '40rem', blockSize: '16rem' }}>
+      <CodeEditor {...args} commands={slashCommands} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Type **/** at a word boundary to open a filtered command menu. **Up/Down** + **Enter/Tab** insert; **Escape** dismisses. An entry can `insert` text or `run` an action.',
+      },
+    },
   },
 }
 

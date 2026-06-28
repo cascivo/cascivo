@@ -26,6 +26,7 @@ export type {
   CodeEditorProps,
   CodeEditorHandle,
   EditorTheme,
+  SlashCommand,
 } from './editor/code-editor/code-editor.tsx'
 export { Highlight } from './editor/highlight/highlight.tsx'
 export type { HighlightProps } from './editor/highlight/highlight.tsx'

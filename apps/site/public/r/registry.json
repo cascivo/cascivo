@@ -9025,10 +9025,16 @@
             "description": "Extra offset-range → CSS class decorations"
           },
           {
+            "name": "commands",
+            "type": "SlashCommand[]",
+            "required": false,
+            "description": "Slash-command entries; typing \"/\" opens a filtered menu. Omit to disable."
+          },
+          {
             "name": "ref",
             "type": "Ref<CodeEditorHandle>",
             "required": false,
-            "description": "Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind"
+            "description": "Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu"
           },
           {
             "name": "className",
@@ -9059,6 +9065,8 @@
             "Mod+F (find)",
             "Mod+Alt+F (replace)",
             "Mod+S (save)",
+            "/ (open slash-command menu when commands are provided)",
+            "Up/Down + Enter/Tab (navigate + insert a command), Escape (dismiss)",
             "Standard textarea editing"
           ],
           "reducedMotion": true,
