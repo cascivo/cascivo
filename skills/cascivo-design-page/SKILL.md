@@ -11,6 +11,18 @@ The user describes a page in plain English (e.g. "a dashboard with a sidebar nav
 
 ## Procedure
 
+### 0. Check the marketplace for a matching template first
+
+Before scaffolding from scratch, see if a published **template** already covers the request — a template is a
+whole-page composition (page + components + fixtures) the user installs and adapts, which is faster and higher-quality
+than generating from zero.
+
+- Call the `list_templates` MCP tool (optionally filtered by `category`/`framework`), or browse `/docs/marketplace`.
+- If a template clearly matches (e.g. the user asks for a dashboard and a `dashboard` template exists), call
+  `get_template` to inspect its components + demo, then install it with `add_template` (or
+  `npx cascivo add <installSpec>`), and help the user adapt the owned source.
+- If nothing matches, continue with the from-scratch scaffold below.
+
 ### 1. Read available components and examples
 
 Before generating anything, read the registry and llms.txt at runtime:

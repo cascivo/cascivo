@@ -33,6 +33,7 @@ import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
 import { LayoutsPage } from './pages/LayoutsPage'
 import { DirectoryPage } from './pages/DirectoryPage'
+import { MarketplacePage } from './pages/MarketplacePage'
 import { ContextExplorerPage } from './pages/ContextExplorerPage'
 import { TokensPage } from './pages/TokensPage'
 import { IconsPage } from './pages/IconsPage'
@@ -56,6 +57,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs/benchmarks': Benchmarks,
   '/docs/layouts': LayoutsPage,
   '/docs/directory': DirectoryPage,
+  '/docs/marketplace': MarketplacePage,
   '/docs/context': ContextExplorerPage,
   '/docs/tokens': TokensPage,
   '/docs/icons': IconsPage,
@@ -81,6 +83,7 @@ const exploreItems = [
   { label: 'Editor', href: '/docs/editor', icon: <Edit size={16} /> },
   { label: 'Flow', href: '/docs/flow', icon: <Grid size={16} /> },
   { label: 'Directory', href: '/docs/directory', icon: <Grid size={16} /> },
+  { label: 'Marketplace', href: '/docs/marketplace', icon: <Grid size={16} /> },
   { label: 'Layouts', href: '/docs/layouts', icon: <Grid size={16} /> },
   { label: 'Playground', href: '/docs/playground', icon: <Terminal size={16} /> },
 ]

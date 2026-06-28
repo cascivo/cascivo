@@ -46,6 +46,7 @@ describe('projectTemplate', () => {
       framework: 'react-vite',
       verified: true,
       demoUrl: 'https://example.com/demo/dashboard',
+      components: ['card'],
     })
   })
 

@@ -9,6 +9,8 @@ export interface MarketplaceTemplate {
   category: string
   framework: string
   tags: string[]
+  /** Component names the template composes (from `registryDependencies`). */
+  components: string[]
   screenshots: TemplateScreenshot[]
   demoUrl?: string
   version: string
@@ -56,6 +58,7 @@ export function projectTemplate(
     category: meta.category,
     framework: meta.framework,
     tags: item.tags ?? [],
+    components: item.registryDependencies ?? [],
     screenshots: meta.screenshots,
     version: item.version,
     license: item.license ?? '',

@@ -23,6 +23,7 @@ import { loadVariantMatrix } from './variants.js'
 import { validateComponentSource } from './validate-component.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
 import { selectComponent } from './select.js'
+import { loadCatalog, listTemplates, getTemplate } from './templates.js'
 
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -173,6 +174,75 @@ export function createServer(options: ServerOptions = {}): McpServer {
         return error(result.stderr || result.error?.message || `Failed to add "${name}".`)
       }
       return text(result.stdout || `Added ${name}.`)
+    },
+  )
+
+  server.registerTool(
+    'list_templates',
+    {
+      title: 'List templates',
+      description:
+        'List marketplace templates (whole-page compositions) from the static catalog, optionally filtered by category, tag, framework, or verified status.',
+      inputSchema: {
+        category: z.string().optional().describe('Filter by category, e.g. "dashboard"'),
+        tag: z.string().optional().describe('Filter by tag'),
+        framework: z
+          .enum(['react-vite', 'react-next'])
+          .optional()
+          .describe('Filter by target framework'),
+        verifiedOnly: z.boolean().optional().describe('Only verified templates'),
+      },
+    },
+    ({ category, tag, framework, verifiedOnly }) => {
+      const catalog = loadCatalog()
+      const filter: Parameters<typeof listTemplates>[1] = {}
+      if (category) filter.category = category
+      if (tag) filter.tag = tag
+      if (framework) filter.framework = framework
+      if (verifiedOnly) filter.verifiedOnly = verifiedOnly
+      return json(listTemplates(catalog, filter))
+    },
+  )
+
+  server.registerTool(
+    'get_template',
+    {
+      title: 'Get template',
+      description:
+        'Get one marketplace template by name or install spec — its components, install command, demo link, and screenshots.',
+      inputSchema: {
+        name: z.string().describe('Template name or install spec, e.g. "@cascivo/dashboard"'),
+      },
+    },
+    ({ name }) => {
+      const tpl = getTemplate(loadCatalog(), name)
+      if (!tpl) return error(`Template "${name}" not found in the marketplace catalog.`)
+      return json(tpl)
+    },
+  )
+
+  server.registerTool(
+    'add_template',
+    {
+      title: 'Add template',
+      description:
+        'Install a marketplace template (its components + page/fixture files) into the current project by running the cascade CLI.',
+      inputSchema: {
+        name: z.string().describe('Template name or install spec, e.g. "@cascivo/dashboard"'),
+        cwd: z.string().optional().describe('Project directory (default: current directory)'),
+      },
+    },
+    ({ name, cwd }) => {
+      const tpl = getTemplate(loadCatalog(), name)
+      const spec = tpl?.installSpec ?? name
+      const result = spawnSync('npx', ['-y', 'cascivo', 'add', spec], {
+        encoding: 'utf8',
+        ...(cwd ? { cwd } : {}),
+      })
+      if (result.status !== 0) {
+        return error(result.stderr || result.error?.message || `Failed to add template "${spec}".`)
+      }
+      return text(result.stdout || `Added template ${spec}.`)
     },
   )
 
