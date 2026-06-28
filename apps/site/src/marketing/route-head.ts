@@ -32,6 +32,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'cascivo performance: signal-driven fine-grained updates, per-component CSS, and measured benchmarks against popular React UI libraries — fewer re-renders, smaller bundles.',
   },
+  '/charts': {
+    title: 'Charts — cascivo',
+    description:
+      '18 chart types built from scratch in @cascivo/charts: line, area, bar, pie, scatter, bubble, combo, radar, heatmap, treemap, histogram, boxplot, sparkline, KPI, meter, bullet, radial-bar and funnel. Annotations, value labels, percent stacking, and click-to-drill — keyboard-navigable, theme-aware, and CVD-safe with zero runtime dependencies.',
+    ogTitle: 'cascivo charts — 18 types, CVD-safe, keyboard-first',
+  },
   '/guides': {
     title: 'Guides — cascivo',
     description:
@@ -126,6 +132,7 @@ export const PRERENDER_ROUTES = [
   'examples/track',
   'examples/pulse',
   'ai',
+  'charts',
   'create',
   'blocks',
 ] as const

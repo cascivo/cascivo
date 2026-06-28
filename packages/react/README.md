@@ -150,7 +150,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-181 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+190 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -342,16 +342,25 @@ routing break after adding one of these, check that the import resolves to
 - **Boxplot** — Box-and-whisker plot with five-number summary and outlier dots per series.
 - **BubbleChart** — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
 - **Bullet** — Bullet chart with background range bands, measure bar, and target tick.
+- **Calendar** — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
+- **Candlestick** — OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.
 - **ComboChart** — Combination bar + line chart on shared or dual y-axes.
+- **Funnel** — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.
+- **Gauge** — A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.
 - **Heatmap** — Two-dimensional heatmap with band scales and color-mix cell interpolation.
 - **Histogram** — Frequency histogram using Freedman–Diaconis binning with hover tooltips.
 - **Kpi** — KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
 - **LineChart** — Time-series or numeric line chart with multi-series support, hover tooltip, and legend.
 - **Meter** — Progress meter in bar or gauge variant with threshold coloring.
 - **PieChart** — Pie or donut chart with hover segments and optional legend.
+- **Polar** — A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.
 - **Radar** — Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
+- **RadialBar** — Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.
+- **Sankey** — Flow diagram — ranked nodes connected by throughput-sized link ribbons.
 - **ScatterChart** — Scatter plot with variable point radius, multi-series, and hover tooltip.
 - **Sparkline** — Compact inline sparkline for embedding trend data in dashboards or KPI cards.
+- **Stream** — Streamgraph — stacked areas on a centered (silhouette) flowing baseline.
+- **Sunburst** — Radial hierarchy — concentric rings where each node is an annular segment sized by value.
 - **Treemap** — Squarified treemap for visualizing part-to-whole hierarchical data.
 
 <!-- COMPONENT_INDEX:END -->

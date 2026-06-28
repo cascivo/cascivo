@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-181-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-190-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-14-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -267,10 +267,10 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**181 components** — display 56 · inputs 40 · layout 27 · navigation 18 · overlay 16 · chart 16 · feedback 8.
+**190 components** — display 56 · inputs 40 · layout 27 · chart 25 · navigation 18 · overlay 16 · feedback 8.
 
 <details>
-<summary>Browse all 181 components</summary>
+<summary>Browse all 190 components</summary>
 
 | Name                       | Category   | Description                                                                                                                                                                                                     |
 | -------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -427,16 +427,25 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | chart/boxplot              | chart      | Box-and-whisker plot with five-number summary and outlier dots per series.                                                                                                                                      |
 | chart/bubble-chart         | chart      | Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.                                                                                                                     |
 | chart/bullet               | chart      | Bullet chart with background range bands, measure bar, and target tick.                                                                                                                                         |
+| chart/calendar             | chart      | Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).                                                                                                                             |
+| chart/candlestick          | chart      | OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.                                                                                                                    |
 | chart/combo-chart          | chart      | Combination bar + line chart on shared or dual y-axes.                                                                                                                                                          |
+| chart/funnel               | chart      | Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.                                                                                              |
+| chart/gauge                | chart      | A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.                                                                                                               |
 | chart/heatmap              | chart      | Two-dimensional heatmap with band scales and color-mix cell interpolation.                                                                                                                                      |
 | chart/histogram            | chart      | Frequency histogram using Freedman–Diaconis binning with hover tooltips.                                                                                                                                        |
 | chart/kpi                  | chart      | KPI card showing a primary metric with optional delta indicator, icon, and sparkline.                                                                                                                           |
 | chart/line-chart           | chart      | Time-series or numeric line chart with multi-series support, hover tooltip, and legend.                                                                                                                         |
 | chart/meter                | chart      | Progress meter in bar or gauge variant with threshold coloring.                                                                                                                                                 |
 | chart/pie-chart            | chart      | Pie or donut chart with hover segments and optional legend.                                                                                                                                                     |
+| chart/polar                | chart      | A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.                                                                                                   |
 | chart/radar                | chart      | Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.                                                                                                                          |
+| chart/radial-bar           | chart      | Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.                                                                                               |
+| chart/sankey               | chart      | Flow diagram — ranked nodes connected by throughput-sized link ribbons.                                                                                                                                         |
 | chart/scatter-chart        | chart      | Scatter plot with variable point radius, multi-series, and hover tooltip.                                                                                                                                       |
 | chart/sparkline            | chart      | Compact inline sparkline for embedding trend data in dashboards or KPI cards.                                                                                                                                   |
+| chart/stream               | chart      | Streamgraph — stacked areas on a centered (silhouette) flowing baseline.                                                                                                                                        |
+| chart/sunburst             | chart      | Radial hierarchy — concentric rings where each node is an annular segment sized by value.                                                                                                                       |
 | chart/treemap              | chart      | Squarified treemap for visualizing part-to-whole hierarchical data.                                                                                                                                             |
 | editor/code-editor         | inputs     | Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.                                                                                           |
 | editor/highlight           | display    | Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.                                                                                                         |

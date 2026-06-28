@@ -37,6 +37,48 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'annotations',
+      type: 'Annotation[]',
+      required: false,
+      description:
+        'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
+    },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
+    {
+      name: 'glyph',
+      type: 'GlyphShape | ((d, seriesId) => GlyphShape)',
+      required: false,
+      description:
+        'Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.',
+    },
+    {
+      name: 'renderer',
+      type: "'svg' | 'canvas' | 'auto'",
+      required: false,
+      default: 'svg',
+      description:
+        'Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.',
+    },
+    {
+      name: 'visualMap',
+      type: 'VisualMapOptions',
+      required: false,
+      description:
+        'Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.',
+    },
+    {
+      name: 'toolbox',
+      type: 'boolean | ToolboxOptions',
+      required: false,
+      description:
+        'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

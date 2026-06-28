@@ -6,7 +6,7 @@ export const meta: ComponentMeta = {
     'Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.',
   category: 'chart',
   states: [],
-  variants: ['grouped', 'stacked'],
+  variants: ['grouped', 'stacked', 'percent'],
   sizes: [],
   props: [
     {
@@ -26,7 +26,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'vertical',
     },
-    { name: 'mode', type: "'grouped' | 'stacked'", required: false, default: 'grouped' },
+    {
+      name: 'mode',
+      type: "'grouped' | 'stacked' | 'percent'",
+      required: false,
+      default: 'grouped',
+      description: "'percent' stacks each category and normalizes it to 100%.",
+    },
     { name: 'width', type: 'number', required: false },
     { name: 'height', type: 'number', required: false, default: '300' },
     { name: 'xTicks', type: 'number', required: false },
@@ -53,6 +59,39 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
+    },
+    {
+      name: 'annotations',
+      type: 'Annotation[]',
+      required: false,
+      description:
+        'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
+    },
+    {
+      name: 'labels',
+      type: 'boolean | { format?: (v: number) => string; position?: string }',
+      required: false,
+      description:
+        'Print each value as a label on the mark (collision-aware, decorative/aria-hidden).',
+    },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
+    {
+      name: 'fill',
+      type: "'solid' | 'gradient' | 'pattern'",
+      required: false,
+      default: 'solid',
+      description: 'Bar fill style — solid, a gradient, or a pattern.',
+    },
+    {
+      name: 'patternKind',
+      type: "'dots' | 'lines' | 'cross'",
+      required: false,
+      description: 'Pattern motif when fill="pattern".',
     },
   ],
   typeDefs: [

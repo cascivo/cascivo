@@ -79,6 +79,19 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'labels',
+      type: 'boolean | { format?: (v: number) => string; position?: string }',
+      required: false,
+      description:
+        'Print each value as a label on the mark (collision-aware, decorative/aria-hidden).',
+    },
+    {
+      name: 'onSelect',
+      type: '(point: ChartPoint) => void',
+      required: false,
+      description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
+    },
   ],
   typeDefs: [
     {

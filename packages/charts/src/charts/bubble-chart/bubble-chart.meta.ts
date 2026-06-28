@@ -32,6 +32,13 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'glyph',
+      type: 'GlyphShape | ((d, seriesId) => GlyphShape)',
+      required: false,
+      description:
+        'Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.',
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

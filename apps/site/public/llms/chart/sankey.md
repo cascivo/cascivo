@@ -1,0 +1,78 @@
+# Sankey
+
+Flow diagram — ranked nodes connected by throughput-sized link ribbons.
+
+## Install
+
+Charts ship in the `@cascivo/charts` package:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import { Sankey } from '@cascivo/charts'
+```
+
+## Category
+
+`chart`
+
+## Props
+
+| Prop          | Type           | Required | Default | Description                       |
+| ------------- | -------------- | -------- | ------- | --------------------------------- |
+| `nodes`       | `SankeyNode[]` | yes      | —       | Nodes: { id, label, color? }.     |
+| `links`       | `SankeyLink[]` | yes      | —       | Links: { source, target, value }. |
+| `title`       | `string`       | yes      | —       | —                                 |
+| `description` | `string`       | no       | —       | —                                 |
+| `width`       | `number`       | no       | —       | —                                 |
+| `height`      | `number`       | no       | `320`   | —                                 |
+| `tooltip`     | `boolean`      | no       | —       | —                                 |
+| `className`   | `string`       | no       | —       | —                                 |
+| `plain`       | `boolean`      | no       | `false` | —                                 |
+
+## Examples
+
+### Sankey flow
+
+```tsx
+import { Sankey } from '@cascivo/charts'
+;<Sankey
+  title="Traffic flow"
+  nodes={[
+    { id: 'a', label: 'Search' },
+    { id: 'b', label: 'Home' },
+    { id: 'c', label: 'Signup' },
+  ]}
+  links={[
+    { source: 'a', target: 'b', value: 30 },
+    { source: 'b', target: 'c', value: 12 },
+  ]}
+/>
+```
+
+## Design tokens
+
+- `--cascivo-chart-1`
+- `--cascivo-chart-2`
+- `--cascivo-chart-3`
+- `--cascivo-chart-4`
+- `--cascivo-chart-5`
+- `--cascivo-chart-6`
+- `--cascivo-chart-7`
+- `--cascivo-chart-8`
+
+## Accessibility
+
+- **WCAG level:** 2.1-AA
+- **ARIA role:** `img`
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate nodes), Escape (clear focus)
+
+## Dependencies
+
+- `@cascivo/charts`
+
+## Tags
+
+chart, sankey, flow, network, data-viz

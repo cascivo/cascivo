@@ -53,6 +53,7 @@ const ShowcasePage = lazy(() =>
   import('./pages/ShowcasePage').then((m) => ({ default: m.ShowcasePage })),
 )
 const AiPage = lazy(() => import('./pages/AiPage').then((m) => ({ default: m.AiPage })))
+const ChartsPage = lazy(() => import('./pages/ChartsPage').then((m) => ({ default: m.ChartsPage })))
 const ExampleDetailPage = lazy(() =>
   import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
 )
@@ -136,6 +137,7 @@ const ROUTES: Record<string, Route> = {
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
   '/showcase': { Page: ShowcasePage, title: ROUTE_HEAD['/showcase']?.title ?? 'cascivo' },
   '/ai': { Page: AiPage, title: ROUTE_HEAD['/ai']?.title ?? 'cascivo' },
+  '/charts': { Page: ChartsPage, title: ROUTE_HEAD['/charts']?.title ?? 'cascivo' },
   '/og': { Page: OgCard, title: 'cascivo' },
   '/create': {
     Page: CreatePage,

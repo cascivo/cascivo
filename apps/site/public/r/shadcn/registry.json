@@ -696,10 +696,70 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-calendar",
+      "type": "registry:component",
+      "files": [],
+      "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-candlestick",
+      "type": "registry:component",
+      "files": [],
+      "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-combo-chart",
       "type": "registry:component",
       "files": [],
       "description": "Combination bar + line chart on shared or dual y-axes.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-funnel",
+      "type": "registry:component",
+      "files": [],
+      "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-gauge",
+      "type": "registry:component",
+      "files": [],
+      "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {
@@ -801,10 +861,55 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-polar",
+      "type": "registry:component",
+      "files": [],
+      "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "chart-radar",
       "type": "registry:component",
       "files": [],
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-radial-bar",
+      "type": "registry:component",
+      "files": [],
+      "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-sankey",
+      "type": "registry:component",
+      "files": [],
+      "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {
@@ -835,6 +940,36 @@
       "type": "registry:component",
       "files": [],
       "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-stream",
+      "type": "registry:component",
+      "files": [],
+      "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+      "dependencies": ["@cascivo/charts"],
+      "categories": ["chart"],
+      "meta": {
+        "cascivo": {
+          "type": "chart",
+          "version": "0.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "chart-sunburst",
+      "type": "registry:component",
+      "files": [],
+      "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
       "dependencies": ["@cascivo/charts"],
       "categories": ["chart"],
       "meta": {

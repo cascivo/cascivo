@@ -53,9 +53,23 @@
       },
       {
         "name": "curve",
-        "type": "'linear' | 'monotone'",
+        "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
         "required": false,
-        "default": "monotone"
+        "default": "monotone",
+        "description": "Line/area interpolation curve."
+      },
+      {
+        "name": "fill",
+        "type": "'solid' | 'gradient' | 'pattern'",
+        "required": false,
+        "default": "solid",
+        "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+      },
+      {
+        "name": "patternKind",
+        "type": "'dots' | 'lines' | 'cross'",
+        "required": false,
+        "description": "Pattern motif when fill=\"pattern\"."
       },
       {
         "name": "width",
@@ -102,6 +116,70 @@
         "required": false,
         "default": "false",
         "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+      },
+      {
+        "name": "labels",
+        "type": "boolean | { format?: (v: number) => string; position?: string }",
+        "required": false,
+        "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+      },
+      {
+        "name": "onSelect",
+        "type": "(point: ChartPoint) => void",
+        "required": false,
+        "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+      },
+      {
+        "name": "brush",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Show a keyboard-operable Brush below the plot to subset the series to a window."
+      },
+      {
+        "name": "dataZoom",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Show a DataZoom slider below the plot — a Brush whose body also pans the window."
+      },
+      {
+        "name": "zoom",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes."
+      },
+      {
+        "name": "syncId",
+        "type": "string",
+        "required": false,
+        "description": "Connect this chart to others sharing the same id — they mirror the zoom window and hovered x."
+      },
+      {
+        "name": "tooltipMode",
+        "type": "'item' | 'axis'",
+        "required": false,
+        "default": "item",
+        "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x)."
+      },
+      {
+        "name": "decimate",
+        "type": "boolean | { method?: 'lttb' | 'minmax'; threshold?: number }",
+        "required": false,
+        "description": "Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data."
+      },
+      {
+        "name": "toolbox",
+        "type": "boolean | ToolboxOptions",
+        "required": false,
+        "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
       }
     ],
     "tokens": [

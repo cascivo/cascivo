@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Boxplot } from '@cascivo/charts'
 
 const series = [
-  { id: 'control', label: 'Control', values: [12, 18, 22, 25, 27, 30, 32, 35, 38, 45] },
-  { id: 'treatment', label: 'Treatment', values: [20, 28, 35, 40, 42, 45, 48, 52, 55, 65] },
-  { id: 'placebo', label: 'Placebo', values: [10, 15, 18, 22, 24, 26, 29, 31, 34, 40] },
+  { id: 'a', label: 'Team A', values: [12, 15, 14, 10, 18, 22, 16, 13, 19, 11] },
+  { id: 'b', label: 'Team B', values: [20, 25, 22, 30, 28, 19, 24, 26, 21, 27] },
+  { id: 'c', label: 'Team C', values: [8, 9, 12, 7, 11, 10, 14, 6, 13, 9] },
 ]
 
 const meta: Meta<typeof Boxplot> = {
@@ -22,16 +22,5 @@ const meta: Meta<typeof Boxplot> = {
 export default meta
 type Story = StoryObj<typeof Boxplot>
 
-export const Default: Story = {
-  args: {
-    series,
-    title: 'Clinical trial results',
-  },
-}
-
-export const TwoGroups: Story = {
-  args: {
-    series: [series[0]!, series[1]!],
-    title: 'Control vs treatment',
-  },
-}
+export const Default: Story = { args: { series, title: 'Cycle time by team' } }
+export const Empty: Story = { args: { series: [], title: 'No data yet' } }

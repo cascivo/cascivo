@@ -5,6 +5,10 @@ import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
+import { renderAnnotations, type Annotation } from '../../chrome/reference'
+import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
+import { ChartDefs, fillFor, type FillKind, type PatternKind } from '../../chrome/defs'
+import { useId } from 'react'
 import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -23,7 +27,7 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   title: string
   description?: string
   orientation?: 'vertical' | 'horizontal'
-  mode?: 'grouped' | 'stacked'
+  mode?: 'grouped' | 'stacked' | 'percent'
   width?: number
   height?: number
   xTicks?: number
@@ -37,6 +41,19 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   className?: string
   /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
   plain?: boolean
+  /**
+   * Reference lines, bands, and markers drawn over the plot. Geometric axes: `y` is the
+   * vertical axis (a threshold on a vertical bar chart's value), `x` is horizontal.
+   */
+  annotations?: readonly Annotation[]
+  /** Print each bar's value as a label. `true` for defaults, or tune format/position. */
+  labels?: LabelOptions
+  /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
+  onSelect?: (point: ChartPoint) => void
+  /** Bar fill style: solid (default), a gradient, or a pattern. */
+  fill?: FillKind
+  /** Pattern motif when `fill="pattern"`. */
+  patternKind?: PatternKind
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -68,8 +85,15 @@ export function BarChart<Datum = { x: string; y: number }>({
   tooltipFormat,
   className,
   plain,
+  annotations,
+  labels,
+  onSelect,
+  fill = 'solid',
+  patternKind,
 }: BarChartProps<Datum>) {
   useSignals()
+  const defsId = useId()
+  const resolvedLabels = plain ? null : resolveLabels(labels)
   const hidden = useSignal(new Set<string>())
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
@@ -79,11 +103,31 @@ export function BarChart<Datum = { x: string; y: number }>({
   const allY = series.flatMap((s) => s.data.map((d) => y(d)))
   const hasData = categories.length > 0
 
-  const yMin = mode === 'stacked' ? 0 : Math.min(0, ...allY)
-  const yMaxStacked = hasData
-    ? Math.max(...categories.map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0)))
-    : 1
-  const yMax = mode === 'stacked' ? yMaxStacked : Math.max(1, ...allY)
+  // 'stacked' and 'percent' both stack; 'percent' normalizes each category to 1.
+  const isStackLike = mode === 'stacked' || mode === 'percent'
+  const categoryTotals = categories.map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0))
+
+  /** Stacked [y0, y1] offsets per series/category; normalized to [0,1] in percent mode. */
+  const computeOffsets = (): [number, number][][] => {
+    const raw = stackSeries(series.map((s) => s.data.map((d) => y(d))))
+    if (mode !== 'percent') return raw
+    return raw.map((seriesOffsets) =>
+      seriesOffsets.map(([y0, y1], i) => {
+        const t = categoryTotals[i] || 1
+        return [y0 / t, y1 / t] as [number, number]
+      }),
+    )
+  }
+
+  const yMin = isStackLike ? 0 : Math.min(0, ...allY)
+  const yMaxStacked = hasData ? Math.max(...categoryTotals) : 1
+  const yMax = mode === 'percent' ? 1 : mode === 'stacked' ? yMaxStacked : Math.max(1, ...allY)
+
+  /** Value-axis tick format — percent mode shows 0–100%. */
+  const valFormat =
+    mode === 'percent'
+      ? (v: number | string | Date) => `${Math.round(Number(v) * 100)}%`
+      : undefined
 
   const fallback = (
     <table>
@@ -125,14 +169,13 @@ export function BarChart<Datum = { x: string; y: number }>({
     const visibleSeries = series.filter((s) => !hidden.value.has(s.id))
 
     let stackedOffsets: [number, number][][] = []
-    if (mode === 'stacked') {
-      const values = series.map((s) => s.data.map((d) => y(d)))
-      stackedOffsets = stackSeries(values)
+    if (isStackLike) {
+      stackedOffsets = computeOffsets()
     }
 
     // Stacked default (no custom formatter): attach the per-category breakdown so
     // the tooltip can show "label · total" + each non-zero layer in its color.
-    const useStackedDefault = mode === 'stacked' && !tooltipFormat
+    const useStackedDefault = isStackLike && !tooltipFormat
     const breakdownByCat = categories.map((_, di) => {
       const segs = visibleSeries.map((s) => ({
         label: s.label,
@@ -150,7 +193,7 @@ export function BarChart<Datum = { x: string; y: number }>({
         const catPos = catScale.map(x(d)) ?? 0
         let val: number
         let baseVal: number
-        if (mode === 'stacked' && stackedOffsets[seriesIdx]) {
+        if (isStackLike && stackedOffsets[seriesIdx]) {
           const offset = stackedOffsets[seriesIdx]![di]!
           val = offset[1]
           baseVal = offset[0]
@@ -191,6 +234,7 @@ export function BarChart<Datum = { x: string; y: number }>({
         data-state={hasData ? undefined : 'empty'}
         plain={plain}
         tooltip={tooltip && hasData ? buildTooltip : undefined}
+        onSelect={onSelect}
       >
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
@@ -206,13 +250,23 @@ export function BarChart<Datum = { x: string; y: number }>({
           const visibleSeries = series.filter((s) => !hidden.value.has(s.id))
 
           let stackedOffsets: [number, number][][] = []
-          if (mode === 'stacked') {
-            const values = series.map((s) => s.data.map((d) => y(d)))
-            stackedOffsets = stackSeries(values)
+          if (isStackLike) {
+            stackedOffsets = computeOffsets()
           }
 
           return (
             <g>
+              {fill !== 'solid' && (
+                <ChartDefs
+                  prefix={defsId}
+                  fill={fill}
+                  patternKind={patternKind}
+                  series={series.map((s, si) => ({
+                    id: s.id,
+                    color: s.color ?? COLORS[si % COLORS.length]!,
+                  }))}
+                />
+              )}
               <g transform={`translate(${margins.left},${margins.top})`}>
                 {!plain && isVertical && (
                   <GridLines scale={valScale} orientation="y" length={innerW} tickCount={yTicks} />
@@ -220,6 +274,13 @@ export function BarChart<Datum = { x: string; y: number }>({
                 {!plain && !isVertical && (
                   <GridLines scale={valScale} orientation="x" length={innerH} tickCount={xTicks} />
                 )}
+                {!plain &&
+                  renderAnnotations(annotations, {
+                    xScale: isVertical ? catScale : valScale,
+                    yScale: isVertical ? valScale : catScale,
+                    innerW,
+                    innerH,
+                  })}
                 {visibleSeries.map((s, si) => {
                   const color = s.color ?? COLORS[series.indexOf(s) % COLORS.length]!
                   const seriesIdx = series.indexOf(s)
@@ -232,7 +293,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     const catPos = catScale.map(x(d)) ?? 0
                     let val: number
                     let baseVal: number
-                    if (mode === 'stacked' && stackedOffsets[seriesIdx]) {
+                    if (isStackLike && stackedOffsets[seriesIdx]) {
                       const offset = stackedOffsets[seriesIdx]![di]!
                       val = offset[1]
                       baseVal = offset[0]
@@ -244,33 +305,65 @@ export function BarChart<Datum = { x: string; y: number }>({
                     const valStart = Math.min(valScale.map(val), valScale.map(baseVal))
                     const valLen = Math.abs(valScale.map(val) - valScale.map(baseVal))
 
-                    if (isVertical) {
-                      return (
-                        <rect
-                          key={`${s.id}-${di}`}
-                          x={barStart}
-                          y={valStart}
-                          width={subBandW}
-                          height={valLen}
-                          fill={color}
-                          rx={2}
-                          data-series={s.id}
-                        />
-                      )
-                    } else {
-                      return (
-                        <rect
-                          key={`${s.id}-${di}`}
-                          x={valStart}
-                          y={barStart}
-                          width={valLen}
-                          height={subBandW}
-                          fill={color}
-                          rx={2}
-                          data-series={s.id}
-                        />
-                      )
+                    // Optional value label, collision-aware: above the bar, flipping
+                    // inside when there's no room (short bar or stacked segment).
+                    let label: React.ReactNode = null
+                    if (resolvedLabels) {
+                      const text = resolvedLabels.format(y(d))
+                      const center = barStart + subBandW / 2
+                      const inside = isStackLike || valLen < 18 || valStart < 14
+                      if (isVertical) {
+                        label = (
+                          <DataLabel
+                            x={center}
+                            y={inside ? valStart + 13 : valStart - 4}
+                            text={text}
+                            tone={inside ? 'muted' : 'default'}
+                          />
+                        )
+                      } else {
+                        const end = valStart + valLen
+                        label = (
+                          <DataLabel
+                            x={inside ? end - 4 : end + 4}
+                            y={center + 4}
+                            text={text}
+                            anchor={inside ? 'end' : 'start'}
+                            tone={inside ? 'muted' : 'default'}
+                          />
+                        )
+                      }
+                      // A stacked segment too small to hold a label gets none.
+                      if (isStackLike && valLen < 14) label = null
                     }
+
+                    const rect = isVertical ? (
+                      <rect
+                        x={barStart}
+                        y={valStart}
+                        width={subBandW}
+                        height={valLen}
+                        fill={fillFor(defsId, s.id, fill, color)}
+                        rx={2}
+                        data-series={s.id}
+                      />
+                    ) : (
+                      <rect
+                        x={valStart}
+                        y={barStart}
+                        width={valLen}
+                        height={subBandW}
+                        fill={fillFor(defsId, s.id, fill, color)}
+                        rx={2}
+                        data-series={s.id}
+                      />
+                    )
+                    return (
+                      <g key={`${s.id}-${di}`}>
+                        {rect}
+                        {label}
+                      </g>
+                    )
                   })
                 })}
                 {!plain && isVertical && (
@@ -283,7 +376,13 @@ export function BarChart<Datum = { x: string; y: number }>({
                       labelEvery={xLabelEvery}
                       transform={`translate(0,${innerH})`}
                     />
-                    <Axis scale={valScale} orientation="y" length={innerH} tickCount={yTicks} />
+                    <Axis
+                      scale={valScale}
+                      orientation="y"
+                      length={innerH}
+                      tickCount={yTicks}
+                      {...(valFormat && { format: valFormat })}
+                    />
                   </>
                 )}
                 {!plain && !isVertical && (
@@ -293,6 +392,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       orientation="x"
                       length={innerW}
                       tickCount={xTicks}
+                      {...(valFormat && { format: valFormat })}
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis

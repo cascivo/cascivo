@@ -1,8 +1,10 @@
 'use client'
-import { useSignals } from '@cascivo/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import { PLAIN_MARGINS } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
+import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
+import type { ToolboxOptions } from '../../chrome/toolbox'
 import { bandScale } from '../../engine/scale'
 import { extent } from '../../engine/stats'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -22,6 +24,10 @@ export interface HeatmapProps {
   className?: string
   /** Render only the marks — no axes. For micro/inline charts. */
   plain?: boolean
+  /** Map cell value → CVD-safe colour via a continuous/piecewise legend that filters the range. */
+  visualMap?: VisualMapOptions
+  /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
+  toolbox?: boolean | ToolboxOptions
 }
 
 export function Heatmap({
@@ -32,6 +38,8 @@ export function Heatmap({
   height,
   className,
   plain,
+  visualMap,
+  toolbox,
 }: HeatmapProps) {
   useSignals()
   const resolvedHeight = height ?? (plain ? 48 : 320)
@@ -44,6 +52,10 @@ export function Heatmap({
 
   // Normalize 0..1
   const norm = (v: number) => Math.max(0, Math.min(1, (v - vMin) / vRange))
+
+  // visualMap filter signals (continuous range + piecewise hidden buckets).
+  const vmRange = useSignal<[number, number]>([visualMap?.min ?? vMin, visualMap?.max ?? vMax])
+  const vmHidden = useSignal(new Set<number>())
 
   const fallback = (
     <table>
@@ -95,7 +107,7 @@ export function Heatmap({
     return { points }
   }
 
-  return (
+  const frame = (
     <ChartFrame
       title={title}
       description={description}
@@ -105,6 +117,15 @@ export function Heatmap({
       className={className}
       plain={plain}
       tooltip={data.length > 0 ? buildTooltip : undefined}
+      toolbox={toolbox}
+      onRestore={
+        visualMap
+          ? () => {
+              vmRange.value = [visualMap.min, visualMap.max]
+              vmHidden.value = new Set<number>()
+            }
+          : undefined
+      }
     >
       {({ width, height: h }) => {
         const inner = {
@@ -122,6 +143,12 @@ export function Heatmap({
               const rx = xScale.map(d.x) ?? 0
               const ry = yScale.map(d.y) ?? 0
               const pct = Math.round(norm(d.value) * 100)
+              const fill = visualMap
+                ? (mapVisual(d.value, visualMap).color ?? 'var(--cascivo-chart-1)')
+                : `color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-color-neutral-100))`
+              const visible = visualMap
+                ? visualVisible(d.value, visualMap, vmRange.value, vmHidden.value)
+                : true
               return (
                 <rect
                   key={i}
@@ -129,7 +156,8 @@ export function Heatmap({
                   y={ry}
                   width={xScale.bandwidth}
                   height={yScale.bandwidth}
-                  fill={`color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-color-neutral-100))`}
+                  fill={fill}
+                  fillOpacity={visible ? 1 : 0.12}
                   stroke="var(--cascivo-surface-base)"
                   strokeWidth={1}
                   aria-label={`${d.x}, ${d.y}: ${d.value}`}
@@ -151,5 +179,14 @@ export function Heatmap({
         )
       }}
     </ChartFrame>
+  )
+
+  if (!visualMap || data.length === 0) return frame
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      {frame}
+      <VisualMap options={visualMap} range={vmRange} hidden={vmHidden} label={title} />
+    </div>
   )
 }

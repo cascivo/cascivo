@@ -109,6 +109,8 @@
             "Button",
             "ButtonGroup",
             "Calendar",
+            "Calendar",
+            "Candlestick",
             "Card",
             "Carousel",
             "Center",
@@ -157,6 +159,8 @@
             "FlowPanel",
             "FlowStory",
             "Form",
+            "Funnel",
+            "Gauge",
             "Grid",
             "Header",
             "HeaderPanel",
@@ -202,6 +206,7 @@
             "Pagination",
             "PasswordInput",
             "PieChart",
+            "Polar",
             "Popover",
             "Progress",
             "ProgressBar",
@@ -211,12 +216,14 @@
             "PullToRefresh",
             "QrCode",
             "Radar",
+            "RadialBar",
             "RadialProgress",
             "Radio",
             "RadioCard",
             "RatingGroup",
             "RelativeTime",
             "Resizable",
+            "Sankey",
             "ScatterChart",
             "ScrollArea",
             "Search",
@@ -244,7 +251,9 @@
             "StatsCards",
             "Status",
             "Steps",
+            "Stream",
             "StructuredList",
+            "Sunburst",
             "Swap",
             "SwipeItem",
             "Switcher",
@@ -4978,7 +4987,25 @@
                   },
                   "curve": {
                     "type": "string",
-                    "enum": ["linear", "monotone"]
+                    "enum": [
+                      "linear",
+                      "monotone",
+                      "step",
+                      "stepBefore",
+                      "stepAfter",
+                      "natural",
+                      "basis",
+                      "cardinal",
+                      "catmullRom"
+                    ]
+                  },
+                  "fill": {
+                    "type": "string",
+                    "enum": ["solid", "gradient", "pattern"]
+                  },
+                  "patternKind": {
+                    "type": "string",
+                    "enum": ["dots", "lines", "cross"]
                   },
                   "width": {
                     "type": "number"
@@ -5003,6 +5030,26 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "brush": {
+                    "type": "boolean"
+                  },
+                  "dataZoom": {
+                    "type": "boolean"
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "syncId": {
+                    "type": "string"
+                  },
+                  "tooltipMode": {
+                    "type": "string",
+                    "enum": ["item", "axis"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5036,7 +5083,7 @@
                   },
                   "mode": {
                     "type": "string",
-                    "enum": ["grouped", "stacked"]
+                    "enum": ["grouped", "stacked", "percent"]
                   },
                   "width": {
                     "type": "number"
@@ -5064,6 +5111,14 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "fill": {
+                    "type": "string",
+                    "enum": ["solid", "gradient", "pattern"]
+                  },
+                  "patternKind": {
+                    "type": "string",
+                    "enum": ["dots", "lines", "cross"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5198,6 +5253,112 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Calendar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string",
+                    "enum": ["string", "Date"]
+                  },
+                  "to": {
+                    "type": "string",
+                    "enum": ["string", "Date"]
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Candlestick"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "yTicks": {
+                    "type": "number"
+                  },
+                  "upColor": {
+                    "type": "string"
+                  },
+                  "downColor": {
+                    "type": "string"
+                  },
+                  "volume": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "ComboChart"
               }
             },
@@ -5242,6 +5403,106 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Funnel"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "showConversion": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Gauge"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "sweep": {
+                    "type": "number"
+                  },
+                  "ticks": {
+                    "type": "number"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["value", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Heatmap"
               }
             },
@@ -5269,6 +5530,14 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["data", "title"]
@@ -5382,7 +5651,17 @@
                   },
                   "curve": {
                     "type": "string",
-                    "enum": ["linear", "monotone"]
+                    "enum": [
+                      "linear",
+                      "monotone",
+                      "step",
+                      "stepBefore",
+                      "stepAfter",
+                      "natural",
+                      "basis",
+                      "cardinal",
+                      "catmullRom"
+                    ]
                   },
                   "width": {
                     "type": "number"
@@ -5407,6 +5686,29 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "connectNulls": {
+                    "type": "boolean"
+                  },
+                  "brush": {
+                    "type": "boolean"
+                  },
+                  "dataZoom": {
+                    "type": "boolean"
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "syncId": {
+                    "type": "string"
+                  },
+                  "tooltipMode": {
+                    "type": "string",
+                    "enum": ["item", "axis"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "x", "y", "title"]
@@ -5530,6 +5832,57 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Polar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["bar", "line", "area"]
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "rings": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Radar"
               }
             },
@@ -5563,6 +5916,110 @@
                   }
                 },
                 "required": ["axes", "series", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "RadialBar"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "sweep": {
+                    "type": "number"
+                  },
+                  "centerValue": {
+                    "type": "string"
+                  },
+                  "centerLabel": {
+                    "type": "string"
+                  },
+                  "centerSlot": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "legend": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Sankey"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["nodes", "links", "title"]
               }
             }
           }
@@ -5610,6 +6067,18 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "renderer": {
+                    "type": "string",
+                    "enum": ["svg", "canvas", "auto"]
+                  },
+                  "visualMap": {
+                    "type": "string",
+                    "enum": ["VisualMapOptions"]
+                  },
+                  "toolbox": {
+                    "type": "string",
+                    "enum": ["boolean", "ToolboxOptions"]
                   }
                 },
                 "required": ["series", "title"]
@@ -5648,6 +6117,106 @@
                   }
                 },
                 "required": ["data", "label"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Stream"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "offset": {
+                    "type": "string",
+                    "enum": ["silhouette", "zero"]
+                  },
+                  "curve": {
+                    "type": "string",
+                    "enum": ["Curve"]
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "legend": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["series", "categories", "title"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Sunburst"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "enum": ["HierNode"]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "number"
+                  },
+                  "width": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "tooltip": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "plain": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["data", "title"]
               }
             }
           }

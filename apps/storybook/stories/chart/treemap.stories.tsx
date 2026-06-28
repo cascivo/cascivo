@@ -2,12 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Treemap } from '@cascivo/charts'
 
 const data = [
-  { id: 'react', label: 'React', value: 42 },
-  { id: 'vue', label: 'Vue', value: 25 },
-  { id: 'angular', label: 'Angular', value: 18 },
-  { id: 'svelte', label: 'Svelte', value: 8 },
-  { id: 'solid', label: 'Solid', value: 4 },
-  { id: 'other', label: 'Other', value: 3 },
+  { id: 'eng', label: 'Engineering', value: 42 },
+  { id: 'sales', label: 'Sales', value: 28 },
+  { id: 'mkt', label: 'Marketing', value: 16 },
+  { id: 'ops', label: 'Ops', value: 9 },
+  { id: 'hr', label: 'People', value: 5 },
 ]
 
 const meta: Meta<typeof Treemap> = {
@@ -25,9 +24,5 @@ const meta: Meta<typeof Treemap> = {
 export default meta
 type Story = StoryObj<typeof Treemap>
 
-export const Default: Story = {
-  args: {
-    data,
-    title: 'Framework usage share',
-  },
-}
+export const Default: Story = { args: { data, title: 'Headcount by team' } }
+export const Empty: Story = { args: { data: [], title: 'No data yet' } }

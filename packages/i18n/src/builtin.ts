@@ -90,6 +90,11 @@ export const builtin = {
   charts: defineMessages('cascade.charts', {
     legendToggle: 'Toggle series {name}',
     noData: 'No data',
+    resetZoom: 'Reset zoom',
+    exportPng: 'Export PNG',
+    exportSvg: 'Export SVG',
+    dataView: 'Data view',
+    restore: 'Restore',
   }),
   alertDialog: defineMessages('cascade.alertDialog', {
     confirm: 'Confirm',
@@ -352,6 +357,11 @@ defineCatalog(builtin.appShell, 'de', {
 defineCatalog(builtin.charts, 'de', {
   legendToggle: 'Reihe {name} umschalten',
   noData: 'Keine Daten',
+  resetZoom: 'Zoom zurücksetzen',
+  exportPng: 'PNG exportieren',
+  exportSvg: 'SVG exportieren',
+  dataView: 'Datenansicht',
+  restore: 'Zurücksetzen',
 })
 defineCatalog(builtin.alertDialog, 'de', {
   confirm: 'Bestätigen',

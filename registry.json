@@ -1,6 +1,6 @@
 {
   "version": "0.0.0",
-  "generatedAt": "2026-06-26",
+  "generatedAt": "2026-06-28",
   "components": [
     {
       "name": "accordion",
@@ -17364,9 +17364,23 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
-            "default": "monotone"
+            "default": "monotone",
+            "description": "Line/area interpolation curve."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           },
           {
             "name": "width",
@@ -17413,6 +17427,70 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "brush",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show a keyboard-operable Brush below the plot to subset the series to a window."
+          },
+          {
+            "name": "dataZoom",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show a DataZoom slider below the plot — a Brush whose body also pans the window."
+          },
+          {
+            "name": "zoom",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes."
+          },
+          {
+            "name": "syncId",
+            "type": "string",
+            "required": false,
+            "description": "Connect this chart to others sharing the same id — they mirror the zoom window and hovered x."
+          },
+          {
+            "name": "tooltipMode",
+            "type": "'item' | 'axis'",
+            "required": false,
+            "default": "item",
+            "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x)."
+          },
+          {
+            "name": "decimate",
+            "type": "boolean | { method?: 'lttb' | 'minmax'; threshold?: number }",
+            "required": false,
+            "description": "Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data."
+          },
+          {
+            "name": "toolbox",
+            "type": "boolean | ToolboxOptions",
+            "required": false,
+            "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
           }
         ],
         "tokens": [
@@ -17485,7 +17563,7 @@
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
         "category": "chart",
         "states": [],
-        "variants": ["grouped", "stacked"],
+        "variants": ["grouped", "stacked", "percent"],
         "sizes": [],
         "props": [
           {
@@ -17522,9 +17600,10 @@
           },
           {
             "name": "mode",
-            "type": "'grouped' | 'stacked'",
+            "type": "'grouped' | 'stacked' | 'percent'",
             "required": false,
-            "default": "grouped"
+            "default": "grouped",
+            "description": "'percent' stacks each category and normalizes it to 100%."
           },
           {
             "name": "width",
@@ -17581,6 +17660,37 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "fill",
+            "type": "'solid' | 'gradient' | 'pattern'",
+            "required": false,
+            "default": "solid",
+            "description": "Bar fill style — solid, a gradient, or a pattern."
+          },
+          {
+            "name": "patternKind",
+            "type": "'dots' | 'lines' | 'cross'",
+            "required": false,
+            "description": "Pattern motif when fill=\"pattern\"."
           }
         ],
         "typeDefs": [
@@ -17908,6 +18018,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "glyph",
+            "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
+            "required": false,
+            "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
           }
         ],
         "tokens": [
@@ -18079,6 +18195,256 @@
       "install": "@cascivo/charts"
     },
     {
+      "name": "chart/calendar",
+      "type": "chart",
+      "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
+      "meta": {
+        "name": "Calendar",
+        "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "CalendarDatum[]",
+            "required": true,
+            "description": "Days: { day: string | Date, value }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "from",
+            "type": "string | Date",
+            "required": false,
+            "description": "Range start (defaults to min day)."
+          },
+          {
+            "name": "to",
+            "type": "string | Date",
+            "required": false,
+            "description": "Range end (defaults to max day)."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "160"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "visualMap",
+            "type": "VisualMapOptions",
+            "required": false,
+            "description": "Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range."
+          }
+        ],
+        "tokens": ["--cascivo-chart-2"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate days)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Contribution calendar",
+            "code": "import { Calendar } from '@cascivo/charts'\n\n<Calendar\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a daily value over weeks/months (activity, contributions)",
+            "Spotting weekly/seasonal patterns at a glance"
+          ],
+          "whenNotToUse": [
+            "Precise daily values — use a LineChart",
+            "Non-date categories — use Heatmap"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Heatmap",
+              "relationship": "alternative",
+              "reason": "Use for arbitrary x/y category grids"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback day/value table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/candlestick",
+      "type": "chart",
+      "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+      "meta": {
+        "name": "Candlestick",
+        "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "CandlestickDatum[]",
+            "required": true,
+            "description": "One candle per period: { t, open, high, low, close, volume? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "yTicks",
+            "type": "number",
+            "required": false,
+            "default": "5"
+          },
+          {
+            "name": "upColor",
+            "type": "string",
+            "required": false,
+            "description": "Colour for up candles (close ≥ open)."
+          },
+          {
+            "name": "downColor",
+            "type": "string",
+            "required": false,
+            "description": "Colour for down candles (close < open)."
+          },
+          {
+            "name": "volume",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Render volume bars beneath the candles."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip (OHLC)."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no axes. For micro/inline charts."
+          }
+        ],
+        "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate candles)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "OHLC price series",
+            "code": "import { Candlestick } from '@cascivo/charts'\n\n<Candlestick\n  title=\"ACME daily\"\n  tooltip\n  data={[\n    { t: 'Mon', open: 10, high: 14, low: 9, close: 13 },\n    { t: 'Tue', open: 13, high: 15, low: 11, close: 11 },\n    { t: 'Wed', open: 11, high: 12, low: 8, close: 9 },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing open/high/low/close price movement over time",
+            "Financial or trading dashboards needing per-period range + direction"
+          ],
+          "whenNotToUse": [
+            "A single value trend — use LineChart",
+            "Non-financial categorical data — use BarChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "LineChart",
+              "relationship": "alternative",
+              "reason": "Use when only the closing price trend matters"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; OHLC values are in the fallback table and tooltip.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
       "name": "chart/combo-chart",
       "type": "chart",
       "description": "Combination bar + line chart on shared or dual y-axes.",
@@ -18151,6 +18517,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
@@ -18195,6 +18567,266 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/funnel",
+      "type": "chart",
+      "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
+      "meta": {
+        "name": "Funnel",
+        "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "FunnelStage[]",
+            "required": true,
+            "description": "Ordered stages (descending): { id, label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle below the title."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "showConversion",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Append each stage’s % of the first stage to its label."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no labels. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate stages)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Signup conversion funnel",
+            "code": "import { Funnel } from '@cascivo/charts'\n\n<Funnel\n  title=\"Signup funnel\"\n  showConversion\n  data={[\n    { id: 'visit', label: 'Visited', value: 8200 },\n    { id: 'signup', label: 'Signed up', value: 3100 },\n    { id: 'active', label: 'Activated', value: 1400 },\n    { id: 'paid', label: 'Paid', value: 520 },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing drop-off across the ordered stages of a process (signup, checkout)",
+            "Communicating stage-to-stage conversion at a glance"
+          ],
+          "whenNotToUse": [
+            "Stages are not strictly decreasing — use BarChart",
+            "Showing a trend over time — use LineChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "BarChart",
+              "relationship": "alternative",
+              "reason": "Use when stages aren’t monotonically decreasing"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/gauge",
+      "type": "chart",
+      "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+      "meta": {
+        "name": "Gauge",
+        "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "The value the needle points to."
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          },
+          {
+            "name": "thresholds",
+            "type": "{ upTo: number; color: string }[]",
+            "required": false,
+            "description": "Coloured zones from min upward; the last should reach max."
+          },
+          {
+            "name": "unit",
+            "type": "string",
+            "required": false,
+            "description": "Suffix after the centre value."
+          },
+          {
+            "name": "sweep",
+            "type": "number",
+            "required": false,
+            "default": "270",
+            "description": "Total sweep angle in degrees (270 = a speedometer arc)."
+          },
+          {
+            "name": "ticks",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "Major tick count."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "240"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no ticks/labels. For micro/inline charts."
+          }
+        ],
+        "tokens": ["--cascivo-color-accent", "--cascivo-color-foreground", "--cascivo-chart-grid"],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": ["Tab (focus chart)"]
+        },
+        "examples": [
+          {
+            "title": "Speedometer with zones",
+            "code": "import { Gauge } from '@cascivo/charts'\n\n<Gauge\n  title=\"CPU load\"\n  value={72}\n  unit=\"%\"\n  thresholds={[\n    { upTo: 50, color: 'var(--cascivo-chart-2)' },\n    { upTo: 80, color: 'var(--cascivo-chart-3)' },\n    { upTo: 100, color: 'var(--cascivo-chart-4)' },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "A single value against a range with a needle and threshold zones",
+            "Dashboard KPIs where a speedometer metaphor aids quick reading"
+          ],
+          "whenNotToUse": [
+            "Several progress values — use RadialBar",
+            "A simple bar against thresholds — use Meter"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Meter",
+              "relationship": "alternative",
+              "reason": "Use a linear bar for a single value against thresholds"
+            },
+            {
+              "name": "RadialBar",
+              "relationship": "alternative",
+              "reason": "Use concentric rings for multiple progress values"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; the value and range are in the fallback table.",
           "flexibility": []
         }
       },
@@ -18255,6 +18887,18 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "visualMap",
+            "type": "VisualMapOptions",
+            "required": false,
+            "description": "Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range."
+          },
+          {
+            "name": "toolbox",
+            "type": "boolean | ToolboxOptions",
+            "required": false,
+            "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
@@ -18554,7 +19198,7 @@
           },
           {
             "name": "curve",
-            "type": "'linear' | 'monotone'",
+            "type": "'linear' | 'monotone' | 'step' | 'stepBefore' | 'stepAfter' | 'natural' | 'basis' | 'cardinal' | 'catmullRom'",
             "required": false,
             "default": "monotone",
             "description": "Line interpolation curve"
@@ -18615,6 +19259,95 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "connectNulls",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Bridge non-finite y gaps instead of breaking the line at them."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "brush",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window."
+          },
+          {
+            "name": "dataZoom",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show a DataZoom slider below the plot — a Brush whose body also pans the window."
+          },
+          {
+            "name": "zoom",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes."
+          },
+          {
+            "name": "syncId",
+            "type": "string",
+            "required": false,
+            "description": "Connect this chart to others sharing the same id — they mirror the zoom window and hovered x."
+          },
+          {
+            "name": "tooltipMode",
+            "type": "'item' | 'axis'",
+            "required": false,
+            "default": "item",
+            "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x)."
+          },
+          {
+            "name": "decimate",
+            "type": "boolean | { method?: 'lttb' | 'minmax'; threshold?: number }",
+            "required": false,
+            "description": "Downsample dense series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data."
+          },
+          {
+            "name": "toolbox",
+            "type": "boolean | ToolboxOptions",
+            "required": false,
+            "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
+          },
+          {
+            "name": "transition",
+            "type": "boolean | { duration?: number; easing?: string; properties?: string[] }",
+            "required": false,
+            "description": "Tune the reduced-motion-gated enter/update transitions (false disables). Always suppressed under prefers-reduced-motion."
+          },
+          {
+            "name": "onBeforeDraw",
+            "type": "(ctx: { width: number; height: number }) => ReactNode",
+            "required": false,
+            "description": "Render custom SVG behind the marks (watermark/region) — a lightweight extension seam."
+          },
+          {
+            "name": "onAfterDraw",
+            "type": "(ctx: { width: number; height: number }) => ReactNode",
+            "required": false,
+            "description": "Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam."
           }
         ],
         "tokens": [
@@ -18641,6 +19374,10 @@
           {
             "title": "Basic line chart",
             "code": "import { LineChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y:15}] }]\n<LineChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          },
+          {
+            "title": "With an SLO target line",
+            "code": "<LineChart\n  series={series}\n  x={d => d.x}\n  y={d => d.y}\n  title=\"Latency\"\n  annotations={[{ kind: 'line', axis: 'y', value: 200, label: 'SLO' }]}\n/>"
           }
         ],
         "dependencies": ["@cascivo/charts"],
@@ -18892,6 +19629,18 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "labels",
+            "type": "boolean | { format?: (v: number) => string; position?: string }",
+            "required": false,
+            "description": "Print each value as a label on the mark (collision-aware, decorative/aria-hidden)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
           }
         ],
         "typeDefs": [
@@ -19013,6 +19762,146 @@
       "install": "@cascivo/charts"
     },
     {
+      "name": "chart/polar",
+      "type": "chart",
+      "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "polar", "rose", "radial", "data-viz"],
+      "meta": {
+        "name": "Polar",
+        "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "PolarDatum[]",
+            "required": true,
+            "description": "One entry per category: { label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "mode",
+            "type": "'bar' | 'line' | 'area'",
+            "required": false,
+            "default": "bar",
+            "description": "Bars (rose), a polar line, or a filled polar area."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "rings",
+            "type": "number",
+            "required": false,
+            "default": "4",
+            "description": "Radial ring count."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain top (full radius). Defaults to the largest value."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no rings or labels. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8",
+          "--cascivo-chart-grid"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Wind rose",
+            "code": "import { Polar } from '@cascivo/charts'\n\n<Polar\n  title=\"Wind by direction\"\n  mode=\"bar\"\n  tooltip\n  data={[\n    { label: 'N', value: 12 },\n    { label: 'E', value: 8 },\n    { label: 'S', value: 5 },\n    { label: 'W', value: 15 },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "polar", "rose", "radial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Cyclical/directional categories where the circle is meaningful (wind, hours, months)",
+            "A rose chart comparing a value across directions"
+          ],
+          "whenNotToUse": [
+            "Precise magnitude comparison — use BarChart",
+            "Multi-metric profiles on shared axes — use Radar"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Radar",
+              "relationship": "alternative",
+              "reason": "Use to compare several series across the same axes"
+            },
+            {
+              "name": "RadialBar",
+              "relationship": "alternative",
+              "reason": "Use concentric rings for progress-to-goal"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\"; values are in the fallback table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
       "name": "chart/radar",
       "type": "chart",
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
@@ -19128,6 +20017,287 @@
       "install": "@cascivo/charts"
     },
     {
+      "name": "chart/radial-bar",
+      "type": "chart",
+      "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
+      "meta": {
+        "name": "RadialBar",
+        "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "RadialBarDatum[]",
+            "required": true,
+            "description": "One ring per datum: { id, label, value, color? }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Chart title (also used as aria-label)."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "Subtitle below the title."
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand (width === height). Explicit width/height win."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "description": "Domain top — the value a full sweep represents. Defaults to the largest datum."
+          },
+          {
+            "name": "sweep",
+            "type": "number",
+            "required": false,
+            "default": "270",
+            "description": "Sweep angle in degrees (270 = a gauge arc; 360 = a full ring)."
+          },
+          {
+            "name": "centerValue",
+            "type": "string",
+            "required": false,
+            "description": "Text in the hole."
+          },
+          {
+            "name": "centerLabel",
+            "type": "string",
+            "required": false,
+            "description": "Caption below centerValue."
+          },
+          {
+            "name": "centerSlot",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Arbitrary hole content; wins over centerValue/centerLabel."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "description": "Enable hover tooltip."
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "description": "Show ring legend."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Marks only — no legend. For micro/inline charts."
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8",
+          "--cascivo-chart-grid"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate rings)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Goal progress rings",
+            "code": "import { RadialBar } from '@cascivo/charts'\n\n<RadialBar\n  title=\"Quarterly goals\"\n  max={100}\n  centerValue=\"72%\"\n  centerLabel=\"On track\"\n  data={[\n    { id: 'rev', label: 'Revenue', value: 84 },\n    { id: 'nps', label: 'NPS', value: 61 },\n    { id: 'ret', label: 'Retention', value: 72 },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a few progress-to-goal values in a compact circular form",
+            "A dashboard KPI cluster where each metric is a ring toward its target"
+          ],
+          "whenNotToUse": [
+            "Comparing many categories precisely — use BarChart",
+            "Part-of-whole of a single total — use PieChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Meter",
+              "relationship": "alternative",
+              "reason": "Use for a single value against thresholds"
+            },
+            {
+              "name": "PieChart",
+              "relationship": "alternative",
+              "reason": "Use for part-of-whole proportions of one total"
+            }
+          ],
+          "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/sankey",
+      "type": "chart",
+      "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+      "meta": {
+        "name": "Sankey",
+        "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "nodes",
+            "type": "SankeyNode[]",
+            "required": true,
+            "description": "Nodes: { id, label, color? }."
+          },
+          {
+            "name": "links",
+            "type": "SankeyLink[]",
+            "required": true,
+            "description": "Links: { source, target, value }."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "320"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate nodes)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Sankey flow",
+            "code": "import { Sankey } from '@cascivo/charts'\n\n<Sankey\n  title=\"Traffic flow\"\n  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}\n  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "sankey", "flow", "network", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing flow/throughput between stages or categories",
+            "Visualizing where volume splits and merges"
+          ],
+          "whenNotToUse": [
+            "Strict ordered stages with one path — use Funnel",
+            "Arbitrary node/edge graphs — use @cascivo/flow"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Funnel",
+              "relationship": "alternative",
+              "reason": "Use for a single decreasing path"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback from/to/value table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
       "name": "chart/scatter-chart",
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -19211,6 +20381,43 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "onSelect",
+            "type": "(point: ChartPoint) => void",
+            "required": false,
+            "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "glyph",
+            "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
+            "required": false,
+            "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
+          },
+          {
+            "name": "renderer",
+            "type": "'svg' | 'canvas' | 'auto'",
+            "required": false,
+            "default": "svg",
+            "description": "Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer."
+          },
+          {
+            "name": "visualMap",
+            "type": "VisualMapOptions",
+            "required": false,
+            "description": "Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range."
+          },
+          {
+            "name": "toolbox",
+            "type": "boolean | ToolboxOptions",
+            "required": false,
+            "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
           }
         ],
         "tokens": [
@@ -19360,6 +20567,259 @@
             }
           ],
           "a11yRationale": "Renders with role=\"img\" and requires a label prop for screen reader labeling.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/stream",
+      "type": "chart",
+      "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
+      "meta": {
+        "name": "Stream",
+        "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "series",
+            "type": "StreamSeries[]",
+            "required": true,
+            "description": "Series, each with values[] aligned to categories."
+          },
+          {
+            "name": "categories",
+            "type": "(string | number)[]",
+            "required": true,
+            "description": "X-axis labels aligned with each series values."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offset",
+            "type": "'silhouette' | 'zero'",
+            "required": false,
+            "default": "silhouette",
+            "description": "silhouette centers the stack (streamgraph); zero is a baseline stack."
+          },
+          {
+            "name": "curve",
+            "type": "Curve",
+            "required": false,
+            "default": "basis",
+            "description": "Interpolation curve."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Streamgraph",
+            "code": "import { Stream } from '@cascivo/charts'\n\n<Stream\n  title=\"Topics over time\"\n  categories={['Jan','Feb','Mar','Apr']}\n  series={[\n    { id: 'a', label: 'A', values: [4, 6, 5, 8] },\n    { id: 'b', label: 'B', values: [2, 3, 7, 4] },\n  ]}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing how several series ebb and flow over time as proportions of a whole",
+            "An organic, aesthetic alternative to a stacked area chart"
+          ],
+          "whenNotToUse": [
+            "Reading precise values — use LineChart or AreaChart",
+            "Few categories with exact comparison — use BarChart"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "AreaChart",
+              "relationship": "alternative",
+              "reason": "Use a zero-baseline stacked area for precise reading"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback data table.",
+          "flexibility": []
+        }
+      },
+      "install": "@cascivo/charts"
+    },
+    {
+      "name": "chart/sunburst",
+      "type": "chart",
+      "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
+      "category": "chart",
+      "version": "0.0.0",
+      "files": [],
+      "dependencies": ["@cascivo/charts"],
+      "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
+      "meta": {
+        "name": "Sunburst",
+        "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
+        "category": "chart",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "data",
+            "type": "HierNode",
+            "required": true,
+            "description": "Root of the tree; leaves carry value, parents sum their children."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "required": false,
+            "description": "Square shorthand (width === height)."
+          },
+          {
+            "name": "width",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "plain",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
+        "tokens": [
+          "--cascivo-chart-1",
+          "--cascivo-chart-2",
+          "--cascivo-chart-3",
+          "--cascivo-chart-4",
+          "--cascivo-chart-5",
+          "--cascivo-chart-6",
+          "--cascivo-chart-7",
+          "--cascivo-chart-8"
+        ],
+        "accessibility": {
+          "role": "img",
+          "wcag": "2.1-AA",
+          "keyboard": [
+            "Tab (focus chart)",
+            "ArrowLeft/ArrowRight (navigate nodes)",
+            "Escape (clear focus)"
+          ]
+        },
+        "examples": [
+          {
+            "title": "Sunburst",
+            "code": "import { Sunburst } from '@cascivo/charts'\n\n<Sunburst\n  title=\"Disk usage\"\n  data={{ label: 'root', children: [\n    { label: 'src', children: [{ label: 'app', value: 40 }, { label: 'lib', value: 25 }] },\n    { label: 'docs', value: 15 },\n  ] }}\n/>"
+          }
+        ],
+        "dependencies": ["@cascivo/charts"],
+        "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
+        "intent": {
+          "whenToUse": [
+            "Showing a part-of-whole hierarchy across multiple levels",
+            "A radial alternative to a Treemap for nested proportions"
+          ],
+          "whenNotToUse": [
+            "A flat set of proportions — use PieChart",
+            "Precise leaf comparison — use a Treemap or bars"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Treemap",
+              "relationship": "alternative",
+              "reason": "Use the rectilinear layout for dense leaves"
+            }
+          ],
+          "a11yRationale": "Renders role=\"img\" with a title and a fallback path/value table.",
           "flexibility": []
         }
       },

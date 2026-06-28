@@ -20,18 +20,19 @@ import { ComboChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type                                 | Required | Default | Description                                                           |
-| ------------- | ------------------------------------ | -------- | ------- | --------------------------------------------------------------------- |
-| `bars`        | `{ label: string; value: number }[]` | yes      | —       | Bar series data                                                       |
-| `line`        | `{ x: number; y: number }[]`         | yes      | —       | Line series data points                                               |
-| `title`       | `string`                             | yes      | —       | —                                                                     |
-| `description` | `string`                             | no       | —       | —                                                                     |
-| `secondAxis`  | `boolean`                            | no       | —       | Render line on a secondary right y-axis                               |
-| `width`       | `number`                             | no       | —       | —                                                                     |
-| `height`      | `number`                             | no       | `320`   | —                                                                     |
-| `tooltip`     | `boolean`                            | no       | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                             | no       | —       | —                                                                     |
-| `plain`       | `boolean`                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop          | Type                                 | Required | Default | Description                                                                                    |
+| ------------- | ------------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `bars`        | `{ label: string; value: number }[]` | yes      | —       | Bar series data                                                                                |
+| `line`        | `{ x: number; y: number }[]`         | yes      | —       | Line series data points                                                                        |
+| `title`       | `string`                             | yes      | —       | —                                                                                              |
+| `description` | `string`                             | no       | —       | —                                                                                              |
+| `secondAxis`  | `boolean`                            | no       | —       | Render line on a secondary right y-axis                                                        |
+| `width`       | `number`                             | no       | —       | —                                                                                              |
+| `height`      | `number`                             | no       | `320`   | —                                                                                              |
+| `tooltip`     | `boolean`                            | no       | —       | Enable hover/keyboard tooltip                                                                  |
+| `className`   | `string`                             | no       | —       | —                                                                                              |
+| `plain`       | `boolean`                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
+| `annotations` | `Annotation[]`                       | no       | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 
 ## Examples
 

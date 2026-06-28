@@ -24,6 +24,12 @@ export interface TooltipModel {
   points: ChartPoint[]
   /** Custom formatter — defaults to "label: value" */
   format?: (p: ChartPoint) => string
+  /**
+   * Hit-test + presentation mode. `item` (default): nearest point in 2-D, one datum
+   * per tooltip. `axis`: nearest x-bucket, a vertical crosshair, and one tooltip
+   * listing every series at that x (carried as the point's `segments`).
+   */
+  mode?: 'item' | 'axis'
 }
 
 export function defaultFormat(p: ChartPoint): string {

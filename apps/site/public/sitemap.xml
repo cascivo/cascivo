@@ -57,6 +57,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/charts</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/create</loc>
     <priority>0.8</priority>
   </url>
@@ -241,7 +245,23 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chart/calendar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/candlestick</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/combo-chart</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/funnel</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/gauge</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -269,7 +289,19 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/chart/polar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/chart/radar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/radial-bar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/sankey</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -278,6 +310,14 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/chart/sparkline</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/stream</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/chart/sunburst</loc>
     <priority>0.6</priority>
   </url>
   <url>

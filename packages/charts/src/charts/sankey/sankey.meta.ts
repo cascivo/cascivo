@@ -1,0 +1,80 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Sankey',
+  description: 'Flow diagram — ranked nodes connected by throughput-sized link ribbons.',
+  category: 'chart',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'nodes',
+      type: 'SankeyNode[]',
+      required: true,
+      description: 'Nodes: { id, label, color? }.',
+    },
+    {
+      name: 'links',
+      type: 'SankeyLink[]',
+      required: true,
+      description: 'Links: { source, target, value }.',
+    },
+    { name: 'title', type: 'string', required: true },
+    { name: 'description', type: 'string', required: false },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '320' },
+    { name: 'tooltip', type: 'boolean', required: false },
+    { name: 'className', type: 'string', required: false },
+    { name: 'plain', type: 'boolean', required: false, default: 'false' },
+  ],
+  tokens: [
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
+  ],
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate nodes)',
+      'Escape (clear focus)',
+    ],
+  },
+  examples: [
+    {
+      title: 'Sankey flow',
+      code: `import { Sankey } from '@cascivo/charts'
+
+<Sankey
+  title="Traffic flow"
+  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}
+  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}
+/>`,
+    },
+  ],
+  dependencies: ['@cascivo/charts'],
+  tags: ['chart', 'sankey', 'flow', 'network', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing flow/throughput between stages or categories',
+      'Visualizing where volume splits and merges',
+    ],
+    whenNotToUse: [
+      'Strict ordered stages with one path — use Funnel',
+      'Arbitrary node/edge graphs — use @cascivo/flow',
+    ],
+    antiPatterns: [],
+    related: [
+      { name: 'Funnel', relationship: 'alternative', reason: 'Use for a single decreasing path' },
+    ],
+    a11yRationale: 'Renders role="img" with a title and a fallback from/to/value table.',
+    flexibility: [],
+  },
+}

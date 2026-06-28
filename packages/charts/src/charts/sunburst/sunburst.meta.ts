@@ -1,0 +1,87 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'Sunburst',
+  description:
+    'Radial hierarchy — concentric rings where each node is an annular segment sized by value.',
+  category: 'chart',
+  states: [],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'data',
+      type: 'HierNode',
+      required: true,
+      description: 'Root of the tree; leaves carry value, parents sum their children.',
+    },
+    { name: 'title', type: 'string', required: true },
+    { name: 'description', type: 'string', required: false },
+    {
+      name: 'size',
+      type: 'number',
+      required: false,
+      description: 'Square shorthand (width === height).',
+    },
+    { name: 'width', type: 'number', required: false },
+    { name: 'height', type: 'number', required: false, default: '300' },
+    { name: 'tooltip', type: 'boolean', required: false },
+    { name: 'className', type: 'string', required: false },
+    { name: 'plain', type: 'boolean', required: false, default: 'false' },
+  ],
+  tokens: [
+    '--cascivo-chart-1',
+    '--cascivo-chart-2',
+    '--cascivo-chart-3',
+    '--cascivo-chart-4',
+    '--cascivo-chart-5',
+    '--cascivo-chart-6',
+    '--cascivo-chart-7',
+    '--cascivo-chart-8',
+  ],
+  accessibility: {
+    role: 'img',
+    wcag: '2.1-AA',
+    keyboard: [
+      'Tab (focus chart)',
+      'ArrowLeft/ArrowRight (navigate nodes)',
+      'Escape (clear focus)',
+    ],
+  },
+  examples: [
+    {
+      title: 'Sunburst',
+      code: `import { Sunburst } from '@cascivo/charts'
+
+<Sunburst
+  title="Disk usage"
+  data={{ label: 'root', children: [
+    { label: 'src', children: [{ label: 'app', value: 40 }, { label: 'lib', value: 25 }] },
+    { label: 'docs', value: 15 },
+  ] }}
+/>`,
+    },
+  ],
+  dependencies: ['@cascivo/charts'],
+  tags: ['chart', 'sunburst', 'hierarchy', 'radial', 'data-viz'],
+  intent: {
+    whenToUse: [
+      'Showing a part-of-whole hierarchy across multiple levels',
+      'A radial alternative to a Treemap for nested proportions',
+    ],
+    whenNotToUse: [
+      'A flat set of proportions — use PieChart',
+      'Precise leaf comparison — use a Treemap or bars',
+    ],
+    antiPatterns: [],
+    related: [
+      {
+        name: 'Treemap',
+        relationship: 'alternative',
+        reason: 'Use the rectilinear layout for dense leaves',
+      },
+    ],
+    a11yRationale: 'Renders role="img" with a title and a fallback path/value table.',
+    flexibility: [],
+  },
+}
