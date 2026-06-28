@@ -597,6 +597,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/log-viewer</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/menu</loc>
     <priority>0.6</priority>
   </url>

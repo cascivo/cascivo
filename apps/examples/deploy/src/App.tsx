@@ -20,6 +20,7 @@ import { loadData, loadError } from './data/fixtures'
 import { UsagePanel } from './sections/home/UsagePanel'
 import { TemplateGallery } from './sections/home/TemplateGallery'
 import { Deployments } from './sections/project/Deployments'
+import { BuildMonitor } from './sections/builds/BuildMonitor'
 import { FlagsView } from './sections/flags/FlagsView'
 import styles from './App.module.css'
 
@@ -28,7 +29,7 @@ import '@cascivo/themes/light'
 import '@cascivo/themes/warm'
 import '@cascivo/tokens'
 
-type View = 'projects' | 'deployments' | 'flags'
+type View = 'projects' | 'deployments' | 'builds' | 'flags'
 
 const currentView = persistedSignal<View>('deploy-view', 'projects')
 
@@ -69,8 +70,11 @@ export default function App() {
         {
           label: t(deployMsg.navAnalytics),
           icon: <BarChart size={16} />,
-          active: false,
-          onClick: (e) => e.preventDefault(),
+          active: currentView.value === 'builds',
+          onClick: (e) => {
+            e.preventDefault()
+            currentView.value = 'builds'
+          },
         },
         {
           label: t(deployMsg.navStorage),
@@ -124,6 +128,7 @@ export default function App() {
         )}
         {currentView.value === 'flags' && <FlagsView />}
         {currentView.value === 'deployments' && <Deployments />}
+        {currentView.value === 'builds' && <BuildMonitor />}
         {currentView.value === 'projects' && (
           <div className={styles['homeLayout']}>
             <aside className={styles['sidebar']}>

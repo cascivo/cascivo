@@ -31,8 +31,35 @@ export function DashboardPage() {
       </section>
 
       <section className="dashboard__chart" aria-label="Trend">
-        {/* Drop a <LineChart> from @cascivo/charts here. */}
+        {/*
+          Static trend: drop a <LineChart> from @cascivo/charts here.
+
+          For a LIVE chart, bind a poll/SSE/WebSocket source with useStreamSeries
+          (@cascivo/charts) into a capped, decimated signal:
+
+            const series = useStreamSeries({ capacity: 600, decimate: { to: 200, y: s => s.v },
+              source: push => { const es = new EventSource('/metrics'); es.onmessage = e => push(JSON.parse(e.data)); return () => es.close() } })
+            <AreaChart series={[{ id: 'm', label: 'Metric', data: series.value }]} x={s => s.t} y={s => s.v} />
+
+          See docs/cookbooks/vercel-dashboard.md + charts-streaming.md.
+        */}
         <div className="dashboard__chart-placeholder">Chart</div>
+      </section>
+
+      <section className="dashboard__logs" aria-label="Live output">
+        {/*
+          Live build/deploy log: feed a bounded ring buffer (createStreamBuffer /
+          useStreamBuffer from @cascivo/core) and render it with <LogViewer> from
+          @cascivo/react — only the visible rows mount, so it scales to 100k lines:
+
+            const logs = useStreamBuffer({ capacity: 1000 })
+            socket.onmessage = e => logs.append({ id: seq++, text: e.data })
+            <LogViewer lines={logs.signal} />
+
+          Wrap per-workspace state in createScope() and dispose() on workspace
+          switch so live effects never leak. See docs/cookbooks/vercel-dashboard.md.
+        */}
+        <div className="dashboard__chart-placeholder">Live log</div>
       </section>
 
       <section className="dashboard__activity" aria-label="Recent activity">

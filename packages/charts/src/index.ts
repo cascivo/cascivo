@@ -26,6 +26,8 @@ export * from './engine/transform'
 export * from './engine/dataset'
 // Decimation — LTTB / min-max downsampling for dense series.
 export * from './engine/decimate'
+// Streaming — bind a live source (poll/SSE/WS) to a capped, decimated series signal.
+export * from './stream/use-stream-series'
 
 // Frame & chrome — the SVG/Canvas shell + the reusable visual primitives.
 export * from './core/chart-frame'

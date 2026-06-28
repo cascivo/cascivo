@@ -3162,6 +3162,50 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['disc', 'decimal', 'none'],
     },
   ],
+  LogViewer: [
+    {
+      name: 'lines',
+      required: true,
+    },
+    {
+      name: 'rowHeight',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'overscan',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'follow',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onFollowChange',
+      required: false,
+    },
+    {
+      name: 'ansi',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'search',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'maxHeight',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+  ],
   LoginPage: [
     {
       name: 'onSubmit',

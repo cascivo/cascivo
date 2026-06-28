@@ -8,6 +8,7 @@
       "homepage": "https://cascivo.com",
       "registryUrl": "https://cascivo.com/r/{name}.json",
       "tags": ["official"],
+      "provides": ["component"],
       "verified": true
     }
   ]

@@ -109,7 +109,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (190 components)
+## Component index (191 components)
 
 ### chart
 
@@ -182,6 +182,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [item](https://docs.cascivo.com/llms/item.md) — Generic content row primitive with media, content, and action regions
 - [kbd](https://docs.cascivo.com/llms/kbd.md) — Displays a keyboard key or shortcut
 - [list](https://docs.cascivo.com/llms/list.md) — Styled unordered or ordered list with ListItem
+- [log-viewer](https://docs.cascivo.com/llms/log-viewer.md) — Virtualized monospace console for high-frequency log and stream output
 - [prose](https://docs.cascivo.com/llms/prose.md) — Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
 - [qr-code](https://docs.cascivo.com/llms/qr-code.md) — Encodes a URL or short text into a scannable SVG QR code
 - [relative-time](https://docs.cascivo.com/llms/relative-time.md) — Displays a date as a localized phrase relative to now, auto-updating
@@ -444,6 +445,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Stack](https://docs.cascivo.com/context/layout/stack.md) — Use when: Arranging children vertically or horizontally with a consistent gap
 - [Link](https://docs.cascivo.com/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
 - [List](https://docs.cascivo.com/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
+- [LogViewer](https://docs.cascivo.com/context/log-viewer.md) — Use when: Rendering continuous, high-volume log or stream output (build/deploy logs, server output)
 - [Menu](https://docs.cascivo.com/context/menu.md) — Use when: Presenting a list of actions or commands triggered from a button
 - [MenuButton](https://docs.cascivo.com/context/menu-button.md) — Use when: Exposing a small set of one-shot actions behind a single labeled button
 - [Menubar](https://docs.cascivo.com/context/menubar.md) — Use when: A persistent application-style command bar (File / Edit / View) where each top-level entry opens a menu of actions

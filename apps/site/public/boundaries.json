@@ -830,6 +830,23 @@
         "note": "Spacing and text color must resolve to --cascivo-* tokens"
       }
     ],
+    "LogViewer": [
+      {
+        "area": "data source",
+        "level": "flexible",
+        "note": "Accepts a live signal or a plain array"
+      },
+      {
+        "area": "rowHeight",
+        "level": "strict",
+        "note": "Virtualization assumes a fixed row height; variable-height lines are not supported"
+      },
+      {
+        "area": "coloring",
+        "level": "flexible",
+        "note": "Per-line level or ANSI SGR-16 escapes"
+      }
+    ],
     "Menu": [
       {
         "area": "token names",

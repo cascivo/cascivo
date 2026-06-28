@@ -30,6 +30,8 @@ export interface LineChartSeries<Datum> {
   label: string
   data: readonly Datum[]
   color?: string
+  /** Which y-axis this series is measured against. Default 'left'. */
+  axis?: 'left' | 'right'
 }
 
 export interface LineChartProps<Datum = { x: number; y: number }> {
@@ -67,6 +69,8 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   syncId?: string
   /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
   tooltipMode?: 'item' | 'axis'
+  /** Add a right-hand y-axis for series with `axis: 'right'` (e.g. bandwidth vs requests/sec). */
+  secondAxis?: { label?: string; format?: (value: number) => string }
   /** Downsample dense series before drawing (LTTB/min-max). The fallback table keeps full data. */
   decimate?: boolean | DecimateOptions
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
@@ -80,6 +84,11 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
+
+/** y-domain anchored at 0, like the single-axis default. */
+function yDomain(ys: readonly number[]): [number, number] {
+  return [Math.min(0, ...ys), Math.max(...ys)]
+}
 
 export function LineChart<Datum = { x: number; y: number }>({
   series: rawSeries,
@@ -106,6 +115,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   zoom,
   syncId,
   tooltipMode,
+  secondAxis,
   decimate,
   toolbox,
   transition,
@@ -152,13 +162,20 @@ export function LineChart<Datum = { x: number; y: number }>({
     ? rawSeries.map((s) => ({ ...s, data: s.data.slice(win.value[0], win.value[1] + 1) }))
     : rawSeries
 
-  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  // A right y-axis is added only when a series opts in; otherwise the layout and
+  // scales are byte-identical to the single-axis default.
+  const hasRight = !plain && series.some((s) => s.axis === 'right')
+  const baseMargins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
   const allX = series.flatMap((s) => s.data.map((d) => x(d)))
   // Drop non-finite y (gaps) so the domain isn't poisoned by NaN.
-  const allY = series.flatMap((s) => s.data.map((d) => y(d))).filter((v) => Number.isFinite(v))
+  const finiteY = (subset: readonly LineChartSeries<Datum>[]) =>
+    subset.flatMap((s) => s.data.map((d) => y(d))).filter((v) => Number.isFinite(v))
+  const leftY = finiteY(hasRight ? series.filter((s) => s.axis !== 'right') : series)
+  const rightY = hasRight ? finiteY(series.filter((s) => s.axis === 'right')) : []
   const hasData = allX.length > 0
 
   const usesDate = hasData && allX[0] instanceof Date
@@ -206,13 +223,12 @@ export function LineChart<Datum = { x: number; y: number }>({
     const xMax = usesDate
       ? Math.max(...(allX as Date[]).map((d) => d.getTime()))
       : Math.max(...(allX as number[]))
-    const yMin = Math.min(0, ...allY)
-    const yMax = Math.max(...allY)
-
     const xScale = usesDate
       ? timeScale([new Date(xMin), new Date(xMax)], [0, innerW])
       : linearScale([xMin, xMax], [0, innerW])
-    const yScale = linearScale([yMin, yMax], [innerH, 0])
+    const yScale = linearScale(yDomain(leftY), [innerH, 0])
+    const yScaleRight = hasRight ? linearScale(yDomain(rightY), [innerH, 0]) : yScale
+    const yOf = (s: LineChartSeries<Datum>) => (s.axis === 'right' ? yScaleRight : yScale)
 
     const xPosOf = (xv: number | Date): number =>
       usesDate
@@ -239,7 +255,7 @@ export function LineChart<Datum = { x: number; y: number }>({
           const xv = x(d)
           cxSum += xPosOf(xv)
           cnt++
-          cyTop = Math.min(cyTop, yScale.map(yv))
+          cyTop = Math.min(cyTop, yOf(s).map(yv))
           labelX = xv instanceof Date ? xv.toLocaleDateString() : String(xv)
           segments.push({
             label: s.label,
@@ -271,7 +287,7 @@ export function LineChart<Datum = { x: number; y: number }>({
         const xPos = usesDate
           ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
           : (xScale as ReturnType<typeof linearScale>).map(xv as number)
-        const yPos = yScale.map(yv)
+        const yPos = yOf(s).map(yv)
         const label = xv instanceof Date ? xv.toLocaleDateString() : String(xv)
         return {
           id: `${s.id}-${i}`,
@@ -334,13 +350,11 @@ export function LineChart<Datum = { x: number; y: number }>({
           const xMax = usesDate
             ? Math.max(...(allX as Date[]).map((d) => d.getTime()))
             : Math.max(...(allX as number[]))
-          const yMin = Math.min(0, ...allY)
-          const yMax = Math.max(...allY)
-
           const xScale = usesDate
             ? timeScale([new Date(xMin), new Date(xMax)], [0, innerW])
             : linearScale([xMin, xMax], [0, innerW])
-          const yScale = linearScale([yMin, yMax], [innerH, 0])
+          const yScale = linearScale(yDomain(leftY), [innerH, 0])
+          const yScaleRight = hasRight ? linearScale(yDomain(rightY), [innerH, 0]) : yScale
 
           return (
             <g>
@@ -358,6 +372,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                 {series.map((s, i) => {
                   if (hidden.value.has(s.id)) return null
                   const color = s.color ?? COLORS[i % COLORS.length]!
+                  const ys = s.axis === 'right' ? yScaleRight : yScale
                   const xPos = (xv: number | Date) =>
                     usesDate
                       ? (xScale as ReturnType<typeof timeScale>).map(xv as Date)
@@ -368,7 +383,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                     const finite: Pt[] = []
                     for (const d of s.data) {
                       const yv = y(d)
-                      if (Number.isFinite(yv)) finite.push([xPos(x(d)), yScale.map(yv)])
+                      if (Number.isFinite(yv)) finite.push([xPos(x(d)), ys.map(yv)])
                     }
                     const dec = decimatePoints(finite, decConf.threshold, decConf.method)
                     return (
@@ -392,7 +407,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                   const rawPts: (Point | null)[] = s.data.map((d) => {
                     const yv = y(d)
                     if (!Number.isFinite(yv)) return null
-                    return [xPos(x(d)), yScale.map(yv)] as Point
+                    return [xPos(x(d)), ys.map(yv)] as Point
                   })
                   const runs = splitDefined(rawPts, connectNulls)
                   return (
@@ -435,6 +450,18 @@ export function LineChart<Datum = { x: number; y: number }>({
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
+                    {hasRight && (
+                      <Axis
+                        scale={yScaleRight}
+                        orientation="y"
+                        length={innerH}
+                        tickCount={yTicks}
+                        transform={`translate(${innerW},0)`}
+                        {...(secondAxis?.format
+                          ? { format: (v: number | string | Date) => secondAxis.format!(Number(v)) }
+                          : {})}
+                      />
+                    )}
                   </>
                 )}
               </g>
