@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-27",
+  "generatedAt": "2026-06-28",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -104,7 +104,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-06-27",
+    "generatedAt": "2026-06-28",
     "global": {
       "strict": [
         {
@@ -1746,7 +1746,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-06-27",
+    "generatedAt": "2026-06-28",
     "exceptions": [
       {
         "id": "EXC-001",
