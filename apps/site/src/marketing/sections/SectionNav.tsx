@@ -6,6 +6,7 @@ const SECTIONS = [
   { id: 'advantages', label: 'Why cascivo' },
   { id: 'proof', label: 'Proof' },
   { id: 'quickstart', label: 'Quick start' },
+  { id: 'templates', label: 'Templates' },
   { id: 'cta', label: 'Get started' },
 ] as const
 

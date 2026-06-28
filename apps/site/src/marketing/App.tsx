@@ -26,6 +26,7 @@ const AdvantageCarousel = lazy(() =>
 const QuickStart = lazy(() =>
   import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
 )
+const Templates = lazy(() => import('./sections/Templates').then((m) => ({ default: m.Templates })))
 const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 const ProofTeasers = lazy(() =>
@@ -105,6 +106,10 @@ function HomePage() {
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={420} />}>
+              <Templates />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={180} />}>

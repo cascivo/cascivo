@@ -102,6 +102,23 @@ export function Home() {
       </section>
 
       <section class="doc-section">
+        <h2>Templates</h2>
+        <p class="doc-lede" style={{ marginBlockEnd: 'var(--cascivo-space-4)' }}>
+          Start from a whole page, not a blank file. <strong>Templates</strong> bundle a working
+          page with the components it composes and its fixtures — install one with{' '}
+          <code>cascivo add @ns/&lt;template&gt;</code> and own the source. Community-contributed,
+          hosted on GitHub, no backend.
+        </p>
+        <a
+          href="/docs/marketplace"
+          class="home-card-label"
+          style={{ color: 'var(--cascivo-color-accent)' }}
+        >
+          Browse the templates marketplace →
+        </a>
+      </section>
+
+      <section class="doc-section">
         <h2>Icons</h2>
         <p class="doc-lede" style={{ marginBlockEnd: 'var(--cascivo-space-4)' }}>
           ~440 stroked 24×24 <code>currentColor</code> SVG icons in <code>@cascivo/icons</code> —
